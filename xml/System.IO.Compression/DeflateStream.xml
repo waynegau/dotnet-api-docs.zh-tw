@@ -1,0 +1,1678 @@
+<Type Name="DeflateStream" FullName="System.IO.Compression.DeflateStream">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="ee85e8760afca78c5281f748656703fd7bf7c83a" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class DeflateStream : System.IO.Stream" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit DeflateStream extends System.IO.Stream" />
+  <TypeSignature Language="DocId" Value="T:System.IO.Compression.DeflateStream" />
+  <TypeSignature Language="VB.NET" Value="Public Class DeflateStream&#xA;Inherits Stream" />
+  <TypeSignature Language="C++ CLI" Value="public ref class DeflateStream : System::IO::Stream" />
+  <AssemblyInfo>
+    <AssemblyName>System.IO.Compression</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <AssemblyVersion>4.2.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.IO.Stream</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="47909-101">提供方法和屬性，以透過 Deflate 演算法來壓縮和解壓縮資料流。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="47909-101">Provides methods and properties for compressing and decompressing streams by using the Deflate algorithm.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="47909-102">此類別代表 Deflate 演算法，這是不失真的檔案壓縮和解壓縮的業界標準演算法。</span><span class="sxs-lookup"><span data-stu-id="47909-102">This class represents the Deflate algorithm, which is an industry-standard algorithm for lossless file compression and decompression.</span></span> <span data-ttu-id="47909-103">從開始[!INCLUDE[net_v45](~/includes/net-v45-md.md)]、<xref:System.IO.Compression.DeflateStream>類別會使用 zlib 程式庫。</span><span class="sxs-lookup"><span data-stu-id="47909-103">Starting with the [!INCLUDE[net_v45](~/includes/net-v45-md.md)], the <xref:System.IO.Compression.DeflateStream> class uses the zlib library.</span></span> <span data-ttu-id="47909-104">如此一來，它提供更好的壓縮演算法和在大部分情況下，比較小的壓縮的檔提供在舊版的.NET Framework。</span><span class="sxs-lookup"><span data-stu-id="47909-104">As a result, it provides a better compression algorithm and, in most cases, a smaller compressed file than it provides in earlier versions of the .NET Framework.</span></span>  
+  
+ <span data-ttu-id="47909-105">這個類別原本就不提供將檔案加入至或從 zip 封存解壓縮檔案的功能。</span><span class="sxs-lookup"><span data-stu-id="47909-105">This class does not inherently provide functionality for adding files to or extracting files from zip archives.</span></span> <span data-ttu-id="47909-106">若要使用的 zip 封存，使用<xref:System.IO.Compression.ZipArchive>和<xref:System.IO.Compression.ZipArchiveEntry>類別。</span><span class="sxs-lookup"><span data-stu-id="47909-106">To work with zip archives, use the <xref:System.IO.Compression.ZipArchive> and the <xref:System.IO.Compression.ZipArchiveEntry> classes.</span></span>  
+  
+ <span data-ttu-id="47909-107"><xref:System.IO.Compression.DeflateStream>類別所使用的 gzip 資料格式為使用相同的壓縮演算法<xref:System.IO.Compression.GZipStream>類別。</span><span class="sxs-lookup"><span data-stu-id="47909-107">The <xref:System.IO.Compression.DeflateStream> class uses the same compression algorithm as the gzip data format used by the <xref:System.IO.Compression.GZipStream> class.</span></span>  
+  
+ <span data-ttu-id="47909-108">中的壓縮功能<xref:System.IO.Compression.DeflateStream>和<xref:System.IO.Compression.GZipStream>公開為資料流。</span><span class="sxs-lookup"><span data-stu-id="47909-108">The compression functionality in <xref:System.IO.Compression.DeflateStream> and <xref:System.IO.Compression.GZipStream> is exposed as a stream.</span></span> <span data-ttu-id="47909-109">資料會讀取位元組的基礎，因此無法執行多個行程來判斷壓縮所有檔案或大型資料區塊的最佳方法。</span><span class="sxs-lookup"><span data-stu-id="47909-109">Data is read on a byte-by-byte basis, so it is not possible to perform multiple passes to determine the best method for compressing entire files or large blocks of data.</span></span> <span data-ttu-id="47909-110"><xref:System.IO.Compression.DeflateStream>和<xref:System.IO.Compression.GZipStream>未壓縮的資料來源上，最適合使用類別。</span><span class="sxs-lookup"><span data-stu-id="47909-110">The <xref:System.IO.Compression.DeflateStream> and <xref:System.IO.Compression.GZipStream> classes are best used on uncompressed sources of data.</span></span> <span data-ttu-id="47909-111">如果已經壓縮的來源資料，使用這些類別可能會增加資料流的大小。</span><span class="sxs-lookup"><span data-stu-id="47909-111">If the source data is already compressed, using these classes may actually increase the size of the stream.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="47909-112">下列範例示範如何使用<xref:System.IO.Compression.DeflateStream>類別來壓縮和解壓縮檔案的目錄。</span><span class="sxs-lookup"><span data-stu-id="47909-112">The following example shows how to use the <xref:System.IO.Compression.DeflateStream> class to compress and decompress a directory of files.</span></span>  
+  
+ [!code-csharp[IO.Compression.Deflate1#1](~/samples/snippets/csharp/VS_Snippets_CLR/IO.Compression.Deflate1/CS/deflatetest.cs#1)]
+ [!code-vb[IO.Compression.Deflate1#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/IO.Compression.Deflate1/VB/deflatetest.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="47909-113">初始化 <see cref="T:System.IO.Compression.DeflateStream" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-113">Initializes a new instance of the <see cref="T:System.IO.Compression.DeflateStream" /> class.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="47909-114">使用<xref:System.IO.Compression.DeflateStream>壓縮檔案大於 4 GB，將會導致例外狀況類別。</span><span class="sxs-lookup"><span data-stu-id="47909-114">Using the <xref:System.IO.Compression.DeflateStream> class to compress a file larger than 4 GB will cause an exception.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DeflateStream (System.IO.Stream stream, System.IO.Compression.CompressionLevel compressionLevel);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.IO.Stream stream, valuetype System.IO.Compression.CompressionLevel compressionLevel) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionLevel)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; DeflateStream(System::IO::Stream ^ stream, System::IO::Compression::CompressionLevel compressionLevel);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+        <Parameter Name="compressionLevel" Type="System.IO.Compression.CompressionLevel" />
+      </Parameters>
+      <Docs>
+        <param name="stream">
+          <span data-ttu-id="47909-115">要壓縮的資料流。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-115">The stream to compress.</span>
+          </span>
+        </param>
+        <param name="compressionLevel">
+          <span data-ttu-id="47909-116">其中一個列舉值，指出當壓縮資料流時是否要強調速度或壓縮的效益。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-116">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing the stream.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="47909-117">使用指定的資料流和壓縮層級，初始化 <see cref="T:System.IO.Compression.DeflateStream" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-117">Initializes a new instance of the <see cref="T:System.IO.Compression.DeflateStream" /> class by using the specified stream and compression level.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="47909-118">當您想要指定是否壓縮效率或速度更重要時的執行個體時，會使用這個建構函式<xref:System.IO.Compression.DeflateStream>類別。</span><span class="sxs-lookup"><span data-stu-id="47909-118">You use this constructor when you want to specify whether compression efficiency or speed is more important for an instance of the <xref:System.IO.Compression.DeflateStream> class.</span></span>  
+  
+ <span data-ttu-id="47909-119">這個建構函式多載會使用的壓縮模式<xref:System.IO.Compression.CompressionMode.Compress>。</span><span class="sxs-lookup"><span data-stu-id="47909-119">This constructor overload uses the compression mode <xref:System.IO.Compression.CompressionMode.Compress>.</span></span> <span data-ttu-id="47909-120">若要設定其他值的壓縮模式，使用<xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%29>或<xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%2CSystem.Boolean%29>多載。</span><span class="sxs-lookup"><span data-stu-id="47909-120">To set the compression mode to another value, use the <xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%29> or <xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%2CSystem.Boolean%29> overload.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="47909-121">下列範例示範如何建立時設定壓縮層級<xref:System.IO.Compression.DeflateStream>物件。</span><span class="sxs-lookup"><span data-stu-id="47909-121">The following example shows how to set the compression level when creating a <xref:System.IO.Compression.DeflateStream> object.</span></span>  
+  
+ [!code-csharp[System.IO.Compression.DeflateStream#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.io.compression.deflatestream/cs/program1.cs#1)]
+ [!code-vb[System.IO.Compression.DeflateStream#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.io.compression.deflatestream/vb/program1.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="47909-122">
+            <paramref name="stream" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-122">
+              <paramref name="stream" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="47909-123">資料流不支援寫入作業，例如壓縮。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-123">The stream does not support write operations such as compression.</span>
+          </span>
+          <span data-ttu-id="47909-124">(資料流物件上的 <see cref="P:System.IO.Stream.CanWrite" />屬性是<see langword="false" />)。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-124">(The <see cref="P:System.IO.Stream.CanWrite" /> property on the stream object is <see langword="false" />.)</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DeflateStream (System.IO.Stream stream, System.IO.Compression.CompressionMode mode);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.IO.Stream stream, valuetype System.IO.Compression.CompressionMode mode) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionMode)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; DeflateStream(System::IO::Stream ^ stream, System::IO::Compression::CompressionMode mode);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+        <Parameter Name="mode" Type="System.IO.Compression.CompressionMode" />
+      </Parameters>
+      <Docs>
+        <param name="stream">
+          <span data-ttu-id="47909-125">要壓縮或解壓縮的資料流。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-125">The stream to compress or decompress.</span>
+          </span>
+        </param>
+        <param name="mode">
+          <span data-ttu-id="47909-126">其中一個列舉值，表示要壓縮還是解壓縮資料流。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-126">One of the enumeration values that indicates whether to compress or decompress the stream.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="47909-127">使用指定的資料流和壓縮模式，初始化 <see cref="T:System.IO.Compression.DeflateStream" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-127">Initializes a new instance of the <see cref="T:System.IO.Compression.DeflateStream" /> class by using the specified stream and compression mode.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="47909-128">根據預設，<xref:System.IO.Compression.DeflateStream>擁有基礎資料流，以便關閉資料流也會關閉基礎資料流。</span><span class="sxs-lookup"><span data-stu-id="47909-128">By default, <xref:System.IO.Compression.DeflateStream> owns the underlying stream, so closing the stream also closes the underlying stream.</span></span> <span data-ttu-id="47909-129">請注意，基礎資料流的狀態可能會影響資料流的可用性。</span><span class="sxs-lookup"><span data-stu-id="47909-129">Note that the state of the underlying stream can affect the usability of the stream.</span></span> <span data-ttu-id="47909-130">此外，任何明確的檢查會不執行，所以會建立新的執行個體時，會擲不回任何其他的例外狀況。</span><span class="sxs-lookup"><span data-stu-id="47909-130">Also, no explicit checks are performed, so no additional exceptions are thrown when the new instance is created.</span></span>  
+  
+ <span data-ttu-id="47909-131">如果執行個體<xref:System.IO.Compression.DeflateStream>類別建立與`mode`參數等於`Compress`，立即插入標頭資訊。</span><span class="sxs-lookup"><span data-stu-id="47909-131">If an instance of the <xref:System.IO.Compression.DeflateStream> class is created with the `mode` parameter equal to `Compress`, header information is inserted immediately.</span></span> <span data-ttu-id="47909-132">如果不發生任何進一步的動作，資料流就會顯示為有效、 空白以及壓縮檔案。</span><span class="sxs-lookup"><span data-stu-id="47909-132">If no further action occurs, the stream appears as a valid, empty, compressed file.</span></span>  
+  
+ <span data-ttu-id="47909-133">使用<xref:System.IO.Compression.DeflateStream>壓縮檔案大於 4 GB 引發例外狀況類別。</span><span class="sxs-lookup"><span data-stu-id="47909-133">Using the <xref:System.IO.Compression.DeflateStream> class to compress a file larger than 4 GB raises an exception.</span></span>  
+  
+ <span data-ttu-id="47909-134">根據預設，壓縮層級設定為<xref:System.IO.Compression.CompressionLevel.Optimal>壓縮模式時<xref:System.IO.Compression.CompressionMode.Compress>。</span><span class="sxs-lookup"><span data-stu-id="47909-134">By default, the compression level is set to <xref:System.IO.Compression.CompressionLevel.Optimal> when the compression mode is <xref:System.IO.Compression.CompressionMode.Compress>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="47909-135">下列範例示範如何使用<xref:System.IO.Compression.DeflateStream>來壓縮和解壓縮檔案的類別。</span><span class="sxs-lookup"><span data-stu-id="47909-135">The following example shows how to use the <xref:System.IO.Compression.DeflateStream> class to compress and decompress a file.</span></span>  
+  
+ [!code-csharp[IO.Compression.Deflate1#1](~/samples/snippets/csharp/VS_Snippets_CLR/IO.Compression.Deflate1/CS/deflatetest.cs#1)]
+ [!code-vb[IO.Compression.Deflate1#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/IO.Compression.Deflate1/VB/deflatetest.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="47909-136">
+            <paramref name="stream" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-136">
+              <paramref name="stream" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="47909-137">
+            <paramref name="mode" /> 不是有效的 <see cref="T:System.IO.Compression.CompressionMode" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-137">
+              <paramref name="mode" /> is not a valid <see cref="T:System.IO.Compression.CompressionMode" /> value.</span>
+          </span>
+          <span data-ttu-id="47909-138">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-138">-or-</span>
+          </span>
+          <span data-ttu-id="47909-139">
+            <see cref="T:System.IO.Compression.CompressionMode" /> 是 <see cref="F:System.IO.Compression.CompressionMode.Compress" />，而 <see cref="P:System.IO.Stream.CanWrite" /> 是 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-139">
+              <see cref="T:System.IO.Compression.CompressionMode" /> is <see cref="F:System.IO.Compression.CompressionMode.Compress" /> and <see cref="P:System.IO.Stream.CanWrite" /> is <see langword="false" />.</span>
+          </span>
+          <span data-ttu-id="47909-140">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-140">-or-</span>
+          </span>
+          <span data-ttu-id="47909-141">
+            <see cref="T:System.IO.Compression.CompressionMode" /> 是 <see cref="F:System.IO.Compression.CompressionMode.Decompress" />，而 <see cref="P:System.IO.Stream.CanRead" /> 是 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-141">
+              <see cref="T:System.IO.Compression.CompressionMode" /> is <see cref="F:System.IO.Compression.CompressionMode.Decompress" /> and <see cref="P:System.IO.Stream.CanRead" /> is <see langword="false" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DeflateStream (System.IO.Stream stream, System.IO.Compression.CompressionLevel compressionLevel, bool leaveOpen);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.IO.Stream stream, valuetype System.IO.Compression.CompressionLevel compressionLevel, bool leaveOpen) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionLevel,System.Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; DeflateStream(System::IO::Stream ^ stream, System::IO::Compression::CompressionLevel compressionLevel, bool leaveOpen);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+        <Parameter Name="compressionLevel" Type="System.IO.Compression.CompressionLevel" />
+        <Parameter Name="leaveOpen" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="stream">
+          <span data-ttu-id="47909-142">要壓縮的資料流。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-142">The stream to compress.</span>
+          </span>
+        </param>
+        <param name="compressionLevel">
+          <span data-ttu-id="47909-143">其中一個列舉值，指出當壓縮資料流時是否要強調速度或壓縮的效益。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-143">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing the stream.</span>
+          </span>
+        </param>
+        <param name="leaveOpen">
+          <span data-ttu-id="47909-144">
+            <see langword="true" /> 表示在處置 <see cref="T:System.IO.Compression.DeflateStream" /> 物件之後，將資料流物件保持開啟；否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-144">
+              <see langword="true" /> to leave the stream object open after disposing the <see cref="T:System.IO.Compression.DeflateStream" /> object; otherwise, <see langword="false" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="47909-145">使用指定的資料流和壓縮層級，初始化 <see cref="T:System.IO.Compression.DeflateStream" /> 類別的新執行個體，並選擇性地保持開啟資料流。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-145">Initializes a new instance of the <see cref="T:System.IO.Compression.DeflateStream" /> class by using the specified stream and compression level, and optionally leaves the stream open.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="47909-146">當您想要指定是否壓縮效率或速度更重要時的執行個體時，會使用這個建構函式<xref:System.IO.Compression.DeflateStream>類別，以及是否要處置之後，將資料流物件保持開啟<xref:System.IO.Compression.DeflateStream>物件。</span><span class="sxs-lookup"><span data-stu-id="47909-146">You use this constructor when you want to specify whether compression efficiency or speed is more important for an instance of the <xref:System.IO.Compression.DeflateStream> class, and whether to leave the stream object open after disposing the <xref:System.IO.Compression.DeflateStream> object.</span></span>  
+  
+ <span data-ttu-id="47909-147">這個建構函式多載會使用的壓縮模式<xref:System.IO.Compression.CompressionMode.Compress>。</span><span class="sxs-lookup"><span data-stu-id="47909-147">This constructor overload uses the compression mode <xref:System.IO.Compression.CompressionMode.Compress>.</span></span> <span data-ttu-id="47909-148">若要設定其他值的壓縮模式，使用<xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%29>或<xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%2CSystem.Boolean%29>多載。</span><span class="sxs-lookup"><span data-stu-id="47909-148">To set the compression mode to another value, use the <xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%29> or <xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%2CSystem.Boolean%29> overload.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="47909-149">下列範例示範如何建立時設定壓縮層級<xref:System.IO.Compression.DeflateStream>物件，以及如何將資料流保持開啟。</span><span class="sxs-lookup"><span data-stu-id="47909-149">The following example shows how to set the compression level when creating a <xref:System.IO.Compression.DeflateStream> object and how to leave the stream open.</span></span>  
+  
+ [!code-csharp[System.IO.Compression.DeflateStream#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.io.compression.deflatestream/cs/program2.cs#2)]
+ [!code-vb[System.IO.Compression.DeflateStream#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.io.compression.deflatestream/vb/program2.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="47909-150">
+            <paramref name="stream" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-150">
+              <paramref name="stream" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="47909-151">資料流不支援寫入作業，例如壓縮。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-151">The stream does not support write operations such as compression.</span>
+          </span>
+          <span data-ttu-id="47909-152">(資料流物件上的 <see cref="P:System.IO.Stream.CanWrite" />屬性是<see langword="false" />)。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-152">(The <see cref="P:System.IO.Stream.CanWrite" /> property on the stream object is <see langword="false" />.)</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DeflateStream (System.IO.Stream stream, System.IO.Compression.CompressionMode mode, bool leaveOpen);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.IO.Stream stream, valuetype System.IO.Compression.CompressionMode mode, bool leaveOpen) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionMode,System.Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; DeflateStream(System::IO::Stream ^ stream, System::IO::Compression::CompressionMode mode, bool leaveOpen);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+        <Parameter Name="mode" Type="System.IO.Compression.CompressionMode" />
+        <Parameter Name="leaveOpen" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="stream">
+          <span data-ttu-id="47909-153">要壓縮或解壓縮的資料流。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-153">The stream to compress or decompress.</span>
+          </span>
+        </param>
+        <param name="mode">
+          <span data-ttu-id="47909-154">其中一個列舉值，表示要壓縮還是解壓縮資料流。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-154">One of the enumeration values that indicates whether to compress or decompress the stream.</span>
+          </span>
+        </param>
+        <param name="leaveOpen">
+          <span data-ttu-id="47909-155">
+            <see langword="true" /> 表示在處置 <see cref="T:System.IO.Compression.DeflateStream" /> 物件之後，將資料流保持開啟，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-155">
+              <see langword="true" /> to leave the stream open after disposing the <see cref="T:System.IO.Compression.DeflateStream" /> object; otherwise, <see langword="false" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="47909-156">使用指定的資料流和壓縮模式，初始化 <see cref="T:System.IO.Compression.DeflateStream" /> 類別的新執行個體，並選擇性地保持開啟資料流。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-156">Initializes a new instance of the <see cref="T:System.IO.Compression.DeflateStream" /> class by using the specified stream and compression mode, and optionally leaves the stream open.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="47909-157">根據預設，<xref:System.IO.Compression.DeflateStream>擁有基礎資料流，以便關閉資料流也會關閉基礎資料流。</span><span class="sxs-lookup"><span data-stu-id="47909-157">By default, <xref:System.IO.Compression.DeflateStream> owns the underlying stream, so closing the stream also closes the underlying stream.</span></span> <span data-ttu-id="47909-158">請注意，基礎資料流的狀態可能會影響資料流的可用性。</span><span class="sxs-lookup"><span data-stu-id="47909-158">Note that the state of the underlying stream can affect the usability of the stream.</span></span> <span data-ttu-id="47909-159">此外，任何明確的檢查會不執行，所以會建立新的執行個體時，會擲不回任何其他的例外狀況。</span><span class="sxs-lookup"><span data-stu-id="47909-159">Also, no explicit checks are performed, so no additional exceptions are thrown when the new instance is created.</span></span>  
+  
+ <span data-ttu-id="47909-160">如果執行個體<xref:System.IO.Compression.DeflateStream>類別建立與`mode`參數等於`Compress`，立即插入標頭資訊。</span><span class="sxs-lookup"><span data-stu-id="47909-160">If an instance of the <xref:System.IO.Compression.DeflateStream> class is created with the `mode` parameter equal to `Compress`, header information is inserted immediately.</span></span> <span data-ttu-id="47909-161">如果不發生任何進一步的動作，資料流就會顯示為有效、 空白以及壓縮檔案。</span><span class="sxs-lookup"><span data-stu-id="47909-161">If no further action occurs, the stream appears as a valid, empty, compressed file.</span></span>  
+  
+ <span data-ttu-id="47909-162">使用<xref:System.IO.Compression.DeflateStream>壓縮檔案大於 4 GB 引發例外狀況類別。</span><span class="sxs-lookup"><span data-stu-id="47909-162">Using the <xref:System.IO.Compression.DeflateStream> class to compress a file larger than 4 GB raises an exception.</span></span>  
+  
+ <span data-ttu-id="47909-163">根據預設，壓縮層級設定為<xref:System.IO.Compression.CompressionLevel.Optimal>壓縮模式時<xref:System.IO.Compression.CompressionMode.Compress>。</span><span class="sxs-lookup"><span data-stu-id="47909-163">By default, the compression level is set to <xref:System.IO.Compression.CompressionLevel.Optimal> when the compression mode is <xref:System.IO.Compression.CompressionMode.Compress>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="47909-164">下列程式碼範例示範如何使用<xref:System.IO.Compression.DeflateStream>來壓縮和解壓縮檔案的類別。</span><span class="sxs-lookup"><span data-stu-id="47909-164">The following code example shows how to use the <xref:System.IO.Compression.DeflateStream> class to compress and decompress a file.</span></span>  
+  
+ [!code-csharp[IO.Compression.Deflate1#1](~/samples/snippets/csharp/VS_Snippets_CLR/IO.Compression.Deflate1/CS/deflatetest.cs#1)]
+ [!code-vb[IO.Compression.Deflate1#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/IO.Compression.Deflate1/VB/deflatetest.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="47909-165">
+            <paramref name="stream" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-165">
+              <paramref name="stream" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="47909-166">
+            <paramref name="mode" /> 不是有效的 <see cref="T:System.IO.Compression.CompressionMode" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-166">
+              <paramref name="mode" /> is not a valid <see cref="T:System.IO.Compression.CompressionMode" /> value.</span>
+          </span>
+          <span data-ttu-id="47909-167">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-167">-or-</span>
+          </span>
+          <span data-ttu-id="47909-168">
+            <see cref="T:System.IO.Compression.CompressionMode" /> 是 <see cref="F:System.IO.Compression.CompressionMode.Compress" />，而 <see cref="P:System.IO.Stream.CanWrite" /> 是 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-168">
+              <see cref="T:System.IO.Compression.CompressionMode" /> is <see cref="F:System.IO.Compression.CompressionMode.Compress" /> and <see cref="P:System.IO.Stream.CanWrite" /> is <see langword="false" />.</span>
+          </span>
+          <span data-ttu-id="47909-169">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-169">-or-</span>
+          </span>
+          <span data-ttu-id="47909-170">
+            <see cref="T:System.IO.Compression.CompressionMode" /> 是 <see cref="F:System.IO.Compression.CompressionMode.Decompress" />，而 <see cref="P:System.IO.Stream.CanRead" /> 是 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-170">
+              <see cref="T:System.IO.Compression.CompressionMode" /> is <see cref="F:System.IO.Compression.CompressionMode.Decompress" /> and <see cref="P:System.IO.Stream.CanRead" /> is <see langword="false" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BaseStream">
+      <MemberSignature Language="C#" Value="public System.IO.Stream BaseStream { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.IO.Stream BaseStream" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Compression.DeflateStream.BaseStream" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property BaseStream As Stream" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::IO::Stream ^ BaseStream { System::IO::Stream ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IO.Stream</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="47909-171">取得基礎資料流的參考。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-171">Gets a reference to the underlying stream.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="47909-172">資料流物件，表示基礎資料流。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-172">A stream object that represents the underlying stream.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="47909-173">已關閉基礎資料流。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-173">The underlying stream is closed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginRead">
+      <MemberSignature Language="C#" Value="public override IAsyncResult BeginRead (byte[] buffer, int offset, int count, AsyncCallback cback, object state);" FrameworkAlternate="netcore-1.0;netcore-1.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.IAsyncResult BeginRead(unsigned int8[] buffer, int32 offset, int32 count, class System.AsyncCallback cback, object state) cil managed" FrameworkAlternate="netcore-1.0;netcore-1.1" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0" />
+      <MemberSignature Language="C#" Value="public override IAsyncResult BeginRead (byte[] buffer, int offset, int count, AsyncCallback asyncCallback, object asyncState);" FrameworkAlternate="netcore-2.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.IAsyncResult BeginRead(unsigned int8[] buffer, int32 offset, int32 count, class System.AsyncCallback asyncCallback, object asyncState) cil managed" FrameworkAlternate="netcore-2.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override IAsyncResult ^ BeginRead(cli::array &lt;System::Byte&gt; ^ buffer, int offset, int count, AsyncCallback ^ asyncCallback, System::Object ^ asyncState);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="array" Type="System.Byte[]" Index="0" FrameworkAlternate="netcore-1.0;netcore-1.1" />
+        <Parameter Name="buffer" Type="System.Byte[]" Index="0" FrameworkAlternate="netcore-2.0" />
+        <Parameter Name="offset" Type="System.Int32" Index="1" />
+        <Parameter Name="count" Type="System.Int32" Index="2" />
+        <Parameter Name="asyncCallback" Type="System.AsyncCallback" Index="3" />
+        <Parameter Name="asyncState" Type="System.Object" Index="4" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">To be added.</param>
+        <param name="offset">
+          <span data-ttu-id="47909-174">「陣列」<c></c>中的位元組位移，即開始從資料流讀取資料的位置。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-174">The byte offset in <c>array</c> at which to begin reading data from the stream.</span>
+          </span>
+        </param>
+        <param name="count">
+          <span data-ttu-id="47909-175">要讀取的最大位元組數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-175">The maximum number of bytes to read.</span>
+          </span>
+        </param>
+        <param name="asyncCallback">To be added.</param>
+        <param name="asyncState">To be added.</param>
+        <summary>
+          <span data-ttu-id="47909-176">開始非同步的讀取作業。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-176">Begins an asynchronous read operation.</span>
+          </span>
+          <span data-ttu-id="47909-177">(請考慮使用 <see cref="M:System.IO.Stream.ReadAsync(System.Byte[],System.Int32,System.Int32)" /> 方法替代。)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-177">(Consider using the <see cref="M:System.IO.Stream.ReadAsync(System.Byte[],System.Int32,System.Int32)" /> method instead.)</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="47909-178">物件，表示可能還在暫止中的非同步讀取作業。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-178">An  object that represents the asynchronous read operation, which could still be pending.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="47909-179">從開始[!INCLUDE[net_v45](~/includes/net-v45-md.md)]，您可以使用來執行非同步的讀取的作業<xref:System.IO.Stream.ReadAsync%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="47909-179">Starting with the [!INCLUDE[net_v45](~/includes/net-v45-md.md)], you can perform asynchronous read operations by using the <xref:System.IO.Stream.ReadAsync%2A> method.</span></span> <span data-ttu-id="47909-180"><xref:System.IO.Compression.DeflateStream.BeginRead%2A>方法是中仍然可用[!INCLUDE[net_v45](~/includes/net-v45-md.md)]以支援舊版的程式碼; 不過，您可以實作非同步 I/O 作業更輕鬆地使用新的非同步方法。</span><span class="sxs-lookup"><span data-stu-id="47909-180">The <xref:System.IO.Compression.DeflateStream.BeginRead%2A> method is still available in the [!INCLUDE[net_v45](~/includes/net-v45-md.md)] to support legacy code; however, you can implement asynchronous I/O operations more easily by using the new async methods.</span></span> <span data-ttu-id="47909-181">如需詳細資訊，請參閱 。</span><span class="sxs-lookup"><span data-stu-id="47909-181">For more information, see .</span></span>  
+  
+ <span data-ttu-id="47909-182">傳遞<xref:System.IAsyncResult>傳回值來<xref:System.IO.Compression.DeflateStream.EndRead%2A>，判斷有多少位元組被讀取，以便釋放系統資源用來讀取資料流的方法。</span><span class="sxs-lookup"><span data-stu-id="47909-182">Pass the <xref:System.IAsyncResult> return value to the <xref:System.IO.Compression.DeflateStream.EndRead%2A> method of the stream to determine how many bytes were read and to release operating system resources used for reading.</span></span> <span data-ttu-id="47909-183">您可以使用相同的程式碼呼叫<xref:System.IO.Compression.DeflateStream.BeginRead%2A>或傳遞至回呼<xref:System.IO.Compression.DeflateStream.BeginRead%2A>。</span><span class="sxs-lookup"><span data-stu-id="47909-183">You can do this either by using the same code that called <xref:System.IO.Compression.DeflateStream.BeginRead%2A> or in a callback passed to <xref:System.IO.Compression.DeflateStream.BeginRead%2A>.</span></span>  
+  
+ <span data-ttu-id="47909-184">非同步讀取或寫入作業時，會發出，未在 I/O 作業完成時，會更新資料流中目前的位置。</span><span class="sxs-lookup"><span data-stu-id="47909-184">The current position in the stream is updated when the asynchronous read or write operation is issued, not when the I/O operation completes.</span></span>  
+  
+ <span data-ttu-id="47909-185">多個同時進行非同步要求轉譯要求完成順序不確定。</span><span class="sxs-lookup"><span data-stu-id="47909-185">Multiple simultaneous asynchronous requests render the request completion order uncertain.</span></span>  
+  
+ <span data-ttu-id="47909-186">使用<xref:System.IO.Compression.DeflateStream.CanRead%2A>屬性來判斷是否目前<xref:System.IO.Compression.DeflateStream>物件支援讀取。</span><span class="sxs-lookup"><span data-stu-id="47909-186">Use the <xref:System.IO.Compression.DeflateStream.CanRead%2A> property to determine whether the current <xref:System.IO.Compression.DeflateStream> object supports reading.</span></span>  
+  
+ <span data-ttu-id="47909-187">如果資料流已關閉，或是您傳遞了無效的引數，會擲回例外狀況立即從<xref:System.IO.Compression.DeflateStream.BeginRead%2A>。</span><span class="sxs-lookup"><span data-stu-id="47909-187">If a stream is closed or you pass an invalid argument, exceptions are thrown immediately from <xref:System.IO.Compression.DeflateStream.BeginRead%2A>.</span></span> <span data-ttu-id="47909-188">非同步讀取要求，例如磁碟失敗期間，在 I/O 要求期間發生的錯誤發生在執行緒集區執行緒，並且呼叫時擲回例外狀況<xref:System.IO.Compression.DeflateStream.EndRead%2A>。</span><span class="sxs-lookup"><span data-stu-id="47909-188">Errors that occur during an asynchronous read request, such as a disk failure during the I/O request, occur on the thread pool thread and throw exceptions when calling <xref:System.IO.Compression.DeflateStream.EndRead%2A>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="47909-189">嘗試非同步讀取的方法超越資料流結尾，或發生了磁碟錯誤。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-189">The method tried to read asynchronously past the end of the stream, or a disk error occurred.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="47909-190">一或多個引數無效。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-190">One or more of the arguments is invalid.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="47909-191">關閉資料流後呼叫了方法。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-191">Methods were called after the stream was closed.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="47909-192">目前的 <see cref="T:System.IO.Compression.DeflateStream" /> 實作不支援讀取作業。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-192">The current <see cref="T:System.IO.Compression.DeflateStream" /> implementation does not support the read operation.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="47909-193">無法完成此呼叫。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-193">This call cannot be completed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginWrite">
+      <MemberSignature Language="C#" Value="public override IAsyncResult BeginWrite (byte[] array, int offset, int count, AsyncCallback asyncCallback, object asyncState);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.IAsyncResult BeginWrite(unsigned int8[] array, int32 offset, int32 count, class System.AsyncCallback asyncCallback, object asyncState) cil managed" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" FrameworkAlternate="netcore-1.0;netcore-1.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netcore-2.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override IAsyncResult ^ BeginWrite(cli::array &lt;System::Byte&gt; ^ array, int offset, int count, AsyncCallback ^ asyncCallback, System::Object ^ asyncState);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="C#" Value="public override IAsyncResult BeginWrite (byte[] buffer, int offset, int count, AsyncCallback cback, object state);" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.IAsyncResult BeginWrite(unsigned int8[] buffer, int32 offset, int32 count, class System.AsyncCallback cback, object state) cil managed" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function BeginWrite (buffer As Byte(), offset As Integer, count As Integer, cback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override IAsyncResult ^ BeginWrite(cli::array &lt;System::Byte&gt; ^ buffer, int offset, int count, AsyncCallback ^ cback, System::Object ^ state);" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="array" Type="System.Byte[]" Index="0" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+        <Parameter Name="buffer" Type="System.Byte[]" Index="0" FrameworkAlternate="xamarinandroid-7.1" />
+        <Parameter Name="offset" Type="System.Int32" Index="1" />
+        <Parameter Name="count" Type="System.Int32" Index="2" />
+        <Parameter Name="asyncCallback" Type="System.AsyncCallback" Index="3" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+        <Parameter Name="cback" Type="System.AsyncCallback" Index="3" FrameworkAlternate="xamarinandroid-7.1" />
+        <Parameter Name="asyncState" Type="System.Object" Index="4" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+        <Parameter Name="state" Type="System.Object" Index="4" FrameworkAlternate="xamarinandroid-7.1" />
+      </Parameters>
+      <Docs>
+        <param name="array">To be added.</param>
+        <param name="buffer">To be added.</param>
+        <param name="offset">
+          <span data-ttu-id="47909-194">
+            <c></c> 中要從該處開始寫入的位元組位移。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-194">The byte offset in <c>buffer</c> to begin writing from.</span>
+          </span>
+        </param>
+        <param name="count">
+          <span data-ttu-id="47909-195">寫入的最大位元組數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-195">The maximum number of bytes to write.</span>
+          </span>
+        </param>
+        <param name="asyncCallback">To be added.</param>
+        <param name="cback">To be added.</param>
+        <param name="asyncState">To be added.</param>
+        <param name="state">To be added.</param>
+        <summary>
+          <span data-ttu-id="47909-196">開始非同步的寫入作業。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-196">Begins an asynchronous write operation.</span>
+          </span>
+          <span data-ttu-id="47909-197">(請考慮使用 <see cref="M:System.IO.Stream.WriteAsync(System.Byte[],System.Int32,System.Int32)" /> 方法替代。)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-197">(Consider using the <see cref="M:System.IO.Stream.WriteAsync(System.Byte[],System.Int32,System.Int32)" /> method instead.)</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="47909-198">物件，表示可能還在暫止中的非同步寫入作業。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-198">An  object that represents the asynchronous write operation, which could still be pending.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="47909-199">從開始[!INCLUDE[net_v45](~/includes/net-v45-md.md)]，您可以使用來執行非同步寫入作業<xref:System.IO.Stream.WriteAsync%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="47909-199">Starting with the [!INCLUDE[net_v45](~/includes/net-v45-md.md)], you can perform asynchronous write operations by using the <xref:System.IO.Stream.WriteAsync%2A> method.</span></span> <span data-ttu-id="47909-200"><xref:System.IO.Compression.DeflateStream.BeginWrite%2A>方法是中仍然可用[!INCLUDE[net_v45](~/includes/net-v45-md.md)]以支援舊版的程式碼; 不過，您可以實作非同步 I/O 作業更輕鬆地使用新的非同步方法。</span><span class="sxs-lookup"><span data-stu-id="47909-200">The <xref:System.IO.Compression.DeflateStream.BeginWrite%2A> method is still available in the [!INCLUDE[net_v45](~/includes/net-v45-md.md)] to support legacy code; however, you can implement asynchronous I/O operations more easily by using the new async methods.</span></span> <span data-ttu-id="47909-201">如需詳細資訊，請參閱 。</span><span class="sxs-lookup"><span data-stu-id="47909-201">For more information, see .</span></span>  
+  
+ <span data-ttu-id="47909-202">傳遞<xref:System.IAsyncResult>至目前的方法所傳回物件<xref:System.IO.Compression.DeflateStream.EndWrite%2A>以確保寫入完成，並適當地釋放資源。</span><span class="sxs-lookup"><span data-stu-id="47909-202">Pass the <xref:System.IAsyncResult> object returned by the current method to <xref:System.IO.Compression.DeflateStream.EndWrite%2A> to ensure that the write completes and frees resources appropriately.</span></span> <span data-ttu-id="47909-203">您可以使用相同的程式碼呼叫<xref:System.IO.Compression.DeflateStream.BeginWrite%2A>或傳遞至回呼<xref:System.IO.Compression.DeflateStream.BeginWrite%2A>。</span><span class="sxs-lookup"><span data-stu-id="47909-203">You can do this either by using the same code that called <xref:System.IO.Compression.DeflateStream.BeginWrite%2A> or in a callback passed to <xref:System.IO.Compression.DeflateStream.BeginWrite%2A>.</span></span> <span data-ttu-id="47909-204">如果在非同步寫入作業期間發生錯誤，將不會擲回例外狀況之前<xref:System.IO.Compression.DeflateStream.EndWrite%2A>呼叫<xref:System.IAsyncResult>這個方法所傳回。</span><span class="sxs-lookup"><span data-stu-id="47909-204">If an error occurs during an asynchronous write operation, an exception will not be thrown until <xref:System.IO.Compression.DeflateStream.EndWrite%2A> is called with the <xref:System.IAsyncResult> returned by this method.</span></span>  
+  
+ <span data-ttu-id="47909-205">如果資料流是可寫入，寫入資料流的結尾會擴充資料流。</span><span class="sxs-lookup"><span data-stu-id="47909-205">If a stream is writable, writing at the end of the stream expands the stream.</span></span>  
+  
+ <span data-ttu-id="47909-206">發出非同步的讀取或寫入作業，不會在 I/O 作業完成時，會更新資料流中目前的位置。</span><span class="sxs-lookup"><span data-stu-id="47909-206">The current position in the stream is updated when you issue the asynchronous read or write operation, not when the I/O operation completes.</span></span> <span data-ttu-id="47909-207">多個同時進行非同步要求轉譯要求完成順序不確定。</span><span class="sxs-lookup"><span data-stu-id="47909-207">Multiple simultaneous asynchronous requests render the request completion order uncertain.</span></span>  
+  
+ <span data-ttu-id="47909-208">使用<xref:System.IO.Compression.DeflateStream.CanWrite%2A>屬性來判斷是否目前<xref:System.IO.Compression.DeflateStream>物件支援寫入。</span><span class="sxs-lookup"><span data-stu-id="47909-208">Use the <xref:System.IO.Compression.DeflateStream.CanWrite%2A> property to determine whether the current <xref:System.IO.Compression.DeflateStream> object supports writing.</span></span>  
+  
+ <span data-ttu-id="47909-209">如果資料流已關閉，或是您傳遞了無效的引數，會擲回例外狀況立即從<xref:System.IO.Compression.DeflateStream.BeginWrite%2A>。</span><span class="sxs-lookup"><span data-stu-id="47909-209">If a stream is closed or you pass an invalid argument, exceptions are thrown immediately from <xref:System.IO.Compression.DeflateStream.BeginWrite%2A>.</span></span> <span data-ttu-id="47909-210">在非同步寫入要求，例如磁碟失敗期間，在 I/O 要求期間發生的錯誤發生在執行緒集區執行緒，並且呼叫時擲回例外狀況<xref:System.IO.Compression.DeflateStream.EndWrite%2A>。</span><span class="sxs-lookup"><span data-stu-id="47909-210">Errors that occur during an asynchronous write request, such as a disk failure during the I/O request, occur on the thread pool thread and throw exceptions when calling <xref:System.IO.Compression.DeflateStream.EndWrite%2A>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="47909-211">嘗試非同步寫入的方法超越資料流結尾，或發生了磁碟錯誤。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-211">The method tried to write asynchronously past the end of the stream, or a disk error occurred.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="47909-212">一或多個引數無效。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-212">One or more of the arguments is invalid.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="47909-213">關閉資料流後呼叫了方法。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-213">Methods were called after the stream was closed.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="47909-214">目前的 <see cref="T:System.IO.Compression.DeflateStream" /> 實作不支援寫入作業。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-214">The current <see cref="T:System.IO.Compression.DeflateStream" /> implementation does not support the write operation.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="47909-215">無法執行寫入作業，因為資料流已關閉。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-215">The write operation cannot be performed because the stream is closed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="CanRead">
+      <MemberSignature Language="C#" Value="public override bool CanRead { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool CanRead" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Compression.DeflateStream.CanRead" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property CanRead As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool CanRead { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="47909-216">取得值，指出在解壓縮檔案時，資料流是否支援讀取。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-216">Gets a value indicating whether the stream supports reading while decompressing a file.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="47909-217">如果 <see cref="T:System.IO.Compression.CompressionMode" /> 值為 <see langword="Decompress" />，且基礎資料流處於開啟狀態並支援讀取，則為 <see langword="true" />；否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-217">
+              <see langword="true" /> if the <see cref="T:System.IO.Compression.CompressionMode" /> value is <see langword="Decompress" />, and the underlying stream is opened and supports reading; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanSeek">
+      <MemberSignature Language="C#" Value="public override bool CanSeek { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool CanSeek" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Compression.DeflateStream.CanSeek" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property CanSeek As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool CanSeek { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="47909-218">取得值，指出資料流是否支援搜尋。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-218">Gets a value indicating whether the stream supports seeking.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="47909-219">所有情況下都是 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-219">
+              <see langword="false" /> in all cases.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanWrite">
+      <MemberSignature Language="C#" Value="public override bool CanWrite { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool CanWrite" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Compression.DeflateStream.CanWrite" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property CanWrite As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool CanWrite { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="47909-220">取得值，指出資料流是否支援寫入。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-220">Gets a value indicating whether the stream supports writing.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="47909-221">如果 <see cref="T:System.IO.Compression.CompressionMode" /> 值為 <see langword="Compress" />，並且基礎資料流支援寫入，且不處於關閉狀態，則為 <see langword="true" />；否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-221">
+              <see langword="true" /> if the <see cref="T:System.IO.Compression.CompressionMode" /> value is <see langword="Compress" />, and the underlying stream supports writing and is not closed; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.Dispose(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub Dispose (disposing As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void Dispose(bool disposing);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">
+          <span data-ttu-id="47909-222">
+            <see langword="true" /> 表示釋放 Managed 和 Unmanaged 資源，<see langword="false" /> 則表示只釋放 Unmanaged 資源。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-222">
+              <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="47909-223">釋放 <see cref="T:System.IO.Compression.DeflateStream" /> 所使用的 Unmanaged 資源，並選擇性地釋放 Managed 資源。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-223">Releases the unmanaged resources used by the <see cref="T:System.IO.Compression.DeflateStream" /> and optionally releases the managed resources.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="47909-224">這個方法會呼叫公用<xref:System.ComponentModel.Component.Dispose%2A>方法和<xref:System.Object.Finalize%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="47909-224">This method is called by the public <xref:System.ComponentModel.Component.Dispose%2A> method and the <xref:System.Object.Finalize%2A> method.</span></span> <span data-ttu-id="47909-225"><xref:System.ComponentModel.Component.Dispose%2A> 叫用受保護<xref:System.IO.Compression.DeflateStream.Dispose%2A>方法`disposing`參數設定為`true`。</span><span class="sxs-lookup"><span data-stu-id="47909-225"><xref:System.ComponentModel.Component.Dispose%2A> invokes the protected <xref:System.IO.Compression.DeflateStream.Dispose%2A> method with the `disposing` parameter set to `true`.</span></span> <span data-ttu-id="47909-226"><xref:System.Object.Finalize%2A> 叫用<xref:System.IO.Compression.DeflateStream.Dispose%2A>與`disposing`設`false`。</span><span class="sxs-lookup"><span data-stu-id="47909-226"><xref:System.Object.Finalize%2A> invokes <xref:System.IO.Compression.DeflateStream.Dispose%2A> with `disposing` set to `false`.</span></span>  
+  
+ <span data-ttu-id="47909-227">`disposing` 參數為 `true` 時，這個方法會釋放 <xref:System.IO.Compression.DeflateStream> 參考的任何 Managed 物件所掌握的資源。</span><span class="sxs-lookup"><span data-stu-id="47909-227">When the `disposing` parameter is `true`, this method releases all resources held by any managed objects that this <xref:System.IO.Compression.DeflateStream> references.</span></span> <span data-ttu-id="47909-228">這個方法會叫用每個參考物件的 <xref:System.ComponentModel.Component.Dispose%2A> 方法。</span><span class="sxs-lookup"><span data-stu-id="47909-228">This method invokes the <xref:System.ComponentModel.Component.Dispose%2A> method of each referenced object.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides">
+          <para>
+            <span data-ttu-id="47909-229">
+              <see cref="M:System.ComponentModel.Component.Dispose" /> 可以被其他物件呼叫多次。</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="47909-229">
+                <see cref="M:System.ComponentModel.Component.Dispose" /> can be called multiple times by other objects.</span>
+            </span>
+            <span data-ttu-id="47909-230">在覆寫<see cref="M:System.IO.Compression.DeflateStream.Dispose(System.Boolean)" />小心不要參考物件已處置過的早期呼叫中<see cref="M:System.ComponentModel.Component.Dispose" />。</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="47909-230">When overriding <see cref="M:System.IO.Compression.DeflateStream.Dispose(System.Boolean)" /> be careful not to reference objects that have been previously disposed of in an earlier call to <see cref="M:System.ComponentModel.Component.Dispose" />.</span>
+            </span>
+            <span data-ttu-id="47909-231">如需有關如何實作<see cref="M:System.IO.Compression.DeflateStream.Dispose(System.Boolean)" />，請參閱[實作 Dispose 方法](~/docs/standard/garbage-collection/implementing-dispose.md)。</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="47909-231">For more information about how to implement <see cref="M:System.IO.Compression.DeflateStream.Dispose(System.Boolean)" />, see [Implementing a Dispose Method](~/docs/standard/garbage-collection/implementing-dispose.md).</span>
+            </span>
+            <span data-ttu-id="47909-232">如需有關<see cref="M:System.ComponentModel.Component.Dispose" />和<see cref="M:System.Object.Finalize" />，請參閱[清除 Unmanaged 資源上](~/docs/standard/garbage-collection/unmanaged.md)。</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="47909-232">For more information about <see cref="M:System.ComponentModel.Component.Dispose" /> and <see cref="M:System.Object.Finalize" />, see [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md).</span>
+            </span>
+          </para>
+        </block>
+      </Docs>
+    </Member>
+    <Member MemberName="EndRead">
+      <MemberSignature Language="C#" Value="public override int EndRead (IAsyncResult asyncResult);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 EndRead(class System.IAsyncResult asyncResult) cil managed" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.EndRead(System.IAsyncResult)" FrameworkAlternate="netcore-1.0;netcore-1.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netcore-2.0" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function EndRead (asyncResult As IAsyncResult) As Integer" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override int EndRead(IAsyncResult ^ asyncResult);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="C#" Value="public override int EndRead (IAsyncResult async_result);" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 EndRead(class System.IAsyncResult async_result) cil managed" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.EndRead(System.IAsyncResult)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function EndRead (async_result As IAsyncResult) As Integer" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override int EndRead(IAsyncResult ^ async_result);" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="asyncResult" Type="System.IAsyncResult" Index="0" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+        <Parameter Name="async_result" Type="System.IAsyncResult" Index="0" FrameworkAlternate="xamarinandroid-7.1" />
+      </Parameters>
+      <Docs>
+        <param name="asyncResult">To be added.</param>
+        <summary>
+          <span data-ttu-id="47909-233">等候暫止的非同步讀取完成。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-233">Waits for the pending asynchronous read to complete.</span>
+          </span>
+          <span data-ttu-id="47909-234">(請考慮使用 <see cref="M:System.IO.Stream.ReadAsync(System.Byte[],System.Int32,System.Int32)" /> 方法替代。)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-234">(Consider using the <see cref="M:System.IO.Stream.ReadAsync(System.Byte[],System.Int32,System.Int32)" /> method instead.)</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="47909-235">從資料流讀取的位元組數，位於 0 (零) 和您所要求的位元組數之間。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-235">The number of bytes read from the stream, between 0 (zero) and the number of bytes you requested.</span>
+          </span>
+          <span data-ttu-id="47909-236">
+            <see cref="T:System.IO.Compression.DeflateStream" /> 只在資料流結尾傳回 0；否則，它會封鎖，直到至少有一個位元組可用為止。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-236">
+              <see cref="T:System.IO.Compression.DeflateStream" /> returns 0 only at the end of the stream; otherwise, it blocks until at least one byte is available.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="47909-237">從開始[!INCLUDE[net_v45](~/includes/net-v45-md.md)]，您可以使用來執行非同步的讀取的作業<xref:System.IO.Stream.ReadAsync%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="47909-237">Starting with the [!INCLUDE[net_v45](~/includes/net-v45-md.md)], you can perform asynchronous read operations by using the <xref:System.IO.Stream.ReadAsync%2A> method.</span></span> <span data-ttu-id="47909-238"><xref:System.IO.Compression.DeflateStream.EndRead%2A>方法是中仍然可用[!INCLUDE[net_v45](~/includes/net-v45-md.md)]以支援舊版的程式碼; 不過，您可以實作非同步 I/O 作業更輕鬆地使用新的非同步方法。</span><span class="sxs-lookup"><span data-stu-id="47909-238">The <xref:System.IO.Compression.DeflateStream.EndRead%2A> method is still available in the [!INCLUDE[net_v45](~/includes/net-v45-md.md)] to support legacy code; however, you can implement asynchronous I/O operations more easily by using the new async methods.</span></span> <span data-ttu-id="47909-239">如需詳細資訊，請參閱 。</span><span class="sxs-lookup"><span data-stu-id="47909-239">For more information, see .</span></span>  
+  
+ <span data-ttu-id="47909-240">呼叫這個方法來判斷有多少位元組被讀取從資料流。</span><span class="sxs-lookup"><span data-stu-id="47909-240">Call this method to determine how many bytes were read from the stream.</span></span> <span data-ttu-id="47909-241">這個方法可以一次呼叫以傳回呼叫之間所讀取的位元組數量<xref:System.IO.Compression.DeflateStream.BeginRead%2A>和<xref:System.IO.Compression.DeflateStream.EndRead%2A>。</span><span class="sxs-lookup"><span data-stu-id="47909-241">This method can be called once to return the amount of bytes read between calls to <xref:System.IO.Compression.DeflateStream.BeginRead%2A> and <xref:System.IO.Compression.DeflateStream.EndRead%2A>.</span></span>  
+  
+ <span data-ttu-id="47909-242">這個方法會封鎖，直到 I/O 作業完成為止。</span><span class="sxs-lookup"><span data-stu-id="47909-242">This method blocks until the I/O operation has completed.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="47909-243">
+            <paramref name="asyncResult" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-243">
+              <paramref name="asyncResult" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="47909-244">
+            <paramref name="asyncResult" /> 不是來自目前資料流的 <see cref="M:System.IO.Compression.DeflateStream.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" /> 方法。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-244">
+              <paramref name="asyncResult" /> did not originate from a <see cref="M:System.IO.Compression.DeflateStream.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" /> method on the current stream.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.SystemException">
+          <span data-ttu-id="47909-245">呼叫 <see cref="M:System.Threading.WaitHandle.WaitOne" /> 期間傳回例外狀況。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-245">An exception was thrown during a call to <see cref="M:System.Threading.WaitHandle.WaitOne" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="47909-246">資料流為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-246">The stream is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="EndWrite">
+      <MemberSignature Language="C#" Value="public override void EndWrite (IAsyncResult asyncResult);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void EndWrite(class System.IAsyncResult asyncResult) cil managed" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.EndWrite(System.IAsyncResult)" FrameworkAlternate="netcore-1.0;netcore-1.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netcore-2.0" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub EndWrite (asyncResult As IAsyncResult)" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void EndWrite(IAsyncResult ^ asyncResult);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="C#" Value="public override void EndWrite (IAsyncResult async_result);" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void EndWrite(class System.IAsyncResult async_result) cil managed" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.EndWrite(System.IAsyncResult)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub EndWrite (async_result As IAsyncResult)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void EndWrite(IAsyncResult ^ async_result);" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="asyncResult" Type="System.IAsyncResult" Index="0" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+        <Parameter Name="async_result" Type="System.IAsyncResult" Index="0" FrameworkAlternate="xamarinandroid-7.1" />
+      </Parameters>
+      <Docs>
+        <param name="asyncResult">To be added.</param>
+        <summary>
+          <span data-ttu-id="47909-247">結束非同步的寫入作業。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-247">Ends an asynchronous write operation.</span>
+          </span>
+          <span data-ttu-id="47909-248">(請考慮使用 <see cref="M:System.IO.Stream.WriteAsync(System.Byte[],System.Int32,System.Int32)" /> 方法替代。)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-248">(Consider using the <see cref="M:System.IO.Stream.WriteAsync(System.Byte[],System.Int32,System.Int32)" /> method instead.)</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="47909-249">從開始[!INCLUDE[net_v45](~/includes/net-v45-md.md)]，您可以使用來執行非同步寫入作業<xref:System.IO.Stream.WriteAsync%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="47909-249">Starting with the [!INCLUDE[net_v45](~/includes/net-v45-md.md)], you can perform asynchronous write operations by using the <xref:System.IO.Stream.WriteAsync%2A> method.</span></span> <span data-ttu-id="47909-250"><xref:System.IO.Compression.DeflateStream.EndWrite%2A>方法是中仍然可用[!INCLUDE[net_v45](~/includes/net-v45-md.md)]以支援舊版的程式碼; 不過，您可以實作非同步 I/O 作業更輕鬆地使用新的非同步方法。</span><span class="sxs-lookup"><span data-stu-id="47909-250">The <xref:System.IO.Compression.DeflateStream.EndWrite%2A> method is still available in the [!INCLUDE[net_v45](~/includes/net-v45-md.md)] to support legacy code; however, you can implement asynchronous I/O operations more easily by using the new async methods.</span></span> <span data-ttu-id="47909-251">如需詳細資訊，請參閱 。</span><span class="sxs-lookup"><span data-stu-id="47909-251">For more information, see .</span></span>  
+  
+ <span data-ttu-id="47909-252"><xref:System.IO.Compression.DeflateStream.EndWrite%2A> 必須針對每次呼叫一次呼叫<xref:System.IO.Compression.DeflateStream.BeginWrite%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="47909-252"><xref:System.IO.Compression.DeflateStream.EndWrite%2A> must be called only once for every call to the <xref:System.IO.Compression.DeflateStream.BeginWrite%2A> method.</span></span>  
+  
+ <span data-ttu-id="47909-253">這個方法會封鎖，直到 I/O 作業完成為止。</span><span class="sxs-lookup"><span data-stu-id="47909-253">This method blocks until the I/O operation has completed.</span></span> <span data-ttu-id="47909-254">在非同步寫入要求，例如磁碟失敗期間，在 I/O 要求期間發生的錯誤發生在執行緒集區執行緒，並且呼叫時變成可見<xref:System.IO.Compression.DeflateStream.EndWrite%2A>。</span><span class="sxs-lookup"><span data-stu-id="47909-254">Errors that occur during an asynchronous write request, such as a disk failure during the I/O request, occur on the thread pool thread and become visible upon a call to <xref:System.IO.Compression.DeflateStream.EndWrite%2A>.</span></span> <span data-ttu-id="47909-255">執行緒集區執行緒擲回例外狀況呼叫時，將無法看到<xref:System.IO.Compression.DeflateStream.EndWrite%2A>。</span><span class="sxs-lookup"><span data-stu-id="47909-255">Exceptions thrown by the thread pool thread will not be visible when calling <xref:System.IO.Compression.DeflateStream.EndWrite%2A>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="47909-256">
+            <paramref name="asyncResult" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-256">
+              <paramref name="asyncResult" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="47909-257">
+            <paramref name="asyncResult" /> 不是來自目前資料流的 <see cref="M:System.IO.Compression.DeflateStream.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" /> 方法。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-257">
+              <paramref name="asyncResult" /> did not originate from a <see cref="M:System.IO.Compression.DeflateStream.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" /> method on the current stream.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Exception">
+          <span data-ttu-id="47909-258">呼叫 <see cref="M:System.Threading.WaitHandle.WaitOne" /> 期間傳回例外狀況。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-258">An exception was thrown during a call to <see cref="M:System.Threading.WaitHandle.WaitOne" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="47909-259">結束寫入呼叫無效。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-259">The end write call is invalid.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Flush">
+      <MemberSignature Language="C#" Value="public override void Flush ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void Flush() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.Flush" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub Flush ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void Flush();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="47909-260">這個方法目前的實作沒有任何功能。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-260">The current implementation of this method has no functionality.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="47909-261">目前的實作，這個方法不會清除內部緩衝區。</span><span class="sxs-lookup"><span data-stu-id="47909-261">The current implementation of this method does not flush the internal buffer.</span></span> <span data-ttu-id="47909-262">內部緩衝區排清時物件已處置。</span><span class="sxs-lookup"><span data-stu-id="47909-262">The internal buffer is flushed when the object is disposed.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="47909-263">資料流已關閉。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-263">The stream is closed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Length">
+      <MemberSignature Language="C#" Value="public override long Length { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int64 Length" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Compression.DeflateStream.Length" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property Length As Long" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property long Length { long get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int64</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="47909-264">這個屬性不受支援，而且一律會擲回 <see cref="T:System.NotSupportedException" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-264">This property is not supported and always throws a <see cref="T:System.NotSupportedException" />.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="47909-265">長整數值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-265">A long value.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="47909-266">這個資料流不支援這個屬性。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-266">This property is not supported on this stream.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Position">
+      <MemberSignature Language="C#" Value="public override long Position { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int64 Position" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Compression.DeflateStream.Position" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property Position As Long" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property long Position { long get(); void set(long value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int64</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="47909-267">這個屬性不受支援，而且一律會擲回 <see cref="T:System.NotSupportedException" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-267">This property is not supported and always throws a <see cref="T:System.NotSupportedException" />.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="47909-268">長整數值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-268">A long value.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="47909-269">這個資料流不支援這個屬性。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-269">This property is not supported on this stream.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Read">
+      <MemberSignature Language="C#" Value="public override int Read (byte[] array, int offset, int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 Read(unsigned int8[] array, int32 offset, int32 count) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.Read(System.Byte[],System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function Read (array As Byte(), offset As Integer, count As Integer) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override int Read(cli::array &lt;System::Byte&gt; ^ array, int offset, int count);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="array" Type="System.Byte[]" />
+        <Parameter Name="offset" Type="System.Int32" />
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="array">
+          <span data-ttu-id="47909-270">用於儲存解壓縮位元組的陣列。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-270">The array to store decompressed bytes.</span>
+          </span>
+        </param>
+        <param name="offset">
+          <span data-ttu-id="47909-271">「陣列」<c></c>中的位元組位移，即放置讀取位元組的位置。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-271">The byte offset in <c>array</c> at which the read bytes will be placed.</span>
+          </span>
+        </param>
+        <param name="count">
+          <span data-ttu-id="47909-272">要讀取的最大解壓縮位元組數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-272">The maximum number of decompressed bytes to read.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="47909-273">將大量解壓縮的位元組讀入指定的位元組陣列。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-273">Reads a number of decompressed bytes into the specified byte array.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="47909-274">已讀入至位元組陣列的位元組數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-274">The number of bytes that were read into the byte array.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="47909-275">下列範例顯示如何壓縮和解壓縮位元組使用<xref:System.IO.Compression.DeflateStream.Read%2A>和<xref:System.IO.Compression.DeflateStream.Write%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="47909-275">The following example shows how to compress and decompress bytes by using the <xref:System.IO.Compression.DeflateStream.Read%2A> and <xref:System.IO.Compression.DeflateStream.Write%2A> methods.</span></span>  
+  
+ [!code-csharp[System.IO.Compression.DeflateStream#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.io.compression.deflatestream/cs/program3.cs#3)]
+ [!code-vb[System.IO.Compression.DeflateStream#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.io.compression.deflatestream/vb/program3.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="47909-276">
+            <paramref name="array" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-276">
+              <paramref name="array" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="47909-277">建立物件時，<see cref="T:System.IO.Compression.CompressionMode" /> 的值為 <see langword="Compress" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-277">The <see cref="T:System.IO.Compression.CompressionMode" /> value was <see langword="Compress" /> when the object was created.</span>
+          </span>
+          <span data-ttu-id="47909-278">\-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-278">\- or -</span>
+          </span>
+          <span data-ttu-id="47909-279">基礎資料流不支援讀取。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-279">The underlying stream does not support reading.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="47909-280">
+            <paramref name="offset" /> 或 <paramref name="count" /> 小於零。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-280">
+              <paramref name="offset" /> or <paramref name="count" /> is less than zero.</span>
+          </span>
+          <span data-ttu-id="47909-281">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-281">-or-</span>
+          </span>
+          <span data-ttu-id="47909-282">
+            <paramref name="array" /> 長度減去索引起點小於 <paramref name="count" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-282">
+              <paramref name="array" /> length minus the index starting point is less than <paramref name="count" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.InvalidDataException">
+          <span data-ttu-id="47909-283">資料的格式無效。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-283">The data is in an invalid format.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="47909-284">資料流已關閉。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-284">The stream is closed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ReadAsync">
+      <MemberSignature Language="C#" Value="public override System.Threading.Tasks.Task&lt;int&gt; ReadAsync (byte[] array, int offset, int count, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.Threading.Tasks.Task`1&lt;int32&gt; ReadAsync(unsigned int8[] array, int32 offset, int32 count, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Threading::Tasks::Task&lt;int&gt; ^ ReadAsync(cli::array &lt;System::Byte&gt; ^ array, int offset, int count, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Int32&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="array" Type="System.Byte[]" />
+        <Parameter Name="offset" Type="System.Int32" />
+        <Parameter Name="count" Type="System.Int32" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="array">To be added.</param>
+        <param name="offset">To be added.</param>
+        <param name="count">To be added.</param>
+        <param name="cancellationToken">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Seek">
+      <MemberSignature Language="C#" Value="public override long Seek (long offset, System.IO.SeekOrigin origin);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int64 Seek(int64 offset, valuetype System.IO.SeekOrigin origin) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.Seek(System.Int64,System.IO.SeekOrigin)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function Seek (offset As Long, origin As SeekOrigin) As Long" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override long Seek(long offset, System::IO::SeekOrigin origin);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int64</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="offset" Type="System.Int64" />
+        <Parameter Name="origin" Type="System.IO.SeekOrigin" />
+      </Parameters>
+      <Docs>
+        <param name="offset">
+          <span data-ttu-id="47909-285">在資料流中的位置。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-285">The location in the stream.</span>
+          </span>
+        </param>
+        <param name="origin">
+          <span data-ttu-id="47909-286">其中一個 <see cref="T:System.IO.SeekOrigin" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-286">One of the <see cref="T:System.IO.SeekOrigin" /> values.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="47909-287">這個作業不受支援，而且一律會擲回 <see cref="T:System.NotSupportedException" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-287">This operation is not supported and always throws a <see cref="T:System.NotSupportedException" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="47909-288">長整數值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-288">A long value.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="47909-289">這個資料流不支援這個屬性。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-289">This property is not supported on this stream.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SetLength">
+      <MemberSignature Language="C#" Value="public override void SetLength (long value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void SetLength(int64 value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.SetLength(System.Int64)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub SetLength (value As Long)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void SetLength(long value);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="value" Type="System.Int64" />
+      </Parameters>
+      <Docs>
+        <param name="value">
+          <span data-ttu-id="47909-290">資料流的長度。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-290">The length of the stream.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="47909-291">這個作業不受支援，而且一律會擲回 <see cref="T:System.NotSupportedException" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-291">This operation is not supported and always throws a <see cref="T:System.NotSupportedException" />.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="47909-292">這個資料流不支援這個屬性。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-292">This property is not supported on this stream.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Write">
+      <MemberSignature Language="C#" Value="public override void Write (byte[] array, int offset, int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void Write(unsigned int8[] array, int32 offset, int32 count) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.Write(System.Byte[],System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub Write (array As Byte(), offset As Integer, count As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void Write(cli::array &lt;System::Byte&gt; ^ array, int offset, int count);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="array" Type="System.Byte[]" />
+        <Parameter Name="offset" Type="System.Int32" />
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="array">
+          <span data-ttu-id="47909-293">包含要壓縮之資料的緩衝區。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-293">The buffer that contains the data to compress.</span>
+          </span>
+        </param>
+        <param name="offset">
+          <span data-ttu-id="47909-294">「陣列」<c></c>中的位元組位移，即讀取位元組的來源位置。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-294">The byte offset in <c>array</c> from which the bytes will be read.</span>
+          </span>
+        </param>
+        <param name="count">
+          <span data-ttu-id="47909-295">寫入的最大位元組數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-295">The maximum number of bytes to write.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="47909-296">從指定的位元組陣列將壓縮的位元組寫入基礎資料流。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="47909-296">Writes compressed bytes to the underlying stream from the specified byte array.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="47909-297">下列範例顯示如何壓縮和解壓縮位元組使用<xref:System.IO.Compression.DeflateStream.Read%2A>和<xref:System.IO.Compression.DeflateStream.Write%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="47909-297">The following example shows how to compress and decompress bytes by using the <xref:System.IO.Compression.DeflateStream.Read%2A> and <xref:System.IO.Compression.DeflateStream.Write%2A> methods.</span></span>  
+  
+ [!code-csharp[System.IO.Compression.DeflateStream#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.io.compression.deflatestream/cs/program3.cs#3)]
+ [!code-vb[System.IO.Compression.DeflateStream#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.io.compression.deflatestream/vb/program3.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteAsync">
+      <MemberSignature Language="C#" Value="public override System.Threading.Tasks.Task WriteAsync (byte[] array, int offset, int count, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.Threading.Tasks.Task WriteAsync(unsigned int8[] array, int32 offset, int32 count, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.WriteAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Threading::Tasks::Task ^ WriteAsync(cli::array &lt;System::Byte&gt; ^ array, int offset, int count, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="array" Type="System.Byte[]" />
+        <Parameter Name="offset" Type="System.Int32" />
+        <Parameter Name="count" Type="System.Int32" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="array">To be added.</param>
+        <param name="offset">To be added.</param>
+        <param name="count">To be added.</param>
+        <param name="cancellationToken">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

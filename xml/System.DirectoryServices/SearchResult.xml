@@ -1,0 +1,481 @@
+<Type Name="SearchResult" FullName="System.DirectoryServices.SearchResult">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="4ad614c236a846013f949c74b6588ca100f0acc6" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class SearchResult" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit SearchResult extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.DirectoryServices.SearchResult" />
+  <TypeSignature Language="VB.NET" Value="Public Class SearchResult" />
+  <TypeSignature Language="C++ CLI" Value="public ref class SearchResult" />
+  <AssemblyInfo>
+    <AssemblyName>System.DirectoryServices</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="7eb88-101">
+        <see cref="T:System.DirectoryServices.SearchResult" /> 類別會封裝 Active Directory 網域服務階層架構中的節點，它是透過 <see cref="T:System.DirectoryServices.DirectorySearcher" /> 在搜尋期間所傳回的。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="7eb88-101">The <see cref="T:System.DirectoryServices.SearchResult" /> class encapsulates a node in the Active Directory Domain Services hierarchy that is returned during a search through <see cref="T:System.DirectoryServices.DirectorySearcher" />.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7eb88-102">執行個體<xref:System.DirectoryServices.SearchResult>類別是非常類似的執行個體<xref:System.DirectoryServices.DirectoryEntry>類別。</span><span class="sxs-lookup"><span data-stu-id="7eb88-102">Instances of the <xref:System.DirectoryServices.SearchResult> class are very similar to instances of <xref:System.DirectoryServices.DirectoryEntry> class.</span></span> <span data-ttu-id="7eb88-103">重要的差異在於，<xref:System.DirectoryServices.DirectoryEntry>類別擷取其資訊從 Active Directory 網域服務階層每次存取新物件時，而資料<xref:System.DirectoryServices.SearchResult>中已經提供<xref:System.DirectoryServices.SearchResultCollection>，它會取得位置從執行之查詢傳回<xref:System.DirectoryServices.DirectorySearcher>類別。</span><span class="sxs-lookup"><span data-stu-id="7eb88-103">The crucial difference is that the <xref:System.DirectoryServices.DirectoryEntry> class retrieves its information from the Active Directory Domain Services hierarchy each time a new object is accessed, whereas the data for <xref:System.DirectoryServices.SearchResult> is already available in the <xref:System.DirectoryServices.SearchResultCollection>, where it gets returned from a query that is performed with the <xref:System.DirectoryServices.DirectorySearcher> class.</span></span> <span data-ttu-id="7eb88-104">只有在透過所指定的屬性<xref:System.DirectoryServices.DirectorySearcher.PropertiesToLoad%2A?displayProperty=nameWithType>就可以從查詢中的集合<xref:System.DirectoryServices.SearchResult>。</span><span class="sxs-lookup"><span data-stu-id="7eb88-104">Only those properties that are specified through the <xref:System.DirectoryServices.DirectorySearcher.PropertiesToLoad%2A?displayProperty=nameWithType> collection in your query will be available from <xref:System.DirectoryServices.SearchResult>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="7eb88-105">下列範例會建立新<xref:System.DirectoryServices.DirectoryEntry>物件所要的路徑，並使用<xref:System.DirectoryServices.DirectorySearcher.FindOne%2A>方法以初始化搜尋。</span><span class="sxs-lookup"><span data-stu-id="7eb88-105">The following example creates a new <xref:System.DirectoryServices.DirectoryEntry> object with the desired path and uses the <xref:System.DirectoryServices.DirectorySearcher.FindOne%2A> method to initiate the search.</span></span> <span data-ttu-id="7eb88-106">執行搜尋之後, 的範例會使用<xref:System.DirectoryServices.SearchResult.GetDirectoryEntry%2A>方法，以擷取搜尋結果中識別的即時目錄項目。</span><span class="sxs-lookup"><span data-stu-id="7eb88-106">After performing the search, the example uses the  <xref:System.DirectoryServices.SearchResult.GetDirectoryEntry%2A> method to retrieve the live directory entry identified in the search results.</span></span>  
+  
+```vb  
+Imports System  
+Imports System.DirectoryServices  
+Imports Microsoft.VisualBasic  
+  
+Public Class MySample  
+   Public Shared Sub Main()  
+      Dim myLDAPPath As String = ""  
+      Try  
+         ' Create a 'DirectoryEntry' object to search.  
+         Console.WriteLine("Enter the path ( Ex : 'LDAP://MyServer')")  
+         myLDAPPath = Console.ReadLine()  
+         Dim mySearchRoot As New DirectoryEntry(myLDAPPath)  
+  
+         Dim myDirectorySearcher As New DirectorySearcher(mySearchRoot)  
+  
+         ' Get the first entry of the search.  
+         Dim mySearchResult As SearchResult = myDirectorySearcher.FindOne()  
+         If Not (mySearchResult Is Nothing) Then  
+            ' Get the 'DirectoryEntry' that corresponds to 'mySearchResult'.  
+            Dim myDirectoryEntry As DirectoryEntry = mySearchResult.GetDirectoryEntry()  
+            Console.WriteLine(ControlChars.Newline + "The name of the 'myDirectoryEntry' " + _  
+                        "directory entry that corresponds to the " + _  
+                        "'mySearchResult' search result is : {0}" + _  
+                        ControlChars.Newline, myDirectoryEntry.Name)  
+            Dim mySearchResultPath As String = mySearchResult.Path  
+            Console.WriteLine("The path for the 'mySearchResult' search result is : {0}" + _  
+                              ControlChars.Newline, mySearchResultPath)  
+            ' Get the properties of the 'mySearchResult'.  
+            Dim myResultPropColl As ResultPropertyCollection  
+            myResultPropColl = mySearchResult.Properties  
+            Console.WriteLine("The properties of the 'mySearchResult' are :")  
+            Dim myKey As String  
+            For Each myKey In  myResultPropColl.PropertyNames  
+               Dim tab1 As String = "    "  
+               Console.WriteLine(myKey + " = ")  
+               Dim myCollection As Object  
+               For Each myCollection In  myResultPropColl(myKey)  
+                  Console.WriteLine(tab1 + myCollection)  
+               Next myCollection  
+            Next myKey  
+            myDirectoryEntry.Dispose()  
+            mySearchRoot.Dispose()  
+         Else  
+            Console.WriteLine("The '" + myLDAPPath + "' path not found.")  
+         End If  
+      Catch e As Exception  
+         Console.WriteLine("The '" + myLDAPPath + "' path not found.")  
+         Console.WriteLine("Exception : " & e.Message)  
+      End Try  
+   End Sub 'Main  
+End Class 'MySample  
+```  
+  
+```csharp  
+using System;  
+using System.DirectoryServices;  
+  
+public class MySample  
+{  
+    public static void Main()  
+    {  
+        string myLDAPPath = "";  
+        try  
+        {  
+            // Create a 'DirectoryEntry' object to search.  
+            Console.WriteLine("Enter the path ( Ex : 'LDAP://MyServer')");  
+            myLDAPPath = Console.ReadLine();  
+  
+            DirectoryEntry mySearchRoot = new DirectoryEntry(myLDAPPath);  
+            DirectorySearcher myDirectorySearcher =   
+                    new DirectorySearcher(mySearchRoot);  
+  
+            // Get the first entry of the search.  
+            SearchResult mySearchResult = myDirectorySearcher.FindOne();  
+  
+            if ( mySearchResult != null )  
+            {  
+                // Get the 'DirectoryEntry' that corresponds to 'mySearchResult'.  
+                DirectoryEntry myDirectoryEntry =   
+                mySearchResult.GetDirectoryEntry();  
+                Console.WriteLine("\nThe name of the 'myDirectoryEntry' " +  
+                        "directory entry that corresponds to the " +  
+                        "'mySearchResult' search result is : {0}\n",  
+                        myDirectoryEntry.Name);  
+                string mySearchResultPath = mySearchResult.Path;  
+                Console.WriteLine("The path for the 'mySearchResult' search "  
+                        + "result is : {0}\n", mySearchResultPath);  
+  
+                // Get the properties of the 'mySearchResult'.  
+                ResultPropertyCollection myResultPropColl;  
+                myResultPropColl = mySearchResult.Properties;  
+                Console.WriteLine("The properties of the " +   
+                        "'mySearchResult' are :");  
+  
+                foreach( string myKey in myResultPropColl.PropertyNames)  
+                {  
+                    string tab = "    ";  
+                    Console.WriteLine(myKey + " = ");  
+                    foreach( Object myCollection in myResultPropColl[myKey])  
+                    {  
+                        Console.WriteLine(tab + myCollection);  
+                    }  
+                }  
+                mySearchRoot.Dispose();  
+                myDirectoryEntry.Dispose();  
+            }  
+            else  
+            {  
+                Console.WriteLine("The '" + myLDAPPath + "' path not found.");  
+            }  
+        }  
+        catch(Exception e)  
+        {  
+            Console.WriteLine("The '" + myLDAPPath + "' path not found.");  
+            Console.WriteLine("Exception : " + e.Message);  
+        }  
+    }  
+  
+}  
+```  
+  
+```cpp#  
+#using <mscorlib.dll>  
+#using <System.dll>  
+#using <System.Directoryservices.dll>  
+  
+using namespace System;  
+using namespace System::Collections;  
+using namespace System::DirectoryServices;  
+using namespace stdcli::language;  
+  
+int main()   
+{  
+    String^ myLDAPPath = "";  
+    try   
+    {  
+        // Create a 'DirectoryEntry' object to search.  
+        Console::WriteLine("Enter the path ( Ex : 'LDAP://MyServer')");  
+        myLDAPPath = Console::ReadLine();  
+        DirectoryEntry^ mySearchRoot = gcnew DirectoryEntry(myLDAPPath);  
+  
+        DirectorySearcher^ myDirectorySearcher = gcnew DirectorySearcher(mySearchRoot);  
+  
+        // Get the first entry of the search.  
+        SearchResult^ mySearchResult = myDirectorySearcher->FindOne();  
+        if (mySearchResult)   
+        {  
+            // Get the 'DirectoryEntry' that corresponds to 'mySearchResult'.  
+            DirectoryEntry^ myDirectoryEntry = mySearchResult->GetDirectoryEntry();  
+            Console::WriteLine(  
+                String::Concat("\nThe name of the 'myDirectoryEntry' ",  
+                "directory entry that corresponds to the ",  
+                "'mySearchResult' search result is : {0}\n"),  
+                myDirectoryEntry->Name);  
+  
+            String^ mySearchResultPath = mySearchResult->Path;  
+            Console::WriteLine("The path for the 'mySearchResult' search result is :  
+                    {0}\n", mySearchResultPath);  
+  
+            // Get the properties of the 'mySearchResult'.  
+            ResultPropertyCollection^ myResultPropColl = mySearchResult->Properties;  
+            Console::WriteLine("The properties of the 'mySearchResult' are :");  
+            IEnumerator^ myEnum = myResultPropColl->PropertyNames->GetEnumerator();  
+            while (myEnum->MoveNext())   
+            {  
+                String^ myKey = safe_cast<String^>(myEnum->Current);  
+                Console::WriteLine("{0} = ", myKey);  
+                IEnumerator^ myEnum = myResultPropColl->Item[myKey]->GetEnumerator();  
+                while (myEnum->MoveNext())   
+                {  
+                    Console::WriteLine("\t{0}", myEnum->Current);  
+                }  
+            }  
+            myDirectoryEntry->Dispose();  
+            mySearchRoot->Dispose();   
+        }   
+        else   
+        {  
+            Console::WriteLine("The '{0}' path not found.", myLDAPPath);  
+        }  
+    }   
+    catch (Exception^ e)   
+    {  
+        Console::WriteLine("The '{0}' path not found.",  myLDAPPath);  
+        Console::WriteLine("Exception : {0}", e->Message);  
+    }  
+}  
+  
+```  
+  
+ ]]></format>
+    </remarks>
+    <permission cref="T:System.DirectoryServices.DirectoryServicesPermission">
+      <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />
+    </permission>
+  </Docs>
+  <Members>
+    <Member MemberName="GetDirectoryEntry">
+      <MemberSignature Language="C#" Value="public System.DirectoryServices.DirectoryEntry GetDirectoryEntry ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.DirectoryServices.DirectoryEntry GetDirectoryEntry() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.DirectoryServices.SearchResult.GetDirectoryEntry" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetDirectoryEntry () As DirectoryEntry" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::DirectoryServices::DirectoryEntry ^ GetDirectoryEntry();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.DirectoryServices</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.DirectoryServices.DirectoryEntry</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="7eb88-107">從 Active Directory 網域服務階層架構中擷取對應至 <see cref="T:System.DirectoryServices.DirectoryEntry" /> 的 <see cref="T:System.DirectoryServices.SearchResult" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7eb88-107">Retrieves the <see cref="T:System.DirectoryServices.DirectoryEntry" /> that corresponds to the <see cref="T:System.DirectoryServices.SearchResult" /> from the Active Directory Domain Services hierarchy.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="7eb88-108">對應到 <see cref="T:System.DirectoryServices.DirectoryEntry" /> 的 <see cref="T:System.DirectoryServices.SearchResult" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7eb88-108">The <see cref="T:System.DirectoryServices.DirectoryEntry" /> that corresponds to the <see cref="T:System.DirectoryServices.SearchResult" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7eb88-109">使用<xref:System.DirectoryServices.SearchResult.GetDirectoryEntry%2A>當您想要查看即時的項目，而不是透過傳回的項目<xref:System.DirectoryServices.DirectorySearcher>，或當您想要叫用方法所傳回的物件。</span><span class="sxs-lookup"><span data-stu-id="7eb88-109">Use <xref:System.DirectoryServices.SearchResult.GetDirectoryEntry%2A> when you want to look at the live entry instead of the entry that was returned through <xref:System.DirectoryServices.DirectorySearcher>, or when you want to invoke a method on the object that was returned.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="7eb88-110">呼叫<xref:System.DirectoryServices.SearchResult.GetDirectoryEntry%2A>每<xref:System.DirectoryServices.SearchResult>透過傳回<xref:System.DirectoryServices.DirectorySearcher>可能會很慢。</span><span class="sxs-lookup"><span data-stu-id="7eb88-110">Calling <xref:System.DirectoryServices.SearchResult.GetDirectoryEntry%2A> on each <xref:System.DirectoryServices.SearchResult> returned through <xref:System.DirectoryServices.DirectorySearcher> can be slow.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="7eb88-111">下列範例是在此範例的摘錄<xref:System.DirectoryServices.SearchResult>。</span><span class="sxs-lookup"><span data-stu-id="7eb88-111">The following example is an excerpt of the example in <xref:System.DirectoryServices.SearchResult>.</span></span> <span data-ttu-id="7eb88-112">原始範例建立一個新<xref:System.DirectoryServices.DirectoryEntry>物件所要的路徑，並使用<xref:System.DirectoryServices.DirectorySearcher.FindOne%2A>方法以初始化搜尋。</span><span class="sxs-lookup"><span data-stu-id="7eb88-112">The original example creates a new <xref:System.DirectoryServices.DirectoryEntry> object with the desired path and uses the <xref:System.DirectoryServices.DirectorySearcher.FindOne%2A> method to initiate the search.</span></span> <span data-ttu-id="7eb88-113">執行搜尋之後, 的範例會使用<xref:System.DirectoryServices.SearchResult.GetDirectoryEntry%2A>方法來擷取即時的目錄項目所識別的搜尋結果中。</span><span class="sxs-lookup"><span data-stu-id="7eb88-113">After performing the search, the example uses the <xref:System.DirectoryServices.SearchResult.GetDirectoryEntry%2A> method to retrieve the live directory entry that is identified in the search results.</span></span>  
+  
+```vb  
+' Get the 'DirectoryEntry' that corresponds to 'mySearchResult'.  
+Dim myDirectoryEntry As DirectoryEntry = mySearchResult.GetDirectoryEntry()  
+Console.WriteLine(ControlChars.Newline + "The name of the 'myDirectoryEntry' " + _  
+            "directory entry that corresponds to the " + _  
+            "'mySearchResult' search result is : {0}" + _  
+            ControlChars.Newline, myDirectoryEntry.Name)  
+  
+```  
+  
+```csharp  
+// Get the 'DirectoryEntry' that corresponds to 'mySearchResult'.  
+DirectoryEntry myDirectoryEntry =   
+                           mySearchResult.GetDirectoryEntry();  
+Console.WriteLine("\nThe name of the 'myDirectoryEntry' " +  
+                  "directory entry that corresponds to the " +  
+                  "'mySearchResult' search result is : {0}\n",  
+                  myDirectoryEntry.Name);  
+  
+```  
+  
+```cpp#  
+// Get the 'DirectoryEntry' that corresponds to 'mySearchResult'.  
+DirectoryEntry^ myDirectoryEntry = mySearchResult->GetDirectoryEntry();  
+Console::WriteLine(  
+    String::Concat("\nThe name of the 'myDirectoryEntry' ",  
+    "directory entry that corresponds to the ",  
+    "'mySearchResult' search result is : {0}\n"),  
+    myDirectoryEntry->Name);  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Path">
+      <MemberSignature Language="C#" Value="public string Path { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Path" />
+      <MemberSignature Language="DocId" Value="P:System.DirectoryServices.SearchResult.Path" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Path As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Path { System::String ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.DirectoryServices</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="7eb88-114">取得這個 <see cref="T:System.DirectoryServices.SearchResult" /> 的路徑。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7eb88-114">Gets the path for this <see cref="T:System.DirectoryServices.SearchResult" />.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="7eb88-115">這個 <see cref="T:System.DirectoryServices.SearchResult" /> 的路徑。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7eb88-115">The path of this <see cref="T:System.DirectoryServices.SearchResult" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7eb88-116"><xref:System.DirectoryServices.SearchResult.Path%2A>屬性可唯一識別在 Active Directory 網域服務階層架構中的這個項目。</span><span class="sxs-lookup"><span data-stu-id="7eb88-116">The <xref:System.DirectoryServices.SearchResult.Path%2A> property uniquely identifies this entry in the Active Directory Domain Services hierarchy.</span></span> <span data-ttu-id="7eb88-117">項目一律可以使用這個路徑來擷取。</span><span class="sxs-lookup"><span data-stu-id="7eb88-117">The entry can always be retrieved using this path.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="7eb88-118">下列範例是在此範例的摘錄<xref:System.DirectoryServices.SearchResult>。</span><span class="sxs-lookup"><span data-stu-id="7eb88-118">The following example is an excerpt of the example in <xref:System.DirectoryServices.SearchResult>.</span></span> <span data-ttu-id="7eb88-119">原始範例建立一個新<xref:System.DirectoryServices.DirectoryEntry>物件所要的路徑，並使用<xref:System.DirectoryServices.DirectorySearcher.FindOne%2A>方法以初始化搜尋。</span><span class="sxs-lookup"><span data-stu-id="7eb88-119">The original example creates a new <xref:System.DirectoryServices.DirectoryEntry> object with the desired path and uses the <xref:System.DirectoryServices.DirectorySearcher.FindOne%2A> method to initiate the search.</span></span> <span data-ttu-id="7eb88-120">執行搜尋之後, 的範例會使用<xref:System.DirectoryServices.SearchResult.GetDirectoryEntry%2A>方法來擷取即時的目錄項目所識別的搜尋結果中。</span><span class="sxs-lookup"><span data-stu-id="7eb88-120">After performing the search, the example uses the <xref:System.DirectoryServices.SearchResult.GetDirectoryEntry%2A> method to retrieve the live directory entry that is identified in the search results.</span></span>  
+  
+ <span data-ttu-id="7eb88-121">此範例顯示如何剖析<xref:System.DirectoryServices.SearchResult.Path%2A>從搜尋結果的屬性。</span><span class="sxs-lookup"><span data-stu-id="7eb88-121">This example shows how to parse the <xref:System.DirectoryServices.SearchResult.Path%2A> property from the search result.</span></span>  
+  
+```vb  
+Dim mySearchResultPath As String = mySearchResult.Path  
+Console.WriteLine("The path for the 'mySearchResult' search result is : {0}" + _  
+                  ControlChars.Newline, mySearchResultPath)  
+  
+```  
+  
+```csharp  
+string mySearchResultPath = mySearchResult.Path;  
+Console.WriteLine("The path for the 'mySearchResult' search "  
+                  + "result is : {0}\n", mySearchResultPath);  
+```  
+  
+```cpp#  
+String^ mySearchResultPath = mySearchResult->Path;  
+Console::WriteLine("The path for the 'mySearchResult' search result is : {0}\n", mySearchResultPath);  
+  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Properties">
+      <MemberSignature Language="C#" Value="public System.DirectoryServices.ResultPropertyCollection Properties { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.DirectoryServices.ResultPropertyCollection Properties" />
+      <MemberSignature Language="DocId" Value="P:System.DirectoryServices.SearchResult.Properties" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Properties As ResultPropertyCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::DirectoryServices::ResultPropertyCollection ^ Properties { System::DirectoryServices::ResultPropertyCollection ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.DirectoryServices</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.DirectoryServices.ResultPropertyCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="7eb88-122">取得這個物件之屬性的 <see cref="T:System.DirectoryServices.ResultPropertyCollection" /> 集合。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7eb88-122">Gets a <see cref="T:System.DirectoryServices.ResultPropertyCollection" /> collection of properties for this object.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="7eb88-123">這個物件上屬性集的 <see cref="T:System.DirectoryServices.ResultPropertyCollection" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7eb88-123">A <see cref="T:System.DirectoryServices.ResultPropertyCollection" /> of properties set on this object.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7eb88-124">此集合只包含透過明確要求的屬性<xref:System.DirectoryServices.DirectorySearcher.PropertiesToLoad%2A?displayProperty=nameWithType>。</span><span class="sxs-lookup"><span data-stu-id="7eb88-124">This collection only contains properties that were explicitly requested through <xref:System.DirectoryServices.DirectorySearcher.PropertiesToLoad%2A?displayProperty=nameWithType>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="7eb88-125">下列範例是在此範例的摘錄<xref:System.DirectoryServices.SearchResult>。</span><span class="sxs-lookup"><span data-stu-id="7eb88-125">The following example is an excerpt of the example in <xref:System.DirectoryServices.SearchResult>.</span></span> <span data-ttu-id="7eb88-126">原始範例建立一個新<xref:System.DirectoryServices.DirectoryEntry>物件所要的路徑，並使用<xref:System.DirectoryServices.DirectorySearcher.FindOne%2A>方法以初始化搜尋。</span><span class="sxs-lookup"><span data-stu-id="7eb88-126">The original example creates a new <xref:System.DirectoryServices.DirectoryEntry> object with the desired path and uses the <xref:System.DirectoryServices.DirectorySearcher.FindOne%2A> method to initiate the search.</span></span> <span data-ttu-id="7eb88-127">執行搜尋之後, 的範例會使用<xref:System.DirectoryServices.SearchResult.GetDirectoryEntry%2A>方法來擷取即時的目錄項目所識別的搜尋結果中。</span><span class="sxs-lookup"><span data-stu-id="7eb88-127">After performing the search, the example uses the <xref:System.DirectoryServices.SearchResult.GetDirectoryEntry%2A> method to retrieve the live directory entry that is identified in the search results.</span></span>  
+  
+ <span data-ttu-id="7eb88-128">在此範例中，搜尋結果會放入<xref:System.DirectoryServices.ResultPropertyCollection>。</span><span class="sxs-lookup"><span data-stu-id="7eb88-128">In this example, the search result is put into a <xref:System.DirectoryServices.ResultPropertyCollection>.</span></span> <span data-ttu-id="7eb88-129">然後，每一個屬性就會顯示在主控台視窗。</span><span class="sxs-lookup"><span data-stu-id="7eb88-129">Then, each property is displayed to the console window.</span></span>  
+  
+```vb  
+' Get the properties for 'mySearchResult'.  
+Dim myResultPropColl As ResultPropertyCollection  
+myResultPropColl = mySearchResult.Properties  
+Console.WriteLine("The properties of the 'mySearchResult' are :")  
+Dim myKey As String  
+For Each myKey In  myResultPropColl.PropertyNames  
+   Dim tab1 As String = "    "  
+   Console.WriteLine(myKey + " = ")  
+   Dim myCollection As Object  
+   For Each myCollection In  myResultPropColl(myKey)  
+      Console.WriteLine(tab1 + myCollection)  
+   Next myCollection  
+Next myKey  
+  
+```  
+  
+```csharp  
+// Get the properties for 'mySearchResult'.  
+ResultPropertyCollection myResultPropColl;  
+myResultPropColl = mySearchResult.Properties;  
+Console.WriteLine("The properties of the " +   
+                  "'mySearchResult' are :");  
+foreach( string myKey in myResultPropColl.PropertyNames)  
+{  
+   string tab = "    ";  
+   Console.WriteLine(myKey + " = ");  
+   foreach( Object myCollection in myResultPropColl[myKey])  
+   {  
+      Console.WriteLine(tab + myCollection);  
+   }  
+}  
+  
+```  
+  
+```cpp#  
+// Get the properties for 'mySearchResult'.  
+ResultPropertyCollection^ myResultPropColl = mySearchResult->Properties;  
+Console::WriteLine("The properties of the 'mySearchResult' are :");  
+IEnumerator^ myEnum = myResultPropColl->PropertyNames->GetEnumerator();  
+while (myEnum->MoveNext())   
+{  
+    String^ myKey = safe_cast<String^>(myEnum->Current);  
+    Console::WriteLine("{0} = ", myKey);  
+    IEnumerator^ myEnum = myResultPropColl->Item[myKey]->GetEnumerator();  
+    while (myEnum->MoveNext())   
+    {  
+        Console::WriteLine("\t{0}", myEnum->Current);  
+    }  
+}  
+  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

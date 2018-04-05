@@ -1,0 +1,1560 @@
+<Type Name="NamedPipeClientStream" FullName="System.IO.Pipes.NamedPipeClientStream">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="145ed8417b729beaf7802c52d9b3f51577c3b254" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public sealed class NamedPipeClientStream : System.IO.Pipes.PipeStream" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit NamedPipeClientStream extends System.IO.Pipes.PipeStream" />
+  <TypeSignature Language="DocId" Value="T:System.IO.Pipes.NamedPipeClientStream" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class NamedPipeClientStream&#xA;Inherits PipeStream" />
+  <TypeSignature Language="C++ CLI" Value="public ref class NamedPipeClientStream sealed : System::IO::Pipes::PipeStream" />
+  <AssemblyInfo>
+    <AssemblyName>System.IO.Pipes</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Core</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.IO.Pipes.PipeStream</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="7aa7f-101">公開具名管道的 <see cref="T:System.IO.Stream" />，兼具同步與非同步讀取與寫入操作的支援。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="7aa7f-101">Exposes a <see cref="T:System.IO.Stream" /> around a named pipe, which supports both synchronous and asynchronous read and write operations.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7aa7f-102">具名的管道的管道伺服器和一或多個管道用戶端之間的通訊，提供單向或雙工的管道。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-102">Named pipes provide one-way or duplex pipes for communication between a pipe server and one or more pipe clients.</span></span> <span data-ttu-id="7aa7f-103">具名的管道可以用於處理序間通訊，在本機或網路。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-103">Named pipes can be used for interprocess communication locally or over a network.</span></span> <span data-ttu-id="7aa7f-104">可由多個共用單一的管道名稱<xref:System.IO.Pipes.NamedPipeClientStream>物件。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-104">A single pipe name can be shared by multiple <xref:System.IO.Pipes.NamedPipeClientStream> objects.</span></span>  
+  
+ <span data-ttu-id="7aa7f-105">任何處理程序可做為具名的管道伺服器或用戶端，或兩者。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-105">Any process can act as either a named pipe server or client, or both.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="7aa7f-106">如[!INCLUDE[winxppro](~/includes/winxppro-md.md)]和[!INCLUDE[win2kserver](~/includes/win2kserver-md.md)]，最多 10 個管道同時可以透過網路連線。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-106">For [!INCLUDE[winxppro](~/includes/winxppro-md.md)] and [!INCLUDE[win2kserver](~/includes/win2kserver-md.md)], a maximum of 10 pipes can simultaneously connect over the network.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="7aa7f-107">下列範例會示範如何從父處理序的字串傳送至子系上的處理序在相同電腦中使用具名管道。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-107">The following example demonstrates a way to send a string from a parent process to a child process on the same computer using named pipes.</span></span> <span data-ttu-id="7aa7f-108">這個範例會建立<xref:System.IO.Pipes.NamedPipeServerStream>父處理序中的物件。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-108">This example creates a <xref:System.IO.Pipes.NamedPipeServerStream> object in a parent process.</span></span> <span data-ttu-id="7aa7f-109"><xref:System.IO.Pipes.NamedPipeServerStream>物件具有<xref:System.IO.Pipes.PipeDirection>值<xref:System.IO.Pipes.PipeDirection.Out>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-109">The <xref:System.IO.Pipes.NamedPipeServerStream> object has a <xref:System.IO.Pipes.PipeDirection> value of <xref:System.IO.Pipes.PipeDirection.Out>.</span></span> <span data-ttu-id="7aa7f-110">伺服器再等待<xref:System.IO.Pipes.NamedPipeClientStream>連接到它的子處理序中的物件。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-110">The server then waits for a <xref:System.IO.Pipes.NamedPipeClientStream> object in a child process to connect to it.</span></span> <span data-ttu-id="7aa7f-111">在此範例中，這兩個處理程序是在相同電腦上和<xref:System.IO.Pipes.NamedPipeClientStream>物件具有<xref:System.IO.Pipes.PipeDirection>值<xref:System.IO.Pipes.PipeDirection.In>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-111">In this example, both processes are on the same computer and the <xref:System.IO.Pipes.NamedPipeClientStream> object has a <xref:System.IO.Pipes.PipeDirection> value of <xref:System.IO.Pipes.PipeDirection.In>.</span></span> <span data-ttu-id="7aa7f-112">接著，父處理序會將使用者提供的字串傳送給子處理序。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-112">The parent process then sends a user-supplied string to the child process.</span></span> <span data-ttu-id="7aa7f-113">字串會顯示到主控台。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-113">The string is displayed to the console.</span></span>  
+  
+ <span data-ttu-id="7aa7f-114">這個範例是用戶端程序中，連接到伺服器處理序。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-114">This example is for the client process, which connects to the server process.</span></span> <span data-ttu-id="7aa7f-115">整個程式碼範例中，將程式碼管道用戶端和伺服器，請參閱[How to： 使用具名管道網路處理序間通訊](~/docs/standard/io/how-to-use-named-pipes-for-network-interprocess-communication.md)。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-115">For the entire code sample, including the code for both the pipe client and server, see [How to: Use Named Pipes for Network Interprocess Communication](~/docs/standard/io/how-to-use-named-pipes-for-network-interprocess-communication.md).</span></span>  
+  
+ [!code-csharp[System.IO.Pipes.NamedPipeClientStream_Sample1#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeClientStream_Sample1/cs/Program.cs#01)]
+ [!code-vb[System.IO.Pipes.NamedPipeClientStream_Sample1#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeClientStream_Sample1/vb/program.vb#01)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="7aa7f-116">初始化 <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-116">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> class.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeClientStream (string pipeName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string pipeName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.#ctor(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (pipeName As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeClientStream(System::String ^ pipeName);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="pipeName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="pipeName">
+          <span data-ttu-id="7aa7f-117">管道的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-117">The name of the pipe.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7aa7f-118">使用指定的管道名稱，初始化 <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-118">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> class with the specified pipe name.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7aa7f-119">這個建構函式會使用下列的預設值：</span><span class="sxs-lookup"><span data-stu-id="7aa7f-119">This constructor uses the following default values:</span></span>  
+  
+-   <span data-ttu-id="7aa7f-120">預設伺服器名稱 」。 」。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-120">A default server name of ".".</span></span>  
+  
+-   <span data-ttu-id="7aa7f-121">預設值<xref:System.IO.Pipes.PipeDirection>值<xref:System.IO.Pipes.PipeDirection.InOut>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-121">A default <xref:System.IO.Pipes.PipeDirection> value of <xref:System.IO.Pipes.PipeDirection.InOut>.</span></span>  
+  
+-   <span data-ttu-id="7aa7f-122">預設值<xref:System.IO.Pipes.PipeOptions>值<xref:System.IO.Pipes.PipeOptions.None>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-122">A default <xref:System.IO.Pipes.PipeOptions> value of <xref:System.IO.Pipes.PipeOptions.None>.</span></span>  
+  
+-   <span data-ttu-id="7aa7f-123">預設值<xref:System.Security.Principal.TokenImpersonationLevel>值<xref:System.Security.Principal.TokenImpersonationLevel.None>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-123">A default <xref:System.Security.Principal.TokenImpersonationLevel> value of <xref:System.Security.Principal.TokenImpersonationLevel.None>.</span></span>  
+  
+-   <span data-ttu-id="7aa7f-124">預設值<xref:System.IO.HandleInheritability>值<xref:System.IO.HandleInheritability.None>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-124">A default <xref:System.IO.HandleInheritability> value of <xref:System.IO.HandleInheritability.None>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="7aa7f-125">
+            <paramref name="pipeName" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-125">
+              <paramref name="pipeName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="7aa7f-126">
+            <paramref name="pipeName" /> 是零長度字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-126">
+              <paramref name="pipeName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="7aa7f-127">將 <paramref name="pipeName" /> 設定為「匿名」。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-127">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="7aa7f-128">針對完全信任立即呼叫者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-128">for full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="7aa7f-129">這個成員無法供部分信任的程式碼使用。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-129">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeClientStream (string serverName, string pipeName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string serverName, string pipeName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.#ctor(System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (serverName As String, pipeName As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeClientStream(System::String ^ serverName, System::String ^ pipeName);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="serverName" Type="System.String" />
+        <Parameter Name="pipeName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="serverName">
+          <span data-ttu-id="7aa7f-130">要連接的遠端電腦名稱，或 "." 表示要指定本機電腦。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-130">The name of the remote computer to connect to, or "." to specify the local computer.</span>
+          </span>
+        </param>
+        <param name="pipeName">
+          <span data-ttu-id="7aa7f-131">管道的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-131">The name of the pipe.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7aa7f-132">使用指定的管道及伺服器名稱，初始化 <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-132">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> class with the specified pipe and server names.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7aa7f-133">這個建構函式會使用下列的預設值：</span><span class="sxs-lookup"><span data-stu-id="7aa7f-133">This constructor uses the following default values:</span></span>  
+  
+-   <span data-ttu-id="7aa7f-134">預設值<xref:System.IO.Pipes.PipeDirection>值<xref:System.IO.Pipes.PipeDirection.InOut>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-134">A default <xref:System.IO.Pipes.PipeDirection> value of <xref:System.IO.Pipes.PipeDirection.InOut>.</span></span>  
+  
+-   <span data-ttu-id="7aa7f-135">預設值<xref:System.IO.Pipes.PipeOptions>值<xref:System.IO.Pipes.PipeOptions.None>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-135">A default <xref:System.IO.Pipes.PipeOptions> value of <xref:System.IO.Pipes.PipeOptions.None>.</span></span>  
+  
+-   <span data-ttu-id="7aa7f-136">預設值<xref:System.Security.Principal.TokenImpersonationLevel>值<xref:System.Security.Principal.TokenImpersonationLevel.None>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-136">A default <xref:System.Security.Principal.TokenImpersonationLevel> value of <xref:System.Security.Principal.TokenImpersonationLevel.None>.</span></span>  
+  
+-   <span data-ttu-id="7aa7f-137">預設值<xref:System.IO.HandleInheritability>值<xref:System.IO.HandleInheritability.None>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-137">A default <xref:System.IO.HandleInheritability> value of <xref:System.IO.HandleInheritability.None>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="7aa7f-138">
+            <paramref name="pipeName" /> 或 <paramref name="serverName" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-138">
+              <paramref name="pipeName" /> or <paramref name="serverName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="7aa7f-139">
+            <paramref name="pipeName" /> 或 <paramref name="serverName" /> 是長度為零的字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-139">
+              <paramref name="pipeName" /> or <paramref name="serverName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="7aa7f-140">將 <paramref name="pipeName" /> 設定為「匿名」。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-140">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="7aa7f-141">針對完全信任立即呼叫者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-141">for full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="7aa7f-142">這個成員無法供部分信任的程式碼使用。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-142">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeClientStream (string serverName, string pipeName, System.IO.Pipes.PipeDirection direction);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string serverName, string pipeName, valuetype System.IO.Pipes.PipeDirection direction) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.#ctor(System.String,System.String,System.IO.Pipes.PipeDirection)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (serverName As String, pipeName As String, direction As PipeDirection)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeClientStream(System::String ^ serverName, System::String ^ pipeName, System::IO::Pipes::PipeDirection direction);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="serverName" Type="System.String" />
+        <Parameter Name="pipeName" Type="System.String" />
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+      </Parameters>
+      <Docs>
+        <param name="serverName">
+          <span data-ttu-id="7aa7f-143">要連接的遠端電腦名稱，或 "." 表示要指定本機電腦。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-143">The name of the remote computer to connect to, or "." to specify the local computer.</span>
+          </span>
+        </param>
+        <param name="pipeName">
+          <span data-ttu-id="7aa7f-144">管道的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-144">The name of the pipe.</span>
+          </span>
+        </param>
+        <param name="direction">
+          <span data-ttu-id="7aa7f-145">其中一個列舉值，決定管道的方向。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-145">One of the enumeration values that determines the direction of the pipe.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7aa7f-146">使用指定的管道與伺服器名稱，以及指定的管道方向，初始化 <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-146">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> class with the specified pipe and server names, and the specified pipe direction.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7aa7f-147">這個建構函式會使用下列的預設值：</span><span class="sxs-lookup"><span data-stu-id="7aa7f-147">This constructor uses the following default values:</span></span>  
+  
+-   <span data-ttu-id="7aa7f-148">預設值<xref:System.IO.Pipes.PipeOptions>值<xref:System.IO.Pipes.PipeOptions.None>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-148">A default <xref:System.IO.Pipes.PipeOptions> value of <xref:System.IO.Pipes.PipeOptions.None>.</span></span>  
+  
+-   <span data-ttu-id="7aa7f-149">預設值<xref:System.Security.Principal.TokenImpersonationLevel>值<xref:System.Security.Principal.TokenImpersonationLevel.None>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-149">A default <xref:System.Security.Principal.TokenImpersonationLevel> value of <xref:System.Security.Principal.TokenImpersonationLevel.None>.</span></span>  
+  
+-   <span data-ttu-id="7aa7f-150">預設值<xref:System.IO.HandleInheritability>值<xref:System.IO.HandleInheritability.None>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-150">A default <xref:System.IO.HandleInheritability> value of <xref:System.IO.HandleInheritability.None>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="7aa7f-151">下列範例會示範將從父處理序的字串傳送至子處理程序，使用具名管道的方法。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-151">The following example demonstrates a method to send a string from a parent process to a child process using named pipes.</span></span> <span data-ttu-id="7aa7f-152">這個範例會建立<xref:System.IO.Pipes.NamedPipeClientStream>物件中的子處理序，然後再連接到本機電腦上的管道。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-152">This example creates a <xref:System.IO.Pipes.NamedPipeClientStream> object in a child process, which then connects to a pipe on the local computer.</span></span> <span data-ttu-id="7aa7f-153">中可以看到伺服器範例<xref:System.IO.Pipes.NamedPipeServerStream>類別。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-153">The server example can be seen in the <xref:System.IO.Pipes.NamedPipeServerStream> class.</span></span> <span data-ttu-id="7aa7f-154">這個範例是針對所提供之較大範例的一部分<xref:System.IO.Pipes.NamedPipeServerStream>和<xref:System.IO.Pipes.NamedPipeClientStream>類別。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-154">This example is part of a larger example provided for the <xref:System.IO.Pipes.NamedPipeServerStream> and <xref:System.IO.Pipes.NamedPipeClientStream> classes.</span></span>  
+  
+ [!code-csharp[System.IO.Pipes.NamedPipeClientStream_Sample1#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeClientStream_Sample1/cs/Program.cs#01)]
+ [!code-vb[System.IO.Pipes.NamedPipeClientStream_Sample1#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeClientStream_Sample1/vb/program.vb#01)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="7aa7f-155">
+            <paramref name="pipeName" /> 或 <paramref name="serverName" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-155">
+              <paramref name="pipeName" /> or <paramref name="serverName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="7aa7f-156">
+            <paramref name="pipeName" /> 或 <paramref name="serverName" /> 是長度為零的字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-156">
+              <paramref name="pipeName" /> or <paramref name="serverName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="7aa7f-157">將 <paramref name="pipeName" /> 設定為「匿名」。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-157">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+          <span data-ttu-id="7aa7f-158">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-158">-or-</span>
+          </span>
+          <span data-ttu-id="7aa7f-159">
+            <paramref name="direction" /> 不是有效的 <see cref="T:System.IO.Pipes.PipeDirection" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-159">
+              <paramref name="direction" /> is not a valid <see cref="T:System.IO.Pipes.PipeDirection" /> value.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="7aa7f-160">針對完全信任立即呼叫者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-160">for full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="7aa7f-161">這個成員無法供部分信任的程式碼使用。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-161">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeClientStream (System.IO.Pipes.PipeDirection direction, bool isAsync, bool isConnected, Microsoft.Win32.SafeHandles.SafePipeHandle safePipeHandle);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.IO.Pipes.PipeDirection direction, bool isAsync, bool isConnected, class Microsoft.Win32.SafeHandles.SafePipeHandle safePipeHandle) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.#ctor(System.IO.Pipes.PipeDirection,System.Boolean,System.Boolean,Microsoft.Win32.SafeHandles.SafePipeHandle)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeClientStream(System::IO::Pipes::PipeDirection direction, bool isAsync, bool isConnected, Microsoft::Win32::SafeHandles::SafePipeHandle ^ safePipeHandle);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+        <Parameter Name="isAsync" Type="System.Boolean" />
+        <Parameter Name="isConnected" Type="System.Boolean" />
+        <Parameter Name="safePipeHandle" Type="Microsoft.Win32.SafeHandles.SafePipeHandle" />
+      </Parameters>
+      <Docs>
+        <param name="direction">
+          <span data-ttu-id="7aa7f-162">其中一個列舉值，決定管道的方向。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-162">One of the enumeration values that determines the direction of the pipe.</span>
+          </span>
+        </param>
+        <param name="isAsync">
+          <span data-ttu-id="7aa7f-163">
+            <see langword="true" /> 表示控制代碼為非同步開啟；否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-163">
+              <see langword="true" /> to indicate that the handle was opened asynchronously; otherwise, <see langword="false" />.</span>
+          </span>
+        </param>
+        <param name="isConnected">
+          <span data-ttu-id="7aa7f-164">
+            <see langword="true" /> 表示管道已連接，否則就是 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-164">
+              <see langword="true" /> to indicate that the pipe is connected; otherwise, <see langword="false" />.</span>
+          </span>
+        </param>
+        <param name="safePipeHandle">
+          <span data-ttu-id="7aa7f-165">安全控制代碼，用於這個 <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> 物件將會封裝的管道。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-165">A safe handle for the pipe that this <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> object will encapsulate.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7aa7f-166">使用具有指定管道方向的管道控制碼，初始化 <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-166">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> class for the specified pipe handle with the specified pipe direction.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="7aa7f-167">資料流已關閉。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-167">The stream has been closed.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="7aa7f-168">
+            <paramref name="safePipeHandle" /> 不是有效的控制代碼。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-168">
+              <paramref name="safePipeHandle" /> is not a valid handle.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="7aa7f-169">
+            <paramref name="safePipeHandle" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-169">
+              <paramref name="safePipeHandle" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="7aa7f-170">
+            <paramref name="direction" /> 不是有效的 <see cref="T:System.IO.Pipes.PipeDirection" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-170">
+              <paramref name="direction" /> is not a valid <see cref="T:System.IO.Pipes.PipeDirection" /> value.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="7aa7f-171">針對完全信任立即呼叫者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-171">for full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="7aa7f-172">這個成員無法供部分信任的程式碼使用。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-172">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeClientStream (string serverName, string pipeName, System.IO.Pipes.PipeDirection direction, System.IO.Pipes.PipeOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string serverName, string pipeName, valuetype System.IO.Pipes.PipeDirection direction, valuetype System.IO.Pipes.PipeOptions options) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.#ctor(System.String,System.String,System.IO.Pipes.PipeDirection,System.IO.Pipes.PipeOptions)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (serverName As String, pipeName As String, direction As PipeDirection, options As PipeOptions)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeClientStream(System::String ^ serverName, System::String ^ pipeName, System::IO::Pipes::PipeDirection direction, System::IO::Pipes::PipeOptions options);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="serverName" Type="System.String" />
+        <Parameter Name="pipeName" Type="System.String" />
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+        <Parameter Name="options" Type="System.IO.Pipes.PipeOptions" />
+      </Parameters>
+      <Docs>
+        <param name="serverName">
+          <span data-ttu-id="7aa7f-173">要連接的遠端電腦名稱，或 "." 表示要指定本機電腦。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-173">The name of the remote computer to connect to, or "." to specify the local computer.</span>
+          </span>
+        </param>
+        <param name="pipeName">
+          <span data-ttu-id="7aa7f-174">管道的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-174">The name of the pipe.</span>
+          </span>
+        </param>
+        <param name="direction">
+          <span data-ttu-id="7aa7f-175">其中一個列舉值，決定管道的方向。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-175">One of the enumeration values that determines the direction of the pipe.</span>
+          </span>
+        </param>
+        <param name="options">
+          <span data-ttu-id="7aa7f-176">其中一個列舉值，決定如何開啟或建立管道。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-176">One of the enumeration values that determines how to open or create the pipe.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7aa7f-177">使用指定的管道與伺服器名稱，以及指定的管道方向與管道選項，初始化 <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-177">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> class with the specified pipe and server names, and the specified pipe direction and pipe options.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7aa7f-178">這個建構函式會使用下列的預設值：</span><span class="sxs-lookup"><span data-stu-id="7aa7f-178">This constructor uses the following default values:</span></span>  
+  
+-   <span data-ttu-id="7aa7f-179">預設值<xref:System.Security.Principal.TokenImpersonationLevel>值<xref:System.Security.Principal.TokenImpersonationLevel.None>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-179">A default <xref:System.Security.Principal.TokenImpersonationLevel> value of <xref:System.Security.Principal.TokenImpersonationLevel.None>.</span></span>  
+  
+-   <span data-ttu-id="7aa7f-180">預設值<xref:System.IO.HandleInheritability>值<xref:System.IO.HandleInheritability.None>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-180">A default <xref:System.IO.HandleInheritability> value of <xref:System.IO.HandleInheritability.None>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="7aa7f-181">
+            <paramref name="pipeName" /> 或 <paramref name="serverName" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-181">
+              <paramref name="pipeName" /> or <paramref name="serverName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="7aa7f-182">
+            <paramref name="pipeName" /> 或 <paramref name="serverName" /> 是長度為零的字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-182">
+              <paramref name="pipeName" /> or <paramref name="serverName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="7aa7f-183">將 <paramref name="pipeName" /> 設定為「匿名」。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-183">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+          <span data-ttu-id="7aa7f-184">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-184">-or-</span>
+          </span>
+          <span data-ttu-id="7aa7f-185">
+            <paramref name="direction" /> 不是有效的 <see cref="T:System.IO.Pipes.PipeDirection" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-185">
+              <paramref name="direction" /> is not a valid <see cref="T:System.IO.Pipes.PipeDirection" /> value.</span>
+          </span>
+          <span data-ttu-id="7aa7f-186">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-186">-or-</span>
+          </span>
+          <span data-ttu-id="7aa7f-187">
+            <paramref name="options" /> 不是有效的 <see cref="T:System.IO.Pipes.PipeOptions" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-187">
+              <paramref name="options" /> is not a valid <see cref="T:System.IO.Pipes.PipeOptions" /> value.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="7aa7f-188">針對完全信任立即呼叫者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-188">for full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="7aa7f-189">這個成員無法供部分信任的程式碼使用。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-189">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeClientStream (string serverName, string pipeName, System.IO.Pipes.PipeDirection direction, System.IO.Pipes.PipeOptions options, System.Security.Principal.TokenImpersonationLevel impersonationLevel);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string serverName, string pipeName, valuetype System.IO.Pipes.PipeDirection direction, valuetype System.IO.Pipes.PipeOptions options, valuetype System.Security.Principal.TokenImpersonationLevel impersonationLevel) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.#ctor(System.String,System.String,System.IO.Pipes.PipeDirection,System.IO.Pipes.PipeOptions,System.Security.Principal.TokenImpersonationLevel)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (serverName As String, pipeName As String, direction As PipeDirection, options As PipeOptions, impersonationLevel As TokenImpersonationLevel)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeClientStream(System::String ^ serverName, System::String ^ pipeName, System::IO::Pipes::PipeDirection direction, System::IO::Pipes::PipeOptions options, System::Security::Principal::TokenImpersonationLevel impersonationLevel);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="serverName" Type="System.String" />
+        <Parameter Name="pipeName" Type="System.String" />
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+        <Parameter Name="options" Type="System.IO.Pipes.PipeOptions" />
+        <Parameter Name="impersonationLevel" Type="System.Security.Principal.TokenImpersonationLevel" />
+      </Parameters>
+      <Docs>
+        <param name="serverName">
+          <span data-ttu-id="7aa7f-190">要連接的遠端電腦名稱，或 "." 表示要指定本機電腦。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-190">The name of the remote computer to connect to, or "." to specify the local computer.</span>
+          </span>
+        </param>
+        <param name="pipeName">
+          <span data-ttu-id="7aa7f-191">管道的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-191">The name of the pipe.</span>
+          </span>
+        </param>
+        <param name="direction">
+          <span data-ttu-id="7aa7f-192">其中一個列舉值，決定管道的方向。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-192">One of the enumeration values that determines the direction of the pipe.</span>
+          </span>
+        </param>
+        <param name="options">
+          <span data-ttu-id="7aa7f-193">其中一個列舉值，決定如何開啟或建立管道。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-193">One of the enumeration values that determines how to open or create the pipe.</span>
+          </span>
+        </param>
+        <param name="impersonationLevel">
+          <span data-ttu-id="7aa7f-194">其中一個列舉值，決定安全性模擬等級。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-194">One of the enumeration values that determines the security impersonation level.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7aa7f-195">使用指定的管道與伺服器名稱，以及指定的管道方向、管道選項及安全性模擬等級，初始化 <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-195">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> class with the specified pipe and server names, and the specified pipe direction, pipe options, and security impersonation level.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7aa7f-196">這個建構函式會使用預設<xref:System.IO.HandleInheritability>值<xref:System.IO.HandleInheritability.None>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-196">This constructor uses a default <xref:System.IO.HandleInheritability> value of <xref:System.IO.HandleInheritability.None>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="7aa7f-197">
+            <paramref name="pipeName" /> 或 <paramref name="serverName" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-197">
+              <paramref name="pipeName" /> or <paramref name="serverName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="7aa7f-198">
+            <paramref name="pipeName" /> 或 <paramref name="serverName" /> 是長度為零的字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-198">
+              <paramref name="pipeName" /> or <paramref name="serverName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="7aa7f-199">將 <paramref name="pipeName" /> 設定為「匿名」。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-199">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+          <span data-ttu-id="7aa7f-200">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-200">-or-</span>
+          </span>
+          <span data-ttu-id="7aa7f-201">
+            <paramref name="direction" /> 不是有效的 <see cref="T:System.IO.Pipes.PipeDirection" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-201">
+              <paramref name="direction" /> is not a valid <see cref="T:System.IO.Pipes.PipeDirection" /> value.</span>
+          </span>
+          <span data-ttu-id="7aa7f-202">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-202">-or-</span>
+          </span>
+          <span data-ttu-id="7aa7f-203">
+            <paramref name="options" /> 不是有效的 <see cref="T:System.IO.Pipes.PipeOptions" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-203">
+              <paramref name="options" /> is not a valid <see cref="T:System.IO.Pipes.PipeOptions" /> value.</span>
+          </span>
+          <span data-ttu-id="7aa7f-204">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-204">-or-</span>
+          </span>
+          <span data-ttu-id="7aa7f-205">
+            <paramref name="impersonationLevel" /> 不是有效的 <see cref="T:System.Security.Principal.TokenImpersonationLevel" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-205">
+              <paramref name="impersonationLevel" /> is not a valid <see cref="T:System.Security.Principal.TokenImpersonationLevel" /> value.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="7aa7f-206">針對完全信任立即呼叫者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-206">for full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="7aa7f-207">這個成員無法供部分信任的程式碼使用。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-207">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeClientStream (string serverName, string pipeName, System.IO.Pipes.PipeAccessRights desiredAccessRights, System.IO.Pipes.PipeOptions options, System.Security.Principal.TokenImpersonationLevel impersonationLevel, System.IO.HandleInheritability inheritability);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string serverName, string pipeName, valuetype System.IO.Pipes.PipeAccessRights desiredAccessRights, valuetype System.IO.Pipes.PipeOptions options, valuetype System.Security.Principal.TokenImpersonationLevel impersonationLevel, valuetype System.IO.HandleInheritability inheritability) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.#ctor(System.String,System.String,System.IO.Pipes.PipeAccessRights,System.IO.Pipes.PipeOptions,System.Security.Principal.TokenImpersonationLevel,System.IO.HandleInheritability)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (serverName As String, pipeName As String, desiredAccessRights As PipeAccessRights, options As PipeOptions, impersonationLevel As TokenImpersonationLevel, inheritability As HandleInheritability)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeClientStream(System::String ^ serverName, System::String ^ pipeName, System::IO::Pipes::PipeAccessRights desiredAccessRights, System::IO::Pipes::PipeOptions options, System::Security::Principal::TokenImpersonationLevel impersonationLevel, System::IO::HandleInheritability inheritability);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="serverName" Type="System.String" />
+        <Parameter Name="pipeName" Type="System.String" />
+        <Parameter Name="desiredAccessRights" Type="System.IO.Pipes.PipeAccessRights" />
+        <Parameter Name="options" Type="System.IO.Pipes.PipeOptions" />
+        <Parameter Name="impersonationLevel" Type="System.Security.Principal.TokenImpersonationLevel" />
+        <Parameter Name="inheritability" Type="System.IO.HandleInheritability" />
+      </Parameters>
+      <Docs>
+        <param name="serverName">
+          <span data-ttu-id="7aa7f-208">要連接的遠端電腦名稱，或 "." 表示要指定本機電腦。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-208">The name of the remote computer to connect to, or "." to specify the local computer.</span>
+          </span>
+        </param>
+        <param name="pipeName">
+          <span data-ttu-id="7aa7f-209">管道的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-209">The name of the pipe.</span>
+          </span>
+        </param>
+        <param name="desiredAccessRights">
+          <span data-ttu-id="7aa7f-210">一個列舉值，指定所需的管道存取權限。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-210">One of the enumeration values that specifies the desired access rights of the pipe.</span>
+          </span>
+        </param>
+        <param name="options">
+          <span data-ttu-id="7aa7f-211">其中一個列舉值，決定如何開啟或建立管道。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-211">One of the enumeration values that determines how to open or create the pipe.</span>
+          </span>
+        </param>
+        <param name="impersonationLevel">
+          <span data-ttu-id="7aa7f-212">其中一個列舉值，決定安全性模擬等級。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-212">One of the enumeration values that determines the security impersonation level.</span>
+          </span>
+        </param>
+        <param name="inheritability">
+          <span data-ttu-id="7aa7f-213">一個列舉值，決定基礎碼控制碼是否將由子處理序繼承。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-213">One of the enumeration values that determines whether the underlying handle will be inheritable by child processes.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7aa7f-214">使用指定的管道與伺服器名稱，以及指定的管道選項、安全性模擬等級和繼承模式，初始化 <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-214">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> class with the specified pipe and server names, and the specified pipe options, security impersonation level, and inheritability mode.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7aa7f-215">這個建構函式的管道方向由`desiredAccessRights`參數。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-215">The pipe direction for this constructor is determined by the `desiredAccessRights` parameter.</span></span> <span data-ttu-id="7aa7f-216">如果`desiredAccessRights`值是<xref:System.IO.Pipes.PipeAccessRights.ReadData>，管道方向將<xref:System.IO.Pipes.PipeDirection.In>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-216">If the `desiredAccessRights` value is <xref:System.IO.Pipes.PipeAccessRights.ReadData>, the pipe direction will be <xref:System.IO.Pipes.PipeDirection.In>.</span></span> <span data-ttu-id="7aa7f-217">如果值`desiredAccessRights`是<xref:System.IO.Pipes.PipeAccessRights.WriteData>，管道方向將<xref:System.IO.Pipes.PipeDirection.Out>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-217">If the value of `desiredAccessRights` is <xref:System.IO.Pipes.PipeAccessRights.WriteData>, the pipe direction will be <xref:System.IO.Pipes.PipeDirection.Out>.</span></span> <span data-ttu-id="7aa7f-218">如果值`desiredAccessRights`同時包含<xref:System.IO.Pipes.PipeAccessRights.ReadData>和<xref:System.IO.Pipes.PipeAccessRights.WriteData>，管道方向將<xref:System.IO.Pipes.PipeDirection.InOut>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-218">If the value of `desiredAccessRights` includes both <xref:System.IO.Pipes.PipeAccessRights.ReadData> and <xref:System.IO.Pipes.PipeAccessRights.WriteData>, the pipe direction will be <xref:System.IO.Pipes.PipeDirection.InOut>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="7aa7f-219">
+            <paramref name="pipeName" /> 或 <paramref name="serverName" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-219">
+              <paramref name="pipeName" /> or <paramref name="serverName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="7aa7f-220">
+            <paramref name="pipeName" /> 或 <paramref name="serverName" /> 是長度為零的字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-220">
+              <paramref name="pipeName" /> or <paramref name="serverName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="7aa7f-221">將 <paramref name="pipeName" /> 設定為「匿名」。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-221">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+          <span data-ttu-id="7aa7f-222">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-222">-or-</span>
+          </span>
+          <span data-ttu-id="7aa7f-223">
+            <paramref name="options" /> 不是有效的 <see cref="T:System.IO.Pipes.PipeOptions" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-223">
+              <paramref name="options" /> is not a valid <see cref="T:System.IO.Pipes.PipeOptions" /> value.</span>
+          </span>
+          <span data-ttu-id="7aa7f-224">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-224">-or-</span>
+          </span>
+          <span data-ttu-id="7aa7f-225">
+            <paramref name="impersonationLevel" /> 不是有效的 <see cref="T:System.Security.Principal.TokenImpersonationLevel" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-225">
+              <paramref name="impersonationLevel" /> is not a valid <see cref="T:System.Security.Principal.TokenImpersonationLevel" /> value.</span>
+          </span>
+          <span data-ttu-id="7aa7f-226">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-226">-or-</span>
+          </span>
+          <span data-ttu-id="7aa7f-227">
+            <paramref name="inheritability" /> 不是有效的 <see cref="T:System.IO.HandleInheritability" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-227">
+              <paramref name="inheritability" /> is not a valid <see cref="T:System.IO.HandleInheritability" /> value.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="7aa7f-228">針對完全信任立即呼叫者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-228">for full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="7aa7f-229">這個成員無法供部分信任的程式碼使用。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-229">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeClientStream (string serverName, string pipeName, System.IO.Pipes.PipeDirection direction, System.IO.Pipes.PipeOptions options, System.Security.Principal.TokenImpersonationLevel impersonationLevel, System.IO.HandleInheritability inheritability);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string serverName, string pipeName, valuetype System.IO.Pipes.PipeDirection direction, valuetype System.IO.Pipes.PipeOptions options, valuetype System.Security.Principal.TokenImpersonationLevel impersonationLevel, valuetype System.IO.HandleInheritability inheritability) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.#ctor(System.String,System.String,System.IO.Pipes.PipeDirection,System.IO.Pipes.PipeOptions,System.Security.Principal.TokenImpersonationLevel,System.IO.HandleInheritability)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (serverName As String, pipeName As String, direction As PipeDirection, options As PipeOptions, impersonationLevel As TokenImpersonationLevel, inheritability As HandleInheritability)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeClientStream(System::String ^ serverName, System::String ^ pipeName, System::IO::Pipes::PipeDirection direction, System::IO::Pipes::PipeOptions options, System::Security::Principal::TokenImpersonationLevel impersonationLevel, System::IO::HandleInheritability inheritability);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="serverName" Type="System.String" />
+        <Parameter Name="pipeName" Type="System.String" />
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+        <Parameter Name="options" Type="System.IO.Pipes.PipeOptions" />
+        <Parameter Name="impersonationLevel" Type="System.Security.Principal.TokenImpersonationLevel" />
+        <Parameter Name="inheritability" Type="System.IO.HandleInheritability" />
+      </Parameters>
+      <Docs>
+        <param name="serverName">
+          <span data-ttu-id="7aa7f-230">要連接的遠端電腦名稱，或 "." 表示要指定本機電腦。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-230">The name of the remote computer to connect to, or "." to specify the local computer.</span>
+          </span>
+        </param>
+        <param name="pipeName">
+          <span data-ttu-id="7aa7f-231">管道的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-231">The name of the pipe.</span>
+          </span>
+        </param>
+        <param name="direction">
+          <span data-ttu-id="7aa7f-232">其中一個列舉值，決定管道的方向。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-232">One of the enumeration values that determines the direction of the pipe.</span>
+          </span>
+        </param>
+        <param name="options">
+          <span data-ttu-id="7aa7f-233">其中一個列舉值，決定如何開啟或建立管道。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-233">One of the enumeration values that determines how to open or create the pipe.</span>
+          </span>
+        </param>
+        <param name="impersonationLevel">
+          <span data-ttu-id="7aa7f-234">其中一個列舉值，決定安全性模擬等級。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-234">One of the enumeration values that determines the security impersonation level.</span>
+          </span>
+        </param>
+        <param name="inheritability">
+          <span data-ttu-id="7aa7f-235">一個列舉值，決定基礎碼控制碼是否將由子處理序繼承。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-235">One of the enumeration values that determines whether the underlying handle will be inheritable by child processes.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7aa7f-236">使用指定的管道與伺服器名稱，以及指定的管道方向、管道選項、安全性模擬等級和繼承模式，初始化 <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-236">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> class with the specified pipe and server names, and the specified pipe direction, pipe options, security impersonation level, and inheritability mode.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="7aa7f-237">
+            <paramref name="pipeName" /> 或 <paramref name="serverName" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-237">
+              <paramref name="pipeName" /> or <paramref name="serverName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="7aa7f-238">
+            <paramref name="pipeName" /> 或 <paramref name="serverName" /> 是長度為零的字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-238">
+              <paramref name="pipeName" /> or <paramref name="serverName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="7aa7f-239">將 <paramref name="pipeName" /> 設定為「匿名」。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-239">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+          <span data-ttu-id="7aa7f-240">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-240">-or-</span>
+          </span>
+          <span data-ttu-id="7aa7f-241">
+            <paramref name="direction" /> 不是有效的 <see cref="T:System.IO.Pipes.PipeDirection" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-241">
+              <paramref name="direction" /> is not a valid <see cref="T:System.IO.Pipes.PipeDirection" /> value.</span>
+          </span>
+          <span data-ttu-id="7aa7f-242">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-242">-or-</span>
+          </span>
+          <span data-ttu-id="7aa7f-243">
+            <paramref name="options" /> 不是有效的 <see cref="T:System.IO.Pipes.PipeOptions" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-243">
+              <paramref name="options" /> is not a valid <see cref="T:System.IO.Pipes.PipeOptions" /> value.</span>
+          </span>
+          <span data-ttu-id="7aa7f-244">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-244">-or-</span>
+          </span>
+          <span data-ttu-id="7aa7f-245">
+            <paramref name="impersonationLevel" /> 不是有效的 <see cref="T:System.Security.Principal.TokenImpersonationLevel" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-245">
+              <paramref name="impersonationLevel" /> is not a valid <see cref="T:System.Security.Principal.TokenImpersonationLevel" /> value.</span>
+          </span>
+          <span data-ttu-id="7aa7f-246">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-246">-or-</span>
+          </span>
+          <span data-ttu-id="7aa7f-247">
+            <paramref name="inheritability" /> 不是有效的 <see cref="T:System.IO.HandleInheritability" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-247">
+              <paramref name="inheritability" /> is not a valid <see cref="T:System.IO.HandleInheritability" /> value.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="7aa7f-248">針對完全信任立即呼叫者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-248">for full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="7aa7f-249">這個成員無法供部分信任的程式碼使用。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-249">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName="CheckPipePropertyOperations">
+      <MemberSignature Language="C#" Value="protected internal override void CheckPipePropertyOperations ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance void CheckPipePropertyOperations() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.CheckPipePropertyOperations" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Sub CheckPipePropertyOperations ()" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override void CheckPipePropertyOperations();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Connect">
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="7aa7f-250">連接到等待伺服器。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-250">Connects to a waiting server.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Connect">
+      <MemberSignature Language="C#" Value="public void Connect ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Connect() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.Connect" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Connect ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Connect();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="7aa7f-251">以無限的逾時值連接至等候中伺服器。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-251">Connects to a waiting server with an infinite time-out value.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7aa7f-252">這個方法會呼叫<xref:System.IO.Pipes.NamedPipeClientStream.Connect%28System.Int32%29>具有無限的逾時值的方法。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-252">This method calls the <xref:System.IO.Pipes.NamedPipeClientStream.Connect%28System.Int32%29> method with an infinite time-out value.</span></span>  
+  
+ <span data-ttu-id="7aa7f-253">這個方法會等候可用的管線執行個體。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-253">This method waits for a pipe instance to become available.</span></span> <span data-ttu-id="7aa7f-254"><xref:System.IO.Pipes.NamedPipeClientStream.Connect%2A> 可能會傳回前<xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A>從呼叫<xref:System.IO.Pipes.NamedPipeServerStream>物件，但<xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A>之前將不會傳回<xref:System.IO.Pipes.NamedPipeClientStream.Connect%2A>已傳回。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-254"><xref:System.IO.Pipes.NamedPipeClientStream.Connect%2A> might return before <xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A> is called from the <xref:System.IO.Pipes.NamedPipeServerStream> object, but <xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A> will not return until <xref:System.IO.Pipes.NamedPipeClientStream.Connect%2A> has returned.</span></span>  
+  
+ <span data-ttu-id="7aa7f-255">寫入管道之後的任何資料<xref:System.IO.Pipes.NamedPipeClientStream>物件已經連線，但之前已呼叫伺服器<xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A>，將可呼叫伺服器<xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-255">Any data written to the pipe after a <xref:System.IO.Pipes.NamedPipeClientStream> object has connected, but before the server has called <xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A>, will be available to the server following the call to <xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="7aa7f-256">下列範例會示範將從父處理序的字串傳送至子處理程序，使用具名管道的方法。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-256">The following example demonstrates a method to send a string from a parent process to a child process using named pipes.</span></span> <span data-ttu-id="7aa7f-257">這個範例會建立<xref:System.IO.Pipes.NamedPipeClientStream>物件中的子處理序，然後再連接到本機電腦上的管道。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-257">This example creates a <xref:System.IO.Pipes.NamedPipeClientStream> object in a child process, which then connects to a pipe on the local computer.</span></span> <span data-ttu-id="7aa7f-258">中可以看到伺服器範例<xref:System.IO.Pipes.NamedPipeServerStream>類別。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-258">The server example can be seen in the <xref:System.IO.Pipes.NamedPipeServerStream> class.</span></span> <span data-ttu-id="7aa7f-259">這個範例是針對所提供之較大範例的一部分<xref:System.IO.Pipes.NamedPipeServerStream>和<xref:System.IO.Pipes.NamedPipeClientStream>類別。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-259">This example is part of a larger example provided for the <xref:System.IO.Pipes.NamedPipeServerStream> and <xref:System.IO.Pipes.NamedPipeClientStream> classes.</span></span>  
+  
+ [!code-csharp[System.IO.Pipes.NamedPipeClientStream_Sample1#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeClientStream_Sample1/cs/Program.cs#01)]
+ [!code-vb[System.IO.Pipes.NamedPipeClientStream_Sample1#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeClientStream_Sample1/vb/program.vb#01)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="7aa7f-260">已連接用戶端。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-260">The client is already connected.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Connect">
+      <MemberSignature Language="C#" Value="public void Connect (int timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Connect(int32 timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.Connect(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Connect (timeout As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Connect(int timeout);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">
+          <span data-ttu-id="7aa7f-261">等候伺服器回應的毫秒數，經過這段時間即為連線逾時。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-261">The number of milliseconds to wait for the server to respond before the connection times out.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7aa7f-262">在指定的逾時限制期間內，連接到等候中的伺服器。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-262">Connects to a waiting server within the specified time-out period.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7aa7f-263">這個方法會等候可用的管線執行個體。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-263">This method waits for a pipe instance to become available.</span></span> <span data-ttu-id="7aa7f-264"><xref:System.IO.Pipes.NamedPipeClientStream.Connect%2A> 可能會傳回前<xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A>從呼叫<xref:System.IO.Pipes.NamedPipeServerStream>，但<xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A>之前將不會傳回<xref:System.IO.Pipes.NamedPipeClientStream.Connect%2A>已傳回。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-264"><xref:System.IO.Pipes.NamedPipeClientStream.Connect%2A> might return before <xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A> is called from the <xref:System.IO.Pipes.NamedPipeServerStream>, but <xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A> will not return until <xref:System.IO.Pipes.NamedPipeClientStream.Connect%2A> has returned.</span></span> <span data-ttu-id="7aa7f-265">您設定`timeout`參數<xref:System.Threading.Timeout.Infinite>來指定無限的逾時值。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-265">You set the `timeout` parameter to <xref:System.Threading.Timeout.Infinite> to specify an infinite time-out value.</span></span>  
+  
+ <span data-ttu-id="7aa7f-266">寫入管道之後的任何資料<xref:System.IO.Pipes.NamedPipeClientStream>物件已經連線，但之前已呼叫伺服器<xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A>，將可呼叫伺服器<xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-266">Any data written to the pipe after a <xref:System.IO.Pipes.NamedPipeClientStream> object has connected, but before the server has called <xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A>, will be available to the server following the call to <xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.TimeoutException">
+          <span data-ttu-id="7aa7f-267">無法在指定的 <paramref name="timeout" /> 期間內連接伺服器。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-267">Could not connect to the server within the specified <paramref name="timeout" /> period.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="7aa7f-268">
+            <paramref name="timeout" /> 小於 0 且未設定為 <see cref="F:System.Threading.Timeout.Infinite" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-268">
+              <paramref name="timeout" /> is less than 0 and not set to <see cref="F:System.Threading.Timeout.Infinite" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="7aa7f-269">已連接用戶端。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-269">The client is already connected.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="7aa7f-270">伺服器連接至另一個用戶端，而且逾時期限已過期。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-270">The server is connected to another client and the time-out period has expired.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="ConnectAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="7aa7f-271">表示非同步作業的工作。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-271">A task that represents the asynchronous connect operation.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="ConnectAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task ConnectAsync ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task ConnectAsync() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.ConnectAsync" />
+      <MemberSignature Language="VB.NET" Value="Public Function ConnectAsync () As Task" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task ^ ConnectAsync();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="7aa7f-272">以無限的逾時期限非同步連接至等候中伺服器。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-272">Asynchronously connects to a waiting server with an infinite timeout period.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="7aa7f-273">表示非同步作業的工作。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-273">A task that represents the asynchronous connect operation.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ConnectAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task ConnectAsync (int timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task ConnectAsync(int32 timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.ConnectAsync(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Function ConnectAsync (timeout As Integer) As Task" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task ^ ConnectAsync(int timeout);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">
+          <span data-ttu-id="7aa7f-274">等候伺服器回應的毫秒數，經過這段時間即為連線逾時。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-274">The number of milliseconds to wait for the server to respond before the connection times out.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7aa7f-275">在指定的逾時期限內非同步連接至等候中伺服器。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-275">Asynchronously connects to a waiting server within the specified timeout period.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="7aa7f-276">表示非同步作業的工作。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-276">A task that represents the asynchronous connect operation.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ConnectAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task ConnectAsync (System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task ConnectAsync(valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.ConnectAsync(System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task ^ ConnectAsync(System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="cancellationToken">
+          <span data-ttu-id="7aa7f-277">用來監視是否有取消要求的語彙基元。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-277">The token to monitor for cancellation requests.</span>
+          </span>
+          <span data-ttu-id="7aa7f-278">預設值是 <see cref="P:System.Threading.CancellationToken.None" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-278">The default value is <see cref="P:System.Threading.CancellationToken.None" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7aa7f-279">非同步連接至等候中伺服器，並且監視取消要求。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-279">Asynchronously connects to a waiting server and monitors cancellation requests.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="7aa7f-280">表示非同步作業的工作。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-280">A task that represents the asynchronous connect operation.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ConnectAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task ConnectAsync (int timeout, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task ConnectAsync(int32 timeout, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.ConnectAsync(System.Int32,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task ^ ConnectAsync(int timeout, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.Int32" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">
+          <span data-ttu-id="7aa7f-281">等候伺服器回應的毫秒數，經過這段時間即為連線逾時。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-281">The number of milliseconds to wait for the server to respond before the connection times out.</span>
+          </span>
+        </param>
+        <param name="cancellationToken">
+          <span data-ttu-id="7aa7f-282">用來監視是否有取消要求的語彙基元。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-282">The token to monitor for cancellation requests.</span>
+          </span>
+          <span data-ttu-id="7aa7f-283">預設值是 <see cref="P:System.Threading.CancellationToken.None" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-283">The default value is <see cref="P:System.Threading.CancellationToken.None" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7aa7f-284">在指定的逾時期限內非同步連接至等候中伺服器，並且監視取消要求。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-284">Asynchronously connects to a waiting server within the specified timeout period and monitors cancellation requests.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="7aa7f-285">表示非同步作業的工作。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-285">A task that represents the asynchronous connect operation.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~NamedPipeClientStream ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeClientStream.Finalize" />
+      <MemberSignature Language="VB.NET" Value="Finalize ()" />
+      <MemberSignature Language="C++ CLI" Value="!NamedPipeClientStream ()" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="7aa7f-286">釋出 Unmanaged 資源並執行其他清除作業後，記憶體回收才能重新回收 <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> 執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-286">Releases unmanaged resources and performs other cleanup operations before the <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> instance is reclaimed by garbage collection.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NumberOfServerInstances">
+      <MemberSignature Language="C#" Value="public int NumberOfServerInstances { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 NumberOfServerInstances" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Pipes.NamedPipeClientStream.NumberOfServerInstances" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property NumberOfServerInstances As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int NumberOfServerInstances { int get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="7aa7f-287">取得共用相同管道名稱的伺服器執行個體數目。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-287">Gets the number of server instances that share the same pipe name.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="7aa7f-288">共用相同管道名稱的伺服器執行個體數目。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-288">The number of server instances that share the same pipe name.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7aa7f-289">這個屬性會傳回的伺服器執行個體數目<xref:System.IO.Pipes.NamedPipeServerStream>物件目前<xref:System.IO.Pipes.NamedPipeClientStream>物件的控制代碼，或者連接到。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-289">This property returns the number of server instances for the <xref:System.IO.Pipes.NamedPipeServerStream> object that the current <xref:System.IO.Pipes.NamedPipeClientStream> object has a handle to or is connected to.</span></span> <span data-ttu-id="7aa7f-290">如果目前<xref:System.IO.Pipes.NamedPipeClientStream>物件具有尚未連線至具名的管道伺服器，或如果尚未設定目前管道控制代碼，這個屬性會擲回<xref:System.InvalidOperationException>。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-290">If the current <xref:System.IO.Pipes.NamedPipeClientStream> object has not yet connected to a named pipe server, or if the current pipe handle has not yet been set, this property throws an <xref:System.InvalidOperationException>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="7aa7f-291">下列範例會示範將從父處理序的字串傳送至子處理程序，使用具名管道的方法。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-291">The following example demonstrates a method to send a string from a parent process to a child process using named pipes.</span></span> <span data-ttu-id="7aa7f-292">在此範例中，<xref:System.IO.Pipes.NamedPipeClientStream>子處理序，然後再連接到本機電腦上的管道中建立物件。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-292">In this example, a <xref:System.IO.Pipes.NamedPipeClientStream> object is created in a child process, which then connects to a pipe on the local computer.</span></span> <span data-ttu-id="7aa7f-293">中可以看到伺服器範例<xref:System.IO.Pipes.NamedPipeServerStream>類別。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-293">The server example can be seen in the <xref:System.IO.Pipes.NamedPipeServerStream> class.</span></span> <span data-ttu-id="7aa7f-294">這個範例是針對所提供之較大範例的一部分<xref:System.IO.Pipes.NamedPipeServerStream>和<xref:System.IO.Pipes.NamedPipeClientStream>類別。</span><span class="sxs-lookup"><span data-stu-id="7aa7f-294">This example is part of a larger example provided for the <xref:System.IO.Pipes.NamedPipeServerStream> and <xref:System.IO.Pipes.NamedPipeClientStream> classes.</span></span>  
+  
+ [!code-csharp[System.IO.Pipes.NamedPipeClientStream_Sample1#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeClientStream_Sample1/cs/Program.cs#01)]
+ [!code-vb[System.IO.Pipes.NamedPipeClientStream_Sample1#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeClientStream_Sample1/vb/program.vb#01)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="7aa7f-295">尚未設定管道控制代碼。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-295">The pipe handle has not been set.</span>
+          </span>
+          <span data-ttu-id="7aa7f-296">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-296">-or-</span>
+          </span>
+          <span data-ttu-id="7aa7f-297">目前的 <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> 物件尚未連接到 <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> 物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-297">The current <see cref="T:System.IO.Pipes.NamedPipeClientStream" /> object has not yet connected to a <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> object.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="7aa7f-298">管道中斷或發生 I/O 錯誤。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-298">The pipe is broken or an I/O error occurred.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="7aa7f-299">基礎的管道控制代碼已關閉。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7aa7f-299">The underlying pipe handle is closed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
