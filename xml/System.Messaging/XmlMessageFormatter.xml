@@ -1,0 +1,668 @@
+<Type Name="XmlMessageFormatter" FullName="System.Messaging.XmlMessageFormatter">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="563e678b40760a20036da2630095cb8b05f461de" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class XmlMessageFormatter : ICloneable, System.Messaging.IMessageFormatter" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit XmlMessageFormatter extends System.Object implements class System.ICloneable, class System.Messaging.IMessageFormatter" />
+  <TypeSignature Language="DocId" Value="T:System.Messaging.XmlMessageFormatter" />
+  <TypeSignature Language="VB.NET" Value="Public Class XmlMessageFormatter&#xA;Implements ICloneable, IMessageFormatter" />
+  <TypeSignature Language="C++ CLI" Value="public ref class XmlMessageFormatter : ICloneable, System::Messaging::IMessageFormatter" />
+  <AssemblyInfo>
+    <AssemblyName>System.Messaging</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.ICloneable</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.Messaging.IMessageFormatter</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>
+      <span data-ttu-id="921c4-101">使用根據 XSD 結構描述定義的 XML 格式，將物件序列化為訊息主體，或從訊息主體還原序列化為物件。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="921c4-101">Serializes and deserializes objects to or from the body of a message, using the XML format based on the XSD schema definition.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="921c4-102"><xref:System.Messaging.XmlMessageFormatter>是預設的格式器的執行個體<xref:System.Messaging.MessageQueue>用來序列化訊息寫入佇列。</span><span class="sxs-lookup"><span data-stu-id="921c4-102">The <xref:System.Messaging.XmlMessageFormatter> is the default formatter that an instance of <xref:System.Messaging.MessageQueue> uses to serialize messages written to the queue.</span></span> <span data-ttu-id="921c4-103">當您建立的執行個體<xref:System.Messaging.MessageQueue>，執行個體<xref:System.Messaging.XmlMessageFormatter>為您建立並與相關聯<xref:System.Messaging.MessageQueue>。</span><span class="sxs-lookup"><span data-stu-id="921c4-103">When you create an instance of <xref:System.Messaging.MessageQueue>, an instance of <xref:System.Messaging.XmlMessageFormatter> is created for you and associated with the <xref:System.Messaging.MessageQueue>.</span></span> <span data-ttu-id="921c4-104">您可以指定不同的格式器所建立程式碼中，並將它指派給<xref:System.Messaging.MessageQueue.Formatter%2A>屬性您<xref:System.Messaging.MessageQueue>。</span><span class="sxs-lookup"><span data-stu-id="921c4-104">You can specify a different formatter by creating it in your code and assigning it to the <xref:System.Messaging.MessageQueue.Formatter%2A> property of your <xref:System.Messaging.MessageQueue>.</span></span>  
+  
+ <span data-ttu-id="921c4-105">佇列的預設<xref:System.Messaging.XmlMessageFormatter>執行個體可以用來寫入至佇列，但它不能用來從佇列讀取，直到您將<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>或<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>格式器上的屬性。</span><span class="sxs-lookup"><span data-stu-id="921c4-105">A queue's default <xref:System.Messaging.XmlMessageFormatter> instance can be used to write to the queue, but it cannot be used to read from the queue until you set either the <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> or <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> property on the formatter.</span></span> <span data-ttu-id="921c4-106">您可以透過設定一個或多個這些值的預設格式器執行個體，或您可以建立格式器的新執行個體，並將它們做為引數傳遞至適當的自動設定的值<xref:System.Messaging.XmlMessageFormatter.%23ctor%2A>建構函式。</span><span class="sxs-lookup"><span data-stu-id="921c4-106">You can either set one or both of these values on the default formatter instance, or you can create a new instance of the formatter and set the values automatically by passing them as arguments into the appropriate <xref:System.Messaging.XmlMessageFormatter.%23ctor%2A> constructor.</span></span>  
+  
+ <span data-ttu-id="921c4-107">當指定<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>而不是<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>，編譯時間，而不是唯讀的時間，減少錯誤可能性在檢查類型是否存在。</span><span class="sxs-lookup"><span data-stu-id="921c4-107">When specifying <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> rather than <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>, type existence is checked at compile time rather than read time, reducing possibility for error.</span></span> <span data-ttu-id="921c4-108"><xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> 需要完整限定，指定其組件名稱的每個項目。</span><span class="sxs-lookup"><span data-stu-id="921c4-108"><xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> requires every entry to be fully qualified, specifying its assembly name.</span></span> <span data-ttu-id="921c4-109">此外，當使用多個並行版本，版本號碼也必須附加至目標型別名稱。</span><span class="sxs-lookup"><span data-stu-id="921c4-109">Further, when working with multiple concurrent versions, the version number must also be appended to the target type name as well.</span></span>  
+  
+ <span data-ttu-id="921c4-110"><xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>和<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>屬性告知格式器嘗試比對訊息還原序列化時哪些結構描述。</span><span class="sxs-lookup"><span data-stu-id="921c4-110">The <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties tell the formatter what schemas to attempt to match when deserializing a message.</span></span> <span data-ttu-id="921c4-111">這可讓要解譯訊息本文格式器。</span><span class="sxs-lookup"><span data-stu-id="921c4-111">This allows the formatter to interpret the message body.</span></span>  
+  
+ <span data-ttu-id="921c4-112">其中一個代表型別陣列中的結構描述必須符合訊息主體中序列化的執行個體。</span><span class="sxs-lookup"><span data-stu-id="921c4-112">The instance serialized in the message body must comply with one of the schemas represented in the type array.</span></span> <span data-ttu-id="921c4-113">當您閱讀訊息使用<xref:System.Messaging.MessageQueue.Receive%2A>方法，方法會建立對應至識別的結構描述和訊息本文讀入之型別的物件。</span><span class="sxs-lookup"><span data-stu-id="921c4-113">When you read the message using the <xref:System.Messaging.MessageQueue.Receive%2A> method, the method creates an object of the type that corresponds to the schema identified and reads the message body into it.</span></span>  
+  
+ <span data-ttu-id="921c4-114">只有其中一個兩個屬性必須設定從佇列讀取時，但您可以將兩個設定。</span><span class="sxs-lookup"><span data-stu-id="921c4-114">Only one of the two properties needs to be set when reading from the queue, but you can set both.</span></span> <span data-ttu-id="921c4-115">型別是從兩個屬性的組合。</span><span class="sxs-lookup"><span data-stu-id="921c4-115">The set of types is the combined set from the two properties.</span></span> <span data-ttu-id="921c4-116">決定要使用哪一個屬性是專屬於您的應用程式。</span><span class="sxs-lookup"><span data-stu-id="921c4-116">The decision of which property to use is specific to your application.</span></span> <span data-ttu-id="921c4-117">如果訊息本文包含其結構描述不符合任何兩個屬性陣列中之類型的型別，讀取訊息時將會擲回例外狀況。</span><span class="sxs-lookup"><span data-stu-id="921c4-117">If the message body contains a type whose schema does not match any of the types in the array for either property, an exception will be thrown when the message is read.</span></span>  
+  
+ <span data-ttu-id="921c4-118"><xref:System.Messaging.XmlMessageFormatter>是重要的鬆散偶合 XML 為基礎的傳訊元件。</span><span class="sxs-lookup"><span data-stu-id="921c4-118">The <xref:System.Messaging.XmlMessageFormatter> is a crucial component of loosely coupled XML-based messaging.</span></span> <span data-ttu-id="921c4-119">XSD.exe 公用程式使用 XML 格式用來產生 XML 結構描述，例如當您使用此公用程式來序列化您的應用程式所使用的類別。</span><span class="sxs-lookup"><span data-stu-id="921c4-119">The XSD.exe utility uses the XML format is used to generate XML schema, such as when you use the utility to serialize a class used by your application.</span></span> <span data-ttu-id="921c4-120">此類別必須具有預設的建構函式。</span><span class="sxs-lookup"><span data-stu-id="921c4-120">The class must have a default constructor.</span></span>  
+  
+ <span data-ttu-id="921c4-121">所用的格式再次相反的處理序中的公用程式會產生結構描述為基礎的類別時您發佈至描述類別資料。</span><span class="sxs-lookup"><span data-stu-id="921c4-121">The format is used again in the reverse process when the utility generates a class based on the schema you distribute to describe your class data.</span></span> <span data-ttu-id="921c4-122">使用此公用程式和它產生的 XML 結構描述可讓您避免轉散發.dll 檔案，每次您重新編譯類別，類別的實作已變更之後。</span><span class="sxs-lookup"><span data-stu-id="921c4-122">The use of the utility and the XML schema it generates enables you to avoid redistributing.dll files every time you recompile a class after the implementation of your class has changed.</span></span> <span data-ttu-id="921c4-123">只要在結構描述不會變更用戶端或伺服器上，其他任一端的變更不會影響其他。</span><span class="sxs-lookup"><span data-stu-id="921c4-123">As long as the schema does not change on the client or the server, other changes on either side do not affect the other.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="921c4-124">下列程式碼範例包含三個程式碼片段： 一種伺服器元件、 order 類別，而且用戶端程式碼。</span><span class="sxs-lookup"><span data-stu-id="921c4-124">The following code example includes three pieces of code: a server component, an order class, and client code.</span></span> <span data-ttu-id="921c4-125">Order 類別可供 XSD.exe 公用程式，以產生傳入訊息內的伺服器可辨識的結構描述。</span><span class="sxs-lookup"><span data-stu-id="921c4-125">The order class can be used by the XSD.exe utility to generate schema that the server recognizes within incoming messages.</span></span> <span data-ttu-id="921c4-126">結構描述會描述 「 圖形 」 類別的 XML 格式的檔案。</span><span class="sxs-lookup"><span data-stu-id="921c4-126">The schema is an XML formatted file that describes the "shape" of the class.</span></span> <span data-ttu-id="921c4-127">然後在用戶端上產生共用的伺服器類別為相同的結構描述的用戶端特定的順序類別使用這個結構描述。</span><span class="sxs-lookup"><span data-stu-id="921c4-127">This schema can then be used on the client side to generate a client-specific order class that shares the same schema as the server class.</span></span>  
+  
+ <span data-ttu-id="921c4-128">下列程式碼範例代表接收訂單，透過訊息佇列的伺服器元件。</span><span class="sxs-lookup"><span data-stu-id="921c4-128">The following code example represents a server component that receives orders through a message queue.</span></span> <span data-ttu-id="921c4-129">訊息的主體應該是順序物件，其結構描述符合此 Order.cs 類別下方。</span><span class="sxs-lookup"><span data-stu-id="921c4-129">The body of the message should be an order object whose schema matches the Order.cs class below.</span></span> <span data-ttu-id="921c4-130">伺服器處理序或應用程式會還原序列化的順序。</span><span class="sxs-lookup"><span data-stu-id="921c4-130">The server process or application deserializes the order.</span></span>  
+  
+ [!code-cpp[Classic XmlMessageFormatter Example#1](~/samples/snippets/cpp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic XmlMessageFormatter Example#1](~/samples/snippets/csharp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CS/source.cs#1)]
+ [!code-vb[Classic XmlMessageFormatter Example#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/VB/source.vb#1)]  
+  
+ <span data-ttu-id="921c4-131">下列程式碼範例代表 order 類別，提供伺服器上的應用程式接收和還原序列化的順序物件的結構描述。</span><span class="sxs-lookup"><span data-stu-id="921c4-131">The following code example represents the order class that provides a schema for the order objects that the application on the server receives and deserializes.</span></span>  
+  
+ [!code-cpp[Classic XmlMessageFormatter Example#2](~/samples/snippets/cpp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CPP/source2.cpp#2)]
+ [!code-csharp[Classic XmlMessageFormatter Example#2](~/samples/snippets/csharp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CS/source2.cs#2)]
+ [!code-vb[Classic XmlMessageFormatter Example#2](~/samples/snippets/visualbasic/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/VB/source2.vb#2)]  
+  
+ <span data-ttu-id="921c4-132">與伺服器上的應用程式互動的任何用戶端應用程式必須在本機定義的順序類別為訊息本文的序列化資訊所傳送訊息至伺服器。</span><span class="sxs-lookup"><span data-stu-id="921c4-132">Any client application that interacts with the application on the server must send messages to the server by serializing information in a locally defined order class into the message body.</span></span> <span data-ttu-id="921c4-133">本機定義的順序類別必須具有相同結構描述所在伺服器上的應用程式會嘗試還原序列化訊息本文的伺服器定義的順序類別。</span><span class="sxs-lookup"><span data-stu-id="921c4-133">The locally defined order class must have the same schema as the server-defined order class into which the application on the server will attempt to deserialize the message body.</span></span> <span data-ttu-id="921c4-134">XSD.exe 公用程式可讓應用程式管理員在伺服器上建立，並將用戶端必須用來序列化訊息移至伺服器的結構描述。</span><span class="sxs-lookup"><span data-stu-id="921c4-134">The XSD.exe utility lets the manager of the application on the server create and distribute the schema the client must use to serialize messages going to the server.</span></span>  
+  
+ <span data-ttu-id="921c4-135">當用戶端應用程式管理員收到 order 類別的結構描述時，會再次從結構描述產生的用戶端特定的順序類別使用 XSD.exe 公用程式。</span><span class="sxs-lookup"><span data-stu-id="921c4-135">When the manager of the client application receives the schema for the order class, the XSD.exe utility is used again to generate a client-specific order class from the schema.</span></span> <span data-ttu-id="921c4-136">它是用戶端程式碼範例，以下伺服器的 order 類別中使用這個類別 （XSD.exe 公用程式會導致結構描述產生的類別具有與原始類別相同的名稱）。</span><span class="sxs-lookup"><span data-stu-id="921c4-136">It is this class that is used in the client code example below, not the server's order class (the XSD.exe utility causes the schema-generated class to have the same name as the original class).</span></span> <span data-ttu-id="921c4-137">這個新的 order 類別用來序列化訊息本文中的順序。</span><span class="sxs-lookup"><span data-stu-id="921c4-137">This new order class is used to serialize the order into the message body.</span></span>  
+  
+ <span data-ttu-id="921c4-138">下列程式碼範例是用戶端處理，用來序列化順序，並傳送至佇列的順序與相關聯的資訊。</span><span class="sxs-lookup"><span data-stu-id="921c4-138">The following code example is the client-side processing, used to serialize an order and send the information associated with the order to a queue.</span></span> <span data-ttu-id="921c4-139">程式碼會關聯此 Order.cs 類別 XSD.exe 公用程式所產生的結構描述項目中的項目、 數量和位址資訊。</span><span class="sxs-lookup"><span data-stu-id="921c4-139">The code associates Item, Quantity, and Address information with elements of the schema that were generated for the Order.cs class by the XSD.exe utility.</span></span> <span data-ttu-id="921c4-140">順序會傳送到訂單佇列，在本機電腦上。</span><span class="sxs-lookup"><span data-stu-id="921c4-140">An order is sent to the Orders queue on the local computer.</span></span>  
+  
+ [!code-cpp[Classic XmlMessageFormatter Example#3](~/samples/snippets/cpp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CPP/source3.cpp#3)]
+ [!code-csharp[Classic XmlMessageFormatter Example#3](~/samples/snippets/csharp/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/CS/source3.cs#3)]
+ [!code-vb[Classic XmlMessageFormatter Example#3](~/samples/snippets/visualbasic/VS_Snippets_Remoting/Classic XmlMessageFormatter Example/VB/source3.vb#3)]  
+  
+ <span data-ttu-id="921c4-141">從伺服器上的 order 類別產生結構描述之後，您可以修改的類別。</span><span class="sxs-lookup"><span data-stu-id="921c4-141">After the schema is generated from the order class on the server, you can modify the class.</span></span> <span data-ttu-id="921c4-142">結構描述變更，除非您不需要重新發佈的結構描述。</span><span class="sxs-lookup"><span data-stu-id="921c4-142">Unless the schema changes, you do not need to redistribute the schema.</span></span> <span data-ttu-id="921c4-143">您已經發佈結構描述及產生的用戶端 order 類別之後，該用戶端類別也可以修改個別伺服器的 order 類別，只要結構描述本身則不會修改。</span><span class="sxs-lookup"><span data-stu-id="921c4-143">After you have distributed the schema and generated a client-side order class, that client class can also be modified independently of the server's order class, as long as the schema itself is not modified.</span></span> <span data-ttu-id="921c4-144">變成鬆散結合兩個類別。</span><span class="sxs-lookup"><span data-stu-id="921c4-144">The two classes have become loosely coupled.</span></span>  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Messaging.MessageQueue" />
+    <altmember cref="T:System.Messaging.ActiveXMessageFormatter" />
+    <altmember cref="T:System.Messaging.BinaryMessageFormatter" />
+    <altmember cref="T:System.Messaging.IMessageFormatter" />
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="921c4-145">初始化 <see cref="T:System.Messaging.XmlMessageFormatter" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-145">Initializes a new instance of the <see cref="T:System.Messaging.XmlMessageFormatter" /> class.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XmlMessageFormatter ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Messaging.XmlMessageFormatter.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XmlMessageFormatter();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="921c4-146">不使用目標型別 (Target Type) 集來初始化 <see cref="T:System.Messaging.XmlMessageFormatter" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-146">Initializes a new instance of the <see cref="T:System.Messaging.XmlMessageFormatter" /> class, without target types set.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="921c4-147">這個多載建構函式的最常用來寫入佇列時寫入時的目標類型並非必要條件。</span><span class="sxs-lookup"><span data-stu-id="921c4-147">This overload of the constructor is used most frequently when writing to the queue, as target types are not required when writing.</span></span>  
+  
+ <span data-ttu-id="921c4-148">若要從使用的執行個體的佇列讀取訊息<xref:System.Messaging.XmlMessageFormatter>使用這個建構函式所建立，您必須設定<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>或<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>讓格式器可讓您知道哪些類型，以嘗試還原序列化的屬性。</span><span class="sxs-lookup"><span data-stu-id="921c4-148">To read a message from a queue using an instance of <xref:System.Messaging.XmlMessageFormatter> created using this constructor, you must set the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> or <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties so the formatter knows what types to attempt to deserialize.</span></span>  
+  
+ <span data-ttu-id="921c4-149">當您建立新<xref:System.Messaging.MessageQueue>，預設值<xref:System.Messaging.XmlMessageFormatter>建立執行個體，不含目標型別集。</span><span class="sxs-lookup"><span data-stu-id="921c4-149">When you create a new <xref:System.Messaging.MessageQueue>, a default <xref:System.Messaging.XmlMessageFormatter> instance is created, without the target types set.</span></span> <span data-ttu-id="921c4-150">如同使用這個建構函式所建立的格式器，您必須設定該格式器執行個體的目標型別，如果您想要從佇列讀取。</span><span class="sxs-lookup"><span data-stu-id="921c4-150">As with a formatter created using this constructor, you must set target types for that formatter instance if you want to read from the queue.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XmlMessageFormatter (string[] targetTypeNames);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string[] targetTypeNames) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Messaging.XmlMessageFormatter.#ctor(System.String[])" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (targetTypeNames As String())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XmlMessageFormatter(cli::array &lt;System::String ^&gt; ^ targetTypeNames);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="targetTypeNames" Type="System.String[]" />
+      </Parameters>
+      <Docs>
+        <param name="targetTypeNames">
+          <span data-ttu-id="921c4-151">
+            <see cref="T:System.String" /> 型別的陣列，指定可能型別的設定，格式子會從所提供的訊息還原序列化這些型別。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-151">An array of type <see cref="T:System.String" /> that specifies the set of possible types that will be deserialized by the formatter from the message provided.</span>
+          </span>
+          <span data-ttu-id="921c4-152">這些值必須是完整的，例如「MyNamespace.MyOrders, MyOrdersAssemblyName」。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-152">These values must be fully qualified, for example, "MyNamespace.MyOrders, MyOrdersAssemblyName".</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="921c4-153">初始化 <see cref="T:System.Messaging.XmlMessageFormatter" /> 類別的新執行個體，將傳入的目標型別設定為 (完整的) 字串值陣列。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-153">Initializes a new instance of the <see cref="T:System.Messaging.XmlMessageFormatter" /> class, setting target types passed in as an array of (fully qualified) string values.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="921c4-154">從佇列讀取時最常使用目標型別參數的建構函式。</span><span class="sxs-lookup"><span data-stu-id="921c4-154">The constructors with target type parameters are most frequently used when reading from the queue.</span></span> <span data-ttu-id="921c4-155">在撰寫時，它不需要指定目標類型。</span><span class="sxs-lookup"><span data-stu-id="921c4-155">When writing, it is not necessary to specify target types.</span></span>  
+  
+ <span data-ttu-id="921c4-156">這個多載<xref:System.Messaging.XmlMessageFormatter.%23ctor%2A>建構函式<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>屬性中傳遞的陣列值`targetTypeNames`參數。</span><span class="sxs-lookup"><span data-stu-id="921c4-156">This overload of the <xref:System.Messaging.XmlMessageFormatter.%23ctor%2A> constructor sets the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> property to the array values passed in through the `targetTypeNames` parameter.</span></span> <span data-ttu-id="921c4-157">設定此屬性可讓<xref:System.Messaging.MessageQueue>使用這個<xref:System.Messaging.XmlMessageFormatter>讀取訊息包含的物件執行個體指定型別。</span><span class="sxs-lookup"><span data-stu-id="921c4-157">Setting this property enables a <xref:System.Messaging.MessageQueue> using this <xref:System.Messaging.XmlMessageFormatter> instance to read messages containing objects of given types.</span></span>  
+  
+ <span data-ttu-id="921c4-158">同時<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>和<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>屬性告知格式器嘗試比對訊息還原序列化時哪些結構描述。</span><span class="sxs-lookup"><span data-stu-id="921c4-158">Both the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties tell the formatter what schemas to attempt to match when deserializing a message.</span></span> <span data-ttu-id="921c4-159">這可讓要解譯訊息本文格式器。</span><span class="sxs-lookup"><span data-stu-id="921c4-159">This allows the formatter to interpret the message body.</span></span>  
+  
+ <span data-ttu-id="921c4-160">其中一個代表型別陣列中的結構描述必須符合訊息主體中序列化的執行個體。</span><span class="sxs-lookup"><span data-stu-id="921c4-160">The instance serialized in the message body must comply with one of the schemas represented in the type array.</span></span> <span data-ttu-id="921c4-161">當您閱讀訊息使用<xref:System.Messaging.MessageQueue.Receive%2A>方法，方法會建立對應至識別的結構描述和訊息本文讀入之型別的物件。</span><span class="sxs-lookup"><span data-stu-id="921c4-161">When you read the message using the <xref:System.Messaging.MessageQueue.Receive%2A> method, the method creates an object of the type that corresponds to the schema identified and reads the message body into it.</span></span>  
+  
+ <span data-ttu-id="921c4-162">只有其中一個兩個屬性必須設定從佇列讀取時，但您可以將兩個設定。</span><span class="sxs-lookup"><span data-stu-id="921c4-162">Only one of the two properties needs to be set when reading from the queue, but you can set both.</span></span> <span data-ttu-id="921c4-163">型別是從兩個屬性的組合。</span><span class="sxs-lookup"><span data-stu-id="921c4-163">The set of types is the combined set from the two properties.</span></span> <span data-ttu-id="921c4-164">決定来使用一個是專屬於您的應用程式。</span><span class="sxs-lookup"><span data-stu-id="921c4-164">The decision of which one to use is specific to your application.</span></span> <span data-ttu-id="921c4-165">如果訊息本文包含的類型，其結構描述不符合任何兩個屬性陣列中的型別，在讀取時間將會擲回例外狀況。</span><span class="sxs-lookup"><span data-stu-id="921c4-165">If the message body contains a type whose schema does not match any of the types in the array for either property, an exception will be thrown at read time.</span></span>  
+  
+   
+  
+## Examples  
+ [!code-cpp[Message.Body#1](~/samples/snippets/cpp/VS_Snippets_Remoting/Message.Body/CPP/message_sendreceive.cpp#1)]
+ [!code-csharp[Message.Body#1](~/samples/snippets/csharp/VS_Snippets_Remoting/Message.Body/CS/message_sendreceive.cs#1)]
+ [!code-vb[Message.Body#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/Message.Body/VB/message_sendreceive.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="921c4-166">
+            <paramref name="targetTypeNames" /> 參數為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-166">The <paramref name="targetTypeNames" /> parameter is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XmlMessageFormatter (Type[] targetTypes);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Type[] targetTypes) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Messaging.XmlMessageFormatter.#ctor(System.Type[])" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (targetTypes As Type())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XmlMessageFormatter(cli::array &lt;Type ^&gt; ^ targetTypes);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="targetTypes" Type="System.Type[]" />
+      </Parameters>
+      <Docs>
+        <param name="targetTypes">
+          <span data-ttu-id="921c4-167">
+            <see cref="T:System.Type" /> 型別的陣列，指定可能型別的設定，格式子會從所提供的訊息還原序列化這些型別。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-167">An array of type <see cref="T:System.Type" /> that specifies the set of possible types that will be deserialized by the formatter from the message provided.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="921c4-168">初始化 <see cref="T:System.Messaging.XmlMessageFormatter" /> 類別的新執行個體，將傳入的目標型別設定為物件型別的陣列。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-168">Initializes a new instance of the <see cref="T:System.Messaging.XmlMessageFormatter" /> class, setting target types passed in as an array of object types.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="921c4-169">從佇列讀取時最常使用目標型別參數的建構函式。</span><span class="sxs-lookup"><span data-stu-id="921c4-169">The constructors with target type parameters are most frequently used when reading from the queue.</span></span> <span data-ttu-id="921c4-170">在撰寫時，它不需要指定目標類型。</span><span class="sxs-lookup"><span data-stu-id="921c4-170">When writing, it is not necessary to specify target types.</span></span>  
+  
+ <span data-ttu-id="921c4-171">這個多載<xref:System.Messaging.XmlMessageFormatter.%23ctor%2A>建構函式<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>屬性中傳遞的陣列值`targetTypes`參數。</span><span class="sxs-lookup"><span data-stu-id="921c4-171">This overload of the <xref:System.Messaging.XmlMessageFormatter.%23ctor%2A> constructor sets the <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> property to the array values passed in through the `targetTypes` parameter.</span></span> <span data-ttu-id="921c4-172">設定此屬性可讓<xref:System.Messaging.MessageQueue>使用這個<xref:System.Messaging.XmlMessageFormatter>讀取訊息包含指定型別的物件的執行個體。</span><span class="sxs-lookup"><span data-stu-id="921c4-172">Setting this property enables a <xref:System.Messaging.MessageQueue> using this <xref:System.Messaging.XmlMessageFormatter> instance to read messages containing objects of the given types.</span></span>  
+  
+ <span data-ttu-id="921c4-173">同時<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>和<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>屬性告知格式器嘗試比對訊息還原序列化時哪些結構描述。</span><span class="sxs-lookup"><span data-stu-id="921c4-173">Both the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties tell the formatter what schemas to attempt to match when deserializing a message.</span></span> <span data-ttu-id="921c4-174">這可讓要解譯訊息本文格式器。</span><span class="sxs-lookup"><span data-stu-id="921c4-174">This allows the formatter to interpret the message body.</span></span>  
+  
+ <span data-ttu-id="921c4-175">其中一個代表型別陣列中的結構描述必須符合訊息主體中序列化的執行個體。</span><span class="sxs-lookup"><span data-stu-id="921c4-175">The instance serialized in the message body must comply with one of the schemas represented in the type array.</span></span> <span data-ttu-id="921c4-176">當您閱讀訊息使用<xref:System.Messaging.MessageQueue.Receive%2A>方法，方法會建立對應至識別的結構描述和訊息本文讀入之型別的物件。</span><span class="sxs-lookup"><span data-stu-id="921c4-176">When you read the message using the <xref:System.Messaging.MessageQueue.Receive%2A> method, the method creates an object of the type that corresponds to the schema identified and reads the message body into it.</span></span>  
+  
+ <span data-ttu-id="921c4-177">只有其中一個兩個屬性必須設定從佇列讀取時，但您可以將兩個設定。</span><span class="sxs-lookup"><span data-stu-id="921c4-177">Only one of the two properties needs to be set when reading from the queue, but you can set both.</span></span> <span data-ttu-id="921c4-178">型別是從兩個屬性的組合。</span><span class="sxs-lookup"><span data-stu-id="921c4-178">The set of types is the combined set from the two properties.</span></span> <span data-ttu-id="921c4-179">決定来使用一個是專屬於您的應用程式。</span><span class="sxs-lookup"><span data-stu-id="921c4-179">The decision of which one to use is specific to your application.</span></span> <span data-ttu-id="921c4-180">如果訊息本文包含的類型，其結構描述不符合任何兩個屬性陣列中的型別，在讀取時間將會擲回例外狀況。</span><span class="sxs-lookup"><span data-stu-id="921c4-180">If the message body contains a type whose schema does not match any of the types in the array for either property, an exception will be thrown at read time.</span></span>  
+  
+ <span data-ttu-id="921c4-181">當指定<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>而不是<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>，編譯時間，而不是唯讀的時間，減少錯誤可能性在檢查類型是否存在。</span><span class="sxs-lookup"><span data-stu-id="921c4-181">When specifying <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> rather than <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>, type existence is checked at compile time rather than read time, reducing possibility for error.</span></span> <span data-ttu-id="921c4-182"><xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> 需要完整限定，指定其組件名稱的每個項目。</span><span class="sxs-lookup"><span data-stu-id="921c4-182"><xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> requires every entry to be fully qualified, specifying its assembly name.</span></span> <span data-ttu-id="921c4-183">此外，當使用多個並行版本，版本號碼也必須附加至目標型別名稱。</span><span class="sxs-lookup"><span data-stu-id="921c4-183">Further, when working with multiple concurrent versions, the version number must also be appended to the target type name as well.</span></span>  
+  
+ <span data-ttu-id="921c4-184">使用時<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>，您可以新增每個物件 (例如， `MyClass`) 至下列 C# 程式碼所示的方法中的清單。</span><span class="sxs-lookup"><span data-stu-id="921c4-184">When using <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>, you can add each object (for example, `MyClass`) to the list in a way demonstrated by the following C# code.</span></span>  
+  
+```  
+TargetTypes = new Type[]{typeof(MyClass)}  
+```  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="921c4-185">
+            <paramref name="targetTypes" /> 參數為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-185">The <paramref name="targetTypes" /> parameter is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="CanRead">
+      <MemberSignature Language="C#" Value="public bool CanRead (System.Messaging.Message message);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanRead(class System.Messaging.Message message) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Messaging.XmlMessageFormatter.CanRead(System.Messaging.Message)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool CanRead(System::Messaging::Message ^ message);" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Messaging.IMessageFormatter.CanRead(System.Messaging.Message)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="message" Type="System.Messaging.Message" />
+      </Parameters>
+      <Docs>
+        <param name="message">
+          <span data-ttu-id="921c4-186">要檢查的 <see cref="T:System.Messaging.Message" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-186">The <see cref="T:System.Messaging.Message" /> to inspect.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="921c4-187">決定格式子是否能夠還原序列化訊息。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-187">Determines whether the formatter can deserialize the message.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="921c4-188">如果 XML 格式子能夠還原序列化訊息，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-188">
+              <see langword="true" /> if the XML formatter can deserialize the message; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="921c4-189">當<xref:System.Messaging.XmlMessageFormatter.CanRead%2A>呼叫時，則格式器會嘗試判斷訊息的內容是否可以還原序列化的項目。</span><span class="sxs-lookup"><span data-stu-id="921c4-189">When <xref:System.Messaging.XmlMessageFormatter.CanRead%2A> is called, the formatter attempts to determine if the contents of the message are something it can deserialize.</span></span> <span data-ttu-id="921c4-190">格式器可以只將訊息還原序列化訊息本文中的型別為其中一個類型相同的結構描述所代表陣列中必須有<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>和<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="921c4-190">The formatter can only deserialize the message if the type in the message body has the same schema as one of the types in the array represented by the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties.</span></span> <span data-ttu-id="921c4-191"><xref:System.Messaging.XmlMessageFormatter.CanRead%2A> 傳回`false`下列兩種情況下：</span><span class="sxs-lookup"><span data-stu-id="921c4-191"><xref:System.Messaging.XmlMessageFormatter.CanRead%2A> returns `false` under the following two circumstances:</span></span>  
+  
+-   <span data-ttu-id="921c4-192">訊息格式不使用<xref:System.Messaging.XmlMessageFormatter>。</span><span class="sxs-lookup"><span data-stu-id="921c4-192">The message was not formatted using the <xref:System.Messaging.XmlMessageFormatter>.</span></span>  
+  
+-   <span data-ttu-id="921c4-193">訊息內文的結構描述不在所列的是<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>或<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="921c4-193">The schema of the message body is not among those listed in either the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> or <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> property.</span></span>  
+  
+ <span data-ttu-id="921c4-194"><xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>和<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>屬性告知格式器的物件類型它必須能夠還原序列化。</span><span class="sxs-lookup"><span data-stu-id="921c4-194">The <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties tell the formatter what types of objects it must be able to deserialize.</span></span> <span data-ttu-id="921c4-195">如果遺漏從清單中，任何型別訊息中找到<xref:System.Messaging.XmlMessageFormatter.CanRead%2A>傳回`false`。</span><span class="sxs-lookup"><span data-stu-id="921c4-195">If any type is missing from the list, yet is found within the message, <xref:System.Messaging.XmlMessageFormatter.CanRead%2A> returns `false`.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="921c4-196">
+            <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> 和 <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> 屬性都沒有設定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-196">Neither the <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> nor <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> property has been set.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="921c4-197">
+            <paramref name="message" /> 參數為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-197">The <paramref name="message" /> parameter is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <altmember cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" />
+        <altmember cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" />
+        <altmember cref="T:System.Messaging.BinaryMessageFormatter" />
+        <altmember cref="T:System.Messaging.ActiveXMessageFormatter" />
+      </Docs>
+    </Member>
+    <Member MemberName="Clone">
+      <MemberSignature Language="C#" Value="public object Clone ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance object Clone() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Messaging.XmlMessageFormatter.Clone" />
+      <MemberSignature Language="VB.NET" Value="Public Function Clone () As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Object ^ Clone();" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ICloneable.Clone</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="921c4-198">建立 <see cref="T:System.Messaging.XmlMessageFormatter" /> 類別的執行個體，其讀取/寫入屬性 (目標型別集) 與目前的 <see cref="T:System.Messaging.XmlMessageFormatter" /> 執行個體相同。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-198">Creates an instance of the <see cref="T:System.Messaging.XmlMessageFormatter" /> class whose read/write properties (the sets of target types) are the same as the current <see cref="T:System.Messaging.XmlMessageFormatter" /> instance.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="921c4-199">物件，其屬性和這個 <see cref="T:System.Messaging.XmlMessageFormatter" /> 執行個體的屬性相同，但是其中繼資料 (Metadata) 沒有指定它為格式子類別執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-199">An object whose properties are identical to those of this <see cref="T:System.Messaging.XmlMessageFormatter" /> instance, but whose metadata does not specify it to be a formatter class instance.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="921c4-200">這個方法會建立此格式子的複本，並初始化其所有屬性的值<xref:System.Messaging.XmlMessageFormatter>物件。</span><span class="sxs-lookup"><span data-stu-id="921c4-200">This method creates a copy of the formatter and initializes all its properties to the values of this <xref:System.Messaging.XmlMessageFormatter> object.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Messaging.IMessageFormatter" />
+      </Docs>
+    </Member>
+    <Member MemberName="Read">
+      <MemberSignature Language="C#" Value="public object Read (System.Messaging.Message message);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance object Read(class System.Messaging.Message message) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Messaging.XmlMessageFormatter.Read(System.Messaging.Message)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Object ^ Read(System::Messaging::Message ^ message);" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Messaging.IMessageFormatter.Read(System.Messaging.Message)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="message" Type="System.Messaging.Message" />
+      </Parameters>
+      <Docs>
+        <param name="message">
+          <span data-ttu-id="921c4-201">要還原序列化的 <see cref="T:System.Messaging.Message" />，格式為 XML。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-201">The <see cref="T:System.Messaging.Message" />, in XML format, to deserialize.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="921c4-202">讀取指定訊息的內容，並建立包含還原序列化訊息的物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-202">Reads the contents from the given message and creates an object that contains the deserialized message.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="921c4-203">還原序列化的訊息。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-203">The deserialized message.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="921c4-204">同時<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>和<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>屬性告知格式器嘗試比對訊息還原序列化時哪些結構描述。</span><span class="sxs-lookup"><span data-stu-id="921c4-204">Both the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties tell the formatter what schemas to attempt to match when deserializing a message.</span></span> <span data-ttu-id="921c4-205">其中一個屬性必須先設定訊息還原序列化。</span><span class="sxs-lookup"><span data-stu-id="921c4-205">One of these properties must be set before the message can be deserialized.</span></span>  
+  
+ <span data-ttu-id="921c4-206">其中一個代表型別陣列中的結構描述必須符合訊息主體中序列化的執行個體。</span><span class="sxs-lookup"><span data-stu-id="921c4-206">The instance serialized in the message body must comply with one of the schemas represented in the type array.</span></span> <span data-ttu-id="921c4-207">當您閱讀訊息使用<xref:System.Messaging.MessageQueue.Receive%2A>方法，方法會建立對應至識別的結構描述和訊息本文讀入之型別的物件。</span><span class="sxs-lookup"><span data-stu-id="921c4-207">When you read the message using the <xref:System.Messaging.MessageQueue.Receive%2A> method, the method creates an object of the type that corresponds to the schema identified and reads the message body into it.</span></span>  
+  
+ <span data-ttu-id="921c4-208">目標類型沒有指定，才能寫入至佇列。</span><span class="sxs-lookup"><span data-stu-id="921c4-208">The target types do not have to be specified in order to write to the queue.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="921c4-209">
+            <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> 和 <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> 屬性都沒有設定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-209">Neither the <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> nor <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> property has been set.</span>
+          </span>
+          <span data-ttu-id="921c4-210">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-210">-or-</span>
+          </span>
+          <span data-ttu-id="921c4-211">在訊息主體中序列化的執行個體不會遵循 <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> 和 <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> 屬性中型別所表示的任何結構描述。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-211">The instance serialized in the message body does not comply with any of the schemas represented by the types in the <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> and <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> properties.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="921c4-212">
+            <paramref name="message" /> 參數為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-212">The <paramref name="message" /> parameter is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <altmember cref="M:System.Messaging.XmlMessageFormatter.CanRead(System.Messaging.Message)" />
+        <altmember cref="M:System.Messaging.XmlMessageFormatter.Write(System.Messaging.Message,System.Object)" />
+        <altmember cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" />
+        <altmember cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" />
+        <altmember cref="T:System.Messaging.Message" />
+      </Docs>
+    </Member>
+    <Member MemberName="TargetTypeNames">
+      <MemberSignature Language="C#" Value="public string[] TargetTypeNames { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string[] TargetTypeNames" />
+      <MemberSignature Language="DocId" Value="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" />
+      <MemberSignature Language="VB.NET" Value="Public Property TargetTypeNames As String()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property cli::array &lt;System::String ^&gt; ^ TargetTypeNames { cli::array &lt;System::String ^&gt; ^ get(); void set(cli::array &lt;System::String ^&gt; ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Messaging.MessagingDescription("XmlMsgTargetTypeNames")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="921c4-213">指定可能型別的設定，格式子會從所提供的訊息還原序列化這些型別。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-213">Specifies the set of possible types that will be deserialized by the formatter from the message provided.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="921c4-214">
+            <see cref="T:System.String" /> 型別的陣列，讀取訊息時，指定要從訊息主體還原序列化的物件型別。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-214">An array of type <see cref="T:System.String" /> that specifies the types of objects to deserialize from the message body when reading the message.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="921c4-215">同時<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>和<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>屬性告知格式器嘗試比對訊息還原序列化時哪些結構描述。</span><span class="sxs-lookup"><span data-stu-id="921c4-215">Both the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties tell the formatter what schemas to attempt to match when deserializing a message.</span></span> <span data-ttu-id="921c4-216">這可讓要解譯訊息本文格式器。</span><span class="sxs-lookup"><span data-stu-id="921c4-216">This allows the formatter to interpret the message body.</span></span>  
+  
+ <span data-ttu-id="921c4-217">其中一個代表型別陣列中的結構描述必須符合訊息主體中序列化的執行個體。</span><span class="sxs-lookup"><span data-stu-id="921c4-217">The instance serialized in the message body must comply with one of the schemas represented in the type array.</span></span> <span data-ttu-id="921c4-218">當您閱讀訊息使用<xref:System.Messaging.MessageQueue.Receive%2A>方法，方法會建立對應至識別的結構描述和訊息本文讀入之型別的物件。</span><span class="sxs-lookup"><span data-stu-id="921c4-218">When you read the message using the <xref:System.Messaging.MessageQueue.Receive%2A> method, the method creates an object of the type that corresponds to the schema identified and reads the message body into it.</span></span>  
+  
+ <span data-ttu-id="921c4-219">只有其中一個兩個屬性必須設定從佇列讀取時，但您可以將兩個設定。</span><span class="sxs-lookup"><span data-stu-id="921c4-219">Only one of the two properties needs to be set when reading from the queue, but you can set both.</span></span> <span data-ttu-id="921c4-220">型別是從兩個屬性的組合。</span><span class="sxs-lookup"><span data-stu-id="921c4-220">The set of types is the combined set from the two properties.</span></span> <span data-ttu-id="921c4-221">決定要使用哪一個屬性是專屬於您的應用程式。</span><span class="sxs-lookup"><span data-stu-id="921c4-221">The decision of which property to use is specific to your application.</span></span> <span data-ttu-id="921c4-222">如果訊息本文包含其結構描述不符合任何兩個屬性陣列中之類型的型別，讀取訊息時將會擲回例外狀況。</span><span class="sxs-lookup"><span data-stu-id="921c4-222">If the message body contains a type whose schema does not match any of the types in the array for either property, an exception will be thrown when the message is read.</span></span>  
+  
+ <span data-ttu-id="921c4-223"><xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> 需要完整限定，指定其組件名稱的每個項目。</span><span class="sxs-lookup"><span data-stu-id="921c4-223"><xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> requires every entry to be fully qualified, specifying its assembly name.</span></span> <span data-ttu-id="921c4-224">此外，當使用多個並行版本，版本號碼也必須附加至目標型別名稱。</span><span class="sxs-lookup"><span data-stu-id="921c4-224">Further, when working with multiple concurrent versions, the version number must also be appended to the target type name as well.</span></span>  
+  
+ <span data-ttu-id="921c4-225">目標類型，才需要： 當從佇列讀取。</span><span class="sxs-lookup"><span data-stu-id="921c4-225">The target types are only required when reading from the queue.</span></span> <span data-ttu-id="921c4-226"><xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>和<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>屬性不需要設定為寫入至佇列。</span><span class="sxs-lookup"><span data-stu-id="921c4-226">The <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties do not need to be set to write to the queue.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="921c4-227">
+            <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> 屬性為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-227">The <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" /> property is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <altmember cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" />
+        <altmember cref="M:System.Messaging.XmlMessageFormatter.CanRead(System.Messaging.Message)" />
+        <altmember cref="M:System.Messaging.XmlMessageFormatter.#ctor" />
+      </Docs>
+    </Member>
+    <Member MemberName="TargetTypes">
+      <MemberSignature Language="C#" Value="public Type[] TargetTypes { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Type[] TargetTypes" />
+      <MemberSignature Language="DocId" Value="P:System.Messaging.XmlMessageFormatter.TargetTypes" />
+      <MemberSignature Language="VB.NET" Value="Public Property TargetTypes As Type()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property cli::array &lt;Type ^&gt; ^ TargetTypes { cli::array &lt;Type ^&gt; ^ get(); void set(cli::array &lt;Type ^&gt; ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.Browsable(false)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.DesignerSerializationVisibility</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Messaging.MessagingDescription("XmlMsgTargetTypes")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Type[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="921c4-228">指定可能型別的設定，格式子會從所提供的訊息還原序列化這些型別。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-228">Specifies the set of possible types that will be deserialized by the formatter from the message provided.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="921c4-229">
+            <see cref="T:System.Type" /> 型別的陣列，讀取訊息時，指定要從訊息主體還原序列化的物件型別。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-229">An array of type <see cref="T:System.Type" /> that specifies the types of objects to deserialize from the message body when reading the message.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="921c4-230">同時<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>和<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>屬性告知格式器嘗試比對訊息還原序列化時哪些結構描述。</span><span class="sxs-lookup"><span data-stu-id="921c4-230">Both the <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties tell the formatter what schemas to attempt to match when deserializing a message.</span></span> <span data-ttu-id="921c4-231">這可讓要解譯訊息本文格式器。</span><span class="sxs-lookup"><span data-stu-id="921c4-231">This allows the formatter to interpret the message body.</span></span>  
+  
+ <span data-ttu-id="921c4-232">其中一個代表型別陣列中的結構描述必須符合訊息主體中序列化的執行個體。</span><span class="sxs-lookup"><span data-stu-id="921c4-232">The instance serialized in the message body must comply with one of the schemas represented in the type array.</span></span> <span data-ttu-id="921c4-233">當您閱讀訊息使用<xref:System.Messaging.MessageQueue.Receive%2A>方法，方法會建立對應至識別的結構描述和訊息本文讀入之型別的物件。</span><span class="sxs-lookup"><span data-stu-id="921c4-233">When you read the message using the <xref:System.Messaging.MessageQueue.Receive%2A> method, the method creates an object of the type that corresponds to the schema identified and reads the message body into it.</span></span>  
+  
+ <span data-ttu-id="921c4-234">只有其中一個兩個屬性必須設定從佇列讀取時，但您可以將兩個設定。</span><span class="sxs-lookup"><span data-stu-id="921c4-234">Only one of the two properties needs to be set when reading from the queue, but you can set both.</span></span> <span data-ttu-id="921c4-235">型別是從兩個屬性的組合。</span><span class="sxs-lookup"><span data-stu-id="921c4-235">The set of types is the combined set from the two properties.</span></span> <span data-ttu-id="921c4-236">決定要使用哪一個屬性是專屬於您的應用程式。</span><span class="sxs-lookup"><span data-stu-id="921c4-236">The decision of which property to use is specific to your application.</span></span> <span data-ttu-id="921c4-237">如果訊息本文包含其結構描述不符合任何兩個屬性陣列中之類型的型別，讀取訊息時將會擲回例外狀況。</span><span class="sxs-lookup"><span data-stu-id="921c4-237">If the message body contains a type whose schema does not match any of the types in the array for either property, an exception will be thrown when the message is read.</span></span>  
+  
+ <span data-ttu-id="921c4-238">目標類型，才需要： 當從佇列讀取。</span><span class="sxs-lookup"><span data-stu-id="921c4-238">The target types are only required when reading from the queue.</span></span> <span data-ttu-id="921c4-239"><xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>和<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>屬性不需要設定為寫入至佇列。</span><span class="sxs-lookup"><span data-stu-id="921c4-239">The <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> and <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> properties do not need to be set to write to the queue.</span></span>  
+  
+ <span data-ttu-id="921c4-240">當指定<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>而不是<xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>，編譯時間，而不是唯讀的時間，減少錯誤可能性在檢查類型是否存在。</span><span class="sxs-lookup"><span data-stu-id="921c4-240">When specifying <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> rather than <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>, type existence is checked at compile time rather than read time, reducing possibility for error.</span></span>  
+  
+ <span data-ttu-id="921c4-241">使用時<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>，您可以新增每個物件 (例如， `MyClass`) 至以 C# 程式碼所示的方式清單`TargetTypes = new Type[]{typeof(MyClass), typeof (MyOtherClass)};`。</span><span class="sxs-lookup"><span data-stu-id="921c4-241">When using <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>, you can add each object (for example, `MyClass`) to the list in a way demonstrated by the C# code `TargetTypes = new Type[]{typeof(MyClass), typeof (MyOtherClass)};`.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="921c4-242">下列程式碼範例會將傳送和接收包含訂單與佇列的訊息。</span><span class="sxs-lookup"><span data-stu-id="921c4-242">The following code example sends and receives a message that contains an order to and from a queue.</span></span>  
+  
+ [!code-cpp[Message.Body#1](~/samples/snippets/cpp/VS_Snippets_Remoting/Message.Body/CPP/message_sendreceive.cpp#1)]
+ [!code-csharp[Message.Body#1](~/samples/snippets/csharp/VS_Snippets_Remoting/Message.Body/CS/message_sendreceive.cs#1)]
+ [!code-vb[Message.Body#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/Message.Body/VB/message_sendreceive.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="921c4-243">
+            <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> 屬性為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-243">The <see cref="P:System.Messaging.XmlMessageFormatter.TargetTypes" /> property is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <altmember cref="P:System.Messaging.XmlMessageFormatter.TargetTypeNames" />
+        <altmember cref="M:System.Messaging.XmlMessageFormatter.CanRead(System.Messaging.Message)" />
+        <altmember cref="M:System.Messaging.XmlMessageFormatter.#ctor" />
+      </Docs>
+    </Member>
+    <Member MemberName="Write">
+      <MemberSignature Language="C#" Value="public void Write (System.Messaging.Message message, object obj);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Write(class System.Messaging.Message message, object obj) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Messaging.XmlMessageFormatter.Write(System.Messaging.Message,System.Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Write(System::Messaging::Message ^ message, System::Object ^ obj);" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Messaging.IMessageFormatter.Write(System.Messaging.Message,System.Object)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="message" Type="System.Messaging.Message" />
+        <Parameter Name="obj" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="message">
+          <span data-ttu-id="921c4-244">
+            <see cref="T:System.Messaging.Message" />，其 <see cref="P:System.Messaging.Message.Body" /> 屬性會包含序列化物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-244">The <see cref="T:System.Messaging.Message" /> whose <see cref="P:System.Messaging.Message.Body" /> property will contain the serialized object.</span>
+          </span>
+        </param>
+        <param name="obj">
+          <span data-ttu-id="921c4-245">要序列化到訊息主體中的 <see cref="T:System.Object" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-245">The <see cref="T:System.Object" /> to be serialized into the message body.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="921c4-246">將物件序列化到訊息主體中。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-246">Serializes an object into the body of the message.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="921c4-247">目標類型，則不需要指定他們必須為讀取時寫入至佇列。</span><span class="sxs-lookup"><span data-stu-id="921c4-247">The target types need not be specified to write to the queue as they must be when reading.</span></span> <span data-ttu-id="921c4-248"><xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A>或<xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A>只在還原序列化訊息時，將會使用格式器所的屬性。</span><span class="sxs-lookup"><span data-stu-id="921c4-248">The <xref:System.Messaging.XmlMessageFormatter.TargetTypeNames%2A> or <xref:System.Messaging.XmlMessageFormatter.TargetTypes%2A> property is used by the formatter only when deserializing a message.</span></span>  
+  
+ <span data-ttu-id="921c4-249"><xref:System.Messaging.XmlMessageFormatter>利用<xref:System.Xml.Serialization.XmlSerializer>類別，定義可以序列化。</span><span class="sxs-lookup"><span data-stu-id="921c4-249">The <xref:System.Messaging.XmlMessageFormatter> makes use of the <xref:System.Xml.Serialization.XmlSerializer> class, which defines what can be serialized.</span></span> <span data-ttu-id="921c4-250">只可以序列化公用欄位和公用屬性。</span><span class="sxs-lookup"><span data-stu-id="921c4-250">Only public fields and public properties can be serialized.</span></span> <span data-ttu-id="921c4-251">結構、 結構陣列和結構的陣列是所有可序列化，只要它們不使用 SOAP 通訊協定與編碼的樣式。</span><span class="sxs-lookup"><span data-stu-id="921c4-251">Structures, structures with arrays, and arrays of structures are all serializable, as long as they do not use the encoded style with the SOAP protocol.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="921c4-252">
+            <paramref name="message" /> 參數為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-252">The <paramref name="message" /> parameter is <see langword="null" />.</span>
+          </span>
+          <span data-ttu-id="921c4-253">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-253">-or-</span>
+          </span>
+          <span data-ttu-id="921c4-254">
+            <paramref name="obj" /> 參數為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="921c4-254">The <paramref name="obj" /> parameter is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <altmember cref="M:System.Messaging.XmlMessageFormatter.Read(System.Messaging.Message)" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>
