@@ -1,0 +1,1117 @@
+<Type Name="ObjectManager" FullName="System.Runtime.Serialization.ObjectManager">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="441eaf19930e3fc015f1322c1a4bcacfa8fa6824" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class ObjectManager" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi ObjectManager extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Runtime.Serialization.ObjectManager" />
+  <TypeSignature Language="VB.NET" Value="Public Class ObjectManager" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ObjectManager" />
+  <AssemblyInfo>
+    <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Runtime.Serialization.Formatters</AssemblyName>
+    <AssemblyVersion>4.0.2.0</AssemblyVersion>
+    <AssemblyVersion>4.0.3.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Runtime.InteropServices.ComVisible(true)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>
+      <span data-ttu-id="63651-101">在物件還原序列化時保持追蹤。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="63651-101">Keeps track of objects as they are deserialized.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="63651-102">還原序列化期間<xref:System.Runtime.Serialization.Formatter>查詢<xref:System.Runtime.Serialization.ObjectManager>來判斷是否參考到序列化資料流中的物件是指已經過已還原序列化的物件 （回溯參考），或尚未經過物件還原序列化 （向前參考）。</span><span class="sxs-lookup"><span data-stu-id="63651-102">During deserialization, the <xref:System.Runtime.Serialization.Formatter> queries the <xref:System.Runtime.Serialization.ObjectManager> to determine whether a reference to an object in the serialized stream refers to an object that has already been deserialized (a backward reference), or to an object that has not yet been deserialized (a forward reference).</span></span> <span data-ttu-id="63651-103">如果序列化的資料流的參考是向前參考，然後在<xref:System.Runtime.Serialization.Formatter>可以註冊以修復<xref:System.Runtime.Serialization.ObjectManager>。</span><span class="sxs-lookup"><span data-stu-id="63651-103">If the reference in the serialized stream is a forward reference, then the <xref:System.Runtime.Serialization.Formatter> can register a fixup with the <xref:System.Runtime.Serialization.ObjectManager>.</span></span> <span data-ttu-id="63651-104">如果序列化的資料流中的參考是回溯的參考，<xref:System.Runtime.Serialization.Formatter>立即完成的參考。</span><span class="sxs-lookup"><span data-stu-id="63651-104">If the reference in the serialized stream is a backward reference, the <xref:System.Runtime.Serialization.Formatter> immediately completes the reference.</span></span> <span data-ttu-id="63651-105">修復參考最終化期間物件還原序列化程序尚未完成的物件參考的程序。</span><span class="sxs-lookup"><span data-stu-id="63651-105">Fixup refers to the process of finalizing object references not already completed during the object deserialization process.</span></span> <span data-ttu-id="63651-106">已還原序列化所需的物件之後，<xref:System.Runtime.Serialization.ObjectManager>才會完成的參考。</span><span class="sxs-lookup"><span data-stu-id="63651-106">After the required object has been deserialized, the <xref:System.Runtime.Serialization.ObjectManager> will complete the reference.</span></span>  
+  
+ <span data-ttu-id="63651-107"><xref:System.Runtime.Serialization.ObjectManager>遵循一組指示修復順序的規則。</span><span class="sxs-lookup"><span data-stu-id="63651-107">The <xref:System.Runtime.Serialization.ObjectManager> follows a set of rules that dictate the fixup order.</span></span> <span data-ttu-id="63651-108">實作的所有物件<xref:System.Runtime.Serialization.ISerializable>或具有<xref:System.Runtime.Serialization.ISerializationSurrogate>可預期會有它們透過傳輸的所有物件<xref:System.Runtime.Serialization.SerializationInfo>還原序列化物件樹狀結構時使用。</span><span class="sxs-lookup"><span data-stu-id="63651-108">All objects that implement <xref:System.Runtime.Serialization.ISerializable> or have a <xref:System.Runtime.Serialization.ISerializationSurrogate> can expect to have all the objects that they transmitted through <xref:System.Runtime.Serialization.SerializationInfo> available when the object tree is deserialized.</span></span> <span data-ttu-id="63651-109">不過，在父物件無法假設，其所有子物件將會完全都完成完整還原序列化時。</span><span class="sxs-lookup"><span data-stu-id="63651-109">However, a parent object cannot presume that all its child objects will be fully completed when it is fully deserialized.</span></span> <span data-ttu-id="63651-110">所有子物件將都會出現，但並非所有的孫系物件一定都會存在。</span><span class="sxs-lookup"><span data-stu-id="63651-110">All child objects will be present but not all the grandchild objects will necessarily be present.</span></span> <span data-ttu-id="63651-111">如果物件需要採取某些動作，取決於子物件上執行程式碼，這些動作的延遲時間、 可以實作<xref:System.Runtime.Serialization.IDeserializationCallback>介面，並將它重新呼叫這個介面上時，才執行程式碼。</span><span class="sxs-lookup"><span data-stu-id="63651-111">If an object needs to take certain actions that depend on executing code on its child objects, it can delay these actions, implement the <xref:System.Runtime.Serialization.IDeserializationCallback> interface, and execute the code only when it is called back on this interface.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="63651-112">下列程式碼範例示範如何使用<xref:System.Runtime.Serialization.ObjectManager>逐步物件圖形，一次周遊至每個物件的類別。</span><span class="sxs-lookup"><span data-stu-id="63651-112">The following code example shows how to use the <xref:System.Runtime.Serialization.ObjectManager> class to walk through an object graph, traversing to each object only once.</span></span>  
+  
+ [!code-csharp[ObjectManager#1](~/samples/snippets/csharp/VS_Snippets_Misc/ObjectManager/CS/ObjectManager.cs#1)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ObjectManager (System.Runtime.Serialization.ISurrogateSelector selector, System.Runtime.Serialization.StreamingContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Runtime.Serialization.ISurrogateSelector selector, valuetype System.Runtime.Serialization.StreamingContext context) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Serialization.ObjectManager.#ctor(System.Runtime.Serialization.ISurrogateSelector,System.Runtime.Serialization.StreamingContext)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (selector As ISurrogateSelector, context As StreamingContext)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ObjectManager(System::Runtime::Serialization::ISurrogateSelector ^ selector, System::Runtime::Serialization::StreamingContext context);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Formatters</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="selector" Type="System.Runtime.Serialization.ISurrogateSelector" />
+        <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
+      </Parameters>
+      <Docs>
+        <param name="selector">
+          <span data-ttu-id="63651-113">要使用的代理選取器。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-113">The surrogate selector to use.</span>
+          </span>
+          <span data-ttu-id="63651-114">
+            <see cref="T:System.Runtime.Serialization.ISurrogateSelector" /> 會決定還原序列化指定之型別的物件時所使用的正確代理。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-114">The <see cref="T:System.Runtime.Serialization.ISurrogateSelector" /> determines the correct surrogate to use when deserializing objects of a given type.</span>
+          </span>
+          <span data-ttu-id="63651-115">在還原序列化時，代理選取器會從資料流上傳輸的資訊建立新的物件執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-115">At deserialization time, the surrogate selector creates a new instance of the object from the information transmitted on the stream.</span>
+          </span>
+        </param>
+        <param name="context">
+          <span data-ttu-id="63651-116">資料流內容。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-116">The streaming context.</span>
+          </span>
+          <span data-ttu-id="63651-117">
+            <see langword="ObjectManager" /> 不使用 <see cref="T:System.Runtime.Serialization.StreamingContext" />，但是該內容會當做參數傳入任何實作 <see cref="T:System.Runtime.Serialization.ISerializable" /> 或具有 <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" /> 的物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-117">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> is not used by <see langword="ObjectManager" />, but is passed as a parameter to any objects implementing <see cref="T:System.Runtime.Serialization.ISerializable" /> or having a <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />.</span>
+          </span>
+          <span data-ttu-id="63651-118">這些物件可以根據還原序列化的資訊來源執行特定的動作。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-118">These objects can take specific actions depending on the source of the information to deserialize.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="63651-119">初始化 <see cref="T:System.Runtime.Serialization.ObjectManager" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-119">Initializes a new instance of the <see cref="T:System.Runtime.Serialization.ObjectManager" /> class.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.Security.SecurityException">
+          <span data-ttu-id="63651-120">呼叫端沒有必要的權限。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-120">The caller does not have the required permission.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">
+          <span data-ttu-id="63651-121">提供序列化服務。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-121">for providing serialization services.</span>
+          </span>
+          <span data-ttu-id="63651-122">關聯的列舉型別：<see cref="F:System.Security.Permissions.SecurityPermissionFlag.SerializationFormatter" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-122">Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.SerializationFormatter" />.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName="DoFixups">
+      <MemberSignature Language="C#" Value="public virtual void DoFixups ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DoFixups() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Serialization.ObjectManager.DoFixups" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub DoFixups ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void DoFixups();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Formatters</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="63651-123">執行所有記錄的修復。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-123">Performs all the recorded fixups.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="63651-124">修復會執行的任何適當的代理物件本身 (如果它實作<xref:System.Runtime.Serialization.ISerializable>)，或預設實作。</span><span class="sxs-lookup"><span data-stu-id="63651-124">The fixups are carried out by any appropriate surrogate, the object itself (if it implements <xref:System.Runtime.Serialization.ISerializable>), or the default implementation.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">
+          <span data-ttu-id="63651-125">修復未成功完成。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-125">A fixup was not successfully completed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetObject">
+      <MemberSignature Language="C#" Value="public virtual object GetObject (long objectID);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance object GetObject(int64 objectID) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Serialization.ObjectManager.GetObject(System.Int64)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetObject (objectID As Long) As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Object ^ GetObject(long objectID);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Formatters</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectID" Type="System.Int64" />
+      </Parameters>
+      <Docs>
+        <param name="objectID">
+          <span data-ttu-id="63651-126">要求物件的 ID。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-126">The ID of the requested object.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="63651-127">傳回具有所指定物件 ID 的物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-127">Returns the object with the specified object ID.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="63651-128">如果先前已經儲存，則為具有指定之物件 ID 的物件，但如果尚未註冊這類物件，則為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-128">The object with the specified object ID if it has been previously stored or <see langword="null" /> if no such object has been registered.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="63651-129">物件可以註冊及發出呼叫的物件識別碼<xref:System.Runtime.Serialization.ObjectManager.RegisterObject%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="63651-129">An object can be registered and issued an object ID with a call to the <xref:System.Runtime.Serialization.ObjectManager.RegisterObject%2A> method.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="63651-130">
+            <paramref name="objectID" /> 參數小於或等於零。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-130">The <paramref name="objectID" /> parameter is less than or equal to zero.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RaiseDeserializationEvent">
+      <MemberSignature Language="C#" Value="public virtual void RaiseDeserializationEvent ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RaiseDeserializationEvent() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Serialization.ObjectManager.RaiseDeserializationEvent" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub RaiseDeserializationEvent ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void RaiseDeserializationEvent();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Formatters</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="63651-131">引發還原序列化事件至任何實作 <see cref="T:System.Runtime.Serialization.IDeserializationCallback" /> 的已登錄物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-131">Raises the deserialization event to any registered object that implements <see cref="T:System.Runtime.Serialization.IDeserializationCallback" />.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RaiseOnDeserializingEvent">
+      <MemberSignature Language="C#" Value="public void RaiseOnDeserializingEvent (object obj);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RaiseOnDeserializingEvent(object obj) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Serialization.ObjectManager.RaiseOnDeserializingEvent(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub RaiseOnDeserializingEvent (obj As Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RaiseOnDeserializingEvent(System::Object ^ obj);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Formatters</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="obj">
+          <span data-ttu-id="63651-132">包含要叫用的方法之型別的執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-132">The instance of the type that contains the method to be invoked.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="63651-133">叫用 (Invoke) 以 <see cref="T:System.Runtime.Serialization.OnDeserializingAttribute" /> 標記的方法。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-133">Invokes the method marked with the <see cref="T:System.Runtime.Serialization.OnDeserializingAttribute" />.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="RecordArrayElementFixup">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="63651-134">記錄陣列中單一元素的修復，以便稍後執行。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-134">Records a fixup for one element in an array, to be executed later.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="RecordArrayElementFixup">
+      <MemberSignature Language="C#" Value="public virtual void RecordArrayElementFixup (long arrayToBeFixed, int index, long objectRequired);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RecordArrayElementFixup(int64 arrayToBeFixed, int32 index, int64 objectRequired) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Serialization.ObjectManager.RecordArrayElementFixup(System.Int64,System.Int32,System.Int64)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub RecordArrayElementFixup (arrayToBeFixed As Long, index As Integer, objectRequired As Long)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void RecordArrayElementFixup(long arrayToBeFixed, int index, long objectRequired);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Formatters</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="arrayToBeFixed" Type="System.Int64" />
+        <Parameter Name="index" Type="System.Int32" />
+        <Parameter Name="objectRequired" Type="System.Int64" />
+      </Parameters>
+      <Docs>
+        <param name="arrayToBeFixed">
+          <span data-ttu-id="63651-135">用來記錄修復的陣列 ID。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-135">The ID of the array used to record a fixup.</span>
+          </span>
+        </param>
+        <param name="index">
+          <span data-ttu-id="63651-136">要求修復之 <c>arrayFixup</c> 中的索引。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-136">The index within <c>arrayFixup</c> that a fixup is requested for.</span>
+          </span>
+        </param>
+        <param name="objectRequired">
+          <span data-ttu-id="63651-137">在完成修復之後，目前陣列元素將指向的物件 ID。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-137">The ID of the object that the current array element will point to after fixup is completed.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="63651-138">記錄陣列中單一元素的修復。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-138">Records a fixup for one element in an array.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="63651-139">修復是指定陣列的指定項目。</span><span class="sxs-lookup"><span data-stu-id="63651-139">The fixup is for a specified element of a specified array.</span></span> <span data-ttu-id="63651-140">修復程序期間使用的值中提供`objectRequired`參數。</span><span class="sxs-lookup"><span data-stu-id="63651-140">The value used during the fixup process is provided in the `objectRequired` parameter.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="63651-141">
+            <paramref name="arrayToBeFixed" /> 或 <paramref name="objectRequired" /> 參數小於或等於零。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-141">The <paramref name="arrayToBeFixed" /> or <paramref name="objectRequired" /> parameter is less than or equal to zero.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="63651-142">
+            <paramref name="index" /> 參數為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-142">The <paramref name="index" /> parameter is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RecordArrayElementFixup">
+      <MemberSignature Language="C#" Value="public virtual void RecordArrayElementFixup (long arrayToBeFixed, int[] indices, long objectRequired);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RecordArrayElementFixup(int64 arrayToBeFixed, int32[] indices, int64 objectRequired) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Serialization.ObjectManager.RecordArrayElementFixup(System.Int64,System.Int32[],System.Int64)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub RecordArrayElementFixup (arrayToBeFixed As Long, indices As Integer(), objectRequired As Long)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void RecordArrayElementFixup(long arrayToBeFixed, cli::array &lt;int&gt; ^ indices, long objectRequired);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Formatters</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="arrayToBeFixed" Type="System.Int64" />
+        <Parameter Name="indices" Type="System.Int32[]" />
+        <Parameter Name="objectRequired" Type="System.Int64" />
+      </Parameters>
+      <Docs>
+        <param name="arrayToBeFixed">
+          <span data-ttu-id="63651-143">用來記錄修復的陣列 ID。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-143">The ID of the array used to record a fixup.</span>
+          </span>
+        </param>
+        <param name="indices">
+          <span data-ttu-id="63651-144">要求修復之多維陣列中的索引。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-144">The indexes within the multidimensional array that a fixup is requested for.</span>
+          </span>
+        </param>
+        <param name="objectRequired">
+          <span data-ttu-id="63651-145">在完成修復之後，陣列元素將指向的物件 ID。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-145">The ID of the object the array elements will point to after fixup is completed.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="63651-146">記錄陣列中指定之元素的修復，以便稍後執行。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-146">Records fixups for the specified elements in an array, to be executed later.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="63651-147">修復是陣列的針對指定的指定項目。</span><span class="sxs-lookup"><span data-stu-id="63651-147">The fixup is for specified elements of a specified array.</span></span> <span data-ttu-id="63651-148">修復程序期間使用的值中提供`objectRequired`參數。</span><span class="sxs-lookup"><span data-stu-id="63651-148">The value used during the fixup process is provided in the `objectRequired` parameter.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="63651-149">
+            <paramref name="arrayToBeFixed" /> 或 <paramref name="objectRequired" /> 參數小於或等於零。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-149">The <paramref name="arrayToBeFixed" /> or <paramref name="objectRequired" /> parameter is less than or equal to zero.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="63651-150">
+            <paramref name="indices" /> 參數為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-150">The <paramref name="indices" /> parameter is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RecordDelayedFixup">
+      <MemberSignature Language="C#" Value="public virtual void RecordDelayedFixup (long objectToBeFixed, string memberName, long objectRequired);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RecordDelayedFixup(int64 objectToBeFixed, string memberName, int64 objectRequired) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Serialization.ObjectManager.RecordDelayedFixup(System.Int64,System.String,System.Int64)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub RecordDelayedFixup (objectToBeFixed As Long, memberName As String, objectRequired As Long)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void RecordDelayedFixup(long objectToBeFixed, System::String ^ memberName, long objectRequired);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Formatters</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToBeFixed" Type="System.Int64" />
+        <Parameter Name="memberName" Type="System.String" />
+        <Parameter Name="objectRequired" Type="System.Int64" />
+      </Parameters>
+      <Docs>
+        <param name="objectToBeFixed">
+          <span data-ttu-id="63651-151">需要參考 <c>objectRequired</c> 物件的物件識別碼。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-151">The ID of the object that needs the reference to <c>objectRequired</c>.</span>
+          </span>
+        </param>
+        <param name="memberName">
+          <span data-ttu-id="63651-152">
+            <c>objectToBeFixed</c> 的成員名稱，將在其中執行修復。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-152">The member name of <c>objectToBeFixed</c> where the fixup will be performed.</span>
+          </span>
+        </param>
+        <param name="objectRequired">
+          <span data-ttu-id="63651-153">
+            <c>objectToBeFixed</c> 需要的物件識別碼。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-153">The ID of the object required by <c>objectToBeFixed</c>.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="63651-154">記錄物件成員的修復，以便稍後執行。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-154">Records a fixup for an object member, to be executed later.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="63651-155">修復是指定之物件的指定之成員。</span><span class="sxs-lookup"><span data-stu-id="63651-155">The fixup is for a specified member of a specified object.</span></span> <span data-ttu-id="63651-156">修復程序期間所要使用的值依現狀`objectRequired`引數。</span><span class="sxs-lookup"><span data-stu-id="63651-156">The value to be used during the fixup process is provided as the `objectRequired` argument.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="63651-157">
+            <paramref name="objectToBeFixed" /> 或 <paramref name="objectRequired" /> 參數小於或等於零。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-157">
+              <paramref name="objectToBeFixed" /> or <paramref name="objectRequired" /> parameter is less than or equal to zero.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="63651-158">
+            <paramref name="memberName" /> 參數為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-158">The <paramref name="memberName" /> parameter is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RecordFixup">
+      <MemberSignature Language="C#" Value="public virtual void RecordFixup (long objectToBeFixed, System.Reflection.MemberInfo member, long objectRequired);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RecordFixup(int64 objectToBeFixed, class System.Reflection.MemberInfo member, int64 objectRequired) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Serialization.ObjectManager.RecordFixup(System.Int64,System.Reflection.MemberInfo,System.Int64)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub RecordFixup (objectToBeFixed As Long, member As MemberInfo, objectRequired As Long)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void RecordFixup(long objectToBeFixed, System::Reflection::MemberInfo ^ member, long objectRequired);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Formatters</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectToBeFixed" Type="System.Int64" />
+        <Parameter Name="member" Type="System.Reflection.MemberInfo" />
+        <Parameter Name="objectRequired" Type="System.Int64" />
+      </Parameters>
+      <Docs>
+        <param name="objectToBeFixed">
+          <span data-ttu-id="63651-159">需要參考 <c>objectRequired</c> 物件的物件識別碼。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-159">The ID of the object that needs the reference to the <c>objectRequired</c> object.</span>
+          </span>
+        </param>
+        <param name="member">
+          <span data-ttu-id="63651-160">
+            <c>objectToBeFixed</c> 的成員，將在其中執行修復。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-160">The member of <c>objectToBeFixed</c> where the fixup will be performed.</span>
+          </span>
+        </param>
+        <param name="objectRequired">
+          <span data-ttu-id="63651-161">
+            <c>objectToBeFixed</c> 需要的物件識別碼。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-161">The ID of the object required by <c>objectToBeFixed</c>.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="63651-162">記錄物件成員的修復，以便稍後執行。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-162">Records a fixup for a member of an object, to be executed later.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="63651-163">修復是指定之物件的指定之成員。</span><span class="sxs-lookup"><span data-stu-id="63651-163">The fixup is for a specified member of a specified object.</span></span> <span data-ttu-id="63651-164">修復程序期間所要使用的值依現狀`objectRequired`參數。</span><span class="sxs-lookup"><span data-stu-id="63651-164">The value to be used during the fixup process is provided as the `objectRequired` parameter.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="63651-165">
+            <paramref name="objectToBeFixed" /> 或 <paramref name="objectRequired" /> 參數小於或等於零。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-165">The <paramref name="objectToBeFixed" /> or <paramref name="objectRequired" /> parameter is less than or equal to zero.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="63651-166">
+            <paramref name="member" /> 參數為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-166">The <paramref name="member" /> parameter is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="RegisterObject">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="63651-167">在物件還原序列化時登錄該物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-167">Registers an object as it is deserialized.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="RegisterObject">
+      <MemberSignature Language="C#" Value="public virtual void RegisterObject (object obj, long objectID);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RegisterObject(object obj, int64 objectID) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Serialization.ObjectManager.RegisterObject(System.Object,System.Int64)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub RegisterObject (obj As Object, objectID As Long)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void RegisterObject(System::Object ^ obj, long objectID);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Formatters</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="System.Object" />
+        <Parameter Name="objectID" Type="System.Int64" />
+      </Parameters>
+      <Docs>
+        <param name="obj">
+          <span data-ttu-id="63651-168">要註冊的物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-168">The object to register.</span>
+          </span>
+        </param>
+        <param name="objectID">
+          <span data-ttu-id="63651-169">要登錄的物件 ID。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-169">The ID of the object to register.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="63651-170">在物件還原序列化時登錄該物件，將它與 <paramref name="objectID" /> 相關聯。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-170">Registers an object as it is deserialized, associating it with <paramref name="objectID" />.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="63651-171"><xref:System.Runtime.Serialization.ObjectManager> 保留資訊的物件以及其識別碼。</span><span class="sxs-lookup"><span data-stu-id="63651-171"><xref:System.Runtime.Serialization.ObjectManager> retains information about both the object and its ID.</span></span> <span data-ttu-id="63651-172">還原序列化期間更新<xref:System.Runtime.Serialization.ObjectManager.GetObject%2A>可用來判斷是否已還原序列化特定物件識別碼，或是否已經不尚未還原序列化之物件的向前參考。</span><span class="sxs-lookup"><span data-stu-id="63651-172">Later during deserialization, <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> can be used to determine whether a particular object ID has already been deserialized, or whether it is a forward reference to an object that has not yet been deserialized.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="63651-173">
+            <paramref name="obj" /> 參數為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-173">The <paramref name="obj" /> parameter is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="63651-174">
+            <paramref name="objectID" /> 參數小於或等於零。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-174">The <paramref name="objectID" /> parameter is less than or equal to zero.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">
+          <span data-ttu-id="63651-175">
+            <paramref name="objectID" /> 已經為 <paramref name="obj" /> 以外的物件進行登錄。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-175">The <paramref name="objectID" /> has already been registered for an object other than <paramref name="obj" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RegisterObject">
+      <MemberSignature Language="C#" Value="public void RegisterObject (object obj, long objectID, System.Runtime.Serialization.SerializationInfo info);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RegisterObject(object obj, int64 objectID, class System.Runtime.Serialization.SerializationInfo info) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Serialization.ObjectManager.RegisterObject(System.Object,System.Int64,System.Runtime.Serialization.SerializationInfo)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub RegisterObject (obj As Object, objectID As Long, info As SerializationInfo)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RegisterObject(System::Object ^ obj, long objectID, System::Runtime::Serialization::SerializationInfo ^ info);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Formatters</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="System.Object" />
+        <Parameter Name="objectID" Type="System.Int64" />
+        <Parameter Name="info" Type="System.Runtime.Serialization.SerializationInfo" />
+      </Parameters>
+      <Docs>
+        <param name="obj">
+          <span data-ttu-id="63651-176">要註冊的物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-176">The object to register.</span>
+          </span>
+        </param>
+        <param name="objectID">
+          <span data-ttu-id="63651-177">要登錄的物件 ID。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-177">The ID of the object to register.</span>
+          </span>
+        </param>
+        <param name="info">
+          <span data-ttu-id="63651-178">
+            <see cref="T:System.Runtime.Serialization.SerializationInfo" />，用於 <c>obj</c> 實作 <see cref="T:System.Runtime.Serialization.ISerializable" /> 或具有 <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" /> 時。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-178">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> used if <c>obj</c> implements <see cref="T:System.Runtime.Serialization.ISerializable" /> or has a <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />.</span>
+          </span>
+          <span data-ttu-id="63651-179">
+            <c>info</c> 將使用任何必要的修復資訊來完成，然後在必要的物件完成時傳遞給該物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-179">
+              <c>info</c> will be completed with any required fixup information and then passed to the required object when that object is completed.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="63651-180">在物件還原序列化時登錄該物件，將它與 <paramref name="objectID" /> 相關聯，並記錄和它一起使用的 <see cref="T:System.Runtime.Serialization.SerializationInfo" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-180">Registers an object as it is deserialized, associating it with <paramref name="objectID" />, and recording the <see cref="T:System.Runtime.Serialization.SerializationInfo" /> used with it.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="63651-181"><xref:System.Runtime.Serialization.ObjectManager> 保留資訊的物件以及其識別碼。</span><span class="sxs-lookup"><span data-stu-id="63651-181"><xref:System.Runtime.Serialization.ObjectManager> retains the information about both the object and its ID.</span></span> <span data-ttu-id="63651-182">稍後在還原序列化時，您可以使用<xref:System.Runtime.Serialization.ObjectManager.GetObject%2A>來探索是否已還原序列化 ID，為特定物件，或者如果它是不尚未完成還原序列化之物件的向前參考。</span><span class="sxs-lookup"><span data-stu-id="63651-182">Later during deserialization, you can use <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> to discover whether a particular object ID has already been deserialized, or if it is a forward reference to an object that has not yet been deserialized.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="63651-183">
+            <paramref name="obj" /> 參數為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-183">The <paramref name="obj" /> parameter is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="63651-184">
+            <paramref name="objectID" /> 參數小於或等於零。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-184">The <paramref name="objectID" /> parameter is less than or equal to zero.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">
+          <span data-ttu-id="63651-185">
+            <paramref name="objectID" /> 已經為 <paramref name="obj" /> 以外的物件進行登錄。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-185">The <paramref name="objectID" /> has already been registered for an object other than <paramref name="obj" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RegisterObject">
+      <MemberSignature Language="C#" Value="public void RegisterObject (object obj, long objectID, System.Runtime.Serialization.SerializationInfo info, long idOfContainingObj, System.Reflection.MemberInfo member);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RegisterObject(object obj, int64 objectID, class System.Runtime.Serialization.SerializationInfo info, int64 idOfContainingObj, class System.Reflection.MemberInfo member) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Serialization.ObjectManager.RegisterObject(System.Object,System.Int64,System.Runtime.Serialization.SerializationInfo,System.Int64,System.Reflection.MemberInfo)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub RegisterObject (obj As Object, objectID As Long, info As SerializationInfo, idOfContainingObj As Long, member As MemberInfo)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RegisterObject(System::Object ^ obj, long objectID, System::Runtime::Serialization::SerializationInfo ^ info, long idOfContainingObj, System::Reflection::MemberInfo ^ member);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Formatters</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="System.Object" />
+        <Parameter Name="objectID" Type="System.Int64" />
+        <Parameter Name="info" Type="System.Runtime.Serialization.SerializationInfo" />
+        <Parameter Name="idOfContainingObj" Type="System.Int64" />
+        <Parameter Name="member" Type="System.Reflection.MemberInfo" />
+      </Parameters>
+      <Docs>
+        <param name="obj">
+          <span data-ttu-id="63651-186">要註冊的物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-186">The object to register.</span>
+          </span>
+        </param>
+        <param name="objectID">
+          <span data-ttu-id="63651-187">要登錄的物件 ID。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-187">The ID of the object to register.</span>
+          </span>
+        </param>
+        <param name="info">
+          <span data-ttu-id="63651-188">
+            <see cref="T:System.Runtime.Serialization.SerializationInfo" />，用於 <c>obj</c> 實作 <see cref="T:System.Runtime.Serialization.ISerializable" /> 或具有 <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" /> 時。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-188">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> used if <c>obj</c> implements <see cref="T:System.Runtime.Serialization.ISerializable" /> or has a <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />.</span>
+          </span>
+          <span data-ttu-id="63651-189">
+            <c>info</c> 將使用任何必要的修復資訊來完成，然後在必要的物件完成時傳遞給該物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-189">
+              <c>info</c> will be completed with any required fixup information and then passed to the required object when that object is completed.</span>
+          </span>
+        </param>
+        <param name="idOfContainingObj">
+          <span data-ttu-id="63651-190">包含 <c>obj</c> 的物件識別碼。只有當 <c>obj</c> 是實值型別時，才需要這個參數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-190">The ID of the object that contains <c>obj</c>. This parameter is required only if <c>obj</c> is a value type.</span>
+          </span>
+        </param>
+        <param name="member">
+          <span data-ttu-id="63651-191">包含物件中的欄位，其中有 <c>obj</c> 存在。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-191">The field in the containing object where <c>obj</c> exists.</span>
+          </span>
+          <span data-ttu-id="63651-192">只有當 <c>obj</c> 是實值型別時，這個參數才有意義。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-192">This parameter has meaning only if <c>obj</c> is a value type.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="63651-193">在物件還原序列化時登錄該物件，將它與 <paramref name="objectID" /> 相關聯，並記錄 <see cref="T:System.Runtime.Serialization.SerializationInfo" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-193">Registers a member of an object as it is deserialized, associating it with <paramref name="objectID" />, and recording the <see cref="T:System.Runtime.Serialization.SerializationInfo" />.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="63651-194">您需要提供`member`和`idOfContainingObj`參數如果`obj`是<xref:System.ValueType>方式上執行修復<xref:System.ValueType>物件。</span><span class="sxs-lookup"><span data-stu-id="63651-194">You need to provide the `member` and `idOfContainingObj` parameters if `obj` is a <xref:System.ValueType> because of the way fixups are performed on <xref:System.ValueType> objects.</span></span> <span data-ttu-id="63651-195">若要儲存之資訊的空間<xref:System.ValueType>配置內嵌於其包含的物件。</span><span class="sxs-lookup"><span data-stu-id="63651-195">The space to store the information for a <xref:System.ValueType> is allocated inline with its containing object.</span></span> <span data-ttu-id="63651-196">不過，當<xref:System.ValueType>會進行 boxed 處理向<xref:System.Runtime.Serialization.ObjectManager>，就會失去與包含物件的連接。</span><span class="sxs-lookup"><span data-stu-id="63651-196">However, when the <xref:System.ValueType> is boxed to be registered with the <xref:System.Runtime.Serialization.ObjectManager>, it loses the connection with its containing object.</span></span> <span data-ttu-id="63651-197">若要保證修復進行中的執行個體<xref:System.ValueType>儲存的已封裝的執行個體，包含的物件而非<xref:System.Runtime.Serialization.ObjectManager>會保留一些額外的資訊。</span><span class="sxs-lookup"><span data-stu-id="63651-197">To guarantee that fixups occur in the instance of the <xref:System.ValueType> stored in the containing object and not in the boxed instance, the <xref:System.Runtime.Serialization.ObjectManager> retains some additional information.</span></span>  
+  
+ <span data-ttu-id="63651-198"><xref:System.Runtime.Serialization.ObjectManager> 保留資訊的物件以及其識別碼。</span><span class="sxs-lookup"><span data-stu-id="63651-198"><xref:System.Runtime.Serialization.ObjectManager> retains information about both the object and its ID.</span></span> <span data-ttu-id="63651-199">還原序列化期間更新<xref:System.Runtime.Serialization.ObjectManager.GetObject%2A>可用來探索是否已還原序列化特定物件識別碼，或它是否不是物件的向前參考尚未還原序列化。</span><span class="sxs-lookup"><span data-stu-id="63651-199">Later during deserialization, <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> can be used to discover whether a particular object ID has already been deserialized, or whether it is a forward reference to an object not yet deserialized.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="63651-200">
+            <paramref name="obj" /> 參數為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-200">The <paramref name="obj" /> parameter is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="63651-201">
+            <paramref name="objectID" /> 參數小於或等於零。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-201">The <paramref name="objectID" /> parameter is less than or equal to zero.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">
+          <span data-ttu-id="63651-202">
+            <paramref name="objectID" /> 已經為 <paramref name="obj" /> 以外的物件進行登錄，或者 <paramref name="member" /> 不是 <see cref="T:System.Reflection.FieldInfo" />，而且 <paramref name="member" /> 不是 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-202">The <paramref name="objectID" /> has already been registered for an object other than <paramref name="obj" />, or <paramref name="member" /> is not a <see cref="T:System.Reflection.FieldInfo" /> and <paramref name="member" /> is not <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RegisterObject">
+      <MemberSignature Language="C#" Value="public void RegisterObject (object obj, long objectID, System.Runtime.Serialization.SerializationInfo info, long idOfContainingObj, System.Reflection.MemberInfo member, int[] arrayIndex);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RegisterObject(object obj, int64 objectID, class System.Runtime.Serialization.SerializationInfo info, int64 idOfContainingObj, class System.Reflection.MemberInfo member, int32[] arrayIndex) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Serialization.ObjectManager.RegisterObject(System.Object,System.Int64,System.Runtime.Serialization.SerializationInfo,System.Int64,System.Reflection.MemberInfo,System.Int32[])" />
+      <MemberSignature Language="VB.NET" Value="Public Sub RegisterObject (obj As Object, objectID As Long, info As SerializationInfo, idOfContainingObj As Long, member As MemberInfo, arrayIndex As Integer())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RegisterObject(System::Object ^ obj, long objectID, System::Runtime::Serialization::SerializationInfo ^ info, long idOfContainingObj, System::Reflection::MemberInfo ^ member, cli::array &lt;int&gt; ^ arrayIndex);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Formatters</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="System.Object" />
+        <Parameter Name="objectID" Type="System.Int64" />
+        <Parameter Name="info" Type="System.Runtime.Serialization.SerializationInfo" />
+        <Parameter Name="idOfContainingObj" Type="System.Int64" />
+        <Parameter Name="member" Type="System.Reflection.MemberInfo" />
+        <Parameter Name="arrayIndex" Type="System.Int32[]" />
+      </Parameters>
+      <Docs>
+        <param name="obj">
+          <span data-ttu-id="63651-203">要註冊的物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-203">The object to register.</span>
+          </span>
+        </param>
+        <param name="objectID">
+          <span data-ttu-id="63651-204">要登錄的物件 ID。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-204">The ID of the object to register.</span>
+          </span>
+        </param>
+        <param name="info">
+          <span data-ttu-id="63651-205">
+            <see cref="T:System.Runtime.Serialization.SerializationInfo" />，用於 <c>obj</c> 實作 <see cref="T:System.Runtime.Serialization.ISerializable" /> 或具有 <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" /> 時。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-205">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> used if <c>obj</c> implements <see cref="T:System.Runtime.Serialization.ISerializable" /> or has a <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />.</span>
+          </span>
+          <span data-ttu-id="63651-206">
+            <c>info</c> 將使用任何必要的修復資訊來完成，然後在必要的物件完成時傳遞給該物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-206">
+              <c>info</c> will be completed with any required fixup information and then passed to the required object when that object is completed.</span>
+          </span>
+        </param>
+        <param name="idOfContainingObj">
+          <span data-ttu-id="63651-207">包含 <c>obj</c> 的物件識別碼。只有當 <c>obj</c> 是實值型別時，才需要這個參數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-207">The ID of the object that contains <c>obj</c>. This parameter is required only if <c>obj</c> is a value type.</span>
+          </span>
+        </param>
+        <param name="member">
+          <span data-ttu-id="63651-208">包含物件中的欄位，其中有 <c>obj</c> 存在。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-208">The field in the containing object where <c>obj</c> exists.</span>
+          </span>
+          <span data-ttu-id="63651-209">只有當 <c>obj</c> 是實值型別時，這個參數才有意義。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-209">This parameter has meaning only if <c>obj</c> is a value type.</span>
+          </span>
+        </param>
+        <param name="arrayIndex">
+          <span data-ttu-id="63651-210">如果 <c>obj</c> 為 <see cref="T:System.ValueType" /> 並且是陣列的成員，<c>arrayIndex</c> 會包含該陣列 (有 <c>obj</c> 存在) 中的索引。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-210">If <c>obj</c> is a <see cref="T:System.ValueType" /> and a member of an array, <c>arrayIndex</c> contains the index within that array where <c>obj</c> exists.</span>
+          </span>
+          <span data-ttu-id="63651-211">如果 <c>obj</c> 不是 <see cref="T:System.ValueType" /> 並且不是陣列的成員，則會忽略 <c>arrayIndex</c>。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-211">
+              <c>arrayIndex</c> is ignored if <c>obj</c> is not both a <see cref="T:System.ValueType" /> and a member of an array.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="63651-212">當物件還原序列化時，登錄物件中所包含的陣列成員，將它與 <paramref name="objectID" /> 相關聯，並記錄 <see cref="T:System.Runtime.Serialization.SerializationInfo" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-212">Registers a member of an array contained in an object while it is deserialized, associating it with <paramref name="objectID" />, and recording the <see cref="T:System.Runtime.Serialization.SerializationInfo" />.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="63651-213">您需要提供`member`和`idOfContainingObj`參數如果`obj`是<xref:System.ValueType>方式上執行修復<xref:System.ValueType>物件。</span><span class="sxs-lookup"><span data-stu-id="63651-213">You need to provide the `member` and `idOfContainingObj` parameters if `obj` is a <xref:System.ValueType> because of the way fixups are performed on <xref:System.ValueType> objects.</span></span> <span data-ttu-id="63651-214">若要儲存之資訊的空間<xref:System.ValueType>配置內嵌於其包含的物件。</span><span class="sxs-lookup"><span data-stu-id="63651-214">The space to store the information for a <xref:System.ValueType> is allocated inline with its containing object.</span></span> <span data-ttu-id="63651-215">不過，當<xref:System.ValueType>會進行 boxed 處理向<xref:System.Runtime.Serialization.ObjectManager>，就會失去與包含物件的連接。</span><span class="sxs-lookup"><span data-stu-id="63651-215">However, when the <xref:System.ValueType> is boxed to be registered with the <xref:System.Runtime.Serialization.ObjectManager>, it loses the connection with its containing object.</span></span> <span data-ttu-id="63651-216">若要保證修復進行中的執行個體<xref:System.ValueType>儲存的已封裝的執行個體，包含的物件而非<xref:System.Runtime.Serialization.ObjectManager>會保留一些額外的資訊。</span><span class="sxs-lookup"><span data-stu-id="63651-216">To guarantee that fixups occur in the instance of the <xref:System.ValueType> stored in the containing object and not in the boxed instance, the <xref:System.Runtime.Serialization.ObjectManager> retains some additional information.</span></span>  
+  
+ <span data-ttu-id="63651-217"><xref:System.Runtime.Serialization.ObjectManager> 保留資訊的物件以及其識別碼。</span><span class="sxs-lookup"><span data-stu-id="63651-217"><xref:System.Runtime.Serialization.ObjectManager> retains information about both the object and its ID.</span></span> <span data-ttu-id="63651-218">還原序列化期間更新<xref:System.Runtime.Serialization.ObjectManager.GetObject%2A>可用來探索是否已還原序列化特定物件識別碼，或它是否不是物件的向前參考尚未還原序列化。</span><span class="sxs-lookup"><span data-stu-id="63651-218">Later during deserialization, <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> can be used to discover whether a particular object ID has already been deserialized, or whether it is a forward reference to an object not yet deserialized.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="63651-219">
+            <paramref name="obj" /> 參數為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-219">The <paramref name="obj" /> parameter is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="63651-220">
+            <paramref name="objectID" /> 參數小於或等於零。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-220">The <paramref name="objectID" /> parameter is less than or equal to zero.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">
+          <span data-ttu-id="63651-221">
+            <paramref name="objectID" /> 已經為 <paramref name="obj" /> 以外的物件進行登錄，或者 <paramref name="member" /> 不是 <see cref="T:System.Reflection.FieldInfo" />，而且 <paramref name="member" /> 不是 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="63651-221">The <paramref name="objectID" /> has already been registered for an object other than <paramref name="obj" />, or <paramref name="member" /> is not a <see cref="T:System.Reflection.FieldInfo" /> and <paramref name="member" /> isn't <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
