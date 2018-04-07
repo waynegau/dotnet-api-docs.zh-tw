@@ -1,0 +1,213 @@
+<Type Name="CodeDefaultValueExpression" FullName="System.CodeDom.CodeDefaultValueExpression">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="8ae1821052d600ab1fe418c175a9e27ff554ebbe" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class CodeDefaultValueExpression : System.CodeDom.CodeExpression" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit CodeDefaultValueExpression extends System.CodeDom.CodeExpression" />
+  <TypeSignature Language="DocId" Value="T:System.CodeDom.CodeDefaultValueExpression" />
+  <TypeSignature Language="VB.NET" Value="Public Class CodeDefaultValueExpression&#xA;Inherits CodeExpression" />
+  <TypeSignature Language="C++ CLI" Value="public ref class CodeDefaultValueExpression : System::CodeDom::CodeExpression" />
+  <AssemblyInfo>
+    <AssemblyName>System</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.CodeDom</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.CodeDom.CodeExpression</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Runtime.InteropServices.ClassInterface</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>System.Runtime.InteropServices.ComVisible(true)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>
+      <span data-ttu-id="e73f6-101">表示參考預設值。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="e73f6-101">Represents a reference to a default value.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="e73f6-102">A<xref:System.CodeDom.CodeDefaultValueExpression>無法用來代表預設值的參考。</span><span class="sxs-lookup"><span data-stu-id="e73f6-102">A <xref:System.CodeDom.CodeDefaultValueExpression> can be used to represent a reference to a default value.</span></span>  
+  
+ <span data-ttu-id="e73f6-103"><xref:System.CodeDom.CodeDefaultValueExpression.Type%2A>屬性會指定對實值類型的參考。</span><span class="sxs-lookup"><span data-stu-id="e73f6-103">The <xref:System.CodeDom.CodeDefaultValueExpression.Type%2A> property specifies the reference to the value type.</span></span> <span data-ttu-id="e73f6-104"><xref:System.CodeDom.CodeDefaultValueExpression>類別用來以泛型為基礎的程式碼的產生。</span><span class="sxs-lookup"><span data-stu-id="e73f6-104">The <xref:System.CodeDom.CodeDefaultValueExpression> class is used in the generation of generics-based code.</span></span> <span data-ttu-id="e73f6-105">如需有關泛型的詳細資訊，請參閱[.NET Framework 類別庫中的泛型](~/docs/csharp/programming-guide/generics/generics-in-the-net-framework-class-library.md)。</span><span class="sxs-lookup"><span data-stu-id="e73f6-105">For more information on generics, see [Generics in the .NET Framework Class Library](~/docs/csharp/programming-guide/generics/generics-in-the-net-framework-class-library.md).</span></span> <span data-ttu-id="e73f6-106">以下程式碼提供的步驟來進一步說明如何使用這一節<xref:System.CodeDom.CodeDefaultValueExpression>類別程式碼圖表中加入新的預設值。</span><span class="sxs-lookup"><span data-stu-id="e73f6-106">The following code steps are provided in this section to further describe the use of the <xref:System.CodeDom.CodeDefaultValueExpression> class to add a new default value to a code graph.</span></span>  
+  
+ <span data-ttu-id="e73f6-107">第 1 部分中的程式碼是針對所提供之較大範例的一部分<xref:System.CodeDom.CodeTypeParameter>類別。</span><span class="sxs-lookup"><span data-stu-id="e73f6-107">The code in part 1 is part of a larger example provided for the <xref:System.CodeDom.CodeTypeParameter> class.</span></span> <span data-ttu-id="e73f6-108">這個程式碼，當執行透過 C# 程式碼產生器，會導致出現在第 2 部分的 C# 程式碼。</span><span class="sxs-lookup"><span data-stu-id="e73f6-108">This code, when run through the C# code generator, results in the C# code that appears in part 2.</span></span> <span data-ttu-id="e73f6-109">第 3 部分中的陳述式中呼叫此程式碼時，結果會是第 4 部分所示的輸出。</span><span class="sxs-lookup"><span data-stu-id="e73f6-109">When this code is called in the statement in part 3, the result is the output shown in part 4.</span></span>  
+  
+```  
+// Part 1: Code to create a generic Print method.  
+            CodeMemberMethod printMethod = new CodeMemberMethod();  
+            CodeTypeParameter sType = new CodeTypeParameter("S");  
+            sType.HasConstructorConstraint = true;  
+            CodeTypeParameter tType = new CodeTypeParameter("T");  
+            sType.HasConstructorConstraint = true;  
+  
+            printMethod.Name = "Print";  
+            printMethod.TypeParameters.Add(sType);  
+            printMethod.TypeParameters.Add(tType);  
+            printMethod.Statements.Add(ConsoleWriteLineStatement(  
+                new CodeDefaultValueExpression(new CodeTypeReference("T"))));  
+            printMethod.Statements.Add(ConsoleWriteLineStatement(  
+                new CodeDefaultValueExpression(new CodeTypeReference("S"))));  
+```  
+  
+```  
+// Part 2: Code generated by code in part 1.  
+public virtual void Print<S, T>()  
+            where S : new()  
+         {  
+            Console.WriteLine(default(T));  
+            Console.WriteLine(default(S));  
+        }  
+```  
+  
+```  
+// Part 3: Call to the generated method.  
+dict.Print<System.Decimal, int>();  
+```  
+  
+```  
+// Part 4: Output of the generated method.  
+0  
+0  
+  
+```  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="e73f6-110">下列程式碼範例示範使用<xref:System.CodeDom.CodeDefaultValueExpression>建立 decimal 和整數參數的預設值。</span><span class="sxs-lookup"><span data-stu-id="e73f6-110">The following code example shows the use of the <xref:System.CodeDom.CodeDefaultValueExpression> to create default values for decimal and integer parameters.</span></span> <span data-ttu-id="e73f6-111">這個範例是針對所提供之較大範例的一部分<xref:System.CodeDom.CodeTypeParameter>類別。</span><span class="sxs-lookup"><span data-stu-id="e73f6-111">This example is part of a larger example provided for the <xref:System.CodeDom.CodeTypeParameter> class.</span></span>  
+  
+ [!code-csharp[System.CodeDOM.Generics.1#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.CodeDOM.Generics.1/CS/codedomgenerics.cs#7)]
+ [!code-vb[System.CodeDOM.Generics.1#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.CodeDOM.Generics.1/VB/codedomgenerics.vb#7)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="e73f6-112">初始化 <see cref="T:System.CodeDom.CodeDefaultValueExpression" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="e73f6-112">Initializes a new instance of the <see cref="T:System.CodeDom.CodeDefaultValueExpression" /> class.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CodeDefaultValueExpression ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.CodeDom.CodeDefaultValueExpression.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; CodeDefaultValueExpression();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.CodeDom</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="e73f6-113">初始化 <see cref="T:System.CodeDom.CodeDefaultValueExpression" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="e73f6-113">Initializes a new instance of the <see cref="T:System.CodeDom.CodeDefaultValueExpression" /> class.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CodeDefaultValueExpression (System.CodeDom.CodeTypeReference type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.CodeDom.CodeTypeReference type) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.CodeDom.CodeDefaultValueExpression.#ctor(System.CodeDom.CodeTypeReference)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (type As CodeTypeReference)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; CodeDefaultValueExpression(System::CodeDom::CodeTypeReference ^ type);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.CodeDom</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="type" Type="System.CodeDom.CodeTypeReference" />
+      </Parameters>
+      <Docs>
+        <param name="type">
+          <span data-ttu-id="e73f6-114">
+            <see cref="T:System.CodeDom.CodeTypeReference" />，指定參考實值型別。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="e73f6-114">A <see cref="T:System.CodeDom.CodeTypeReference" /> that specifies the reference to a value type.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="e73f6-115">使用指定的程式碼型別參考，初始化 <see cref="T:System.CodeDom.CodeDefaultValueExpression" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="e73f6-115">Initializes a new instance of the <see cref="T:System.CodeDom.CodeDefaultValueExpression" /> class using the specified code type reference.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Type">
+      <MemberSignature Language="C#" Value="public System.CodeDom.CodeTypeReference Type { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.CodeDom.CodeTypeReference Type" />
+      <MemberSignature Language="DocId" Value="P:System.CodeDom.CodeDefaultValueExpression.Type" />
+      <MemberSignature Language="VB.NET" Value="Public Property Type As CodeTypeReference" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::CodeDom::CodeTypeReference ^ Type { System::CodeDom::CodeTypeReference ^ get(); void set(System::CodeDom::CodeTypeReference ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.CodeDom</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.CodeDom.CodeTypeReference</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="e73f6-116">取得或設定預設值的資料型別參考。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="e73f6-116">Gets or sets the data type reference for a default value.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="e73f6-117">
+            <see cref="T:System.CodeDom.CodeTypeReference" /> 物件，表示具有預設值的資料型別。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="e73f6-117">A <see cref="T:System.CodeDom.CodeTypeReference" /> object representing a data type that has a default value.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

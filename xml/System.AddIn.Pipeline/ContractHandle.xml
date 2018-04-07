@@ -1,0 +1,349 @@
+<Type Name="ContractHandle" FullName="System.AddIn.Pipeline.ContractHandle">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="5565bfb6f9f3ce8255c0ca1ca8bf3a4c0c2e3bdc" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class ContractHandle : IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit ContractHandle extends System.Object implements class System.IDisposable" />
+  <TypeSignature Language="DocId" Value="T:System.AddIn.Pipeline.ContractHandle" />
+  <TypeSignature Language="VB.NET" Value="Public Class ContractHandle&#xA;Implements IDisposable" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ContractHandle : IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>System.AddIn</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>
+      <span data-ttu-id="545f3-101">提供會控制增益集存留期的方法。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="545f3-101">Provides methods that control the lifetime of an add-in.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="545f3-102">增益集模型可讓您的應用程式定義域之間和處理序之間通訊的增益集，因為它不能依賴記憶體回收行程回收它們。</span><span class="sxs-lookup"><span data-stu-id="545f3-102">Because the add-in model provides the ability for add-ins to communicate between application domains and between processes, it cannot rely on the garbage collector to reclaim them.</span></span> <span data-ttu-id="545f3-103">這個類別會提供參考計數機制增益集，取得其合約存留期語彙基元。</span><span class="sxs-lookup"><span data-stu-id="545f3-103">This class provides a reference counting mechanism for the add-in by obtaining a lifetime token to its contract.</span></span>  
+  
+ <span data-ttu-id="545f3-104">當<xref:System.AddIn.Pipeline.ContractHandle>建構物件，它會呼叫<xref:System.AddIn.Pipeline.ContractBase.AcquireLifetimeToken%2A>傳遞至建構函式在合約上的方法。</span><span class="sxs-lookup"><span data-stu-id="545f3-104">When a <xref:System.AddIn.Pipeline.ContractHandle> object is constructed, it calls the <xref:System.AddIn.Pipeline.ContractBase.AcquireLifetimeToken%2A> method on the contract that is passed to the constructor.</span></span> <span data-ttu-id="545f3-105">當<xref:System.AddIn.Pipeline.ContractHandle>物件已處置或最終處理，它會呼叫<xref:System.AddIn.Pipeline.ContractBase.RevokeLifetimeToken%2A>合約，代表要移除其保留在合約上的方法。</span><span class="sxs-lookup"><span data-stu-id="545f3-105">When the <xref:System.AddIn.Pipeline.ContractHandle> object is disposed or finalized, it calls the <xref:System.AddIn.Pipeline.ContractBase.RevokeLifetimeToken%2A> method on the contract, which removes its hold on the contract.</span></span>  
+  
+ <span data-ttu-id="545f3-106">配接器實作的合約。</span><span class="sxs-lookup"><span data-stu-id="545f3-106">Adapters implement the contract.</span></span> <span data-ttu-id="545f3-107"><xref:System.AddIn.Pipeline.ContractHandle>類別設計來協助管理所調整合約的存留期的管線開發人員使用合約來檢視配接器中。</span><span class="sxs-lookup"><span data-stu-id="545f3-107">The <xref:System.AddIn.Pipeline.ContractHandle> class is designed to be used in a contract-to-view adapter to help pipeline developers manage the lifetime of the contract that is being adapted.</span></span> <span data-ttu-id="545f3-108">一般而言，此類別的執行個體具現化配接器類別的建構期間，儲存在配接器的執行個體欄位。</span><span class="sxs-lookup"><span data-stu-id="545f3-108">Typically, an instance of this class is instantiated during the construction of the adapter class and is stored in an instance field of the adapter.</span></span> <span data-ttu-id="545f3-109">當配接器類別被記憶體回收，<xref:System.AddIn.Pipeline.ContractHandle>物件也會收集和<xref:System.AddIn.Pipeline.ContractHandle>物件會撤銷合約上的存留期語彙基元。</span><span class="sxs-lookup"><span data-stu-id="545f3-109">When the adapter class is garbage-collected, the <xref:System.AddIn.Pipeline.ContractHandle> object will also be collected and the <xref:System.AddIn.Pipeline.ContractHandle> object will revoke the lifetime token on the contract.</span></span>  
+  
+ <span data-ttu-id="545f3-110">建議您檢視合約的介面卡繼承自<xref:System.AddIn.Pipeline.ContractBase>類別。</span><span class="sxs-lookup"><span data-stu-id="545f3-110">It is recommended that your view-to-contract adapters inherit from the <xref:System.AddIn.Pipeline.ContractBase> class.</span></span> <span data-ttu-id="545f3-111">您接著可以使用的預設實作的成員<xref:System.AddIn.Contract.IContract>，這表示您需要實作您的特定合約的成員。</span><span class="sxs-lookup"><span data-stu-id="545f3-111">You can then use a default implementation for the members of <xref:System.AddIn.Contract.IContract>, which means you need to implement only the members of your specific contract.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="545f3-112">下列範例會示範如何設定合約來檢視配接器中的存留期語彙基元的控制代碼，一邊增益集的管線。</span><span class="sxs-lookup"><span data-stu-id="545f3-112">The following example shows how to set the lifetime token handle in a contract-to-view adapter on the add-in side of a pipeline.</span></span>  
+  
+ [!code-csharp[AddinP2HostSideAdapters#2](~/samples/snippets/csharp/VS_Snippets_CLR/AddInP2HostSideAdapters/cs/Calc2ContractToViewHostSideAdapter.cs#2)]
+ [!code-vb[AddinP2HostSideAdapters#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/AddInP2HostSideAdapters/vb/Calc2ContractToViewHostSideAdapter.vb#2)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ContractHandle (System.AddIn.Contract.IContract contract);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.AddIn.Contract.IContract contract) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.AddIn.Pipeline.ContractHandle.#ctor(System.AddIn.Contract.IContract)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (contract As IContract)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ContractHandle(System::AddIn::Contract::IContract ^ contract);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.AddIn</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="contract" Type="System.AddIn.Contract.IContract" />
+      </Parameters>
+      <Docs>
+        <param name="contract">
+          <span data-ttu-id="545f3-113">要用於管線的合約。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-113">The contract to use in the pipeline.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="545f3-114">初始化 <see cref="T:System.AddIn.Pipeline.ContractHandle" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-114">Initializes a new instance of the <see cref="T:System.AddIn.Pipeline.ContractHandle" /> class.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="545f3-115">
+            <paramref name="contract" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-115">
+              <paramref name="contract" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="AppDomainOwner">
+      <MemberSignature Language="C#" Value="public static System.AddIn.Contract.IContract AppDomainOwner (AppDomain domain);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.AddIn.Contract.IContract AppDomainOwner(class System.AppDomain domain) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.AddIn.Pipeline.ContractHandle.AppDomainOwner(System.AppDomain)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function AppDomainOwner (domain As AppDomain) As IContract" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::AddIn::Contract::IContract ^ AppDomainOwner(AppDomain ^ domain);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.AddIn</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.AddIn.Contract.IContract</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="domain" Type="System.AppDomain" />
+      </Parameters>
+      <Docs>
+        <param name="domain">
+          <span data-ttu-id="545f3-116">要檢查的應用程式定義域。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-116">The application domain to check.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="545f3-117">取得建立應用程式定義域時增益集端配接器的執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-117">Gets the instance of the add-in-side adapter when the application domain was created.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="545f3-118">
+            <see cref="T:System.AddIn.Contract.IContract" /> 物件，表示應用程式定義域擁有者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-118">An <see cref="T:System.AddIn.Contract.IContract" /> object that represents the owner of the application domain.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="545f3-119">增益集端配接器的型別為<xref:System.AddIn.Contract.IContract>。</span><span class="sxs-lookup"><span data-stu-id="545f3-119">The add-in-side adapters are typed as <xref:System.AddIn.Contract.IContract>.</span></span>  
+  
+ <span data-ttu-id="545f3-120">如果使用者先前已建立的應用程式定義域，但是沒有擁有者。</span><span class="sxs-lookup"><span data-stu-id="545f3-120">If the application domain was previously created by a user, there is no owner.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="545f3-121">
+            <paramref name="domain" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-121">
+              <paramref name="domain" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Contract">
+      <MemberSignature Language="C#" Value="public System.AddIn.Contract.IContract Contract { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.AddIn.Contract.IContract Contract" />
+      <MemberSignature Language="DocId" Value="P:System.AddIn.Pipeline.ContractHandle.Contract" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Contract As IContract" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::AddIn::Contract::IContract ^ Contract { System::AddIn::Contract::IContract ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.AddIn</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.AddIn.Contract.IContract</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="545f3-122">取得管線所使用的合約。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-122">Gets the contract used by a pipeline.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="545f3-123">合約，衍生自 <see cref="T:System.AddIn.Contract.IContract" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-123">The contract, which is derived from <see cref="T:System.AddIn.Contract.IContract" />.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ContractOwnsAppDomain">
+      <MemberSignature Language="C#" Value="public static bool ContractOwnsAppDomain (System.AddIn.Contract.IContract contract, AppDomain domain);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool ContractOwnsAppDomain(class System.AddIn.Contract.IContract contract, class System.AppDomain domain) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.AddIn.Pipeline.ContractHandle.ContractOwnsAppDomain(System.AddIn.Contract.IContract,System.AppDomain)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function ContractOwnsAppDomain (contract As IContract, domain As AppDomain) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool ContractOwnsAppDomain(System::AddIn::Contract::IContract ^ contract, AppDomain ^ domain);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.AddIn</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="contract" Type="System.AddIn.Contract.IContract" />
+        <Parameter Name="domain" Type="System.AppDomain" />
+      </Parameters>
+      <Docs>
+        <param name="contract">
+          <span data-ttu-id="545f3-124">要檢查的合約。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-124">The contract to check.</span>
+          </span>
+        </param>
+        <param name="domain">
+          <span data-ttu-id="545f3-125">要檢查的應用程式定義域。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-125">The application domain to check.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="545f3-126">判斷應用程式定義域是否由指定的合約所擁有。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-126">Determines whether an application domain is owned by the specified contract.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="545f3-127">如果合約擁有應用程式定義域，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-127">
+              <see langword="true" /> if the contract owns the application domain; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="545f3-128">
+            <paramref name="contract" /> 或 <paramref name="domain" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-128">
+              <paramref name="contract" /> or <paramref name="domain" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Dispose">
+      <AssemblyInfo>
+        <AssemblyName>System.AddIn</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="545f3-129">撤銷合約上的存留期語彙基元。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-129">Revokes the lifetime token on a contract.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public void Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.AddIn.Pipeline.ContractHandle.Dispose" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Dispose ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Dispose();" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.AddIn</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="545f3-130">不論輸入為何，撤銷合約上的存留期語彙基元。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-130">Revokes the lifetime token on a contract, regardless of input.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected virtual void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.AddIn.Pipeline.ContractHandle.Dispose(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub Dispose (disposing As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void Dispose(bool disposing);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.AddIn</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">
+          <span data-ttu-id="545f3-131">
+            <see langword="true" /> 表示釋放 Managed 和 Unmanaged 資源，<see langword="false" /> 則表示只釋放 Unmanaged 資源。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-131">
+              <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="545f3-132">不論輸入為何，撤銷合約上的存留期語彙基元，並選擇性釋放 Managed 資源。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-132">Revokes the lifetime token on the contract regardless of input and optionally releases the managed resources.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~ContractHandle ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.AddIn.Pipeline.ContractHandle.Finalize" />
+      <MemberSignature Language="VB.NET" Value="Finalize ()" />
+      <MemberSignature Language="C++ CLI" Value="!ContractHandle ()" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.AddIn</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="545f3-133">釋出與這個 <see cref="T:System.AddIn.Pipeline.ContractHandle" />執行個體相關聯的資源。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="545f3-133">Releases the resources associated with the <see cref="T:System.AddIn.Pipeline.ContractHandle" /> instance.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="545f3-134">這個方法覆寫 <xref:System.Object.Finalize%2A?displayProperty=nameWithType>。</span><span class="sxs-lookup"><span data-stu-id="545f3-134">This method overrides <xref:System.Object.Finalize%2A?displayProperty=nameWithType>.</span></span> <span data-ttu-id="545f3-135">應用程式程式碼不應該呼叫這個方法。物件的<xref:System.AddIn.Pipeline.ContractHandle.Finalize%2A>方法會自動叫用記憶體回收期間，除非已停用記憶體回收行程的最終處理的呼叫所<xref:System.GC.SuppressFinalize%2A?displayProperty=nameWithType>方法。</span><span class="sxs-lookup"><span data-stu-id="545f3-135">Application code should not call this method; an object's <xref:System.AddIn.Pipeline.ContractHandle.Finalize%2A> method is automatically invoked during garbage collection, unless finalization by the garbage collector has been disabled by a call to the <xref:System.GC.SuppressFinalize%2A?displayProperty=nameWithType> method.</span></span>  
+  
+ <span data-ttu-id="545f3-136">當記憶體回收行程所呼叫，這個方法會呼叫<xref:System.AddIn.Pipeline.ContractHandle.Dispose%28System.Boolean%29>方法。</span><span class="sxs-lookup"><span data-stu-id="545f3-136">When called by the garbage collector, this method calls the <xref:System.AddIn.Pipeline.ContractHandle.Dispose%28System.Boolean%29> method.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

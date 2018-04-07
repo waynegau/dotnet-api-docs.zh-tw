@@ -1,0 +1,1556 @@
+<Type Name="OracleParameter" FullName="System.Data.OracleClient.OracleParameter">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="d31a0cd7669acc5ee6381edffcbcef3bcc648eca" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public sealed class OracleParameter : System.Data.Common.DbParameter, ICloneable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit OracleParameter extends System.Data.Common.DbParameter implements class System.Data.IDataParameter, class System.Data.IDbDataParameter, class System.ICloneable" />
+  <TypeSignature Language="DocId" Value="T:System.Data.OracleClient.OracleParameter" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class OracleParameter&#xA;Inherits DbParameter&#xA;Implements ICloneable" />
+  <TypeSignature Language="C++ CLI" Value="public ref class OracleParameter sealed : System::Data::Common::DbParameter, ICloneable" />
+  <AssemblyInfo>
+    <AssemblyName>System.Data.OracleClient</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Data.Common.DbParameter</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.ICloneable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.ComponentModel.TypeConverter(typeof(System.Data.OracleClient.OracleParameter/OracleParameterConverter))</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>
+      <span data-ttu-id="c36d3-101">表示 <see cref="T:System.Data.OracleClient.OracleCommand" /> 的參數及其對 <see cref="T:System.Data.DataColumn" /> 的對應 (選擇性)。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="c36d3-101">Represents a parameter to an <see cref="T:System.Data.OracleClient.OracleCommand" /> and optionally its mapping to a <see cref="T:System.Data.DataColumn" />.</span>
+      </span>
+      <span data-ttu-id="c36d3-102">這個類別無法被繼承。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="c36d3-102">This class cannot be inherited.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-103">參數名稱不區分大小寫。</span><span class="sxs-lookup"><span data-stu-id="c36d3-103">Parameter names are not case-sensitive.</span></span>  
+  
+ <span data-ttu-id="c36d3-104">在查詢時使用 Microsoft OLE DB Provider for Oracle (MSDAORA) 和 ODBC.NET Framework 資料提供者的 Oracle 資料庫，使用`LIKE`子句來查詢中固定長度欄位的值可能不會傳回所有預期的相符項目。</span><span class="sxs-lookup"><span data-stu-id="c36d3-104">When querying an Oracle database using the Microsoft OLE DB Provider for Oracle (MSDAORA) and the ODBC.NET Framework Data Provider, using the `LIKE` clause to query values in fixed-length fields may not return all expected matches.</span></span> <span data-ttu-id="c36d3-105">原因是： 當 Oracle 符合中的固定長度欄位`LIKE`子句，它會比對整個字串的長度，包括任何填補的後端空格。</span><span class="sxs-lookup"><span data-stu-id="c36d3-105">The reason is that when Oracle matches values for fixed-length fields in a `LIKE` clause, it matches the entire length of the string, including any padding trailing spaces.</span></span> <span data-ttu-id="c36d3-106">例如，如果資料表中 Oracle 資料庫包含名為"Field1"定義為欄位`char(3)`，並輸入值"a"該資料表中，下列程式碼中的資料列將不會傳回資料列。</span><span class="sxs-lookup"><span data-stu-id="c36d3-106">For example, if a table in an Oracle database contains a field named "Field1" that is defined as `char(3)`, and you enter the value "a" into a row of that table, the following code will not return the row.</span></span>  
+  
+```vb  
+Dim queryString As String = "SELECT * FROM Table1 WHERE Field1 LIKE ?"  
+Dim command As OleDbCommand = New OleDbCommand(queryString, connection)  
+command.Parameters.Add("@p1", OleDbType.Char, 3).Value = "a"  
+Dim reader As OleDbDataReader = command.ExecuteReader()  
+```  
+  
+```csharp  
+string queryString = "SELECT * FROM Table1 WHERE Field1 LIKE ?";  
+OleDbCommand command = new OleDbCommand(queryString, connection);  
+command.Parameters.Add("@p1", OleDbType.Char, 3).Value = "a";  
+OleDbDataReader reader = command.ExecuteReader();  
+```  
+  
+ <span data-ttu-id="c36d3-107">這是因為 Oracle 儲存的資料行值為"a"(填補以"a"後, 端空格，3 的固定的欄位長度)，Oracle 不會將當成參數值的"a"相符項目是其`LIKE`固定長度欄位的比較。</span><span class="sxs-lookup"><span data-stu-id="c36d3-107">This is because Oracle stores the column value as "a  " (padding "a", with trailing spaces, to the fixed field length of 3), which Oracle does not treat as a match for the parameter value of "a" in the case of a `LIKE` comparison of fixed-length fields.</span></span>  
+  
+ <span data-ttu-id="c36d3-108">若要解決這個問題，請附加百分比 （"%"） 萬用字元參數值 (`"a%"`)，或使用 SQL`=`比較改為。</span><span class="sxs-lookup"><span data-stu-id="c36d3-108">To resolve this problem, append a percentage ("%") wildcard character to the parameter value (`"a%"`), or use an SQL `=` comparison instead.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="c36d3-109">下列範例會建立多個執行個體<xref:System.Data.OracleClient.OracleParameter>透過<xref:System.Data.OracleClient.OracleParameterCollection>內<xref:System.Data.OracleClient.OracleDataAdapter>。</span><span class="sxs-lookup"><span data-stu-id="c36d3-109">The following example creates multiple instances of <xref:System.Data.OracleClient.OracleParameter> through the <xref:System.Data.OracleClient.OracleParameterCollection> within the <xref:System.Data.OracleClient.OracleDataAdapter>.</span></span> <span data-ttu-id="c36d3-110">這些參數可用來從資料庫選取資料並將資料<xref:System.Data.DataSet>。</span><span class="sxs-lookup"><span data-stu-id="c36d3-110">These parameters are used to select data from the database and place the data in the <xref:System.Data.DataSet>.</span></span> <span data-ttu-id="c36d3-111">這個範例假設<xref:System.Data.DataSet>和<xref:System.Data.OracleClient.OracleDataAdapter>已經建立使用適當的結構描述、 命令及連線。</span><span class="sxs-lookup"><span data-stu-id="c36d3-111">This example assumes that a <xref:System.Data.DataSet> and an <xref:System.Data.OracleClient.OracleDataAdapter> have already been created by using the appropriate schema, commands, and connection.</span></span>  
+  
+ [!code-csharp[Classic WebData OracleParameter#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OracleParameter/CS/source.cs#1)]
+ [!code-vb[Classic WebData OracleParameter#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OracleParameter/VB/source.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-112">初始化 <see cref="T:System.Data.OracleClient.OracleParameter" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-112">Initializes a new instance of the <see cref="T:System.Data.OracleClient.OracleParameter" /> class.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public OracleParameter ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.OracleClient.OracleParameter.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; OracleParameter();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-113">初始化 <see cref="T:System.Data.OracleClient.OracleParameter" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-113">Initializes a new instance of the <see cref="T:System.Data.OracleClient.OracleParameter" /> class.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public OracleParameter (string name, System.Data.OracleClient.OracleType oracleType);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name, valuetype System.Data.OracleClient.OracleType oracleType) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.OracleClient.OracleParameter.#ctor(System.String,System.Data.OracleClient.OracleType)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; OracleParameter(System::String ^ name, System::Data::OracleClient::OracleType oracleType);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="oracleType" Type="System.Data.OracleClient.OracleType" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="c36d3-114">參數名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-114">The name of the parameter.</span>
+          </span>
+        </param>
+        <param name="oracleType">
+          <span data-ttu-id="c36d3-115">其中一個 <see cref="T:System.Data.OracleClient.OracleType" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-115">One of the <see cref="T:System.Data.OracleClient.OracleType" /> values.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="c36d3-116">初始化 <see cref="T:System.Data.OracleClient.OracleParameter" /> 類別的新執行個體，該類別使用參數名稱和資料型別。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-116">Initializes a new instance of the <see cref="T:System.Data.OracleClient.OracleParameter" /> class that uses the parameter name and data type.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="c36d3-117">下列範例會建立<xref:System.Data.OracleClient.OracleParameter>並設定其屬性的某些。</span><span class="sxs-lookup"><span data-stu-id="c36d3-117">The following example creates an <xref:System.Data.OracleClient.OracleParameter> and sets some of its properties.</span></span>  
+  
+ [!code-csharp[Classic WebData OracleParameter.OracleParameter1#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OracleParameter.OracleParameter1/CS/source.cs#1)]
+ [!code-vb[Classic WebData OracleParameter.OracleParameter1#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OracleParameter.OracleParameter1/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="c36d3-118">
+            <paramref name="oracleType" /> 參數中所提供的值是無效的後端資料類型。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-118">The value supplied in the <paramref name="oracleType" /> parameter is an invalid back-end data type.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public OracleParameter (string name, object value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name, object value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.OracleClient.OracleParameter.#ctor(System.String,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (name As String, value As Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; OracleParameter(System::String ^ name, System::Object ^ value);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="c36d3-119">參數名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-119">The name of the parameter.</span>
+          </span>
+        </param>
+        <param name="value">
+          <span data-ttu-id="c36d3-120">
+            <see cref="T:System.Data.OracleClient.OracleParameter" /> 物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-120">An <see cref="T:System.Data.OracleClient.OracleParameter" /> object.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="c36d3-121">初始化 <see cref="T:System.Data.OracleClient.OracleParameter" /> 類別的新執行個體，該類別使用參數名稱和 <see cref="T:System.Data.OracleClient.OracleParameter" /> 物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-121">Initializes a new instance of the <see cref="T:System.Data.OracleClient.OracleParameter" /> class that uses the parameter name and an <see cref="T:System.Data.OracleClient.OracleParameter" /> object.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-122">當您指定<xref:System.Object>中`value`參數，<xref:System.Data.DbType>推斷的 Microsoft.NET Framework 型別<xref:System.Object>。</span><span class="sxs-lookup"><span data-stu-id="c36d3-122">When you specify an <xref:System.Object> in the `value` parameter, the <xref:System.Data.DbType> is inferred from the Microsoft .NET Framework type of the <xref:System.Object>.</span></span>  
+  
+ <span data-ttu-id="c36d3-123">當您使用的這個多載時請特別小心<xref:System.Data.OracleClient.OracleParameter>建構函式。</span><span class="sxs-lookup"><span data-stu-id="c36d3-123">Use caution when you are using this overload of the <xref:System.Data.OracleClient.OracleParameter> constructor.</span></span> <span data-ttu-id="c36d3-124">因為此多載會採用`value`型別的<xref:System.Object>，您必須將整數值轉換<xref:System.Object>時輸入的值為零，如下列的 Microsoft Visual C# 範例所示。</span><span class="sxs-lookup"><span data-stu-id="c36d3-124">Because this overload takes a `value` of type <xref:System.Object>, you must convert the integral value to an <xref:System.Object> type when the value is zero, as the following Microsoft Visual C# example demonstrates.</span></span>  
+  
+```  
+Parameter = new OracleParameter("pname", Convert.ToInt32(0));  
+```  
+  
+ <span data-ttu-id="c36d3-125">如果您不會執行這項轉換，編譯器會假設您嘗試呼叫`OracleParameter`(`string`， `OracleType`) 建構函式多載。</span><span class="sxs-lookup"><span data-stu-id="c36d3-125">If you do not perform this conversion, the compiler will assume that you are trying to call the `OracleParameter`(`string`, `OracleType`) constructor overload.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public OracleParameter (string name, System.Data.OracleClient.OracleType oracleType, int size);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name, valuetype System.Data.OracleClient.OracleType oracleType, int32 size) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.OracleClient.OracleParameter.#ctor(System.String,System.Data.OracleClient.OracleType,System.Int32)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; OracleParameter(System::String ^ name, System::Data::OracleClient::OracleType oracleType, int size);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="oracleType" Type="System.Data.OracleClient.OracleType" />
+        <Parameter Name="size" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="c36d3-126">參數名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-126">The name of the parameter.</span>
+          </span>
+        </param>
+        <param name="oracleType">
+          <span data-ttu-id="c36d3-127">其中一個 <see cref="T:System.Data.OracleClient.OracleType" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-127">One of the <see cref="T:System.Data.OracleClient.OracleType" /> values.</span>
+          </span>
+        </param>
+        <param name="size">
+          <span data-ttu-id="c36d3-128">參數的長度。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-128">The length of the parameter.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="c36d3-129">初始化 <see cref="T:System.Data.OracleClient.OracleParameter" /> 類別的新執行個體，該類別使用參數名稱、資料型別和長度。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-129">Initializes a new instance of the <see cref="T:System.Data.OracleClient.OracleParameter" /> class that uses the parameter name, data type, and length.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="c36d3-130">下列範例會建立<xref:System.Data.OracleClient.OracleParameter>並設定其屬性的某些。</span><span class="sxs-lookup"><span data-stu-id="c36d3-130">The following example creates an <xref:System.Data.OracleClient.OracleParameter> and sets some of its properties.</span></span>  
+  
+ [!code-csharp[Classic WebData OracleParameter.OracleParameter2#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OracleParameter.OracleParameter2/CS/source.cs#1)]
+ [!code-vb[Classic WebData OracleParameter.OracleParameter2#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OracleParameter.OracleParameter2/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="c36d3-131">
+            <paramref name="oracleType" /> 參數中所提供的值是無效的後端資料類型。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-131">The value supplied in the <paramref name="oracleType" /> parameter is an invalid back-end data type.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public OracleParameter (string name, System.Data.OracleClient.OracleType oracleType, int size, string srcColumn);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name, valuetype System.Data.OracleClient.OracleType oracleType, int32 size, string srcColumn) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.OracleClient.OracleParameter.#ctor(System.String,System.Data.OracleClient.OracleType,System.Int32,System.String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; OracleParameter(System::String ^ name, System::Data::OracleClient::OracleType oracleType, int size, System::String ^ srcColumn);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="oracleType" Type="System.Data.OracleClient.OracleType" />
+        <Parameter Name="size" Type="System.Int32" />
+        <Parameter Name="srcColumn" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="c36d3-132">參數名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-132">The name of the parameter.</span>
+          </span>
+        </param>
+        <param name="oracleType">
+          <span data-ttu-id="c36d3-133">其中一個 <see cref="T:System.Data.OracleClient.OracleType" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-133">One of the <see cref="T:System.Data.OracleClient.OracleType" /> values.</span>
+          </span>
+        </param>
+        <param name="size">
+          <span data-ttu-id="c36d3-134">參數的長度。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-134">The length of the parameter.</span>
+          </span>
+        </param>
+        <param name="srcColumn">
+          <span data-ttu-id="c36d3-135">來源資料行的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-135">The name of the source column.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="c36d3-136">初始化 <see cref="T:System.Data.OracleClient.OracleParameter" /> 類別的新執行個體，該類別使用參數名稱、資料型別、長度和來源資料行名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-136">Initializes a new instance of the <see cref="T:System.Data.OracleClient.OracleParameter" /> class that uses the parameter name, data type, length, and source column name.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="c36d3-137">下列範例會建立<xref:System.Data.OracleClient.OracleParameter>並設定其屬性的某些。</span><span class="sxs-lookup"><span data-stu-id="c36d3-137">The following example creates an <xref:System.Data.OracleClient.OracleParameter> and sets some of its properties.</span></span>  
+  
+ [!code-csharp[Classic WebData OracleParameter.OracleParameter3#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OracleParameter.OracleParameter3/CS/source.cs#1)]
+ [!code-vb[Classic WebData OracleParameter.OracleParameter3#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OracleParameter.OracleParameter3/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="c36d3-138">
+            <paramref name="oracleType" /> 參數中所提供的值是無效的後端資料類型。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-138">The value supplied in the <paramref name="oracleType" /> parameter is an invalid back-end data type.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public OracleParameter (string name, System.Data.OracleClient.OracleType oracleType, int size, System.Data.ParameterDirection direction, string sourceColumn, System.Data.DataRowVersion sourceVersion, bool sourceColumnNullMapping, object value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name, valuetype System.Data.OracleClient.OracleType oracleType, int32 size, valuetype System.Data.ParameterDirection direction, string sourceColumn, valuetype System.Data.DataRowVersion sourceVersion, bool sourceColumnNullMapping, object value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.OracleClient.OracleParameter.#ctor(System.String,System.Data.OracleClient.OracleType,System.Int32,System.Data.ParameterDirection,System.String,System.Data.DataRowVersion,System.Boolean,System.Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; OracleParameter(System::String ^ name, System::Data::OracleClient::OracleType oracleType, int size, System::Data::ParameterDirection direction, System::String ^ sourceColumn, System::Data::DataRowVersion sourceVersion, bool sourceColumnNullMapping, System::Object ^ value);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="oracleType" Type="System.Data.OracleClient.OracleType" />
+        <Parameter Name="size" Type="System.Int32" />
+        <Parameter Name="direction" Type="System.Data.ParameterDirection" />
+        <Parameter Name="sourceColumn" Type="System.String" />
+        <Parameter Name="sourceVersion" Type="System.Data.DataRowVersion" />
+        <Parameter Name="sourceColumnNullMapping" Type="System.Boolean" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="c36d3-139">要對應的參數名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-139">The name of the parameter to map.</span>
+          </span>
+        </param>
+        <param name="oracleType">
+          <span data-ttu-id="c36d3-140">其中一個 <see cref="T:System.Data.OracleClient.OracleType" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-140">One of the <see cref="T:System.Data.OracleClient.OracleType" /> values.</span>
+          </span>
+        </param>
+        <param name="size">
+          <span data-ttu-id="c36d3-141">參數的長度。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-141">The length of the parameter.</span>
+          </span>
+        </param>
+        <param name="direction">
+          <span data-ttu-id="c36d3-142">其中一個 <see cref="T:System.Data.ParameterDirection" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-142">One of the <see cref="T:System.Data.ParameterDirection" /> values.</span>
+          </span>
+        </param>
+        <param name="sourceColumn">
+          <span data-ttu-id="c36d3-143">來源資料行的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-143">The name of the source column.</span>
+          </span>
+        </param>
+        <param name="sourceVersion">
+          <span data-ttu-id="c36d3-144">其中一個 <see cref="T:System.Data.DataRowVersion" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-144">One of the <see cref="T:System.Data.DataRowVersion" /> values.</span>
+          </span>
+        </param>
+        <param name="sourceColumnNullMapping">
+          <span data-ttu-id="c36d3-145">如果來源資料行可為 null，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-145">
+              <see langword="true" /> if the source column is nullable, otherwise <see langword="false" />.</span>
+          </span>
+        </param>
+        <param name="value">
+          <span data-ttu-id="c36d3-146">
+            <see cref="T:System.Object" />，是 <see cref="T:System.Data.OracleClient.OracleParameter" /> 的值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-146">An <see cref="T:System.Object" /> that is the value of the <see cref="T:System.Data.OracleClient.OracleParameter" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="c36d3-147">初始化 <see cref="T:System.Data.OracleClient.OracleParameter" /> 類別的新執行個體，該類別使用參數名稱、資料型別、大小、方向、來源資料行、來源版本和其他屬性。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-147">Initializes a new instance of the <see cref="T:System.Data.OracleClient.OracleParameter" /> class that uses the parameter name, data type, size, direction, source column, source version, and other properties.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="c36d3-148">
+            <paramref name="oracleType" /> 參數中所提供的值是無效的後端資料類型。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-148">The value supplied in the <paramref name="oracleType" /> parameter is an invalid back-end data type.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public OracleParameter (string name, System.Data.OracleClient.OracleType oracleType, int size, System.Data.ParameterDirection direction, bool isNullable, byte precision, byte scale, string srcColumn, System.Data.DataRowVersion srcVersion, object value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name, valuetype System.Data.OracleClient.OracleType oracleType, int32 size, valuetype System.Data.ParameterDirection direction, bool isNullable, unsigned int8 precision, unsigned int8 scale, string srcColumn, valuetype System.Data.DataRowVersion srcVersion, object value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.OracleClient.OracleParameter.#ctor(System.String,System.Data.OracleClient.OracleType,System.Int32,System.Data.ParameterDirection,System.Boolean,System.Byte,System.Byte,System.String,System.Data.DataRowVersion,System.Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; OracleParameter(System::String ^ name, System::Data::OracleClient::OracleType oracleType, int size, System::Data::ParameterDirection direction, bool isNullable, System::Byte precision, System::Byte scale, System::String ^ srcColumn, System::Data::DataRowVersion srcVersion, System::Object ^ value);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="oracleType" Type="System.Data.OracleClient.OracleType" />
+        <Parameter Name="size" Type="System.Int32" />
+        <Parameter Name="direction" Type="System.Data.ParameterDirection" />
+        <Parameter Name="isNullable" Type="System.Boolean" />
+        <Parameter Name="precision" Type="System.Byte" />
+        <Parameter Name="scale" Type="System.Byte" />
+        <Parameter Name="srcColumn" Type="System.String" />
+        <Parameter Name="srcVersion" Type="System.Data.DataRowVersion" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="c36d3-149">參數名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-149">The name of the parameter.</span>
+          </span>
+        </param>
+        <param name="oracleType">
+          <span data-ttu-id="c36d3-150">其中一個 <see cref="T:System.Data.OracleClient.OracleType" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-150">One of the <see cref="T:System.Data.OracleClient.OracleType" /> values.</span>
+          </span>
+        </param>
+        <param name="size">
+          <span data-ttu-id="c36d3-151">參數的長度。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-151">The length of the parameter.</span>
+          </span>
+        </param>
+        <param name="direction">
+          <span data-ttu-id="c36d3-152">其中一個 <see cref="T:System.Data.ParameterDirection" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-152">One of the <see cref="T:System.Data.ParameterDirection" /> values.</span>
+          </span>
+        </param>
+        <param name="isNullable">
+          <span data-ttu-id="c36d3-153">如果欄位值可以是 null，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-153">
+              <see langword="true" /> if the value of the field can be null, otherwise, <see langword="false" />.</span>
+          </span>
+        </param>
+        <param name="precision">
+          <span data-ttu-id="c36d3-154">
+            <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> 所解析的小數點左右側的位數總數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-154">The total number of digits to the left and right of the decimal point to which <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> is resolved.</span>
+          </span>
+        </param>
+        <param name="scale">
+          <span data-ttu-id="c36d3-155">
+            <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> 所解析的小數點位數的總數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-155">The total number of decimal places to which <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> is resolved.</span>
+          </span>
+        </param>
+        <param name="srcColumn">
+          <span data-ttu-id="c36d3-156">來源資料行的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-156">The name of the source column.</span>
+          </span>
+        </param>
+        <param name="srcVersion">
+          <span data-ttu-id="c36d3-157">其中一個 <see cref="T:System.Data.DataRowVersion" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-157">One of the <see cref="T:System.Data.DataRowVersion" /> values.</span>
+          </span>
+        </param>
+        <param name="value">
+          <span data-ttu-id="c36d3-158">
+            <see cref="T:System.Object" />，是 <see cref="T:System.Data.OracleClient.OracleParameter" /> 的值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-158">An <see cref="T:System.Object" /> that is the value of the <see cref="T:System.Data.OracleClient.OracleParameter" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="c36d3-159">初始化 <see cref="T:System.Data.OracleClient.OracleParameter" />類別的新執行個體，它使用參數名稱、資料類型、長度、來源資料行名稱、參數方向、數值有效位數，以及其他屬性。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-159">Initializes a new instance of the <see cref="T:System.Data.OracleClient.OracleParameter" /> class that uses the parameter name, data type, length, source column name, parameter direction, numeric precision, and other properties.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="c36d3-160">下列範例會建立<xref:System.Data.OracleClient.OracleParameter>並顯示<xref:System.Data.OracleClient.OracleParameter.ParameterName%2A>。</span><span class="sxs-lookup"><span data-stu-id="c36d3-160">The following example creates an <xref:System.Data.OracleClient.OracleParameter> and displays the <xref:System.Data.OracleClient.OracleParameter.ParameterName%2A>.</span></span>  
+  
+ [!code-csharp[Classic WebData OracleParameter.OracleParameter4#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OracleParameter.OracleParameter4/CS/source.cs#1)]
+ [!code-vb[Classic WebData OracleParameter.OracleParameter4#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OracleParameter.OracleParameter4/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="c36d3-161">
+            <paramref name="oracleType" /> 參數中所提供的值是無效的後端資料類型。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-161">The value supplied in the <paramref name="oracleType" /> parameter is an invalid back-end data type.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DbType">
+      <MemberSignature Language="C#" Value="public override System.Data.DbType DbType { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Data.DbType DbType" />
+      <MemberSignature Language="DocId" Value="P:System.Data.OracleClient.OracleParameter.DbType" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property DbType As DbType" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Data::DbType DbType { System::Data::DbType get(); void set(System::Data::DbType value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDataParameter.DbType</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Data.DbType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-162">取得或設定參數的 <see cref="T:System.Data.DbType" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-162">Gets or sets the <see cref="T:System.Data.DbType" /> of the parameter.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="c36d3-163">其中一個 <see cref="T:System.Data.DbType" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-163">One of the <see cref="T:System.Data.DbType" /> values.</span>
+          </span>
+          <span data-ttu-id="c36d3-164">預設值為 <see cref="F:System.Data.DbType.AnsiString" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-164">The default is <see cref="F:System.Data.DbType.AnsiString" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-165"><xref:System.Data.OracleClient.OracleParameter.OracleType%2A>和<xref:System.Data.OracleClient.OracleParameter.DbType%2A>連結。</span><span class="sxs-lookup"><span data-stu-id="c36d3-165">The <xref:System.Data.OracleClient.OracleParameter.OracleType%2A> and <xref:System.Data.OracleClient.OracleParameter.DbType%2A> are linked.</span></span> <span data-ttu-id="c36d3-166">因此，設定<xref:System.Data.OracleClient.OracleParameter.DbType%2A>變更<xref:System.Data.OracleClient.OracleParameter.OracleType%2A>支援<xref:System.Data.OracleClient.OracleParameter.OracleType%2A>。</span><span class="sxs-lookup"><span data-stu-id="c36d3-166">Therefore, setting the <xref:System.Data.OracleClient.OracleParameter.DbType%2A> changes the <xref:System.Data.OracleClient.OracleParameter.OracleType%2A> to a supporting <xref:System.Data.OracleClient.OracleParameter.OracleType%2A>.</span></span>  
+  
+ <span data-ttu-id="c36d3-167"><xref:System.Data.OracleClient.OracleParameter.DbType%2A>， <xref:System.Data.OracleClient.OracleParameter.OracleType%2A>，和<xref:System.Data.OracleClient.OracleParameter.Size%2A>參數的屬性，可以藉由設定推斷<xref:System.Data.OracleClient.OracleParameter.Value%2A>。</span><span class="sxs-lookup"><span data-stu-id="c36d3-167">The <xref:System.Data.OracleClient.OracleParameter.DbType%2A>, <xref:System.Data.OracleClient.OracleParameter.OracleType%2A>, and <xref:System.Data.OracleClient.OracleParameter.Size%2A> properties of a parameter can be inferred by setting <xref:System.Data.OracleClient.OracleParameter.Value%2A>.</span></span> <span data-ttu-id="c36d3-168">因此，您不需要指定它們。</span><span class="sxs-lookup"><span data-stu-id="c36d3-168">Therefore, you are not required to specify them.</span></span> <span data-ttu-id="c36d3-169">不過，它們不會顯示在<xref:System.Data.OracleClient.OracleParameter>屬性設定。</span><span class="sxs-lookup"><span data-stu-id="c36d3-169">However, they are not exposed in <xref:System.Data.OracleClient.OracleParameter> property settings.</span></span> <span data-ttu-id="c36d3-170">例如，如果已推斷參數的大小，<xref:System.Data.OracleClient.OracleParameter.Size%2A>陳述式執行之後未包含推斷的值。</span><span class="sxs-lookup"><span data-stu-id="c36d3-170">For example, if the size of the parameter has been inferred, <xref:System.Data.OracleClient.OracleParameter.Size%2A> does not contain inferred value after statement execution.</span></span> <span data-ttu-id="c36d3-171">如`String`資料型別預設值是<xref:System.Data.DbType.AnsiString>。</span><span class="sxs-lookup"><span data-stu-id="c36d3-171">For `String` data types the default is <xref:System.Data.DbType.AnsiString>.</span></span>  
+  
+ <span data-ttu-id="c36d3-172">如需支援的資料類型的清單，請參閱適當<xref:System.Data.OracleClient.OracleParameter.OracleType%2A>成員。</span><span class="sxs-lookup"><span data-stu-id="c36d3-172">For a list of the supported data types, see the appropriate <xref:System.Data.OracleClient.OracleParameter.OracleType%2A> member.</span></span> <span data-ttu-id="c36d3-173">如需詳細資訊，請參閱[DataAdapter 的參數](~/docs/framework/data/adonet/dataadapter-parameters.md)。</span><span class="sxs-lookup"><span data-stu-id="c36d3-173">For more information, see [DataAdapter Parameters](~/docs/framework/data/adonet/dataadapter-parameters.md).</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="c36d3-174">下列範例會建立<xref:System.Data.OracleClient.OracleParameter>並設定其屬性的某些。</span><span class="sxs-lookup"><span data-stu-id="c36d3-174">The following example creates an <xref:System.Data.OracleClient.OracleParameter> and sets some of its properties.</span></span>  
+  
+ [!code-csharp[Classic WebData OracleParameter.DbType#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OracleParameter.DbType/CS/source.cs#1)]
+ [!code-vb[Classic WebData OracleParameter.DbType#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OracleParameter.DbType/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="c36d3-175">屬性並未設定為有效的 <see cref="T:System.Data.DbType" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-175">The property was not set to a valid <see cref="T:System.Data.DbType" />.</span>
+          </span>
+        </exception>
+        <altmember cref="T:System.Data.OracleClient.OracleType" />
+      </Docs>
+    </Member>
+    <Member MemberName="Direction">
+      <MemberSignature Language="C#" Value="public override System.Data.ParameterDirection Direction { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Data.ParameterDirection Direction" />
+      <MemberSignature Language="DocId" Value="P:System.Data.OracleClient.OracleParameter.Direction" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property Direction As ParameterDirection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Data::ParameterDirection Direction { System::Data::ParameterDirection get(); void set(System::Data::ParameterDirection value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDataParameter.Direction</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.RefreshProperties</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Data.ParameterDirection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-176">取得或設定值，以表示參數是僅限輸入、僅限輸出、雙向 (Bidirectional) 或預存程序 (Stored Procedure) 傳回值參數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-176">Gets or sets a value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="c36d3-177">其中一個 <see cref="T:System.Data.ParameterDirection" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-177">One of the <see cref="T:System.Data.ParameterDirection" /> values.</span>
+          </span>
+          <span data-ttu-id="c36d3-178">預設值為 <see langword="Input" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-178">The default is <see langword="Input" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-179">如果<xref:System.Data.ParameterDirection>是輸出，以及執行相關聯的<xref:System.Data.OracleClient.OracleCommand>沒有傳回值，<xref:System.Data.OracleClient.OracleParameter>包含 null 值。</span><span class="sxs-lookup"><span data-stu-id="c36d3-179">If the <xref:System.Data.ParameterDirection> is output, and execution of the associated <xref:System.Data.OracleClient.OracleCommand> does not return a value, the <xref:System.Data.OracleClient.OracleParameter> contains a null value.</span></span>  
+  
+ <span data-ttu-id="c36d3-180">`Output``InputOut`，和`ReturnValue`透過呼叫所傳回的參數<xref:System.Data.OracleClient.OracleCommand.ExecuteReader%2A>無法存取，直到您呼叫<xref:System.Data.OracleClient.OracleDataReader.Close%2A>上<xref:System.Data.OracleClient.OracleDataReader>。</span><span class="sxs-lookup"><span data-stu-id="c36d3-180">`Output`, `InputOut`, and `ReturnValue` parameters returned by calling <xref:System.Data.OracleClient.OracleCommand.ExecuteReader%2A> cannot be accessed until you call <xref:System.Data.OracleClient.OracleDataReader.Close%2A> on the <xref:System.Data.OracleClient.OracleDataReader>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="c36d3-181">下列範例會建立<xref:System.Data.OracleClient.OracleParameter>並設定其屬性的某些。</span><span class="sxs-lookup"><span data-stu-id="c36d3-181">The following example creates a <xref:System.Data.OracleClient.OracleParameter> and sets some of its properties.</span></span>  
+  
+```vb  
+Public Sub CreateOracleDbParameter()  
+   Dim parameter As New OracleParameter()  
+   parameter.ParameterName = "pDName"  
+   parameter.DbType = DbType.String  
+   parameter.Value = "ENGINEERING"  
+   parameter.SourceColumn = "DName"  
+End Sub  
+```  
+  
+```csharp  
+public void CreateOracleDbParameter()   
+{  
+   OracleParameter parameter = new OracleParameter();  
+   parameter.ParameterName = "pDName";  
+   parameter.DbType = DbType.String;  
+   parameter.Value = "ENGINEERING";  
+   parameter.SourceColumn = "DName";  
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="c36d3-182">屬性未設定為其中一個有效的 <see cref="T:System.Data.ParameterDirection" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-182">The property was not set to one of the valid <see cref="T:System.Data.ParameterDirection" /> values.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="IsNullable">
+      <MemberSignature Language="C#" Value="public override bool IsNullable { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsNullable" />
+      <MemberSignature Language="DocId" Value="P:System.Data.OracleClient.OracleParameter.IsNullable" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property IsNullable As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool IsNullable { bool get(); void set(bool value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-183">取得或設定值，這個值指出該參數是否接受 null 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-183">Gets or sets a value that indicates whether the parameter accepts null values.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="c36d3-184">如果接受 null 值，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-184">
+              <see langword="true" /> if null values are accepted, otherwise <see langword="false" />.</span>
+          </span>
+          <span data-ttu-id="c36d3-185">預設值為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-185">The default is <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-186">使用處理 null 值<xref:System.DBNull>類別。</span><span class="sxs-lookup"><span data-stu-id="c36d3-186">Null values are handled using the <xref:System.DBNull> class.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="c36d3-187">下列範例會建立<xref:System.Data.OracleClient.OracleParameter>並設定其屬性的某些。</span><span class="sxs-lookup"><span data-stu-id="c36d3-187">The following example creates a <xref:System.Data.OracleClient.OracleParameter> and sets some of its properties.</span></span>  
+  
+```vb  
+Public Sub CreateOracleParameter()  
+   Dim parameter As New OracleParameter("DName", OracleType.VarChar, 14)  
+   parameter.IsNullable = True  
+   parameter.Direction = ParameterDirection.Output  
+End Sub  
+```  
+  
+```csharp  
+public void CreateOracleParameter()   
+{  
+   OracleParameter parameter = new OracleParameter("DName", OracleType.VarChar, 14);  
+   parameter.IsNullable = true;  
+   parameter.Direction = ParameterDirection.Output;  
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Offset">
+      <MemberSignature Language="C#" Value="public int Offset { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Offset" />
+      <MemberSignature Language="DocId" Value="P:System.Data.OracleClient.OracleParameter.Offset" />
+      <MemberSignature Language="VB.NET" Value="Public Property Offset As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int Offset { int get(); void set(int value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.Browsable(false)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-188">取得或設定 <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> 屬性的位移。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-188">Gets or sets the offset to the <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> property.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="c36d3-189">
+            <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> 的位移。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-189">The offset to the <see cref="P:System.Data.OracleClient.OracleParameter.Value" />.</span>
+          </span>
+          <span data-ttu-id="c36d3-190">預設值為 0。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-190">The default is 0.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-191">`Offset`屬性適用於用戶端區塊處理的二進位和字串資料。</span><span class="sxs-lookup"><span data-stu-id="c36d3-191">The `Offset` property is used for client-side chunking of binary and string data.</span></span> <span data-ttu-id="c36d3-192">比方說，若要插入的伺服器上的資料行中的 10 MB 的文字，使用者可能會執行 10 個參數化的插入的 1 MB 的區塊，移位的值`Offset`上每個反覆項目 1 mb。</span><span class="sxs-lookup"><span data-stu-id="c36d3-192">For example, in order to insert 10MB of text into a column on a server, a user might execute 10 parameterized inserts of 1MB chunks, shifting the value of `Offset` on each iteration by 1MB.</span></span>  
+  
+ <span data-ttu-id="c36d3-193">`Offset` 指定的二進位型別，位元組數目以及字串的字元數目。</span><span class="sxs-lookup"><span data-stu-id="c36d3-193">`Offset` specifies the number of bytes for binary types, and the number of characters for strings.</span></span> <span data-ttu-id="c36d3-194">字串的計數不包括結束的字元。</span><span class="sxs-lookup"><span data-stu-id="c36d3-194">The count for strings does not include the terminating character.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="c36d3-195">下列範例會建立<xref:System.Data.OracleClient.OracleParameter>並設定其屬性的某些。</span><span class="sxs-lookup"><span data-stu-id="c36d3-195">The following example creates a <xref:System.Data.OracleClient.OracleParameter> and sets some of its properties.</span></span>  
+  
+```vb  
+Public Sub CreateOracleParameter()  
+   Dim parameter As New OracleParameter("pDName", OracleType.VarChar)  
+   parameter.IsNullable = True  
+   parameter.Offset = 3  
+End Sub  
+```  
+  
+```csharp  
+public void CreateOracleParameter()   
+{  
+   OracleParameter parameter = new OracleParameter("pDName", OracleType.VarChar);  
+   parameter.IsNullable = true;  
+   parameter.Offset = 3;  
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OracleType">
+      <MemberSignature Language="C#" Value="public System.Data.OracleClient.OracleType OracleType { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Data.OracleClient.OracleType OracleType" />
+      <MemberSignature Language="DocId" Value="P:System.Data.OracleClient.OracleParameter.OracleType" />
+      <MemberSignature Language="VB.NET" Value="Public Property OracleType As OracleType" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Data::OracleClient::OracleType OracleType { System::Data::OracleClient::OracleType get(); void set(System::Data::OracleClient::OracleType value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.DefaultValue(Mono.Cecil.CustomAttributeArgument)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.RefreshProperties</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Data.Common.DbProviderSpecificTypeProperty(true)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Data.OracleClient.OracleType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-196">取得或設定參數的 <see cref="T:System.Data.OracleClient.OracleType" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-196">Gets or sets the <see cref="T:System.Data.OracleClient.OracleType" /> of the parameter.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="c36d3-197">
+            <see cref="T:System.Data.OracleClient.OracleType" /> 值，為參數的 <see cref="T:System.Data.OracleClient.OracleType" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-197">An <see cref="T:System.Data.OracleClient.OracleType" /> value that is the <see cref="T:System.Data.OracleClient.OracleType" /> of the parameter.</span>
+          </span>
+          <span data-ttu-id="c36d3-198">預設值為 <see cref="F:System.Data.OracleClient.OracleType.VarChar" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-198">The default is <see cref="F:System.Data.OracleClient.OracleType.VarChar" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-199"><xref:System.Data.OracleClient.OracleParameter.OracleType%2A>和<xref:System.Data.OracleClient.OracleParameter.DbType%2A>連結。</span><span class="sxs-lookup"><span data-stu-id="c36d3-199">The <xref:System.Data.OracleClient.OracleParameter.OracleType%2A> and <xref:System.Data.OracleClient.OracleParameter.DbType%2A> are linked.</span></span> <span data-ttu-id="c36d3-200">因此，設定<xref:System.Data.OracleClient.OracleParameter.DbType%2A>變更<xref:System.Data.OracleClient.OracleParameter.OracleType%2A>支援<xref:System.Data.OracleClient.OracleType>。</span><span class="sxs-lookup"><span data-stu-id="c36d3-200">Therefore, setting the <xref:System.Data.OracleClient.OracleParameter.DbType%2A> changes the <xref:System.Data.OracleClient.OracleParameter.OracleType%2A> to a supporting <xref:System.Data.OracleClient.OracleType>.</span></span>  
+  
+ <span data-ttu-id="c36d3-201"><xref:System.Data.OracleClient.OracleParameter.DbType%2A>， <xref:System.Data.OracleClient.OracleParameter.OracleType%2A>，和<xref:System.Data.OracleClient.OracleParameter.Size%2A>參數的屬性，可以藉由設定推斷<xref:System.Data.OracleClient.OracleParameter.Value%2A>。</span><span class="sxs-lookup"><span data-stu-id="c36d3-201">The <xref:System.Data.OracleClient.OracleParameter.DbType%2A>, <xref:System.Data.OracleClient.OracleParameter.OracleType%2A>, and <xref:System.Data.OracleClient.OracleParameter.Size%2A> properties of a parameter can be inferred by setting <xref:System.Data.OracleClient.OracleParameter.Value%2A>.</span></span> <span data-ttu-id="c36d3-202">因此，您不需要指定它們。</span><span class="sxs-lookup"><span data-stu-id="c36d3-202">Therefore, you are not required to specify them.</span></span> <span data-ttu-id="c36d3-203">不過，它們不會顯示在<xref:System.Data.OracleClient.OracleParameter>屬性設定。</span><span class="sxs-lookup"><span data-stu-id="c36d3-203">However, they are not exposed in <xref:System.Data.OracleClient.OracleParameter> property settings.</span></span> <span data-ttu-id="c36d3-204">例如，如果已推斷參數的大小，<xref:System.Data.OracleClient.OracleParameter.Size%2A>陳述式執行之後未包含推斷的值。</span><span class="sxs-lookup"><span data-stu-id="c36d3-204">For example, if the size of the parameter has been inferred, <xref:System.Data.OracleClient.OracleParameter.Size%2A> does not contain inferred value after statement execution.</span></span> <span data-ttu-id="c36d3-205">如`String`資料型別預設值是<xref:System.Data.OracleClient.OracleType.VarChar>。</span><span class="sxs-lookup"><span data-stu-id="c36d3-205">For `String` data types the default is <xref:System.Data.OracleClient.OracleType.VarChar>.</span></span>  
+  
+ <span data-ttu-id="c36d3-206">如需支援的資料類型的清單，請參閱適當<xref:System.Data.OracleClient.OracleType>成員。</span><span class="sxs-lookup"><span data-stu-id="c36d3-206">For a list of the supported data types, see the appropriate <xref:System.Data.OracleClient.OracleType> member.</span></span> <span data-ttu-id="c36d3-207">如需詳細資訊，請參閱[DataAdapter 的參數](~/docs/framework/data/adonet/dataadapter-parameters.md)。</span><span class="sxs-lookup"><span data-stu-id="c36d3-207">For more information, see [DataAdapter Parameters](~/docs/framework/data/adonet/dataadapter-parameters.md).</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ParameterName">
+      <MemberSignature Language="C#" Value="public override string ParameterName { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ParameterName" />
+      <MemberSignature Language="DocId" Value="P:System.Data.OracleClient.OracleParameter.ParameterName" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property ParameterName As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::String ^ ParameterName { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDataParameter.ParameterName</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-208">取得或設定 <see cref="T:System.Data.OracleClient.OracleParameter" /> 的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-208">Gets or sets the name of the <see cref="T:System.Data.OracleClient.OracleParameter" />.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="c36d3-209">
+            <see cref="T:System.Data.OracleClient.OracleParameter" /> 的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-209">The name of the <see cref="T:System.Data.OracleClient.OracleParameter" />.</span>
+          </span>
+          <span data-ttu-id="c36d3-210">預設為空字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-210">The default is an empty string.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-211">.NET Framework Data Provider for Oracle 不支援以問號 （？） 標示為位置參數。</span><span class="sxs-lookup"><span data-stu-id="c36d3-211">The .NET Framework Data Provider for Oracle does not support positional parameters that are marked with a question mark (?).</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="c36d3-212">下列範例會建立<xref:System.Data.OracleClient.OracleParameter>並設定其屬性的某些。</span><span class="sxs-lookup"><span data-stu-id="c36d3-212">The following example creates a <xref:System.Data.OracleClient.OracleParameter> and sets some of its properties.</span></span>  
+  
+```vb  
+Public Sub CreateOracleDbParameter()  
+   Dim parameter As New OracleParameter()  
+   parameter.ParameterName = "pDName"  
+   parameter.DbType = DbType.String  
+   parameter.Value = "ENGINEERING"  
+   parameter.SourceColumn = "DName"  
+End Sub  
+```  
+  
+```csharp  
+public void CreateOracleDbParameter()   
+{  
+   OracleParameter parameter = new OracleParameter();  
+   parameter.ParameterName = "pDName";  
+   parameter.DbType = DbType.String;  
+   parameter.Value = "ENGINEERING";  
+   parameter.SourceColumn = "DName";  
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Precision">
+      <MemberSignature Language="C#" Value="public byte Precision { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int8 Precision" />
+      <MemberSignature Language="DocId" Value="P:System.Data.OracleClient.OracleParameter.Precision" />
+      <MemberSignature Language="VB.NET" Value="Public Property Precision As Byte" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Byte Precision { System::Byte get(); void set(System::Byte value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDbDataParameter.Precision</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.Browsable(false)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Obsolete("Precision has been deprecated.  Use the Math classes to explicitly set the precision of a decimal.  http://go.microsoft.com/fwlink/?linkid=14202")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Byte</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-213">取得或設定用來表示 <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> 屬性的最大位數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-213">Gets or sets the maximum number of digits used to represent the <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> property.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="c36d3-214">用來表示 <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> 屬性的最大位數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-214">The maximum number of digits used to represent the <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> property.</span>
+          </span>
+          <span data-ttu-id="c36d3-215">預設值為 0，指出資料提供者為 <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> 設定精確度。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-215">The default value is 0, which indicates that the data provider sets the precision for <see cref="P:System.Data.OracleClient.OracleParameter.Value" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-216">設定<xref:System.Data.OracleClient.OracleParameter.Precision%2A>或<xref:System.Data.OracleClient.OracleParameter.Scale%2A>屬性沒有任何作用。</span><span class="sxs-lookup"><span data-stu-id="c36d3-216">Setting the <xref:System.Data.OracleClient.OracleParameter.Precision%2A> or <xref:System.Data.OracleClient.OracleParameter.Scale%2A> properties has no effect.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ResetDbType">
+      <MemberSignature Language="C#" Value="public override void ResetDbType ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void ResetDbType() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.OracleClient.OracleParameter.ResetDbType" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub ResetDbType ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void ResetDbType();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-217">重設與此 <see cref="T:System.Data.OracleClient.OracleParameter" /> 相關聯的類型。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-217">Resets the type associated with this <see cref="T:System.Data.OracleClient.OracleParameter" />.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-218">執行命令時，其中包含參數值、 程式碼可以明確地設定參數的型別或參數可以推斷其類型的值。</span><span class="sxs-lookup"><span data-stu-id="c36d3-218">When executing a command that includes parameter values, code can either set the type of a parameter explicitly, or the parameter can infer its type from its value.</span></span> <span data-ttu-id="c36d3-219">呼叫這個方法，使推斷其類型，從傳入參數中的值時，一次，會重設參數。</span><span class="sxs-lookup"><span data-stu-id="c36d3-219">Calling this method resets the parameter so that it can again infer its type from the value passed in the parameter.</span></span> <span data-ttu-id="c36d3-220">呼叫這個方法會同時影響<xref:System.Data.Odbc.OdbcParameter.DbType%2A>和<xref:System.Data.OracleClient.OracleParameter.OracleType%2A>屬性<xref:System.Data.OracleClient.OracleParameter>。</span><span class="sxs-lookup"><span data-stu-id="c36d3-220">Calling this method affects both the <xref:System.Data.Odbc.OdbcParameter.DbType%2A> and <xref:System.Data.OracleClient.OracleParameter.OracleType%2A> properties of the <xref:System.Data.OracleClient.OracleParameter>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Data.OracleClient.OracleParameter.ResetOracleType" />
+        <altmember cref="P:System.Data.Odbc.OdbcParameter.DbType" />
+        <altmember cref="P:System.Data.OracleClient.OracleParameter.OracleType" />
+      </Docs>
+    </Member>
+    <Member MemberName="ResetOracleType">
+      <MemberSignature Language="C#" Value="public void ResetOracleType ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ResetOracleType() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.OracleClient.OracleParameter.ResetOracleType" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ResetOracleType ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ResetOracleType();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-221">重設與此 <see cref="T:System.Data.OracleClient.OracleParameter" /> 相關聯的類型。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-221">Resets the type associated with this <see cref="T:System.Data.OracleClient.OracleParameter" />.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-222">執行命令時，其中包含參數值、 程式碼可以明確地設定參數的型別或參數可以推斷其類型的值。</span><span class="sxs-lookup"><span data-stu-id="c36d3-222">When executing a command that includes parameter values, code can either set the type of a parameter explicitly, or the parameter can infer its type from its value.</span></span> <span data-ttu-id="c36d3-223">呼叫這個方法，使推斷其類型，從傳入參數中的值時，一次，會重設參數。</span><span class="sxs-lookup"><span data-stu-id="c36d3-223">Calling this method resets the parameter so that it can again infer its type from the value passed in the parameter.</span></span> <span data-ttu-id="c36d3-224">呼叫這個方法會同時影響<xref:System.Data.Odbc.OdbcParameter.DbType%2A>和<xref:System.Data.OracleClient.OracleParameter.OracleType%2A>屬性<xref:System.Data.OracleClient.OracleParameter>。</span><span class="sxs-lookup"><span data-stu-id="c36d3-224">Calling this method affects both the <xref:System.Data.Odbc.OdbcParameter.DbType%2A> and <xref:System.Data.OracleClient.OracleParameter.OracleType%2A> properties of the <xref:System.Data.OracleClient.OracleParameter>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Data.Odbc.OdbcParameter.ResetDbType" />
+        <altmember cref="P:System.Data.Odbc.OdbcParameter.DbType" />
+        <altmember cref="P:System.Data.OracleClient.OracleParameter.OracleType" />
+      </Docs>
+    </Member>
+    <Member MemberName="Scale">
+      <MemberSignature Language="C#" Value="public byte Scale { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int8 Scale" />
+      <MemberSignature Language="DocId" Value="P:System.Data.OracleClient.OracleParameter.Scale" />
+      <MemberSignature Language="VB.NET" Value="Public Property Scale As Byte" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Byte Scale { System::Byte get(); void set(System::Byte value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDbDataParameter.Scale</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.Browsable(false)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Obsolete("Scale has been deprecated.  Use the Math classes to explicitly set the scale of a decimal.  http://go.microsoft.com/fwlink/?linkid=14202")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Byte</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-225">取得或設定 <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> 所解析的小數點位數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-225">Gets or sets the number of decimal places to which <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> is resolved.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="c36d3-226">
+            <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> 所解析的小數點位數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-226">The number of decimal places to which <see cref="P:System.Data.OracleClient.OracleParameter.Value" /> is resolved.</span>
+          </span>
+          <span data-ttu-id="c36d3-227">預設值為 0。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-227">The default is 0.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-228">設定<xref:System.Data.OracleClient.OracleParameter.Precision%2A>或<xref:System.Data.OracleClient.OracleParameter.Scale%2A>屬性沒有任何作用。</span><span class="sxs-lookup"><span data-stu-id="c36d3-228">Setting the <xref:System.Data.OracleClient.OracleParameter.Precision%2A> or <xref:System.Data.OracleClient.OracleParameter.Scale%2A> properties has no effect.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Size">
+      <MemberSignature Language="C#" Value="public override int Size { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Size" />
+      <MemberSignature Language="DocId" Value="P:System.Data.OracleClient.OracleParameter.Size" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property Size As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property int Size { int get(); void set(int value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDbDataParameter.Size</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-229">取得或設定資料行中資料的最大大小 (以位元組為單位)。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-229">Gets or sets the maximum size, in bytes, of the data within the column.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="c36d3-230">資料行中資料的最大大小 (以位元組為單位)。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-230">The maximum size, in bytes, of the data within the column.</span>
+          </span>
+          <span data-ttu-id="c36d3-231">預設值為 0 (當您不想指定值的最大大小時可以使用)。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-231">The default value is 0 (to be used when you do not want to specify the maximum size of the value).</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-232">設定<xref:System.Data.OracleClient.OracleParameter.Size%2A>會影響參數的輸入的值。</span><span class="sxs-lookup"><span data-stu-id="c36d3-232">Setting <xref:System.Data.OracleClient.OracleParameter.Size%2A> affects only the input value of a parameter.</span></span> <span data-ttu-id="c36d3-233">這個屬性不影響傳回值和輸出參數。</span><span class="sxs-lookup"><span data-stu-id="c36d3-233">Return values and output parameters are not affected by this property.</span></span>  
+  
+ <span data-ttu-id="c36d3-234"><xref:System.Data.OracleClient.OracleParameter.Size%2A>屬性適用於二進位和字串類型。</span><span class="sxs-lookup"><span data-stu-id="c36d3-234">The <xref:System.Data.OracleClient.OracleParameter.Size%2A> property is used for binary and string types.</span></span>  
+  
+ <span data-ttu-id="c36d3-235">針對非字串資料類型和 ANSI 字串資料，<xref:System.Data.OracleClient.OracleParameter.Size%2A>屬性參考到的位元組數目。</span><span class="sxs-lookup"><span data-stu-id="c36d3-235">For nonstring data types and ANSI string data, the <xref:System.Data.OracleClient.OracleParameter.Size%2A> property refers to the number of bytes.</span></span> <span data-ttu-id="c36d3-236">Unicode 字串資料，<xref:System.Data.OracleClient.OracleParameter.Size%2A>指的是字元數。</span><span class="sxs-lookup"><span data-stu-id="c36d3-236">For Unicode string data, <xref:System.Data.OracleClient.OracleParameter.Size%2A> refers to the number of characters.</span></span> <span data-ttu-id="c36d3-237">字串的計數不包括結束的字元。</span><span class="sxs-lookup"><span data-stu-id="c36d3-237">The count for strings does not include the terminating character.</span></span>  
+  
+ <span data-ttu-id="c36d3-238">可變長度資料類型，<xref:System.Data.OracleClient.OracleParameter.Size%2A>說明資料傳輸至伺服器的最大數量。</span><span class="sxs-lookup"><span data-stu-id="c36d3-238">For variable-length data types, <xref:System.Data.OracleClient.OracleParameter.Size%2A> describes the maximum amount of data to transmit to the server.</span></span> <span data-ttu-id="c36d3-239">例如，針對 Unicode 字串值，<xref:System.Data.OracleClient.OracleParameter.Size%2A>無法用來限制傳送給伺服器，首先一百個字元的資料量。</span><span class="sxs-lookup"><span data-stu-id="c36d3-239">For example, for a Unicode string value, <xref:System.Data.OracleClient.OracleParameter.Size%2A> could be used to limit the amount of data sent to the server to the first one hundred characters.</span></span>  
+  
+ <span data-ttu-id="c36d3-240">針對雙向和輸出參數和傳回值，您必須設定大小的值。</span><span class="sxs-lookup"><span data-stu-id="c36d3-240">For bidirectional and output parameters, and return values, you must set the value of Size.</span></span> <span data-ttu-id="c36d3-241">這是不必要的輸入參數，而且如果未明確設定的值推斷，從指定之參數的實際大小參數化陳述式執行時。</span><span class="sxs-lookup"><span data-stu-id="c36d3-241">This is not required for input parameters, and if not explicitly set, the value of is inferred from the actual size of the specified parameter when a parameterized statement is executed.</span></span>  
+  
+ <span data-ttu-id="c36d3-242"><xref:System.Data.OracleClient.OracleParameter.DbType%2A>， <xref:System.Data.OracleClient.OracleParameter.OracleType%2A>，和<xref:System.Data.OracleClient.OracleParameter.Size%2A>參數的屬性，可以藉由設定推斷<xref:System.Data.OracleClient.OracleParameter.Value%2A>。</span><span class="sxs-lookup"><span data-stu-id="c36d3-242">The <xref:System.Data.OracleClient.OracleParameter.DbType%2A>, <xref:System.Data.OracleClient.OracleParameter.OracleType%2A>, and <xref:System.Data.OracleClient.OracleParameter.Size%2A> properties of a parameter can be inferred by setting <xref:System.Data.OracleClient.OracleParameter.Value%2A>.</span></span> <span data-ttu-id="c36d3-243">因此，您不需要指定它們。</span><span class="sxs-lookup"><span data-stu-id="c36d3-243">Therefore, you are not required to specify them.</span></span> <span data-ttu-id="c36d3-244">不過，它們不會顯示在<xref:System.Data.OracleClient.OracleParameter>屬性設定。</span><span class="sxs-lookup"><span data-stu-id="c36d3-244">However, they are not exposed in <xref:System.Data.OracleClient.OracleParameter> property settings.</span></span> <span data-ttu-id="c36d3-245">例如，如果已推斷參數的大小，<xref:System.Data.OracleClient.OracleParameter.Size%2A>陳述式執行之後未包含推斷的值。</span><span class="sxs-lookup"><span data-stu-id="c36d3-245">For example, if the size of the parameter has been inferred, <xref:System.Data.OracleClient.OracleParameter.Size%2A> does not contain inferred value after statement execution.</span></span>  
+  
+ <span data-ttu-id="c36d3-246">固定長度資料類型的值<xref:System.Data.OracleClient.OracleParameter.Size%2A>會被忽略。</span><span class="sxs-lookup"><span data-stu-id="c36d3-246">For fixed length data types, the value of <xref:System.Data.OracleClient.OracleParameter.Size%2A> is ignored.</span></span> <span data-ttu-id="c36d3-247">它可以擷取僅供參考之用，並且會傳回的位元組的提供者會使用傳輸伺服器參數的值時的最大數量。</span><span class="sxs-lookup"><span data-stu-id="c36d3-247">It can be retrieved for informational purposes, and returns the maximum amount of bytes the provider uses when transmitting the value of the parameter to the server.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="c36d3-248">下列範例會建立<xref:System.Data.OracleClient.OracleParameter>並設定其屬性的某些。</span><span class="sxs-lookup"><span data-stu-id="c36d3-248">The following example creates a <xref:System.Data.OracleClient.OracleParameter> and sets some of its properties.</span></span>  
+  
+```vb  
+Public Sub CreateOracleParameter()  
+   Dim parameter As New OracleParameter("pDescription", OracleType.VarChar)  
+   parameter.IsNullable = True  
+   parameter.Direction = ParameterDirection.Output  
+   parameter.Size = 88  
+End Sub  
+```  
+  
+```csharp  
+public void CreateOracleParameter()   
+{  
+   OracleParameter parameter = new OracleParameter("pDescription", OracleType.VarChar);  
+   parameter.IsNullable = true;  
+   parameter.Direction = ParameterDirection.Output;  
+   parameter.Size = 88;  
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SourceColumn">
+      <MemberSignature Language="C#" Value="public override string SourceColumn { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string SourceColumn" />
+      <MemberSignature Language="DocId" Value="P:System.Data.OracleClient.OracleParameter.SourceColumn" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property SourceColumn As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::String ^ SourceColumn { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDataParameter.SourceColumn</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-249">取得或設定來源資料行的名稱，其對應至 <see cref="T:System.Data.DataSet" /> 並用於載入或傳回 <see cref="P:System.Data.OracleClient.OracleParameter.Value" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-249">Gets or sets the name of the source column mapped to the <see cref="T:System.Data.DataSet" /> and used for loading or returning the <see cref="P:System.Data.OracleClient.OracleParameter.Value" /></span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="c36d3-250">對應至 <see cref="T:System.Data.DataSet" /> 的來源資料行名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-250">The name of the source column mapped to the <see cref="T:System.Data.DataSet" />.</span>
+          </span>
+          <span data-ttu-id="c36d3-251">預設為空字串 ("")。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-251">The default is an empty string ("").</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-252">值之間的連結<xref:System.Data.OracleClient.OracleParameter>和<xref:System.Data.DataTable>可能的值而定的雙向<xref:System.Data.OracleClient.OracleParameter.Direction%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="c36d3-252">The link between the value of the <xref:System.Data.OracleClient.OracleParameter> and the <xref:System.Data.DataTable> may be bidirectional depending on the value of the <xref:System.Data.OracleClient.OracleParameter.Direction%2A> property.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="c36d3-253">下列範例會建立<xref:System.Data.OracleClient.OracleParameter>並設定其屬性的某些。</span><span class="sxs-lookup"><span data-stu-id="c36d3-253">The following example creates a <xref:System.Data.OracleClient.OracleParameter> and sets some of its properties.</span></span>  
+  
+```vb  
+Public Sub CreateOracleDbParameter()  
+   Dim parameter As New OracleParameter()  
+   parameter.ParameterName = "pDName"  
+   parameter.DbType = DbType.String  
+   parameter.Value = "ENGINEERING"  
+   parameter.SourceColumn = "DName"  
+End Sub  
+```  
+  
+```csharp  
+public void CreateOracleDbParameter()   
+{  
+   OracleParameter parameter = new OracleParameter();  
+   parameter.ParameterName = "pDName";  
+   parameter.DbType = DbType.String;  
+   parameter.Value = "ENGINEERING";  
+   parameter.SourceColumn = "DName";  
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SourceColumnNullMapping">
+      <MemberSignature Language="C#" Value="public override bool SourceColumnNullMapping { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SourceColumnNullMapping" />
+      <MemberSignature Language="DocId" Value="P:System.Data.OracleClient.OracleParameter.SourceColumnNullMapping" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property SourceColumnNullMapping As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool SourceColumnNullMapping { bool get(); void set(bool value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-254">設定或取得值，這個值表示來源資料行是否可為 Null。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-254">Sets or gets a value which indicates whether the source column is nullable.</span>
+          </span>
+          <span data-ttu-id="c36d3-255">這可讓 <see cref="T:System.Data.OracleClient.OracleCommandBuilder" /> 正確產生可為 Null 的資料行的 Update 陳述式。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-255">This allows <see cref="T:System.Data.OracleClient.OracleCommandBuilder" /> to correctly generate Update statements for nullable columns.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="c36d3-256">如果來源資料行可為 null，則為 <see langword="True" />，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-256">
+              <see langword="True" /> if the source column is nullable, otherwise <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-257"><xref:System.Data.OracleClient.OracleParameter.SourceColumnNullMapping%2A> 正由<xref:System.Data.OracleClient.OracleCommandBuilder>正確處理可為 null 的資料行時，產生更新命令。</span><span class="sxs-lookup"><span data-stu-id="c36d3-257"><xref:System.Data.OracleClient.OracleParameter.SourceColumnNullMapping%2A> is used by the <xref:System.Data.OracleClient.OracleCommandBuilder> to correctly generate update commands when dealing with nullable columns.</span></span> <span data-ttu-id="c36d3-258">一般而言，使用<xref:System.Data.OracleClient.OracleParameter.SourceColumnNullMapping%2A>僅限於開發人員繼承自<xref:System.Data.OracleClient.OracleCommandBuilder>。</span><span class="sxs-lookup"><span data-stu-id="c36d3-258">Generally, use of <xref:System.Data.OracleClient.OracleParameter.SourceColumnNullMapping%2A> is limited to developers inheriting from <xref:System.Data.OracleClient.OracleCommandBuilder>.</span></span>  
+  
+ <span data-ttu-id="c36d3-259"><xref:System.Data.Common.DbCommandBuilder> 使用這個屬性來判斷來源資料行是否可為 null，並將此屬性設定為`true`是否可為 null，和`false`如果不是。</span><span class="sxs-lookup"><span data-stu-id="c36d3-259"><xref:System.Data.Common.DbCommandBuilder> uses this property to determine whether the source column is nullable, and sets this property to `true` if it is nullable, and `false` if it is not.</span></span> <span data-ttu-id="c36d3-260">當<xref:System.Data.OracleClient.OracleCommandBuilder>會產生其 Update 陳述式，它會檢查<xref:System.Data.OracleClient.OracleParameter.SourceColumnNullMapping%2A>每個參數。</span><span class="sxs-lookup"><span data-stu-id="c36d3-260">When <xref:System.Data.OracleClient.OracleCommandBuilder> is generating its Update statement, it examines the <xref:System.Data.OracleClient.OracleParameter.SourceColumnNullMapping%2A> for each parameter.</span></span> <span data-ttu-id="c36d3-261">如果屬性是`true`，<xref:System.Data.OracleClient.OracleCommandBuilder>會產生類似下面的 WHERE 子句 （在這個查詢運算式中，"FieldName"代表欄位的名稱）：</span><span class="sxs-lookup"><span data-stu-id="c36d3-261">If the property is `true`, <xref:System.Data.OracleClient.OracleCommandBuilder> generates a WHERE clauses like the following (in this query expression, "FieldName" represents the name of the field):</span></span>  
+  
+```  
+((@IsNull_FieldName = 1 AND FieldName IS NULL) OR   
+  (FieldName = @Original_FieldName))  
+```  
+  
+ <span data-ttu-id="c36d3-262">如果<xref:System.Data.OracleClient.OracleParameter.SourceColumnNullMapping%2A>為 false，此欄位為<xref:System.Data.OracleClient.OracleCommandBuilder>會產生下列 WHERE 子句：</span><span class="sxs-lookup"><span data-stu-id="c36d3-262">If <xref:System.Data.OracleClient.OracleParameter.SourceColumnNullMapping%2A> for the field is false, <xref:System.Data.OracleClient.OracleCommandBuilder> generates the following WHERE clause:</span></span>  
+  
+```  
+FieldName = @OriginalFieldName  
+```  
+  
+ <span data-ttu-id="c36d3-263">此外，@IsNull_FieldName包含 1，如果來源欄位包含 null 和 0 如果不存在。</span><span class="sxs-lookup"><span data-stu-id="c36d3-263">In addition, @IsNull_FieldName contains 1 if the source field contains null, and 0 if it does not.</span></span> <span data-ttu-id="c36d3-264">這項機制可讓 Oracle 伺服器中的效能最佳化，並提供可跨多個提供者的通用程式碼。</span><span class="sxs-lookup"><span data-stu-id="c36d3-264">This mechanism allows for a performance optimization in Oracle Server, and provides for common code that works across multiple providers.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SourceVersion">
+      <MemberSignature Language="C#" Value="public override System.Data.DataRowVersion SourceVersion { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Data.DataRowVersion SourceVersion" />
+      <MemberSignature Language="DocId" Value="P:System.Data.OracleClient.OracleParameter.SourceVersion" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property SourceVersion As DataRowVersion" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Data::DataRowVersion SourceVersion { System::Data::DataRowVersion get(); void set(System::Data::DataRowVersion value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDataParameter.SourceVersion</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Data.DataRowVersion</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-265">取得或設定載入 <see cref="T:System.Data.DataRowVersion" /> 時要使用的 <see cref="P:System.Data.OracleClient.OracleParameter.Value" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-265">Gets or sets the <see cref="T:System.Data.DataRowVersion" /> to use when you load <see cref="P:System.Data.OracleClient.OracleParameter.Value" />.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="c36d3-266">其中一個 <see cref="T:System.Data.DataRowVersion" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-266">One of the <see cref="T:System.Data.DataRowVersion" /> values.</span>
+          </span>
+          <span data-ttu-id="c36d3-267">預設值為 <see langword="Current" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-267">The default is <see langword="Current" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-268">這個屬性供<xref:System.Data.OracleClient.OracleDataAdapter.UpdateCommand%2A>期間<xref:System.Data.Common.DbDataAdapter.Update%2A?displayProperty=nameWithType>以判斷原始或目前的值是否用於參數值。</span><span class="sxs-lookup"><span data-stu-id="c36d3-268">This property is used by the <xref:System.Data.OracleClient.OracleDataAdapter.UpdateCommand%2A> during the <xref:System.Data.Common.DbDataAdapter.Update%2A?displayProperty=nameWithType> to determine whether the original or current value is used for a parameter value.</span></span> <span data-ttu-id="c36d3-269">這可讓更新的主索引鍵。</span><span class="sxs-lookup"><span data-stu-id="c36d3-269">This lets primary keys be updated.</span></span> <span data-ttu-id="c36d3-270">此屬性設定為版本<xref:System.Data.DataRow>供<xref:System.Data.DataRow.Item%2A?displayProperty=nameWithType>屬性 (<xref:System.Data.DataRow>索引子)，或<xref:System.Data.DataRow.GetChildRows%2A?displayProperty=nameWithType>方法<xref:System.Data.DataRow>物件。</span><span class="sxs-lookup"><span data-stu-id="c36d3-270">This property is set to the version of the <xref:System.Data.DataRow> used by the <xref:System.Data.DataRow.Item%2A?displayProperty=nameWithType> property (<xref:System.Data.DataRow> indexer), or the <xref:System.Data.DataRow.GetChildRows%2A?displayProperty=nameWithType> method of the <xref:System.Data.DataRow> object.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="c36d3-271">下列範例會建立<xref:System.Data.OracleClient.OracleParameter>並設定其屬性的某些。</span><span class="sxs-lookup"><span data-stu-id="c36d3-271">The following example creates a <xref:System.Data.OracleClient.OracleParameter> and sets some of its properties.</span></span>  
+  
+```vb  
+Public Sub CreateOracleParameter()  
+   Dim parameter As New OracleParameter("pDName", OracleType.VarChar)  
+   parameter.IsNullable = True  
+   parameter.SourceColumn = "Description"  
+   parameter.SourceVersion = DataRowVersion.Current  
+   parameter.Direction = ParameterDirection.Output  
+End Sub  
+```  
+  
+```csharp  
+public void CreateOracleParameter()   
+{  
+   OracleParameter parameter = new OracleParameter("pDName", OracleType.VarChar);  
+   parameter.IsNullable = true;  
+   parameter.SourceColumn = "Description";  
+   parameter.SourceVersion = DataRowVersion.Current;  
+   parameter.Direction = ParameterDirection.Output;  
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ICloneable.Clone">
+      <MemberSignature Language="C#" Value="object ICloneable.Clone ();" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance object System.ICloneable.Clone() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.OracleClient.OracleParameter.System#ICloneable#Clone" />
+      <MemberSignature Language="VB.NET" Value="Function Clone () As Object Implements ICloneable.Clone" />
+      <MemberSignature Language="C++ CLI" Value=" virtual System::Object ^ System.ICloneable.Clone() = ICloneable::Clone;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ICloneable.Clone</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-272">如需這個成員的說明，請參閱 <see cref="M:System.ICloneable.Clone" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-272">For a description of this member, see <see cref="M:System.ICloneable.Clone" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="c36d3-273">這個執行個體複本的新物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-273">A new object that is a copy of this instance.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-274">這個成員是明確介面成員實作，</span><span class="sxs-lookup"><span data-stu-id="c36d3-274">This member is an explicit interface member implementation.</span></span> <span data-ttu-id="c36d3-275">只有在 <xref:System.Data.OracleClient.OracleParameter> 執行個體轉換成 <xref:System.ICloneable> 介面時，才能使用這個成員。</span><span class="sxs-lookup"><span data-stu-id="c36d3-275">It can be used only when the <xref:System.Data.OracleClient.OracleParameter> instance is cast to an <xref:System.ICloneable> interface.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ToString">
+      <MemberSignature Language="C#" Value="public override string ToString ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance string ToString() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.OracleClient.OracleParameter.ToString" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function ToString () As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::String ^ ToString();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-276">取得包含 <see cref="P:System.Data.OracleClient.OracleParameter.ParameterName" /> 的字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-276">Gets a string that contains the <see cref="P:System.Data.OracleClient.OracleParameter.ParameterName" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="c36d3-277">包含 <see cref="P:System.Data.OracleClient.OracleParameter.ParameterName" /> 的字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-277">A string that contains the <see cref="P:System.Data.OracleClient.OracleParameter.ParameterName" />.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Value">
+      <MemberSignature Language="C#" Value="public override object Value { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance object Value" />
+      <MemberSignature Language="DocId" Value="P:System.Data.OracleClient.OracleParameter.Value" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property Value As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Object ^ Value { System::Object ^ get(); void set(System::Object ^ value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDataParameter.Value</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.OracleClient</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.RefreshProperties</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.TypeConverter(typeof(System.ComponentModel.StringConverter))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="c36d3-278">取得或設定參數的值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-278">Gets or sets the value of the parameter.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="c36d3-279">物件，為參數的值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-279">An object that is the value of the parameter.</span>
+          </span>
+          <span data-ttu-id="c36d3-280">預設值為 null。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="c36d3-280">The default value is null.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="c36d3-281">輸入參數的值繫結至<xref:System.Data.OracleClient.OracleCommand>傳送到伺服器。</span><span class="sxs-lookup"><span data-stu-id="c36d3-281">For input parameters, the value is bound to the <xref:System.Data.OracleClient.OracleCommand> that is sent to the server.</span></span> <span data-ttu-id="c36d3-282">輸出和傳回值參數，在完成設定值<xref:System.Data.OracleClient.OracleCommand>及之後<xref:System.Data.OracleClient.OracleDataReader>已關閉。</span><span class="sxs-lookup"><span data-stu-id="c36d3-282">For output and return-value parameters, the value is set on completion of the <xref:System.Data.OracleClient.OracleCommand> and after the <xref:System.Data.OracleClient.OracleDataReader> is closed.</span></span>  
+  
+ <span data-ttu-id="c36d3-283">輸入參數，<xref:System.Data.OracleClient.OracleParameter.Value%2A>可以設定為 Microsoft.NET Framework 資料型別或 Oracle 資料類型的物件 (例如，<xref:System.Data.OracleClient.OracleNumber>或<xref:System.Data.OracleClient.OracleString>)。</span><span class="sxs-lookup"><span data-stu-id="c36d3-283">For an input parameter, <xref:System.Data.OracleClient.OracleParameter.Value%2A> can be set to an object of either a Microsoft .NET Framework data type or an Oracle data type (for example, an <xref:System.Data.OracleClient.OracleNumber> or <xref:System.Data.OracleClient.OracleString>).</span></span>  
+  
+ <span data-ttu-id="c36d3-284">當您傳送 null 參數值到伺服器時，您必須指定 DBNull，不是 null。</span><span class="sxs-lookup"><span data-stu-id="c36d3-284">When you send a null parameter value to the server, you must specify DBNull, not null.</span></span> <span data-ttu-id="c36d3-285">系統中的 null 值是空的物件沒有值。</span><span class="sxs-lookup"><span data-stu-id="c36d3-285">A null value in the system is an empty object that has no value.</span></span> <span data-ttu-id="c36d3-286">DBNull 用來表示 null 值。</span><span class="sxs-lookup"><span data-stu-id="c36d3-286">DBNull is used to represent null values.</span></span>  
+  
+ <span data-ttu-id="c36d3-287">如果應用程式指定的資料庫型別，繫結的值會轉換成該類型，提供者將資料傳送到伺服器時。</span><span class="sxs-lookup"><span data-stu-id="c36d3-287">If the application specifies the database type, the bound value is converted to that type when the provider sends the data to the server.</span></span> <span data-ttu-id="c36d3-288">提供者會嘗試將值的任何類型的轉換，如果支援<xref:System.IConvertible>介面。</span><span class="sxs-lookup"><span data-stu-id="c36d3-288">The provider tries to convert any type of value if it supports the <xref:System.IConvertible> interface.</span></span> <span data-ttu-id="c36d3-289">如果指定的型別不相容的值，可能導致轉換錯誤。</span><span class="sxs-lookup"><span data-stu-id="c36d3-289">Conversion errors may result if the specified type is not compatible with the value.</span></span>  
+  
+ <span data-ttu-id="c36d3-290"><xref:System.Data.OracleClient.OracleParameter.DbType%2A>， <xref:System.Data.OracleClient.OracleParameter.OracleType%2A>，和<xref:System.Data.OracleClient.OracleParameter.Size%2A>參數的屬性，來推斷設定的值。</span><span class="sxs-lookup"><span data-stu-id="c36d3-290">The <xref:System.Data.OracleClient.OracleParameter.DbType%2A>, <xref:System.Data.OracleClient.OracleParameter.OracleType%2A>, and <xref:System.Data.OracleClient.OracleParameter.Size%2A> properties of a parameter can be inferred by setting Value.</span></span> <span data-ttu-id="c36d3-291">因此，您不需要指定它們。</span><span class="sxs-lookup"><span data-stu-id="c36d3-291">Therefore, you are not required to specify them.</span></span> <span data-ttu-id="c36d3-292">不過，它們不會顯示在<xref:System.Data.OracleClient.OracleParameter>屬性設定。</span><span class="sxs-lookup"><span data-stu-id="c36d3-292">However, they are not exposed in <xref:System.Data.OracleClient.OracleParameter> property settings.</span></span> <span data-ttu-id="c36d3-293">比方說，如果已推斷參數的大小，大小沒有推斷的值之後的陳述式執行。</span><span class="sxs-lookup"><span data-stu-id="c36d3-293">For example, if the size of the parameter has been inferred, Size does not contain inferred value after statement execution.</span></span>  
+  
+ <span data-ttu-id="c36d3-294">`InputOutput`， `Output`，和`ReturnValue` <xref:System.Data.ParameterDirection> Value 屬性所使用的值將會 Microsoft.NET Framework 資料型別，除非輸入的值 Oracle 資料類型 (例如，<xref:System.Data.OracleClient.OracleNumber>或<xref:System.Data.OracleClient.OracleString>)。</span><span class="sxs-lookup"><span data-stu-id="c36d3-294">The `InputOutput`, `Output`, and `ReturnValue`<xref:System.Data.ParameterDirection> values used by the Value property will be Microsoft .NET Framework data types, unless the input value was an Oracle data type (for example, <xref:System.Data.OracleClient.OracleNumber> or <xref:System.Data.OracleClient.OracleString>).</span></span> <span data-ttu-id="c36d3-295">這不會套用至 REF CURSOR，BFILE 或 LOB 資料類型。</span><span class="sxs-lookup"><span data-stu-id="c36d3-295">This does not apply to REF CURSOR, BFILE, or LOB data types.</span></span>  
+  
+ <span data-ttu-id="c36d3-296"><xref:System.Data.OracleClient.OracleParameter.Value%2A>屬性覆寫**更新**方法。</span><span class="sxs-lookup"><span data-stu-id="c36d3-296">The <xref:System.Data.OracleClient.OracleParameter.Value%2A> property is overwritten by the **Update** method.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
