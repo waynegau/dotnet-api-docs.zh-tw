@@ -1,0 +1,370 @@
+<Type Name="PageStatePersister" FullName="System.Web.UI.PageStatePersister">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="8088aa9ec9624ae83238fa8fc2f4457413effd55" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public abstract class PageStatePersister" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit PageStatePersister extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Web.UI.PageStatePersister" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class PageStatePersister" />
+  <TypeSignature Language="C++ CLI" Value="public ref class PageStatePersister abstract" />
+  <AssemblyInfo>
+    <AssemblyName>System.Web</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="51ed0-101">提供 ASP.NET 檢視狀態保存性機制的基本功能。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="51ed0-101">Provides the base functionality for ASP.NET view state persistence mechanisms.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="51ed0-102">HTTP 要求和回應會原本是無狀態。</span><span class="sxs-lookup"><span data-stu-id="51ed0-102">The HTTP requests and responses are inherently stateless.</span></span> <span data-ttu-id="51ed0-103">若要維護狀態資訊之間的 HTTP 要求，可以儲存伺服器的 ASP.NET 網頁<xref:System.Web.UI.Page>狀態。</span><span class="sxs-lookup"><span data-stu-id="51ed0-103">To maintain state information between HTTP requests, ASP.NET server pages can store <xref:System.Web.UI.Page> state.</span></span> <span data-ttu-id="51ed0-104">此狀態下，稱為檢視狀態包含網頁、 控制項設定和資料，讓網頁及控制項顯示如同它們是相同的使用者所看到和其最後一個往返伺服器互動。</span><span class="sxs-lookup"><span data-stu-id="51ed0-104">This state, called view state, consists of page and control settings and data that make the page and controls appear as if they are the same ones that the user saw and interacted with on their last round trip to the server.</span></span> <span data-ttu-id="51ed0-105">若要儲存檢視狀態相同的頁面上的連續要求之間，有多個機制。</span><span class="sxs-lookup"><span data-stu-id="51ed0-105">Several mechanisms exist to store view state between successive requests to the same page.</span></span> <span data-ttu-id="51ed0-106">抽象<xref:System.Web.UI.PageStatePersister>類別代表這些狀態資訊儲存機制的基底類別。</span><span class="sxs-lookup"><span data-stu-id="51ed0-106">The abstract <xref:System.Web.UI.PageStatePersister> class represents the base class for these state information storage mechanisms.</span></span>  
+  
+ <span data-ttu-id="51ed0-107">在 ASP.NET 中的預設檢視狀態持續性機制是可以維持隱藏的 HTML 項目以 Base64 編碼字串形式的狀態資訊 (具有的項目`type`屬性設為`"hidden"`) 頁面上。</span><span class="sxs-lookup"><span data-stu-id="51ed0-107">The default view state persistence mechanism in ASP.NET is to maintain the state information as a Base64-encoded string in a hidden HTML element (an element with the `type` attribute set to `"hidden"`) on the page.</span></span> <span data-ttu-id="51ed0-108">ASP.NET 網頁使用<xref:System.Web.UI.HiddenFieldPageStatePersister>物件來執行此工作，使用<xref:System.Web.UI.IStateFormatter>序列化和還原序列化物件的狀態資訊的執行個體。</span><span class="sxs-lookup"><span data-stu-id="51ed0-108">An ASP.NET page uses a <xref:System.Web.UI.HiddenFieldPageStatePersister> object to perform this work, using an <xref:System.Web.UI.IStateFormatter> instance to serialize and deserialize object state information.</span></span> <span data-ttu-id="51ed0-109">或者，您可以檢視狀態儲存為您的網頁中<xref:System.Web.HttpContext.Session%2A>物件上使用 server<xref:System.Web.UI.SessionPageStatePersister>行動用戶端具有有限的頻寬和資源的類別。</span><span class="sxs-lookup"><span data-stu-id="51ed0-109">Alternately, you can store the view state for your pages in the <xref:System.Web.HttpContext.Session%2A> object on the server using the <xref:System.Web.UI.SessionPageStatePersister> class for mobile clients with limited bandwidth and resources.</span></span> <span data-ttu-id="51ed0-110">在某些情況下，您可能會完全停用檢視狀態持續性。</span><span class="sxs-lookup"><span data-stu-id="51ed0-110">In some cases, you might disable view state persistence altogether.</span></span> <span data-ttu-id="51ed0-111">如果您這麼做時，結果是，有時候網頁及控制項依賴狀態持續性不正常運作。</span><span class="sxs-lookup"><span data-stu-id="51ed0-111">If you do this, the result is that sometimes pages and controls that rely on state persistence do not behave correctly.</span></span> <span data-ttu-id="51ed0-112">如需頁面狀態管理和檢視狀態的詳細資訊，請參閱[ASP.NET 狀態管理概觀](http://msdn.microsoft.com/library/0218d965-5d30-445b-b6a6-8870e70e63ce)。</span><span class="sxs-lookup"><span data-stu-id="51ed0-112">For more information about page state management and view state, see [ASP.NET State Management Overview](http://msdn.microsoft.com/library/0218d965-5d30-445b-b6a6-8870e70e63ce).</span></span>  
+  
+ <span data-ttu-id="51ed0-113">如果您要撰寫控制項，您可以儲存中的控制項的狀態資訊<xref:System.Web.UI.Control.ViewState%2A>字典，<xref:System.Web.UI.StateBag>物件。</span><span class="sxs-lookup"><span data-stu-id="51ed0-113">If you are writing controls, you can store state information for the controls in the <xref:System.Web.UI.Control.ViewState%2A> dictionary, which is a <xref:System.Web.UI.StateBag> object.</span></span> <span data-ttu-id="51ed0-114">開發人員會擷取到的控制項狀態<xref:System.Web.UI.PageStatePersister.ControlState%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="51ed0-114">A developer would retrieve the control state through the <xref:System.Web.UI.PageStatePersister.ControlState%2A> property.</span></span> <span data-ttu-id="51ed0-115">您可以指定索引鍵和值<xref:System.Web.UI.Control.ViewState%2A>屬性，而<xref:System.Web.UI.Page>物件序列化要求之間的狀態資訊。</span><span class="sxs-lookup"><span data-stu-id="51ed0-115">You assign keys and values to the <xref:System.Web.UI.Control.ViewState%2A> property, and the <xref:System.Web.UI.Page> object serializes the state information between requests.</span></span> <span data-ttu-id="51ed0-116">若要執行自訂處理在控制項中的狀態，請覆寫<xref:System.Web.UI.Control.LoadViewState%2A>和<xref:System.Web.UI.Control.SaveViewState%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="51ed0-116">To perform custom state handling in your control, override the <xref:System.Web.UI.Control.LoadViewState%2A> and <xref:System.Web.UI.Control.SaveViewState%2A> methods.</span></span> <span data-ttu-id="51ed0-117">網頁開發人員停用檢視狀態時，此字典中儲存任何狀態資訊會遺失。</span><span class="sxs-lookup"><span data-stu-id="51ed0-117">Any state information that is stored in this dictionary is lost when view state is disabled by a page developer.</span></span> <span data-ttu-id="51ed0-118">若要降低，您可以將重大狀態資訊儲存在不同的物件，稱為控制項狀態的 2.0 版的 ASP.NET。</span><span class="sxs-lookup"><span data-stu-id="51ed0-118">To mitigate this, in ASP.NET version 2.0 you can store critical state information in a separate object, called control state.</span></span> <span data-ttu-id="51ed0-119">當網頁開發人員會停用檢視狀態時，不會影響控制項的狀態物件。</span><span class="sxs-lookup"><span data-stu-id="51ed0-119">The control state object is not affected when view state is disabled by a page developer.</span></span> <span data-ttu-id="51ed0-120">將狀態資訊儲存在控制項的狀態物件需要，覆寫控制項<xref:System.Web.UI.Control.LoadControlState%2A>和<xref:System.Web.UI.Control.SaveControlState%2A>方法和控制項登錄來儲存狀態資訊中的控制狀態每次初始化控制項時。</span><span class="sxs-lookup"><span data-stu-id="51ed0-120">Storing state information in the control state object requires that the control override the <xref:System.Web.UI.Control.LoadControlState%2A> and <xref:System.Web.UI.Control.SaveControlState%2A> methods and that the control be registered to store state information in control state every time the control is initialized.</span></span> <span data-ttu-id="51ed0-121">您可以註冊使用控制項的狀態，藉由覆寫控制項<xref:System.Web.UI.Control.OnInit%2A>方法，並呼叫<xref:System.Web.UI.Page.RegisterRequiresControlState%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="51ed0-121">You can register a control to use control state by overriding the <xref:System.Web.UI.Control.OnInit%2A> method and calling the <xref:System.Web.UI.Page.RegisterRequiresControlState%2A> method.</span></span> <span data-ttu-id="51ed0-122">如需有關使用<xref:System.Web.UI.Control.ViewState%2A>屬性和控制項的狀態時開發控制項，請參閱[開發自訂 ASP.NET 伺服器控制項](http://msdn.microsoft.com/library/fbe26c16-cff4-4089-b3dd-877411f0c0ef)。</span><span class="sxs-lookup"><span data-stu-id="51ed0-122">For more information about using the <xref:System.Web.UI.Control.ViewState%2A> property and control state when developing controls, see [Developing Custom ASP.NET Server Controls](http://msdn.microsoft.com/library/fbe26c16-cff4-4089-b3dd-877411f0c0ef).</span></span>  
+  
+ <span data-ttu-id="51ed0-123">若要維護上的 檢視狀態無法支援現有的用戶端檢視狀態持續性機制，您可以擴充<xref:System.Web.UI.PageStatePersister>類別導入您自己的檢視狀態持續性方法，和您可以使用 頁面配置器來設定 ASP.NET 應用程式若要使用不同的檢視狀態持續性機制，而根據頁面會提供服務的用戶端的類型。</span><span class="sxs-lookup"><span data-stu-id="51ed0-123">To maintain view state on clients that cannot support the existing view state persistence mechanisms, you can extend the <xref:System.Web.UI.PageStatePersister> class to introduce your own view state persistence methods, and you can use page adapters to configure your ASP.NET application to use different view state persistence mechanisms based on the type of client to which a page is served.</span></span> <span data-ttu-id="51ed0-124">類別衍生自<xref:System.Web.UI.PageStatePersister>類別必須覆寫抽象<xref:System.Web.UI.PageStatePersister.Save%2A>方法來將檢視狀態，以及控制項狀態儲存在持續性媒體，並覆寫<xref:System.Web.UI.PageStatePersister.Load%2A>方法，以將它解壓縮。</span><span class="sxs-lookup"><span data-stu-id="51ed0-124">Classes that derive from the <xref:System.Web.UI.PageStatePersister> class must override the abstract <xref:System.Web.UI.PageStatePersister.Save%2A> method to store view state and control state in the persistence medium, and override the <xref:System.Web.UI.PageStatePersister.Load%2A> method to extract it.</span></span> <span data-ttu-id="51ed0-125">如果您需要序列化檢視狀態，以及字串的控制項狀態，您可以使用<xref:System.Web.UI.IStateFormatter>物件，使用存取<xref:System.Web.UI.PageStatePersister.StateFormatter%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="51ed0-125">If you need to serialize view state and control state to a string, you can use the <xref:System.Web.UI.IStateFormatter> object that is accessed using the <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> property.</span></span> <span data-ttu-id="51ed0-126">它有效率地序列化和還原序列化成 Base64 編碼字串的物件狀態資訊。</span><span class="sxs-lookup"><span data-stu-id="51ed0-126">It efficiently serializes and deserializes object state information to a Base64-encoded string.</span></span> <span data-ttu-id="51ed0-127">您也可以覆寫<xref:System.Web.UI.PageStatePersister.StateFormatter%2A>屬性，以提供您自己的物件狀態的序列化機制。</span><span class="sxs-lookup"><span data-stu-id="51ed0-127">You can also override the <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> property to supply your own object state serialization mechanism.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="51ed0-128">下列程式碼範例示範如何建立<xref:System.Web.UI.PageStatePersister>將檢視和控制的狀態儲存在 Web 伺服器的物件。</span><span class="sxs-lookup"><span data-stu-id="51ed0-128">The following code example demonstrates how to create a <xref:System.Web.UI.PageStatePersister> object that saves view and control state on the Web server.</span></span> <span data-ttu-id="51ed0-129">`StreamPageStatePersister`示範如何覆寫<xref:System.Web.UI.PageStatePersister.Load%2A>和<xref:System.Web.UI.PageStatePersister.Save%2A>方法來擷取並儲存檢視狀態資訊。</span><span class="sxs-lookup"><span data-stu-id="51ed0-129">The `StreamPageStatePersister` demonstrates how to override the <xref:System.Web.UI.PageStatePersister.Load%2A> and <xref:System.Web.UI.PageStatePersister.Save%2A> methods to extract and save view state information.</span></span> <span data-ttu-id="51ed0-130">因為與調整呈現及用戶端功能相關的狀態持續性機制`MyPageAdapter`類別提供給啟動`StreamPageStatePersister`ASP.NET 應用程式。</span><span class="sxs-lookup"><span data-stu-id="51ed0-130">Because the state persistence mechanisms are related to adaptive rendering and client capabilities, the `MyPageAdapter` class is provided to activate the `StreamPageStatePersister` for an ASP.NET application.</span></span> <span data-ttu-id="51ed0-131">最後，瀏覽器的功能 (.browser) 檔案，可讓`MyPageAdapter`配接器的特定類別的用戶端 （在此情況下，預設網頁瀏覽器）。</span><span class="sxs-lookup"><span data-stu-id="51ed0-131">Finally, a browser capabilities (.browser) file is provided to enable the `MyPageAdapter` adapter for a specific class of clients (in this case, the default Web browser).</span></span>  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#1)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#1)]  
+  
+ <span data-ttu-id="51ed0-132">下列程式碼範例示範如何建立<xref:System.Web.UI.Adapters.PageAdapter>傳回的執行個體的類別`StreamPageStatePersister`，用來保存檢視和控制 ASP.NET 網頁的狀態。</span><span class="sxs-lookup"><span data-stu-id="51ed0-132">The following code example demonstrates how to create a <xref:System.Web.UI.Adapters.PageAdapter> class that returns an instance of `StreamPageStatePersister`, which is used to persist view and control state for an ASP.NET Web page.</span></span>  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#5](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/mypageadapter.cs#5)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/mypageadapter.vb#5)]  
+  
+ <span data-ttu-id="51ed0-133">編譯為組件可讓您執行範例，請使用下列編譯器命令列中的這兩個類別。</span><span class="sxs-lookup"><span data-stu-id="51ed0-133">Compile these two classes into an assembly that you can use to run a sample, using the following compiler command line.</span></span> <span data-ttu-id="51ed0-134">確定已編譯的組件中為 ASP.NET 應用程式根目錄底下之 \Bin 目錄。</span><span class="sxs-lookup"><span data-stu-id="51ed0-134">Ensure that the compiled assembly is in the \Bin directory underneath the ASP.NET application root.</span></span>  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#6](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/mypageadapter.cs#6)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/mypageadapter.vb#6)]  
+  
+ <span data-ttu-id="51ed0-135">最後，若要啟用`MyPageAdapter`配接器，您必須建立名為 ASP.NET 應用程式根目錄，下方的瀏覽器的目錄，並納入.browser 檔案與組態資訊。</span><span class="sxs-lookup"><span data-stu-id="51ed0-135">Finally, to enable the `MyPageAdapter` adapter, you must create a directory named Browsers underneath the ASP.NET application root, and include a .browser file with configuration information.</span></span> <span data-ttu-id="51ed0-136">`<refid>`組態檔中的項目指示，設定會覆寫預設的瀏覽器 Default.browser 組態檔中指定的值。</span><span class="sxs-lookup"><span data-stu-id="51ed0-136">The `<refid>` element in the configuration file indicates that the configuration overrides the values specified for the default browser in the Default.browser configuration file.</span></span> <span data-ttu-id="51ed0-137">在此範例中，`MyPageAdapter`用於 ASP.NET Web pages （通常沒有配接器會使用）。</span><span class="sxs-lookup"><span data-stu-id="51ed0-137">In this example, `MyPageAdapter` is used for ASP.NET Web pages (where normally no adapter is used).</span></span>  
+  
+```  
+<browsers>  
+    <browser refid="Default" >  
+        <controlAdapters>  
+            <adapter   
+                controlType="System.Web.UI.Page"                              
+                adapterType="Samples.AspNet.CS.MyPageAdapter" />  
+        </controlAdapters>  
+    </browser>  
+</browsers>  
+```  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Web.UI.ObjectStateFormatter" />
+    <altmember cref="T:System.Web.UI.LosFormatter" />
+    <altmember cref="T:System.Web.UI.Pair" />
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected PageStatePersister (System.Web.UI.Page page);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class System.Web.UI.Page page) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.PageStatePersister.#ctor(System.Web.UI.Page)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; PageStatePersister(System::Web::UI::Page ^ page);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="page" Type="System.Web.UI.Page" />
+      </Parameters>
+      <Docs>
+        <param name="page">
+          <span data-ttu-id="51ed0-138">建立其檢視狀態保存性機制的 <see cref="T:System.Web.UI.Page" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="51ed0-138">The <see cref="T:System.Web.UI.Page" /> that the view state persistence mechanism is created for.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="51ed0-139">初始化 <see cref="T:System.Web.UI.PageStatePersister" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="51ed0-139">Initializes a new instance of the <see cref="T:System.Web.UI.PageStatePersister" /> class.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="51ed0-140">
+            <paramref name="page" /> 參數為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="51ed0-140">The <paramref name="page" /> parameter is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ControlState">
+      <MemberSignature Language="C#" Value="public object ControlState { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance object ControlState" />
+      <MemberSignature Language="DocId" Value="P:System.Web.UI.PageStatePersister.ControlState" />
+      <MemberSignature Language="VB.NET" Value="Public Property ControlState As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Object ^ ControlState { System::Object ^ get(); void set(System::Object ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="51ed0-141">取得或設定物件，表示對 Web 伺服器的 HTTP 要求之間，目前 <see cref="T:System.Web.UI.Page" /> 物件所包含的控制項用以保存的資料。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="51ed0-141">Gets or sets an object that represents the data that controls contained by the current <see cref="T:System.Web.UI.Page" /> object use to persist across HTTP requests to the Web server.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="51ed0-142">包含檢視狀態資料的物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="51ed0-142">An object that contains view state data.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="51ed0-143">控制項的狀態是重要的檢視狀態資料的 Web 伺服器控制項需要函式，而且會包含在標準檢視狀態資訊的個別物件所組成的物件。</span><span class="sxs-lookup"><span data-stu-id="51ed0-143">Control state is an object comprised of critical view state data that Web server controls need to function, and is contained in a separate object from normal view state information.</span></span> <span data-ttu-id="51ed0-144">在停用檢視狀態時，不會影響控制項狀態資料<xref:System.Web.UI.Page>層級，但需要額外的實作步驟，才能使用。</span><span class="sxs-lookup"><span data-stu-id="51ed0-144">Control state data is not affected when view state is disabled at the <xref:System.Web.UI.Page> level, but requires extra implementation steps to use.</span></span> <span data-ttu-id="51ed0-145">如需有關使用<xref:System.Web.UI.Control.ViewState%2A>屬性和控制項的狀態時開發控制項，請參閱[開發自訂 ASP.NET 伺服器控制項](http://msdn.microsoft.com/library/fbe26c16-cff4-4089-b3dd-877411f0c0ef)。</span><span class="sxs-lookup"><span data-stu-id="51ed0-145">For more information on using the <xref:System.Web.UI.Control.ViewState%2A> property and control state when developing controls, see [Developing Custom ASP.NET Server Controls](http://msdn.microsoft.com/library/fbe26c16-cff4-4089-b3dd-877411f0c0ef).</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="51ed0-146">下列程式碼範例示範如何從衍生的類別<xref:System.Web.UI.PageStatePersister>類別初始化<xref:System.Web.UI.PageStatePersister.ControlState%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="51ed0-146">The following code example demonstrates how a class that derives from the <xref:System.Web.UI.PageStatePersister> class initializes the <xref:System.Web.UI.PageStatePersister.ControlState%2A> property.</span></span> <span data-ttu-id="51ed0-147">在此範例中，<xref:System.Web.UI.PageStatePersister.ControlState%2A>指派屬性給<xref:System.Web.UI.Pair.Second>欄位<xref:System.Web.UI.Pair>物件，並使用序列化<xref:System.Web.UI.ObjectStateFormatter>類別。</span><span class="sxs-lookup"><span data-stu-id="51ed0-147">In this example, the <xref:System.Web.UI.PageStatePersister.ControlState%2A> property has been assigned to the <xref:System.Web.UI.Pair.Second> field of a <xref:System.Web.UI.Pair> object, and serialized using the <xref:System.Web.UI.ObjectStateFormatter> class.</span></span> <span data-ttu-id="51ed0-148">當<xref:System.Web.UI.PageStatePersister.Load%2A>呼叫方法時，<xref:System.Web.UI.ObjectStateFormatter>類別用來還原檢視狀態和控制狀態資訊的序列化和<xref:System.Web.UI.PageStatePersister.ControlState%2A>屬性會初始化從產生<xref:System.Web.UI.Pair>物件的<xref:System.Web.UI.Pair.Second>欄位。</span><span class="sxs-lookup"><span data-stu-id="51ed0-148">When the <xref:System.Web.UI.PageStatePersister.Load%2A> method is called, the <xref:System.Web.UI.ObjectStateFormatter> class is used to deserialize view state and control state information, and the <xref:System.Web.UI.PageStatePersister.ControlState%2A> property is initialized from the resulting <xref:System.Web.UI.Pair> object's <xref:System.Web.UI.Pair.Second> field.</span></span> <span data-ttu-id="51ed0-149">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.Web.UI.PageStatePersister>類別。</span><span class="sxs-lookup"><span data-stu-id="51ed0-149">This code example is part of a larger example provided for the <xref:System.Web.UI.PageStatePersister> class.</span></span>  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#2)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Load">
+      <MemberSignature Language="C#" Value="public abstract void Load ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Load() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.PageStatePersister.Load" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Sub Load ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract void Load();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="51ed0-150">當 <see cref="T:System.Web.UI.Page" /> 物件初始化其控制階層架構時，由衍生類別覆寫，以還原序列化並載入保存的狀態資訊。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="51ed0-150">Overridden by derived classes to deserialize and load persisted state information when a <see cref="T:System.Web.UI.Page" /> object initializes its control hierarchy.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="51ed0-151">類別衍生自<xref:System.Web.UI.PageStatePersister>類別實作<xref:System.Web.UI.PageStatePersister.Load%2A>方法來初始化<xref:System.Web.UI.PageStatePersister.ViewState%2A>和<xref:System.Web.UI.PageStatePersister.ControlState%2A>從某些永續性格式的屬性。</span><span class="sxs-lookup"><span data-stu-id="51ed0-151">Classes that derive from the <xref:System.Web.UI.PageStatePersister> class implement the <xref:System.Web.UI.PageStatePersister.Load%2A> method to initialize the <xref:System.Web.UI.PageStatePersister.ViewState%2A> and <xref:System.Web.UI.PageStatePersister.ControlState%2A> properties from some persisted format.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="51ed0-152">下列程式碼範例示範如何從衍生的類別<xref:System.Web.UI.PageStatePersister>類別會實作<xref:System.Web.UI.PageStatePersister.Load%2A>從持續性中載入檢視狀態的方法。</span><span class="sxs-lookup"><span data-stu-id="51ed0-152">The following code example demonstrates how a class that derives from the <xref:System.Web.UI.PageStatePersister> class implements the <xref:System.Web.UI.PageStatePersister.Load%2A> method to load view state from a persistence medium.</span></span> <span data-ttu-id="51ed0-153">`StreamPageStatePersister`嘗試從資料流讀取資料。</span><span class="sxs-lookup"><span data-stu-id="51ed0-153">The `StreamPageStatePersister` attempts to read data from a stream.</span></span> <span data-ttu-id="51ed0-154">它會使用<xref:System.Web.UI.IStateFormatter>物件還原序列化的檢視狀態資料，並初始化<xref:System.Web.UI.PageStatePersister.ViewState%2A>屬性和<xref:System.Web.UI.PageStatePersister.ControlState%2A>屬性，用來初始化控制項的頁面。</span><span class="sxs-lookup"><span data-stu-id="51ed0-154">It uses an <xref:System.Web.UI.IStateFormatter> object to deserialize view state data and initialize the <xref:System.Web.UI.PageStatePersister.ViewState%2A> property and the <xref:System.Web.UI.PageStatePersister.ControlState%2A> property, which a page uses to initialize controls.</span></span> <span data-ttu-id="51ed0-155">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.Web.UI.PageStatePersister>類別。</span><span class="sxs-lookup"><span data-stu-id="51ed0-155">This code example is part of a larger example provided for the <xref:System.Web.UI.PageStatePersister> class.</span></span>  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#2)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Page">
+      <MemberSignature Language="C#" Value="protected System.Web.UI.Page Page { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.UI.Page Page" />
+      <MemberSignature Language="DocId" Value="P:System.Web.UI.PageStatePersister.Page" />
+      <MemberSignature Language="VB.NET" Value="Protected Property Page As Page" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property System::Web::UI::Page ^ Page { System::Web::UI::Page ^ get(); void set(System::Web::UI::Page ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.UI.Page</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="51ed0-156">取得或設定 <see cref="T:System.Web.UI.Page" /> 物件，以建立檢視狀態保存性機制。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="51ed0-156">Gets or sets the <see cref="T:System.Web.UI.Page" /> object that the view state persistence mechanism is created for.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="51ed0-157">與 <see cref="T:System.Web.UI.Page" /> 關聯的 <see cref="T:System.Web.UI.PageStatePersister" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="51ed0-157">The <see cref="T:System.Web.UI.Page" /> that the <see cref="T:System.Web.UI.PageStatePersister" /> is associated with.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="51ed0-158">您可以使用<xref:System.Web.UI.PageStatePersister.Page%2A>屬性來存取目前<xref:System.Web.HttpContext>物件。</span><span class="sxs-lookup"><span data-stu-id="51ed0-158">You can use the <xref:System.Web.UI.PageStatePersister.Page%2A> property to access the current <xref:System.Web.HttpContext> object.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Save">
+      <MemberSignature Language="C#" Value="public abstract void Save ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Save() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.PageStatePersister.Save" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Sub Save ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract void Save();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="51ed0-159">從記憶體卸載 <see cref="T:System.Web.UI.Page" /> 物件時，由衍生類別覆寫，以序列化保存的狀態資訊。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="51ed0-159">Overridden by derived classes to serialize persisted state information when a <see cref="T:System.Web.UI.Page" /> object is unloaded from memory.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="51ed0-160">類別衍生自<xref:System.Web.UI.PageStatePersister>類別實作<xref:System.Web.UI.PageStatePersister.Save%2A>方法，以保存的內容，<xref:System.Web.UI.PageStatePersister.ViewState%2A>和<xref:System.Web.UI.PageStatePersister.ControlState%2A>持續性中的屬性。</span><span class="sxs-lookup"><span data-stu-id="51ed0-160">Classes that derive from the <xref:System.Web.UI.PageStatePersister> class implement the <xref:System.Web.UI.PageStatePersister.Save%2A> method to persist the contents of the <xref:System.Web.UI.PageStatePersister.ViewState%2A> and <xref:System.Web.UI.PageStatePersister.ControlState%2A> properties to a persistence medium.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="51ed0-161">下列程式碼範例示範如何從衍生的類別<xref:System.Web.UI.PageStatePersister>類別會實作<xref:System.Web.UI.PageStatePersister.Save%2A>方法，將持續性中的檢視狀態。</span><span class="sxs-lookup"><span data-stu-id="51ed0-161">The following code example demonstrates how a class that derives from the <xref:System.Web.UI.PageStatePersister> class implements the <xref:System.Web.UI.PageStatePersister.Save%2A> method to persist view state to a persistence medium.</span></span> <span data-ttu-id="51ed0-162">`StreamPageStatePersister`使用<xref:System.Web.UI.IStateFormatter>要序列化的內容物件<xref:System.Web.UI.PageStatePersister.ViewState%2A>屬性和<xref:System.Web.UI.PageStatePersister.ControlState%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="51ed0-162">The `StreamPageStatePersister` uses an <xref:System.Web.UI.IStateFormatter> object to serialize the contents of the <xref:System.Web.UI.PageStatePersister.ViewState%2A> property and <xref:System.Web.UI.PageStatePersister.ControlState%2A> property.</span></span> <span data-ttu-id="51ed0-163">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.Web.UI.PageStatePersister>類別。</span><span class="sxs-lookup"><span data-stu-id="51ed0-163">This code example is part of a larger example provided for the <xref:System.Web.UI.PageStatePersister> class.</span></span>  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#3)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StateFormatter">
+      <MemberSignature Language="C#" Value="protected System.Web.UI.IStateFormatter StateFormatter { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.UI.IStateFormatter StateFormatter" />
+      <MemberSignature Language="DocId" Value="P:System.Web.UI.PageStatePersister.StateFormatter" />
+      <MemberSignature Language="VB.NET" Value="Protected ReadOnly Property StateFormatter As IStateFormatter" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property System::Web::UI::IStateFormatter ^ StateFormatter { System::Web::UI::IStateFormatter ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.UI.IStateFormatter</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="51ed0-164">取得 <see cref="T:System.Web.UI.IStateFormatter" /> 物件，對 <see cref="P:System.Web.UI.PageStatePersister.ViewState" /> 和 <see cref="P:System.Web.UI.PageStatePersister.ControlState" /> 方法呼叫時，這個物件會用來序列化和還原序列化 <see cref="M:System.Web.UI.PageStatePersister.Save" /> 和 <see cref="M:System.Web.UI.PageStatePersister.Load" /> 屬性中包含的狀態資訊。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="51ed0-164">Gets an <see cref="T:System.Web.UI.IStateFormatter" /> object that is used to serialize and deserialize the state information contained in the <see cref="P:System.Web.UI.PageStatePersister.ViewState" /> and <see cref="P:System.Web.UI.PageStatePersister.ControlState" /> properties during calls to the <see cref="M:System.Web.UI.PageStatePersister.Save" /> and <see cref="M:System.Web.UI.PageStatePersister.Load" /> methods.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="51ed0-165">
+            <see cref="T:System.Web.UI.IStateFormatter" /> 的執行個體，用來序列化和還原序列化物件狀態。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="51ed0-165">An instance of <see cref="T:System.Web.UI.IStateFormatter" /> that is used to serialize and deserialize object state.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="51ed0-166">您可以覆寫<xref:System.Web.UI.PageStatePersister.StateFormatter%2A>屬性以提供您自己的檢視狀態格式器。</span><span class="sxs-lookup"><span data-stu-id="51ed0-166">You can override the <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> property to provide your own view state formatter.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="51ed0-167">下列程式碼範例示範如何從衍生的類別<xref:System.Web.UI.PageStatePersister>類別存取<xref:System.Web.UI.PageStatePersister.StateFormatter%2A>屬性，以擷取<xref:System.Web.UI.ObjectStateFormatter>物件，它是預設實作的<xref:System.Web.UI.IStateFormatter>介面，以序列化檢視資料流狀態和控制狀態。</span><span class="sxs-lookup"><span data-stu-id="51ed0-167">The following code example demonstrates how a class that derives from the <xref:System.Web.UI.PageStatePersister> class accesses the <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> property to retrieve an <xref:System.Web.UI.ObjectStateFormatter> object, which is the default implementation of the <xref:System.Web.UI.IStateFormatter> interface, to serialize view state and control state to a stream.</span></span> <span data-ttu-id="51ed0-168">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.Web.UI.PageStatePersister>類別。</span><span class="sxs-lookup"><span data-stu-id="51ed0-168">This code example is part of a larger example provided for the <xref:System.Web.UI.PageStatePersister> class.</span></span>  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#3)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ViewState">
+      <MemberSignature Language="C#" Value="public object ViewState { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance object ViewState" />
+      <MemberSignature Language="DocId" Value="P:System.Web.UI.PageStatePersister.ViewState" />
+      <MemberSignature Language="VB.NET" Value="Public Property ViewState As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Object ^ ViewState { System::Object ^ get(); void set(System::Object ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="51ed0-169">取得或設定物件，表示對 Web 伺服器的 HTTP 要求之間，目前 <see cref="T:System.Web.UI.Page" /> 物件所包含的控制項用以保存的資料。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="51ed0-169">Gets or sets an object that represents the data that controls contained by the current <see cref="T:System.Web.UI.Page" /> object use to persist across HTTP requests to the Web server.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="51ed0-170">包含檢視狀態資料的物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="51ed0-170">An object that contains view state data.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="51ed0-171">檢視狀態是 Web 伺服器控制項需要函式，並呈現其本身的狀態資料的字典。</span><span class="sxs-lookup"><span data-stu-id="51ed0-171">View state is a dictionary of state data that Web server controls need to function and render themselves.</span></span> <span data-ttu-id="51ed0-172">控制項開發人員通常會存取檢視狀態物件使用<xref:System.Web.UI.Control.ViewState%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="51ed0-172">Control developers typically access the view state object using the <xref:System.Web.UI.Control.ViewState%2A> property.</span></span> <span data-ttu-id="51ed0-173">在停用檢視狀態時，會受到影響檢視狀態<xref:System.Web.UI.Page>層級，並因此控制項可能無法正確運作在這些案例。</span><span class="sxs-lookup"><span data-stu-id="51ed0-173">View state is affected when view state is disabled at the <xref:System.Web.UI.Page> level, and as a result controls might not behave correctly in these scenarios.</span></span> <span data-ttu-id="51ed0-174">如需有關使用<xref:System.Web.UI.Control.ViewState%2A>和控制狀態開發控制項時，請參閱[開發自訂 ASP.NET 伺服器控制項](http://msdn.microsoft.com/library/fbe26c16-cff4-4089-b3dd-877411f0c0ef)。</span><span class="sxs-lookup"><span data-stu-id="51ed0-174">For more information on using <xref:System.Web.UI.Control.ViewState%2A> and control state when developing controls, see [Developing Custom ASP.NET Server Controls](http://msdn.microsoft.com/library/fbe26c16-cff4-4089-b3dd-877411f0c0ef).</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="51ed0-175">下列程式碼範例示範如何從衍生的類別<xref:System.Web.UI.PageStatePersister>類別初始化<xref:System.Web.UI.PageStatePersister.ViewState%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="51ed0-175">The following code example demonstrates how a class that derives from the <xref:System.Web.UI.PageStatePersister> class initializes the <xref:System.Web.UI.PageStatePersister.ViewState%2A> property.</span></span> <span data-ttu-id="51ed0-176">在此範例中，<xref:System.Web.UI.PageStatePersister.ViewState%2A>指派屬性給<xref:System.Web.UI.Pair.First>欄位<xref:System.Web.UI.Pair>物件，並使用序列化<xref:System.Web.UI.ObjectStateFormatter>物件，它是執行個體的<xref:System.Web.UI.IStateFormatter>介面。</span><span class="sxs-lookup"><span data-stu-id="51ed0-176">In this example, the <xref:System.Web.UI.PageStatePersister.ViewState%2A> property has been assigned to the <xref:System.Web.UI.Pair.First> field of a <xref:System.Web.UI.Pair> object, and serialized using the <xref:System.Web.UI.ObjectStateFormatter> object, which is an instance of the <xref:System.Web.UI.IStateFormatter> interface.</span></span> <span data-ttu-id="51ed0-177">當<xref:System.Web.UI.PageStatePersister.Load%2A>呼叫方法時，<xref:System.Web.UI.ObjectStateFormatter>介面用來還原檢視狀態資訊、 序列化和<xref:System.Web.UI.PageStatePersister.ViewState%2A>屬性會初始化從產生<xref:System.Web.UI.Pair>物件的<xref:System.Web.UI.Pair.First>欄位。</span><span class="sxs-lookup"><span data-stu-id="51ed0-177">When the <xref:System.Web.UI.PageStatePersister.Load%2A> method is called, the <xref:System.Web.UI.ObjectStateFormatter> interface is used to deserialize view state information, and the <xref:System.Web.UI.PageStatePersister.ViewState%2A> property is initialized from the resulting <xref:System.Web.UI.Pair> object's <xref:System.Web.UI.Pair.First> field.</span></span> <span data-ttu-id="51ed0-178">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.Web.UI.PageStatePersister>類別。</span><span class="sxs-lookup"><span data-stu-id="51ed0-178">This code example is part of a larger example provided for the <xref:System.Web.UI.PageStatePersister> class.</span></span>  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#2)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

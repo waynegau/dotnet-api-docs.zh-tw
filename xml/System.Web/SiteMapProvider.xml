@@ -1,0 +1,1161 @@
+<Type Name="SiteMapProvider" FullName="System.Web.SiteMapProvider">
+  <TypeSignature Language="C#" Value="public abstract class SiteMapProvider : System.Configuration.Provider.ProviderBase" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit SiteMapProvider extends System.Configuration.Provider.ProviderBase" />
+  <TypeSignature Language="DocId" Value="T:System.Web.SiteMapProvider" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class SiteMapProvider&#xA;Inherits ProviderBase" />
+  <TypeSignature Language="C++ CLI" Value="public ref class SiteMapProvider abstract : System::Configuration::Provider::ProviderBase" />
+  <AssemblyInfo>
+    <AssemblyName>System.Web</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Configuration.Provider.ProviderBase</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary><span data-ttu-id="14087-101">提供所有網站導覽資料提供者的通用基底類別，並讓開發人員實作可以與 ASP.NET 網站導覽基礎結構搭配使用之自訂網站導覽資料提供者，以做為 <see cref="T:System.Web.SiteMap" /> 物件的持續性存放區。</span><span class="sxs-lookup"><span data-stu-id="14087-101">Provides a common base class for all site map data providers, and a way for developers to implement custom site map data providers that can be used with the ASP.NET site map infrastructure as persistent stores for <see cref="T:System.Web.SiteMap" /> objects.</span></span></summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-102"><xref:System.Web.StaticSiteMapProvider>和<xref:System.Web.XmlSiteMapProvider>類別則表示預設實作之抽象<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-102">The <xref:System.Web.StaticSiteMapProvider> and <xref:System.Web.XmlSiteMapProvider> classes represent the default implementations of the abstract <xref:System.Web.SiteMapProvider> class.</span></span> <span data-ttu-id="14087-103"><xref:System.Web.XmlSiteMapProvider>來儲存站台地圖資料會使用名為 Web.sitemap 的 XML 檔案。</span><span class="sxs-lookup"><span data-stu-id="14087-103">The <xref:System.Web.XmlSiteMapProvider> uses an XML file named Web.sitemap to store site map data.</span></span> <span data-ttu-id="14087-104">如需 Web.sitemap 檔的詳細資訊，請參閱[ASP.NET 網站導覽](http://msdn.microsoft.com/library/6b85a558-1df8-44cf-bea6-62e61bcc8d20)。</span><span class="sxs-lookup"><span data-stu-id="14087-104">For more information on about the Web.sitemap file, see [ASP.NET Site Maps](http://msdn.microsoft.com/library/6b85a558-1df8-44cf-bea6-62e61bcc8d20).</span></span>  
+  
+ <span data-ttu-id="14087-105"><xref:System.Web.SiteMapProvider>類別支援的站台對應提供者階層架構概念，藉由宣告<xref:System.Web.SiteMapProvider.RootProvider%2A>和<xref:System.Web.SiteMapProvider.ParentProvider%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="14087-105">The <xref:System.Web.SiteMapProvider> class supports the concept of a site map provider hierarchy, by declaring the <xref:System.Web.SiteMapProvider.RootProvider%2A> and <xref:System.Web.SiteMapProvider.ParentProvider%2A> properties.</span></span> <span data-ttu-id="14087-106">A<xref:System.Web.SiteMapProvider>可以是子系或父系的另一個提供者。</span><span class="sxs-lookup"><span data-stu-id="14087-106">A <xref:System.Web.SiteMapProvider> can be a child or parent of another provider.</span></span> <span data-ttu-id="14087-107">這可讓不同的內容區域的站台所擁有或維護自己的站台對應和站台對應提供者的開發團隊所實作的位置的案例。</span><span class="sxs-lookup"><span data-stu-id="14087-107">This enables scenarios where different content areas of a site are owned or implemented by different development groups that maintain their own site maps and site map providers.</span></span>  
+  
+ <span data-ttu-id="14087-108">所有<xref:System.Web.SiteMapProvider>Web.config 檔中用來設定物件。</span><span class="sxs-lookup"><span data-stu-id="14087-108">All <xref:System.Web.SiteMapProvider> objects are configured in the Web.config files.</span></span> <span data-ttu-id="14087-109">這些組態檔中宣告的任何站台對應提供者執行階段時載入，而且可用來載入並處理站台瀏覽資料。</span><span class="sxs-lookup"><span data-stu-id="14087-109">Any site map providers that are declared in these configuration files are loaded at run time and are used to load and process site navigation data.</span></span> <span data-ttu-id="14087-110"><xref:System.Web.SiteMap>物件，可追蹤的所有提供者，皆可透過其<xref:System.Web.SiteMap.Providers%2A>屬性集合，提供程式設計的存取由提供者所管理的瀏覽資料。</span><span class="sxs-lookup"><span data-stu-id="14087-110">The <xref:System.Web.SiteMap> object, which keeps track of all the providers that are available to it through its <xref:System.Web.SiteMap.Providers%2A> property collection, provides programmatic access to the navigation data that is managed by the providers.</span></span> <span data-ttu-id="14087-111">下列程式碼範例示範用來宣告在 Web.config 檔案中的站台地圖提供者的格式。</span><span class="sxs-lookup"><span data-stu-id="14087-111">The following code example demonstrates the format that is used to declare a site map provider in a Web.config file.</span></span>  
+  
+```  
+<siteMap defaultProvider="<name>">  
+  <providers>  
+    <add  
+      name="<friendly name>"  
+      type="<fully qualified class name>, <assembly name (optional)>"   
+      siteMapFile = "<file name>" />  
+  </providers>  
+</siteMap>  
+```  
+  
+ <span data-ttu-id="14087-112">這些提供者所載入的站台瀏覽資料由其他元件的站台對應基礎結構，例如<xref:System.Web.UI.WebControls.SiteMapPath>和<xref:System.Web.UI.WebControls.TreeView>控制項，以顯示使用者的站台對應資訊。</span><span class="sxs-lookup"><span data-stu-id="14087-112">The site navigation data that is loaded by these providers is used by other components of the site map infrastructure, such as the <xref:System.Web.UI.WebControls.SiteMapPath> and <xref:System.Web.UI.WebControls.TreeView> controls, to display site map information for users.</span></span>  
+  
+ <span data-ttu-id="14087-113">如果您實作您自己的站台地圖提供者，您可以在 ASP.NET 應用程式的 App_Code 目錄中的原始程式檔，然後將組件將會自動編譯。</span><span class="sxs-lookup"><span data-stu-id="14087-113">If you implement your own site map provider, you can place the source file in the App_Code directory of your ASP.NET application, and then the assembly will be compiled automatically.</span></span> <span data-ttu-id="14087-114">您也可以全域組件快取 (GAC) 中，將您自己的站台地圖提供者，並提供其完整限定參考的 Web.config 檔案中。</span><span class="sxs-lookup"><span data-stu-id="14087-114">You can also place your own site map provider in the Global Assembly Cache (GAC), and provide a fully-qualified reference to it in the Web.config file.</span></span> <span data-ttu-id="14087-115">如需編譯器服務的詳細資訊，請參閱[使用組件和全域組件快取](~/docs/framework/app-domains/working-with-assemblies-and-the-gac.md)。</span><span class="sxs-lookup"><span data-stu-id="14087-115">For more information on compiler services, see [Working with Assemblies and the Global Assembly Cache](~/docs/framework/app-domains/working-with-assemblies-and-the-gac.md).</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="14087-116">下列程式碼範例示範如何撰寫會實作抽象類別<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-116">The following code example demonstrates how to write a class that implements the abstract <xref:System.Web.SiteMapProvider> class.</span></span> <span data-ttu-id="14087-117">這個範例包含只是範例<xref:System.Web.SiteMapProvider>及與它的運作方式的範例文字檔案。</span><span class="sxs-lookup"><span data-stu-id="14087-117">This example includes only a sample <xref:System.Web.SiteMapProvider> and a sample text file that works with it.</span></span> <span data-ttu-id="14087-118">要執行此範例也需要在 Web.config 檔案和.aspx 網頁中的項目。</span><span class="sxs-lookup"><span data-stu-id="14087-118">To run the example you also need an entry in the Web.config file and an .aspx page.</span></span> <span data-ttu-id="14087-119">您也可以將這些文件中找到<xref:System.Web.UI.WebControls.SiteMapDataSource.SiteMapProvider%2A?displayProperty=nameWithType>屬性。</span><span class="sxs-lookup"><span data-stu-id="14087-119">You can find these in the documentation for the <xref:System.Web.UI.WebControls.SiteMapDataSource.SiteMapProvider%2A?displayProperty=nameWithType> property.</span></span>  
+  
+ <span data-ttu-id="14087-120">此範例會使用逗號分隔的檔案之後載入 sitemap 資訊預期的結構。</span><span class="sxs-lookup"><span data-stu-id="14087-120">The example uses a comma-delimited file that follows an expected structure to load sitemap information.</span></span> <span data-ttu-id="14087-121">檔案的第一行代表 sitemap 的根節點，而接下來幾行的子節點。</span><span class="sxs-lookup"><span data-stu-id="14087-121">The first line of the file represents the root node of the sitemap, and subsequent lines are subnodes.</span></span> <span data-ttu-id="14087-122">每一個子節點識別其父節點的 url。</span><span class="sxs-lookup"><span data-stu-id="14087-122">Each subnode identifies its parent node by URL.</span></span> <span data-ttu-id="14087-123">符合這些準則的檔案的範例如下所示。</span><span class="sxs-lookup"><span data-stu-id="14087-123">An example of a file that meets these criteria is shown below.</span></span>  
+  
+```  
+default.aspx,Home,MyCompany Home Page,  
+sale.aspx,Now On Sale,Check Out These Great Deals!,default.aspx  
+catalog.aspx,Online Catalog,Browse Our Many Great Items!,default.aspx  
+```  
+  
+ <span data-ttu-id="14087-124">`SimpleTextSiteMapProvider`提供所有的範例實作<xref:System.Web.SiteMapProvider>屬性和方法。</span><span class="sxs-lookup"><span data-stu-id="14087-124">The `SimpleTextSiteMapProvider` provides example implementations of all the <xref:System.Web.SiteMapProvider> properties and methods.</span></span>  
+  
+ [!code-csharp[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/CS/simpletextsitemapprovider.cs#1)]
+ [!code-vb[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/VB/simpletextsitemapprovider.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+    <block subset="none" type="overrides">
+      <para><span data-ttu-id="14087-125">當您繼承自<see cref="T:System.Web.SiteMapProvider" />類別，您必須覆寫下列成員： <see cref="M:System.Web.SiteMapProvider.GetRootNodeCore" />， <see cref="M:System.Web.SiteMapProvider.FindSiteMapNode(System.String)" />， <see cref="M:System.Web.SiteMapProvider.GetChildNodes(System.Web.SiteMapNode)" />，和<see cref="M:System.Web.SiteMapProvider.GetParentNode(System.Web.SiteMapNode)" />。</span><span class="sxs-lookup"><span data-stu-id="14087-125">When you inherit from the <see cref="T:System.Web.SiteMapProvider" /> class, you must override the following members: <see cref="M:System.Web.SiteMapProvider.GetRootNodeCore" />, <see cref="M:System.Web.SiteMapProvider.FindSiteMapNode(System.String)" />, <see cref="M:System.Web.SiteMapProvider.GetChildNodes(System.Web.SiteMapNode)" />, and <see cref="M:System.Web.SiteMapProvider.GetParentNode(System.Web.SiteMapNode)" />.</span></span></para>
+    </block>
+    <altmember cref="T:System.Web.SiteMapProvider" />
+    <altmember cref="T:System.Web.XmlSiteMapProvider" />
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected SiteMapProvider ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; SiteMapProvider();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><span data-ttu-id="14087-126">初始化 <see cref="T:System.Web.SiteMapProvider" /> 類別的新執行個體。</span><span class="sxs-lookup"><span data-stu-id="14087-126">Initializes a new instance of the <see cref="T:System.Web.SiteMapProvider" /> class.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="14087-127"><xref:System.Web.SiteMapProvider>類別不直接執行個體化。</span><span class="sxs-lookup"><span data-stu-id="14087-127">The <xref:System.Web.SiteMapProvider> class is not instantiated directly.</span></span> <span data-ttu-id="14087-128"><xref:System.Web.SiteMapProvider.%23ctor%2A>從衍生自類別的建構函式呼叫建構函式<xref:System.Web.StaticSiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-128">The <xref:System.Web.SiteMapProvider.%23ctor%2A> constructor is called from the constructor of classes that are derived from the <xref:System.Web.StaticSiteMapProvider> class.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="AddNode">
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><span data-ttu-id="14087-129">將 <see cref="T:System.Web.SiteMapNode" /> 物件加入至網站導覽提供者所維護的節點集合。</span><span class="sxs-lookup"><span data-stu-id="14087-129">Adds a <see cref="T:System.Web.SiteMapNode" /> object to the node collection that is maintained by the site map provider.</span></span></summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="AddNode">
+      <MemberSignature Language="C#" Value="protected virtual void AddNode (System.Web.SiteMapNode node);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void AddNode(class System.Web.SiteMapNode node) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.AddNode(System.Web.SiteMapNode)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub AddNode (node As SiteMapNode)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void AddNode(System::Web::SiteMapNode ^ node);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Web.SiteMapNode" />
+      </Parameters>
+      <Docs>
+        <param name="node"><span data-ttu-id="14087-130">要加入至提供者所維護之節點集合的 <see cref="T:System.Web.SiteMapNode" />。</span><span class="sxs-lookup"><span data-stu-id="14087-130">The <see cref="T:System.Web.SiteMapNode" /> to add to the node collection maintained by the provider.</span></span></param>
+        <summary><span data-ttu-id="14087-131">將 <see cref="T:System.Web.SiteMapNode" /> 物件加入至網站導覽提供者所維護的節點集合。</span><span class="sxs-lookup"><span data-stu-id="14087-131">Adds a <see cref="T:System.Web.SiteMapNode" /> object to the node collection that is maintained by the site map provider.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-132">類別衍生自<xref:System.Web.SiteMapProvider>類別可以覆寫<xref:System.Web.SiteMapProvider.AddNode%2A>方法，並提供邏輯加入<xref:System.Web.SiteMapNode>節點集合由站台地圖提供者所維護的物件。</span><span class="sxs-lookup"><span data-stu-id="14087-132">Classes deriving from the <xref:System.Web.SiteMapProvider> class can override the <xref:System.Web.SiteMapProvider.AddNode%2A> method and provide logic for adding a <xref:System.Web.SiteMapNode> object to the node collection that is maintained by the site map provider.</span></span> <span data-ttu-id="14087-133">預設實作<xref:System.Web.SiteMapProvider.AddNode%2A>方法會擲回<xref:System.NotImplementedException>例外狀況。</span><span class="sxs-lookup"><span data-stu-id="14087-133">The default implementation of the <xref:System.Web.SiteMapProvider.AddNode%2A> method throws a <xref:System.NotImplementedException> exception.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Web.SiteMapProvider.AddNode(System.Web.SiteMapNode,System.Web.SiteMapNode)" />
+        <altmember cref="T:System.Web.SiteMapNodeCollection" />
+        <altmember cref="T:System.Web.XmlSiteMapProvider" />
+      </Docs>
+    </Member>
+    <Member MemberName="AddNode">
+      <MemberSignature Language="C#" Value="protected internal virtual void AddNode (System.Web.SiteMapNode node, System.Web.SiteMapNode parentNode);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance void AddNode(class System.Web.SiteMapNode node, class System.Web.SiteMapNode parentNode) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.AddNode(System.Web.SiteMapNode,System.Web.SiteMapNode)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overridable Sub AddNode (node As SiteMapNode, parentNode As SiteMapNode)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; virtual void AddNode(System::Web::SiteMapNode ^ node, System::Web::SiteMapNode ^ parentNode);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Web.SiteMapNode" />
+        <Parameter Name="parentNode" Type="System.Web.SiteMapNode" />
+      </Parameters>
+      <Docs>
+        <param name="node"><span data-ttu-id="14087-134">要加入至提供者所維護之節點集合的 <see cref="T:System.Web.SiteMapNode" />。</span><span class="sxs-lookup"><span data-stu-id="14087-134">The <see cref="T:System.Web.SiteMapNode" /> to add to the node collection maintained by the provider.</span></span></param>
+        <param name="parentNode"><span data-ttu-id="14087-135"><see cref="T:System.Web.SiteMapNode" />，即 <c>node</c> 的父代。</span><span class="sxs-lookup"><span data-stu-id="14087-135">The <see cref="T:System.Web.SiteMapNode" /> that is the parent of <c>node</c>.</span></span></param>
+        <summary><span data-ttu-id="14087-136">將 <see cref="T:System.Web.SiteMapNode" /> 物件加入至網站導覽提供者所維護的節點集合中，並且指定父代 <see cref="T:System.Web.SiteMapNode" /> 物件。</span><span class="sxs-lookup"><span data-stu-id="14087-136">Adds a <see cref="T:System.Web.SiteMapNode" /> object to the node collection that is maintained by the site map provider and specifies the parent <see cref="T:System.Web.SiteMapNode" /> object.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-137">類別衍生自<xref:System.Web.SiteMapProvider>類別可以覆寫<xref:System.Web.SiteMapProvider.AddNode%2A>方法，並提供邏輯加入<xref:System.Web.SiteMapNode>與指定的父站台對應提供者所維護的節點集合的物件。</span><span class="sxs-lookup"><span data-stu-id="14087-137">Classes deriving from the <xref:System.Web.SiteMapProvider> class can override the <xref:System.Web.SiteMapProvider.AddNode%2A> method and provide logic for adding a <xref:System.Web.SiteMapNode> object with a specified parent to the node collection that is maintained by the site map provider.</span></span> <span data-ttu-id="14087-138">例如，<xref:System.Web.XmlSiteMapProvider.AddNode%2A?displayProperty=nameWithType>方法會將<xref:System.Web.SiteMapNode>所指定的物件`node`至<xref:System.Web.SiteMapNodeCollection>集合是由維護<xref:System.Web.XmlSiteMapProvider>物件，並建立之間的父子式關聯性<xref:System.Web.SiteMapNode>所指定的物件`node`和`parentNode`。</span><span class="sxs-lookup"><span data-stu-id="14087-138">For example, the <xref:System.Web.XmlSiteMapProvider.AddNode%2A?displayProperty=nameWithType> method adds the <xref:System.Web.SiteMapNode> object that is specified by `node` to the <xref:System.Web.SiteMapNodeCollection> collection that is maintained by the <xref:System.Web.XmlSiteMapProvider> object and creates a parent/child relationship between the <xref:System.Web.SiteMapNode> object that is specified by `node` and `parentNode`.</span></span> <span data-ttu-id="14087-139">預設實作<xref:System.Web.SiteMapProvider.AddNode%2A>方法會擲回<xref:System.NotImplementedException>例外狀況。</span><span class="sxs-lookup"><span data-stu-id="14087-139">The default implementation of the <xref:System.Web.SiteMapProvider.AddNode%2A> method throws a <xref:System.NotImplementedException> exception.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NotImplementedException"><span data-ttu-id="14087-140">在所有情況下。</span><span class="sxs-lookup"><span data-stu-id="14087-140">In all cases.</span></span></exception>
+        <altmember cref="M:System.Web.SiteMapProvider.AddNode(System.Web.SiteMapNode)" />
+        <altmember cref="T:System.Web.SiteMapNodeCollection" />
+        <altmember cref="T:System.Web.XmlSiteMapProvider" />
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentNode">
+      <MemberSignature Language="C#" Value="public virtual System.Web.SiteMapNode CurrentNode { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.SiteMapNode CurrentNode" />
+      <MemberSignature Language="DocId" Value="P:System.Web.SiteMapProvider.CurrentNode" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property CurrentNode As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Web::SiteMapNode ^ CurrentNode { System::Web::SiteMapNode ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="14087-141">取得代表目前所要求頁面的 <see cref="T:System.Web.SiteMapNode" /> 物件。</span><span class="sxs-lookup"><span data-stu-id="14087-141">Gets the <see cref="T:System.Web.SiteMapNode" /> object that represents the currently requested page.</span></span></summary>
+        <value><span data-ttu-id="14087-142">表示目前所要求之網頁的 <see cref="T:System.Web.SiteMapNode" />，但如果找不到 <see cref="T:System.Web.SiteMapNode" /> 或無法為目前使用者傳回，則為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-142">A <see cref="T:System.Web.SiteMapNode" /> that represents the currently requested page; otherwise, <see langword="null" />, if the <see cref="T:System.Web.SiteMapNode" /> is not found or cannot be returned for the current user.</span></span></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-143"><xref:System.Web.SiteMapProvider.SiteMapResolve>引發之前嘗試擷取<xref:System.Web.SiteMapNode>物件，以便讓傳回的執行個體的事件訂閱者<xref:System.Web.SiteMapNode>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-143">The <xref:System.Web.SiteMapProvider.SiteMapResolve> event is raised before attempting to retrieve a <xref:System.Web.SiteMapNode> object, to enable event subscribers to return an instance of the <xref:System.Web.SiteMapNode> class.</span></span> <span data-ttu-id="14087-144">如果沒有任何事件訂閱者，<xref:System.Web.SiteMapProvider>類別會呼叫<xref:System.Web.SiteMapProvider.FindSiteMapNode%2A>方法用於擷取目前的 HTTP 內容<xref:System.Web.SiteMapNode>，代表目前要求的頁面。</span><span class="sxs-lookup"><span data-stu-id="14087-144">If there are no event subscribers, the <xref:System.Web.SiteMapProvider> class calls the <xref:System.Web.SiteMapProvider.FindSiteMapNode%2A> method using the current HTTP context to retrieve a <xref:System.Web.SiteMapNode> that represents the currently requested page.</span></span>  
+  
+ <span data-ttu-id="14087-145">如果目前要求的頁面不會對應至<xref:System.Web.SiteMapNode>，`null`傳回。</span><span class="sxs-lookup"><span data-stu-id="14087-145">If the currently requested page does not correspond with a <xref:System.Web.SiteMapNode>, `null` is returned.</span></span> <span data-ttu-id="14087-146">如果安全性調整已啟用，而且不允許使用者存取<xref:System.Web.SiteMapNode>，`null`傳回。</span><span class="sxs-lookup"><span data-stu-id="14087-146">If security trimming is enabled and the user is not permitted to access the <xref:System.Web.SiteMapNode>, `null` is returned.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="14087-147">下列程式碼範例示範如何實作<xref:System.Web.SiteMapProvider.CurrentNode%2A>會實作抽象類別中的屬性<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-147">The following code example demonstrates how to implement the <xref:System.Web.SiteMapProvider.CurrentNode%2A> property in a class that implements the abstract <xref:System.Web.SiteMapProvider> class.</span></span>  
+  
+ <span data-ttu-id="14087-148">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-148">This code example is part of a larger example provided for the <xref:System.Web.SiteMapProvider> class.</span></span>  
+  
+ [!code-csharp[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/CS/simpletextsitemapprovider.cs#2)]
+ [!code-vb[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/VB/simpletextsitemapprovider.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Web.SiteMapProvider.RootNode" />
+        <altmember cref="P:System.Web.SiteMapProvider.SecurityTrimmingEnabled" />
+      </Docs>
+    </Member>
+    <Member MemberName="EnableLocalization">
+      <MemberSignature Language="C#" Value="public bool EnableLocalization { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool EnableLocalization" />
+      <MemberSignature Language="DocId" Value="P:System.Web.SiteMapProvider.EnableLocalization" />
+      <MemberSignature Language="VB.NET" Value="Public Property EnableLocalization As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool EnableLocalization { bool get(); void set(bool value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="14087-149">取得或設定布林值，指出是否傳回 <see cref="T:System.Web.SiteMapNode" /> 屬性的當地語系化值。</span><span class="sxs-lookup"><span data-stu-id="14087-149">Gets or sets a Boolean value indicating whether localized values of <see cref="T:System.Web.SiteMapNode" /> attributes are returned.</span></span></summary>
+        <value>
+          <span data-ttu-id="14087-150">如果傳回 <see cref="T:System.Web.SiteMapNode" /> 屬性的當地語系化值，則為 <see langword="true" />，否則為 <see langword="false" />。</span><span class="sxs-lookup"><span data-stu-id="14087-150"><see langword="true" /> if a localized value of the <see cref="T:System.Web.SiteMapNode" /> attributes are returned; otherwise, <see langword="false" />.</span></span> <span data-ttu-id="14087-151">預設值為 <see langword="false" />。</span><span class="sxs-lookup"><span data-stu-id="14087-151">The default is <see langword="false" />.</span></span></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-152"><xref:System.Web.SiteMapProvider.EnableLocalization%2A>屬性用於 get 存取子的<xref:System.Web.SiteMapNode.Title%2A>和<xref:System.Web.SiteMapNode.Description%2A>屬性，以及其他<xref:System.Web.SiteMapNode.Attributes%2A>屬性<xref:System.Web.SiteMapNode>物件。</span><span class="sxs-lookup"><span data-stu-id="14087-152">The <xref:System.Web.SiteMapProvider.EnableLocalization%2A> property is used for the get accessor of the <xref:System.Web.SiteMapNode.Title%2A> and <xref:System.Web.SiteMapNode.Description%2A> properties, as well as additional <xref:System.Web.SiteMapNode.Attributes%2A> properties of a <xref:System.Web.SiteMapNode> object.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Web.SiteMapNode.Title" />
+        <altmember cref="P:System.Web.SiteMapNode.Description" />
+        <altmember cref="P:System.Web.SiteMapNode.Attributes" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="FindSiteMapNode">
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><span data-ttu-id="14087-153">在衍生類別中覆寫時，擷取表示網頁的 <see cref="T:System.Web.SiteMapNode" /> 物件。</span><span class="sxs-lookup"><span data-stu-id="14087-153">When overridden in a derived class, retrieves a <see cref="T:System.Web.SiteMapNode" /> object that represents a page.</span></span></summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="FindSiteMapNode">
+      <MemberSignature Language="C#" Value="public abstract System.Web.SiteMapNode FindSiteMapNode (string rawUrl);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Web.SiteMapNode FindSiteMapNode(string rawUrl) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.FindSiteMapNode(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function FindSiteMapNode (rawUrl As String) As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract System::Web::SiteMapNode ^ FindSiteMapNode(System::String ^ rawUrl);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rawUrl" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="rawUrl"><span data-ttu-id="14087-154">URL，其可識別要擷取 <see cref="T:System.Web.SiteMapNode" /> 的頁面。</span><span class="sxs-lookup"><span data-stu-id="14087-154">A URL that identifies the page for which to retrieve a <see cref="T:System.Web.SiteMapNode" />.</span></span></param>
+        <summary><span data-ttu-id="14087-155">在衍生類別中覆寫時，擷取表示位於指定 URL 之網頁的 <see cref="T:System.Web.SiteMapNode" /> 物件。</span><span class="sxs-lookup"><span data-stu-id="14087-155">When overridden in a derived class, retrieves a <see cref="T:System.Web.SiteMapNode" /> object that represents the page at the specified URL.</span></span></summary>
+        <returns><span data-ttu-id="14087-156">表示 <paramref name="rawURL" /> 所識別之網頁的 <see cref="T:System.Web.SiteMapNode" />，但如果找不到對應的 <see cref="T:System.Web.SiteMapNode" />，或安全性調整已啟用，而無法傳回目前使用者的 <see cref="T:System.Web.SiteMapNode" />，則為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-156">A <see cref="T:System.Web.SiteMapNode" /> that represents the page identified by <paramref name="rawURL" />; otherwise, <see langword="null" />, if no corresponding <see cref="T:System.Web.SiteMapNode" /> is found or if security trimming is enabled and the <see cref="T:System.Web.SiteMapNode" /> cannot be returned for the current user.</span></span></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-157">類別衍生自<xref:System.Web.SiteMapProvider>類別必須實作抽象<xref:System.Web.SiteMapProvider.FindSiteMapNode%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="14087-157">Classes that derive from the <xref:System.Web.SiteMapProvider> class must implement the abstract <xref:System.Web.SiteMapProvider.FindSiteMapNode%2A> method.</span></span>  
+  
+ <span data-ttu-id="14087-158">提供的 URL 可以是虛擬的或絕對的 URL。</span><span class="sxs-lookup"><span data-stu-id="14087-158">The URL provided can be a virtual or absolute URL.</span></span> <span data-ttu-id="14087-159">它也可以使用應用程式相對的語法，例如 URL `~/apprelativedirectory`。</span><span class="sxs-lookup"><span data-stu-id="14087-159">It might also be a URL that uses application-relative syntax, such as `~/apprelativedirectory`.</span></span> <span data-ttu-id="14087-160">請確定任何實作<xref:System.Web.SiteMapProvider.FindSiteMapNode%2A>方法剖析，並適當地處理應用程式相對的語法。</span><span class="sxs-lookup"><span data-stu-id="14087-160">Ensure that any implementation of the <xref:System.Web.SiteMapProvider.FindSiteMapNode%2A> method parse and handle application-relative syntax properly.</span></span>  
+  
+ <span data-ttu-id="14087-161"><xref:System.Web.XmlSiteMapProvider>類別，這是 ASP.NET 的預設站台對應提供者，使用的 URL<xref:System.Web.SiteMapNode>做為索引鍵中的維護類別的各種集合物件。</span><span class="sxs-lookup"><span data-stu-id="14087-161">The <xref:System.Web.XmlSiteMapProvider> class, which is the default site map provider for ASP.NET, uses the URL of a <xref:System.Web.SiteMapNode> object as a key in the various collections that the classes maintain.</span></span> <span data-ttu-id="14087-162">因此，如果<xref:System.Web.SiteMapNode>提供 URL，它必須是唯一的站台對應提供者的範圍內。</span><span class="sxs-lookup"><span data-stu-id="14087-162">Therefore, if a <xref:System.Web.SiteMapNode> provides a URL, it must be unique within the scope of the site map provider.</span></span> <span data-ttu-id="14087-163">如果未不提供任何 URL，則產生的唯一識別碼識別<xref:System.Web.SiteMapNode>。</span><span class="sxs-lookup"><span data-stu-id="14087-163">If no URL is provided, a unique identifier is generated to identify the <xref:System.Web.SiteMapNode>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="14087-164">下列程式碼範例示範如何實作<xref:System.Web.SiteMapProvider.FindSiteMapNode%2A>方法會實作抽象類別中的<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-164">The following code example demonstrates how to implement the <xref:System.Web.SiteMapProvider.FindSiteMapNode%2A> method in a class that implements the abstract <xref:System.Web.SiteMapProvider> class.</span></span> <span data-ttu-id="14087-165">`SimpleTextSiteMapProvider`使用 helper 方法，名為`FindUrl`、 取得目前顯示的頁面從 URL<xref:System.Web.HttpContext>物件。</span><span class="sxs-lookup"><span data-stu-id="14087-165">The `SimpleTextSiteMapProvider` uses a helper method, named `FindUrl`, to get the URL of the currently displayed page from the <xref:System.Web.HttpContext> object.</span></span>  
+  
+ <span data-ttu-id="14087-166">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-166">This code example is part of a larger example provided for the <xref:System.Web.SiteMapProvider> class.</span></span>  
+  
+ [!code-csharp[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#5](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/CS/simpletextsitemapprovider.cs#5)]
+ [!code-vb[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/VB/simpletextsitemapprovider.vb#5)]  
+  
+ [!code-csharp[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#8](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/CS/simpletextsitemapprovider.cs#8)]
+ [!code-vb[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#8](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/VB/simpletextsitemapprovider.vb#8)]  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides">
+          <para><span data-ttu-id="14087-167">在覆寫<see cref="M:System.Web.SiteMapProvider.FindSiteMapNode(System.String)" />方法在衍生類別中，請務必將搜尋延伸至任何子系的提供者，如果<see cref="T:System.Web.SiteMapNode" />URL 相符的物件中找不到提供者目前的站台對應，且提供者支援子項提供者。</span><span class="sxs-lookup"><span data-stu-id="14087-167">When overriding the <see cref="M:System.Web.SiteMapProvider.FindSiteMapNode(System.String)" /> method in a derived class, be sure to extend the search to any child providers, if a <see cref="T:System.Web.SiteMapNode" /> object that matches the URL is not found by the provider in the current site map and the provider supports child providers.</span></span></para>
+        </block>
+        <altmember cref="P:System.Web.SiteMapProvider.CurrentNode" />
+        <altmember cref="M:System.Web.SiteMapProvider.FindSiteMapNode(System.Web.HttpContext)" />
+      </Docs>
+    </Member>
+    <Member MemberName="FindSiteMapNode">
+      <MemberSignature Language="C#" Value="public virtual System.Web.SiteMapNode FindSiteMapNode (System.Web.HttpContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Web.SiteMapNode FindSiteMapNode(class System.Web.HttpContext context) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.FindSiteMapNode(System.Web.HttpContext)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function FindSiteMapNode (context As HttpContext) As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Web::SiteMapNode ^ FindSiteMapNode(System::Web::HttpContext ^ context);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Web.HttpContext" />
+      </Parameters>
+      <Docs>
+        <param name="context"><span data-ttu-id="14087-168"><see cref="T:System.Web.HttpContext" />，用來使節點資訊與所要求之網頁的 URL 相對應。</span><span class="sxs-lookup"><span data-stu-id="14087-168">The <see cref="T:System.Web.HttpContext" /> used to match node information with the URL of the requested page.</span></span></param>
+        <summary><span data-ttu-id="14087-169">使用指定的 <see cref="T:System.Web.SiteMapNode" /> 物件，擷取表示目前所要求之網頁的 <see cref="T:System.Web.HttpContext" /> 物件。</span><span class="sxs-lookup"><span data-stu-id="14087-169">Retrieves a <see cref="T:System.Web.SiteMapNode" /> object that represents the currently requested page using the specified <see cref="T:System.Web.HttpContext" /> object.</span></span></summary>
+        <returns><span data-ttu-id="14087-170">表示目前所要求之網頁的 <see cref="T:System.Web.SiteMapNode" />，如果 <see cref="T:System.Web.SiteMapNode" /> 中找不到對應的 <see cref="T:System.Web.SiteMapNode" />，或網頁內容為 <see langword="null" />，則為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-170">A <see cref="T:System.Web.SiteMapNode" /> that represents the currently requested page; otherwise, <see langword="null" />, if no corresponding <see cref="T:System.Web.SiteMapNode" /> can be found in the <see cref="T:System.Web.SiteMapNode" /> or if the page context is <see langword="null" />.</span></span></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-171"><xref:System.Web.SiteMapProvider.FindSiteMapNode%2A>方法會呼叫抽象<xref:System.Web.SiteMapProvider.FindSiteMapNode%2A>方法來擷取<xref:System.Web.SiteMapNode>物件的目前要求的網頁的原始 URL 或根據要求的虛擬路徑。</span><span class="sxs-lookup"><span data-stu-id="14087-171">The <xref:System.Web.SiteMapProvider.FindSiteMapNode%2A> method calls the abstract <xref:System.Web.SiteMapProvider.FindSiteMapNode%2A> method to retrieve a <xref:System.Web.SiteMapNode> object for the currently requested page based on the raw URL or the virtual path of the request.</span></span> <span data-ttu-id="14087-172">如果沒有對應<xref:System.Web.SiteMapNode>位於<xref:System.Web.SiteMap>，`null`傳回。</span><span class="sxs-lookup"><span data-stu-id="14087-172">If no corresponding <xref:System.Web.SiteMapNode> is found in the <xref:System.Web.SiteMap>, `null` is returned.</span></span>  
+  
+ <span data-ttu-id="14087-173"><xref:System.Web.SiteMapProvider.FindSiteMapNode%2A>方法不會檢查是否<xref:System.Web.SiteMapNode>預設的使用者進行存取。</span><span class="sxs-lookup"><span data-stu-id="14087-173">The <xref:System.Web.SiteMapProvider.FindSiteMapNode%2A> method does not check whether a <xref:System.Web.SiteMapNode> is accessible to a user, by default.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Web.SiteMapProvider.FindSiteMapNode(System.String)" />
+      </Docs>
+    </Member>
+    <Member MemberName="FindSiteMapNodeFromKey">
+      <MemberSignature Language="C#" Value="public virtual System.Web.SiteMapNode FindSiteMapNodeFromKey (string key);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Web.SiteMapNode FindSiteMapNodeFromKey(string key) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.FindSiteMapNodeFromKey(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function FindSiteMapNodeFromKey (key As String) As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Web::SiteMapNode ^ FindSiteMapNodeFromKey(System::String ^ key);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="key" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="key"><span data-ttu-id="14087-174">查閱索引鍵，用來建立 <see cref="T:System.Web.SiteMapNode" />。</span><span class="sxs-lookup"><span data-stu-id="14087-174">A lookup key with which a <see cref="T:System.Web.SiteMapNode" /> is created.</span></span></param>
+        <summary><span data-ttu-id="14087-175">根據指定的索引鍵，擷取 <see cref="T:System.Web.SiteMapNode" /> 物件。</span><span class="sxs-lookup"><span data-stu-id="14087-175">Retrieves a <see cref="T:System.Web.SiteMapNode" /> object based on a specified key.</span></span></summary>
+        <returns><span data-ttu-id="14087-176">表示 <paramref name="key" /> 所識別之網頁的 <see cref="T:System.Web.SiteMapNode" />，但如果找不到對應的 <see cref="T:System.Web.SiteMapNode" />，或安全性調整已啟用，而無法傳回目前使用者的 <see cref="T:System.Web.SiteMapNode" />，則為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-176">A <see cref="T:System.Web.SiteMapNode" /> that represents the page identified by <paramref name="key" />; otherwise, <see langword="null" />, if no corresponding <see cref="T:System.Web.SiteMapNode" /> is found or if security trimming is enabled and the <see cref="T:System.Web.SiteMapNode" /> cannot be returned for the current user.</span></span> <span data-ttu-id="14087-177">預設值為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-177">The default is <see langword="null" />.</span></span></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-178"><xref:System.Web.SiteMapProvider>實作會傳回`null`在所有情況下。</span><span class="sxs-lookup"><span data-stu-id="14087-178">The <xref:System.Web.SiteMapProvider> implementation returns `null` in all cases.</span></span> <span data-ttu-id="14087-179">類別衍生自<xref:System.Web.SiteMapProvider>類別可以覆寫<xref:System.Web.SiteMapProvider.FindSiteMapNodeFromKey%2A>唯一索引鍵為基礎的方法，以提供查閱功能 (而不是 URL，這由<xref:System.Web.SiteMapProvider.FindSiteMapNode%2A>方法)。</span><span class="sxs-lookup"><span data-stu-id="14087-179">Classes that derive from the <xref:System.Web.SiteMapProvider> class can override the <xref:System.Web.SiteMapProvider.FindSiteMapNodeFromKey%2A> method to provide lookup functionality based on a unique key (instead of a URL, which is used by the <xref:System.Web.SiteMapProvider.FindSiteMapNode%2A> method).</span></span> <span data-ttu-id="14087-180">實作<xref:System.Web.SiteMapProvider.FindSiteMapNodeFromKey%2A>方法，如果您的站台對應提供者實作會使用<xref:System.Web.SiteMapNode.Key%2A?displayProperty=nameWithType>屬性<xref:System.Web.SiteMapNode>物件為主要網站導覽結構中的識別項。</span><span class="sxs-lookup"><span data-stu-id="14087-180">Implement the <xref:System.Web.SiteMapProvider.FindSiteMapNodeFromKey%2A> method if your site map provider implementation uses the <xref:System.Web.SiteMapNode.Key%2A?displayProperty=nameWithType> property of a <xref:System.Web.SiteMapNode> object as a primary identifier in a site map structure.</span></span>  
+  
+ <span data-ttu-id="14087-181"><xref:System.Web.StaticSiteMapProvider>類別會提供實作以處理搜尋未定義 URL 的站台對應節點。</span><span class="sxs-lookup"><span data-stu-id="14087-181">The <xref:System.Web.StaticSiteMapProvider> class provides an implementation that handles searching for site map nodes that do not define a URL.</span></span>  
+  
+ <span data-ttu-id="14087-182"><xref:System.Web.XmlSiteMapProvider>類別，這是 ASP.NET 的預設站台對應提供者，使用的 URL<xref:System.Web.SiteMapNode>做為索引鍵中的各種集合的維護類別。</span><span class="sxs-lookup"><span data-stu-id="14087-182">The <xref:System.Web.XmlSiteMapProvider> class, which is the default site map provider for ASP.NET, uses the URL of a <xref:System.Web.SiteMapNode> as a key in the various collections that the classes maintain.</span></span> <span data-ttu-id="14087-183">因此，如果節點提供 URL，它必須是唯一的範圍內的站台地圖提供者。</span><span class="sxs-lookup"><span data-stu-id="14087-183">Therefore, if a node provides a URL, it must be unique within the scope of the site map provider.</span></span> <span data-ttu-id="14087-184">如果未不提供任何 URL，則產生的唯一識別碼識別<xref:System.Web.SiteMapNode>。</span><span class="sxs-lookup"><span data-stu-id="14087-184">If no URL is provided, a unique identifier is generated to identify the <xref:System.Web.SiteMapNode>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="Overload:System.Web.SiteMapProvider.FindSiteMapNode" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetChildNodes">
+      <MemberSignature Language="C#" Value="public abstract System.Web.SiteMapNodeCollection GetChildNodes (System.Web.SiteMapNode node);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Web.SiteMapNodeCollection GetChildNodes(class System.Web.SiteMapNode node) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.GetChildNodes(System.Web.SiteMapNode)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function GetChildNodes (node As SiteMapNode) As SiteMapNodeCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract System::Web::SiteMapNodeCollection ^ GetChildNodes(System::Web::SiteMapNode ^ node);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNodeCollection</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Web.SiteMapNode" />
+      </Parameters>
+      <Docs>
+        <param name="node"><span data-ttu-id="14087-185"><see cref="T:System.Web.SiteMapNode" />，要擷取其所有子節點。</span><span class="sxs-lookup"><span data-stu-id="14087-185">The <see cref="T:System.Web.SiteMapNode" /> for which to retrieve all child nodes.</span></span></param>
+        <summary><span data-ttu-id="14087-186">在衍生類別中覆寫時，擷取特定 <see cref="T:System.Web.SiteMapNode" /> 的子節點。</span><span class="sxs-lookup"><span data-stu-id="14087-186">When overridden in a derived class, retrieves the child nodes of a specific <see cref="T:System.Web.SiteMapNode" />.</span></span></summary>
+        <returns><span data-ttu-id="14087-187">唯讀的 <see cref="T:System.Web.SiteMapNodeCollection" />，包含指定 <see cref="T:System.Web.SiteMapNode" /> 的直接子節點，但如果子節點不存在，則為 <see langword="null" /> 或空集合。</span><span class="sxs-lookup"><span data-stu-id="14087-187">A read-only <see cref="T:System.Web.SiteMapNodeCollection" /> that contains the immediate child nodes of the specified <see cref="T:System.Web.SiteMapNode" />; otherwise, <see langword="null" /> or an empty collection, if no child nodes exist.</span></span></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-188">類別衍生自<xref:System.Web.SiteMapProvider>類別必須實作抽象<xref:System.Web.SiteMapProvider.GetChildNodes%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="14087-188">Classes that derive from the <xref:System.Web.SiteMapProvider> class must implement the abstract <xref:System.Web.SiteMapProvider.GetChildNodes%2A> method.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="14087-189">下列程式碼範例示範如何實作<xref:System.Web.SiteMapProvider.GetChildNodes%2A>方法會實作抽象類別中的<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-189">The following code example demonstrates how to implement the <xref:System.Web.SiteMapProvider.GetChildNodes%2A> method in a class that implements the abstract <xref:System.Web.SiteMapProvider> class.</span></span> <span data-ttu-id="14087-190">`SimpleTextSiteMapProvider`儲存階層式父子式關聯性中其中一個<xref:System.Collections.Hashtable>物件及其所有<xref:System.Web.SiteMapNode>中另一個物件。</span><span class="sxs-lookup"><span data-stu-id="14087-190">The `SimpleTextSiteMapProvider` stores the hierarchical parent/child relationships in one <xref:System.Collections.Hashtable> object and all <xref:System.Web.SiteMapNode> objects in another.</span></span> <span data-ttu-id="14087-191"><xref:System.Web.SiteMapProvider.GetChildNodes%2A>方法會執行使用這兩個反向查閱<xref:System.Collections.ArrayList>物件。</span><span class="sxs-lookup"><span data-stu-id="14087-191">The <xref:System.Web.SiteMapProvider.GetChildNodes%2A> method performs a reverse-lookup using both <xref:System.Collections.ArrayList> objects.</span></span>  
+  
+ <span data-ttu-id="14087-192">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-192">This code example is part of a larger example provided for the <xref:System.Web.SiteMapProvider> class.</span></span>  
+  
+ [!code-csharp[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#6](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/CS/simpletextsitemapprovider.cs#6)]
+ [!code-vb[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/VB/simpletextsitemapprovider.vb#6)]  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides">
+          <para><span data-ttu-id="14087-193">在覆寫<see cref="M:System.Web.SiteMapProvider.GetChildNodes(System.Web.SiteMapNode)" />方法在衍生類別中，請務必在子節點上執行安全性調整，並確認傳回的集合是唯讀的。</span><span class="sxs-lookup"><span data-stu-id="14087-193">When overriding the <see cref="M:System.Web.SiteMapProvider.GetChildNodes(System.Web.SiteMapNode)" /> method in a derived class, be sure to perform security trimming on the child nodes and ensure that the returned collection is read-only.</span></span> <span data-ttu-id="14087-194">集合包含只有的直接子系指定的<paramref name="node" />。</span><span class="sxs-lookup"><span data-stu-id="14087-194">The collection contains only the immediate children of the specified <paramref name="node" />.</span></span></para>
+        </block>
+        <altmember cref="M:System.Web.SiteMapProvider.GetParentNode(System.Web.SiteMapNode)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetCurrentNodeAndHintAncestorNodes">
+      <MemberSignature Language="C#" Value="public virtual System.Web.SiteMapNode GetCurrentNodeAndHintAncestorNodes (int upLevel);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Web.SiteMapNode GetCurrentNodeAndHintAncestorNodes(int32 upLevel) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.GetCurrentNodeAndHintAncestorNodes(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetCurrentNodeAndHintAncestorNodes (upLevel As Integer) As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Web::SiteMapNode ^ GetCurrentNodeAndHintAncestorNodes(int upLevel);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="upLevel" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="upLevel"><span data-ttu-id="14087-195">要取得的祖系網站導覽節點層代數。</span><span class="sxs-lookup"><span data-stu-id="14087-195">The number of ancestor site map node generations to get.</span></span> <span data-ttu-id="14087-196">-1 值表示提供者可以擷取和快取所有祖系。</span><span class="sxs-lookup"><span data-stu-id="14087-196">A value of -1 indicates that all ancestors might be retrieved and cached by the provider.</span></span></param>
+        <summary><span data-ttu-id="14087-197">當擷取目前所要求之網頁的節點，以及擷取目前網頁的父代和祖系網站導覽節點時，提供網站導覽提供者的最佳化查閱方法。</span><span class="sxs-lookup"><span data-stu-id="14087-197">Provides an optimized lookup method for site map providers when retrieving the node for the currently requested page and fetching the parent and ancestor site map nodes for the current page.</span></span></summary>
+        <returns><span data-ttu-id="14087-198">表示目前所要求之網頁的 <see cref="T:System.Web.SiteMapNode" />，但如果找不到 <see cref="T:System.Web.SiteMapNode" /> 或無法為目前使用者傳回，則為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-198">A <see cref="T:System.Web.SiteMapNode" /> that represents the currently requested page; otherwise, <see langword="null" />, if the <see cref="T:System.Web.SiteMapNode" /> is not found or cannot be returned for the current user.</span></span></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-199">預設實作<xref:System.Web.SiteMapProvider.GetCurrentNodeAndHintAncestorNodes%2A>方法會傳回<xref:System.Web.SiteMapProvider.CurrentNode%2A>屬性; 不過，站台對應提供者可以覆寫<xref:System.Web.SiteMapProvider.GetCurrentNodeAndHintAncestorNodes%2A>方法，並提供用來傳回目前的自訂快取機制最佳化的實作<xref:System.Web.SiteMapNode>，以及之父系的父系及祖系節點。</span><span class="sxs-lookup"><span data-stu-id="14087-199">The default implementation of the <xref:System.Web.SiteMapProvider.GetCurrentNodeAndHintAncestorNodes%2A> method returns the <xref:System.Web.SiteMapProvider.CurrentNode%2A> property; however, site map providers can override the <xref:System.Web.SiteMapProvider.GetCurrentNodeAndHintAncestorNodes%2A> method and provide an optimized implementation that uses custom caching mechanisms to return the current <xref:System.Web.SiteMapNode>, as well as the parent and ancestor nodes of the parent.</span></span>  
+  
+ <span data-ttu-id="14087-200">`upLevel`參數用來指定多少層的擷取父系及祖系節點。</span><span class="sxs-lookup"><span data-stu-id="14087-200">The `upLevel` parameter is used to specify how many levels of parent and ancestor nodes to retrieve.</span></span> <span data-ttu-id="14087-201">如果願意的話父系及祖系節點可以連結至<xref:System.Web.SiteMapNode>所傳回的物件<xref:System.Web.SiteMapProvider.GetCurrentNodeAndHintAncestorNodes%2A>方法，使用<xref:System.Web.SiteMapNode.ParentNode%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="14087-201">If preferred, the parent and ancestor nodes can be linked to the <xref:System.Web.SiteMapNode> object that is returned by the <xref:System.Web.SiteMapProvider.GetCurrentNodeAndHintAncestorNodes%2A> method, using the <xref:System.Web.SiteMapNode.ParentNode%2A> property.</span></span>  
+  
+ <span data-ttu-id="14087-202"><xref:System.Web.XmlSiteMapProvider>類別，這是 ASP.NET 的預設站台對應提供者，會快取在記憶體中，這會產生少量或沒有的額外負荷，查詢時的整個站台對應<xref:System.Web.XmlSiteMapProvider>特定<xref:System.Web.SiteMapNode>物件。</span><span class="sxs-lookup"><span data-stu-id="14087-202">The <xref:System.Web.XmlSiteMapProvider> class, which is the default site map provider for ASP.NET, caches the entire site map in memory, which results in little or no overhead when querying the <xref:System.Web.XmlSiteMapProvider> for specific <xref:System.Web.SiteMapNode> objects.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="14087-203"><paramref name="upLevel" /> 小於 -1。</span><span class="sxs-lookup"><span data-stu-id="14087-203"><paramref name="upLevel" /> is less than -1.</span></span></exception>
+        <altmember cref="M:System.Web.SiteMapProvider.GetCurrentNodeAndHintNeighborhoodNodes(System.Int32,System.Int32)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetCurrentNodeAndHintNeighborhoodNodes">
+      <MemberSignature Language="C#" Value="public virtual System.Web.SiteMapNode GetCurrentNodeAndHintNeighborhoodNodes (int upLevel, int downLevel);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Web.SiteMapNode GetCurrentNodeAndHintNeighborhoodNodes(int32 upLevel, int32 downLevel) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.GetCurrentNodeAndHintNeighborhoodNodes(System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetCurrentNodeAndHintNeighborhoodNodes (upLevel As Integer, downLevel As Integer) As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Web::SiteMapNode ^ GetCurrentNodeAndHintNeighborhoodNodes(int upLevel, int downLevel);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="upLevel" Type="System.Int32" />
+        <Parameter Name="downLevel" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="upLevel"><span data-ttu-id="14087-204">要擷取的祖系 <see cref="T:System.Web.SiteMapNode" /> 層代數。</span><span class="sxs-lookup"><span data-stu-id="14087-204">The number of ancestor <see cref="T:System.Web.SiteMapNode" /> generations to fetch.</span></span> <span data-ttu-id="14087-205">0 表示提供者不擷取任何祖系節點，而 -1 則表示提供者可以擷取和快取所有祖系。</span><span class="sxs-lookup"><span data-stu-id="14087-205">0 indicates no ancestor nodes are retrieved and -1 indicates that all ancestors might be retrieved and cached by the provider.</span></span></param>
+        <param name="downLevel"><span data-ttu-id="14087-206">要擷取的子系 <see cref="T:System.Web.SiteMapNode" /> 層代數。</span><span class="sxs-lookup"><span data-stu-id="14087-206">The number of child <see cref="T:System.Web.SiteMapNode" /> generations to fetch.</span></span> <span data-ttu-id="14087-207">0 表示提供者不擷取任何子代節點，而 -1 則表示提供者可以擷取和快取所有子代節點。</span><span class="sxs-lookup"><span data-stu-id="14087-207">0 indicates no descendant nodes are retrieved and a -1 indicates that all descendant nodes might be retrieved and cached by the provider.</span></span></param>
+        <summary><span data-ttu-id="14087-208">當擷取目前所要求之網頁的節點，以及擷取目前節點附近的網站導覽節點時，提供網站導覽提供者的最佳化查閱方法。</span><span class="sxs-lookup"><span data-stu-id="14087-208">Provides an optimized lookup method for site map providers when retrieving the node for the currently requested page and fetching the site map nodes in the proximity of the current node.</span></span></summary>
+        <returns><span data-ttu-id="14087-209">表示目前所要求之網頁的 <see cref="T:System.Web.SiteMapNode" />，但如果找不到 <see cref="T:System.Web.SiteMapNode" /> 或無法為目前使用者傳回，則為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-209">A <see cref="T:System.Web.SiteMapNode" /> that represents the currently requested page; otherwise, <see langword="null" />, if the <see cref="T:System.Web.SiteMapNode" /> is not found or cannot be returned for the current user.</span></span></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-210">預設實作<xref:System.Web.SiteMapProvider.GetCurrentNodeAndHintNeighborhoodNodes%2A>方法會傳回<xref:System.Web.SiteMapProvider.CurrentNode%2A>屬性; 不過，站台對應提供者可以覆寫<xref:System.Web.SiteMapProvider.GetCurrentNodeAndHintNeighborhoodNodes%2A>方法，並提供用來傳回目前的自訂快取機制最佳化的實作<xref:System.Web.SiteMapNode>物件，以及<xref:System.Web.SiteMapNode>物件中目前的接近度<xref:System.Web.SiteMapNode>。</span><span class="sxs-lookup"><span data-stu-id="14087-210">The default implementation of the <xref:System.Web.SiteMapProvider.GetCurrentNodeAndHintNeighborhoodNodes%2A> method returns the <xref:System.Web.SiteMapProvider.CurrentNode%2A> property; however, site map providers can override the <xref:System.Web.SiteMapProvider.GetCurrentNodeAndHintNeighborhoodNodes%2A> method and provide an optimized implementation that uses custom caching mechanisms to return the current <xref:System.Web.SiteMapNode> object, as well as <xref:System.Web.SiteMapNode> objects that are in the proximity of the current <xref:System.Web.SiteMapNode>.</span></span>  
+  
+ <span data-ttu-id="14087-211">`upLevel`參數用來指定多少層的擷取及快取，以及其直屬子系的父系及祖系節點。</span><span class="sxs-lookup"><span data-stu-id="14087-211">The `upLevel` parameter is used to specify how many levels of parent and ancestor nodes to retrieve and cache, along with their immediate children.</span></span> <span data-ttu-id="14087-212">`downLevel`參數用來指定多少層的子系的節點，從目前<xref:System.Web.SiteMapNode>擷取。</span><span class="sxs-lookup"><span data-stu-id="14087-212">The `downLevel` parameter is used to specify how many levels of descendant nodes from the current <xref:System.Web.SiteMapNode> to retrieve.</span></span> <span data-ttu-id="14087-213">如果願意的話的上階和下階節點可以連結至<xref:System.Web.SiteMapNode>，由</span><span class="sxs-lookup"><span data-stu-id="14087-213">If preferred, the ancestor and descendant nodes can be linked to the <xref:System.Web.SiteMapNode> that is returned by the</span></span>  
+  
+ <span data-ttu-id="14087-214"><xref:System.Web.SiteMapProvider.GetCurrentNodeAndHintNeighborhoodNodes%2A> 方法中，使用<xref:System.Web.SiteMapNode.ParentNode%2A>和<xref:System.Web.SiteMapNode.ChildNodes%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="14087-214"><xref:System.Web.SiteMapProvider.GetCurrentNodeAndHintNeighborhoodNodes%2A> method, using the <xref:System.Web.SiteMapNode.ParentNode%2A> and <xref:System.Web.SiteMapNode.ChildNodes%2A> properties.</span></span> <span data-ttu-id="14087-215">如果有較少上階或子節點層級超過所指定`upLevel`或`downLevel`，只有可擷取。</span><span class="sxs-lookup"><span data-stu-id="14087-215">If there are fewer ancestor or child node levels than are specified by `upLevel` or `downLevel`, only those that are available are retrieved.</span></span>  
+  
+ <span data-ttu-id="14087-216"><xref:System.Web.XmlSiteMapProvider>類別，這是 ASP.NET 的預設站台對應提供者，會快取在記憶體中，這會產生少量或沒有的額外負荷，查詢時的整個站台對應<xref:System.Web.XmlSiteMapProvider>特定<xref:System.Web.SiteMapNode>物件。</span><span class="sxs-lookup"><span data-stu-id="14087-216">The <xref:System.Web.XmlSiteMapProvider> class, which is the default site map provider for ASP.NET, caches the entire site map in memory, which results in little or no overhead when querying the <xref:System.Web.XmlSiteMapProvider> for specific <xref:System.Web.SiteMapNode> objects.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="14087-217"><paramref name="upLevel" /> 或 <paramref name="downLevel" /> 小於 -1。</span><span class="sxs-lookup"><span data-stu-id="14087-217"><paramref name="upLevel" /> or <paramref name="downLevel" /> is less than -1.</span></span></exception>
+        <altmember cref="M:System.Web.SiteMapProvider.GetCurrentNodeAndHintAncestorNodes(System.Int32)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetParentNode">
+      <MemberSignature Language="C#" Value="public abstract System.Web.SiteMapNode GetParentNode (System.Web.SiteMapNode node);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Web.SiteMapNode GetParentNode(class System.Web.SiteMapNode node) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.GetParentNode(System.Web.SiteMapNode)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function GetParentNode (node As SiteMapNode) As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract System::Web::SiteMapNode ^ GetParentNode(System::Web::SiteMapNode ^ node);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Web.SiteMapNode" />
+      </Parameters>
+      <Docs>
+        <param name="node"><span data-ttu-id="14087-218"><see cref="T:System.Web.SiteMapNode" />，要擷取其父節點。</span><span class="sxs-lookup"><span data-stu-id="14087-218">The <see cref="T:System.Web.SiteMapNode" /> for which to retrieve the parent node.</span></span></param>
+        <summary><span data-ttu-id="14087-219">在衍生類別中覆寫時，擷取特定 <see cref="T:System.Web.SiteMapNode" /> 物件的父節點。</span><span class="sxs-lookup"><span data-stu-id="14087-219">When overridden in a derived class, retrieves the parent node of a specific <see cref="T:System.Web.SiteMapNode" /> object.</span></span></summary>
+        <returns><span data-ttu-id="14087-220">表示 <paramref name="node" /> 之父代的 <see cref="T:System.Web.SiteMapNode" />，但如果 <see cref="T:System.Web.SiteMapNode" /> 沒有父代，或安全性調整已啟用，而且目前使用者無法存取此父節點，則為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-220">A <see cref="T:System.Web.SiteMapNode" /> that represents the parent of <paramref name="node" />; otherwise, <see langword="null" />, if the <see cref="T:System.Web.SiteMapNode" /> has no parent or security trimming is enabled and the parent node is not accessible to the current user.</span></span>  
+  
+ <span data-ttu-id="14087-221">如果父節點屬於不同的提供者，則 <block subset="none" type="note"><para><see cref="M:System.Web.SiteMapProvider.GetParentNode(System.Web.SiteMapNode)" /> 也可能傳回 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-221"><block subset="none" type="note"><para><see cref="M:System.Web.SiteMapProvider.GetParentNode(System.Web.SiteMapNode)" /> might also return <see langword="null" /> if the parent node belongs to a different provider.</span></span> <span data-ttu-id="14087-222">在這個案例中，請改用 <paramref name="node" /> 的 <see cref="P:System.Web.SiteMapNode.ParentNode" /> 屬性。</span><span class="sxs-lookup"><span data-stu-id="14087-222">In this case, use the <see cref="P:System.Web.SiteMapNode.ParentNode" /> property of <paramref name="node" /> instead.</span></span>  
+  
+</para></block></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="14087-223">下列程式碼範例示範如何實作<xref:System.Web.SiteMapProvider.GetParentNode%2A>方法會實作抽象類別中的<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-223">The following code example demonstrates how to implement the <xref:System.Web.SiteMapProvider.GetParentNode%2A> method in a class that implements the abstract <xref:System.Web.SiteMapProvider> class.</span></span> <span data-ttu-id="14087-224">`SimpleTextSiteMapProvider`儲存之間的父子式階層式關聯性<xref:System.Web.SiteMapNode>中的物件<xref:System.Collections.IList>介面，例如<xref:System.Collections.ArrayList>物件。</span><span class="sxs-lookup"><span data-stu-id="14087-224">The `SimpleTextSiteMapProvider` stores the hierarchical parent/child relationship between <xref:System.Web.SiteMapNode> objects in an <xref:System.Collections.IList> interface, such as an <xref:System.Collections.ArrayList> object.</span></span>  
+  
+ <span data-ttu-id="14087-225">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-225">This code example is part of a larger example provided for the <xref:System.Web.SiteMapProvider> class.</span></span>  
+  
+ [!code-csharp[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#6](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/CS/simpletextsitemapprovider.cs#6)]
+ [!code-vb[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/VB/simpletextsitemapprovider.vb#6)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Web.SiteMapProvider.GetChildNodes(System.Web.SiteMapNode)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetParentNodeRelativeToCurrentNodeAndHintDownFromParent">
+      <MemberSignature Language="C#" Value="public virtual System.Web.SiteMapNode GetParentNodeRelativeToCurrentNodeAndHintDownFromParent (int walkupLevels, int relativeDepthFromWalkup);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Web.SiteMapNode GetParentNodeRelativeToCurrentNodeAndHintDownFromParent(int32 walkupLevels, int32 relativeDepthFromWalkup) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.GetParentNodeRelativeToCurrentNodeAndHintDownFromParent(System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetParentNodeRelativeToCurrentNodeAndHintDownFromParent (walkupLevels As Integer, relativeDepthFromWalkup As Integer) As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Web::SiteMapNode ^ GetParentNodeRelativeToCurrentNodeAndHintDownFromParent(int walkupLevels, int relativeDepthFromWalkup);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="walkupLevels" Type="System.Int32" />
+        <Parameter Name="relativeDepthFromWalkup" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="walkupLevels"><span data-ttu-id="14087-226">當擷取所要求之祖系節點時，要周遊的祖系節點層級數。</span><span class="sxs-lookup"><span data-stu-id="14087-226">The number of ancestor node levels to traverse when retrieving the requested ancestor node.</span></span></param>
+        <param name="relativeDepthFromWalkup"><span data-ttu-id="14087-227">要從目標祖系節點開始擷取的子代節點層級數。</span><span class="sxs-lookup"><span data-stu-id="14087-227">The number of descendant node levels to retrieve from the target ancestor node.</span></span></param>
+        <summary><span data-ttu-id="14087-228">當擷取目前所要求之網頁的祖系節點，以及擷取祖系的子代節點時，提供網站導覽提供者的最佳化查閱方法。</span><span class="sxs-lookup"><span data-stu-id="14087-228">Provides an optimized lookup method for site map providers when retrieving an ancestor node for the currently requested page and fetching the descendant nodes for the ancestor.</span></span></summary>
+        <returns><span data-ttu-id="14087-229"><see cref="T:System.Web.SiteMapNode" />，表示目前所要求之網頁的祖系 <see cref="T:System.Web.SiteMapNode" />，但如果找不到目前或祖系 <see cref="T:System.Web.SiteMapNode" /> 或無法為目前使用者傳回，則為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-229">A <see cref="T:System.Web.SiteMapNode" /> that represents an ancestor <see cref="T:System.Web.SiteMapNode" /> of the currently requested page; otherwise, <see langword="null" />, if the current or ancestor <see cref="T:System.Web.SiteMapNode" /> is not found or cannot be returned for the current user.</span></span></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-230">預設實作<xref:System.Web.SiteMapProvider>類別提供的非最佳化實作<xref:System.Web.SiteMapProvider.GetParentNodeRelativeToCurrentNodeAndHintDownFromParent%2A>方法，並呼叫<xref:System.Web.SiteMapProvider.GetCurrentNodeAndHintAncestorNodes%2A>和<xref:System.Web.SiteMapProvider.HintNeighborhoodNodes%2A>方法; 不過，站台對應提供者可以覆寫<xref:System.Web.SiteMapProvider.GetParentNodeRelativeToCurrentNodeAndHintDownFromParent%2A>方法和提供使用自訂的快取機制，傳回上階節點，並執行其他最佳化的查詢的最佳化的實作<xref:System.Web.SiteMapNode>物件。</span><span class="sxs-lookup"><span data-stu-id="14087-230">The default implementation of the <xref:System.Web.SiteMapProvider> class provides a non-optimized implementation of the <xref:System.Web.SiteMapProvider.GetParentNodeRelativeToCurrentNodeAndHintDownFromParent%2A> method, calling the <xref:System.Web.SiteMapProvider.GetCurrentNodeAndHintAncestorNodes%2A> and <xref:System.Web.SiteMapProvider.HintNeighborhoodNodes%2A> methods; however, site map providers can override the <xref:System.Web.SiteMapProvider.GetParentNodeRelativeToCurrentNodeAndHintDownFromParent%2A> method and provide an optimized implementation that uses custom caching mechanisms to return the ancestor node and perform an optimized lookup of the other <xref:System.Web.SiteMapNode> objects.</span></span>  
+  
+ <span data-ttu-id="14087-231">`walkupLevels`參數用來指定多少層的周遊時擷取的目標節點的父系及祖系節點。</span><span class="sxs-lookup"><span data-stu-id="14087-231">The `walkupLevels` parameter is used to specify how many levels of parent and ancestor nodes to traverse when retrieving the target node.</span></span> <span data-ttu-id="14087-232">如果要求，超出較少的層級`null`傳回。</span><span class="sxs-lookup"><span data-stu-id="14087-232">If fewer levels exist than are requested, `null` is returned.</span></span> <span data-ttu-id="14087-233">`downLevel`參數用來指定多少層的子系的節點，從要擷取之目標上階節點。</span><span class="sxs-lookup"><span data-stu-id="14087-233">The `downLevel` parameter is used to specify how many levels of descendant nodes from the target ancestor node to retrieve.</span></span> <span data-ttu-id="14087-234">如果願意的話的上階和下階節點可以連結至<xref:System.Web.SiteMapNode>所傳回<xref:System.Web.SiteMapProvider.GetParentNodeRelativeToCurrentNodeAndHintDownFromParent%2A>方法，使用<xref:System.Web.SiteMapNode.ParentNode%2A>和<xref:System.Web.SiteMapNode.ChildNodes%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="14087-234">If preferred, the ancestor and descendant nodes can be linked to the <xref:System.Web.SiteMapNode> that is returned by the <xref:System.Web.SiteMapProvider.GetParentNodeRelativeToCurrentNodeAndHintDownFromParent%2A> method, using the <xref:System.Web.SiteMapNode.ParentNode%2A> and <xref:System.Web.SiteMapNode.ChildNodes%2A> properties.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="14087-235"><paramref name="walkupLevels" /> 或 <paramref name="relativeDepthFromWalkup" /> 小於 0。</span><span class="sxs-lookup"><span data-stu-id="14087-235"><paramref name="walkupLevels" /> or <paramref name="relativeDepthFromWalkup" /> is less than 0.</span></span></exception>
+        <altmember cref="M:System.Web.SiteMapProvider.GetParentNodeRelativeToNodeAndHintDownFromParent(System.Web.SiteMapNode,System.Int32,System.Int32)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetParentNodeRelativeToNodeAndHintDownFromParent">
+      <MemberSignature Language="C#" Value="public virtual System.Web.SiteMapNode GetParentNodeRelativeToNodeAndHintDownFromParent (System.Web.SiteMapNode node, int walkupLevels, int relativeDepthFromWalkup);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Web.SiteMapNode GetParentNodeRelativeToNodeAndHintDownFromParent(class System.Web.SiteMapNode node, int32 walkupLevels, int32 relativeDepthFromWalkup) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.GetParentNodeRelativeToNodeAndHintDownFromParent(System.Web.SiteMapNode,System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetParentNodeRelativeToNodeAndHintDownFromParent (node As SiteMapNode, walkupLevels As Integer, relativeDepthFromWalkup As Integer) As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Web::SiteMapNode ^ GetParentNodeRelativeToNodeAndHintDownFromParent(System::Web::SiteMapNode ^ node, int walkupLevels, int relativeDepthFromWalkup);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Web.SiteMapNode" />
+        <Parameter Name="walkupLevels" Type="System.Int32" />
+        <Parameter Name="relativeDepthFromWalkup" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="node"><span data-ttu-id="14087-236"><see cref="T:System.Web.SiteMapNode" />，作用為 <c>walkupLevels</c> 和 <c>relativeDepthFromWalkup</c> 的參考點。</span><span class="sxs-lookup"><span data-stu-id="14087-236">The <see cref="T:System.Web.SiteMapNode" /> that acts as a reference point for <c>walkupLevels</c> and <c>relativeDepthFromWalkup</c>.</span></span></param>
+        <param name="walkupLevels"><span data-ttu-id="14087-237">當擷取所要求之祖系節點時，要周遊的祖系節點層級數。</span><span class="sxs-lookup"><span data-stu-id="14087-237">The number of ancestor node levels to traverse when retrieving the requested ancestor node.</span></span></param>
+        <param name="relativeDepthFromWalkup"><span data-ttu-id="14087-238">要從目標祖系節點開始擷取的子代節點層級數。</span><span class="sxs-lookup"><span data-stu-id="14087-238">The number of descendant node levels to retrieve from the target ancestor node.</span></span></param>
+        <summary><span data-ttu-id="14087-239">當擷取指定 <see cref="T:System.Web.SiteMapNode" /> 物件的祖系節點，以及擷取其子節點時，提供網站導覽提供者的最佳化查閱方法。</span><span class="sxs-lookup"><span data-stu-id="14087-239">Provides an optimized lookup method for site map providers when retrieving an ancestor node for the specified <see cref="T:System.Web.SiteMapNode" /> object and fetching its child nodes.</span></span></summary>
+        <returns><span data-ttu-id="14087-240"><see cref="T:System.Web.SiteMapNode" />，表示 <paramref name="node" /> 的祖系，但如果找不到目前或祖系 <see cref="T:System.Web.SiteMapNode" /> 或無法為目前使用者傳回，則為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-240">A <see cref="T:System.Web.SiteMapNode" /> that represents an ancestor of <paramref name="node" />; otherwise, <see langword="null" />, if the current or ancestor <see cref="T:System.Web.SiteMapNode" /> is not found or cannot be returned for the current user.</span></span></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-241">預設實作<xref:System.Web.SiteMapProvider>類別提供的非最佳化實作<xref:System.Web.SiteMapProvider.GetParentNodeRelativeToNodeAndHintDownFromParent%2A>方法，並呼叫<xref:System.Web.SiteMapProvider.HintAncestorNodes%2A>和<xref:System.Web.SiteMapProvider.HintNeighborhoodNodes%2A>方法; 不過，站台對應提供者可以覆寫<xref:System.Web.SiteMapProvider.GetParentNodeRelativeToNodeAndHintDownFromParent%2A>方法和提供使用自訂的快取機制，傳回上階節點，並執行其他最佳化的查詢的最佳化的實作<xref:System.Web.SiteMapNode>物件。</span><span class="sxs-lookup"><span data-stu-id="14087-241">The default implementation of the <xref:System.Web.SiteMapProvider> class provides a non-optimized implementation of the <xref:System.Web.SiteMapProvider.GetParentNodeRelativeToNodeAndHintDownFromParent%2A> method, calling the <xref:System.Web.SiteMapProvider.HintAncestorNodes%2A> and <xref:System.Web.SiteMapProvider.HintNeighborhoodNodes%2A> methods; however, site map providers can override the <xref:System.Web.SiteMapProvider.GetParentNodeRelativeToNodeAndHintDownFromParent%2A> method and provide an optimized implementation that uses custom caching mechanisms to return the ancestor node and perform an optimized lookup of the other <xref:System.Web.SiteMapNode> objects.</span></span>  <span data-ttu-id="14087-242"><xref:System.Web.SiteMapProvider.GetParentNodeRelativeToNodeAndHintDownFromParent%2A>方法是非常類似於<xref:System.Web.SiteMapProvider.GetParentNodeRelativeToCurrentNodeAndHintDownFromParent%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="14087-242">The <xref:System.Web.SiteMapProvider.GetParentNodeRelativeToNodeAndHintDownFromParent%2A> method is very similar to the <xref:System.Web.SiteMapProvider.GetParentNodeRelativeToCurrentNodeAndHintDownFromParent%2A> method.</span></span>  
+  
+ <span data-ttu-id="14087-243">`walkupLevels`參數用來指定多少層的周遊時擷取的目標節點的父系及祖系節點。</span><span class="sxs-lookup"><span data-stu-id="14087-243">The `walkupLevels` parameter is used to specify how many levels of parent and ancestor nodes to traverse when retrieving the target node.</span></span> <span data-ttu-id="14087-244">如果要求，超出較少的層級`null`傳回。</span><span class="sxs-lookup"><span data-stu-id="14087-244">If fewer levels exist than are requested, `null` is returned.</span></span> <span data-ttu-id="14087-245">`downLevel`參數用來指定多少層的子系的節點，從要擷取之目標上階節點。</span><span class="sxs-lookup"><span data-stu-id="14087-245">The `downLevel` parameter is used to specify how many levels of descendant nodes from the target ancestor node to retrieve.</span></span> <span data-ttu-id="14087-246">如果願意的話的上階和下階節點可以連結至<xref:System.Web.SiteMapNode>所傳回<xref:System.Web.SiteMapProvider.GetParentNodeRelativeToNodeAndHintDownFromParent%2A>方法，使用<xref:System.Web.SiteMapNode.ParentNode%2A>和<xref:System.Web.SiteMapNode.ChildNodes%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="14087-246">If preferred, the ancestor and descendant nodes can be linked to the <xref:System.Web.SiteMapNode> that is returned by the <xref:System.Web.SiteMapProvider.GetParentNodeRelativeToNodeAndHintDownFromParent%2A> method, using the <xref:System.Web.SiteMapNode.ParentNode%2A> and <xref:System.Web.SiteMapNode.ChildNodes%2A> properties.</span></span> <span data-ttu-id="14087-247">如果有較少的祖系節點層級所指定非`upLevel`參數，`null`傳回。</span><span class="sxs-lookup"><span data-stu-id="14087-247">If there are fewer ancestor node levels than specified by the `upLevel` parameter, `null` is returned.</span></span>  <span data-ttu-id="14087-248">它是由提供者實作者，以決定如何處理情況可用的子系節點層級數目由所指定的值小於`downLevel`參數。</span><span class="sxs-lookup"><span data-stu-id="14087-248">It is up to the provider implementer to decide how to handle the situation where the number of available descendant node levels is less than the value that is specified by the `downLevel` parameter.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException"><span data-ttu-id="14087-249"><paramref name="walkupLevels" /> 或 <paramref name="relativeDepthFromWalkup" /> 的指定值小於 0。</span><span class="sxs-lookup"><span data-stu-id="14087-249">The value specified for <paramref name="walkupLevels" /> or <paramref name="relativeDepthFromWalkup" /> is less than 0.</span></span></exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="14087-250"><paramref name="node" /> 為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-250"><paramref name="node" /> is <see langword="null" />.</span></span></exception>
+        <altmember cref="M:System.Web.SiteMapProvider.GetParentNodeRelativeToCurrentNodeAndHintDownFromParent(System.Int32,System.Int32)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetRootNodeCore">
+      <MemberSignature Language="C#" Value="protected internal abstract System.Web.SiteMapNode GetRootNodeCore ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance class System.Web.SiteMapNode GetRootNodeCore() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.GetRootNodeCore" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend MustOverride Function GetRootNodeCore () As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract System::Web::SiteMapNode ^ GetRootNodeCore();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><span data-ttu-id="14087-251">在衍生類別中覆寫時，擷取目前提供者目前所管理之所有節點的根節點。</span><span class="sxs-lookup"><span data-stu-id="14087-251">When overridden in a derived class, retrieves the root node of all the nodes that are currently managed by the current provider.</span></span></summary>
+        <returns><span data-ttu-id="14087-252"><see cref="T:System.Web.SiteMapNode" />，表示目前提供者所管理之節點集合的根節點。</span><span class="sxs-lookup"><span data-stu-id="14087-252">A <see cref="T:System.Web.SiteMapNode" /> that represents the root node of the set of nodes that the current provider manages.</span></span></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-253"><xref:System.Web.SiteMapProvider.GetRootNodeCore%2A>方法可讓父系中的提供者的提供者階層，以取得<xref:System.Web.SiteMapNode>的建置提供者階層和較大的站台對應節點階層的站台地圖資料的總和，作為參考框架的物件，每個管理提供者。</span><span class="sxs-lookup"><span data-stu-id="14087-253">The <xref:System.Web.SiteMapProvider.GetRootNodeCore%2A> method enables a parent provider in a provider hierarchy to obtain a <xref:System.Web.SiteMapNode> object that acts as a frame of reference for building the provider hierarchy and the larger site map node hierarchy that is the sum of the site map data that each provider manages.</span></span>  
+  
+   
+  
+## Examples  
+ [!code-csharp[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#3](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/CS/simpletextsitemapprovider.cs#3)]
+ [!code-vb[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/VB/simpletextsitemapprovider.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Web.SiteMapProvider.GetRootNodeCoreFromProvider(System.Web.SiteMapProvider)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetRootNodeCoreFromProvider">
+      <MemberSignature Language="C#" Value="protected static System.Web.SiteMapNode GetRootNodeCoreFromProvider (System.Web.SiteMapProvider provider);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig class System.Web.SiteMapNode GetRootNodeCoreFromProvider(class System.Web.SiteMapProvider provider) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.GetRootNodeCoreFromProvider(System.Web.SiteMapProvider)" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared Function GetRootNodeCoreFromProvider (provider As SiteMapProvider) As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static System::Web::SiteMapNode ^ GetRootNodeCoreFromProvider(System::Web::SiteMapProvider ^ provider);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="provider" Type="System.Web.SiteMapProvider" />
+      </Parameters>
+      <Docs>
+        <param name="provider"><span data-ttu-id="14087-254">呼叫 <see cref="M:System.Web.SiteMapProvider.GetRootNodeCore" /> 的提供者。</span><span class="sxs-lookup"><span data-stu-id="14087-254">The provider that calls the <see cref="M:System.Web.SiteMapProvider.GetRootNodeCore" />.</span></span></param>
+        <summary><span data-ttu-id="14087-255">擷取指定網站導覽提供者目前所管理之所有節點的根節點。</span><span class="sxs-lookup"><span data-stu-id="14087-255">Retrieves the root node of all the nodes that are currently managed by the specified site map provider.</span></span></summary>
+        <returns><span data-ttu-id="14087-256"><see cref="T:System.Web.SiteMapNode" />，表示 <paramref name="provider" /> 所管理之節點集合的根節點。</span><span class="sxs-lookup"><span data-stu-id="14087-256">A <see cref="T:System.Web.SiteMapNode" /> that represents the root node of the set of nodes that is managed by <paramref name="provider" />.</span></span></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-257">預設實作會呼叫抽象<xref:System.Web.SiteMapProvider.GetRootNodeCore%2A>方法上指定`provider`。</span><span class="sxs-lookup"><span data-stu-id="14087-257">The default implementation calls the abstract <xref:System.Web.SiteMapProvider.GetRootNodeCore%2A> method on the specified `provider`.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Web.SiteMapProvider.GetRootNodeCore" />
+      </Docs>
+    </Member>
+    <Member MemberName="HintAncestorNodes">
+      <MemberSignature Language="C#" Value="public virtual void HintAncestorNodes (System.Web.SiteMapNode node, int upLevel);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void HintAncestorNodes(class System.Web.SiteMapNode node, int32 upLevel) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.HintAncestorNodes(System.Web.SiteMapNode,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub HintAncestorNodes (node As SiteMapNode, upLevel As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void HintAncestorNodes(System::Web::SiteMapNode ^ node, int upLevel);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Web.SiteMapNode" />
+        <Parameter Name="upLevel" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="node"><span data-ttu-id="14087-258"><see cref="T:System.Web.SiteMapNode" />，作用如同 <c>upLevel</c> 的參考點。</span><span class="sxs-lookup"><span data-stu-id="14087-258">The <see cref="T:System.Web.SiteMapNode" /> that acts as a reference point for <c>upLevel</c>.</span></span></param>
+        <param name="upLevel"><span data-ttu-id="14087-259">要擷取的祖系 <see cref="T:System.Web.SiteMapNode" /> 層代數。</span><span class="sxs-lookup"><span data-stu-id="14087-259">The number of ancestor <see cref="T:System.Web.SiteMapNode" /> generations to fetch.</span></span> <span data-ttu-id="14087-260">0 表示不擷取任何祖系節點，而 -1 則表示可以擷取和快取所有祖系。</span><span class="sxs-lookup"><span data-stu-id="14087-260">0 indicates no ancestor nodes are retrieved and -1 indicates that all ancestors might be retrieved and cached.</span></span></param>
+        <summary><span data-ttu-id="14087-261">提供方法，讓網站導覽提供者可以覆寫，以最佳化方式擷取相對於指定 <see cref="T:System.Web.SiteMapNode" /> 物件的一或多個層級之父代和祖系節點。</span><span class="sxs-lookup"><span data-stu-id="14087-261">Provides a method that site map providers can override to perform an optimized retrieval of one or more levels of parent and ancestor nodes, relative to the specified <see cref="T:System.Web.SiteMapNode" /> object.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-262">預設值<xref:System.Web.SiteMapProvider.HintAncestorNodes%2A>方法只會檢查`upLevel`小於-1 的參數和`node`參數`null`。</span><span class="sxs-lookup"><span data-stu-id="14087-262">The default <xref:System.Web.SiteMapProvider.HintAncestorNodes%2A> method only checks for an `upLevel` parameter that is less than -1 and a `node` parameter that is `null`.</span></span> <span data-ttu-id="14087-263">因為<xref:System.Web.XmlSiteMapProvider>類別會快取在記憶體中，站台對應資訊<xref:System.Web.SiteMapProvider.HintAncestorNodes%2A>不能使用方法。</span><span class="sxs-lookup"><span data-stu-id="14087-263">Because the <xref:System.Web.XmlSiteMapProvider> class caches site map information in memory, the <xref:System.Web.SiteMapProvider.HintAncestorNodes%2A> method is not used.</span></span>  
+  
+ <span data-ttu-id="14087-264">站台對應提供者可以覆寫<xref:System.Web.SiteMapProvider.HintAncestorNodes%2A>方法，以執行指定的父系及祖系節點的最佳化的擷取<xref:System.Web.SiteMapNode>物件。</span><span class="sxs-lookup"><span data-stu-id="14087-264">Site map providers can override the <xref:System.Web.SiteMapProvider.HintAncestorNodes%2A> method to perform an optimized retrieval of parent and ancestor nodes of the specified <xref:System.Web.SiteMapNode> object.</span></span>  
+  
+ <span data-ttu-id="14087-265">`upLevel`參數用來指定多少層的周遊從指定的父系及祖系節點<xref:System.Web.SiteMapNode>。</span><span class="sxs-lookup"><span data-stu-id="14087-265">The `upLevel` parameter is used to specify how many levels of parent and ancestor nodes to traverse from the specified <xref:System.Web.SiteMapNode>.</span></span> <span data-ttu-id="14087-266">如果要求超出較少的層級中指定的繫結, 傳回所有可用的祖系節點。</span><span class="sxs-lookup"><span data-stu-id="14087-266">If fewer levels exist than are requested, all available ancestor nodes are returned within the specified bound.</span></span> <span data-ttu-id="14087-267">如果慣用，可以連結的父節點到指定<xref:System.Web.SiteMapNode>使用<xref:System.Web.SiteMapNode.ParentNode%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="14087-267">If preferred, the parent node can be linked to the specified <xref:System.Web.SiteMapNode> using the <xref:System.Web.SiteMapNode.ParentNode%2A> property.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="14087-268"><paramref name="upLevel" /> 小於 -1。</span><span class="sxs-lookup"><span data-stu-id="14087-268"><paramref name="upLevel" /> is less than -1.</span></span></exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="14087-269"><paramref name="node" /> 為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-269"><paramref name="node" /> is <see langword="null" />.</span></span></exception>
+        <altmember cref="M:System.Web.SiteMapProvider.HintNeighborhoodNodes(System.Web.SiteMapNode,System.Int32,System.Int32)" />
+      </Docs>
+    </Member>
+    <Member MemberName="HintNeighborhoodNodes">
+      <MemberSignature Language="C#" Value="public virtual void HintNeighborhoodNodes (System.Web.SiteMapNode node, int upLevel, int downLevel);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void HintNeighborhoodNodes(class System.Web.SiteMapNode node, int32 upLevel, int32 downLevel) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.HintNeighborhoodNodes(System.Web.SiteMapNode,System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub HintNeighborhoodNodes (node As SiteMapNode, upLevel As Integer, downLevel As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void HintNeighborhoodNodes(System::Web::SiteMapNode ^ node, int upLevel, int downLevel);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Web.SiteMapNode" />
+        <Parameter Name="upLevel" Type="System.Int32" />
+        <Parameter Name="downLevel" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="node"><span data-ttu-id="14087-270"><see cref="T:System.Web.SiteMapNode" />，作用如同 <c>upLevel</c> 的參考點。</span><span class="sxs-lookup"><span data-stu-id="14087-270">The <see cref="T:System.Web.SiteMapNode" /> that acts as a reference point for <c>upLevel</c>.</span></span></param>
+        <param name="upLevel"><span data-ttu-id="14087-271">要擷取的祖系 <see cref="T:System.Web.SiteMapNode" /> 層代數。</span><span class="sxs-lookup"><span data-stu-id="14087-271">The number of ancestor <see cref="T:System.Web.SiteMapNode" /> generations to fetch.</span></span> <span data-ttu-id="14087-272">0 表示不擷取任何祖系節點，而 -1 則表示可以擷取和快取所有祖系 (以及到 <c>node</c> 層級的子代節點)。</span><span class="sxs-lookup"><span data-stu-id="14087-272">0 indicates no ancestor nodes are retrieved and -1 indicates that all ancestors (and their descendant nodes to the level of <c>node</c>) might be retrieved and cached.</span></span></param>
+        <param name="downLevel"><span data-ttu-id="14087-273">要擷取的子代 <see cref="T:System.Web.SiteMapNode" /> 層代數。</span><span class="sxs-lookup"><span data-stu-id="14087-273">The number of descendant <see cref="T:System.Web.SiteMapNode" /> generations to fetch.</span></span> <span data-ttu-id="14087-274">0 表示不擷取任何子代節點，而 -1 則表示可以擷取和快取所有子代節點。</span><span class="sxs-lookup"><span data-stu-id="14087-274">0 indicates no descendant nodes are retrieved and -1 indicates that all descendant nodes might be retrieved and cached.</span></span></param>
+        <summary><span data-ttu-id="14087-275">提供方法，讓網站導覽提供者可以覆寫，以最佳化方式擷取指定節點附近找到的節點。</span><span class="sxs-lookup"><span data-stu-id="14087-275">Provides a method that site map providers can override to perform an optimized retrieval of nodes found in the proximity of the specified node.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-276">預設值<xref:System.Web.SiteMapProvider.HintNeighborhoodNodes%2A>方法只會檢查`upLevel`和`downLevel`參數小於-1 和`node`參數`null`。</span><span class="sxs-lookup"><span data-stu-id="14087-276">The default <xref:System.Web.SiteMapProvider.HintNeighborhoodNodes%2A> method only checks for an `upLevel` and `downLevel` parameters that are less than -1 and a `node` parameter that is `null`.</span></span> <span data-ttu-id="14087-277">因為<xref:System.Web.XmlSiteMapProvider>物件快取在記憶體中，站台對應資訊<xref:System.Web.SiteMapProvider.HintNeighborhoodNodes%2A>不能使用方法。</span><span class="sxs-lookup"><span data-stu-id="14087-277">Because the <xref:System.Web.XmlSiteMapProvider> object caches site map information in memory, the <xref:System.Web.SiteMapProvider.HintNeighborhoodNodes%2A> method is not used.</span></span>  
+  
+ <span data-ttu-id="14087-278">站台對應提供者可以覆寫<xref:System.Web.SiteMapProvider.HintNeighborhoodNodes%2A>方法，以執行的最佳化的查閱<xref:System.Web.SiteMapNode>物件中指定的接近度<xref:System.Web.SiteMapNode>。</span><span class="sxs-lookup"><span data-stu-id="14087-278">Site map providers can override the <xref:System.Web.SiteMapProvider.HintNeighborhoodNodes%2A> method to perform an optimized lookup of the <xref:System.Web.SiteMapNode> objects in the proximity of the specified <xref:System.Web.SiteMapNode>.</span></span> <span data-ttu-id="14087-279">`upLevel`參數用來指定多少層的周遊從指定的父系及祖系節點<xref:System.Web.SiteMapNode>。</span><span class="sxs-lookup"><span data-stu-id="14087-279">The `upLevel` parameter is used to specify how many levels of parent and ancestor nodes to traverse from the specified <xref:System.Web.SiteMapNode>.</span></span> <span data-ttu-id="14087-280">`downLevel`參數用來指定多少層的子節點，從目前的節點來擷取。</span><span class="sxs-lookup"><span data-stu-id="14087-280">The `downLevel` parameter is used to specify how many levels of child nodes from the current node to retrieve.</span></span> <span data-ttu-id="14087-281">如果願意的話的上階和下階節點可以連結至<xref:System.Web.SiteMapNode>所傳回<xref:System.Web.SiteMapProvider.HintNeighborhoodNodes%2A>方法，使用<xref:System.Web.SiteMapNode.ParentNode%2A>和<xref:System.Web.SiteMapNode.ChildNodes%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="14087-281">If preferred, the ancestor and descendant nodes can be linked to the <xref:System.Web.SiteMapNode> that is returned by the <xref:System.Web.SiteMapProvider.HintNeighborhoodNodes%2A> method, using the <xref:System.Web.SiteMapNode.ParentNode%2A> and <xref:System.Web.SiteMapNode.ChildNodes%2A> properties.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="14087-282"><paramref name="upLevel" /> 或 <paramref name="downLevel" /> 小於 -1。</span><span class="sxs-lookup"><span data-stu-id="14087-282"><paramref name="upLevel" /> or <paramref name="downLevel" /> is less than -1.</span></span></exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="14087-283"><paramref name="node" /> 為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-283"><paramref name="node" /> is <see langword="null" />.</span></span></exception>
+        <altmember cref="M:System.Web.SiteMapProvider.HintAncestorNodes(System.Web.SiteMapNode,System.Int32)" />
+      </Docs>
+    </Member>
+    <Member MemberName="Initialize">
+      <MemberSignature Language="C#" Value="public override void Initialize (string name, System.Collections.Specialized.NameValueCollection attributes);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void Initialize(string name, class System.Collections.Specialized.NameValueCollection attributes) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.Initialize(System.String,System.Collections.Specialized.NameValueCollection)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub Initialize (name As String, attributes As NameValueCollection)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void Initialize(System::String ^ name, System::Collections::Specialized::NameValueCollection ^ attributes);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="attributes" Type="System.Collections.Specialized.NameValueCollection" />
+      </Parameters>
+      <Docs>
+        <param name="name"><span data-ttu-id="14087-284">要初始化之提供者的 <see cref="P:System.Configuration.Provider.ProviderBase.Name" />。</span><span class="sxs-lookup"><span data-stu-id="14087-284">The <see cref="P:System.Configuration.Provider.ProviderBase.Name" /> of the provider to initialize.</span></span></param>
+        <param name="attributes"><span data-ttu-id="14087-285"><see cref="T:System.Collections.Specialized.NameValueCollection" />，可以包含用來協助初始化提供者的其他屬性。</span><span class="sxs-lookup"><span data-stu-id="14087-285">A <see cref="T:System.Collections.Specialized.NameValueCollection" /> that can contain additional attributes to help initialize the provider.</span></span> <span data-ttu-id="14087-286">這些屬性是從 Web.config 檔案中的網站導覽提供者組態讀取。</span><span class="sxs-lookup"><span data-stu-id="14087-286">These attributes are read from the site map provider configuration in the Web.config file.</span></span></param>
+        <summary><span data-ttu-id="14087-287">初始化 <see cref="T:System.Web.SiteMapProvider" /> 實作，包括從持續性儲存體載入網站導覽資料時所需的任何資源。</span><span class="sxs-lookup"><span data-stu-id="14087-287">Initializes the <see cref="T:System.Web.SiteMapProvider" /> implementation, including any resources that are needed to load site map data from persistent storage.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-288"><xref:System.Web.SiteMapProvider.Initialize%2A>方法不會實際建立站台對應，它只會準備的狀態<xref:System.Web.SiteMapProvider>物件，若要這樣做。</span><span class="sxs-lookup"><span data-stu-id="14087-288">The <xref:System.Web.SiteMapProvider.Initialize%2A> method does not actually build a site map, it only prepares the state of the <xref:System.Web.SiteMapProvider> object to do so.</span></span> <span data-ttu-id="14087-289">預設實作初始化<xref:System.Web.SiteMapProvider.SecurityTrimmingEnabled%2A>站台地圖提供者，從站台瀏覽設定的屬性。</span><span class="sxs-lookup"><span data-stu-id="14087-289">The default implementation initializes the <xref:System.Web.SiteMapProvider.SecurityTrimmingEnabled%2A> property for the site map provider from the site navigation configuration.</span></span>  
+  
+ <span data-ttu-id="14087-290">類別衍生自<xref:System.Web.SiteMapProvider>可以覆寫<xref:System.Web.SiteMapProvider.Initialize%2A>方法來初始化任何狀態和永續性儲存體中載入網站導覽資料所需的資源。</span><span class="sxs-lookup"><span data-stu-id="14087-290">Classes that derive from the <xref:System.Web.SiteMapProvider> can override the <xref:System.Web.SiteMapProvider.Initialize%2A> method to initialize any state and resources that are required to load site map data from persistent storage.</span></span> <span data-ttu-id="14087-291">例如，如果您的衍生的類別來儲存站台地圖資料使用檔案，任何檔案執行初始設定可以在<xref:System.Web.SiteMapProvider.Initialize%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="14087-291">For example, if your derived class is using files to store site map data, any file initialization can be performed in the <xref:System.Web.SiteMapProvider.Initialize%2A> method.</span></span> <span data-ttu-id="14087-292">如果衍生的類別使用的其他類型的資料存放區，例如關聯式資料庫中，可能會執行初始化資料庫連接。</span><span class="sxs-lookup"><span data-stu-id="14087-292">If the derived class uses some other type of data store, such as a relational database, initializing a database connection might be performed.</span></span>  
+  
+ <span data-ttu-id="14087-293">其他屬性，例如檔案名稱或連接字串是 ASP.NET 組態系統被讀取，並傳遞至<xref:System.Web.SiteMapProvider.Initialize%2A>方法及其<xref:System.Collections.Specialized.NameValueCollection>參數。</span><span class="sxs-lookup"><span data-stu-id="14087-293">Additional attributes, such as file names or connection strings, are read by the ASP.NET configuration system and passed to the <xref:System.Web.SiteMapProvider.Initialize%2A> method with its <xref:System.Collections.Specialized.NameValueCollection> parameter.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="14087-294">下列程式碼範例示範如何覆寫<xref:System.Web.SiteMapProvider.Initialize%2A>方法以準備 Microsoft Access 資料庫連接。</span><span class="sxs-lookup"><span data-stu-id="14087-294">The following code example demonstrates how to override the <xref:System.Web.SiteMapProvider.Initialize%2A> method to prepare a Microsoft Access database connection.</span></span>  
+  
+ <span data-ttu-id="14087-295">連接字串<xref:System.Data.OleDb.OleDbConnection>物件傳入<xref:System.Collections.Specialized.NameValueCollection>參數<xref:System.Web.SiteMapProvider.Initialize%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="14087-295">The connection string for the <xref:System.Data.OleDb.OleDbConnection> object is passed in the <xref:System.Collections.Specialized.NameValueCollection> parameter of the <xref:System.Web.SiteMapProvider.Initialize%2A> method.</span></span> <span data-ttu-id="14087-296">在此情況下，在 Web.config 檔案中的特定提供者 > 一節會提供連接字串。</span><span class="sxs-lookup"><span data-stu-id="14087-296">In this case, the connection string is provided by the provider-specific section in the Web.config file.</span></span> <span data-ttu-id="14087-297">在這裡，`accessSiteMapConnectionString`包含裝載站台地圖資料的 Microsoft Access 資料庫的連接字串。</span><span class="sxs-lookup"><span data-stu-id="14087-297">Here, `accessSiteMapConnectionString` contains a connection string to a Microsoft Access database that hosts the site map data.</span></span>  
+  
+```  
+<siteMap defaultProvider="AccessSiteMapProvider">  
+  <providers>  
+     <add  
+       name="AccessSiteMapProvider"  
+       type="Samples.AspNet.AccessSiteMapProvider,Samples.AspNet"  
+       accessSiteMapConnectionString="PROVIDER=MICROSOFT.JET.OLEDB.4.0;DATA SOURCE=\\SomeUNCShare\\sitemap.mdb"/>  
+  </providers>   
+ </siteMap>  
+```  
+  
+ <span data-ttu-id="14087-298">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-298">This code example is part of a larger example provided for the <xref:System.Web.SiteMapProvider> class.</span></span>  
+  
+ [!code-cpp[Urtue.Samples.Alexkr.AccessSiteMapProvider_1#2](~/samples/snippets/cpp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.AccessSiteMapProvider_1/CPP/accesssitemapprovider.cpp#2)]
+ [!code-csharp[Urtue.Samples.Alexkr.AccessSiteMapProvider_1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.AccessSiteMapProvider_1/CS/accesssitemapprovider.cs#2)]
+ [!code-vb[Urtue.Samples.Alexkr.AccessSiteMapProvider_1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.AccessSiteMapProvider_1/VB/accesssitemapprovider.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides">
+          <para><span data-ttu-id="14087-299">在覆寫<see cref="M:System.Web.SiteMapProvider.Initialize(System.String,System.Collections.Specialized.NameValueCollection)" />第一次呼叫的方法在衍生類別中，務必<see cref="M:System.Web.SiteMapProvider.Initialize(System.String,System.Collections.Specialized.NameValueCollection)" />基底類別，然後再執行您自己的初始化方法。</span><span class="sxs-lookup"><span data-stu-id="14087-299">When overriding the <see cref="M:System.Web.SiteMapProvider.Initialize(System.String,System.Collections.Specialized.NameValueCollection)" /> method in a derived class, be sure to first call the <see cref="M:System.Web.SiteMapProvider.Initialize(System.String,System.Collections.Specialized.NameValueCollection)" /> method for the base class before performing your own initializations.</span></span></para>
+        </block>
+        <altmember cref="T:System.Configuration.Provider.ProviderBase" />
+        <altmember cref="M:System.Web.StaticSiteMapProvider.BuildSiteMap" />
+        <altmember cref="M:System.Web.StaticSiteMapProvider.Clear" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsAccessibleToUser">
+      <MemberSignature Language="C#" Value="public virtual bool IsAccessibleToUser (System.Web.HttpContext context, System.Web.SiteMapNode node);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IsAccessibleToUser(class System.Web.HttpContext context, class System.Web.SiteMapNode node) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.IsAccessibleToUser(System.Web.HttpContext,System.Web.SiteMapNode)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function IsAccessibleToUser (context As HttpContext, node As SiteMapNode) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool IsAccessibleToUser(System::Web::HttpContext ^ context, System::Web::SiteMapNode ^ node);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Web.HttpContext" />
+        <Parameter Name="node" Type="System.Web.SiteMapNode" />
+      </Parameters>
+      <Docs>
+        <param name="context"><span data-ttu-id="14087-300">包含使用者資訊的 <see cref="T:System.Web.HttpContext" />。</span><span class="sxs-lookup"><span data-stu-id="14087-300">The <see cref="T:System.Web.HttpContext" /> that contains user information.</span></span></param>
+        <param name="node"><span data-ttu-id="14087-301">使用者要求的 <see cref="T:System.Web.SiteMapNode" />。</span><span class="sxs-lookup"><span data-stu-id="14087-301">The <see cref="T:System.Web.SiteMapNode" /> that is requested by the user.</span></span></param>
+        <summary><span data-ttu-id="14087-302">擷取布林值，指出在指定內容中使用者是否可以檢視指定的 <see cref="T:System.Web.SiteMapNode" /> 物件。</span><span class="sxs-lookup"><span data-stu-id="14087-302">Retrieves a Boolean value indicating whether the specified <see cref="T:System.Web.SiteMapNode" /> object can be viewed by the user in the specified context.</span></span></summary>
+        <returns>
+          <span data-ttu-id="14087-303">如果安全性調整已啟用，而且使用者可以檢視 <paramref name="node" />，或安全性調整未啟用，則為 <see langword="true" />，否則為 <see langword="false" />。</span><span class="sxs-lookup"><span data-stu-id="14087-303"><see langword="true" /> if security trimming is enabled and <paramref name="node" /> can be viewed by the user or security trimming is not enabled; otherwise, <see langword="false" />.</span></span></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-304">安全性調整已啟用時的預設行為是下表中所述。</span><span class="sxs-lookup"><span data-stu-id="14087-304">The default behavior when security trimming is enabled is as described in the following table.</span></span>  
+  
+|<span data-ttu-id="14087-305">條件</span><span class="sxs-lookup"><span data-stu-id="14087-305">Condition</span></span>|<span data-ttu-id="14087-306">傳回值</span><span class="sxs-lookup"><span data-stu-id="14087-306">Return Value</span></span>|  
+|---------------|------------------|  
+|<span data-ttu-id="14087-307"><xref:System.Web.SiteMapNode.Roles%2A>存在於`node`和目前的使用者是在至少一個指定的角色。</span><span class="sxs-lookup"><span data-stu-id="14087-307">The <xref:System.Web.SiteMapNode.Roles%2A> exists on `node` and the current user is in at least one of the specified roles.</span></span><br /><br /> <span data-ttu-id="14087-308">-或-</span><span class="sxs-lookup"><span data-stu-id="14087-308">- or -</span></span><br /><br /> <span data-ttu-id="14087-309">目前的執行緒都有相關聯`WindowsIdentity`有為所要求的檔案存取權的 URL 和 URL 是位於應用程式的目錄結構。</span><span class="sxs-lookup"><span data-stu-id="14087-309">The current thread has an associated `WindowsIdentity` that has file access to the requested URL and the URL is located within the directory structure for the application.</span></span><br /><br /> <span data-ttu-id="14087-310">-或-</span><span class="sxs-lookup"><span data-stu-id="14087-310">- or -</span></span><br /><br /> <span data-ttu-id="14087-311">目前的使用者已獲授權特別要求的 URL 中`authorization`目前應用程式和 URL 的項目是位於應用程式的目錄結構。</span><span class="sxs-lookup"><span data-stu-id="14087-311">The current user is authorized specifically for the requested URL in the `authorization` element for the current application and the URL is located within the directory structure for the application.</span></span>|`true`|  
+|<span data-ttu-id="14087-312">符合上述條件。</span><span class="sxs-lookup"><span data-stu-id="14087-312">None of the preceding conditions is met.</span></span>|`false`|  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="14087-313"><paramref name="context" /> 為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-313"><paramref name="context" /> is <see langword="null" />.</span></span>  
+  
+ <span data-ttu-id="14087-314">\-或-</span><span class="sxs-lookup"><span data-stu-id="14087-314">\- or -</span></span>  
+  
+ <span data-ttu-id="14087-315"><paramref name="node" /> 為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-315"><paramref name="node" /> is <see langword="null" />.</span></span></exception>
+        <altmember cref="P:System.Web.SiteMapProvider.SecurityTrimmingEnabled" />
+      </Docs>
+    </Member>
+    <Member MemberName="ParentProvider">
+      <MemberSignature Language="C#" Value="public virtual System.Web.SiteMapProvider ParentProvider { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.SiteMapProvider ParentProvider" />
+      <MemberSignature Language="DocId" Value="P:System.Web.SiteMapProvider.ParentProvider" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Property ParentProvider As SiteMapProvider" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Web::SiteMapProvider ^ ParentProvider { System::Web::SiteMapProvider ^ get(); void set(System::Web::SiteMapProvider ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapProvider</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="14087-316">取得或設定目前提供者的父代 <see cref="T:System.Web.SiteMapProvider" /> 物件。</span><span class="sxs-lookup"><span data-stu-id="14087-316">Gets or sets the parent <see cref="T:System.Web.SiteMapProvider" /> object of the current provider.</span></span></summary>
+        <value><span data-ttu-id="14087-317">目前 <see cref="T:System.Web.SiteMapProvider" /> 的父提供者。</span><span class="sxs-lookup"><span data-stu-id="14087-317">The parent provider of the current <see cref="T:System.Web.SiteMapProvider" />.</span></span></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-318">實作抽象的所有類別<xref:System.Web.SiteMapProvider>類別可支援的站台對應提供者階層概念。</span><span class="sxs-lookup"><span data-stu-id="14087-318">All classes that implement the abstract <xref:System.Web.SiteMapProvider> class can support the concept of a site map provider hierarchy.</span></span> <span data-ttu-id="14087-319">提供者之間的任何階層式關聯性會維護範圍之外<xref:System.Web.SiteMapProviderCollection>由提供者本身的集合。</span><span class="sxs-lookup"><span data-stu-id="14087-319">Any hierarchical relationships between providers are maintained outside the scope of a <xref:System.Web.SiteMapProviderCollection> collection by the providers themselves.</span></span> <span data-ttu-id="14087-320">如需功能的提供者階層的範例，請參閱<xref:System.Web.XmlSiteMapProvider>。</span><span class="sxs-lookup"><span data-stu-id="14087-320">For an example of a functional provider hierarchy, see <xref:System.Web.XmlSiteMapProvider>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="14087-321">下列程式碼範例示範如何實作<xref:System.Web.SiteMapProvider.ParentProvider%2A>會實作抽象類別中的屬性<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-321">The following code example demonstrates how to implement the <xref:System.Web.SiteMapProvider.ParentProvider%2A> property in a class that implements the abstract <xref:System.Web.SiteMapProvider> class.</span></span>  
+  
+ <span data-ttu-id="14087-322">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-322">This code example is part of a larger example provided for the <xref:System.Web.SiteMapProvider> class.</span></span>  
+  
+ [!code-csharp[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#4](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/CS/simpletextsitemapprovider.cs#4)]
+ [!code-vb[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/VB/simpletextsitemapprovider.vb#4)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Web.SiteMapProvider.RootProvider" />
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveNode">
+      <MemberSignature Language="C#" Value="protected internal virtual void RemoveNode (System.Web.SiteMapNode node);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance void RemoveNode(class System.Web.SiteMapNode node) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.RemoveNode(System.Web.SiteMapNode)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overridable Sub RemoveNode (node As SiteMapNode)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; virtual void RemoveNode(System::Web::SiteMapNode ^ node);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Web.SiteMapNode" />
+      </Parameters>
+      <Docs>
+        <param name="node"><span data-ttu-id="14087-323">在提供者所維護的節點集合中，要移除的 <see cref="T:System.Web.SiteMapNode" />。</span><span class="sxs-lookup"><span data-stu-id="14087-323">The <see cref="T:System.Web.SiteMapNode" /> to remove from the node collection maintained by the provider.</span></span></param>
+        <summary><span data-ttu-id="14087-324">從網站導覽提供者所維護的節點集合中，移除指定的 <see cref="T:System.Web.SiteMapNode" /> 物件。</span><span class="sxs-lookup"><span data-stu-id="14087-324">Removes the specified <see cref="T:System.Web.SiteMapNode" /> object from the node collection that is maintained by the site map provider.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-325">類別衍生自<xref:System.Web.SiteMapProvider>類別可以覆寫<xref:System.Web.SiteMapProvider.RemoveNode%2A>方法以及提供邏輯移除<xref:System.Web.SiteMapNode>從站台對應提供者所維護的節點集合的物件。</span><span class="sxs-lookup"><span data-stu-id="14087-325">Classes deriving from the <xref:System.Web.SiteMapProvider> class can override the <xref:System.Web.SiteMapProvider.RemoveNode%2A> method and provide logic for removing <xref:System.Web.SiteMapNode> objects from the node collection that is maintained by the site map provider.</span></span> <span data-ttu-id="14087-326">預設實作<xref:System.Web.SiteMapProvider.RemoveNode%2A>方法會擲回<xref:System.NotImplementedException>例外狀況。</span><span class="sxs-lookup"><span data-stu-id="14087-326">The default implementation of the <xref:System.Web.SiteMapProvider.RemoveNode%2A> method throws a <xref:System.NotImplementedException> exception.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NotImplementedException"><span data-ttu-id="14087-327">在所有情況下。</span><span class="sxs-lookup"><span data-stu-id="14087-327">In all cases.</span></span></exception>
+        <altmember cref="Overload:System.Web.SiteMapProvider.AddNode" />
+      </Docs>
+    </Member>
+    <Member MemberName="ResolveSiteMapNode">
+      <MemberSignature Language="C#" Value="protected System.Web.SiteMapNode ResolveSiteMapNode (System.Web.HttpContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance class System.Web.SiteMapNode ResolveSiteMapNode(class System.Web.HttpContext context) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SiteMapProvider.ResolveSiteMapNode(System.Web.HttpContext)" />
+      <MemberSignature Language="VB.NET" Value="Protected Function ResolveSiteMapNode (context As HttpContext) As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; System::Web::SiteMapNode ^ ResolveSiteMapNode(System::Web::HttpContext ^ context);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Web.HttpContext" />
+      </Parameters>
+      <Docs>
+        <param name="context"><span data-ttu-id="14087-328">目前有網站導覽的 <see cref="T:System.Web.HttpContext" />。</span><span class="sxs-lookup"><span data-stu-id="14087-328">The <see cref="T:System.Web.HttpContext" /> for which the site map currently exists.</span></span></param>
+        <summary><span data-ttu-id="14087-329">引發 <see cref="E:System.Web.SiteMapProvider.SiteMapResolve" /> 事件。</span><span class="sxs-lookup"><span data-stu-id="14087-329">Raises the <see cref="E:System.Web.SiteMapProvider.SiteMapResolve" /> event.</span></span></summary>
+        <returns><span data-ttu-id="14087-330">已註冊為處理事件之事件處理常式委派所提供的 <see cref="T:System.Web.SiteMapNode" />，如果有一個以上的委派註冊為處理事件，則為委派鏈結中最後一個委派的傳回值，否則為 <see langword="null" />。</span><span class="sxs-lookup"><span data-stu-id="14087-330">A <see cref="T:System.Web.SiteMapNode" /> provided by the event handler delegate that is registered to handle the event or, if more than one delegate is registered to handle the event, the return value of the last delegate in the delegate chain; otherwise, <see langword="null" />.</span></span></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-331">`context`參數和呼叫提供者的參考<xref:System.Web.SiteMapProvider.ResolveSiteMapNode%2A>方法會傳遞至建構函式的所有相關聯<xref:System.Web.SiteMapResolveEventArgs>物件。</span><span class="sxs-lookup"><span data-stu-id="14087-331">The `context` parameter and a reference to the provider that called the <xref:System.Web.SiteMapProvider.ResolveSiteMapNode%2A> method are passed to the constructor of any associated <xref:System.Web.SiteMapResolveEventArgs> object.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="E:System.Web.SiteMapProvider.SiteMapResolve" />
+        <altmember cref="T:System.Web.SiteMapResolveEventArgs" />
+        <altmember cref="T:System.Web.SiteMapResolveEventHandler" />
+      </Docs>
+    </Member>
+    <Member MemberName="ResourceKey">
+      <MemberSignature Language="C#" Value="public string ResourceKey { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ResourceKey" />
+      <MemberSignature Language="DocId" Value="P:System.Web.SiteMapProvider.ResourceKey" />
+      <MemberSignature Language="VB.NET" Value="Public Property ResourceKey As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ ResourceKey { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="14087-332">取得或設定用來當地語系化 <see cref="T:System.Web.SiteMapNode" /> 屬性的資源索引鍵。</span><span class="sxs-lookup"><span data-stu-id="14087-332">Get or sets the resource key that is used for localizing <see cref="T:System.Web.SiteMapNode" /> attributes.</span></span></summary>
+        <value><span data-ttu-id="14087-333">含有資源索引鍵名稱的字串。</span><span class="sxs-lookup"><span data-stu-id="14087-333">A string containing the resource key name.</span></span></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-334"><xref:System.Web.SiteMapProvider.ResourceKey%2A>屬性搭配<xref:System.Web.SiteMapNode.GetImplicitResourceString%2A>方法<xref:System.Web.SiteMapNode>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-334">The <xref:System.Web.SiteMapProvider.ResourceKey%2A> property is used with the <xref:System.Web.SiteMapNode.GetImplicitResourceString%2A> method of the <xref:System.Web.SiteMapNode> class.</span></span> <span data-ttu-id="14087-335">如<xref:System.Web.SiteMapNode.Title%2A>和<xref:System.Web.SiteMapNode.Description%2A>屬性，以及任何其他屬性中所定義的<xref:System.Web.SiteMapNode.Attributes%2A>集合<xref:System.Web.SiteMapNode>物件<xref:System.Web.SiteMapNode.GetImplicitResourceString%2A>方法會優先於<xref:System.Web.SiteMapNode.GetExplicitResourceString%2A>時以啟用當地語系化<xref:System.Web.SiteMapProvider.EnableLocalization%2A>屬性設定為`true`。</span><span class="sxs-lookup"><span data-stu-id="14087-335">For the <xref:System.Web.SiteMapNode.Title%2A> and <xref:System.Web.SiteMapNode.Description%2A> properties, as well as any additional attributes that are defined in the <xref:System.Web.SiteMapNode.Attributes%2A> collection of the <xref:System.Web.SiteMapNode> object, the <xref:System.Web.SiteMapNode.GetImplicitResourceString%2A> method takes precedence over the <xref:System.Web.SiteMapNode.GetExplicitResourceString%2A> when the localization is enabled with the <xref:System.Web.SiteMapProvider.EnableLocalization%2A> property set to `true`.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Web.SiteMapNode.Title" />
+        <altmember cref="P:System.Web.SiteMapNode.Description" />
+        <altmember cref="P:System.Web.SiteMapNode.Attributes" />
+        <altmember cref="M:System.Web.SiteMapNode.GetImplicitResourceString(System.String)" />
+        <altmember cref="M:System.Web.SiteMapNode.GetExplicitResourceString(System.String,System.String,System.Boolean)" />
+      </Docs>
+    </Member>
+    <Member MemberName="RootNode">
+      <MemberSignature Language="C#" Value="public virtual System.Web.SiteMapNode RootNode { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.SiteMapNode RootNode" />
+      <MemberSignature Language="DocId" Value="P:System.Web.SiteMapProvider.RootNode" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property RootNode As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Web::SiteMapNode ^ RootNode { System::Web::SiteMapNode ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="14087-336">取得目前提供者所表示之網站導覽資料的根 <see cref="T:System.Web.SiteMapNode" /> 物件。</span><span class="sxs-lookup"><span data-stu-id="14087-336">Gets the root <see cref="T:System.Web.SiteMapNode" /> object of the site map data that the current provider represents.</span></span></summary>
+        <value><span data-ttu-id="14087-337">目前網站導覽資料提供者的根 <see cref="T:System.Web.SiteMapNode" />。</span><span class="sxs-lookup"><span data-stu-id="14087-337">The root <see cref="T:System.Web.SiteMapNode" /> of the current site map data provider.</span></span> <span data-ttu-id="14087-338">預設實作會在傳回的節點上執行安全性調整。</span><span class="sxs-lookup"><span data-stu-id="14087-338">The default implementation performs security trimming on the returned node.</span></span></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-339">預設實作會呼叫抽象<xref:System.Web.SiteMapProvider.GetRootNodeCore%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="14087-339">The default implementation calls the abstract <xref:System.Web.SiteMapProvider.GetRootNodeCore%2A> method.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="14087-340">下列程式碼範例示範如何實作<xref:System.Web.SiteMapProvider.RootNode%2A>會實作抽象類別中的屬性<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-340">The following code example demonstrates how to implement the <xref:System.Web.SiteMapProvider.RootNode%2A> property in a class that implements the abstract <xref:System.Web.SiteMapProvider> class.</span></span>  
+  
+ <span data-ttu-id="14087-341">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-341">This code example is part of a larger example provided for the <xref:System.Web.SiteMapProvider> class.</span></span>  
+  
+ [!code-csharp[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/CS/simpletextsitemapprovider.cs#2)]
+ [!code-vb[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/VB/simpletextsitemapprovider.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides">
+          <para><span data-ttu-id="14087-342">在覆寫<see cref="P:System.Web.SiteMapProvider.RootNode" />屬性在衍生類別中，請務必實作不會不導覽提供者階層，如果有的話，找不到網站的絕對的根節點。</span><span class="sxs-lookup"><span data-stu-id="14087-342">When overriding the <see cref="P:System.Web.SiteMapProvider.RootNode" /> property in a derived class, be sure that the implementation does not navigate the provider hierarchy, if one exists, to find the absolute root node of the site.</span></span></para>
+        </block>
+        <altmember cref="M:System.Web.SiteMapProvider.GetRootNodeCore" />
+        <altmember cref="P:System.Web.SiteMapProvider.CurrentNode" />
+      </Docs>
+    </Member>
+    <Member MemberName="RootProvider">
+      <MemberSignature Language="C#" Value="public virtual System.Web.SiteMapProvider RootProvider { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.SiteMapProvider RootProvider" />
+      <MemberSignature Language="DocId" Value="P:System.Web.SiteMapProvider.RootProvider" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property RootProvider As SiteMapProvider" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Web::SiteMapProvider ^ RootProvider { System::Web::SiteMapProvider ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapProvider</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="14087-343">取得目前提供者階層架構中的根 <see cref="T:System.Web.SiteMapProvider" /> 物件。</span><span class="sxs-lookup"><span data-stu-id="14087-343">Gets the root <see cref="T:System.Web.SiteMapProvider" /> object in the current provider hierarchy.</span></span></summary>
+        <value><span data-ttu-id="14087-344"><see cref="T:System.Web.SiteMapProvider" />，為目前提供者所屬提供者階層架構中的最上層網站導覽提供者。</span><span class="sxs-lookup"><span data-stu-id="14087-344">An <see cref="T:System.Web.SiteMapProvider" /> that is the top-level site map provider in the provider hierarchy that the current provider belongs to.</span></span></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-345">所有類別可實作<xref:System.Web.SiteMapProvider>類別可支援的站台對應提供者階層概念。</span><span class="sxs-lookup"><span data-stu-id="14087-345">All classes that implement the <xref:System.Web.SiteMapProvider> class can support the concept of a site map provider hierarchy.</span></span> <span data-ttu-id="14087-346">提供者之間的任何階層式關聯性會維護範圍之外<xref:System.Web.SiteMapProviderCollection>由提供者本身的集合。</span><span class="sxs-lookup"><span data-stu-id="14087-346">Any hierarchical relationships between providers are maintained outside the scope of a <xref:System.Web.SiteMapProviderCollection> collection by the providers themselves.</span></span> <span data-ttu-id="14087-347">如需功能的提供者階層的範例，請參閱<xref:System.Web.XmlSiteMapProvider>。</span><span class="sxs-lookup"><span data-stu-id="14087-347">For an example of a functional provider hierarchy, see <xref:System.Web.XmlSiteMapProvider>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="14087-348">下列程式碼範例示範如何實作<xref:System.Web.SiteMapProvider.RootProvider%2A>會實作抽象類別中的屬性<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-348">The following code example demonstrates how to implement the <xref:System.Web.SiteMapProvider.RootProvider%2A> property in a class that implements the abstract <xref:System.Web.SiteMapProvider> class.</span></span> <span data-ttu-id="14087-349">`SimpleTextSiteMapProvider`會使用簡單的邏輯來判斷目前的提供者是否為提供者階層的一部分。</span><span class="sxs-lookup"><span data-stu-id="14087-349">The `SimpleTextSiteMapProvider` uses simple logic to determine whether the current provider is part of a provider hierarchy.</span></span> <span data-ttu-id="14087-350">如果提供者是階層的一部分，它會使用<xref:System.Web.SiteMapProvider.RootProvider%2A>父提供者當做其本身的屬性。</span><span class="sxs-lookup"><span data-stu-id="14087-350">If the provider is part of a hierarchy, it uses the <xref:System.Web.SiteMapProvider.RootProvider%2A> property for the parent provider as its own.</span></span> <span data-ttu-id="14087-351">如果提供者不是階層的一部分，提供者是它自己的根提供者。</span><span class="sxs-lookup"><span data-stu-id="14087-351">If the provider is not part of a hierarchy, the provider is its own root provider.</span></span>  
+  
+ <span data-ttu-id="14087-352">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.Web.SiteMapProvider>類別。</span><span class="sxs-lookup"><span data-stu-id="14087-352">This code example is part of a larger example provided for the <xref:System.Web.SiteMapProvider> class.</span></span>  
+  
+ [!code-csharp[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#4](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/CS/simpletextsitemapprovider.cs#4)]
+ [!code-vb[Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.SimpleTextSiteMapProvider_1/VB/simpletextsitemapprovider.vb#4)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Configuration.Provider.ProviderException"><span data-ttu-id="14087-353">具有目前網站導覽提供者的循環參考。</span><span class="sxs-lookup"><span data-stu-id="14087-353">There is a circular reference to the current site map provider.</span></span></exception>
+        <altmember cref="P:System.Web.SiteMapProvider.ParentProvider" />
+      </Docs>
+    </Member>
+    <Member MemberName="SecurityTrimmingEnabled">
+      <MemberSignature Language="C#" Value="public bool SecurityTrimmingEnabled { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SecurityTrimmingEnabled" />
+      <MemberSignature Language="DocId" Value="P:System.Web.SiteMapProvider.SecurityTrimmingEnabled" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SecurityTrimmingEnabled As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool SecurityTrimmingEnabled { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="14087-354">取得布林值，指出網站導覽提供者是否根據使用者的角色篩選網站導覽節點。</span><span class="sxs-lookup"><span data-stu-id="14087-354">Gets a Boolean value indicating whether a site map provider filters site map nodes based on a user's role.</span></span></summary>
+        <value>
+          <span data-ttu-id="14087-355">如果提供者設定為根據角色篩選節點，則為 <see langword="true" />，否則為 <see langword="false" />。</span><span class="sxs-lookup"><span data-stu-id="14087-355"><see langword="true" /> if the provider is configured to filter nodes based on role; otherwise, <see langword="false" />.</span></span></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-356">無法以程式設計方式設定安全性調整 — 提供者組態中設定。</span><span class="sxs-lookup"><span data-stu-id="14087-356">Security trimming cannot be set programmatically—it is set in the configuration for the provider.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Web.SiteMapProvider.IsAccessibleToUser(System.Web.HttpContext,System.Web.SiteMapNode)" />
+      </Docs>
+    </Member>
+    <Member MemberName="SiteMapResolve">
+      <MemberSignature Language="C#" Value="public event System.Web.SiteMapResolveEventHandler SiteMapResolve;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.Web.SiteMapResolveEventHandler SiteMapResolve" />
+      <MemberSignature Language="DocId" Value="E:System.Web.SiteMapProvider.SiteMapResolve" />
+      <MemberSignature Language="VB.NET" Value="Public Event SiteMapResolve As SiteMapResolveEventHandler " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event System::Web::SiteMapResolveEventHandler ^ SiteMapResolve;" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapResolveEventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="14087-357">呼叫 <see cref="P:System.Web.SiteMapProvider.CurrentNode" /> 屬性時發生。</span><span class="sxs-lookup"><span data-stu-id="14087-357">Occurs when the <see cref="P:System.Web.SiteMapProvider.CurrentNode" /> property is called.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="14087-358">您可以建立<xref:System.Web.SiteMapNode>表示目前要求的頁面，而不需要實作自訂站台地圖提供者藉由訂閱<xref:System.Web.SiteMapProvider.SiteMapResolve>事件。</span><span class="sxs-lookup"><span data-stu-id="14087-358">You can create a <xref:System.Web.SiteMapNode> representation of the currently requested page without implementing a custom site map provider by subscribing to the <xref:System.Web.SiteMapProvider.SiteMapResolve> event.</span></span> <span data-ttu-id="14087-359">訂閱者附加<xref:System.Web.SiteMapResolveEventHandler>接收通知的物件時<xref:System.Web.SiteMapProvider.CurrentNode%2A>屬性呼叫，而且可以傳回自訂<xref:System.Web.SiteMapNode>物件而不是所傳回的其中一個預設<xref:System.Web.SiteMapProvider.CurrentNode%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="14087-359">Subscribers attach a <xref:System.Web.SiteMapResolveEventHandler> object to receive notification when the <xref:System.Web.SiteMapProvider.CurrentNode%2A> property is called and can return a custom <xref:System.Web.SiteMapNode> object instead of the default one that is returned by the <xref:System.Web.SiteMapProvider.CurrentNode%2A> property.</span></span>  
+  
+ <span data-ttu-id="14087-360">如需處理事件的詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。</span><span class="sxs-lookup"><span data-stu-id="14087-360">For more information about handling events, see [NIB: Consuming Events](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67).</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="E:System.Web.SiteMap.SiteMapResolve" />
+        <altmember cref="T:System.Web.SiteMapResolveEventHandler" />
+        <altmember cref="T:System.Web.SiteMapResolveEventArgs" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

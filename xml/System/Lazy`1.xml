@@ -1,0 +1,965 @@
+<Type Name="Lazy&lt;T&gt;" FullName="System.Lazy&lt;T&gt;">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="ad53c03faf661b5a698d5ef0c4fcd9d0451bbc14" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class Lazy&lt;T&gt;" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit Lazy`1&lt;T&gt; extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Lazy`1" />
+  <TypeSignature Language="VB.NET" Value="Public Class Lazy(Of T)" />
+  <TypeSignature Language="C++ CLI" Value="generic &lt;typename T&gt;&#xA;public ref class Lazy" />
+  <AssemblyInfo>
+    <AssemblyName>System.Runtime</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.10.0</AssemblyVersion>
+    <AssemblyVersion>4.0.20.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <AssemblyVersion>4.2.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <TypeParameters>
+    <TypeParameter Name="T" />
+  </TypeParameters>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Diagnostics.DebuggerDisplay("ThreadSafetyMode={Mode}, IsValueCreated={IsValueCreated}, IsValueFaulted={IsValueFaulted}, Value={ValueForDebugDisplay}")</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>System.Diagnostics.DebuggerTypeProxy(typeof(System.System_LazyDebugView`1))</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>System.Runtime.InteropServices.ComVisible(false)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <typeparam name="T">
+      <span data-ttu-id="12ebc-101">正在延遲初始化的物件類型。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="12ebc-101">The type of object that is being lazily initialized.</span>
+      </span>
+    </typeparam>
+    <summary>
+      <span data-ttu-id="12ebc-102">提供延遲初始設定的支援。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="12ebc-102">Provides support for lazy initialization.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="12ebc-103">延後建立大型或需要大量資源的物件或需要大量資源的工作，執行這類的建立或執行可能不會發生在程式的存留期內時，特別是使用延遲初始設定。</span><span class="sxs-lookup"><span data-stu-id="12ebc-103">Use lazy initialization to defer the creation of a large or resource-intensive object, or the execution of a resource-intensive task, particularly when such creation or execution might not occur during the lifetime of the program.</span></span>  
+  
+ <span data-ttu-id="12ebc-104">若要準備延遲初始設定，您建立的執行個體<xref:System.Lazy%601>。</span><span class="sxs-lookup"><span data-stu-id="12ebc-104">To prepare for lazy initialization, you create an instance of <xref:System.Lazy%601>.</span></span> <span data-ttu-id="12ebc-105">型別引數<xref:System.Lazy%601>您所建立的物件會指定您想要執行延遲初始化的物件型別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-105">The type argument of the <xref:System.Lazy%601> object that you create specifies the type of the object that you want to initialize lazily.</span></span> <span data-ttu-id="12ebc-106">建構函式用來建立<xref:System.Lazy%601>物件可以決定所初始化的特性。</span><span class="sxs-lookup"><span data-stu-id="12ebc-106">The constructor that you use to create the <xref:System.Lazy%601> object determines the characteristics of the initialization.</span></span> <span data-ttu-id="12ebc-107">延遲初始化會在第一次存取 <xref:System.Lazy%601.Value%2A?displayProperty=nameWithType> 屬性時發生。</span><span class="sxs-lookup"><span data-stu-id="12ebc-107">Lazy initialization occurs the first time the <xref:System.Lazy%601.Value%2A?displayProperty=nameWithType> property is accessed.</span></span>  
+  
+ <span data-ttu-id="12ebc-108">在大部分情況下，選擇建構函式取決於您對兩個問題的答案：</span><span class="sxs-lookup"><span data-stu-id="12ebc-108">In most cases, choosing a constructor depends on your answers to two questions:</span></span>  
+  
+-   <span data-ttu-id="12ebc-109">會從多個執行緒存取延遲初始化的物件嗎？</span><span class="sxs-lookup"><span data-stu-id="12ebc-109">Will the lazily initialized object be accessed from more than one thread?</span></span> <span data-ttu-id="12ebc-110">如果是這樣，<xref:System.Lazy%601>物件可能會建立任何執行緒上。</span><span class="sxs-lookup"><span data-stu-id="12ebc-110">If so, the <xref:System.Lazy%601> object might create it on any thread.</span></span> <span data-ttu-id="12ebc-111">您可以使用其中一種簡單的建構函式的預設行為是建立安全執行緒<xref:System.Lazy%601>物件，因此延遲具現化物件只能有一個執行個體建立無論多少執行緒嘗試存取它。</span><span class="sxs-lookup"><span data-stu-id="12ebc-111">You can use one of the simple constructors whose default behavior is to create a thread-safe <xref:System.Lazy%601> object, so that only one instance of the lazily instantiated object is created no matter how many threads try to access it.</span></span> <span data-ttu-id="12ebc-112">若要建立<xref:System.Lazy%601>不是安全執行緒的物件，您必須使用可讓您指定沒有執行緒安全的建構函式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-112">To create a <xref:System.Lazy%601> object that is not thread safe, you must use a constructor that enables you to specify no thread safety.</span></span>  
+  
+    > [!CAUTION]
+    >  <span data-ttu-id="12ebc-113">進行<xref:System.Lazy%601>物件具備執行緒安全，不會保護延遲初始化的物件。</span><span class="sxs-lookup"><span data-stu-id="12ebc-113">Making the <xref:System.Lazy%601> object thread safe does not protect the lazily initialized object.</span></span> <span data-ttu-id="12ebc-114">如果多個執行緒可以存取的延遲初始化的物件，您必須進行其屬性和方法安全地用於多執行緒存取。</span><span class="sxs-lookup"><span data-stu-id="12ebc-114">If multiple threads can access the lazily initialized object, you must make its properties and methods safe for multithreaded access.</span></span>  
+  
+-   <span data-ttu-id="12ebc-115">延遲初始設定是否需要大量程式碼，或延遲初始化的物件是否有預設建構函式不需要而且不會擲回例外狀況的所有內容？</span><span class="sxs-lookup"><span data-stu-id="12ebc-115">Does lazy initialization require a lot of code, or does the lazily initialized object have a default constructor that does everything you need and doesn't throw exceptions?</span></span> <span data-ttu-id="12ebc-116">如果您需要撰寫初始化程式碼，或需要處理的例外狀況，使用其中一個會採用的 factory 方法的建構函式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-116">If you need to write initialization code or if exceptions need to be handled, use one of the constructors that takes a factory method.</span></span> <span data-ttu-id="12ebc-117">撰寫初始化程式碼中的 factory 方法。</span><span class="sxs-lookup"><span data-stu-id="12ebc-117">Write your initialization code in the factory method.</span></span>  
+  
+ <span data-ttu-id="12ebc-118">下表顯示哪些建構函式，來選擇，請根據這兩項因素：</span><span class="sxs-lookup"><span data-stu-id="12ebc-118">The following table shows which constructor to choose, based on these two factors:</span></span>  
+  
+|<span data-ttu-id="12ebc-119">物件會由存取</span><span class="sxs-lookup"><span data-stu-id="12ebc-119">Object will be accessed by</span></span>|<span data-ttu-id="12ebc-120">如果不不需要任何初始設定程式碼 （預設建構函式），使用</span><span class="sxs-lookup"><span data-stu-id="12ebc-120">If no initialization code is required (default constructor), use</span></span>|<span data-ttu-id="12ebc-121">如果不需要的初始化程式碼，使用</span><span class="sxs-lookup"><span data-stu-id="12ebc-121">If initialization code is required, use</span></span>|  
+|--------------------------------|------------------------------------------------------------------------|---------------------------------------------|  
+|<span data-ttu-id="12ebc-122">多個執行緒</span><span class="sxs-lookup"><span data-stu-id="12ebc-122">Multiple threads</span></span>|<xref:System.Lazy%601.%23ctor>|<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29>|  
+|<span data-ttu-id="12ebc-123">一個執行緒</span><span class="sxs-lookup"><span data-stu-id="12ebc-123">One thread</span></span>|<span data-ttu-id="12ebc-124"><xref:System.Lazy%601.%23ctor%28System.Boolean%29> 與`isThreadSafe`設`false`。</span><span class="sxs-lookup"><span data-stu-id="12ebc-124"><xref:System.Lazy%601.%23ctor%28System.Boolean%29> with `isThreadSafe` set to `false`.</span></span>|<span data-ttu-id="12ebc-125"><xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29> 與`isThreadSafe`設`false`。</span><span class="sxs-lookup"><span data-stu-id="12ebc-125"><xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29> with `isThreadSafe` set to `false`.</span></span>|  
+  
+ <span data-ttu-id="12ebc-126">您可以使用 lambda 運算式來指定此處理站方法。</span><span class="sxs-lookup"><span data-stu-id="12ebc-126">You can use a lambda expression to specify the factory method.</span></span> <span data-ttu-id="12ebc-127">這會在一個位置中保留所有初始化程式碼。</span><span class="sxs-lookup"><span data-stu-id="12ebc-127">This keeps all the initialization code in one place.</span></span> <span data-ttu-id="12ebc-128">Lambda 運算式擷取的內容，包括您執行延遲初始化的物件建構函式傳遞任何引數。</span><span class="sxs-lookup"><span data-stu-id="12ebc-128">The lambda expression captures the context, including any arguments you pass to the lazily initialized object's constructor.</span></span>  
+  
+ <span data-ttu-id="12ebc-129">**快取例外狀況**當您使用處理站方法時，會快取例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-129">**Exception caching** When you use factory methods, exceptions are cached.</span></span> <span data-ttu-id="12ebc-130">也就是說，如果的 factory 方法，就會擲回例外狀況的第一個階段的執行緒嘗試存取<xref:System.Lazy%601.Value%2A>屬性<xref:System.Lazy%601>物件，每個後續的嘗試會擲回相同的例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-130">That is, if the factory method throws an exception the first time a thread tries to access the <xref:System.Lazy%601.Value%2A> property of the <xref:System.Lazy%601> object, the same exception is thrown on every subsequent attempt.</span></span> <span data-ttu-id="12ebc-131">如此可確保每次呼叫<xref:System.Lazy%601.Value%2A>屬性會產生相同的結果，並避免如果不同的執行緒都會取得不同的結果可能會產生難以察覺的錯誤。</span><span class="sxs-lookup"><span data-stu-id="12ebc-131">This ensures that every call to the <xref:System.Lazy%601.Value%2A> property produces the same result and avoids subtle errors that might arise if different threads get different results.</span></span> <span data-ttu-id="12ebc-132"><xref:System.Lazy%601>代表的實際`T`，否則會初始化在某個較早的時間點，通常在啟動期間。</span><span class="sxs-lookup"><span data-stu-id="12ebc-132">The <xref:System.Lazy%601> stands in for an actual `T` that otherwise would have been initialized at some earlier point, usually during startup.</span></span> <span data-ttu-id="12ebc-133">在該較早的時間點失敗是通常是嚴重威脅。</span><span class="sxs-lookup"><span data-stu-id="12ebc-133">A failure at that earlier point is usually fatal.</span></span> <span data-ttu-id="12ebc-134">如果沒有可復原的失敗的可能性，我們建議您至初始化常式 （在此情況下，處理站方法），建立重試邏輯，就如同如果您沒有使用延遲初始設定。</span><span class="sxs-lookup"><span data-stu-id="12ebc-134">If there is a potential for a recoverable failure, we recommend that you build the retry logic into the initialization routine (in this case, the factory method), just as you would if you weren’t using lazy initialization.</span></span>  
+  
+ <span data-ttu-id="12ebc-135">**鎖定的替代方式**在某些情況下，您可能想要避免的額外負荷<xref:System.Lazy%601>物件的預設鎖定行為。</span><span class="sxs-lookup"><span data-stu-id="12ebc-135">**Alternative to locking** In certain situations, you might want to avoid the overhead of the <xref:System.Lazy%601> object's default locking behavior.</span></span> <span data-ttu-id="12ebc-136">在罕見的情況下，可能會有死結。</span><span class="sxs-lookup"><span data-stu-id="12ebc-136">In rare situations, there might be a potential for deadlocks.</span></span> <span data-ttu-id="12ebc-137">在這種情況下，您可以使用<xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29>或<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>建構函式，並指定<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>。</span><span class="sxs-lookup"><span data-stu-id="12ebc-137">In such cases, you can use the <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> or <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> constructor, and specify <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>.</span></span> <span data-ttu-id="12ebc-138">這可讓<xref:System.Lazy%601>物件以建立數個執行緒的每個上的延遲初始化物件的複本，如果呼叫執行緒<xref:System.Lazy%601.Value%2A>屬性同時。</span><span class="sxs-lookup"><span data-stu-id="12ebc-138">This enables the <xref:System.Lazy%601> object to create a copy of the lazily initialized object on each of several threads if the threads call the <xref:System.Lazy%601.Value%2A> property simultaneously.</span></span> <span data-ttu-id="12ebc-139"><xref:System.Lazy%601>物件可確保所有執行緒使用相同的執行個體的延遲初始化的物件，並捨棄未使用的執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-139">The <xref:System.Lazy%601> object ensures that all threads use the same instance of the lazily initialized object and discards the instances that are not used.</span></span> <span data-ttu-id="12ebc-140">因此，減少鎖定負擔成本是您的程式可能會有時建立，並捨棄高度耗費資源物件的額外複本。</span><span class="sxs-lookup"><span data-stu-id="12ebc-140">Thus, the cost of reducing the locking overhead is that your program might sometimes create and discard extra copies of an expensive object.</span></span> <span data-ttu-id="12ebc-141">在大部分情況下，這是不太可能項目。</span><span class="sxs-lookup"><span data-stu-id="12ebc-141">In most cases, this is unlikely.</span></span> <span data-ttu-id="12ebc-142">如範例<xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29>和<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>建構函式都會表現此行為。</span><span class="sxs-lookup"><span data-stu-id="12ebc-142">The examples for the <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> and <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> constructors demonstrate this behavior.</span></span>  
+  
+> [!IMPORTANT]
+>  <span data-ttu-id="12ebc-143">當您指定<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>，例外狀況會永遠不會快取，即使您指定的 factory 方法。</span><span class="sxs-lookup"><span data-stu-id="12ebc-143">When you specify <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>, exceptions are never cached, even if you specify a factory method.</span></span>  
+  
+ <span data-ttu-id="12ebc-144">**對等的建構函式**除了啟用使用<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>、<xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29>和<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>建構函式可以複製其他建構函式的功能。</span><span class="sxs-lookup"><span data-stu-id="12ebc-144">**Equivalent constructors** In addition to enabling the use of <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>, the <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> and <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> constructors can duplicate the functionality of the other constructors.</span></span> <span data-ttu-id="12ebc-145">下表顯示對等的行為會產生的參數值。</span><span class="sxs-lookup"><span data-stu-id="12ebc-145">The following table shows the parameter values that produce equivalent behavior.</span></span>  
+  
+|<span data-ttu-id="12ebc-146">若要建立<xref:System.Lazy%601>物件</span><span class="sxs-lookup"><span data-stu-id="12ebc-146">To create a <xref:System.Lazy%601> object that is</span></span>|<span data-ttu-id="12ebc-147">建構函式具有`LazyThreadSafetyMode``mode`參數，設定`mode`至</span><span class="sxs-lookup"><span data-stu-id="12ebc-147">For constructors that have a `LazyThreadSafetyMode` `mode` parameter, set `mode` to</span></span>|<span data-ttu-id="12ebc-148">建構函式的布林值為`isThreadSafe`參數，設定`isThreadSafe`至</span><span class="sxs-lookup"><span data-stu-id="12ebc-148">For constructors that have a Boolean `isThreadSafe` parameter, set `isThreadSafe` to</span></span>|<span data-ttu-id="12ebc-149">不含任何執行緒安全性參數的建構函式</span><span class="sxs-lookup"><span data-stu-id="12ebc-149">For constructors with no thread safety parameters</span></span>|  
+|-------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|-------------------------------------------------------|  
+|<span data-ttu-id="12ebc-150">完整具備執行緒安全。使用鎖定來確保只有一個執行緒初始化值。</span><span class="sxs-lookup"><span data-stu-id="12ebc-150">Fully thread safe; uses locking to ensure that only one thread initializes the value.</span></span>|<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication>|`true`|<span data-ttu-id="12ebc-151">所有這類建構函式是完全安全執行緒。</span><span class="sxs-lookup"><span data-stu-id="12ebc-151">All such constructors are fully thread safe.</span></span>|  
+|<span data-ttu-id="12ebc-152">不具備執行緒安全。</span><span class="sxs-lookup"><span data-stu-id="12ebc-152">Not thread safe.</span></span>|<xref:System.Threading.LazyThreadSafetyMode.None>|`false`|<span data-ttu-id="12ebc-153">不適用。</span><span class="sxs-lookup"><span data-stu-id="12ebc-153">Not applicable.</span></span>|  
+|<span data-ttu-id="12ebc-154">完整具備執行緒安全。執行緒競爭來初始化值。</span><span class="sxs-lookup"><span data-stu-id="12ebc-154">Fully thread safe; threads race to initialize the value.</span></span>|<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly>|<span data-ttu-id="12ebc-155">不適用。</span><span class="sxs-lookup"><span data-stu-id="12ebc-155">Not applicable.</span></span>|<span data-ttu-id="12ebc-156">不適用。</span><span class="sxs-lookup"><span data-stu-id="12ebc-156">Not applicable.</span></span>|  
+  
+ <span data-ttu-id="12ebc-157">**其他功能**有關使用<xref:System.Lazy%601>執行緒靜態欄位，或做為備份存放區屬性，請參閱[延遲初始設定](~/docs/framework/performance/lazy-initialization.md)。</span><span class="sxs-lookup"><span data-stu-id="12ebc-157">**Other capabilities** For information about the use of <xref:System.Lazy%601> with thread-static fields, or as the backing store for properties, see [Lazy Initialization](~/docs/framework/performance/lazy-initialization.md).</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="12ebc-158">下列範例示範如何使用<xref:System.Lazy%601>類別，以提供延遲初始設定，以從多個執行緒存取。</span><span class="sxs-lookup"><span data-stu-id="12ebc-158">The following example demonstrates the use of the <xref:System.Lazy%601> class to provide lazy initialization with access from multiple threads.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="12ebc-159">此範例會使用<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29>建構函式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-159">The example uses the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29> constructor.</span></span> <span data-ttu-id="12ebc-160">它也示範如何使用<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29>建構函式 (指定`true`如`isThreadSafe`) 和<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>建構函式 (指定<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType>如`mode`)。</span><span class="sxs-lookup"><span data-stu-id="12ebc-160">It also demonstrates the use of the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29> constructor (specifying `true` for `isThreadSafe`) and the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> constructor (specifying <xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType> for `mode`).</span></span> <span data-ttu-id="12ebc-161">若要切換至不同的建構函式，只要將變更的建構函式標記為註解。</span><span class="sxs-lookup"><span data-stu-id="12ebc-161">To switch to a different constructor, just change which constructors are commented out.</span></span>  
+>   
+>  <span data-ttu-id="12ebc-162">如需示範例外狀況的範例快取使用相同的建構函式，請參閱<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29>建構函式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-162">For an example that demonstrates exception caching using the same constructors, see the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29> constructor.</span></span>  
+  
+ <span data-ttu-id="12ebc-163">這個範例定義將由多個執行緒中的一個執行延遲初始化的 `LargeObject` 類別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-163">The example defines a `LargeObject` class that will be initialized lazily by one of several threads.</span></span> <span data-ttu-id="12ebc-164">程式碼的四個索引鍵的各節將說明建立初始設定式、 的 factory 方法，實際的初始化和的建構函式`LargeObject`類別，建立物件時，會顯示訊息。</span><span class="sxs-lookup"><span data-stu-id="12ebc-164">The four key sections of code illustrate the creation of the initializer, the factory method, the actual initialization, and the constructor of the `LargeObject` class, which displays a message when the object is created.</span></span> <span data-ttu-id="12ebc-165">在 `Main` 方法的開頭，此範例會為 `LargeObject` 建立安全執行緒延遲初始設定式:</span><span class="sxs-lookup"><span data-stu-id="12ebc-165">At the beginning of the `Main` method, the example creates the thread-safe lazy initializer for `LargeObject`:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/example.cs#newlazy)]
+ [!code-vb[System.Lazy\`1#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/example.vb#newlazy)]  
+  
+ <span data-ttu-id="12ebc-166">Factory 方法，顯示在建立物件，以進行進一步的初始化預留位置：</span><span class="sxs-lookup"><span data-stu-id="12ebc-166">The factory method shows the creation of the object, with a placeholder for further initialization:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1#FactoryFunc](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/example.cs#factoryfunc)]
+ [!code-vb[System.Lazy\`1#FactoryFunc](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/example.vb#factoryfunc)]  
+  
+ <span data-ttu-id="12ebc-167">請注意，使用 lambda 函式，無法合併前, 兩個程式碼區段，如下所示：</span><span class="sxs-lookup"><span data-stu-id="12ebc-167">Note that the first two code sections could be combined by using a lambda function, as shown here:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1#InitWithLambda](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/lambda.cs#initwithlambda)]
+ [!code-vb[System.Lazy\`1#InitWithLambda](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/lambda.vb#initwithlambda)]  
+  
+ <span data-ttu-id="12ebc-168">此範例會暫停，表示沒有期限可能會發生延遲初始設定之前停用。</span><span class="sxs-lookup"><span data-stu-id="12ebc-168">The example pauses, to indicate that an indeterminate period may elapse before lazy initialization occurs.</span></span> <span data-ttu-id="12ebc-169">當您按**Enter**索引鍵，此範例會建立並啟動三個執行緒。</span><span class="sxs-lookup"><span data-stu-id="12ebc-169">When you press the **Enter** key, the example creates and starts three threads.</span></span> <span data-ttu-id="12ebc-170">`ThreadProc`方法，以供所有的三個執行緒呼叫<xref:System.Lazy%601.Value%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="12ebc-170">The `ThreadProc` method that's used by all three threads calls the <xref:System.Lazy%601.Value%2A> property.</span></span> <span data-ttu-id="12ebc-171">發生這種情況，在第一次`LargeObject`建立執行個體：</span><span class="sxs-lookup"><span data-stu-id="12ebc-171">The first time this happens, the `LargeObject` instance is created:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/example.cs#valueprop)]
+ [!code-vb[System.Lazy\`1#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/example.vb#valueprop)]  
+  
+ <span data-ttu-id="12ebc-172">建構函式`LargeObject`類別，其中包含程式碼的最後一節，會顯示訊息和記錄初始化執行緒的識別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-172">The constructor of the `LargeObject` class, which includes the last key section of code, displays a message and records the identity of the initializing thread.</span></span> <span data-ttu-id="12ebc-173">程式的輸出會出現在完整的程式碼清單的結尾。</span><span class="sxs-lookup"><span data-stu-id="12ebc-173">The output from the program appears at the end of the full code listing.</span></span>  
+  
+ [!code-csharp[System.Lazy\`1#LargeCtor](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/example.cs#largector)]
+ [!code-vb[System.Lazy\`1#LargeCtor](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/example.vb#largector)]  
+  
+> [!NOTE]
+>  <span data-ttu-id="12ebc-174">為了簡化，這個範例使用 <xref:System.Lazy%601> 的全域執行個體，而且所有方法都是 `static` (Visual Basic 中為 `Shared`)。</span><span class="sxs-lookup"><span data-stu-id="12ebc-174">For simplicity, this example uses a global instance of <xref:System.Lazy%601>, and all the methods are `static` (`Shared` in Visual Basic).</span></span> <span data-ttu-id="12ebc-175">這些不是使用延遲初始設定的必要項。</span><span class="sxs-lookup"><span data-stu-id="12ebc-175">These are not requirements for the use of lazy initialization.</span></span>  
+  
+ [!code-csharp[System.Lazy\`1#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1/cs/example.cs#all)]
+ [!code-vb[System.Lazy\`1#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1/vb/example.vb#all)]  
+  
+ ]]></format>
+    </remarks>
+    <threadsafe>
+      <span data-ttu-id="12ebc-176">根據預設，所有的 public 和 protected 成員的<see cref="T:System.Lazy`1" />類別都是安全執行緒，且可能會從多個執行緒同時使用。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="12ebc-176">By default, all public and protected members of the <see cref="T:System.Lazy`1" /> class are thread safe and may be used concurrently from multiple threads.</span>
+      </span>
+      <span data-ttu-id="12ebc-177">（選擇性） 和每個執行個體，使用參數的型別建構函式，可能會移除這些執行緒安全性保證。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="12ebc-177">These thread-safety guarantees may be removed optionally and per instance, using parameters to the type's constructors.</span>
+      </span>
+    </threadsafe>
+    <altmember cref="T:System.Threading.LazyThreadSafetyMode" />
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="12ebc-178">初始化 <see cref="T:System.Lazy`1" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-178">Initializes a new instance of the <see cref="T:System.Lazy`1" /> class.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Lazy ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Lazy`1.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; Lazy();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="12ebc-179">初始化 <see cref="T:System.Lazy`1" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-179">Initializes a new instance of the <see cref="T:System.Lazy`1" /> class.</span>
+          </span>
+          <span data-ttu-id="12ebc-180">發生延遲初始設定時，會使用目標類型的預設建構函式。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-180">When lazy initialization occurs, the default constructor of the target type is used.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="12ebc-181">可從多個執行緒同時使用這個建構函式來建立執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-181">An instance that is created with this constructor may be used concurrently from multiple threads.</span></span>  
+  
+ <span data-ttu-id="12ebc-182">執行緒安全模式的<xref:System.Lazy%601>會使用這個建構函式初始化的執行個體是<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType>。</span><span class="sxs-lookup"><span data-stu-id="12ebc-182">The thread safety mode of a <xref:System.Lazy%601> instance that is initialized with this constructor is <xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType>.</span></span> <span data-ttu-id="12ebc-183">執行緒安全模式描述的行為，當多個執行緒嘗試初始化<xref:System.Lazy%601>執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-183">The thread safety mode describes the behavior when multiple threads try to initialize the <xref:System.Lazy%601> instance.</span></span>  
+  
+ <span data-ttu-id="12ebc-184">A<xref:System.Lazy%601>建立使用這個建構函式的執行個體不會快取例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-184">A <xref:System.Lazy%601> instance that is created with this constructor does not cache exceptions.</span></span> <span data-ttu-id="12ebc-185">如需詳細資訊，請參閱 <xref:System.Lazy%601> 類別或 <xref:System.Threading.LazyThreadSafetyMode?displayProperty=nameWithType> 列舉型別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-185">For more information, see the <xref:System.Lazy%601> class or the <xref:System.Threading.LazyThreadSafetyMode?displayProperty=nameWithType> enumeration.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="12ebc-186">下列範例示範如何使用這個建構函式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-186">The following example demonstrates the use of this constructor.</span></span> <span data-ttu-id="12ebc-187">它也說明如何使用<xref:System.Lazy%601.%23ctor%28System.Boolean%29>建構函式 (指定`true`如`isThreadSafe`) 和<xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29>建構函式 (指定<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType>如`mode`)。</span><span class="sxs-lookup"><span data-stu-id="12ebc-187">It also illustrates the use of the <xref:System.Lazy%601.%23ctor%28System.Boolean%29> constructor (specifying `true` for `isThreadSafe`) and the <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> constructor (specifying <xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType> for `mode`).</span></span> <span data-ttu-id="12ebc-188">若要切換至不同的建構函式，只要將變更的建構函式標記為註解。</span><span class="sxs-lookup"><span data-stu-id="12ebc-188">To switch to a different constructor, just change which constructors are commented out.</span></span>  
+  
+ <span data-ttu-id="12ebc-189">這個範例定義將由多個執行緒中的一個執行延遲初始化的 `LargeObject` 類別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-189">The example defines a `LargeObject` class that will be initialized lazily by one of several threads.</span></span> <span data-ttu-id="12ebc-190">兩個金鑰在此範例中的程式碼行會建立初始設定式和實際初始化。</span><span class="sxs-lookup"><span data-stu-id="12ebc-190">The two key lines of code in this example are the creation of the initializer and the actual initialization.</span></span> <span data-ttu-id="12ebc-191">在 `Main` 方法的開頭，此範例會為 `LargeObject` 建立安全執行緒延遲初始設定式:</span><span class="sxs-lookup"><span data-stu-id="12ebc-191">At the beginning of the `Main` method, the example creates the thread-safe lazy initializer for `LargeObject`:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctor#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctor/cs/example.cs#newlazy)]
+ [!code-vb[System.Lazy\`1.ctor#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctor/vb/example.vb#newlazy)]  
+  
+ <span data-ttu-id="12ebc-192">此範例會建立並啟動三個執行緒上封鎖<xref:System.Threading.ManualResetEvent>物件，以便在此範例可以一次釋放執行緒。</span><span class="sxs-lookup"><span data-stu-id="12ebc-192">The example creates and starts three threads that block on a <xref:System.Threading.ManualResetEvent> object, so that the example can release the threads all at once.</span></span> <span data-ttu-id="12ebc-193">`ThreadProc`方法，以供所有的三個執行緒呼叫<xref:System.Lazy%601.Value%2A>屬性來取得`LargeObject`執行個體：</span><span class="sxs-lookup"><span data-stu-id="12ebc-193">The `ThreadProc` method that's used by all three threads calls the <xref:System.Lazy%601.Value%2A> property to get the `LargeObject` instance:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctor#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctor/cs/example.cs#valueprop)]
+ [!code-vb[System.Lazy\`1.ctor#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctor/vb/example.vb#valueprop)]  
+  
+ <span data-ttu-id="12ebc-194"><xref:System.Lazy%601>類別會提供鎖定，因此只有一個執行緒來建立允許`LargeObject`執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-194">The <xref:System.Lazy%601> class provides locking, so that only one thread is allowed to create the `LargeObject` instance.</span></span> <span data-ttu-id="12ebc-195">此範例會示範所有其他執行緒都取得相同的執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-195">The example demonstrates that the other threads all get the same instance.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="12ebc-196">為了簡化，這個範例使用 <xref:System.Lazy%601> 的全域執行個體，而且所有方法都是 `static` (Visual Basic 中為 `Shared`)。</span><span class="sxs-lookup"><span data-stu-id="12ebc-196">For simplicity, this example uses a global instance of <xref:System.Lazy%601>, and all the methods are `static` (`Shared` in Visual Basic).</span></span> <span data-ttu-id="12ebc-197">這些不是使用延遲初始設定的必要項。</span><span class="sxs-lookup"><span data-stu-id="12ebc-197">These are not requirements for the use of lazy initialization.</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctor#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctor/cs/example.cs#all)]
+ [!code-vb[System.Lazy\`1.ctor#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctor/vb/example.vb#all)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Lazy (bool isThreadSafe);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(bool isThreadSafe) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Lazy`1.#ctor(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (isThreadSafe As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; Lazy(bool isThreadSafe);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="isThreadSafe" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="isThreadSafe">
+          <span data-ttu-id="12ebc-198">
+            <see langword="true" /> 表示這個執行個體可供多個執行緒同時使用，<see langword="false" /> 表示執行個體一次只能供一個執行緒使用。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-198">
+              <see langword="true" /> to make this instance usable concurrently by multiple threads; <see langword="false" /> to make the instance usable by only one thread at a time.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="12ebc-199">初始化 <see cref="T:System.Lazy`1" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-199">Initializes a new instance of the <see cref="T:System.Lazy`1" /> class.</span>
+          </span>
+          <span data-ttu-id="12ebc-200">當延遲初始設定發生時，會使用目標類型的預設建構函式和指定的初始設定模式。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-200">When lazy initialization occurs, the default constructor of the target type and the specified initialization mode are used.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="12ebc-201">執行緒安全模式的<xref:System.Lazy%601>會使用這個建構函式初始化的執行個體是<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType>如果`isThreadSafe`是`true`，否則的模式是<xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=nameWithType>。</span><span class="sxs-lookup"><span data-stu-id="12ebc-201">The thread safety mode of a <xref:System.Lazy%601> instance that is initialized with this constructor is <xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType> if `isThreadSafe` is `true`; otherwise, the mode is <xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=nameWithType>.</span></span> <span data-ttu-id="12ebc-202">執行緒安全模式描述的行為，當多個執行緒嘗試初始化<xref:System.Lazy%601>執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-202">The thread safety mode describes the behavior when multiple threads try to initialize the <xref:System.Lazy%601> instance.</span></span> <span data-ttu-id="12ebc-203">若要指定<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>模式中，使用<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>或<xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29>建構函式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-203">To specify the <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType> mode, use the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> or <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> constructor.</span></span>  
+  
+ <span data-ttu-id="12ebc-204">A<xref:System.Lazy%601>建立使用這個建構函式的執行個體不會快取例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-204">A <xref:System.Lazy%601> instance that is created with this constructor does not cache exceptions.</span></span> <span data-ttu-id="12ebc-205">如需詳細資訊，請參閱 <xref:System.Lazy%601> 類別或 <xref:System.Threading.LazyThreadSafetyMode?displayProperty=nameWithType> 列舉型別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-205">For more information, see the <xref:System.Lazy%601> class or the <xref:System.Threading.LazyThreadSafetyMode?displayProperty=nameWithType> enumeration.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="12ebc-206">下列範例示範如何使用這個建構函式來建立不是安全的延遲初始化的物件的所有存取相同的執行緒上都發生的情況下執行緒延遲初始設定式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-206">The following example demonstrates the use of this constructor to create a lazy initializer that is not thread safe, for scenarios where all access to the lazily initialized object occurs on the same thread.</span></span> <span data-ttu-id="12ebc-207">它也示範如何使用<xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29>建構函式 (指定<xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=nameWithType>如`mode`。</span><span class="sxs-lookup"><span data-stu-id="12ebc-207">It also demonstrates the use of the <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> constructor (specifying <xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=nameWithType> for `mode`.</span></span> <span data-ttu-id="12ebc-208">若要切換至不同的建構函式，只要將變更的建構函式標記為註解。</span><span class="sxs-lookup"><span data-stu-id="12ebc-208">To switch to a different constructor, just change which constructor is commented out.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="12ebc-209">示範如何在多執行緒案例中使用這個建構函式的程式碼 (指定`true`如`isThreadSafe`)，請參閱範例的<xref:System.Lazy%601.%23ctor>建構函式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-209">For code that demonstrates how to use this constructor in multithreaded scenarios (specifying `true` for `isThreadSafe`), see the example for the <xref:System.Lazy%601.%23ctor> constructor.</span></span>  
+  
+ <span data-ttu-id="12ebc-210">此範例會定義`LargeObject`將執行延遲初始化的類別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-210">The example defines a `LargeObject` class that will be initialized lazily.</span></span> <span data-ttu-id="12ebc-211">在`Main`方法，此範例會建立<xref:System.Lazy%601>執行個體，然後暫停。</span><span class="sxs-lookup"><span data-stu-id="12ebc-211">In the `Main` method, the example creates a <xref:System.Lazy%601> instance and then pauses.</span></span> <span data-ttu-id="12ebc-212">當您按**Enter**索引鍵，範例會存取<xref:System.Lazy%601.Value%2A>屬性<xref:System.Lazy%601>執行個體，這會導致進行初始化。</span><span class="sxs-lookup"><span data-stu-id="12ebc-212">When you press the **Enter** key, the example accesses the <xref:System.Lazy%601.Value%2A> property of the <xref:System.Lazy%601> instance, which causes initialization to occur.</span></span> <span data-ttu-id="12ebc-213">建構函式`LargeObject`類別會顯示主控台訊息。</span><span class="sxs-lookup"><span data-stu-id="12ebc-213">The constructor of the `LargeObject` class displays a console message.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="12ebc-214">為了簡化，這個範例使用 <xref:System.Lazy%601> 的全域執行個體，而且所有方法都是 `static` (Visual Basic 中為 `Shared`)。</span><span class="sxs-lookup"><span data-stu-id="12ebc-214">For simplicity, this example uses a global instance of <xref:System.Lazy%601>, and all the methods are `static` (`Shared` in Visual Basic).</span></span> <span data-ttu-id="12ebc-215">這些不是使用延遲初始設定的必要項。</span><span class="sxs-lookup"><span data-stu-id="12ebc-215">These are not requirements for the use of lazy initialization.</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorBool#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorbool/cs/example.cs#all)]
+ [!code-vb[System.Lazy\`1.ctorBool#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorbool/vb/example.vb#all)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Lazy (Func&lt;T&gt; valueFactory);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Func`1&lt;!T&gt; valueFactory) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Lazy`1.#ctor(System.Func{`0})" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (valueFactory As Func(Of T))" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; Lazy(Func&lt;T&gt; ^ valueFactory);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="valueFactory" Type="System.Func&lt;T&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="valueFactory">
+          <span data-ttu-id="12ebc-216">委派，需要時會叫用以產生延遲初始化的值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-216">The delegate that is invoked to produce the lazily initialized value when it is needed.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="12ebc-217">初始化 <see cref="T:System.Lazy`1" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-217">Initializes a new instance of the <see cref="T:System.Lazy`1" /> class.</span>
+          </span>
+          <span data-ttu-id="12ebc-218">當延遲初始設定發生時，就會使用指定的初始化函式。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-218">When lazy initialization occurs, the specified initialization function is used.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="12ebc-219">可從多個執行緒同時使用這個建構函式來建立執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-219">An instance that is created with this constructor may be used concurrently from multiple threads.</span></span>  
+  
+ <span data-ttu-id="12ebc-220">執行緒安全模式的<xref:System.Lazy%601>會使用這個建構函式初始化的執行個體是<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType>。</span><span class="sxs-lookup"><span data-stu-id="12ebc-220">The thread safety mode of a <xref:System.Lazy%601> instance that is initialized with this constructor is <xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType>.</span></span> <span data-ttu-id="12ebc-221">執行緒安全模式描述的行為，當多個執行緒嘗試初始化<xref:System.Lazy%601>執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-221">The thread safety mode describes the behavior when multiple threads try to initialize the <xref:System.Lazy%601> instance.</span></span>  
+  
+ <span data-ttu-id="12ebc-222">擲回的例外狀況`valueFactory`會快取。</span><span class="sxs-lookup"><span data-stu-id="12ebc-222">Exceptions that are thrown by `valueFactory` are cached.</span></span> <span data-ttu-id="12ebc-223">如需詳細資訊，請參閱 <xref:System.Lazy%601> 類別或 <xref:System.Threading.LazyThreadSafetyMode?displayProperty=nameWithType> 列舉型別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-223">For more information, see the <xref:System.Lazy%601> class or the <xref:System.Threading.LazyThreadSafetyMode?displayProperty=nameWithType> enumeration.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="12ebc-224">下列範例示範如何使用這個建構函式，以提供延遲初始設定快取例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-224">The following example demonstrates the use of this constructor to provide lazy initialization with exception caching.</span></span> <span data-ttu-id="12ebc-225">它也示範如何使用<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29>建構函式 (指定`true`如`isThreadSafe`) 和<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>建構函式 (指定<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType>如`mode`)。</span><span class="sxs-lookup"><span data-stu-id="12ebc-225">It also demonstrates the use of the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29> constructor (specifying `true` for `isThreadSafe`) and the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> constructor (specifying <xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType> for `mode`).</span></span> <span data-ttu-id="12ebc-226">若要切換至不同的建構函式，只要將變更的建構函式標記為註解。</span><span class="sxs-lookup"><span data-stu-id="12ebc-226">To switch to a different constructor, just change which constructors are commented out.</span></span>  
+  
+ <span data-ttu-id="12ebc-227">這個範例定義將由多個執行緒中的一個執行延遲初始化的 `LargeObject` 類別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-227">The example defines a `LargeObject` class that will be initialized lazily by one of several threads.</span></span> <span data-ttu-id="12ebc-228">程式碼的三個索引鍵的各節將說明建立初始設定式、 實際初始化，以及建構函式`LargeObject`類別，示範快取例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-228">The three key sections of code illustrate the creation of the initializer, the actual initialization, and the constructor of the `LargeObject` class, which demonstrates exception caching.</span></span> <span data-ttu-id="12ebc-229">在 `Main` 方法的開頭，此範例會為 `LargeObject` 建立安全執行緒延遲初始設定式:</span><span class="sxs-lookup"><span data-stu-id="12ebc-229">At the beginning of the `Main` method, the example creates the thread-safe lazy initializer for `LargeObject`:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorFunc#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/cs/example.cs#newlazy)]
+ [!code-vb[System.Lazy\`1.ctorFunc#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/vb/example.vb#newlazy)]  
+  
+ <span data-ttu-id="12ebc-230">此範例會建立並啟動三個執行緒。</span><span class="sxs-lookup"><span data-stu-id="12ebc-230">The example creates and starts three threads.</span></span> <span data-ttu-id="12ebc-231">`ThreadProc`方法，以供所有的三個執行緒呼叫<xref:System.Lazy%601.Value%2A>屬性來取得`LargeObject`執行個體：</span><span class="sxs-lookup"><span data-stu-id="12ebc-231">The `ThreadProc` method that's used by all three threads calls the <xref:System.Lazy%601.Value%2A> property to get the `LargeObject` instance:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorFunc#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/cs/example.cs#valueprop)]
+ [!code-vb[System.Lazy\`1.ctorFunc#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/vb/example.vb#valueprop)]  
+  
+ <span data-ttu-id="12ebc-232">建構函式中`LargeObject`類別，第三個索引鍵段程式碼擲回例外狀況第一次`LargeObject`執行個體建立時，但之後可讓執行個體建立發生：</span><span class="sxs-lookup"><span data-stu-id="12ebc-232">In the constructor of the `LargeObject` class, the third key section of code throws an exception the first time a `LargeObject` instance is created, but thereafter allows instance creation to occur:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorFunc#LargeCtor](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/cs/example.cs#largector)]
+ [!code-vb[System.Lazy\`1.ctorFunc#LargeCtor](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/vb/example.vb#largector)]  
+  
+ <span data-ttu-id="12ebc-233">當範例執行時，會嘗試建立的執行個體的第一個執行緒`LargeObject`攔截會失敗，且例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-233">When the example is run, the first thread that tries to create an instance of `LargeObject` fails, and the exception is caught.</span></span> <span data-ttu-id="12ebc-234">您可能預期的下一個執行緒會成功地建立執行個體，但<xref:System.Lazy%601>物件已快取例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-234">You might expect that the next thread would successfully create an instance, but the <xref:System.Lazy%601> object has cached the exception.</span></span> <span data-ttu-id="12ebc-235">因為這個緣故，所有三個執行緒擲回例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-235">Because of this, all three threads throw the exception.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="12ebc-236">為了簡化，這個範例使用 <xref:System.Lazy%601> 的全域執行個體，而且所有方法都是 `static` (Visual Basic 中為 `Shared`)。</span><span class="sxs-lookup"><span data-stu-id="12ebc-236">For simplicity, this example uses a global instance of <xref:System.Lazy%601>, and all the methods are `static` (`Shared` in Visual Basic).</span></span> <span data-ttu-id="12ebc-237">這些不是使用延遲初始設定的必要項。</span><span class="sxs-lookup"><span data-stu-id="12ebc-237">These are not requirements for the use of lazy initialization.</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorFunc#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/cs/example.cs#all)]
+ [!code-vb[System.Lazy\`1.ctorFunc#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfunc/vb/example.vb#all)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="12ebc-238">
+            <paramref name="valueFactory" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-238">
+              <paramref name="valueFactory" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Lazy (System.Threading.LazyThreadSafetyMode mode);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Threading.LazyThreadSafetyMode mode) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Lazy`1.#ctor(System.Threading.LazyThreadSafetyMode)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (mode As LazyThreadSafetyMode)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; Lazy(System::Threading::LazyThreadSafetyMode mode);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="mode" Type="System.Threading.LazyThreadSafetyMode" />
+      </Parameters>
+      <Docs>
+        <param name="mode">
+          <span data-ttu-id="12ebc-239">其中一個列舉值會指定執行緒安全模式。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-239">One of the enumeration values that specifies the thread safety mode.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="12ebc-240">初始化 <see cref="T:System.Lazy`1" /> 類別的新執行個體，這個執行個體會使用 <paramref name="T" /> 的預設建構函式和指定的執行緒安全模式。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-240">Initializes a new instance of the <see cref="T:System.Lazy`1" /> class that uses the default constructor of <paramref name="T" /> and the specified thread-safety mode.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="12ebc-241">執行緒安全模式的<xref:System.Lazy%601>執行個體描述的行為，當多個執行緒嘗試初始化<xref:System.Lazy%601>執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-241">The thread safety mode of a <xref:System.Lazy%601> instance describes the behavior when multiple threads try to initialize the <xref:System.Lazy%601> instance.</span></span>  
+  
+ <span data-ttu-id="12ebc-242">A<xref:System.Lazy%601>建立使用這個建構函式的執行個體不會快取例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-242">A <xref:System.Lazy%601> instance that is created with this constructor does not cache exceptions.</span></span> <span data-ttu-id="12ebc-243">如需詳細資訊，請參閱 <xref:System.Lazy%601> 類別或 <xref:System.Threading.LazyThreadSafetyMode?displayProperty=nameWithType> 列舉型別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-243">For more information, see the <xref:System.Lazy%601> class or the <xref:System.Threading.LazyThreadSafetyMode?displayProperty=nameWithType> enumeration.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="12ebc-244">下列範例示範如何使用這個建構函式來建立延遲初始設定式，可讓多個執行緒執行延遲建立物件的競爭。</span><span class="sxs-lookup"><span data-stu-id="12ebc-244">The following example demonstrates the use of this constructor to create a lazy initializer that enables multiple threads to race to create an object lazily.</span></span> <span data-ttu-id="12ebc-245">多個執行緒可能會成功建立執行個體，但所有執行緒都使用第一次建立的執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-245">Multiple threads might succeed in creating instances, but all threads use the instance that was created first.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="12ebc-246">如需範例，示範如何在單一執行緒案例中使用這個建構函式 (指定<xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=nameWithType>如`mode`)，請參閱<xref:System.Lazy%601.%23ctor%28System.Boolean%29>建構函式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-246">For an example that demonstrates how to use this constructor in single-threaded scenarios (specifying <xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=nameWithType> for `mode`), see the <xref:System.Lazy%601.%23ctor%28System.Boolean%29> constructor.</span></span> <span data-ttu-id="12ebc-247">如需範例，示範如何使用這個建構函式提供的鎖定而不多執行緒案例中的競爭情形 (指定<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType>如`mode`)，請參閱<xref:System.Lazy%601.%23ctor>建構函式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-247">For an example that demonstrates how to use this constructor to provide locking instead of race conditions in multithreaded scenarios (specifying <xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType> for `mode`), see the <xref:System.Lazy%601.%23ctor> constructor.</span></span>  
+  
+ <span data-ttu-id="12ebc-248">此範例會定義`LargeObject`會由任何多個執行緒執行延遲初始化的類別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-248">The example defines a `LargeObject` class that will be initialized lazily by any of several threads.</span></span> <span data-ttu-id="12ebc-249">程式碼的三個主要區段說明建立初始設定式、 實際的初始化和建構函式和完成項的`LargeObject`類別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-249">The three key sections of code illustrate the creation of the initializer, the actual initialization, and the constructor and finalizer of the `LargeObject` class.</span></span> <span data-ttu-id="12ebc-250">在開頭`Main`方法，此範例會建立<xref:System.Lazy%601>執行延遲初始化的物件`LargeObject`:</span><span class="sxs-lookup"><span data-stu-id="12ebc-250">At the beginning of the `Main` method, the example creates the <xref:System.Lazy%601> object that performs lazy initialization of the `LargeObject`:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorLTSM#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/cs/example.cs#newlazy)]
+ [!code-vb[System.Lazy\`1.ctorLTSM#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/vb/example.vb#newlazy)]  
+  
+ <span data-ttu-id="12ebc-251">此範例會建立並啟動三個執行緒上封鎖<xref:System.Threading.ManualResetEvent>物件，以便在此範例可以一次釋放執行緒。</span><span class="sxs-lookup"><span data-stu-id="12ebc-251">The example creates and starts three threads that block on a <xref:System.Threading.ManualResetEvent> object, so that the example can release the threads all at once.</span></span> <span data-ttu-id="12ebc-252">在`ThreadProc`方法，以供所有的三個執行緒，呼叫<xref:System.Lazy%601.Value%2A>屬性建立`LargeObject`執行個體：</span><span class="sxs-lookup"><span data-stu-id="12ebc-252">In the `ThreadProc` method that's used by all three threads, calling the <xref:System.Lazy%601.Value%2A> property creates the `LargeObject` instance:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorLTSM#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/cs/example.cs#valueprop)]
+ [!code-vb[System.Lazy\`1.ctorLTSM#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/vb/example.vb#valueprop)]  
+  
+ <span data-ttu-id="12ebc-253">因為的建構函式<xref:System.Lazy%601>指定執行個體<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>，所有三個執行緒都可建立`LargeObject`執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-253">Because the constructor for the <xref:System.Lazy%601> instance specified <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>, all three threads are allowed to create `LargeObject` instances.</span></span> <span data-ttu-id="12ebc-254">範例將提供示範顯示主控台訊息，在建構函式和完成項的`LargeObject`類別：</span><span class="sxs-lookup"><span data-stu-id="12ebc-254">The example demonstrates this by displaying console messages in the constructor and in the finalizer of the `LargeObject` class:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorLTSM#CtorFinalizer](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/cs/example.cs#ctorfinalizer)]
+ [!code-vb[System.Lazy\`1.ctorLTSM#CtorFinalizer](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/vb/example.vb#ctorfinalizer)]  
+  
+ <span data-ttu-id="12ebc-255">不過，<xref:System.Lazy%601>物件可確保只有一個執行個體由所有執行緒。</span><span class="sxs-lookup"><span data-stu-id="12ebc-255">However, the <xref:System.Lazy%601> object ensures that only one instance is used by all threads.</span></span> <span data-ttu-id="12ebc-256">範例輸出會顯示所有的三個執行緒使用相同的執行個體，以及顯示其他兩個執行個體，可以回收進行回收。</span><span class="sxs-lookup"><span data-stu-id="12ebc-256">The output from the example shows that all three threads use the same instance, and also shows that the other two instances can be reclaimed by garbage collection.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="12ebc-257">為了簡化，這個範例使用 <xref:System.Lazy%601> 的全域執行個體，而且所有方法都是 `static` (Visual Basic 中為 `Shared`)。</span><span class="sxs-lookup"><span data-stu-id="12ebc-257">For simplicity, this example uses a global instance of <xref:System.Lazy%601>, and all the methods are `static` (`Shared` in Visual Basic).</span></span> <span data-ttu-id="12ebc-258">這些不是使用延遲初始設定的必要項。</span><span class="sxs-lookup"><span data-stu-id="12ebc-258">These are not requirements for the use of lazy initialization.</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorLTSM#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/cs/example.cs#all)]
+ [!code-vb[System.Lazy\`1.ctorLTSM#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorltsm/vb/example.vb#all)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="12ebc-259">
+            <paramref name="mode" /> 包含無效的值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-259">
+              <paramref name="mode" /> contains an invalid value.</span>
+          </span>
+        </exception>
+        <altmember cref="T:System.Threading.LazyThreadSafetyMode" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Lazy (T value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(!T value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Lazy`1.#ctor(`0)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (value As T)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; Lazy(T value);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="value" Type="T" />
+      </Parameters>
+      <Docs>
+        <param name="value">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Lazy (Func&lt;T&gt; valueFactory, bool isThreadSafe);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Func`1&lt;!T&gt; valueFactory, bool isThreadSafe) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Lazy`1.#ctor(System.Func{`0},System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (valueFactory As Func(Of T), isThreadSafe As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; Lazy(Func&lt;T&gt; ^ valueFactory, bool isThreadSafe);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="valueFactory" Type="System.Func&lt;T&gt;" />
+        <Parameter Name="isThreadSafe" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="valueFactory">
+          <span data-ttu-id="12ebc-260">委派，需要時會叫用以產生延遲初始化的值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-260">The delegate that is invoked to produce the lazily initialized value when it is needed.</span>
+          </span>
+        </param>
+        <param name="isThreadSafe">
+          <span data-ttu-id="12ebc-261">
+            <see langword="true" /> 表示這個執行個體可供多個執行緒同時使用，<see langword="false" /> 表示這個執行個體一次只能供一個執行緒使用。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-261">
+              <see langword="true" /> to make this instance usable concurrently by multiple threads; <see langword="false" /> to make this instance usable by only one thread at a time.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="12ebc-262">初始化 <see cref="T:System.Lazy`1" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-262">Initializes a new instance of the <see cref="T:System.Lazy`1" /> class.</span>
+          </span>
+          <span data-ttu-id="12ebc-263">當延遲初始設定發生時，會使用指定的初始化函式和初始化模式。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-263">When lazy initialization occurs, the specified initialization function and initialization mode are used.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="12ebc-264">執行緒安全模式的<xref:System.Lazy%601>會使用這個建構函式初始化的執行個體是<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType>如果`isThreadSafe`是`true`，否則的模式是<xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=nameWithType>。</span><span class="sxs-lookup"><span data-stu-id="12ebc-264">The thread safety mode of a <xref:System.Lazy%601> instance that is initialized with this constructor is <xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType> if `isThreadSafe` is `true`; otherwise, the mode is <xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=nameWithType>.</span></span> <span data-ttu-id="12ebc-265">執行緒安全模式描述的行為，當多個執行緒嘗試初始化<xref:System.Lazy%601>執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-265">The thread safety mode describes the behavior when multiple threads try to initialize the <xref:System.Lazy%601> instance.</span></span>  
+  
+ <span data-ttu-id="12ebc-266">若要指定<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>模式中，使用<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>或<xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29>建構函式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-266">To specify the <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType> mode, use the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29> or <xref:System.Lazy%601.%23ctor%28System.Threading.LazyThreadSafetyMode%29> constructor.</span></span>  
+  
+ <span data-ttu-id="12ebc-267">擲回的例外狀況`valueFactory`會快取。</span><span class="sxs-lookup"><span data-stu-id="12ebc-267">Exceptions that are thrown by `valueFactory` are cached.</span></span> <span data-ttu-id="12ebc-268">如需詳細資訊，請參閱 <xref:System.Lazy%601> 類別或 <xref:System.Threading.LazyThreadSafetyMode?displayProperty=nameWithType> 列舉型別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-268">For more information, see the <xref:System.Lazy%601> class or the <xref:System.Threading.LazyThreadSafetyMode?displayProperty=nameWithType> enumeration.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="12ebc-269">下列範例示範如何使用這個建構函式，以提供延遲初始設定快取，在案例中，以單一執行緒的例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-269">The following example demonstrates the use of this constructor to provide lazy initialization with exception caching, in a scenario with a single thread.</span></span> <span data-ttu-id="12ebc-270">它也示範如何使用<xref:System.Lazy%601.%23ctor%2A>建構函式 (指定<xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=nameWithType>如`mode`)。</span><span class="sxs-lookup"><span data-stu-id="12ebc-270">It also demonstrates the use of the  <xref:System.Lazy%601.%23ctor%2A> constructor (specifying <xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=nameWithType> for `mode`).</span></span> <span data-ttu-id="12ebc-271">若要切換至該建構函式，只要將變更的建構函式標記為註解。</span><span class="sxs-lookup"><span data-stu-id="12ebc-271">To switch to that constructor, just change which constructor is commented out.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="12ebc-272">示範如何在多執行緒案例中使用這個建構函式的程式碼 (指定`true`如`isThreadSafe`)，請參閱範例的<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29>建構函式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-272">For code that demonstrates how to use this constructor in multithreaded scenarios (specifying `true` for `isThreadSafe`), see the example for the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29> constructor.</span></span>  
+  
+ <span data-ttu-id="12ebc-273">這個範例定義將由多個執行緒中的一個執行延遲初始化的 `LargeObject` 類別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-273">The example defines a `LargeObject` class that will be initialized lazily by one of several threads.</span></span> <span data-ttu-id="12ebc-274">程式碼的三個索引鍵的各節將說明建立初始設定式、 實際初始化，以及建構函式`LargeObject`類別，示範快取例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-274">The three key sections of code illustrate the creation of the initializer, the actual initialization, and the constructor of the `LargeObject` class, which demonstrates exception caching.</span></span> <span data-ttu-id="12ebc-275">在 `Main` 方法的開頭，此範例會為 `LargeObject` 建立安全執行緒延遲初始設定式:</span><span class="sxs-lookup"><span data-stu-id="12ebc-275">At the beginning of the `Main` method, the example creates the thread-safe lazy initializer for `LargeObject`:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorFuncBool#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/cs/example.cs#newlazy)]
+ [!code-vb[System.Lazy\`1.ctorFuncBool#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/vb/example.vb#newlazy)]  
+  
+ <span data-ttu-id="12ebc-276">在建構函式，呼叫`isThreadSafe`參數是`false`，因此<xref:System.Lazy%601>不是安全執行緒。</span><span class="sxs-lookup"><span data-stu-id="12ebc-276">In the call to the constructor, the `isThreadSafe` parameter is `false`, so the <xref:System.Lazy%601> is not thread safe.</span></span> <span data-ttu-id="12ebc-277">因為它不是安全執行緒，此範例會呼叫<xref:System.Lazy%601.Value%2A>三次的相同執行緒上的屬性：</span><span class="sxs-lookup"><span data-stu-id="12ebc-277">Because it's not thread safe, the example calls the <xref:System.Lazy%601.Value%2A> property three times on the same thread:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorFuncBool#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/cs/example.cs#valueprop)]
+ [!code-vb[System.Lazy\`1.ctorFuncBool#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/vb/example.vb#valueprop)]  
+  
+ <span data-ttu-id="12ebc-278">建構函式中`LargeObject`類別，第三個索引鍵段程式碼擲回例外狀況第一次`LargeObject`執行個體建立時，但之後可讓執行個體建立發生：</span><span class="sxs-lookup"><span data-stu-id="12ebc-278">In the constructor of the `LargeObject` class, the third key section of code throws an exception the first time a `LargeObject` instance is created, but thereafter allows instance creation to occur:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorFuncBool#LargeCtor](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/cs/example.cs#largector)]
+ [!code-vb[System.Lazy\`1.ctorFuncBool#LargeCtor](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/vb/example.vb#largector)]  
+  
+ <span data-ttu-id="12ebc-279">當範例執行時，第一次嘗試建立的執行個體`LargeObject`攔截會失敗，且例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-279">When the example is run, the first attempt to create an instance of `LargeObject` fails, and the exception is caught.</span></span> <span data-ttu-id="12ebc-280">您所料下, 一次的嘗試會成功，但<xref:System.Lazy%601>物件已快取例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-280">You might expect that the next attempt would succeed, but the <xref:System.Lazy%601> object has cached the exception.</span></span> <span data-ttu-id="12ebc-281">因為這個緣故，所有的三次嘗試，會擲回例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-281">Because of this, all three attempts throw the exception.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="12ebc-282">為了簡化，這個範例使用 <xref:System.Lazy%601> 的全域執行個體，而且所有方法都是 `static` (Visual Basic 中為 `Shared`)。</span><span class="sxs-lookup"><span data-stu-id="12ebc-282">For simplicity, this example uses a global instance of <xref:System.Lazy%601>, and all the methods are `static` (`Shared` in Visual Basic).</span></span> <span data-ttu-id="12ebc-283">這些不是使用延遲初始設定的必要項。</span><span class="sxs-lookup"><span data-stu-id="12ebc-283">These are not requirements for the use of lazy initialization.</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorFuncBool#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/cs/example.cs#all)]
+ [!code-vb[System.Lazy\`1.ctorFuncBool#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncbool/vb/example.vb#all)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="12ebc-284">
+            <paramref name="valueFactory" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-284">
+              <paramref name="valueFactory" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public Lazy (Func&lt;T&gt; valueFactory, System.Threading.LazyThreadSafetyMode mode);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Func`1&lt;!T&gt; valueFactory, valuetype System.Threading.LazyThreadSafetyMode mode) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Lazy`1.#ctor(System.Func{`0},System.Threading.LazyThreadSafetyMode)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (valueFactory As Func(Of T), mode As LazyThreadSafetyMode)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; Lazy(Func&lt;T&gt; ^ valueFactory, System::Threading::LazyThreadSafetyMode mode);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="valueFactory" Type="System.Func&lt;T&gt;" />
+        <Parameter Name="mode" Type="System.Threading.LazyThreadSafetyMode" />
+      </Parameters>
+      <Docs>
+        <param name="valueFactory">
+          <span data-ttu-id="12ebc-285">委派，需要時會叫用以產生延遲初始化的值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-285">The delegate that is invoked to produce the lazily initialized value when it is needed.</span>
+          </span>
+        </param>
+        <param name="mode">
+          <span data-ttu-id="12ebc-286">其中一個列舉值會指定執行緒安全模式。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-286">One of the enumeration values that specifies the thread safety mode.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="12ebc-287">初始化 <see cref="T:System.Lazy`1" /> 類別的新行個體，這個執行個體會使用指定的初始設定函式和執行緒安全模式。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-287">Initializes a new instance of the <see cref="T:System.Lazy`1" /> class that uses the specified initialization function and thread-safety mode.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="12ebc-288">執行緒安全模式的<xref:System.Lazy%601>執行個體描述的行為，當多個執行緒嘗試初始化<xref:System.Lazy%601>執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-288">The thread safety mode of a <xref:System.Lazy%601> instance describes the behavior when multiple threads try to initialize the <xref:System.Lazy%601> instance.</span></span>  
+  
+ <span data-ttu-id="12ebc-289">擲回的例外狀況`valueFactory`會快取，除非`mode`是<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>。</span><span class="sxs-lookup"><span data-stu-id="12ebc-289">Exceptions that are thrown by `valueFactory` are cached, unless `mode` is <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>.</span></span> <span data-ttu-id="12ebc-290">如需詳細資訊，請參閱 <xref:System.Lazy%601> 類別或 <xref:System.Threading.LazyThreadSafetyMode?displayProperty=nameWithType> 列舉型別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-290">For more information, see the <xref:System.Lazy%601> class or the <xref:System.Threading.LazyThreadSafetyMode?displayProperty=nameWithType> enumeration.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="12ebc-291">下列範例示範如何使用這個建構函式來建立延遲初始設定式，可讓多個執行緒執行延遲建立物件的競爭。</span><span class="sxs-lookup"><span data-stu-id="12ebc-291">The following example demonstrates the use of this constructor to create a lazy initializer that enables multiple threads to race to create an object lazily.</span></span> <span data-ttu-id="12ebc-292">多個執行緒可能會成功建立執行個體，但所有執行緒都使用第一次建立的執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-292">Multiple threads might succeed in creating instances, but all threads use the instance that was created first.</span></span> <span data-ttu-id="12ebc-293">此外，此範例示範的例外狀況會永遠不會快取指定時<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>，即使延遲建立的類型的預設建構函式的函式，而不是由執行初始化。</span><span class="sxs-lookup"><span data-stu-id="12ebc-293">In addition, the example demonstrates that exceptions are never cached when you specify <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>, even if initialization is performed by a function instead of by the default constructor of the lazily created type.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="12ebc-294">如需範例，示範如何在單一執行緒案例中使用這個建構函式 (指定<xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=nameWithType>如`mode`)，請參閱<xref:System.Lazy%601.%23ctor%28System.Boolean%29>建構函式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-294">For an example that demonstrates how to use this constructor in single-threaded scenarios (specifying <xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=nameWithType> for `mode`), see the <xref:System.Lazy%601.%23ctor%28System.Boolean%29> constructor.</span></span> <span data-ttu-id="12ebc-295">如需範例，示範如何使用這個建構函式提供的鎖定而不多執行緒案例中的競爭情形 (指定<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType>如`mode`)，請參閱<xref:System.Lazy%601.%23ctor>建構函式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-295">For an example that demonstrates how to use this constructor to provide locking instead of race conditions in multithreaded scenarios (specifying <xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType> for `mode`), see the <xref:System.Lazy%601.%23ctor> constructor.</span></span>  
+  
+ <span data-ttu-id="12ebc-296">此範例會定義`LargeObject`會由任何多個執行緒執行延遲初始化的類別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-296">The example defines a `LargeObject` class that will be initialized lazily by any of several threads.</span></span> <span data-ttu-id="12ebc-297">程式碼的四個主要區段說明建立初始設定式、 實際初始化、 初始化函式和建構函式和完成項的`LargeObject`類別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-297">The four key sections of code illustrate the creation of the initializer, the actual initialization, the initialization function, and the constructor and finalizer of the `LargeObject` class.</span></span> <span data-ttu-id="12ebc-298">在開頭`Main`方法，此範例會建立<xref:System.Lazy%601>執行延遲初始化的物件`LargeObject`:</span><span class="sxs-lookup"><span data-stu-id="12ebc-298">At the beginning of the `Main` method, the example creates the <xref:System.Lazy%601> object that performs lazy initialization of the `LargeObject`:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorFuncLTSM#NewLazy](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/cs/example.cs#newlazy)]
+ [!code-vb[System.Lazy\`1.ctorFuncLTSM#NewLazy](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/vb/example.vb#newlazy)]  
+  
+ <span data-ttu-id="12ebc-299">延遲初始設定式會使用函式執行初始化。</span><span class="sxs-lookup"><span data-stu-id="12ebc-299">The lazy initializer uses a function to perform the initialization.</span></span> <span data-ttu-id="12ebc-300">在此情況下，功能是必要的所以沒有預設建構函式`LargeObject`類別。</span><span class="sxs-lookup"><span data-stu-id="12ebc-300">In this case, a function is required because there is no default constructor for the `LargeObject` class.</span></span>  
+  
+ <span data-ttu-id="12ebc-301">此範例會建立並啟動三個執行緒上封鎖<xref:System.Threading.ManualResetEvent>物件，以便在此範例可以一次釋放執行緒。</span><span class="sxs-lookup"><span data-stu-id="12ebc-301">The example creates and starts three threads that block on a <xref:System.Threading.ManualResetEvent> object, so that the example can release the threads all at once.</span></span> <span data-ttu-id="12ebc-302">在`ThreadProc`方法，以供所有的三個執行緒，呼叫<xref:System.Lazy%601.Value%2A>屬性建立`LargeObject`執行個體：</span><span class="sxs-lookup"><span data-stu-id="12ebc-302">In the `ThreadProc` method that's used by all three threads, calling the <xref:System.Lazy%601.Value%2A> property creates the `LargeObject` instance:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorFuncLTSM#ValueProp](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/cs/example.cs#valueprop)]
+ [!code-vb[System.Lazy\`1.ctorFuncLTSM#ValueProp](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/vb/example.vb#valueprop)]  
+  
+ <span data-ttu-id="12ebc-303">在第三個主要區段中的程式碼，延遲初始設定函式會呼叫建立`LargeObject`執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-303">In the third key section of code, the lazy initialization function is called to create the `LargeObject` instance.</span></span> <span data-ttu-id="12ebc-304">此函式會擲回例外狀況的第一次呼叫：</span><span class="sxs-lookup"><span data-stu-id="12ebc-304">The function throws an exception the first time it's called:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorFuncLTSM#FactoryFunc](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/cs/example.cs#factoryfunc)]
+ [!code-vb[System.Lazy\`1.ctorFuncLTSM#FactoryFunc](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/vb/example.vb#factoryfunc)]  
+  
+ <span data-ttu-id="12ebc-305">與任何其他<xref:System.Threading.LazyThreadSafetyMode>設定，初始化函式處理的例外狀況會快取。</span><span class="sxs-lookup"><span data-stu-id="12ebc-305">With any other <xref:System.Threading.LazyThreadSafetyMode> setting, an unhandled exception in the initialization function would be cached.</span></span> <span data-ttu-id="12ebc-306">不過，<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>隱藏快取例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-306">However, <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType> suppresses exception caching.</span></span> <span data-ttu-id="12ebc-307">範例輸出示範以初始化物件的後續嘗試會成功。</span><span class="sxs-lookup"><span data-stu-id="12ebc-307">The output from the example demonstrates that a subsequent attempt to initialize the object succeeds.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="12ebc-308">例外狀況訊息通常會顯示訊息，指出其他執行緒都已成功初始化物件之後。</span><span class="sxs-lookup"><span data-stu-id="12ebc-308">The exception message usually appears after messages indicating that other threads have successfully initialized the object.</span></span> <span data-ttu-id="12ebc-309">這是因為擲回和攔截例外狀況時導入的延遲。</span><span class="sxs-lookup"><span data-stu-id="12ebc-309">This is because of the delay introduced by throwing and catching the exception.</span></span>  
+  
+ <span data-ttu-id="12ebc-310">因為的建構函式<xref:System.Lazy%601>指定執行個體<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>，所有三個執行緒都可建立`LargeObject`執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-310">Because the constructor for the <xref:System.Lazy%601> instance specified <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>, all three threads are allowed to create `LargeObject` instances.</span></span> <span data-ttu-id="12ebc-311">範例將提供示範顯示主控台訊息，在建構函式和完成項的`LargeObject`類別：</span><span class="sxs-lookup"><span data-stu-id="12ebc-311">The example demonstrates this by displaying console messages in the constructor and in the finalizer of the `LargeObject` class:</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorFuncLTSM#CtorFinalizer](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/cs/example.cs#ctorfinalizer)]
+ [!code-vb[System.Lazy\`1.ctorFuncLTSM#CtorFinalizer](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/vb/example.vb#ctorfinalizer)]  
+  
+ <span data-ttu-id="12ebc-312"><xref:System.Lazy%601>物件可確保只有一個執行個體由所有執行緒 （除非初始設定函式擲回例外狀況的執行緒）。</span><span class="sxs-lookup"><span data-stu-id="12ebc-312">The <xref:System.Lazy%601> object ensures that only one instance is used by all threads (except the thread where the initialization function throws an exception).</span></span> <span data-ttu-id="12ebc-313">範例輸出顯示這點。</span><span class="sxs-lookup"><span data-stu-id="12ebc-313">The output from the example shows this.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="12ebc-314">為了簡化，這個範例使用 <xref:System.Lazy%601> 的全域執行個體，而且所有方法都是 `static` (Visual Basic 中為 `Shared`)。</span><span class="sxs-lookup"><span data-stu-id="12ebc-314">For simplicity, this example uses a global instance of <xref:System.Lazy%601>, and all the methods are `static` (`Shared` in Visual Basic).</span></span> <span data-ttu-id="12ebc-315">這些不是使用延遲初始設定的必要項。</span><span class="sxs-lookup"><span data-stu-id="12ebc-315">These are not requirements for the use of lazy initialization.</span></span>  
+  
+ [!code-csharp[System.Lazy\`1.ctorFuncLTSM#All](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/cs/example.cs#all)]
+ [!code-vb[System.Lazy\`1.ctorFuncLTSM#All](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.lazy`1.ctorfuncltsm/vb/example.vb#all)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="12ebc-316">
+            <paramref name="mode" /> 包含無效的值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-316">
+              <paramref name="mode" /> contains an invalid value.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="12ebc-317">
+            <paramref name="valueFactory" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-317">
+              <paramref name="valueFactory" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="IsValueCreated">
+      <MemberSignature Language="C#" Value="public bool IsValueCreated { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsValueCreated" />
+      <MemberSignature Language="DocId" Value="P:System.Lazy`1.IsValueCreated" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsValueCreated As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsValueCreated { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="12ebc-318">取得值，這個值表示是否已建立此 <see cref="T:System.Lazy`1" /> 執行個體的值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-318">Gets a value that indicates whether a value has been created for this <see cref="T:System.Lazy`1" /> instance.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="12ebc-319">如果已建立此 <see cref="T:System.Lazy`1" /> 執行個體的值則為 <see langword="true" />，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-319">
+              <see langword="true" /> if a value has been created for this <see cref="T:System.Lazy`1" /> instance; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="12ebc-320">當延遲初始設定發生<xref:System.Lazy%601>執行個體，它可能會導致正在建立的值或擲回例外狀況。</span><span class="sxs-lookup"><span data-stu-id="12ebc-320">When lazy initialization occurs for a <xref:System.Lazy%601> instance, it may result in either a value being created or an exception being thrown.</span></span> <span data-ttu-id="12ebc-321">如果例外狀況擲回，後續的行為<xref:System.Lazy%601>執行個體取決於快取例外狀況是否作用中。</span><span class="sxs-lookup"><span data-stu-id="12ebc-321">If an exception is thrown, subsequent behavior of the <xref:System.Lazy%601> instance depends on whether exception caching is in effect.</span></span> <span data-ttu-id="12ebc-322">如果<xref:System.Lazy%601>建立執行個體所使用的建構函式未指定的初始化函式，則快取例外狀況為非作用中。</span><span class="sxs-lookup"><span data-stu-id="12ebc-322">If the <xref:System.Lazy%601> instance was created by using a constructor that does not specify an initialization function, then exception caching is not in effect.</span></span> <span data-ttu-id="12ebc-323">後續嘗試初始化<xref:System.Lazy%601>可能會成功，並在成功初始化之後<xref:System.Lazy%601.IsValueCreated%2A>屬性會傳回`true`。</span><span class="sxs-lookup"><span data-stu-id="12ebc-323">A subsequent attempt to initialize the <xref:System.Lazy%601> might succeed, and after successful initialization the <xref:System.Lazy%601.IsValueCreated%2A> property returns `true`.</span></span> <span data-ttu-id="12ebc-324">如果<xref:System.Lazy%601>初始化函式以建立執行個體 (所指定`valueFactory`參數<xref:System.Lazy%601>建構函式)，則快取例外狀況由執行緒安全模式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-324">If the <xref:System.Lazy%601> instance was created with an initialization function (specified by the `valueFactory` parameter of the <xref:System.Lazy%601> constructor), then exception caching is controlled by the thread safety mode.</span></span>  
+  
+-   <span data-ttu-id="12ebc-325">如果模式是<xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType>或<xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=nameWithType>，來初始化沒有第二個機會<xref:System.Lazy%601>執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-325">If the mode is <xref:System.Threading.LazyThreadSafetyMode.ExecutionAndPublication?displayProperty=nameWithType> or <xref:System.Threading.LazyThreadSafetyMode.None?displayProperty=nameWithType>, there is no second chance to initialize the <xref:System.Lazy%601> instance.</span></span> <span data-ttu-id="12ebc-326">如果發生例外狀況，就會發生的初始化函式中未處理，該例外狀況是快取及重新擲回的後續存取<xref:System.Lazy%601.Value%2A?displayProperty=nameWithType>屬性。</span><span class="sxs-lookup"><span data-stu-id="12ebc-326">If an exception occurs and is unhandled in the initialization function, that exception is cached and rethrown on subsequent accesses of the <xref:System.Lazy%601.Value%2A?displayProperty=nameWithType> property.</span></span> <span data-ttu-id="12ebc-327">如果擲回例外狀況，因此在這種情況下，任何值則會建立<xref:System.Lazy%601.IsValueCreated%2A>傳回`false`。</span><span class="sxs-lookup"><span data-stu-id="12ebc-327">No value is created if an exception is thrown, so in such cases <xref:System.Lazy%601.IsValueCreated%2A> returns `false`.</span></span>  
+  
+-   <span data-ttu-id="12ebc-328">如果模式是<xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>，成功地執行的初始化函式 （或預設建構函式） 的第一個執行緒建立的值<xref:System.Lazy%601>執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-328">If the mode is <xref:System.Threading.LazyThreadSafetyMode.PublicationOnly?displayProperty=nameWithType>, the first thread that succeeds in running the initialization function (or the default constructor) creates the value for the <xref:System.Lazy%601> instance.</span></span> <span data-ttu-id="12ebc-329">如果在一個執行緒上初始化函式擲回的例外狀況，其他的執行緒仍可嘗試初始化<xref:System.Lazy%601>執行個體。</span><span class="sxs-lookup"><span data-stu-id="12ebc-329">If the initialization function throws an exception on one thread, other threads can still try to initialize the <xref:System.Lazy%601> instance.</span></span> <span data-ttu-id="12ebc-330">值建立，直到<xref:System.Lazy%601.IsValueCreated%2A>屬性會傳回`false`。</span><span class="sxs-lookup"><span data-stu-id="12ebc-330">Until the value is created, the <xref:System.Lazy%601.IsValueCreated%2A> property returns `false`.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Threading.LazyThreadSafetyMode" />
+      </Docs>
+    </Member>
+    <Member MemberName="ToString">
+      <MemberSignature Language="C#" Value="public override string ToString ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance string ToString() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Lazy`1.ToString" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function ToString () As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::String ^ ToString();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="12ebc-331">建立並傳回這個執行個體之 <see cref="P:System.Lazy`1.Value" /> 屬性的字串表示。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-331">Creates and returns a string representation of the <see cref="P:System.Lazy`1.Value" /> property for this instance.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="12ebc-332">針對此執行個體在 <see cref="M:System.Object.ToString" /> 屬性上呼叫 <see cref="P:System.Lazy`1.Value" /> 方法的結果，前提是已經建立此值 (也就是說，如果 <see cref="P:System.Lazy`1.IsValueCreated" /> 屬性傳回 <see langword="true" />)。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-332">The result of calling the <see cref="M:System.Object.ToString" /> method on the <see cref="P:System.Lazy`1.Value" /> property for this instance, if the value has been created (that is, if the <see cref="P:System.Lazy`1.IsValueCreated" /> property returns <see langword="true" />).</span>
+          </span>
+          <span data-ttu-id="12ebc-333">否則為表示尚未建立值的字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-333">Otherwise, a string indicating that the value has not been created.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="12ebc-334">呼叫這個方法不會初始化。</span><span class="sxs-lookup"><span data-stu-id="12ebc-334">Calling this method does not cause initialization.</span></span>  
+  
+ <span data-ttu-id="12ebc-335"><xref:System.Lazy%601.Value%2A?displayProperty=nameWithType>屬性可以是`null`後延遲初始設定，如果該處理站方法，為指定`valueFactory`參數<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29>， <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>，或<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29>建構函式會傳回`null`。</span><span class="sxs-lookup"><span data-stu-id="12ebc-335">The <xref:System.Lazy%601.Value%2A?displayProperty=nameWithType> property can be `null` after lazy initialization if the factory method that was specified for the `valueFactory` parameter of the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29>, <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>, or <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29> constructor returns `null`.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NullReferenceException">
+          <span data-ttu-id="12ebc-336">
+            <see cref="P:System.Lazy`1.Value" /> 屬性為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-336">The <see cref="P:System.Lazy`1.Value" /> property is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Value">
+      <MemberSignature Language="C#" Value="public T Value { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance !T Value" />
+      <MemberSignature Language="DocId" Value="P:System.Lazy`1.Value" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Value As T" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property T Value { T get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>T</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="12ebc-337">取得目前 <see cref="T:System.Lazy`1" /> 執行個體的延遲初始化值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-337">Gets the lazily initialized value of the current <see cref="T:System.Lazy`1" /> instance.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="12ebc-338">目前 <see cref="T:System.Lazy`1" /> 執行個體的延遲初始化值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-338">The lazily initialized value of the current <see cref="T:System.Lazy`1" /> instance.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="12ebc-339">如果<xref:System.Lazy%601.IsValueCreated%2A?displayProperty=nameWithType>屬性是`false`、 存取<xref:System.Lazy%601.Value%2A>屬性會強制初始化。</span><span class="sxs-lookup"><span data-stu-id="12ebc-339">If the <xref:System.Lazy%601.IsValueCreated%2A?displayProperty=nameWithType> property is `false`, accessing the <xref:System.Lazy%601.Value%2A> property forces initialization.</span></span>  
+  
+ <span data-ttu-id="12ebc-340">除了所列的例外狀況<xref:System.Lazy%601.Value%2A>屬性可以擲回任何未處理的例外狀況擲回的 factory 方法，傳遞給`valueFactory`參數<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29>， <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>，或<xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29>建構函式。</span><span class="sxs-lookup"><span data-stu-id="12ebc-340">In addition to the exceptions that are listed, the <xref:System.Lazy%601.Value%2A> property can throw any unhandled exception that is thrown by the factory method that was passed to the `valueFactory` parameter of the <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%29>, <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Threading.LazyThreadSafetyMode%29>, or <xref:System.Lazy%601.%23ctor%28System.Func%7B%600%7D%2CSystem.Boolean%29> constructor.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.MemberAccessException">
+          <span data-ttu-id="12ebc-341">
+            <see cref="T:System.Lazy`1" /> 執行個體已初始化為使用延遲初始化型別的預設建構函式，而且存取建構函式的使用權限已遺失。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-341">The <see cref="T:System.Lazy`1" /> instance is initialized to use the default constructor of the type that is being lazily initialized, and permissions to access the constructor are missing.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.MissingMemberException">
+          <span data-ttu-id="12ebc-342">
+            <see cref="T:System.Lazy`1" /> 執行個體已初始化為使用延遲初始化型別的預設建構函式，而且該型別沒有公用無參數的建構函式。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-342">The <see cref="T:System.Lazy`1" /> instance is initialized to use the default constructor of the type that is being lazily initialized, and that type does not have a public, parameterless constructor.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="12ebc-343">初始設定函式嘗試存取這個執行個體的 <see cref="P:System.Lazy`1.Value" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="12ebc-343">The initialization function tries to access <see cref="P:System.Lazy`1.Value" /> on this instance.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
