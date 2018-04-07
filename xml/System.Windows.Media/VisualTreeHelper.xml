@@ -1,0 +1,1373 @@
+<Type Name="VisualTreeHelper" FullName="System.Windows.Media.VisualTreeHelper">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="8e915853b0ae47964f34415a9dd0c35719396302" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public static class VisualTreeHelper" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit VisualTreeHelper extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Windows.Media.VisualTreeHelper" />
+  <TypeSignature Language="VB.NET" Value="Public Class VisualTreeHelper" />
+  <TypeSignature Language="C++ CLI" Value="public ref class VisualTreeHelper abstract sealed" />
+  <AssemblyInfo>
+    <AssemblyName>PresentationCore</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="d3fa9-101">提供公用程式方法，執行以視覺化樹狀呈現節點的一般工作。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="d3fa9-101">Provides utility methods that perform common tasks involving nodes in a visual tree.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-102">視覺化樹狀結構中的節點可以是<xref:System.Windows.Media.Visual>或<xref:System.Windows.Media.Media3D.Visual3D>物件。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-102">Nodes in the visual tree can be either <xref:System.Windows.Media.Visual> or <xref:System.Windows.Media.Media3D.Visual3D> objects.</span></span> <span data-ttu-id="d3fa9-103">視覺物件的類型所特有的方法的型別為其中<xref:System.Windows.Media.Visual>或<xref:System.Windows.Media.Media3D.Visual3D>。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-103">Methods that are specific to a type of visual object are typed as either <xref:System.Windows.Media.Visual> or <xref:System.Windows.Media.Media3D.Visual3D>.</span></span> <span data-ttu-id="d3fa9-104">不過中的某些方法<xref:System.Windows.Media.VisualTreeHelper>類別可以接受<xref:System.Windows.DependencyObject>值，表示其中一個視覺物件的類型。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-104">However, some methods in the <xref:System.Windows.Media.VisualTreeHelper> class can accept a <xref:System.Windows.DependencyObject> value that represents either type of visual object.</span></span>  
+  
+ [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)]<span data-ttu-id="d3fa9-105"> 支援以程式設計方式存取物件的數個不同的樹狀目錄結構。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-105"> supports programmatic access to several different tree structures of objects.</span></span> <span data-ttu-id="d3fa9-106">這主要被公開做為視覺化樹狀結構，以及邏輯樹狀結構。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-106">Primarily, this is exposed as a visual tree and a logical tree.</span></span> <span data-ttu-id="d3fa9-107">在某些情況下，邏輯樹狀結構是中的項目更實用的方式表示[!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)]實作應用程式，但在概念上之邏輯樹狀結構層級超過<xref:System.Windows.Media.Visual>類別。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-107">In some cases, the logical tree is a more useful representation of the elements in a [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] application, but conceptually the logical tree is implemented at a level beyond the <xref:System.Windows.Media.Visual> class.</span></span> <span data-ttu-id="d3fa9-108">不同的視覺化樹狀結構中，於邏輯樹狀結構可以代表非視覺化的資料物件，例如<xref:System.Windows.Documents.ListItem>。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-108">Unlike the visual tree, the logical tree can represent nonvisual data objects, such as <xref:System.Windows.Documents.ListItem>.</span></span> <span data-ttu-id="d3fa9-109">如需有關邏輯樹狀結構的詳細資訊，請參閱 [WPF 中的樹狀結構](~/docs/framework/wpf/advanced/trees-in-wpf.md)。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-109">For more information on the logical tree, see [Trees in WPF](~/docs/framework/wpf/advanced/trees-in-wpf.md).</span></span> <span data-ttu-id="d3fa9-110">邏輯樹狀結構也支援類似的公用程式方法類別<xref:System.Windows.LogicalTreeHelper>。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-110">The logical tree also is supported by a similar utility method class, <xref:System.Windows.LogicalTreeHelper>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="d3fa9-111">下列範例示範如何列舉視覺物件的所有子系，如果您對將視覺物件階層的所有轉譯資訊序列化感興趣，這也會是您想要使用的技術。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-111">The following example shows how to enumerate all the descendants of a visual object, which is a technique you might want to use if you were interested in serializing all the rendering information of a visual object hierarchy.</span></span>  
+  
+ [!code-csharp[VisualsOverview#101](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualsOverview/CSharp/Window1.xaml.cs#101)]
+ [!code-vb[VisualsOverview#101](~/samples/snippets/visualbasic/VS_Snippets_Wpf/VisualsOverview/visualbasic/window1.xaml.vb#101)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="GetBitmapEffect">
+      <MemberSignature Language="C#" Value="public static System.Windows.Media.Effects.BitmapEffect GetBitmapEffect (System.Windows.Media.Visual reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Windows.Media.Effects.BitmapEffect GetBitmapEffect(class System.Windows.Media.Visual reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetBitmapEffect(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetBitmapEffect (reference As Visual) As BitmapEffect" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Media::Effects::BitmapEffect ^ GetBitmapEffect(System::Windows::Media::Visual ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Effects.BitmapEffect</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-112">包含點陣圖效果的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-112">The <see cref="T:System.Windows.Media.Visual" /> that contains the bitmap effect.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-113">傳回指定之 <see cref="T:System.Windows.Media.Effects.BitmapEffect" /> 的 <see cref="T:System.Windows.Media.Visual" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-113">Returns the <see cref="T:System.Windows.Media.Effects.BitmapEffect" /> value for the specified <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-114">這個 <see cref="T:System.Windows.Media.Effects.BitmapEffect" /> 的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-114">The <see cref="T:System.Windows.Media.Effects.BitmapEffect" /> for this <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetBitmapEffectInput">
+      <MemberSignature Language="C#" Value="public static System.Windows.Media.Effects.BitmapEffectInput GetBitmapEffectInput (System.Windows.Media.Visual reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Windows.Media.Effects.BitmapEffectInput GetBitmapEffectInput(class System.Windows.Media.Visual reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetBitmapEffectInput(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetBitmapEffectInput (reference As Visual) As BitmapEffectInput" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Media::Effects::BitmapEffectInput ^ GetBitmapEffectInput(System::Windows::Media::Visual ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Effects.BitmapEffectInput</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-115">包含點陣圖效果輸入值的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-115">The <see cref="T:System.Windows.Media.Visual" /> that contains the bitmap effect input value.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-116">傳回指定之 <see cref="T:System.Windows.Media.Effects.BitmapEffectInput" /> 的 <see cref="T:System.Windows.Media.Visual" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-116">Returns the <see cref="T:System.Windows.Media.Effects.BitmapEffectInput" /> value for the specified <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-117">這個 <see cref="T:System.Windows.Media.Effects.BitmapEffectInput" /> 的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-117">The <see cref="T:System.Windows.Media.Effects.BitmapEffectInput" /> for this <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetCacheMode">
+      <MemberSignature Language="C#" Value="public static System.Windows.Media.CacheMode GetCacheMode (System.Windows.Media.Visual reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Windows.Media.CacheMode GetCacheMode(class System.Windows.Media.Visual reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetCacheMode(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetCacheMode (reference As Visual) As CacheMode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Media::CacheMode ^ GetCacheMode(System::Windows::Media::Visual ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.CacheMode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-118">要為其取得 <see cref="T:System.Windows.Media.Visual" /> 的 <see cref="T:System.Windows.Media.CacheMode" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-118">The <see cref="T:System.Windows.Media.Visual" /> to get the <see cref="T:System.Windows.Media.CacheMode" /> for.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-119">擷取指定之 <see cref="T:System.Windows.Media.Visual" /> 的快取表示。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-119">Retrieves the cached representation of the specified <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-120">
+            <paramref name="reference" /> 的 <see cref="T:System.Windows.Media.CacheMode" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-120">The <see cref="T:System.Windows.Media.CacheMode" /> for <paramref name="reference" />.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <altmember cref="T:System.Windows.Media.BitmapCache" />
+        <altmember cref="T:System.Windows.Media.BitmapCacheBrush" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetChild">
+      <MemberSignature Language="C#" Value="public static System.Windows.DependencyObject GetChild (System.Windows.DependencyObject reference, int childIndex);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Windows.DependencyObject GetChild(class System.Windows.DependencyObject reference, int32 childIndex) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetChild(System.Windows.DependencyObject,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetChild (reference As DependencyObject, childIndex As Integer) As DependencyObject" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::DependencyObject ^ GetChild(System::Windows::DependencyObject ^ reference, int childIndex);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.DependencyObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.DependencyObject" />
+        <Parameter Name="childIndex" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-121">父視覺物件，參考為 <see cref="T:System.Windows.DependencyObject" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-121">The parent visual, referenced as a <see cref="T:System.Windows.DependencyObject" />.</span>
+          </span>
+        </param>
+        <param name="childIndex">
+          <span data-ttu-id="d3fa9-122">索引，表示 <c>reference</c> 包含的子視覺物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-122">The index that represents the child visual that is contained by <c>reference</c>.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-123">從指定之父代內的指定的集合索引傳回子視覺物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-123">Returns the child visual object from the specified collection index within a specified parent.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-124">子視覺物件的索引值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-124">The index value of the child visual object.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-125">呼叫<xref:System.Windows.Media.VisualTreeHelper.GetChildrenCount%2A>方法來判斷父視覺子項目總數。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-125">Call the <xref:System.Windows.Media.VisualTreeHelper.GetChildrenCount%2A> method to determine the total number of child elements of a parent visual.</span></span>  
+  
+ <span data-ttu-id="d3fa9-126">值`reference`可以代表<xref:System.Windows.Media.Visual>或<xref:System.Windows.Media.Media3D.Visual3D>物件，這也是為什麼通用基底型別<xref:System.Windows.DependencyObject>用為參數型別。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-126">The value of `reference` can represent either a <xref:System.Windows.Media.Visual> or <xref:System.Windows.Media.Media3D.Visual3D> object, which is why the common base type <xref:System.Windows.DependencyObject> is used here as a parameter type.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="d3fa9-127">下列範例會示範如何列舉的視覺物件的所有下階。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-127">The following example shows how to enumerate all the descendants of a visual object.</span></span> <span data-ttu-id="d3fa9-128">這是如果您想要序列化的視覺物件階層的所有呈現資訊或執行分析或替代的轉譯，您可能會使用一種技術。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-128">This is a technique you might use if you are interested in serializing all the rendering information of a visual object hierarchy or are performing analysis or alternative rendering.</span></span>  
+  
+ [!code-csharp[VisualsOverview#101](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualsOverview/CSharp/Window1.xaml.cs#101)]
+ [!code-vb[VisualsOverview#101](~/samples/snippets/visualbasic/VS_Snippets_Wpf/VisualsOverview/visualbasic/window1.xaml.vb#101)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetChildrenCount">
+      <MemberSignature Language="C#" Value="public static int GetChildrenCount (System.Windows.DependencyObject reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig int32 GetChildrenCount(class System.Windows.DependencyObject reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetChildrenCount(System.Windows.DependencyObject)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetChildrenCount (reference As DependencyObject) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static int GetChildrenCount(System::Windows::DependencyObject ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.DependencyObject" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-129">父視覺物件，參考為 <see cref="T:System.Windows.DependencyObject" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-129">The parent visual that is referenced as a <see cref="T:System.Windows.DependencyObject" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-130">傳回指定的視覺物件包含的子系數目。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-130">Returns the number of children that the specified visual object contains.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-131">父視覺物件包含的子視覺物件數目。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-131">The number of child visuals that the parent visual contains.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-132">使用<xref:System.Windows.Media.VisualTreeHelper.GetChild%2A>方法來擷取指定的父視覺子系。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-132">Use the <xref:System.Windows.Media.VisualTreeHelper.GetChild%2A> method to retrieve a specified child of a parent visual.</span></span>  
+  
+ <span data-ttu-id="d3fa9-133">值`reference`可以代表<xref:System.Windows.Media.Visual>或<xref:System.Windows.Media.Media3D.Visual3D>物件，這也是為什麼通用基底型別<xref:System.Windows.DependencyObject>用為參數型別。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-133">The value of `reference` can represent either a <xref:System.Windows.Media.Visual> or <xref:System.Windows.Media.Media3D.Visual3D> object, which is why the common base type <xref:System.Windows.DependencyObject> is used here as a parameter type.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="d3fa9-134">下列範例會示範如何列舉的視覺物件的所有下階。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-134">The following example shows how to enumerate all the descendants of a visual object.</span></span> <span data-ttu-id="d3fa9-135">這是如果您想要序列化的視覺物件階層的所有呈現資訊或執行分析或替代的轉譯，您可能會使用一種技術。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-135">This is a technique you might use if you are interested in serializing all the rendering information of a visual object hierarchy or are performing analysis or alternative rendering.</span></span>  
+  
+ [!code-csharp[VisualsOverview#101](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualsOverview/CSharp/Window1.xaml.cs#101)]
+ [!code-vb[VisualsOverview#101](~/samples/snippets/visualbasic/VS_Snippets_Wpf/VisualsOverview/visualbasic/window1.xaml.vb#101)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetClip">
+      <MemberSignature Language="C#" Value="public static System.Windows.Media.Geometry GetClip (System.Windows.Media.Visual reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Windows.Media.Geometry GetClip(class System.Windows.Media.Visual reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetClip(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetClip (reference As Visual) As Geometry" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Media::Geometry ^ GetClip(System::Windows::Media::Visual ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Geometry</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-136">要傳回其裁剪區域值的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-136">The <see cref="T:System.Windows.Media.Visual" /> whose clip region value is returned.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-137">傳回指定之 <see cref="T:System.Windows.Media.Visual" /> 的裁剪區域做為 <see cref="T:System.Windows.Media.Geometry" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-137">Return the clip region of the specified <see cref="T:System.Windows.Media.Visual" /> as a <see cref="T:System.Windows.Media.Geometry" /> value.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-138">
+            <see cref="T:System.Windows.Media.Visual" /> 的裁剪區域值，以 <see cref="T:System.Windows.Media.Geometry" /> 型別傳回。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-138">The clip region value of the <see cref="T:System.Windows.Media.Visual" /> returned as a <see cref="T:System.Windows.Media.Geometry" /> type.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <altmember cref="P:System.Windows.Media.ContainerVisual.Clip" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetContentBounds">
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="d3fa9-139">傳回 <see cref="T:System.Windows.Media.Visual" /> 的快取周框方塊矩形。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-139">Returns the cached bounding box rectangle for the <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetContentBounds">
+      <MemberSignature Language="C#" Value="public static System.Windows.Media.Media3D.Rect3D GetContentBounds (System.Windows.Media.Media3D.Visual3D reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig valuetype System.Windows.Media.Media3D.Rect3D GetContentBounds(class System.Windows.Media.Media3D.Visual3D reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetContentBounds(System.Windows.Media.Media3D.Visual3D)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetContentBounds (reference As Visual3D) As Rect3D" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Media::Media3D::Rect3D GetContentBounds(System::Windows::Media::Media3D::Visual3D ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Media3D.Rect3D</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Media3D.Visual3D" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-140">要計算其周框方塊值的 3D 視覺物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-140">The 3D visual whose bounding box value is computed.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-141">傳回指定之 <see cref="T:System.Windows.Media.Media3D.Visual3D" /> 的快取周框方塊矩形。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-141">Returns the cached bounding box rectangle for the specified <see cref="T:System.Windows.Media.Media3D.Visual3D" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-142">
+            <see cref="T:System.Windows.Media.Media3D.Visual3D" /> 的周框方塊 3D 矩形。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-142">The bounding box 3D rectangle for the <see cref="T:System.Windows.Media.Media3D.Visual3D" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-143">使用<xref:System.Windows.Media.VisualTreeHelper.GetDescendantBounds%2A>方法以傳回聯集的週框方塊的 3D 的 visual 物件，其中包含的所有下階的所有內容<xref:System.Windows.Media.Media3D.Visual3D>本身。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-143">Use the <xref:System.Windows.Media.VisualTreeHelper.GetDescendantBounds%2A> method to return the union of all the content bounding boxes for all the descendants of a 3D visual object, which includes the <xref:System.Windows.Media.Media3D.Visual3D> itself.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Media.VisualTreeHelper.GetContentBounds(System.Windows.Media.Visual)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetContentBounds">
+      <MemberSignature Language="C#" Value="public static System.Windows.Rect GetContentBounds (System.Windows.Media.Visual reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig valuetype System.Windows.Rect GetContentBounds(class System.Windows.Media.Visual reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetContentBounds(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetContentBounds (reference As Visual) As Rect" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Rect GetContentBounds(System::Windows::Media::Visual ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Rect</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-144">要計算其周框方塊值的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-144">The <see cref="T:System.Windows.Media.Visual" /> whose bounding box value is computed.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-145">傳回指定之 <see cref="T:System.Windows.Media.Visual" /> 的快取周框方塊矩形。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-145">Returns the cached bounding box rectangle for the specified <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-146">
+            <see cref="T:System.Windows.Media.Visual" /> 的周框方塊矩形。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-146">The bounding box rectangle for the <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-147">呼叫<xref:System.Windows.Media.VisualTreeHelper.GetDescendantBounds%2A>方法以傳回聯集的週框方塊的 visual 物件，其中包含的所有下階的所有內容<xref:System.Windows.Media.Visual>本身。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-147">Call the <xref:System.Windows.Media.VisualTreeHelper.GetDescendantBounds%2A> method to return the union of all the content bounding boxes for all the descendants of a visual object, which includes the <xref:System.Windows.Media.Visual> itself.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="d3fa9-148">下列範例示範如何擷取週框矩形<xref:System.Windows.Media.Visual>物件。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-148">The following example shows how to retrieve the bounding rectangle of a <xref:System.Windows.Media.Visual> object.</span></span>  
+  
+ [!code-csharp[VisualsOverview#102](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualsOverview/CSharp/Window1.xaml.cs#102)]
+ [!code-vb[VisualsOverview#102](~/samples/snippets/visualbasic/VS_Snippets_Wpf/VisualsOverview/visualbasic/window1.xaml.vb#102)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Media.VisualTreeHelper.GetContentBounds(System.Windows.Media.Media3D.Visual3D)" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetDescendantBounds">
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="d3fa9-149">傳回視覺物件之所有下階的所有內容週框方塊聯集，這個聯集包括 <see cref="T:System.Windows.Media.Visual" /> 的內容週框方塊。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-149">Returns the union of all the content bounding boxes for all the descendants of the visual object, which includes the content bounding box of the <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetDescendantBounds">
+      <MemberSignature Language="C#" Value="public static System.Windows.Media.Media3D.Rect3D GetDescendantBounds (System.Windows.Media.Media3D.Visual3D reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig valuetype System.Windows.Media.Media3D.Rect3D GetDescendantBounds(class System.Windows.Media.Media3D.Visual3D reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetDescendantBounds(System.Windows.Media.Media3D.Visual3D)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetDescendantBounds (reference As Visual3D) As Rect3D" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Media::Media3D::Rect3D GetDescendantBounds(System::Windows::Media::Media3D::Visual3D ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Media3D.Rect3D</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Media3D.Visual3D" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-150">要計算其所有子系之周框方塊值的 3D 視覺物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-150">The 3D visual whose bounding box value for all descendants is computed.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-151">傳回指定之 <see cref="T:System.Windows.Media.Media3D.Visual3D" /> 的所有子系的所有內容周框方塊聯集，包括 <see cref="T:System.Windows.Media.Media3D.Visual3D" /> 的內容周框方塊。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-151">Returns the union of all the content bounding boxes for all the descendants of the specified <see cref="T:System.Windows.Media.Media3D.Visual3D" />, which includes the content bounding box of the <see cref="T:System.Windows.Media.Media3D.Visual3D" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-152">傳回 3D 視覺物件的周框方塊 3D 矩形。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-152">Returns the bounding box 3D rectangle for the 3D visual.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-153">呼叫<xref:System.Windows.Media.VisualTreeHelper.GetContentBounds%2A>方法以傳回快取的週框方塊矩形 3D 視覺物件。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-153">Call the <xref:System.Windows.Media.VisualTreeHelper.GetContentBounds%2A> method to return the cached bounding box rectangle for a 3D visual object.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetDescendantBounds">
+      <MemberSignature Language="C#" Value="public static System.Windows.Rect GetDescendantBounds (System.Windows.Media.Visual reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig valuetype System.Windows.Rect GetDescendantBounds(class System.Windows.Media.Visual reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetDescendantBounds(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetDescendantBounds (reference As Visual) As Rect" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Rect GetDescendantBounds(System::Windows::Media::Visual ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Rect</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-154">要計算其所有子系之周框方塊值的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-154">The <see cref="T:System.Windows.Media.Visual" /> whose bounding box value for all descendants is computed.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-155">傳回 <see cref="T:System.Windows.Media.Visual" /> 的所有子系的所有內容周框方塊聯集，包括 <see cref="T:System.Windows.Media.Visual" /> 的內容周框方塊。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-155">Returns the union of all the content bounding boxes for all the descendants of the <see cref="T:System.Windows.Media.Visual" />, which includes the content bounding box of the <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-156">指定之 <see cref="T:System.Windows.Media.Visual" /> 的周框方塊矩形。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-156">The bounding box rectangle for the specified <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-157">呼叫<xref:System.Windows.Media.VisualTreeHelper.GetContentBounds%2A>方法傳回的快取的週框方塊矩形<xref:System.Windows.Media.Visual>。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-157">Call the <xref:System.Windows.Media.VisualTreeHelper.GetContentBounds%2A> method to return the cached bounding box rectangle for a <xref:System.Windows.Media.Visual>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="d3fa9-158">下列範例示範如何擷取週框的下階的聯集<xref:System.Windows.Media.Visual>。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-158">The following example shows how to retrieve the union of bounding rectangles for the descendants of a <xref:System.Windows.Media.Visual>.</span></span>  
+  
+ [!code-csharp[VisualsOverview#102](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualsOverview/CSharp/Window1.xaml.cs#102)]
+ [!code-vb[VisualsOverview#102](~/samples/snippets/visualbasic/VS_Snippets_Wpf/VisualsOverview/visualbasic/window1.xaml.vb#102)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetDpi">
+      <MemberSignature Language="C#" Value="public static System.Windows.DpiScale GetDpi (System.Windows.Media.Visual visual);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig valuetype System.Windows.DpiScale GetDpi(class System.Windows.Media.Visual visual) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetDpi(System.Windows.Media.Visual)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::DpiScale GetDpi(System::Windows::Media::Visual ^ visual);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.DpiScale</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="visual" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="visual">
+          <span data-ttu-id="d3fa9-159">Visual 目標物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-159">The Visual target object.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-160">取得測量及轉譯此 Visual 的 DPI 資訊。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-160">Gets the DPI information at which this Visual is measured and rendered.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-161">DPIScale 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-161">A DPIScale value.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetDrawing">
+      <MemberSignature Language="C#" Value="public static System.Windows.Media.DrawingGroup GetDrawing (System.Windows.Media.Visual reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Windows.Media.DrawingGroup GetDrawing(class System.Windows.Media.Visual reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetDrawing(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetDrawing (reference As Visual) As DrawingGroup" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Media::DrawingGroup ^ GetDrawing(System::Windows::Media::Visual ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.DrawingGroup</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-162">要傳回其繪製內容的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-162">The <see cref="T:System.Windows.Media.Visual" /> whose drawing content is returned.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-163">傳回指定之 <see cref="T:System.Windows.Media.Visual" /> 的繪製內容。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-163">Returns the drawing content of the specified <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-164">
+            <see cref="T:System.Windows.Media.Visual" /> 的繪製內容，以 <see cref="T:System.Windows.Media.DrawingGroup" /> 型別傳回。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-164">The drawing content of the <see cref="T:System.Windows.Media.Visual" /> returned as a <see cref="T:System.Windows.Media.DrawingGroup" /> type.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="d3fa9-165">下列範例示範如何擷取<xref:System.Windows.Media.DrawingGroup>從使用的 visual 物件<xref:System.Windows.Media.VisualTreeHelper.GetDrawing%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-165">The following example shows how to retrieve the <xref:System.Windows.Media.DrawingGroup> from a visual object by using the <xref:System.Windows.Media.VisualTreeHelper.GetDrawing%2A> method.</span></span> <span data-ttu-id="d3fa9-166">接著執行點擊的測試的每個繪圖幾何上<xref:System.Windows.Media.DrawingGroup>來判斷點擊的幾何。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-166">A hit test is then performed on the geometry of each drawing in the <xref:System.Windows.Media.DrawingGroup> to determine which geometry was hit.</span></span>  
+  
+ [!code-csharp[VisualsOverview#VisualsOverviewSnippet4](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualsOverview/CSharp/Window1.xaml.cs#visualsoverviewsnippet4)]
+ [!code-vb[VisualsOverview#VisualsOverviewSnippet4](~/samples/snippets/visualbasic/VS_Snippets_Wpf/VisualsOverview/visualbasic/window1.xaml.vb#visualsoverviewsnippet4)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetEdgeMode">
+      <MemberSignature Language="C#" Value="public static System.Windows.Media.EdgeMode GetEdgeMode (System.Windows.Media.Visual reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig valuetype System.Windows.Media.EdgeMode GetEdgeMode(class System.Windows.Media.Visual reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetEdgeMode(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetEdgeMode (reference As Visual) As EdgeMode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Media::EdgeMode GetEdgeMode(System::Windows::Media::Visual ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.EdgeMode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-167">要傳回其邊緣模式值的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-167">The <see cref="T:System.Windows.Media.Visual" /> whose edge mode value is returned.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-168">傳回指定之 <see cref="T:System.Windows.Media.Visual" /> 的邊緣模式做為 <see cref="T:System.Windows.Media.EdgeMode" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-168">Returns the edge mode of the specified <see cref="T:System.Windows.Media.Visual" /> as an <see cref="T:System.Windows.Media.EdgeMode" /> value.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-169">
+            <see cref="T:System.Windows.Media.EdgeMode" /> 的 <see cref="T:System.Windows.Media.Visual" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-169">The <see cref="T:System.Windows.Media.EdgeMode" /> value of the <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-170">邊緣模式值會決定如何呈現非文字基本的邊緣。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-170">The edge mode value determines how the edges of non-text primitives are rendered.</span></span>  
+  
+|<span data-ttu-id="d3fa9-171">邊緣模式值</span><span class="sxs-lookup"><span data-stu-id="d3fa9-171">Edge mode value</span></span>|<span data-ttu-id="d3fa9-172">描述</span><span class="sxs-lookup"><span data-stu-id="d3fa9-172">Description</span></span>|  
+|---------------------|-----------------|  
+|<xref:System.Windows.Media.EdgeMode.Aliased>|<span data-ttu-id="d3fa9-173">呈現為鋸齒邊緣的非文字基本的邊緣。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-173">Render edges of non-text primitives as aliased edges.</span></span>|  
+|<xref:System.Windows.Media.EdgeMode.Unspecified>|<span data-ttu-id="d3fa9-174">未指定邊緣模式。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-174">No edge mode is specified.</span></span> <span data-ttu-id="d3fa9-175">請勿變更套用至非文字基本的目前邊緣模式。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-175">Do not change the current edge mode that is applied to non-text primitives.</span></span>|  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetEffect">
+      <MemberSignature Language="C#" Value="public static System.Windows.Media.Effects.Effect GetEffect (System.Windows.Media.Visual reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Windows.Media.Effects.Effect GetEffect(class System.Windows.Media.Visual reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetEffect(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetEffect (reference As Visual) As Effect" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Media::Effects::Effect ^ GetEffect(System::Windows::Media::Visual ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Effects.Effect</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-176">要取得其點陣圖效果的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-176">The <see cref="T:System.Windows.Media.Visual" /> to get the bitmap effect for.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-177">取得指定之 <see cref="T:System.Windows.Media.Visual" /> 的點陣圖效果。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-177">Gets the bitmap effect for the specified <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-178">套用至 <paramref name="reference" /> 的 <see cref="T:System.Windows.Media.Effects.Effect" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-178">The <see cref="T:System.Windows.Media.Effects.Effect" /> applied to <paramref name="reference" />.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.ShaderEffect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetOffset">
+      <MemberSignature Language="C#" Value="public static System.Windows.Vector GetOffset (System.Windows.Media.Visual reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig valuetype System.Windows.Vector GetOffset(class System.Windows.Media.Visual reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetOffset(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetOffset (reference As Visual) As Vector" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Vector GetOffset(System::Windows::Media::Visual ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Vector</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-179">要傳回其位移 (Offset) 的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-179">The <see cref="T:System.Windows.Media.Visual" /> whose offset is returned.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-180">傳回 <see cref="T:System.Windows.Media.Visual" /> 的位移。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-180">Returns the offset of the <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-181">
+            <see cref="T:System.Windows.Vector" />，表示 <see cref="T:System.Windows.Media.Visual" /> 的位移值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-181">A <see cref="T:System.Windows.Vector" /> that represents the offset value of the <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-182">傳回的位移的值是相對於父系的<xref:System.Windows.Media.Visual>。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-182">The returned offset value is relative to the parent of the <xref:System.Windows.Media.Visual>.</span></span> <span data-ttu-id="d3fa9-183">如果您想要傳回的位移的值不是相對於父系的<xref:System.Windows.Media.Visual>，使用<xref:System.Windows.Media.Visual.TransformToAncestor%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-183">If you want to return an offset value that is not relative to the parent of a <xref:System.Windows.Media.Visual>, use the <xref:System.Windows.Media.Visual.TransformToAncestor%2A> method.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="d3fa9-184">下列標記範例所示<xref:System.Windows.Controls.TextBlock>定義與<xref:System.Windows.FrameworkElement.Margin%2A>4 的值。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-184">The following markup example shows a <xref:System.Windows.Controls.TextBlock> that is defined with <xref:System.Windows.FrameworkElement.Margin%2A> value of 4.</span></span>  
+  
+ [!code-xaml[VisualSnippets#VisualSnippet1](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualSnippets/CSharp/Window1.xaml#visualsnippet1)]  
+  
+ <span data-ttu-id="d3fa9-185">下列程式碼範例示範如何使用<xref:System.Windows.Media.VisualTreeHelper.GetOffset%2A>方法來擷取的位移<xref:System.Windows.Controls.TextBlock>。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-185">The following code example shows how to use the <xref:System.Windows.Media.VisualTreeHelper.GetOffset%2A> method to retrieve the offset of the <xref:System.Windows.Controls.TextBlock>.</span></span> <span data-ttu-id="d3fa9-186">位移的值包含在傳回<xref:System.Windows.Vector>值。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-186">The offset values are contained within the returned <xref:System.Windows.Vector> value.</span></span>  
+  
+ [!code-csharp[VisualSnippets#VisualSnippet2](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualSnippets/CSharp/Window1.xaml.cs#visualsnippet2)]
+ [!code-vb[VisualSnippets#VisualSnippet2](~/samples/snippets/visualbasic/VS_Snippets_Wpf/VisualSnippets/visualbasic/window1.xaml.vb#visualsnippet2)]  
+  
+ <span data-ttu-id="d3fa9-187">位移會考量<xref:System.Windows.FrameworkElement.Margin%2A>值。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-187">The offset takes into account the <xref:System.Windows.FrameworkElement.Margin%2A> value.</span></span> <span data-ttu-id="d3fa9-188">在此情況下，<xref:System.Windows.Vector.X%2A>為 4，和<xref:System.Windows.Vector.Y%2A>為 4。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-188">In this case, <xref:System.Windows.Vector.X%2A> is 4, and <xref:System.Windows.Vector.Y%2A> is 4.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetOpacity">
+      <MemberSignature Language="C#" Value="public static double GetOpacity (System.Windows.Media.Visual reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig float64 GetOpacity(class System.Windows.Media.Visual reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetOpacity(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetOpacity (reference As Visual) As Double" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static double GetOpacity(System::Windows::Media::Visual ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-189">要傳回其不透明度值的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-189">The <see cref="T:System.Windows.Media.Visual" /> whose opacity value is returned.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-190">傳回 <see cref="T:System.Windows.Media.Visual" /> 的不透明度。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-190">Returns the opacity of the <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-191">型別 <see cref="T:System.Double" /> 的值，表示 <see cref="T:System.Windows.Media.Visual" /> 的不透明度值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-191">A value of type <see cref="T:System.Double" /> that represents the opacity value of the <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-192">不透明度的值被以介於 0 和 1 之間的值。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-192">The value of the opacity is expressed as a value between 0 and 1.</span></span> <span data-ttu-id="d3fa9-193">值為 0 表示的項目是完全透明，而值為 1 表示項目，則完全不透明。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-193">A value of 0 indicates that the element is completely transparent, while a value of 1 indicates that the element is completely opaque.</span></span> <span data-ttu-id="d3fa9-194">值為 0.5 表示的項目是 50%不透明。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-194">A value of 0.5 indicates that the element is 50 percent opaque.</span></span> <span data-ttu-id="d3fa9-195">值小於 0 會被視為 0，大於 1 的值會被視為 1。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-195">Values less than 0 are treated as 0, and values greater than 1 are treated as 1.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetOpacityMask">
+      <MemberSignature Language="C#" Value="public static System.Windows.Media.Brush GetOpacityMask (System.Windows.Media.Visual reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Windows.Media.Brush GetOpacityMask(class System.Windows.Media.Visual reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetOpacityMask(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetOpacityMask (reference As Visual) As Brush" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Media::Brush ^ GetOpacityMask(System::Windows::Media::Visual ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Brush</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-196">要傳回其不透明遮罩值的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-196">The <see cref="T:System.Windows.Media.Visual" /> whose opacity mask value is returned.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-197">傳回 <see cref="T:System.Windows.Media.Brush" /> 值，這個值表示 <see cref="T:System.Windows.Media.Visual" /> 的不透明遮罩。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-197">Returns a <see cref="T:System.Windows.Media.Brush" /> value that represents the opacity mask of the <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-198">型別 <see cref="T:System.Windows.Media.Brush" /> 的值，表示 <see cref="T:System.Windows.Media.Visual" /> 的不透明遮罩值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-198">A value of type <see cref="T:System.Windows.Media.Brush" /> that represents the opacity mask value of the <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-199">不透明度遮罩是<xref:System.Windows.Media.Brush>套用至任何 alpha 色板遮罩所呈現的內容<xref:System.Windows.Media.Visual>。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-199">The opacity mask is a <xref:System.Windows.Media.Brush> that is applied to any alpha-channel masking for the rendered content of this <xref:System.Windows.Media.Visual>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetParent">
+      <MemberSignature Language="C#" Value="public static System.Windows.DependencyObject GetParent (System.Windows.DependencyObject reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Windows.DependencyObject GetParent(class System.Windows.DependencyObject reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetParent(System.Windows.DependencyObject)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetParent (reference As DependencyObject) As DependencyObject" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::DependencyObject ^ GetParent(System::Windows::DependencyObject ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.DependencyObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.DependencyObject" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-200">傳回其父代的視覺物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-200">The visual whose parent is returned.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-201">傳回 <see cref="T:System.Windows.DependencyObject" /> 值，這個值表示視覺物件的父代。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-201">Returns a <see cref="T:System.Windows.DependencyObject" /> value that represents the parent of the visual object.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-202">視覺物件的父代。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-202">The parent of the visual.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-203">值`reference`可以代表<xref:System.Windows.Media.Visual>或<xref:System.Windows.Media.Media3D.Visual3D>物件。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-203">The value of `reference` can represent either a <xref:System.Windows.Media.Visual> or <xref:System.Windows.Media.Media3D.Visual3D> object.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTransform">
+      <MemberSignature Language="C#" Value="public static System.Windows.Media.Transform GetTransform (System.Windows.Media.Visual reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Windows.Media.Transform GetTransform(class System.Windows.Media.Visual reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetTransform(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetTransform (reference As Visual) As Transform" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Media::Transform ^ GetTransform(System::Windows::Media::Visual ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Transform</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-204">要傳回其轉換值的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-204">The <see cref="T:System.Windows.Media.Visual" /> whose transform value is returned.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-205">傳回 <see cref="T:System.Windows.Media.Transform" /> 的 <see cref="T:System.Windows.Media.Visual" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-205">Returns a <see cref="T:System.Windows.Media.Transform" /> value for the <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-206">
+            <see cref="T:System.Windows.Media.Visual" /> 的轉換值，如果 <paramref name="reference" /> 沒有定義轉換則為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-206">The transform value of the <see cref="T:System.Windows.Media.Visual" />, or <see langword="null" /> if <paramref name="reference" /> does not have a transform defined.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-207">或者，您可以使用<xref:System.Windows.Media.Visual.TransformToAncestor%2A>方法來轉換值傳回的上階<xref:System.Windows.Media.Visual>。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-207">Alternatively, you can use the <xref:System.Windows.Media.Visual.TransformToAncestor%2A> method to return a transform value for the ancestor of a <xref:System.Windows.Media.Visual>.</span></span> <span data-ttu-id="d3fa9-208">這個方法一律會傳回有效的轉換。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-208">This method always returns a valid transform.</span></span> <span data-ttu-id="d3fa9-209">下列程式碼範例示範如何使用<xref:System.Windows.Media.Visual.TransformToAncestor%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-209">The following code example shows how to use <xref:System.Windows.Media.Visual.TransformToAncestor%2A> method.</span></span>  
+  
+ [!code-csharp[VisualSnippets#VisualSnippet3](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualSnippets/CSharp/Window1.xaml.cs#visualsnippet3)]
+ [!code-vb[VisualSnippets#VisualSnippet3](~/samples/snippets/visualbasic/VS_Snippets_Wpf/VisualSnippets/visualbasic/window1.xaml.vb#visualsnippet3)]  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="d3fa9-210">下列程式碼範例示範如何使用<xref:System.Windows.Media.VisualTreeHelper.GetTransform%2A>方法來擷取指定的視覺物件的轉換。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-210">The following code example shows how to use the <xref:System.Windows.Media.VisualTreeHelper.GetTransform%2A> method to retrieve the transform for the specified visual object.</span></span>  
+  
+ [!code-csharp[VisualSnippets#VisualSnippet6](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualSnippets/CSharp/Window1.xaml.cs#visualsnippet6)]
+ [!code-vb[VisualSnippets#VisualSnippet6](~/samples/snippets/visualbasic/VS_Snippets_Wpf/VisualSnippets/visualbasic/window1.xaml.vb#visualsnippet6)]  
+  
+ <span data-ttu-id="d3fa9-211">應該先測試您的程式碼`null`之前使用傳回的值。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-211">Your code should test for `null` before using the returned value.</span></span> <span data-ttu-id="d3fa9-212">若要傳回的位移傳回轉換，請使用<xref:System.Windows.Media.GeneralTransform.Transform%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-212">To return the offset of the returned transform, use the <xref:System.Windows.Media.GeneralTransform.Transform%2A> method.</span></span> <span data-ttu-id="d3fa9-213">位移的值是相對於父系的<xref:System.Windows.Media.Visual>。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-213">The offset value is relative to the parent of the <xref:System.Windows.Media.Visual>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetXSnappingGuidelines">
+      <MemberSignature Language="C#" Value="public static System.Windows.Media.DoubleCollection GetXSnappingGuidelines (System.Windows.Media.Visual reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Windows.Media.DoubleCollection GetXSnappingGuidelines(class System.Windows.Media.Visual reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetXSnappingGuidelines(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetXSnappingGuidelines (reference As Visual) As DoubleCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Media::DoubleCollection ^ GetXSnappingGuidelines(System::Windows::Media::Visual ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.DoubleCollection</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-214">要傳回其 X 座標導線集合的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-214">The <see cref="T:System.Windows.Media.Visual" /> whose X-coordinate guideline collection is returned.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-215">傳回 X 座標 (垂直) 導線集合。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-215">Returns an X-coordinate (vertical) guideline collection.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-216">
+            <see cref="T:System.Windows.Media.Visual" /> 的 X 座標導線集合。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-216">The X-coordinate guideline collection of the <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-217">像素貼齊是使裝置特定像素呈現物件邊緣內容版面配置固定的程序。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-217">Pixel snapping is the process in which content layout is fixed so that object edges are rendered on device-specific pixels.</span></span> <span data-ttu-id="d3fa9-218">[!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] 圖形系統會使用裝置獨立單位來啟用解析度和裝置獨立性。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-218">The [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] graphics system uses device-independent units to enable resolution and device independence.</span></span> <span data-ttu-id="d3fa9-219">每個裝置獨立像素都會依系統的 [!INCLUDE[TLA#tla_dpi](~/includes/tlasharptla-dpi-md.md)] 設定自動進行調整。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-219">Each device independent pixel automatically scales with the system's [!INCLUDE[TLA#tla_dpi](~/includes/tlasharptla-dpi-md.md)] setting.</span></span> <span data-ttu-id="d3fa9-220">這讓 [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] 應用程式針對不同的 [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)] 設定進行適當調整，並自動讓應用程式感知 [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)]。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-220">This provides [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] applications proper scaling for different [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)] settings and makes the application automatically [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)]-aware.</span></span>  
+  
+ <span data-ttu-id="d3fa9-221">不過，這[!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)]獨立性可以建立異常的邊緣轉譯，因為消除鋸齒。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-221">However, this [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)] independence can create irregular edge rendering due to anti-aliasing.</span></span> <span data-ttu-id="d3fa9-222">這些成品，通常被視為模糊或 「 軟式 」 的邊緣，就會發生的邊緣位置落在裝置像素，而不是裝置像素之間。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-222">These artifacts, commonly seen as blurry, or "soft" edges, can occur when the location of an edge falls in the middle of a device pixel rather than between device pixels.</span></span> <span data-ttu-id="d3fa9-223">若要解決此問題，[!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)]提供方法的 「 對齊 」 裝置像素，透過像素貼齊、 貼至視覺化樹狀結構中的物件邊緣消除柔和消除鋸齒所產生的邊界。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-223">To address this issue, [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] provides a way for object edges in a visual tree to "snap" to device pixels through pixel snapping, eliminating the soft edges produced by anti-aliasing.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Media.Visual.VisualXSnappingGuidelines" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetYSnappingGuidelines">
+      <MemberSignature Language="C#" Value="public static System.Windows.Media.DoubleCollection GetYSnappingGuidelines (System.Windows.Media.Visual reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Windows.Media.DoubleCollection GetYSnappingGuidelines(class System.Windows.Media.Visual reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.GetYSnappingGuidelines(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetYSnappingGuidelines (reference As Visual) As DoubleCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Media::DoubleCollection ^ GetYSnappingGuidelines(System::Windows::Media::Visual ^ reference);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.DoubleCollection</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-224">要傳回其 Y 座標導線集合的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-224">The <see cref="T:System.Windows.Media.Visual" /> whose Y-coordinate guideline collection is returned.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-225">傳回 Y 座標 (水平) 導線集合。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-225">Returns a Y-coordinate (horizontal) guideline collection.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-226">
+            <see cref="T:System.Windows.Media.Visual" /> 的 Y 座標導線集合。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-226">The Y-coordinate guideline collection of the <see cref="T:System.Windows.Media.Visual" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-227">像素貼齊是使裝置特定像素呈現物件邊緣內容版面配置固定的程序。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-227">Pixel snapping is the process in which content layout is fixed so that object edges are rendered on device-specific pixels.</span></span> <span data-ttu-id="d3fa9-228">[!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] 圖形系統會使用裝置獨立單位來啟用解析度和裝置獨立性。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-228">The [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] graphics system uses device-independent units to enable resolution and device independence.</span></span> <span data-ttu-id="d3fa9-229">每個裝置獨立像素都會依系統的 [!INCLUDE[TLA#tla_dpi](~/includes/tlasharptla-dpi-md.md)] 設定自動進行調整。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-229">Each device independent pixel automatically scales with the system's [!INCLUDE[TLA#tla_dpi](~/includes/tlasharptla-dpi-md.md)] setting.</span></span> <span data-ttu-id="d3fa9-230">這讓 [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] 應用程式針對不同的 [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)] 設定進行適當調整，並自動讓應用程式感知 [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)]。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-230">This provides [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] applications proper scaling for different [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)] settings and makes the application automatically [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)]-aware.</span></span>  
+  
+ <span data-ttu-id="d3fa9-231">不過，這[!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)]獨立性可以建立異常的邊緣轉譯，因為消除鋸齒。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-231">However, this [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)] independence can create irregular edge rendering due to anti-aliasing.</span></span> <span data-ttu-id="d3fa9-232">這些成品，通常被視為模糊或 「 軟式 」 的邊緣，就會發生的邊緣位置落在裝置像素，而不是裝置像素之間。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-232">These artifacts, commonly seen as blurry, or "soft" edges, can occur when the location of an edge falls in the middle of a device pixel rather than between device pixels.</span></span> <span data-ttu-id="d3fa9-233">若要解決此問題，[!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)]提供方法的 「 對齊 」 裝置像素，透過像素貼齊、 貼至視覺化樹狀結構中的物件邊緣消除柔和消除鋸齒所產生的邊界。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-233">To address this issue, [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] provides a way for object edges in a visual tree to "snap" to device pixels through pixel snapping, eliminating the soft edges produced by anti-aliasing.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Media.Visual.VisualYSnappingGuidelines" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="HitTest">
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="d3fa9-234">傳回點擊測試最上層的 <see cref="T:System.Windows.Media.Visual" /> 物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-234">Returns the topmost <see cref="T:System.Windows.Media.Visual" /> object of a hit test.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-235">多載這些方法會採用<xref:System.Windows.Media.HitTestResultCallback>和<xref:System.Windows.Media.HitTestFilterCallback>參數在點擊測試期間提供額外的功能：</span><span class="sxs-lookup"><span data-stu-id="d3fa9-235">The overloaded methods that take <xref:System.Windows.Media.HitTestResultCallback> and <xref:System.Windows.Media.HitTestFilterCallback> as parameters provide additional functionality during hit testing:</span></span>  
+  
+-   <span data-ttu-id="d3fa9-236">可讓您參與控制在點擊測試期間的視覺化樹狀目錄中周遊。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-236">Allow you to participate in controlling the visual tree traversal during hit testing.</span></span>  
+  
+-   <span data-ttu-id="d3fa9-237">可讓您擷取所有的點或幾何，不只是最上層的其中一個視覺效果。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-237">Allow you to retrieve all of the visuals under the point or geometry, not just the topmost one.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="HitTest">
+      <MemberSignature Language="C#" Value="public static System.Windows.Media.HitTestResult HitTest (System.Windows.Media.Visual reference, System.Windows.Point point);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Windows.Media.HitTestResult HitTest(class System.Windows.Media.Visual reference, valuetype System.Windows.Point point) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.HitTest(System.Windows.Media.Visual,System.Windows.Point)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Windows::Media::HitTestResult ^ HitTest(System::Windows::Media::Visual ^ reference, System::Windows::Point point);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.HitTestResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+        <Parameter Name="point" Type="System.Windows.Point" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-238">要進行點擊測試的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-238">The <see cref="T:System.Windows.Media.Visual" /> to hit test.</span>
+          </span>
+        </param>
+        <param name="point">
+          <span data-ttu-id="d3fa9-239">要進行點擊測試的點值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-239">The point value to hit test against.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-240">藉由指定 <see cref="T:System.Windows.Point" />，傳回點擊測試最上層的 <see cref="T:System.Windows.Media.Visual" /> 物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-240">Returns the topmost <see cref="T:System.Windows.Media.Visual" /> object of a hit test by specifying a <see cref="T:System.Windows.Point" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="d3fa9-241">
+            <see cref="T:System.Windows.Media.Visual" /> 的點擊測試結果，作為 <see cref="T:System.Windows.Media.HitTestResult" /> 類型傳回。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-241">The hit test result of the <see cref="T:System.Windows.Media.Visual" />, returned as a <see cref="T:System.Windows.Media.HitTestResult" /> type.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-242"><xref:System.Windows.Media.HitTestResult.VisualHit%2A>屬性的傳回值表示<xref:System.Windows.Media.Visual>已叫用的物件。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-242">The <xref:System.Windows.Media.HitTestResult.VisualHit%2A> property of the return value represents the <xref:System.Windows.Media.Visual> object that was hit.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="d3fa9-243">點擊測試傳回 2D 視覺化樹狀結構中啟動，可能會<xref:System.Windows.Media.Media3D.RayHitTestResult>，這就是 3D 點擊的測試結果物件。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-243">It is possible for a hit test that starts in a 2D visual tree to return <xref:System.Windows.Media.Media3D.RayHitTestResult>, which is a 3D hit test result object.</span></span> <span data-ttu-id="d3fa9-244">點擊測試 2D 的視覺化樹狀結構中的啟動順暢地延伸至任何已定義的 3D 視覺化樹狀結構。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-244">Hit testing that starts in a 2D visual tree seamlessly extends into any defined 3D visual tree.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="d3fa9-245">下列範例示範如何使用<xref:System.Windows.Media.VisualTreeHelper.HitTest%2A>方法要進行點擊測試中的物件<xref:System.Windows.Controls.Canvas>。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-245">The following example shows how to use the <xref:System.Windows.Media.VisualTreeHelper.HitTest%2A> method to hit test the objects within a <xref:System.Windows.Controls.Canvas>.</span></span>  
+  
+ [!code-csharp[HitTestingOverview#100](~/samples/snippets/csharp/VS_Snippets_Wpf/HitTestingOverview/CSharp/Window1.xaml.cs#100)]
+ [!code-vb[HitTestingOverview#100](~/samples/snippets/visualbasic/VS_Snippets_Wpf/HitTestingOverview/visualbasic/window1.xaml.vb#100)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HitTest">
+      <MemberSignature Language="C#" Value="public static void HitTest (System.Windows.Media.Media3D.Visual3D reference, System.Windows.Media.HitTestFilterCallback filterCallback, System.Windows.Media.HitTestResultCallback resultCallback, System.Windows.Media.Media3D.HitTestParameters3D hitTestParameters);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void HitTest(class System.Windows.Media.Media3D.Visual3D reference, class System.Windows.Media.HitTestFilterCallback filterCallback, class System.Windows.Media.HitTestResultCallback resultCallback, class System.Windows.Media.Media3D.HitTestParameters3D hitTestParameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.HitTest(System.Windows.Media.Media3D.Visual3D,System.Windows.Media.HitTestFilterCallback,System.Windows.Media.HitTestResultCallback,System.Windows.Media.Media3D.HitTestParameters3D)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Sub HitTest (reference As Visual3D, filterCallback As HitTestFilterCallback, resultCallback As HitTestResultCallback, hitTestParameters As HitTestParameters3D)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static void HitTest(System::Windows::Media::Media3D::Visual3D ^ reference, System::Windows::Media::HitTestFilterCallback ^ filterCallback, System::Windows::Media::HitTestResultCallback ^ resultCallback, System::Windows::Media::Media3D::HitTestParameters3D ^ hitTestParameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Media3D.Visual3D" />
+        <Parameter Name="filterCallback" Type="System.Windows.Media.HitTestFilterCallback" />
+        <Parameter Name="resultCallback" Type="System.Windows.Media.HitTestResultCallback" />
+        <Parameter Name="hitTestParameters" Type="System.Windows.Media.Media3D.HitTestParameters3D" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-246">要進行點擊測試的 <see cref="T:System.Windows.Media.Media3D.Visual3D" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-246">The <see cref="T:System.Windows.Media.Media3D.Visual3D" /> to hit test.</span>
+          </span>
+        </param>
+        <param name="filterCallback">
+          <span data-ttu-id="d3fa9-247">代表點擊測試篩選回呼值的方法。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-247">The method that represents the hit test filter callback value.</span>
+          </span>
+        </param>
+        <param name="resultCallback">
+          <span data-ttu-id="d3fa9-248">代表點擊測試結果回呼值的方法。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-248">The method that represents the hit test result callback value.</span>
+          </span>
+        </param>
+        <param name="hitTestParameters">
+          <span data-ttu-id="d3fa9-249">要進行點擊測試的 3D 參數值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-249">The 3D parameter value to hit test against.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-250">利用呼叫端定義的 <see cref="T:System.Windows.Media.HitTestFilterCallback" /> 和 <see cref="T:System.Windows.Media.HitTestResultCallback" /> 方法，在指定的 <see cref="T:System.Windows.Media.Media3D.Visual3D" /> 上起始點擊測試。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-250">Initiates a hit test on the specified <see cref="T:System.Windows.Media.Media3D.Visual3D" />, with caller-defined <see cref="T:System.Windows.Media.HitTestFilterCallback" /> and <see cref="T:System.Windows.Media.HitTestResultCallback" /> methods.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-251">`filterCallback`參數可以是`null`，在此情況下，它會被忽略。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-251">The `filterCallback` parameter can be `null`, in which case, it is ignored.</span></span> <span data-ttu-id="d3fa9-252">如果`filterCallback`不`null`，它會叫用之前`resultCallback`。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-252">If `filterCallback` is not `null`, it is invoked before `resultCallback`.</span></span>  <span data-ttu-id="d3fa9-253">`resultCallback` 不可以是 `null`。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-253">`resultCallback` cannot be `null`.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="d3fa9-254">點擊測試傳回 2D 視覺化樹狀結構中啟動，可能會<xref:System.Windows.Media.Media3D.RayHitTestResult>，這就是 3D 點擊的測試結果物件。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-254">It is possible for a hit test that starts in a 2D visual tree to return <xref:System.Windows.Media.Media3D.RayHitTestResult>, which is a 3D hit test result object.</span></span> <span data-ttu-id="d3fa9-255">點擊測試 2D 的視覺化樹狀結構中的啟動順暢地延伸至任何已定義的 3D 視覺化樹狀結構。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-255">Hit testing that starts in a 2D visual tree seamlessly extends into any defined 3D visual tree.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HitTest">
+      <MemberSignature Language="C#" Value="public static void HitTest (System.Windows.Media.Visual reference, System.Windows.Media.HitTestFilterCallback filterCallback, System.Windows.Media.HitTestResultCallback resultCallback, System.Windows.Media.HitTestParameters hitTestParameters);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void HitTest(class System.Windows.Media.Visual reference, class System.Windows.Media.HitTestFilterCallback filterCallback, class System.Windows.Media.HitTestResultCallback resultCallback, class System.Windows.Media.HitTestParameters hitTestParameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.HitTest(System.Windows.Media.Visual,System.Windows.Media.HitTestFilterCallback,System.Windows.Media.HitTestResultCallback,System.Windows.Media.HitTestParameters)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static void HitTest(System::Windows::Media::Visual ^ reference, System::Windows::Media::HitTestFilterCallback ^ filterCallback, System::Windows::Media::HitTestResultCallback ^ resultCallback, System::Windows::Media::HitTestParameters ^ hitTestParameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Windows.Media.Visual" />
+        <Parameter Name="filterCallback" Type="System.Windows.Media.HitTestFilterCallback" />
+        <Parameter Name="resultCallback" Type="System.Windows.Media.HitTestResultCallback" />
+        <Parameter Name="hitTestParameters" Type="System.Windows.Media.HitTestParameters" />
+      </Parameters>
+      <Docs>
+        <param name="reference">
+          <span data-ttu-id="d3fa9-256">要進行點擊測試的 <see cref="T:System.Windows.Media.Visual" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-256">The <see cref="T:System.Windows.Media.Visual" /> to hit test.</span>
+          </span>
+        </param>
+        <param name="filterCallback">
+          <span data-ttu-id="d3fa9-257">代表點擊測試篩選回呼值的方法。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-257">The method that represents the hit test filter callback value.</span>
+          </span>
+        </param>
+        <param name="resultCallback">
+          <span data-ttu-id="d3fa9-258">代表點擊測試結果回呼值的方法。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-258">The method that represents the hit test result callback value.</span>
+          </span>
+        </param>
+        <param name="hitTestParameters">
+          <span data-ttu-id="d3fa9-259">要進行點擊測試的參數值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-259">The parameter value to hit test against.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-260">利用呼叫端定義的 <see cref="T:System.Windows.Media.HitTestFilterCallback" /> 和 <see cref="T:System.Windows.Media.HitTestResultCallback" /> 方法，在指定的 <see cref="T:System.Windows.Media.Visual" /> 上起始點擊測試。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-260">Initiates a hit test on the specified <see cref="T:System.Windows.Media.Visual" />, with caller-defined <see cref="T:System.Windows.Media.HitTestFilterCallback" /> and <see cref="T:System.Windows.Media.HitTestResultCallback" /> methods.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="d3fa9-261">`filterCallback`參數可以是`null`，在此情況下會忽略它。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-261">The `filterCallback` parameter can be `null`, in which case it is ignored.</span></span> <span data-ttu-id="d3fa9-262">如果`filterCallback`不`null`，它會叫用之前`resultCallback`。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-262">If `filterCallback` is not `null`, it is invoked before `resultCallback`.</span></span> <span data-ttu-id="d3fa9-263">`resultCallback` 不可以是 `null`。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-263">`resultCallback` cannot be `null`.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="d3fa9-264">點擊測試傳回 2D 視覺化樹狀結構中啟動，可能會<xref:System.Windows.Media.Media3D.RayHitTestResult>，這就是 3D 點擊的測試結果物件。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-264">It is possible for a hit test that starts in a 2D visual tree to return <xref:System.Windows.Media.Media3D.RayHitTestResult>, which is a 3D hit test result object.</span></span> <span data-ttu-id="d3fa9-265">點擊測試 2D 的視覺化樹狀結構中的啟動順暢地延伸至任何已定義的 3D 視覺化樹狀結構。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-265">Hit testing that starts in a 2D visual tree seamlessly extends into any defined 3D visual tree.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="d3fa9-266">下列範例示範如何使用<xref:System.Windows.Media.VisualTreeHelper.HitTest%2A>方法要進行點擊測試中的物件<xref:System.Windows.Controls.Canvas>。</span><span class="sxs-lookup"><span data-stu-id="d3fa9-266">The following example shows how to use the <xref:System.Windows.Media.VisualTreeHelper.HitTest%2A> method to hit test the objects within a <xref:System.Windows.Controls.Canvas>.</span></span>  
+  
+ [!code-csharp[HitTestingOverview#101](~/samples/snippets/csharp/VS_Snippets_Wpf/HitTestingOverview/CSharp/Window1.xaml.cs#101)]
+ [!code-vb[HitTestingOverview#101](~/samples/snippets/visualbasic/VS_Snippets_Wpf/HitTestingOverview/visualbasic/window1.xaml.vb#101)]  
+[!code-csharp[HitTestingOverview#102](~/samples/snippets/csharp/VS_Snippets_Wpf/HitTestingOverview/CSharp/Window1.xaml.cs#102)]
+[!code-vb[HitTestingOverview#102](~/samples/snippets/visualbasic/VS_Snippets_Wpf/HitTestingOverview/visualbasic/window1.xaml.vb#102)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetRootDpi">
+      <MemberSignature Language="C#" Value="public static void SetRootDpi (System.Windows.Media.Visual visual, System.Windows.DpiScale dpiInfo);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void SetRootDpi(class System.Windows.Media.Visual visual, valuetype System.Windows.DpiScale dpiInfo) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.VisualTreeHelper.SetRootDpi(System.Windows.Media.Visual,System.Windows.DpiScale)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static void SetRootDpi(System::Windows::Media::Visual ^ visual, System::Windows::DpiScale dpiInfo);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="visual" Type="System.Windows.Media.Visual" />
+        <Parameter Name="dpiInfo" Type="System.Windows.DpiScale" />
+      </Parameters>
+      <Docs>
+        <param name="visual">
+          <span data-ttu-id="d3fa9-267">Visual 物件目標。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-267">A Visual object target.</span>
+          </span>
+        </param>
+        <param name="dpiInfo">
+          <span data-ttu-id="d3fa9-268">目標 Visual 的 DPI 資訊。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-268">DPI information for the target Visual.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="d3fa9-269">更新 Visual 的 DPI 的資訊。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-269">Updates the DPI information of a Visual.</span>
+          </span>
+          <span data-ttu-id="d3fa9-270">它只能在不具父代的 Visual 上呼叫。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="d3fa9-270">It can only be called on a Visual without a parent.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

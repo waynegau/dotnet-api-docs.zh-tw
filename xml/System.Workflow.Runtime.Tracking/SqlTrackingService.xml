@@ -1,0 +1,645 @@
+<Type Name="SqlTrackingService" FullName="System.Workflow.Runtime.Tracking.SqlTrackingService">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="a809d975a4313e341cc7d646fd6dcab5b694f1fb" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public sealed class SqlTrackingService : System.Workflow.Runtime.Tracking.TrackingService, System.Workflow.Runtime.Tracking.IProfileNotification" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit SqlTrackingService extends System.Workflow.Runtime.Tracking.TrackingService implements class System.Workflow.Runtime.Tracking.IProfileNotification" />
+  <TypeSignature Language="DocId" Value="T:System.Workflow.Runtime.Tracking.SqlTrackingService" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class SqlTrackingService&#xA;Inherits TrackingService&#xA;Implements IProfileNotification" />
+  <TypeSignature Language="C++ CLI" Value="public ref class SqlTrackingService sealed : System::Workflow::Runtime::Tracking::TrackingService, System::Workflow::Runtime::Tracking::IProfileNotification" />
+  <AssemblyInfo>
+    <AssemblyName>System.Workflow.Runtime</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Workflow.Runtime.Tracking.TrackingService</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.Workflow.Runtime.Tracking.IProfileNotification</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Obsolete("The System.Workflow.* types are deprecated.  Instead, please use the new types from System.Activities.*")</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>
+      <span data-ttu-id="20ea9-101">代表使用 SQL 資料庫儲存追蹤資訊的追蹤服務。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="20ea9-101">Represents a tracking service that uses a SQL database to store tracking information.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  [!INCLUDE[DeprecatedContent](~/includes/deprecatedcontent-md.md)]  
+  
+ <span data-ttu-id="20ea9-102"><xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 類別代表功能完整的追蹤服務。</span><span class="sxs-lookup"><span data-stu-id="20ea9-102">The <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> class represents a fully functional tracking service.</span></span> <span data-ttu-id="20ea9-103">您可以使用此全新的服務收集和儲存追蹤資訊和儲存追蹤設定檔，並在工作流程執行階段引擎要求時提供它們。</span><span class="sxs-lookup"><span data-stu-id="20ea9-103">You can use this service out-of-box to collect and store tracking information, and to store tracking profiles and provide them when requested by the workflow runtime engine.</span></span> <span data-ttu-id="20ea9-104">SQL 追蹤服務會將執行階段追蹤基礎結構傳送給它的追蹤資料寫入 SQL 資料庫中。</span><span class="sxs-lookup"><span data-stu-id="20ea9-104">The SQL tracking service writes tracking data sent to it by the runtime tracking infrastructure to a SQL database.</span></span>  
+  
+ <span data-ttu-id="20ea9-105">在許多案例中，對 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 而言，保持它的資料庫與工作流程執行階段引擎的狀態之間的一致性相當重要。</span><span class="sxs-lookup"><span data-stu-id="20ea9-105">In many scenarios it is important for the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> to maintain consistency between its database and the state of the workflow runtime engine.</span></span> <span data-ttu-id="20ea9-106">因此，`SqlTrackingChannel` 類別運用 <xref:System.Workflow.Runtime.IPendingWork> 介面，以參與 <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService> 提供的工作流程交易批次處理功能。</span><span class="sxs-lookup"><span data-stu-id="20ea9-106">Therefore, the `SqlTrackingChannel` class makes use of the <xref:System.Workflow.Runtime.IPendingWork> interface to participate in the workflow transaction batching functionality provided by the <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService>.</span></span> <span data-ttu-id="20ea9-107">您可以設定 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.IsTransactional%2A> 或傳遞適當的參數到建構函式中以設定 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 參與批次處理，並加入代表暫止變更 SQL 資料庫的物件到 <xref:System.Workflow.Runtime.WorkflowEnvironment.WorkBatch%2A>。</span><span class="sxs-lookup"><span data-stu-id="20ea9-107">You can set <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.IsTransactional%2A> or pass the appropriate parameters to the constructor to configure the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> to participate in batching and add objects that represent pending changes to the SQL database to the <xref:System.Workflow.Runtime.WorkflowEnvironment.WorkBatch%2A>.</span></span>  
+  
+ <span data-ttu-id="20ea9-108"><xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 也會在其資料庫中保存追蹤設定檔。</span><span class="sxs-lookup"><span data-stu-id="20ea9-108">The <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> also maintains tracking profiles in its database.</span></span> <span data-ttu-id="20ea9-109">工作流程執行階段引擎必須能夠持續得知其使用中的追蹤設定檔的任何變更。</span><span class="sxs-lookup"><span data-stu-id="20ea9-109">The workflow runtime engine must be kept apprised of changes to any of the tracking profiles that it is using.</span></span> <span data-ttu-id="20ea9-110"><xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 會實作 <xref:System.Workflow.Runtime.Tracking.IProfileNotification> 介面，並定期在它的資料庫中檢查追蹤設定檔，以通知工作流程執行階段引擎有關這些 <xref:System.Workflow.Runtime.Tracking.TrackingProfile> 的變更。</span><span class="sxs-lookup"><span data-stu-id="20ea9-110">The <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> implements the <xref:System.Workflow.Runtime.Tracking.IProfileNotification> interface and periodically examines the tracking profiles in its database in order to notify the workflow runtime engine of changes to a <xref:System.Workflow.Runtime.Tracking.TrackingProfile> stored in its database.</span></span> <span data-ttu-id="20ea9-111">您可以設定 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileChangeCheckInterval%2A> 或傳遞適當的參數到建構函式來設定 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 檢查其追蹤設定檔的時間間隔，以通知追蹤執行階段關於任何設定檔變更。</span><span class="sxs-lookup"><span data-stu-id="20ea9-111">You can set <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileChangeCheckInterval%2A> or pass the appropriate parameter to the constructor in order to set the interval at which the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> examines its tracking profiles to notify the tracking runtime of any profile changes.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="20ea9-112">在工作流程應用程式中使用 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 和 <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService> 時，建議您使用單一資料庫進行保存和追蹤。</span><span class="sxs-lookup"><span data-stu-id="20ea9-112">When using both the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> and the <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService> in a workflow application, it is recommended that you use a single database for both persistence and tracking.</span></span>  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20ea9-113">初始化 <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-113">Initializes a new instance of the <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> class.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SqlTrackingService (System.Collections.Specialized.NameValueCollection parameters);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Collections.Specialized.NameValueCollection parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Tracking.SqlTrackingService.#ctor(System.Collections.Specialized.NameValueCollection)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (parameters As NameValueCollection)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SqlTrackingService(System::Collections::Specialized::NameValueCollection ^ parameters);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="parameters" Type="System.Collections.Specialized.NameValueCollection" />
+      </Parameters>
+      <Docs>
+        <param name="parameters">
+          <span data-ttu-id="20ea9-114">
+            <see cref="T:System.Collections.Specialized.NameValueCollection" />，指定 <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> 的屬性及屬性的初始值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-114">A <see cref="T:System.Collections.Specialized.NameValueCollection" /> that specifies properties of <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> and their initial values.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="20ea9-115">使用指定的 <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> 來初始化 <see cref="T:System.Collections.Specialized.NameValueCollection" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-115">Initializes a new instance of the <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> class by using the specified <see cref="T:System.Collections.Specialized.NameValueCollection" />.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20ea9-116">從指定 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 的應用程式組態檔中初始化工作流程執行階段引擎時，工作流程執行階段引擎會呼叫此建構函式。</span><span class="sxs-lookup"><span data-stu-id="20ea9-116">This constructor is called by the workflow runtime engine when the workflow runtime engine is initialized from an application configuration file that specifies a <xref:System.Workflow.Runtime.Tracking.SqlTrackingService>.</span></span> <span data-ttu-id="20ea9-117">您也可以使用此建構函式從主應用程式初始化 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService>。</span><span class="sxs-lookup"><span data-stu-id="20ea9-117">You can also use this constructor to initialize the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> from a host application.</span></span> <span data-ttu-id="20ea9-118"><xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 是根據 <xref:System.Collections.Specialized.NameValueCollection> 中的索引鍵/值組進行初始化。</span><span class="sxs-lookup"><span data-stu-id="20ea9-118">The <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> is initialized according to the key-value pairs that are contained in the <xref:System.Collections.Specialized.NameValueCollection>.</span></span> <span data-ttu-id="20ea9-119">下表列舉可能的索引鍵、每個值初始化的屬性和每個屬性的類型。</span><span class="sxs-lookup"><span data-stu-id="20ea9-119">The following table enumerates the potential keys, the property which each value initializes, and the type of each property.</span></span> <span data-ttu-id="20ea9-120">與每個索引鍵關聯的值，應該是代表該索引鍵所參考之屬性的適當類型的字串。</span><span class="sxs-lookup"><span data-stu-id="20ea9-120">The value associated with each key should be a string that represents the appropriate type for the property referred to by that key.</span></span> <span data-ttu-id="20ea9-121">您可以指定這些索引鍵/值組的其中一或多個。</span><span class="sxs-lookup"><span data-stu-id="20ea9-121">You can specify one or more of these key-value pairs.</span></span>  
+  
+|<span data-ttu-id="20ea9-122">Key</span><span class="sxs-lookup"><span data-stu-id="20ea9-122">Key</span></span>|<span data-ttu-id="20ea9-123">屬性類型</span><span class="sxs-lookup"><span data-stu-id="20ea9-123">Property Type</span></span>|<span data-ttu-id="20ea9-124">屬性描述</span><span class="sxs-lookup"><span data-stu-id="20ea9-124">Property Description</span></span>|  
+|---------|-------------------|--------------------------|  
+|`"IsTransactional"`|`bool`|<span data-ttu-id="20ea9-125">使用 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 指定 <xref:System.Workflow.Runtime.WorkflowEnvironment.WorkBatch%2A> 是否參與工作流程交易。</span><span class="sxs-lookup"><span data-stu-id="20ea9-125">Specifies whether <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> participates in workflow transactions by using the <xref:System.Workflow.Runtime.WorkflowEnvironment.WorkBatch%2A>.</span></span> <span data-ttu-id="20ea9-126">預設為 `true`，指定以同步方式將追蹤變更寫入資料庫中。</span><span class="sxs-lookup"><span data-stu-id="20ea9-126">The default is `true`, specifying that tracking changes are written to the database in a synchronous manner.</span></span>|  
+|`"UseDefaultProfile"`|`bool`|<span data-ttu-id="20ea9-127">指定如果無法為 <xref:System.Workflow.Runtime.Tracking.TrackingService.GetProfile%2A> 呼叫找到追蹤設定檔時，是否傳回預設的追蹤設定檔。</span><span class="sxs-lookup"><span data-stu-id="20ea9-127">Specifies whether the default tracking profile will be returned if a tracking profile cannot be found for a <xref:System.Workflow.Runtime.Tracking.TrackingService.GetProfile%2A> call.</span></span> <span data-ttu-id="20ea9-128">預設為 `true`，指定將使用預設的追蹤設定檔。</span><span class="sxs-lookup"><span data-stu-id="20ea9-128">The default is `true`, specifying that the default tracking profile will be used.</span></span>|  
+|`"ProfileChangeCheckInterval"`|`double`|<span data-ttu-id="20ea9-129">以毫秒為單位，指定檢查資料庫有無任何其追蹤設定檔之變更的時間。</span><span class="sxs-lookup"><span data-stu-id="20ea9-129">Specifies the time in milliseconds at which to examine the database for changes to its tracking profiles.</span></span> <span data-ttu-id="20ea9-130">預設值為 60000 毫秒。</span><span class="sxs-lookup"><span data-stu-id="20ea9-130">The default is 60000 milliseconds.</span></span>|  
+|`"ConnectionString"`|`string`|<span data-ttu-id="20ea9-131">指定資料庫連線字串。</span><span class="sxs-lookup"><span data-stu-id="20ea9-131">Specifies the database connection string.</span></span> <span data-ttu-id="20ea9-132">預設為 null 參考 (在 Visual Basic 中為 `Nothing`)。</span><span class="sxs-lookup"><span data-stu-id="20ea9-132">The default is a null reference (`Nothing` in Visual Basic).</span></span>|  
+|`"PartitionOnCompletion"`|`bool`|<span data-ttu-id="20ea9-133">指定在完成工作流程執行個體時，工作流程執行個體的追蹤資料是否應移到資料庫的使用中的磁碟分割。</span><span class="sxs-lookup"><span data-stu-id="20ea9-133">Specifies whether tracking data for a workflow instance should be moved to the currently active partition in the database when the workflow instance is completed.</span></span>|  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="20ea9-134">
+            <paramref name="parameters" /> 為 null 參考 (在 Visual Basic 中為 <see langword="Nothing" />)。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-134">
+              <paramref name="parameters" /> is a null reference (<see langword="Nothing" /> in Visual Basic).</span>
+          </span>
+        </exception>
+        <exception cref="T:System.FormatException">
+          <span data-ttu-id="20ea9-135">與 <see langword="string" /> 中的 <see langword="Boolean" /> 屬性索引鍵關聯的 <paramref name="parameters" /> 值，不是以 <see cref="F:System.Boolean.TrueString" /> 或 <see cref="F:System.Boolean.FalseString" /> 表示。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-135">The <see langword="string" /> value associated with a <see langword="Boolean" /> property key in <paramref name="parameters" /> is not represented by either <see cref="F:System.Boolean.TrueString" /> or <see cref="F:System.Boolean.FalseString" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SqlTrackingService (string connectionString);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string connectionString) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Tracking.SqlTrackingService.#ctor(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (connectionString As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SqlTrackingService(System::String ^ connectionString);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="connectionString" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="connectionString">
+          <span data-ttu-id="20ea9-136">有效的資料庫連線字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-136">A valid database connection string.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="20ea9-137">使用指定的資料庫連線字串，初始化 <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-137">Initializes a new instance of the <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> class by using the specified database connection string.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="20ea9-138">資料庫連線字串無效。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-138">The database connection string is not valid.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ConnectionString">
+      <MemberSignature Language="C#" Value="public string ConnectionString { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ConnectionString" />
+      <MemberSignature Language="DocId" Value="P:System.Workflow.Runtime.Tracking.SqlTrackingService.ConnectionString" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ConnectionString As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ ConnectionString { System::String ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20ea9-139">取得追蹤資料庫的連線字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-139">Gets the connection string for the tracking database.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20ea9-140">追蹤資料庫的連線字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-140">The connection string for the tracking database.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EnableRetries">
+      <MemberSignature Language="C#" Value="public bool EnableRetries { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool EnableRetries" />
+      <MemberSignature Language="DocId" Value="P:System.Workflow.Runtime.Tracking.SqlTrackingService.EnableRetries" />
+      <MemberSignature Language="VB.NET" Value="Public Property EnableRetries As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool EnableRetries { bool get(); void set(bool value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20ea9-141">取得或設定值，這個值指定 <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> 執行資料庫作業時是否重試。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-141">Gets and sets a value specifying whether the <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> will retry when performing a database operation.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20ea9-142">如果 <see langword="true" /> 應重試作業則為 <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" />，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-142">
+              <see langword="true" /> if the <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> should retry the operation; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20ea9-143">如果 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.IsTransactional%2A> 屬性設定為 `false`，且 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.EnableRetries%2A> 設定為 `true`，則所有交易重試將視 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.EnableRetries%2A> 屬性的值而定。</span><span class="sxs-lookup"><span data-stu-id="20ea9-143">If the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.IsTransactional%2A> property is set to `false` and <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.EnableRetries%2A> is set to `true`, then all transaction retries depend on the value of the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.EnableRetries%2A> property.</span></span>  
+  
+ <span data-ttu-id="20ea9-144">如果 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.IsTransactional%2A> 設定為 `true`，則特定工作會進行批次處理，而且由 <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService> 的衍生類型 (例如，<xref:System.Workflow.Runtime.Hosting.DefaultWorkflowCommitWorkBatchService> 或 <xref:System.Workflow.Runtime.Hosting.SharedConnectionWorkflowCommitWorkBatchService>) 處理那些工作批次交易的重試。</span><span class="sxs-lookup"><span data-stu-id="20ea9-144">If <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.IsTransactional%2A> is set to `true`, then certain work is batched and retries of those work batch transactions are handled by a derived type of <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService>, such as <xref:System.Workflow.Runtime.Hosting.DefaultWorkflowCommitWorkBatchService> or <xref:System.Workflow.Runtime.Hosting.SharedConnectionWorkflowCommitWorkBatchService>.</span></span>  
+  
+ <span data-ttu-id="20ea9-145">無論 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.IsTransactional%2A> 是否設定為 `true`，下列工作項目無法批次處理，而且必須透過 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.EnableRetries%2A> 屬性處理任何交易重試。</span><span class="sxs-lookup"><span data-stu-id="20ea9-145">Regardless of whether <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.IsTransactional%2A> is set to `true`, the following work items cannot be batched and any transaction retries must be handled through the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.EnableRetries%2A> property.</span></span>  
+  
+-   <span data-ttu-id="20ea9-146">輪詢追蹤設定檔變更。</span><span class="sxs-lookup"><span data-stu-id="20ea9-146">Polling for tracking profile changes.</span></span>  
+  
+-   <span data-ttu-id="20ea9-147"><xref:System.Workflow.Runtime.Tracking.SqlTrackingService.IsTransactional%2A> 設定為 `false` 時，所有對 SQL Server 資料庫的寫入動作。</span><span class="sxs-lookup"><span data-stu-id="20ea9-147">All writes to a SQL Server database when <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.IsTransactional%2A> is set to `false`.</span></span>  
+  
+ <span data-ttu-id="20ea9-148">除了以程式設計方式設定以外，您可以透過組態檔啟用這項功能。</span><span class="sxs-lookup"><span data-stu-id="20ea9-148">Besides being set programmatically, this functionality can be enabled through a configuration file.</span></span> <span data-ttu-id="20ea9-149">如需如何透過組態檔設定這個屬性的詳細資訊，請參閱[工作流程組態檔](http://msdn.microsoft.com/library/ada4bb90-6c9d-4f3d-a9d0-b559bb0f9909)。</span><span class="sxs-lookup"><span data-stu-id="20ea9-149">For more information about how to set this property through a configuration file, see [Workflow Configuration Files](http://msdn.microsoft.com/library/ada4bb90-6c9d-4f3d-a9d0-b559bb0f9909).</span></span>  
+  
+ <span data-ttu-id="20ea9-150">如需重試工作批次異動的一般資訊，請參閱[批次中的工作流程的狀態資訊](http://msdn.microsoft.com/library/ecda18ba-9140-4bd7-b13d-6787fdf5959d)。</span><span class="sxs-lookup"><span data-stu-id="20ea9-150">For general information about retrying work batch transactions, see [Batching State Information in Workflows](http://msdn.microsoft.com/library/ecda18ba-9140-4bd7-b13d-6787fdf5959d).</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetProfile">
+      <MemberSignature Language="C#" Value="protected internal override System.Workflow.Runtime.Tracking.TrackingProfile GetProfile (Guid scheduleInstanceId);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance class System.Workflow.Runtime.Tracking.TrackingProfile GetProfile(valuetype System.Guid scheduleInstanceId) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Tracking.SqlTrackingService.GetProfile(System.Guid)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Function GetProfile (scheduleInstanceId As Guid) As TrackingProfile" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override System::Workflow::Runtime::Tracking::TrackingProfile ^ GetProfile(Guid scheduleInstanceId);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Workflow.Runtime.Tracking.TrackingProfile</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scheduleInstanceId" Type="System.Guid" />
+      </Parameters>
+      <Docs>
+        <param name="scheduleInstanceId">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetProfile">
+      <MemberSignature Language="C#" Value="protected internal override System.Workflow.Runtime.Tracking.TrackingProfile GetProfile (Type workflowType, Version profileVersion);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance class System.Workflow.Runtime.Tracking.TrackingProfile GetProfile(class System.Type workflowType, class System.Version profileVersion) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Tracking.SqlTrackingService.GetProfile(System.Type,System.Version)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Function GetProfile (workflowType As Type, profileVersion As Version) As TrackingProfile" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override System::Workflow::Runtime::Tracking::TrackingProfile ^ GetProfile(Type ^ workflowType, Version ^ profileVersion);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Workflow.Runtime.Tracking.TrackingProfile</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="workflowType" Type="System.Type" />
+        <Parameter Name="profileVersion" Type="System.Version" />
+      </Parameters>
+      <Docs>
+        <param name="workflowType">To be added.</param>
+        <param name="profileVersion">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTrackingChannel">
+      <MemberSignature Language="C#" Value="protected internal override System.Workflow.Runtime.Tracking.TrackingChannel GetTrackingChannel (System.Workflow.Runtime.Tracking.TrackingParameters parameters);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance class System.Workflow.Runtime.Tracking.TrackingChannel GetTrackingChannel(class System.Workflow.Runtime.Tracking.TrackingParameters parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Tracking.SqlTrackingService.GetTrackingChannel(System.Workflow.Runtime.Tracking.TrackingParameters)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Function GetTrackingChannel (parameters As TrackingParameters) As TrackingChannel" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override System::Workflow::Runtime::Tracking::TrackingChannel ^ GetTrackingChannel(System::Workflow::Runtime::Tracking::TrackingParameters ^ parameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Workflow.Runtime.Tracking.TrackingChannel</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="parameters" Type="System.Workflow.Runtime.Tracking.TrackingParameters" />
+      </Parameters>
+      <Docs>
+        <param name="parameters">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsTransactional">
+      <MemberSignature Language="C#" Value="public bool IsTransactional { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsTransactional" />
+      <MemberSignature Language="DocId" Value="P:System.Workflow.Runtime.Tracking.SqlTrackingService.IsTransactional" />
+      <MemberSignature Language="VB.NET" Value="Public Property IsTransactional As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsTransactional { bool get(); void set(bool value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20ea9-151">取得或設定值，這個值指出 <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> 是否參與工作流程交易。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-151">Gets or sets a value that indicates whether <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> participates in workflow transactions.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20ea9-152">如果 <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> 參與工作流程交易則為 <see langword="true" />，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-152">
+              <see langword="true" /> if <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> participates in the workflow transaction; otherwise, <see langword="false" />.</span>
+          </span>
+          <span data-ttu-id="20ea9-153">預設值為 <see langword="true" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-153">The default is <see langword="true" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20ea9-154">通常追蹤資料會同步寫入資料庫中，也就是一在追蹤通道上收到後就立刻寫入資料。</span><span class="sxs-lookup"><span data-stu-id="20ea9-154">Ordinarily tracking data is written to the database synchronously, that is, the data is written as soon as it is received on the Tracking Channel.</span></span> <span data-ttu-id="20ea9-155">如果 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.IsTransactional%2A> 為 `true`，則 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 參與工作流程交易。</span><span class="sxs-lookup"><span data-stu-id="20ea9-155">If <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.IsTransactional%2A> is `true`, <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> participates in the workflow transaction.</span></span> <span data-ttu-id="20ea9-156">也就是說，追蹤服務會依據 <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService> 定義的語意，將任何變更加入其資料庫中做為 <xref:System.Workflow.Runtime.WorkflowEnvironment.WorkBatch%2A> 的工作項目。</span><span class="sxs-lookup"><span data-stu-id="20ea9-156">That is, it follows the semantics defined by <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService> and adds any changes to its database as work items to the <xref:System.Workflow.Runtime.WorkflowEnvironment.WorkBatch%2A>.</span></span> <span data-ttu-id="20ea9-157">服務會在工作流程執行階段引擎指示時，認可這些變更。</span><span class="sxs-lookup"><span data-stu-id="20ea9-157">The service commits these changes when instructed to by the workflow runtime engine.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PartitionOnCompletion">
+      <MemberSignature Language="C#" Value="public bool PartitionOnCompletion { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool PartitionOnCompletion" />
+      <MemberSignature Language="DocId" Value="P:System.Workflow.Runtime.Tracking.SqlTrackingService.PartitionOnCompletion" />
+      <MemberSignature Language="VB.NET" Value="Public Property PartitionOnCompletion As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool PartitionOnCompletion { bool get(); void set(bool value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20ea9-158">取得或設定值，這個值指定在完成工作流程執行個體時，工作流程執行個體的追蹤資料是否應移到資料庫的使用中的磁碟分割。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-158">Gets or sets a value that specifies whether tracking data for a workflow instance should be moved to the currently active partition in the database when the workflow instance is completed.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20ea9-159">如果追蹤資料應在工作流程完成時移到目前使用中的磁碟分割則為 <see langword="true" />，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-159">
+              <see langword="true" /> if tracking data should be moved to the currently active partition on workflow completion; otherwise, <see langword="false" />.</span>
+          </span>
+          <span data-ttu-id="20ea9-160">預設值為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-160">The default is <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20ea9-161"><xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 允許您分割資料庫，以提供封存和刪除追蹤記錄的有效方法。</span><span class="sxs-lookup"><span data-stu-id="20ea9-161">The <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> allows you to partition the database in order to provide an efficient method for archiving and deleting tracking records.</span></span> <span data-ttu-id="20ea9-162">如果您資料庫的停機時間之間隔著很長的期間，或您的資料庫沒有計畫的停機時間，您可以設定 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.PartitionOnCompletion%2A> 在工作流程執行個體完成時，將與工作流程執行個體關聯的追蹤記錄從使用中的執行個體表格移到目前使用中的磁碟分割。</span><span class="sxs-lookup"><span data-stu-id="20ea9-162">If your database experiences long periods between down times or your database has no planned downtime, you can set <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.PartitionOnCompletion%2A> to move tracking records associated with a workflow instance from the active instance tables to the currently active partition when the workflow instance completes.</span></span> <span data-ttu-id="20ea9-163">這可以讓您封存或刪除這些記錄，而不必鎖定資料庫的使用中執行個體表格中的資料。</span><span class="sxs-lookup"><span data-stu-id="20ea9-163">This allows you to archive or delete these records without having to lock the data in the active instance tables of the database.</span></span> <span data-ttu-id="20ea9-164">如需有關資料分割的詳細資訊，請參閱[資料維護與 SqlTrackingService](http://msdn.microsoft.com/library/a62d5719-d6cd-4871-a3ab-56ea629d4e00)。</span><span class="sxs-lookup"><span data-stu-id="20ea9-164">For more information about partitioning, see [Data Maintenance with SqlTrackingService](http://msdn.microsoft.com/library/a62d5719-d6cd-4871-a3ab-56ea629d4e00).</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ProfileChangeCheckInterval">
+      <MemberSignature Language="C#" Value="public double ProfileChangeCheckInterval { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 ProfileChangeCheckInterval" />
+      <MemberSignature Language="DocId" Value="P:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileChangeCheckInterval" />
+      <MemberSignature Language="VB.NET" Value="Public Property ProfileChangeCheckInterval As Double" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property double ProfileChangeCheckInterval { double get(); void set(double value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20ea9-165">取得或設定值，指定檢查資料庫查看追蹤設定檔有無任何變更的時間間隔。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-165">Gets or sets a value that specifies the interval at which the database should be checked for changes to one or more of its tracking profiles.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20ea9-166">時間間隔長度以毫秒為單位。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-166">The interval length in milliseconds.</span>
+          </span>
+          <span data-ttu-id="20ea9-167">預設值為 60000。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-167">The default is 60000.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20ea9-168"><xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 會定期檢查資料庫，以判斷其一個或多個追蹤設定檔是否已變更或刪除。</span><span class="sxs-lookup"><span data-stu-id="20ea9-168">The <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> periodically examines the database to determine whether one or more of its tracking profiles have been changed or have been deleted.</span></span> <span data-ttu-id="20ea9-169">當 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 判定 <xref:System.Workflow.Runtime.Tracking.TrackingProfile> 已遭到刪除時，會引發 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileRemoved> 事件。當判定設定檔已變更時，會引發 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileUpdated> 事件。</span><span class="sxs-lookup"><span data-stu-id="20ea9-169">When the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> determines that a <xref:System.Workflow.Runtime.Tracking.TrackingProfile> has been deleted it raises an <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileRemoved> event; when it determines that a profile has been changed it raises a <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileUpdated> event.</span></span> <span data-ttu-id="20ea9-170">執行階段追蹤基礎結構會訂閱這兩種事件，並且在這兩種事件發生時適當更新追蹤設定檔快取。</span><span class="sxs-lookup"><span data-stu-id="20ea9-170">The runtime tracking infrastructure subscribes to both of these events and updates its tracking profile cache appropriately when they occur.</span></span> <span data-ttu-id="20ea9-171">如果您想要得到有關追蹤設定檔變更的通知，也可以訂閱這兩種事件的其中一種，或兩種都訂閱。</span><span class="sxs-lookup"><span data-stu-id="20ea9-171">You can also subscribe to either or both of these events if you want to be notified of changes to a tracking profile.</span></span> <span data-ttu-id="20ea9-172">您可以設定 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileChangeCheckInterval%2A>，以指定 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 測試這些變更的頻率。</span><span class="sxs-lookup"><span data-stu-id="20ea9-172">You can set <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileChangeCheckInterval%2A> to specify the frequency with which the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> should test for such changes.</span></span> <span data-ttu-id="20ea9-173">指定 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileChangeCheckInterval%2A> 的新值時，時間間隔會立刻設定為這個新值。</span><span class="sxs-lookup"><span data-stu-id="20ea9-173">When you specify a new value for <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileChangeCheckInterval%2A>, the timer interval is immediately set to this new value.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ProfileRemoved">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.Workflow.Runtime.Tracking.ProfileRemovedEventArgs&gt; ProfileRemoved;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.Workflow.Runtime.Tracking.ProfileRemovedEventArgs&gt; ProfileRemoved" />
+      <MemberSignature Language="DocId" Value="E:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileRemoved" />
+      <MemberSignature Language="VB.NET" Value="Public Event ProfileRemoved As EventHandler(Of ProfileRemovedEventArgs) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual event EventHandler&lt;System::Workflow::Runtime::Tracking::ProfileRemovedEventArgs ^&gt; ^ ProfileRemoved;" />
+      <MemberType>Event</MemberType>
+      <Implements>
+        <InterfaceMember>E:System.Workflow.Runtime.Tracking.IProfileNotification.ProfileRemoved</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.Workflow.Runtime.Tracking.ProfileRemovedEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20ea9-174">發生在 <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> 偵測到已刪除 <see cref="T:System.Workflow.Runtime.Tracking.TrackingProfile" /> 時。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-174">Occurs when the <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> detects that a <see cref="T:System.Workflow.Runtime.Tracking.TrackingProfile" /> has been deleted.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20ea9-175"><xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 會定期檢查它的資料庫，以判斷其一個或多個追蹤設定檔是否已刪除。</span><span class="sxs-lookup"><span data-stu-id="20ea9-175">The <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> periodically examines its database to determine whether one or more of its tracking profiles have been deleted.</span></span> <span data-ttu-id="20ea9-176">如果它偵測到已刪除 <xref:System.Workflow.Runtime.Tracking.TrackingProfile>，將會引發 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileRemoved> 事件，並將工作流程 <xref:System.Type> 放入 <xref:System.Workflow.Runtime.Tracking.ProfileRemovedEventArgs> 中。</span><span class="sxs-lookup"><span data-stu-id="20ea9-176">If it detects that a <xref:System.Workflow.Runtime.Tracking.TrackingProfile> has been deleted, it raises the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileRemoved> event and puts the workflow <xref:System.Type> in the <xref:System.Workflow.Runtime.Tracking.ProfileRemovedEventArgs>.</span></span> <span data-ttu-id="20ea9-177">執行階段追蹤基礎結構使用此事件更新其設定檔快取。</span><span class="sxs-lookup"><span data-stu-id="20ea9-177">The runtime tracking infrastructure uses this event to update its profile cache.</span></span> <span data-ttu-id="20ea9-178">您可以設定 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileChangeCheckInterval%2A>，以指定 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 檢查資料庫的頻率。</span><span class="sxs-lookup"><span data-stu-id="20ea9-178">You can set <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileChangeCheckInterval%2A> to specify the frequency at which the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> examines its database.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ProfileUpdated">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.Workflow.Runtime.Tracking.ProfileUpdatedEventArgs&gt; ProfileUpdated;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.Workflow.Runtime.Tracking.ProfileUpdatedEventArgs&gt; ProfileUpdated" />
+      <MemberSignature Language="DocId" Value="E:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileUpdated" />
+      <MemberSignature Language="VB.NET" Value="Public Event ProfileUpdated As EventHandler(Of ProfileUpdatedEventArgs) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual event EventHandler&lt;System::Workflow::Runtime::Tracking::ProfileUpdatedEventArgs ^&gt; ^ ProfileUpdated;" />
+      <MemberType>Event</MemberType>
+      <Implements>
+        <InterfaceMember>E:System.Workflow.Runtime.Tracking.IProfileNotification.ProfileUpdated</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.Workflow.Runtime.Tracking.ProfileUpdatedEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20ea9-179">發生在 <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> 偵測到已變更 <see cref="T:System.Workflow.Runtime.Tracking.TrackingProfile" /> 時。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-179">Occurs when the <see cref="T:System.Workflow.Runtime.Tracking.SqlTrackingService" /> detects that a <see cref="T:System.Workflow.Runtime.Tracking.TrackingProfile" /> has been changed.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20ea9-180"><xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 會定期檢查它的資料庫，以判斷其一個或多個追蹤設定檔是否已變更。</span><span class="sxs-lookup"><span data-stu-id="20ea9-180">The <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> periodically examines its database to determine whether one or more of its tracking profiles have been changed.</span></span> <span data-ttu-id="20ea9-181">如果它在 <xref:System.Workflow.Runtime.Tracking.TrackingProfile> 中偵測到這類變更，它會以封裝在 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileUpdated> 中的追蹤設定檔引發 <xref:System.Workflow.Runtime.Tracking.ProfileUpdatedEventArgs> 事件。</span><span class="sxs-lookup"><span data-stu-id="20ea9-181">If it detects such a change in a <xref:System.Workflow.Runtime.Tracking.TrackingProfile>, it raises the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileUpdated> event with the tracking profile encapsulated in a <xref:System.Workflow.Runtime.Tracking.ProfileUpdatedEventArgs>.</span></span> <span data-ttu-id="20ea9-182">執行階段追蹤基礎結構使用此事件更新其設定檔快取。</span><span class="sxs-lookup"><span data-stu-id="20ea9-182">The runtime tracking infrastructure uses this event to update its profile cache.</span></span> <span data-ttu-id="20ea9-183">您可以設定 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileChangeCheckInterval%2A>，以指定 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 檢查資料庫的頻率。</span><span class="sxs-lookup"><span data-stu-id="20ea9-183">You can set <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileChangeCheckInterval%2A> to specify the frequency at which the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> examines its database.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Start">
+      <MemberSignature Language="C#" Value="protected internal override void Start ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance void Start() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Tracking.SqlTrackingService.Start" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Sub Start ()" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override void Start();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TryGetProfile">
+      <MemberSignature Language="C#" Value="protected internal override bool TryGetProfile (Type workflowType, out System.Workflow.Runtime.Tracking.TrackingProfile profile);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance bool TryGetProfile(class System.Type workflowType, [out] class System.Workflow.Runtime.Tracking.TrackingProfile&amp; profile) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Tracking.SqlTrackingService.TryGetProfile(System.Type,System.Workflow.Runtime.Tracking.TrackingProfile@)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Function TryGetProfile (workflowType As Type, ByRef profile As TrackingProfile) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override bool TryGetProfile(Type ^ workflowType, [Runtime::InteropServices::Out] System::Workflow::Runtime::Tracking::TrackingProfile ^ % profile);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="workflowType" Type="System.Type" />
+        <Parameter Name="profile" Type="System.Workflow.Runtime.Tracking.TrackingProfile&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="workflowType">To be added.</param>
+        <param name="profile">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TryReloadProfile">
+      <MemberSignature Language="C#" Value="protected internal override bool TryReloadProfile (Type workflowType, Guid scheduleInstanceId, out System.Workflow.Runtime.Tracking.TrackingProfile profile);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance bool TryReloadProfile(class System.Type workflowType, valuetype System.Guid scheduleInstanceId, [out] class System.Workflow.Runtime.Tracking.TrackingProfile&amp; profile) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Tracking.SqlTrackingService.TryReloadProfile(System.Type,System.Guid,System.Workflow.Runtime.Tracking.TrackingProfile@)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Function TryReloadProfile (workflowType As Type, scheduleInstanceId As Guid, ByRef profile As TrackingProfile) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override bool TryReloadProfile(Type ^ workflowType, Guid scheduleInstanceId, [Runtime::InteropServices::Out] System::Workflow::Runtime::Tracking::TrackingProfile ^ % profile);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="workflowType" Type="System.Type" />
+        <Parameter Name="scheduleInstanceId" Type="System.Guid" />
+        <Parameter Name="profile" Type="System.Workflow.Runtime.Tracking.TrackingProfile&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="workflowType">To be added.</param>
+        <param name="scheduleInstanceId">To be added.</param>
+        <param name="profile">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UseDefaultProfile">
+      <MemberSignature Language="C#" Value="public bool UseDefaultProfile { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool UseDefaultProfile" />
+      <MemberSignature Language="DocId" Value="P:System.Workflow.Runtime.Tracking.SqlTrackingService.UseDefaultProfile" />
+      <MemberSignature Language="VB.NET" Value="Public Property UseDefaultProfile As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool UseDefaultProfile { bool get(); void set(bool value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20ea9-184">取得或設定值，指定是否應將預設的 <see cref="T:System.Workflow.Runtime.Tracking.TrackingProfile" /> 使用於沒有追蹤設定檔的工作流程類型。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-184">Gets or sets a value specifying whether a default <see cref="T:System.Workflow.Runtime.Tracking.TrackingProfile" /> should be used for workflow types that do not have a tracking profile.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20ea9-185">如果應該使用預設的追蹤設定檔則為 <see langword="true" />，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-185">
+              <see langword="true" /> if a default tracking profile should be used; otherwise, <see langword="false" />.</span>
+          </span>
+          <span data-ttu-id="20ea9-186">預設值為 <see langword="true" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20ea9-186">The default is <see langword="true" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20ea9-187">如果 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.UseDefaultProfile%2A> 是 `true`，每當工作流程執行階段引擎嘗試為追蹤服務沒有關聯 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 的工作流程 <xref:System.Workflow.Runtime.Tracking.TrackingProfile> 取得追蹤設定檔時，<xref:System.Type> 將會傳回預設的 <xref:System.Workflow.Runtime.Tracking.TrackingProfile>。</span><span class="sxs-lookup"><span data-stu-id="20ea9-187">If <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.UseDefaultProfile%2A> is `true`, the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> will return a default <xref:System.Workflow.Runtime.Tracking.TrackingProfile> whenever the workflow runtime engine tries to get a tracking profile for a workflow <xref:System.Type> for which the tracking service has no associated <xref:System.Workflow.Runtime.Tracking.TrackingProfile>.</span></span>  
+  
+ <span data-ttu-id="20ea9-188">全新的預設追蹤設定檔會符合工作流程執行個體發出的所有活動事件、使用者事件和工作流程事件。</span><span class="sxs-lookup"><span data-stu-id="20ea9-188">The out-of-box default tracking profile matches all activity events, user events, and workflow events emitted by a workflow instance.</span></span> <span data-ttu-id="20ea9-189">您可以使用 `UpdateDefaultProfile` 預存程序來變更預設的追蹤設定檔。</span><span class="sxs-lookup"><span data-stu-id="20ea9-189">You can change the default tracking profile by using the `UpdateDefaultProfile` stored procedure.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="20ea9-190">`UpdateDefaultProfile` 預存程序將變更預設的追蹤設定檔。</span><span class="sxs-lookup"><span data-stu-id="20ea9-190">The `UpdateDefaultProfile` stored procedure will change the default tracking profile.</span></span> <span data-ttu-id="20ea9-191">當工作流程執行階段引擎為追蹤服務沒有關聯追蹤設定檔的工作流程類型要求設定檔時，將傳回這個新的預設設定檔。</span><span class="sxs-lookup"><span data-stu-id="20ea9-191">This new default profile will be returned when the workflow runtime engine requests a profile for a workflow type for which the tracking service has no associated tracking profile.</span></span> <span data-ttu-id="20ea9-192">即使在呼叫 `UpdateDefaultProfile` 後，之前舊的預設設定檔關聯的工作流程類型將仍與該設定檔關聯。您必須在這些要與新的預設設定檔關聯的工作流程類型上明確呼叫 `UpdateTrackingProfile` 預存程序。</span><span class="sxs-lookup"><span data-stu-id="20ea9-192">Workflow types that were previously associated with the old default profile will still be associated with that profile even after `UpdateDefaultProfile` is called; you must explicitly call the `UpdateTrackingProfile` stored procedure on any of these workflow types that you want to associate with the new default profile.</span></span>  
+  
+ <span data-ttu-id="20ea9-193">當 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.UseDefaultProfile%2A> 為 true 時，針對其資料庫中沒有關聯之追蹤設定檔的工作流程型別，<xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 將會傳回預設的追蹤設定檔至工作流程執行階段引擎。</span><span class="sxs-lookup"><span data-stu-id="20ea9-193">While <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.UseDefaultProfile%2A> is true, the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> will return the default tracking profile to the workflow runtime engine for any workflow type for which it doesn't have a tracking profile associated in its database.</span></span> <span data-ttu-id="20ea9-194">如果您稍後將 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.UseDefaultProfile%2A> 設定為 false，預設設定檔仍然會與資料庫中的這些工作流程類型關聯。</span><span class="sxs-lookup"><span data-stu-id="20ea9-194">If you later set <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.UseDefaultProfile%2A> to false, the default profile will still be associated with these workflow types in the database.</span></span> <span data-ttu-id="20ea9-195">您可以在工作流程類型上呼叫 `DeleteTrackingProfile` 預存程序，使追蹤設定檔不再與該類型產生關聯，或者您也可以在工作流程類型上呼叫 `UpdateTrackingProfile` 預存程序，以變更與該類型關聯的追蹤設定檔。</span><span class="sxs-lookup"><span data-stu-id="20ea9-195">You can call the `DeleteTrackingProfile` stored procedure on a workflow type to no longer associate a tracking profile with that type, or you can call the `UpdateTrackingProfile` stored procedure on a workflow type to change the tracking profile associated with that type.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="20ea9-196">工作流程執行階段引擎會快取其追蹤設定檔。</span><span class="sxs-lookup"><span data-stu-id="20ea9-196">The workflow runtime engine caches its tracking profiles.</span></span> <span data-ttu-id="20ea9-197">因此，對於在快取中已有關聯之追蹤設定檔的任何工作流程類型而言，工作流程執行階段引擎必須收到這類工作流程類型的 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileRemoved> 事件，才會停止為該工作流程類型的新執行個體使用快取的追蹤設定檔。</span><span class="sxs-lookup"><span data-stu-id="20ea9-197">Therefore, it must receive a <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileRemoved> event for any workflow type for which it already has a tracking profile associated in its cache before it will stop using its cached profile for new instances of that workflow type.</span></span> <span data-ttu-id="20ea9-198">同樣地，工作流程執行階段引擎必須收到這類工作流程類型的 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileUpdated> 事件，然後才會將新的追蹤設定檔載入其快取中，以便與該工作流程類型的新執行個體產生關聯。</span><span class="sxs-lookup"><span data-stu-id="20ea9-198">Likewise, the workflow runtime engine must receive a <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileUpdated> event for such workflow types before it will load a new tracking profile into its cache to associate with new instances of the workflow type.</span></span> <span data-ttu-id="20ea9-199"><xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 在檢查資料庫中有無其追蹤設定檔的變更時，會為合適的工作流程類型引發適當的事件。</span><span class="sxs-lookup"><span data-stu-id="20ea9-199">The <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> raises the appropriate events for applicable workflow types when it examines the database for changes to its tracking profiles.</span></span> <span data-ttu-id="20ea9-200"><xref:System.Workflow.Runtime.Tracking.SqlTrackingService> 執行此作業的頻率由 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileChangeCheckInterval%2A> 設定。</span><span class="sxs-lookup"><span data-stu-id="20ea9-200">The frequency at which the <xref:System.Workflow.Runtime.Tracking.SqlTrackingService> performs this operation is set by <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileChangeCheckInterval%2A>.</span></span>  <span data-ttu-id="20ea9-201">因此，每次您呼叫 `UpdateTrackingProfile` 或 `DeleteTrackingProfile` 預存程序時，在工作流程執行階段引擎反應您在其設定檔快取中的變更之前，最多可能會有一段 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileChangeCheckInterval%2A> 指定的延遲期間。</span><span class="sxs-lookup"><span data-stu-id="20ea9-201">Therefore, whenever you call the `UpdateTrackingProfile` or `DeleteTrackingProfile` stored procedures there may be a delay of up to the period specified by <xref:System.Workflow.Runtime.Tracking.SqlTrackingService.ProfileChangeCheckInterval%2A> before the workflow runtime engine will reflect your changes in its profile cache.</span></span>  
+>   
+>  <span data-ttu-id="20ea9-202">如需追蹤設定檔的詳細資訊，請參閱[建立和使用追蹤設定檔](http://msdn.microsoft.com/library/f018ad09-d20f-4626-9792-31d9f278d0b0)。</span><span class="sxs-lookup"><span data-stu-id="20ea9-202">For more information about tracking profiles, see [Creating and Using Tracking Profiles](http://msdn.microsoft.com/library/f018ad09-d20f-4626-9792-31d9f278d0b0).</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
