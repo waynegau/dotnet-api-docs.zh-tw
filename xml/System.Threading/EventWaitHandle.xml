@@ -1,0 +1,1421 @@
+<Type Name="EventWaitHandle" FullName="System.Threading.EventWaitHandle">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="04ca1c444cfd772670659b4609b267628b38c728" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class EventWaitHandle : System.Threading.WaitHandle" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit EventWaitHandle extends System.Threading.WaitHandle" />
+  <TypeSignature Language="DocId" Value="T:System.Threading.EventWaitHandle" />
+  <TypeSignature Language="VB.NET" Value="Public Class EventWaitHandle&#xA;Inherits WaitHandle" />
+  <TypeSignature Language="C++ CLI" Value="public ref class EventWaitHandle : System::Threading::WaitHandle" />
+  <AssemblyInfo>
+    <AssemblyName>System.Threading</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.10.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Threading.WaitHandle</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Runtime.InteropServices.ComVisible(true)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>
+      <span data-ttu-id="3d893-101">表示執行緒同步處理事件。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="3d893-101">Represents a thread synchronization event.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3d893-102"><xref:System.Threading.EventWaitHandle>類別可讓執行緒信號與對方進行通訊。</span><span class="sxs-lookup"><span data-stu-id="3d893-102">The <xref:System.Threading.EventWaitHandle> class allows threads to communicate with each other by signaling.</span></span> <span data-ttu-id="3d893-103">一般而言，一個或多個執行緒封鎖<xref:System.Threading.EventWaitHandle>之前解除封鎖的執行緒呼叫<xref:System.Threading.EventWaitHandle.Set%2A>方法，釋出一或多個已封鎖的執行緒。</span><span class="sxs-lookup"><span data-stu-id="3d893-103">Typically, one or more threads block on an <xref:System.Threading.EventWaitHandle> until an unblocked thread calls the <xref:System.Threading.EventWaitHandle.Set%2A> method, releasing one or more of the blocked threads.</span></span> <span data-ttu-id="3d893-104">執行緒可以發出信號<xref:System.Threading.EventWaitHandle>再封鎖它，藉由呼叫`static`(`Shared`在 Visual Basic 中)<xref:System.Threading.WaitHandle.SignalAndWait%2A?displayProperty=nameWithType>方法。</span><span class="sxs-lookup"><span data-stu-id="3d893-104">A thread can signal an <xref:System.Threading.EventWaitHandle> and then block on it, by calling the `static` (`Shared` in Visual Basic) <xref:System.Threading.WaitHandle.SignalAndWait%2A?displayProperty=nameWithType> method.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="3d893-105"><xref:System.Threading.EventWaitHandle>類別會提供存取具名的系統同步處理事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-105">The <xref:System.Threading.EventWaitHandle> class provides access to named system synchronization events.</span></span>  
+  
+ <span data-ttu-id="3d893-106">行為<xref:System.Threading.EventWaitHandle>，已收到信號其重設模式而定。</span><span class="sxs-lookup"><span data-stu-id="3d893-106">The behavior of an <xref:System.Threading.EventWaitHandle> that has been signaled depends on its reset mode.</span></span> <span data-ttu-id="3d893-107"><xref:System.Threading.EventWaitHandle>以建立<xref:System.Threading.EventResetMode.AutoReset?displayProperty=nameWithType>旗標會自動重設時收到信號之後釋出單一的等候執行緒。</span><span class="sxs-lookup"><span data-stu-id="3d893-107">An <xref:System.Threading.EventWaitHandle> created with the <xref:System.Threading.EventResetMode.AutoReset?displayProperty=nameWithType> flag resets automatically when signaled, after releasing a single waiting thread.</span></span> <span data-ttu-id="3d893-108"><xref:System.Threading.EventWaitHandle>以建立<xref:System.Threading.EventResetMode.ManualReset?displayProperty=nameWithType>旗標會保留已收到信號，直到其<xref:System.Threading.EventWaitHandle.Reset%2A>方法呼叫。</span><span class="sxs-lookup"><span data-stu-id="3d893-108">An <xref:System.Threading.EventWaitHandle> created with the <xref:System.Threading.EventResetMode.ManualReset?displayProperty=nameWithType> flag remains signaled until its <xref:System.Threading.EventWaitHandle.Reset%2A> method is called.</span></span>  
+  
+ <span data-ttu-id="3d893-109">自動重設事件提供給資源的獨佔存取權。</span><span class="sxs-lookup"><span data-stu-id="3d893-109">Automatic reset events provide exclusive access to a resource.</span></span> <span data-ttu-id="3d893-110">如果自動重設事件在沒有任何執行緒處於等候狀態時收到訊號，它會維持收到訊號的狀態，直到有執行緒嘗試等候它為止。</span><span class="sxs-lookup"><span data-stu-id="3d893-110">If an automatic reset event is signaled when no threads are waiting, it remains signaled until a thread attempts to wait on it.</span></span> <span data-ttu-id="3d893-111">此事件會釋出執行緒並立即重設，以阻斷後續的執行緒。</span><span class="sxs-lookup"><span data-stu-id="3d893-111">The event releases the thread and immediately resets, blocking subsequent threads.</span></span>  
+  
+ <span data-ttu-id="3d893-112">手動重設事件就像是大門。</span><span class="sxs-lookup"><span data-stu-id="3d893-112">Manual reset events are like gates.</span></span> <span data-ttu-id="3d893-113">當事件不會收到信號時，將會封鎖在其等候的執行緒。</span><span class="sxs-lookup"><span data-stu-id="3d893-113">When the event is not signaled, threads that wait on it will block.</span></span> <span data-ttu-id="3d893-114">當事件發出信號、 釋放所有等候中執行緒，以及事件保留已收到信號時 （亦即，就不會封鎖後續的等候） 直到其<xref:System.Threading.EventWaitHandle.Reset%2A>方法呼叫。</span><span class="sxs-lookup"><span data-stu-id="3d893-114">When the event is signaled, all waiting threads are released, and the event remains signaled (that is, subsequent waits do not block) until its <xref:System.Threading.EventWaitHandle.Reset%2A> method is called.</span></span> <span data-ttu-id="3d893-115">手動重設事件當一個執行緒必須完成的活動，然後才可以繼續執行其他執行緒會很有用。</span><span class="sxs-lookup"><span data-stu-id="3d893-115">Manual reset events are useful when one thread must complete an activity before other threads can proceed.</span></span>  
+  
+ <span data-ttu-id="3d893-116"><xref:System.Threading.EventWaitHandle> 物件可以用與`static`(`Shared`在 Visual Basic 中)<xref:System.Threading.WaitHandle.WaitAll%2A?displayProperty=nameWithType>和<xref:System.Threading.WaitHandle.WaitAny%2A?displayProperty=nameWithType>方法。</span><span class="sxs-lookup"><span data-stu-id="3d893-116"><xref:System.Threading.EventWaitHandle> objects can be used with the `static`(`Shared` in Visual Basic) <xref:System.Threading.WaitHandle.WaitAll%2A?displayProperty=nameWithType> and <xref:System.Threading.WaitHandle.WaitAny%2A?displayProperty=nameWithType> methods.</span></span>  
+  
+ <span data-ttu-id="3d893-117">如需執行緒的同步處理機制的詳細資訊，請參閱[EventWaitHandle、 AutoResetEvent、 CountdownEvent、 ManualResetEvent](~/docs/standard/threading/eventwaithandle-autoresetevent-countdownevent-manualresetevent.md)。</span><span class="sxs-lookup"><span data-stu-id="3d893-117">For more information about thread synchronization mechanisms, see [EventWaitHandle, AutoResetEvent, CountdownEvent, ManualResetEvent](~/docs/standard/threading/eventwaithandle-autoresetevent-countdownevent-manualresetevent.md).</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="3d893-118">下列程式碼範例使用<xref:System.Threading.WaitHandle.SignalAndWait%28System.Threading.WaitHandle%2CSystem.Threading.WaitHandle%29>方法多載來允許主執行緒發出信號封鎖的執行緒，以及執行緒完成工作，然後等候。</span><span class="sxs-lookup"><span data-stu-id="3d893-118">The following code example uses the <xref:System.Threading.WaitHandle.SignalAndWait%28System.Threading.WaitHandle%2CSystem.Threading.WaitHandle%29> method overload to allow the main thread to signal a blocked thread and then wait until the thread finishes a task.</span></span>  
+  
+ <span data-ttu-id="3d893-119">範例啟動五個執行緒，並讓他們封鎖<xref:System.Threading.EventWaitHandle>以建立<xref:System.Threading.EventResetMode.AutoReset?displayProperty=nameWithType>旗標，然後再發行每一個執行緒時間，使用者按下 ENTER 鍵。</span><span class="sxs-lookup"><span data-stu-id="3d893-119">The example starts five threads and allows them to block on an <xref:System.Threading.EventWaitHandle> created with the <xref:System.Threading.EventResetMode.AutoReset?displayProperty=nameWithType> flag, then releases one thread each time the user presses the ENTER key.</span></span> <span data-ttu-id="3d893-120">此範例會排入佇列，另一個的五個執行緒，並釋放所有使用<xref:System.Threading.EventWaitHandle>以建立<xref:System.Threading.EventResetMode.ManualReset?displayProperty=nameWithType>旗標。</span><span class="sxs-lookup"><span data-stu-id="3d893-120">The example then queues another five threads and releases them all using an <xref:System.Threading.EventWaitHandle> created with the <xref:System.Threading.EventResetMode.ManualReset?displayProperty=nameWithType> flag.</span></span>  
+  
+ [!code-cpp[System.Threading.WaitHandle.SignalAndWait#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.WaitHandle.SignalAndWait/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.WaitHandle.SignalAndWait#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.WaitHandle.SignalAndWait/CS/source.cs#1)]
+ [!code-vb[System.Threading.WaitHandle.SignalAndWait#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.WaitHandle.SignalAndWait/VB/source.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+    <threadsafe>
+      <span data-ttu-id="3d893-121">此型別具備執行緒安全。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="3d893-121">This type is thread safe.</span>
+      </span>
+    </threadsafe>
+    <altmember cref="T:System.Threading.WaitHandle" />
+    <altmember cref="T:System.Threading.AutoResetEvent" />
+    <altmember cref="T:System.Threading.ManualResetEvent" />
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3d893-122">初始化 <see cref="T:System.Threading.EventWaitHandle" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-122">Initializes a new instance of the <see cref="T:System.Threading.EventWaitHandle" /> class.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public EventWaitHandle (bool initialState, System.Threading.EventResetMode mode);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(bool initialState, valuetype System.Threading.EventResetMode mode) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.EventWaitHandle.#ctor(System.Boolean,System.Threading.EventResetMode)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (initialState As Boolean, mode As EventResetMode)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; EventWaitHandle(bool initialState, System::Threading::EventResetMode mode);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="initialState" Type="System.Boolean" />
+        <Parameter Name="mode" Type="System.Threading.EventResetMode" />
+      </Parameters>
+      <Docs>
+        <param name="initialState">
+          <span data-ttu-id="3d893-123">
+            <see langword="true" /> 表示初始狀態設定為已收到信號，<see langword="false" /> 表示初始狀態設定為未收到信號。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-123">
+              <see langword="true" /> to set the initial state to signaled; <see langword="false" /> to set it to nonsignaled.</span>
+          </span>
+        </param>
+        <param name="mode">
+          <span data-ttu-id="3d893-124">其中一個 <see cref="T:System.Threading.EventResetMode" /> 值，決定事件是否要自動或手動重設。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-124">One of the <see cref="T:System.Threading.EventResetMode" /> values that determines whether the event resets automatically or manually.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3d893-125">初始化 <see cref="T:System.Threading.EventWaitHandle" /> 類別的新執行個體、指定等候控制代碼是否一開始就會收到信號，以及是以自動還是手動方式來重設。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-125">Initializes a new instance of the <see cref="T:System.Threading.EventWaitHandle" /> class, specifying whether the wait handle is initially signaled, and whether it resets automatically or manually.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3d893-126">如果未收到信號的事件初始狀態，該事件的執行緒會封鎖。</span><span class="sxs-lookup"><span data-stu-id="3d893-126">If the initial state of the event is nonsignaled, threads that wait on the event will block.</span></span> <span data-ttu-id="3d893-127">如果收到信號的初始狀態，而<xref:System.Threading.EventResetMode.ManualReset>旗標指定給`mode`，該事件的執行緒不會封鎖。</span><span class="sxs-lookup"><span data-stu-id="3d893-127">If the initial state is signaled, and the <xref:System.Threading.EventResetMode.ManualReset> flag is specified for `mode`, threads that wait on the event will not block.</span></span> <span data-ttu-id="3d893-128">如果收到信號的初始狀態，和`mode`是<xref:System.Threading.EventResetMode.AutoReset>、 等候事件的第一個執行緒就會發行立即之後, 會重設事件，並將會封鎖後續的執行緒。</span><span class="sxs-lookup"><span data-stu-id="3d893-128">If the initial state is signaled, and `mode` is <xref:System.Threading.EventResetMode.AutoReset>, the first thread that waits on the event will be released immediately, after which the event will reset, and subsequent threads will block.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="3d893-129">下列程式碼範例使用<xref:System.Threading.WaitHandle.SignalAndWait%28System.Threading.WaitHandle%2CSystem.Threading.WaitHandle%29>方法多載來允許主執行緒發出信號封鎖的執行緒，以及執行緒完成工作，然後等候。</span><span class="sxs-lookup"><span data-stu-id="3d893-129">The following code example uses the <xref:System.Threading.WaitHandle.SignalAndWait%28System.Threading.WaitHandle%2CSystem.Threading.WaitHandle%29> method overload to allow the main thread to signal a blocked thread and then wait until the thread finishes a task.</span></span>  
+  
+ <span data-ttu-id="3d893-130">範例啟動五個執行緒，並讓他們封鎖<xref:System.Threading.EventWaitHandle>以建立<xref:System.Threading.EventResetMode.AutoReset?displayProperty=nameWithType>旗標，然後再發行每一個執行緒時間，使用者按下 ENTER 鍵。</span><span class="sxs-lookup"><span data-stu-id="3d893-130">The example starts five threads and allows them to block on an <xref:System.Threading.EventWaitHandle> created with the <xref:System.Threading.EventResetMode.AutoReset?displayProperty=nameWithType> flag, then releases one thread each time the user presses ENTER key.</span></span> <span data-ttu-id="3d893-131">此範例會排入佇列，另一個的五個執行緒，並釋放所有使用<xref:System.Threading.EventWaitHandle>以建立<xref:System.Threading.EventResetMode.ManualReset?displayProperty=nameWithType>旗標。</span><span class="sxs-lookup"><span data-stu-id="3d893-131">The example then queues another five threads and releases them all using an <xref:System.Threading.EventWaitHandle> created with the <xref:System.Threading.EventResetMode.ManualReset?displayProperty=nameWithType> flag.</span></span>  
+  
+ [!code-cpp[System.Threading.WaitHandle.SignalAndWait#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.WaitHandle.SignalAndWait/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.WaitHandle.SignalAndWait#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.WaitHandle.SignalAndWait/CS/source.cs#1)]
+ [!code-vb[System.Threading.WaitHandle.SignalAndWait#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.WaitHandle.SignalAndWait/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public EventWaitHandle (bool initialState, System.Threading.EventResetMode mode, string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(bool initialState, valuetype System.Threading.EventResetMode mode, string name) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.EventWaitHandle.#ctor(System.Boolean,System.Threading.EventResetMode,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (initialState As Boolean, mode As EventResetMode, name As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; EventWaitHandle(bool initialState, System::Threading::EventResetMode mode, System::String ^ name);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="initialState" Type="System.Boolean" />
+        <Parameter Name="mode" Type="System.Threading.EventResetMode" />
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="initialState">
+          <span data-ttu-id="3d893-132">如果已因此呼叫而建立具名事件，則為 <see langword="true" /> 以將初始狀態設定為收到信號；否則為 <see langword="false" /> 以將其設定為未收到信號。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-132">
+              <see langword="true" /> to set the initial state to signaled if the named event is created as a result of this call; <see langword="false" /> to set it to nonsignaled.</span>
+          </span>
+        </param>
+        <param name="mode">
+          <span data-ttu-id="3d893-133">其中一個 <see cref="T:System.Threading.EventResetMode" /> 值，決定事件是否要自動或手動重設。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-133">One of the <see cref="T:System.Threading.EventResetMode" /> values that determines whether the event resets automatically or manually.</span>
+          </span>
+        </param>
+        <param name="name">
+          <span data-ttu-id="3d893-134">整個系統的同步處理事件名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-134">The name of a system-wide synchronization event.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3d893-135">初始化 <see cref="T:System.Threading.EventWaitHandle" /> 類別的新執行個體、指定等候控制代碼是否一開始就會收到信號 (如果它是因這個呼叫而建立)、是以自動還是手動方式進行重設，以及系統同步處理事件的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-135">Initializes a new instance of the <see cref="T:System.Threading.EventWaitHandle" /> class, specifying whether the wait handle is initially signaled if created as a result of this call, whether it resets automatically or manually, and the name of a system synchronization event.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3d893-136">如果`name`是`null`或空字串時，本機<xref:System.Threading.EventWaitHandle>建立。</span><span class="sxs-lookup"><span data-stu-id="3d893-136">If `name` is `null` or an empty string, a local <xref:System.Threading.EventWaitHandle> is created.</span></span>  
+  
+ <span data-ttu-id="3d893-137">如果指定的名稱與系統事件`name`參數已經存在，`initialState`參數已忽略。</span><span class="sxs-lookup"><span data-stu-id="3d893-137">If a system event with the name specified for the `name` parameter already exists, the `initialState` parameter is ignored.</span></span>  
+  
+> [!IMPORTANT]
+>  <span data-ttu-id="3d893-138">當使用這個建構函式的具名的系統事件時，指定`false`如`initialState`。</span><span class="sxs-lookup"><span data-stu-id="3d893-138">When using this constructor for named system events, specify `false` for `initialState`.</span></span> <span data-ttu-id="3d893-139">這個建構函式會提供任何方法來判斷是否已建立具名的系統事件，因此您不能提出任何假設具名事件的狀態。</span><span class="sxs-lookup"><span data-stu-id="3d893-139">This constructor provides no way to determine whether a named system event was created, so you cannot make any assumptions about the state of the named event.</span></span> <span data-ttu-id="3d893-140">若要判斷是否已建立的具名的事件，請使用<xref:System.Threading.EventWaitHandle.%23ctor%28System.Boolean%2CSystem.Threading.EventResetMode%2CSystem.String%2CSystem.Boolean%40%29>建構函式或<xref:System.Threading.EventWaitHandle.%23ctor%28System.Boolean%2CSystem.Threading.EventResetMode%2CSystem.String%2CSystem.Boolean%40%2CSystem.Security.AccessControl.EventWaitHandleSecurity%29>建構函式。</span><span class="sxs-lookup"><span data-stu-id="3d893-140">To determine whether a named event was created, use the <xref:System.Threading.EventWaitHandle.%23ctor%28System.Boolean%2CSystem.Threading.EventResetMode%2CSystem.String%2CSystem.Boolean%40%29> constructor or the <xref:System.Threading.EventWaitHandle.%23ctor%28System.Boolean%2CSystem.Threading.EventResetMode%2CSystem.String%2CSystem.Boolean%40%2CSystem.Security.AccessControl.EventWaitHandleSecurity%29> constructor.</span></span>  
+  
+ <span data-ttu-id="3d893-141">如果未收到信號的事件初始狀態，該事件的執行緒會封鎖。</span><span class="sxs-lookup"><span data-stu-id="3d893-141">If the initial state of the event is nonsignaled, threads that wait on the event will block.</span></span> <span data-ttu-id="3d893-142">如果收到信號的初始狀態，而<xref:System.Threading.EventResetMode.ManualReset>旗標指定給`mode`，該事件的執行緒不會封鎖。</span><span class="sxs-lookup"><span data-stu-id="3d893-142">If the initial state is signaled, and the <xref:System.Threading.EventResetMode.ManualReset> flag is specified for `mode`, threads that wait on the event will not block.</span></span> <span data-ttu-id="3d893-143">如果收到信號的初始狀態，和`mode`是<xref:System.Threading.EventResetMode.AutoReset>、 等候事件的第一個執行緒就會發行立即之後, 會重設事件，並將會封鎖後續的執行緒。</span><span class="sxs-lookup"><span data-stu-id="3d893-143">If the initial state is signaled, and `mode` is <xref:System.Threading.EventResetMode.AutoReset>, the first thread that waits on the event will be released immediately, after which the event will reset, and subsequent threads will block.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="3d893-144">發生 Win32 錯誤。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-144">A Win32 error occurred.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.UnauthorizedAccessException">
+          <span data-ttu-id="3d893-145">具名事件存在，並具有存取控制安全性，但使用者沒有 <see cref="F:System.Security.AccessControl.EventWaitHandleRights.FullControl" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-145">The named event exists and has access control security, but the user does not have <see cref="F:System.Security.AccessControl.EventWaitHandleRights.FullControl" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">
+          <span data-ttu-id="3d893-146">無法建立具名事件，可能是因為不同類型的等候控制代碼具有相同的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-146">The named event cannot be created, perhaps because a wait handle of a different type has the same name.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="3d893-147">
+            <paramref name="name" /> 的長度超過 260 個字元。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-147">
+              <paramref name="name" /> is longer than 260 characters.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">
+          <span data-ttu-id="3d893-148">需要完全信任立即呼叫者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-148">Requires full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="3d893-149">這個成員無法供部分信任或安全性透明程式碼。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-149">This member cannot be used by partially trusted or transparent code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public EventWaitHandle (bool initialState, System.Threading.EventResetMode mode, string name, out bool createdNew);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(bool initialState, valuetype System.Threading.EventResetMode mode, string name, [out] bool&amp; createdNew) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.EventWaitHandle.#ctor(System.Boolean,System.Threading.EventResetMode,System.String,System.Boolean@)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (initialState As Boolean, mode As EventResetMode, name As String, ByRef createdNew As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; EventWaitHandle(bool initialState, System::Threading::EventResetMode mode, System::String ^ name, [Runtime::InteropServices::Out] bool % createdNew);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="initialState" Type="System.Boolean" />
+        <Parameter Name="mode" Type="System.Threading.EventResetMode" />
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="createdNew" Type="System.Boolean&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="initialState">
+          <span data-ttu-id="3d893-150">如果已因此呼叫而建立具名事件，則為 <see langword="true" /> 以將初始狀態設定為收到信號；否則為 <see langword="false" /> 以將其設定為未收到信號。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-150">
+              <see langword="true" /> to set the initial state to signaled if the named event is created as a result of this call; <see langword="false" /> to set it to nonsignaled.</span>
+          </span>
+        </param>
+        <param name="mode">
+          <span data-ttu-id="3d893-151">其中一個 <see cref="T:System.Threading.EventResetMode" /> 值，決定事件是否要自動或手動重設。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-151">One of the <see cref="T:System.Threading.EventResetMode" /> values that determines whether the event resets automatically or manually.</span>
+          </span>
+        </param>
+        <param name="name">
+          <span data-ttu-id="3d893-152">整個系統的同步處理事件名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-152">The name of a system-wide synchronization event.</span>
+          </span>
+        </param>
+        <param name="createdNew">
+          <span data-ttu-id="3d893-153">這個方法傳回時，如果已建立本機事件 (也就是說，如果 <c>name</c> 為 <see langword="null" /> 或空字串)，或是已建立指定的具名系統事件，則會包含 <see langword="true" />；如果指定的具名系統事件已經存在，則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-153">When this method returns, contains <see langword="true" /> if a local event was created (that is, if <c>name</c> is <see langword="null" /> or an empty string) or if the specified named system event was created; <see langword="false" /> if the specified named system event already existed.</span>
+          </span>
+          <span data-ttu-id="3d893-154">這個參數會以未初始化的狀態傳遞。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-154">This parameter is passed uninitialized.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3d893-155">初始化 <see cref="T:System.Threading.EventWaitHandle" /> 類別的新執行個體，指定如果等候控制代碼是因此呼叫而建立，一開始是否會發出信號；它是否會自動或手動重設；系統同步處理事件的名稱；以及布林值變數，其值會在呼叫之後指出是否已建立具名系統事件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-155">Initializes a new instance of the <see cref="T:System.Threading.EventWaitHandle" /> class, specifying whether the wait handle is initially signaled if created as a result of this call, whether it resets automatically or manually, the name of a system synchronization event, and a Boolean variable whose value after the call indicates whether the named system event was created.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3d893-156">如果指定的名稱與系統事件`name`參數已經存在，`initialState`參數已忽略。</span><span class="sxs-lookup"><span data-stu-id="3d893-156">If a system event with the name specified for the `name` parameter already exists, the `initialState` parameter is ignored.</span></span> <span data-ttu-id="3d893-157">之後呼叫這個建構函式，使用中針對指定的變數值`ref`參數 (`ByRef`在 Visual Basic 中)`createdNew`來判斷是否具名的系統事件已經存在，或已建立。</span><span class="sxs-lookup"><span data-stu-id="3d893-157">After calling this constructor, use the value in the variable specified for the `ref` parameter (`ByRef` parameter in Visual Basic)`createdNew` to determine whether the named system event already existed or was created.</span></span>  
+  
+ <span data-ttu-id="3d893-158">如果未收到信號的事件初始狀態，該事件的執行緒會封鎖。</span><span class="sxs-lookup"><span data-stu-id="3d893-158">If the initial state of the event is nonsignaled, threads that wait on the event will block.</span></span> <span data-ttu-id="3d893-159">如果收到信號的初始狀態，而<xref:System.Threading.EventResetMode.ManualReset>旗標指定給`mode`，該事件的執行緒不會封鎖。</span><span class="sxs-lookup"><span data-stu-id="3d893-159">If the initial state is signaled, and the <xref:System.Threading.EventResetMode.ManualReset> flag is specified for `mode`, threads that wait on the event will not block.</span></span> <span data-ttu-id="3d893-160">如果收到信號的初始狀態，和`mode`是<xref:System.Threading.EventResetMode.AutoReset>、 等候事件的第一個執行緒就會發行立即之後, 會重設事件，並將會封鎖後續的執行緒。</span><span class="sxs-lookup"><span data-stu-id="3d893-160">If the initial state is signaled, and `mode` is <xref:System.Threading.EventResetMode.AutoReset>, the first thread that waits on the event will be released immediately, after which the event will reset, and subsequent threads will block.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="3d893-161">發生 Win32 錯誤。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-161">A Win32 error occurred.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.UnauthorizedAccessException">
+          <span data-ttu-id="3d893-162">具名事件存在，並具有存取控制安全性，但使用者沒有 <see cref="F:System.Security.AccessControl.EventWaitHandleRights.FullControl" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-162">The named event exists and has access control security, but the user does not have <see cref="F:System.Security.AccessControl.EventWaitHandleRights.FullControl" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">
+          <span data-ttu-id="3d893-163">無法建立具名事件，可能是因為不同類型的等候控制代碼具有相同的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-163">The named event cannot be created, perhaps because a wait handle of a different type has the same name.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="3d893-164">
+            <paramref name="name" /> 的長度超過 260 個字元。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-164">
+              <paramref name="name" /> is longer than 260 characters.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">
+          <span data-ttu-id="3d893-165">需要完全信任立即呼叫者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-165">Requires full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="3d893-166">這個成員無法供部分信任或安全性透明程式碼。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-166">This member cannot be used by partially trusted or transparent code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public EventWaitHandle (bool initialState, System.Threading.EventResetMode mode, string name, out bool createdNew, System.Security.AccessControl.EventWaitHandleSecurity eventSecurity);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(bool initialState, valuetype System.Threading.EventResetMode mode, string name, [out] bool&amp; createdNew, class System.Security.AccessControl.EventWaitHandleSecurity eventSecurity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.EventWaitHandle.#ctor(System.Boolean,System.Threading.EventResetMode,System.String,System.Boolean@,System.Security.AccessControl.EventWaitHandleSecurity)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (initialState As Boolean, mode As EventResetMode, name As String, ByRef createdNew As Boolean, eventSecurity As EventWaitHandleSecurity)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; EventWaitHandle(bool initialState, System::Threading::EventResetMode mode, System::String ^ name, [Runtime::InteropServices::Out] bool % createdNew, System::Security::AccessControl::EventWaitHandleSecurity ^ eventSecurity);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="initialState" Type="System.Boolean" />
+        <Parameter Name="mode" Type="System.Threading.EventResetMode" />
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="createdNew" Type="System.Boolean&amp;" RefType="out" />
+        <Parameter Name="eventSecurity" Type="System.Security.AccessControl.EventWaitHandleSecurity" />
+      </Parameters>
+      <Docs>
+        <param name="initialState">
+          <span data-ttu-id="3d893-167">如果已因此呼叫而建立具名事件，則為 <see langword="true" /> 以將初始狀態設定為收到信號；否則為 <see langword="false" /> 以將其設定為未收到信號。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-167">
+              <see langword="true" /> to set the initial state to signaled if the named event is created as a result of this call; <see langword="false" /> to set it to nonsignaled.</span>
+          </span>
+        </param>
+        <param name="mode">
+          <span data-ttu-id="3d893-168">其中一個 <see cref="T:System.Threading.EventResetMode" /> 值，決定事件是否要自動或手動重設。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-168">One of the <see cref="T:System.Threading.EventResetMode" /> values that determines whether the event resets automatically or manually.</span>
+          </span>
+        </param>
+        <param name="name">
+          <span data-ttu-id="3d893-169">整個系統的同步處理事件名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-169">The name of a system-wide synchronization event.</span>
+          </span>
+        </param>
+        <param name="createdNew">
+          <span data-ttu-id="3d893-170">這個方法傳回時，如果已建立本機事件 (也就是說，如果 <c>name</c> 為 <see langword="null" /> 或空字串)，或是已建立指定的具名系統事件，則會包含 <see langword="true" />；如果指定的具名系統事件已經存在，則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-170">When this method returns, contains <see langword="true" /> if a local event was created (that is, if <c>name</c> is <see langword="null" /> or an empty string) or if the specified named system event was created; <see langword="false" /> if the specified named system event already existed.</span>
+          </span>
+          <span data-ttu-id="3d893-171">這個參數會以未初始化的狀態傳遞。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-171">This parameter is passed uninitialized.</span>
+          </span>
+        </param>
+        <param name="eventSecurity">
+          <span data-ttu-id="3d893-172">
+            <see cref="T:System.Security.AccessControl.EventWaitHandleSecurity" /> 物件，代表要套用至具名系統事件的存取控制安全性。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-172">An <see cref="T:System.Security.AccessControl.EventWaitHandleSecurity" /> object that represents the access control security to be applied to the named system event.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3d893-173">初始化 <see cref="T:System.Threading.EventWaitHandle" /> 類別的新執行個體，指定如果等候控制代碼是因此呼叫而建立，一開始是否會發出信號；它是否會自動或手動重設；系統同步處理事件的名稱；布林值變數，其值會在呼叫之後指出是否已建立具名系統事件；以及要套用至具名事件 (如果已建立) 的存取控制項安全性。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-173">Initializes a new instance of the <see cref="T:System.Threading.EventWaitHandle" /> class, specifying whether the wait handle is initially signaled if created as a result of this call, whether it resets automatically or manually, the name of a system synchronization event, a Boolean variable whose value after the call indicates whether the named system event was created, and the access control security to be applied to the named event if it is created.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3d893-174">您可以使用這個建構函式套用到具名的系統事件建立時，避免其他程式碼取得事件的控制項的存取控制安全性。</span><span class="sxs-lookup"><span data-stu-id="3d893-174">Use this constructor to apply access control security to a named system event when it is created, preventing other code from taking control of the event.</span></span>  
+  
+ <span data-ttu-id="3d893-175">這個建構函式初始化<xref:System.Threading.EventWaitHandle>物件，代表系統事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-175">This constructor initializes an <xref:System.Threading.EventWaitHandle> object that represents a system event.</span></span> <span data-ttu-id="3d893-176">您可以建立多個<xref:System.Threading.EventWaitHandle>代表相同的系統事件的物件。</span><span class="sxs-lookup"><span data-stu-id="3d893-176">You can create multiple <xref:System.Threading.EventWaitHandle> objects that represent the same system event.</span></span>  
+  
+ <span data-ttu-id="3d893-177">如果系統事件不存在，則會建立具有指定的存取控制安全性。</span><span class="sxs-lookup"><span data-stu-id="3d893-177">If the system event does not exist, it is created with the specified access control security.</span></span> <span data-ttu-id="3d893-178">如果此事件存在，則會忽略指定的存取控制安全性。</span><span class="sxs-lookup"><span data-stu-id="3d893-178">If the event exists, the specified access control security is ignored.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="3d893-179">呼叫端具有對於新建立的完整控制權<xref:System.Threading.EventWaitHandle>物件，即使`eventSecurity`拒絕，或將某些存取權授與目前的使用者就會失敗。</span><span class="sxs-lookup"><span data-stu-id="3d893-179">The caller has full control over the newly created <xref:System.Threading.EventWaitHandle> object even if `eventSecurity` denies or fails to grant some access rights to the current user.</span></span> <span data-ttu-id="3d893-180">不過，如果目前的使用者試圖取得另一個<xref:System.Threading.EventWaitHandle>物件代表相同具名事件時，使用建構函式或<xref:System.Threading.EventWaitHandle.OpenExisting%2A>方法時，Windows 會套用存取控制安全性。</span><span class="sxs-lookup"><span data-stu-id="3d893-180">However, if the current user attempts to get another <xref:System.Threading.EventWaitHandle> object to represent the same named event, using either a constructor or the <xref:System.Threading.EventWaitHandle.OpenExisting%2A> method, Windows access control security is applied.</span></span>  
+  
+ <span data-ttu-id="3d893-181">如果指定的名稱與系統事件`name`參數已經存在，`initialState`參數已忽略。</span><span class="sxs-lookup"><span data-stu-id="3d893-181">If a system event with the name specified for the `name` parameter already exists, the `initialState` parameter is ignored.</span></span> <span data-ttu-id="3d893-182">之後呼叫這個建構函式，使用中針對指定的變數值`ref`參數 (`ByRef`在 Visual Basic 中)`createdNew`來判斷是否具名的系統事件已經存在，或已建立。</span><span class="sxs-lookup"><span data-stu-id="3d893-182">After calling this constructor, use the value in the variable specified for the `ref` parameter (`ByRef` parameter in Visual Basic) `createdNew` to determine whether the named system event already existed or was created.</span></span>  
+  
+ <span data-ttu-id="3d893-183">如果未收到信號的事件初始狀態，該事件的執行緒會封鎖。</span><span class="sxs-lookup"><span data-stu-id="3d893-183">If the initial state of the event is nonsignaled, threads that wait on the event will block.</span></span> <span data-ttu-id="3d893-184">如果收到信號的初始狀態，而<xref:System.Threading.EventResetMode.ManualReset>旗標指定給`mode`，該事件的執行緒不會封鎖。</span><span class="sxs-lookup"><span data-stu-id="3d893-184">If the initial state is signaled, and the <xref:System.Threading.EventResetMode.ManualReset> flag is specified for `mode`, threads that wait on the event will not block.</span></span> <span data-ttu-id="3d893-185">如果收到信號的初始狀態，和`mode`是<xref:System.Threading.EventResetMode.AutoReset>、 等候事件的第一個執行緒就會發行立即之後, 會重設事件，並將會封鎖後續的執行緒。</span><span class="sxs-lookup"><span data-stu-id="3d893-185">If the initial state is signaled, and `mode` is <xref:System.Threading.EventResetMode.AutoReset>, the first thread that waits on the event will be released immediately, after which the event will reset, and subsequent threads will block.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="3d893-186">下列程式碼範例示範具名的系統事件的跨處理序行為與存取控制安全性。</span><span class="sxs-lookup"><span data-stu-id="3d893-186">The following code example demonstrates the cross-process behavior of a named system event with access control security.</span></span> <span data-ttu-id="3d893-187">此範例會使用<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>方法多載來測試是否存在的具名事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-187">The example uses the <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29> method overload to test for the existence of a named event.</span></span>  
+  
+ <span data-ttu-id="3d893-188">如果事件不存在，就會建立使用的初始擁有權和拒絕目前使用者的權限，請使用事件，但讀取和變更的權限事件的權限會授與存取控制安全性。</span><span class="sxs-lookup"><span data-stu-id="3d893-188">If the event does not exist, it is created with initial ownership and access control security that denies the current user the right to use the event, but grants the right to read and change permissions on the event.</span></span>  
+  
+ <span data-ttu-id="3d893-189">如果您從兩個命令視窗執行編譯的範例，第二個副本將會擲回存取違規的例外狀況上呼叫<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>。</span><span class="sxs-lookup"><span data-stu-id="3d893-189">If you run the compiled example from two command windows, the second copy will throw an access violation exception on the call to <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>.</span></span> <span data-ttu-id="3d893-190">例外狀況時，和此範例會使用<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%29>方法多載來讀取和變更的權限所需的權限以等候事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-190">The exception is caught, and the example uses the <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%29> method overload to wait on the event with the rights needed to read and change the permissions.</span></span>  
+  
+ <span data-ttu-id="3d893-191">變更權限之後，事件會開啟在其上等候，並表示它所需的權限。</span><span class="sxs-lookup"><span data-stu-id="3d893-191">After the permissions are changed, the event is opened with the rights required to wait on it and signal it.</span></span> <span data-ttu-id="3d893-192">如果您是從第三個命令視窗執行編譯的範例，此範例會使用執行新的權限。</span><span class="sxs-lookup"><span data-stu-id="3d893-192">If you run the compiled example from a third command window, the example runs using the new permissions.</span></span>  
+  
+ [!code-cpp[System.Threading.EventWaitHandle.ctor named 5#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.EventWaitHandle.ctor named 5/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.EventWaitHandle.ctor named 5#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.EventWaitHandle.ctor named 5/CS/source.cs#1)]
+ [!code-vb[System.Threading.EventWaitHandle.ctor named 5#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.EventWaitHandle.ctor named 5/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="3d893-193">發生 Win32 錯誤。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-193">A Win32 error occurred.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.UnauthorizedAccessException">
+          <span data-ttu-id="3d893-194">具名事件存在，並具有存取控制安全性，但使用者沒有 <see cref="F:System.Security.AccessControl.EventWaitHandleRights.FullControl" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-194">The named event exists and has access control security, but the user does not have <see cref="F:System.Security.AccessControl.EventWaitHandleRights.FullControl" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">
+          <span data-ttu-id="3d893-195">無法建立具名事件，可能是因為不同類型的等候控制代碼具有相同的名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-195">The named event cannot be created, perhaps because a wait handle of a different type has the same name.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="3d893-196">
+            <paramref name="name" /> 的長度超過 260 個字元。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-196">
+              <paramref name="name" /> is longer than 260 characters.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">
+          <span data-ttu-id="3d893-197">需要完全信任立即呼叫者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-197">Requires full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="3d893-198">這個成員無法供部分信任或安全性透明程式碼。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-198">This member cannot be used by partially trusted or transparent code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAccessControl">
+      <MemberSignature Language="C#" Value="public System.Security.AccessControl.EventWaitHandleSecurity GetAccessControl ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Security.AccessControl.EventWaitHandleSecurity GetAccessControl() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.EventWaitHandle.GetAccessControl" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetAccessControl () As EventWaitHandleSecurity" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Security::AccessControl::EventWaitHandleSecurity ^ GetAccessControl();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Security.AccessControl.EventWaitHandleSecurity</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3d893-199">取得 <see cref="T:System.Security.AccessControl.EventWaitHandleSecurity" /> 物件，此物件代表由目前 <see cref="T:System.Threading.EventWaitHandle" /> 物件所表示的具名系統事件的存取控制安全性。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-199">Gets an <see cref="T:System.Security.AccessControl.EventWaitHandleSecurity" /> object that represents the access control security for the named system event represented by the current <see cref="T:System.Threading.EventWaitHandle" /> object.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3d893-200">
+            <see cref="T:System.Security.AccessControl.EventWaitHandleSecurity" /> 物件，代表具名系統事件的存取控制安全性。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-200">An <see cref="T:System.Security.AccessControl.EventWaitHandleSecurity" /> object that represents the access control security for the named system event.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3d893-201"><xref:System.Threading.EventWaitHandle.GetAccessControl%2A>方法會使用下列旗標 （使用位元 OR 運算結合） 的組合來搜尋權限： <xref:System.Security.AccessControl.AccessControlSections.Access?displayProperty=nameWithType>， <xref:System.Security.AccessControl.AccessControlSections.Owner?displayProperty=nameWithType>，和<xref:System.Security.AccessControl.AccessControlSections.Group?displayProperty=nameWithType>。</span><span class="sxs-lookup"><span data-stu-id="3d893-201">The <xref:System.Threading.EventWaitHandle.GetAccessControl%2A> method uses the following combination of flags (combined using the bitwise OR operation) to search for permissions: <xref:System.Security.AccessControl.AccessControlSections.Access?displayProperty=nameWithType>, <xref:System.Security.AccessControl.AccessControlSections.Owner?displayProperty=nameWithType>, and <xref:System.Security.AccessControl.AccessControlSections.Group?displayProperty=nameWithType>.</span></span>  
+  
+ <span data-ttu-id="3d893-202">使用者必須擁有<xref:System.Security.AccessControl.EventWaitHandleRights.ReadPermissions?displayProperty=nameWithType>呼叫這個方法和事件的權限必須是與開啟<xref:System.Security.AccessControl.EventWaitHandleRights.ReadPermissions?displayProperty=nameWithType>旗標。</span><span class="sxs-lookup"><span data-stu-id="3d893-202">The user must have <xref:System.Security.AccessControl.EventWaitHandleRights.ReadPermissions?displayProperty=nameWithType> rights to call this method, and the event must have been opened with the <xref:System.Security.AccessControl.EventWaitHandleRights.ReadPermissions?displayProperty=nameWithType> flag.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="3d893-203">下列程式碼範例示範具名的系統事件的跨處理序行為與存取控制安全性。</span><span class="sxs-lookup"><span data-stu-id="3d893-203">The following code example demonstrates the cross-process behavior of a named system event with access control security.</span></span> <span data-ttu-id="3d893-204">此範例會使用<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>方法多載來測試是否存在的具名事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-204">The example uses the <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29> method overload to test for the existence of a named event.</span></span>  
+  
+ <span data-ttu-id="3d893-205">如果事件不存在，就會建立使用的初始擁有權和拒絕目前使用者的權限，請使用事件，但讀取和變更的權限事件的權限會授與存取控制安全性。</span><span class="sxs-lookup"><span data-stu-id="3d893-205">If the event does not exist, it is created with initial ownership and access control security that denies the current user the right to use the event, but grants the right to read and change permissions on the event.</span></span>  
+  
+ <span data-ttu-id="3d893-206">如果您從兩個命令視窗執行編譯的範例，第二個副本將會擲回存取違規的例外狀況上呼叫<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>。</span><span class="sxs-lookup"><span data-stu-id="3d893-206">If you run the compiled example from two command windows, the second copy will throw an access violation exception on the call to <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>.</span></span> <span data-ttu-id="3d893-207">例外狀況時，和此範例會使用<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%29>方法多載來讀取和變更的權限所需的權限以等候事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-207">The exception is caught, and the example uses the <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%29> method overload to wait on the event with the rights needed to read and change the permissions.</span></span>  
+  
+ <span data-ttu-id="3d893-208">權限已閱讀、 使用之後<xref:System.Threading.EventWaitHandle.GetAccessControl%2A>方法，而且變更，事件會開啟在其上等候，並表示它所需的權限。</span><span class="sxs-lookup"><span data-stu-id="3d893-208">After the permissions have been read, using the <xref:System.Threading.EventWaitHandle.GetAccessControl%2A> method, and changed, the event is opened with the rights required to wait on it and signal it.</span></span> <span data-ttu-id="3d893-209">如果您是從第三個命令視窗執行編譯的範例，此範例會使用執行新的權限。</span><span class="sxs-lookup"><span data-stu-id="3d893-209">If you run the compiled example from a third command window, the example runs using the new permissions.</span></span>  
+  
+ [!code-cpp[System.Threading.EventWaitHandle.ctor named 5#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.EventWaitHandle.ctor named 5/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.EventWaitHandle.ctor named 5#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.EventWaitHandle.ctor named 5/CS/source.cs#1)]
+ [!code-vb[System.Threading.EventWaitHandle.ctor named 5#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.EventWaitHandle.ctor named 5/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.UnauthorizedAccessException">
+          <span data-ttu-id="3d893-210">目前的 <see cref="T:System.Threading.EventWaitHandle" /> 物件代表具名系統事件，但是使用者沒有 <see cref="F:System.Security.AccessControl.EventWaitHandleRights.ReadPermissions" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-210">The current <see cref="T:System.Threading.EventWaitHandle" /> object represents a named system event, and the user does not have <see cref="F:System.Security.AccessControl.EventWaitHandleRights.ReadPermissions" />.</span>
+          </span>
+          <span data-ttu-id="3d893-211">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-211">-or-</span>
+          </span>
+          <span data-ttu-id="3d893-212">目前的 <see cref="T:System.Threading.EventWaitHandle" /> 物件代表具名系統事件，且不是以 <see cref="F:System.Security.AccessControl.EventWaitHandleRights.ReadPermissions" /> 開啟。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-212">The current <see cref="T:System.Threading.EventWaitHandle" /> object represents a named system event, and was not opened with <see cref="F:System.Security.AccessControl.EventWaitHandleRights.ReadPermissions" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="3d893-213">不支援 Windows 98 或 Windows Millennium Edition。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-213">Not supported for Windows 98 or Windows Millennium Edition.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="3d893-214">之前在這個 <see cref="M:System.Threading.WaitHandle.Close" /> 上呼叫 <see cref="T:System.Threading.EventWaitHandle" /> 方法。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-214">The <see cref="M:System.Threading.WaitHandle.Close" /> method was previously called on this <see cref="T:System.Threading.EventWaitHandle" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="OpenExisting">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3d893-215">開啟指定的具名同步處理事件 (如果已經存在)。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-215">Opens a specified named synchronization event, if it already exists.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="OpenExisting">
+      <MemberSignature Language="C#" Value="public static System.Threading.EventWaitHandle OpenExisting (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Threading.EventWaitHandle OpenExisting(string name) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.EventWaitHandle.OpenExisting(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function OpenExisting (name As String) As EventWaitHandle" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Threading::EventWaitHandle ^ OpenExisting(System::String ^ name);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.EventWaitHandle</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="3d893-216">要開啟的系統同步處理事件名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-216">The name of the system synchronization event to open.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3d893-217">開啟指定的具名同步處理事件 (如果已經存在)。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-217">Opens the specified named synchronization event, if it already exists.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3d893-218">表示具名系統事件的物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-218">An  object that represents the named system event.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3d893-219"><xref:System.Threading.EventWaitHandle.OpenExisting%2A>方法嘗試開啟指定的具名的系統事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-219">The <xref:System.Threading.EventWaitHandle.OpenExisting%2A> method tries to open the specified named system event.</span></span> <span data-ttu-id="3d893-220">如果系統事件不存在，這個方法會擲回的例外狀況，而不是建立的系統事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-220">If the system event does not exist, this method throws an exception instead of creating the system event.</span></span> <span data-ttu-id="3d893-221">若要建立的系統事件不存在時，使用其中一種<xref:System.Threading.EventWaitHandle.%23ctor%2A>建構函式具有`name`參數。</span><span class="sxs-lookup"><span data-stu-id="3d893-221">To create the system event when it does not already exist, use one of the <xref:System.Threading.EventWaitHandle.%23ctor%2A> constructors that has a `name` parameter.</span></span>  
+  
+ <span data-ttu-id="3d893-222">使用相同的值，這個方法的多次呼叫`name`不一定會傳回相同<xref:System.Threading.EventWaitHandle>物件，即使傳回的物件代表相同的具名的系統事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-222">Multiple calls to this method that use the same value for `name` do not necessarily return the same <xref:System.Threading.EventWaitHandle> object, even though the objects that are returned represent the same named system event.</span></span>  
+  
+ <span data-ttu-id="3d893-223">這個方法多載就相當於呼叫<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%29>方法多載，並指定<xref:System.Security.AccessControl.EventWaitHandleRights.Synchronize?displayProperty=nameWithType>和<xref:System.Security.AccessControl.EventWaitHandleRights.Modify?displayProperty=nameWithType>權限，使用位元 OR 運算結合。</span><span class="sxs-lookup"><span data-stu-id="3d893-223">This method overload is equivalent to calling the <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%29> method overload and specifying <xref:System.Security.AccessControl.EventWaitHandleRights.Synchronize?displayProperty=nameWithType> and <xref:System.Security.AccessControl.EventWaitHandleRights.Modify?displayProperty=nameWithType> rights, combined by using the bitwise OR operation.</span></span>  
+  
+ <span data-ttu-id="3d893-224">指定<xref:System.Security.AccessControl.EventWaitHandleRights.Synchronize?displayProperty=nameWithType>旗標可讓執行緒等候該具名的系統事件，並指定<xref:System.Security.AccessControl.EventWaitHandleRights.Modify?displayProperty=nameWithType>旗標可讓呼叫執行緒<xref:System.Threading.EventWaitHandle.Set%2A>和<xref:System.Threading.EventWaitHandle.Reset%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="3d893-224">Specifying the <xref:System.Security.AccessControl.EventWaitHandleRights.Synchronize?displayProperty=nameWithType> flag allows a thread to wait on the named system event, and specifying the <xref:System.Security.AccessControl.EventWaitHandleRights.Modify?displayProperty=nameWithType> flag allows a thread to call the <xref:System.Threading.EventWaitHandle.Set%2A> and <xref:System.Threading.EventWaitHandle.Reset%2A> methods.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="3d893-225">下列程式碼範例示範具名的系統事件的跨處理序行為與存取控制安全性。</span><span class="sxs-lookup"><span data-stu-id="3d893-225">The following code example demonstrates the cross-process behavior of a named system event with access control security.</span></span> <span data-ttu-id="3d893-226">此範例會使用<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>方法多載來測試是否存在的具名事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-226">The example uses the <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29> method overload to test for the existence of a named event.</span></span>  
+  
+ <span data-ttu-id="3d893-227">如果事件不存在，就會建立使用的初始擁有權和拒絕目前使用者的權限，請使用事件，但讀取和變更的權限事件的權限會授與存取控制安全性。</span><span class="sxs-lookup"><span data-stu-id="3d893-227">If the event does not exist, it is created with initial ownership and access control security that denies the current user the right to use the event, but grants the right to read and change permissions on the event.</span></span>  
+  
+ <span data-ttu-id="3d893-228">如果您從兩個命令視窗執行編譯的範例，第二個副本將會擲回存取違規的例外狀況上呼叫<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>。</span><span class="sxs-lookup"><span data-stu-id="3d893-228">If you run the compiled example from two command windows, the second copy will throw an access violation exception on the call to <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>.</span></span> <span data-ttu-id="3d893-229">例外狀況時，和此範例會使用<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%29>方法多載來讀取和變更的權限所需的權限以等候事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-229">The exception is caught, and the example uses the <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%29> method overload to wait on the event with the rights needed to read and change the permissions.</span></span>  
+  
+ <span data-ttu-id="3d893-230">變更權限之後，事件會開啟在其上等候，並表示它所需的權限。</span><span class="sxs-lookup"><span data-stu-id="3d893-230">After the permissions are changed, the event is opened with the rights required to wait on it and signal it.</span></span> <span data-ttu-id="3d893-231">如果您是從第三個命令視窗執行編譯的範例，此範例會使用執行新的權限。</span><span class="sxs-lookup"><span data-stu-id="3d893-231">If you run the compiled example from a third command window, the example runs using the new permissions.</span></span>  
+  
+ [!code-cpp[System.Threading.EventWaitHandle.ctor named 5#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.EventWaitHandle.ctor named 5/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.EventWaitHandle.ctor named 5#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.EventWaitHandle.ctor named 5/CS/source.cs#1)]
+ [!code-vb[System.Threading.EventWaitHandle.ctor named 5#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.EventWaitHandle.ctor named 5/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="3d893-232">
+            <paramref name="name" /> 為空字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-232">
+              <paramref name="name" /> is an empty string.</span>
+          </span>
+          <span data-ttu-id="3d893-233">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-233">-or-</span>
+          </span>
+          <span data-ttu-id="3d893-234">
+            <paramref name="name" /> 的長度超過 260 個字元。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-234">
+              <paramref name="name" /> is longer than 260 characters.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="3d893-235">
+            <paramref name="name" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-235">
+              <paramref name="name" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">
+          <span data-ttu-id="3d893-236">具名系統事件不存在。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-236">The named system event does not exist.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="3d893-237">發生 Win32 錯誤。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-237">A Win32 error occurred.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.UnauthorizedAccessException">
+          <span data-ttu-id="3d893-238">具名事件存在，但是使用者並沒有使用它所需的安全性存取權。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-238">The named event exists, but the user does not have the security access required to use it.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">
+          <span data-ttu-id="3d893-239">需要完全信任立即呼叫者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-239">Requires full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="3d893-240">這個成員無法供部分信任或安全性透明程式碼。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-240">This member cannot be used by partially trusted or transparent code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenExisting">
+      <MemberSignature Language="C#" Value="public static System.Threading.EventWaitHandle OpenExisting (string name, System.Security.AccessControl.EventWaitHandleRights rights);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Threading.EventWaitHandle OpenExisting(string name, valuetype System.Security.AccessControl.EventWaitHandleRights rights) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.EventWaitHandle.OpenExisting(System.String,System.Security.AccessControl.EventWaitHandleRights)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function OpenExisting (name As String, rights As EventWaitHandleRights) As EventWaitHandle" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Threading::EventWaitHandle ^ OpenExisting(System::String ^ name, System::Security::AccessControl::EventWaitHandleRights rights);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.EventWaitHandle</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="rights" Type="System.Security.AccessControl.EventWaitHandleRights" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="3d893-241">要開啟的系統同步處理事件名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-241">The name of the system synchronization event to open.</span>
+          </span>
+        </param>
+        <param name="rights">
+          <span data-ttu-id="3d893-242">列舉值的位元組合，表示所需的安全性存取。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-242">A bitwise combination of the enumeration values that represent the desired security access.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3d893-243">使用所需的安全性存取權，開啟指定的具名同步處理事件 (如果已經存在)。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-243">Opens the specified named synchronization event, if it already exists, with the desired security access.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3d893-244">表示具名系統事件的物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-244">An object that represents the named system event.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3d893-245">`rights`參數必須包含<xref:System.Security.AccessControl.EventWaitHandleRights.Synchronize?displayProperty=nameWithType>旗標以允許的執行緒等待事件，而<xref:System.Security.AccessControl.EventWaitHandleRights.Modify?displayProperty=nameWithType>旗標以允許呼叫的執行緒<xref:System.Threading.EventWaitHandle.Set%2A>和<xref:System.Threading.EventWaitHandle.Reset%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="3d893-245">The `rights` parameter must include the <xref:System.Security.AccessControl.EventWaitHandleRights.Synchronize?displayProperty=nameWithType> flag to allow threads to wait on the event, and the <xref:System.Security.AccessControl.EventWaitHandleRights.Modify?displayProperty=nameWithType> flag to allow threads to call the <xref:System.Threading.EventWaitHandle.Set%2A> and <xref:System.Threading.EventWaitHandle.Reset%2A> methods.</span></span>  
+  
+ <span data-ttu-id="3d893-246"><xref:System.Threading.EventWaitHandle.OpenExisting%2A>方法嘗試開啟現有的具名的系統事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-246">The <xref:System.Threading.EventWaitHandle.OpenExisting%2A> method tries to open an existing named system event.</span></span> <span data-ttu-id="3d893-247">如果系統事件不存在，這個方法會擲回的例外狀況，而不是建立的系統事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-247">If the system event does not exist, this method throws an exception instead of creating the system event.</span></span> <span data-ttu-id="3d893-248">若要建立的系統事件不存在時，使用其中一種<xref:System.Threading.EventWaitHandle.%23ctor%2A>建構函式具有`name`參數。</span><span class="sxs-lookup"><span data-stu-id="3d893-248">To create the system event when it does not already exist, use one of the <xref:System.Threading.EventWaitHandle.%23ctor%2A> constructors that has a `name` parameter.</span></span>  
+  
+ <span data-ttu-id="3d893-249">使用相同的值，這個方法的多次呼叫`name`不一定會傳回相同<xref:System.Threading.EventWaitHandle>物件，即使傳回的物件代表相同的具名的系統事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-249">Multiple calls to this method that use the same value for `name` do not necessarily return the same <xref:System.Threading.EventWaitHandle> object, even though the objects that are returned represent the same named system event.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="3d893-250">下列程式碼範例示範具名的系統事件的跨處理序行為與存取控制安全性。</span><span class="sxs-lookup"><span data-stu-id="3d893-250">The following code example demonstrates the cross-process behavior of a named system event with access control security.</span></span> <span data-ttu-id="3d893-251">此範例會使用<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>方法多載來測試是否存在的具名事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-251">The example uses the <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29> method overload to test for the existence of a named event.</span></span>  
+  
+ <span data-ttu-id="3d893-252">如果事件不存在，就會建立使用的初始擁有權和拒絕目前使用者的權限，請使用事件，但讀取和變更的權限事件的權限會授與存取控制安全性。</span><span class="sxs-lookup"><span data-stu-id="3d893-252">If the event does not exist, it is created with initial ownership and access control security that denies the current user the right to use the event, but grants the right to read and change permissions on the event.</span></span>  
+  
+ <span data-ttu-id="3d893-253">如果您從兩個命令視窗執行編譯的範例，第二個副本將會擲回存取違規的例外狀況上呼叫<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>。</span><span class="sxs-lookup"><span data-stu-id="3d893-253">If you run the compiled example from two command windows, the second copy will throw an access violation exception on the call to <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>.</span></span> <span data-ttu-id="3d893-254">例外狀況時，和此範例會使用<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%29>方法多載來讀取和變更的權限所需的權限以等候事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-254">The exception is caught, and the example uses the <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%29> method overload to wait on the event with the rights needed to read and change the permissions.</span></span>  
+  
+ <span data-ttu-id="3d893-255">變更權限之後，事件會開啟在其上等候，並表示它所需的權限。</span><span class="sxs-lookup"><span data-stu-id="3d893-255">After the permissions are changed, the event is opened with the rights required to wait on it and signal it.</span></span> <span data-ttu-id="3d893-256">如果您是從第三個命令視窗執行編譯的範例，此範例會使用執行新的權限。</span><span class="sxs-lookup"><span data-stu-id="3d893-256">If you run the compiled example from a third command window, the example runs using the new permissions.</span></span>  
+  
+ [!code-cpp[System.Threading.EventWaitHandle.ctor named 5#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.EventWaitHandle.ctor named 5/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.EventWaitHandle.ctor named 5#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.EventWaitHandle.ctor named 5/CS/source.cs#1)]
+ [!code-vb[System.Threading.EventWaitHandle.ctor named 5#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.EventWaitHandle.ctor named 5/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="3d893-257">
+            <paramref name="name" /> 為空字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-257">
+              <paramref name="name" /> is an empty string.</span>
+          </span>
+          <span data-ttu-id="3d893-258">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-258">-or-</span>
+          </span>
+          <span data-ttu-id="3d893-259">
+            <paramref name="name" /> 的長度超過 260 個字元。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-259">
+              <paramref name="name" /> is longer than 260 characters.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="3d893-260">
+            <paramref name="name" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-260">
+              <paramref name="name" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">
+          <span data-ttu-id="3d893-261">具名系統事件不存在。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-261">The named system event does not exist.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="3d893-262">發生 Win32 錯誤。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-262">A Win32 error occurred.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.UnauthorizedAccessException">
+          <span data-ttu-id="3d893-263">具名事件存在，但使用者沒有所需的安全性存取權。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-263">The named event exists, but the user does not have the desired security access.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">
+          <span data-ttu-id="3d893-264">需要完全信任立即呼叫者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-264">Requires full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="3d893-265">這個成員無法供部分信任或安全性透明程式碼。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-265">This member cannot be used by partially trusted or transparent code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName="Reset">
+      <MemberSignature Language="C#" Value="public bool Reset ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Reset() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.EventWaitHandle.Reset" />
+      <MemberSignature Language="VB.NET" Value="Public Function Reset () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool Reset();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3d893-266">將事件的狀態設定為未收到信號，因而造成執行緒封鎖。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-266">Sets the state of the event to nonsignaled, causing threads to block.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3d893-267">如果作業成功，則為 <see langword="true" />，否則為 <see langword="false" /> .</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-267">
+              <see langword="true" /> if the operation succeeds; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="3d893-268">之前在這個 <see cref="M:System.Threading.WaitHandle.Close" /> 上呼叫 <see cref="T:System.Threading.EventWaitHandle" /> 方法。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-268">The <see cref="M:System.Threading.WaitHandle.Close" /> method was previously called on this <see cref="T:System.Threading.EventWaitHandle" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Set">
+      <MemberSignature Language="C#" Value="public bool Set ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Set() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.EventWaitHandle.Set" />
+      <MemberSignature Language="VB.NET" Value="Public Function Set () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool Set();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3d893-269">將事件的狀態設定為收到信號，允許一個或多個等待中的執行緒繼續執行。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-269">Sets the state of the event to signaled, allowing one or more waiting threads to proceed.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3d893-270">如果作業成功，則為 <see langword="true" />，否則為 <see langword="false" /> .</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-270">
+              <see langword="true" /> if the operation succeeds; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3d893-271">如<xref:System.Threading.EventWaitHandle>與<xref:System.Threading.EventResetMode.AutoReset?displayProperty=nameWithType>(包括<xref:System.Threading.AutoResetEvent>)、<xref:System.Threading.EventWaitHandle.Set%2A>方法會釋放單一執行緒。</span><span class="sxs-lookup"><span data-stu-id="3d893-271">For an <xref:System.Threading.EventWaitHandle> with <xref:System.Threading.EventResetMode.AutoReset?displayProperty=nameWithType> (including <xref:System.Threading.AutoResetEvent>), the <xref:System.Threading.EventWaitHandle.Set%2A> method releases a single thread.</span></span> <span data-ttu-id="3d893-272">如果有任何的等候中執行緒，等候控制代碼維持信號，直到執行緒嘗試等候，或直到它<xref:System.Threading.EventWaitHandle.Reset%2A>方法呼叫。</span><span class="sxs-lookup"><span data-stu-id="3d893-272">If there are no waiting threads, the wait handle remains signaled until a thread attempts to wait on it, or until its <xref:System.Threading.EventWaitHandle.Reset%2A> method is called.</span></span>  
+  
+> [!IMPORTANT]
+>  <span data-ttu-id="3d893-273">不保證，每次呼叫<xref:System.Threading.EventWaitHandle.Set%2A>方法會釋放執行緒<xref:System.Threading.EventWaitHandle>其重設模式是<xref:System.Threading.EventResetMode.AutoReset?displayProperty=nameWithType>。</span><span class="sxs-lookup"><span data-stu-id="3d893-273">There is no guarantee that every call to the <xref:System.Threading.EventWaitHandle.Set%2A> method will release a thread from an <xref:System.Threading.EventWaitHandle> whose reset mode is <xref:System.Threading.EventResetMode.AutoReset?displayProperty=nameWithType>.</span></span> <span data-ttu-id="3d893-274">如果兩個呼叫太接近，使第二次呼叫發生於之前已釋放執行緒，只有一個執行緒在釋出。</span><span class="sxs-lookup"><span data-stu-id="3d893-274">If two calls are too close together, so that the second call occurs before a thread has been released, only one thread is released.</span></span> <span data-ttu-id="3d893-275">就如同第二個呼叫並未發生。</span><span class="sxs-lookup"><span data-stu-id="3d893-275">It is as if the second call did not happen.</span></span> <span data-ttu-id="3d893-276">此外，如果<xref:System.Threading.EventWaitHandle.Set%2A>沒有等候的執行緒時，會呼叫和<xref:System.Threading.EventWaitHandle>已經發出信號，呼叫沒有任何作用。</span><span class="sxs-lookup"><span data-stu-id="3d893-276">Also, if <xref:System.Threading.EventWaitHandle.Set%2A> is called when there are no threads waiting and the <xref:System.Threading.EventWaitHandle> is already signaled, the call has no effect.</span></span>  
+  
+ <span data-ttu-id="3d893-277">如<xref:System.Threading.EventWaitHandle>與<xref:System.Threading.EventResetMode.ManualReset?displayProperty=nameWithType>(包括<xref:System.Threading.ManualResetEvent>)，則呼叫<xref:System.Threading.EventWaitHandle.Set%2A>方法會等候控制代碼保留在收到信號的狀態，直到其<xref:System.Threading.EventWaitHandle.Reset%2A>方法呼叫。</span><span class="sxs-lookup"><span data-stu-id="3d893-277">For an <xref:System.Threading.EventWaitHandle> with <xref:System.Threading.EventResetMode.ManualReset?displayProperty=nameWithType> (including <xref:System.Threading.ManualResetEvent>), calling the <xref:System.Threading.EventWaitHandle.Set%2A> method leaves the wait handle in a signaled state until its <xref:System.Threading.EventWaitHandle.Reset%2A> method is called.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="3d893-278">下列程式碼範例使用<xref:System.Threading.WaitHandle.SignalAndWait%28System.Threading.WaitHandle%2CSystem.Threading.WaitHandle%29>方法多載來允許主執行緒發出信號封鎖的執行緒，以及執行緒完成工作，然後等候。</span><span class="sxs-lookup"><span data-stu-id="3d893-278">The following code example uses the <xref:System.Threading.WaitHandle.SignalAndWait%28System.Threading.WaitHandle%2CSystem.Threading.WaitHandle%29> method overload to allow the main thread to signal a blocked thread and then wait until the thread finishes a task.</span></span>  
+  
+ <span data-ttu-id="3d893-279">範例啟動五個執行緒，並讓他們封鎖<xref:System.Threading.EventWaitHandle>以建立<xref:System.Threading.EventResetMode.AutoReset?displayProperty=nameWithType>旗標，然後再發行每一個執行緒時間，使用者按下 ENTER 鍵。</span><span class="sxs-lookup"><span data-stu-id="3d893-279">The example starts five threads and allows them to block on an <xref:System.Threading.EventWaitHandle> created with the <xref:System.Threading.EventResetMode.AutoReset?displayProperty=nameWithType> flag, then releases one thread each time the user presses the ENTER key.</span></span> <span data-ttu-id="3d893-280">此範例會排入佇列，另一個的五個執行緒，並釋放所有使用<xref:System.Threading.EventWaitHandle>以建立<xref:System.Threading.EventResetMode.ManualReset?displayProperty=nameWithType>旗標。</span><span class="sxs-lookup"><span data-stu-id="3d893-280">The example then queues another five threads and releases them all using an <xref:System.Threading.EventWaitHandle> created with the <xref:System.Threading.EventResetMode.ManualReset?displayProperty=nameWithType> flag.</span></span>  
+  
+ [!code-cpp[System.Threading.WaitHandle.SignalAndWait#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.WaitHandle.SignalAndWait/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.WaitHandle.SignalAndWait#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.WaitHandle.SignalAndWait/CS/source.cs#1)]
+ [!code-vb[System.Threading.WaitHandle.SignalAndWait#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.WaitHandle.SignalAndWait/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="3d893-281">之前在這個 <see cref="M:System.Threading.WaitHandle.Close" /> 上呼叫 <see cref="T:System.Threading.EventWaitHandle" /> 方法。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-281">The <see cref="M:System.Threading.WaitHandle.Close" /> method was previously called on this <see cref="T:System.Threading.EventWaitHandle" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SetAccessControl">
+      <MemberSignature Language="C#" Value="public void SetAccessControl (System.Security.AccessControl.EventWaitHandleSecurity eventSecurity);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetAccessControl(class System.Security.AccessControl.EventWaitHandleSecurity eventSecurity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.EventWaitHandle.SetAccessControl(System.Security.AccessControl.EventWaitHandleSecurity)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub SetAccessControl (eventSecurity As EventWaitHandleSecurity)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SetAccessControl(System::Security::AccessControl::EventWaitHandleSecurity ^ eventSecurity);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="eventSecurity" Type="System.Security.AccessControl.EventWaitHandleSecurity" />
+      </Parameters>
+      <Docs>
+        <param name="eventSecurity">
+          <span data-ttu-id="3d893-282">
+            <see cref="T:System.Security.AccessControl.EventWaitHandleSecurity" /> 物件，代表要套用至具名系統事件的存取控制安全性。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-282">An <see cref="T:System.Security.AccessControl.EventWaitHandleSecurity" /> object that represents the access control security to be applied to the named system event.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3d893-283">為具名系統事件設定存取控制安全性。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-283">Sets the access control security for a named system event.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3d893-284">使用者必須擁有<xref:System.Security.AccessControl.EventWaitHandleRights.ChangePermissions?displayProperty=nameWithType>呼叫這個方法和事件的權限必須是與開啟<xref:System.Security.AccessControl.EventWaitHandleRights.ChangePermissions?displayProperty=nameWithType>旗標。</span><span class="sxs-lookup"><span data-stu-id="3d893-284">The user must have <xref:System.Security.AccessControl.EventWaitHandleRights.ChangePermissions?displayProperty=nameWithType> rights to call this method, and the event must have been opened with the <xref:System.Security.AccessControl.EventWaitHandleRights.ChangePermissions?displayProperty=nameWithType> flag.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="3d893-285">下列程式碼範例示範具名的系統事件的跨處理序行為與存取控制安全性。</span><span class="sxs-lookup"><span data-stu-id="3d893-285">The following code example demonstrates the cross-process behavior of a named system event with access control security.</span></span> <span data-ttu-id="3d893-286">此範例會使用<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>方法多載來測試是否存在的具名事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-286">The example uses the <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29> method overload to test for the existence of a named event.</span></span>  
+  
+ <span data-ttu-id="3d893-287">如果事件不存在，就會建立使用的初始擁有權和拒絕目前使用者的權限，請使用事件，但讀取和變更的權限事件的權限會授與存取控制安全性。</span><span class="sxs-lookup"><span data-stu-id="3d893-287">If the event does not exist, it is created with initial ownership and access control security that denies the current user the right to use the event, but grants the right to read and change permissions on the event.</span></span>  
+  
+ <span data-ttu-id="3d893-288">如果您從兩個命令視窗執行編譯的範例，第二個副本將會擲回存取違規的例外狀況上呼叫<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>。</span><span class="sxs-lookup"><span data-stu-id="3d893-288">If you run the compiled example from two command windows, the second copy will throw an access violation exception on the call to <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>.</span></span> <span data-ttu-id="3d893-289">例外狀況時，和此範例會使用<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%29>方法多載來讀取和變更的權限所需的權限以等候事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-289">The exception is caught, and the example uses the <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%29> method overload to wait on the event with the rights needed to read and change the permissions.</span></span>  
+  
+ <span data-ttu-id="3d893-290">變更的權限，使用後<xref:System.Threading.EventWaitHandle.SetAccessControl%2A>開啟事件的方法，在其上等候，並表示它所需的權限。</span><span class="sxs-lookup"><span data-stu-id="3d893-290">After the permissions are changed, using the <xref:System.Threading.EventWaitHandle.SetAccessControl%2A> method, the event is opened with the rights required to wait on it and signal it.</span></span> <span data-ttu-id="3d893-291">如果您是從第三個命令視窗執行編譯的範例，此範例會使用執行新的權限。</span><span class="sxs-lookup"><span data-stu-id="3d893-291">If you run the compiled example from a third command window, the example runs using the new permissions.</span></span>  
+  
+ [!code-cpp[System.Threading.EventWaitHandle.ctor named 5#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.EventWaitHandle.ctor named 5/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.EventWaitHandle.ctor named 5#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.EventWaitHandle.ctor named 5/CS/source.cs#1)]
+ [!code-vb[System.Threading.EventWaitHandle.ctor named 5#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.EventWaitHandle.ctor named 5/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="3d893-292">
+            <paramref name="eventSecurity" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-292">
+              <paramref name="eventSecurity" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.UnauthorizedAccessException">
+          <span data-ttu-id="3d893-293">使用者沒有 <see cref="F:System.Security.AccessControl.EventWaitHandleRights.ChangePermissions" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-293">The user does not have <see cref="F:System.Security.AccessControl.EventWaitHandleRights.ChangePermissions" />.</span>
+          </span>
+          <span data-ttu-id="3d893-294">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-294">-or-</span>
+          </span>
+          <span data-ttu-id="3d893-295">並未以 <see cref="F:System.Security.AccessControl.EventWaitHandleRights.ChangePermissions" /> 開啟事件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-295">The event was not opened with <see cref="F:System.Security.AccessControl.EventWaitHandleRights.ChangePermissions" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.SystemException">
+          <span data-ttu-id="3d893-296">目前的 <see cref="T:System.Threading.EventWaitHandle" /> 物件不表示具名系統事件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-296">The current <see cref="T:System.Threading.EventWaitHandle" /> object does not represent a named system event.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="3d893-297">之前在這個 <see cref="M:System.Threading.WaitHandle.Close" /> 上呼叫 <see cref="T:System.Threading.EventWaitHandle" /> 方法。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-297">The <see cref="M:System.Threading.WaitHandle.Close" /> method was previously called on this <see cref="T:System.Threading.EventWaitHandle" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="TryOpenExisting">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3d893-298">開啟指定的具名同步處理事件 (如果已經存在)，並傳回值，指出作業是否成功。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-298">Opens a specified named synchronization event, if it already exists, and returns a value that indicates whether the operation succeeded.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="TryOpenExisting">
+      <MemberSignature Language="C#" Value="public static bool TryOpenExisting (string name, out System.Threading.EventWaitHandle result);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool TryOpenExisting(string name, [out] class System.Threading.EventWaitHandle&amp; result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.EventWaitHandle.TryOpenExisting(System.String,System.Threading.EventWaitHandle@)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function TryOpenExisting (name As String, ByRef result As EventWaitHandle) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool TryOpenExisting(System::String ^ name, [Runtime::InteropServices::Out] System::Threading::EventWaitHandle ^ % result);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="result" Type="System.Threading.EventWaitHandle&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="3d893-299">要開啟的系統同步處理事件名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-299">The name of the system synchronization event to open.</span>
+          </span>
+        </param>
+        <param name="result">
+          <span data-ttu-id="3d893-300">這個方法傳回時，如果呼叫成功，則包含 <see cref="T:System.Threading.EventWaitHandle" /> 物件，此物件代表具名同步處理事件，如果呼叫失敗，則為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-300">When this method returns, contains a <see cref="T:System.Threading.EventWaitHandle" /> object that represents the named synchronization event if the call succeeded, or <see langword="null" /> if the call failed.</span>
+          </span>
+          <span data-ttu-id="3d893-301">這個參數會被視為未初始化。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-301">This parameter is treated as uninitialized.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3d893-302">開啟指定的具名同步處理事件 (如果已經存在)，並傳回值，指出作業是否成功。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-302">Opens the specified named synchronization event, if it already exists, and returns a value that indicates whether the operation succeeded.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3d893-303">如果已成功開啟具名同步處理事件，則為 <see langword="true" />；否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-303">
+              <see langword="true" /> if the named synchronization event was opened successfully; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3d893-304">如果具名同步處理事件不存在，這個方法不會建立它。</span><span class="sxs-lookup"><span data-stu-id="3d893-304">If the named synchronization event does not exist, this method does not create it.</span></span> <span data-ttu-id="3d893-305">若要建立的系統事件不存在時，使用其中一種<xref:System.Threading.EventWaitHandle.%23ctor%2A>建構函式具有`name`參數。</span><span class="sxs-lookup"><span data-stu-id="3d893-305">To create the system event when it does not already exist, use one of the <xref:System.Threading.EventWaitHandle.%23ctor%2A> constructors that has a `name` parameter.</span></span>  
+  
+ <span data-ttu-id="3d893-306">如果您不確定具名同步處理事件是否存在，請使用這個方法多載，而不是<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29>方法多載，如果同步處理事件不存在，擲回例外狀況。</span><span class="sxs-lookup"><span data-stu-id="3d893-306">If you are uncertain whether a named synchronization event exists, use this method overload instead of the <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%29> method overload, which throws an exception if the synchronization event does not exist.</span></span>  
+  
+ <span data-ttu-id="3d893-307">這個方法多載就相當於呼叫<xref:System.Threading.EventWaitHandle.TryOpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%2CSystem.Threading.EventWaitHandle%40%29>方法多載，並指定<xref:System.Security.AccessControl.EventWaitHandleRights.Synchronize?displayProperty=nameWithType>和<xref:System.Security.AccessControl.EventWaitHandleRights.Modify?displayProperty=nameWithType>權限，使用位元 OR 運算結合。</span><span class="sxs-lookup"><span data-stu-id="3d893-307">This method overload is equivalent to calling the <xref:System.Threading.EventWaitHandle.TryOpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%2CSystem.Threading.EventWaitHandle%40%29> method overload and specifying <xref:System.Security.AccessControl.EventWaitHandleRights.Synchronize?displayProperty=nameWithType> and <xref:System.Security.AccessControl.EventWaitHandleRights.Modify?displayProperty=nameWithType> rights, combined by using the bitwise OR operation.</span></span> <span data-ttu-id="3d893-308">指定<xref:System.Security.AccessControl.EventWaitHandleRights.Synchronize?displayProperty=nameWithType>旗標可讓執行緒等候該具名的系統事件，並指定<xref:System.Security.AccessControl.EventWaitHandleRights.Modify?displayProperty=nameWithType>旗標可讓呼叫執行緒<xref:System.Threading.EventWaitHandle.Set%2A>和<xref:System.Threading.EventWaitHandle.Reset%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="3d893-308">Specifying the <xref:System.Security.AccessControl.EventWaitHandleRights.Synchronize?displayProperty=nameWithType> flag allows a thread to wait on the named system event, and specifying the <xref:System.Security.AccessControl.EventWaitHandleRights.Modify?displayProperty=nameWithType> flag allows a thread to call the <xref:System.Threading.EventWaitHandle.Set%2A> and <xref:System.Threading.EventWaitHandle.Reset%2A> methods.</span></span>  
+  
+ <span data-ttu-id="3d893-309">使用相同的值，這個方法的多次呼叫`name`不一定會傳回相同<xref:System.Threading.EventWaitHandle>物件，即使傳回的物件代表相同的具名的系統事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-309">Multiple calls to this method that use the same value for `name` do not necessarily return the same <xref:System.Threading.EventWaitHandle> object, even though the objects that are returned represent the same named system event.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="3d893-310">
+            <paramref name="name" /> 為空字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-310">
+              <paramref name="name" /> is an empty string.</span>
+          </span>
+          <span data-ttu-id="3d893-311">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-311">-or-</span>
+          </span>
+          <span data-ttu-id="3d893-312">
+            <paramref name="name" /> 的長度超過 260 個字元。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-312">
+              <paramref name="name" /> is longer than 260 characters.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="3d893-313">
+            <paramref name="name" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-313">
+              <paramref name="name" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="3d893-314">發生 Win32 錯誤。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-314">A Win32 error occurred.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.UnauthorizedAccessException">
+          <span data-ttu-id="3d893-315">具名事件存在，但使用者沒有所需的安全性存取權。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-315">The named event exists, but the user does not have the desired security access.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">
+          <span data-ttu-id="3d893-316">需要完全信任立即呼叫者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-316">requires full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="3d893-317">這個成員無法供部分信任或安全性透明程式碼。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-317">This member cannot be used by partially trusted or transparent code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName="TryOpenExisting">
+      <MemberSignature Language="C#" Value="public static bool TryOpenExisting (string name, System.Security.AccessControl.EventWaitHandleRights rights, out System.Threading.EventWaitHandle result);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool TryOpenExisting(string name, valuetype System.Security.AccessControl.EventWaitHandleRights rights, [out] class System.Threading.EventWaitHandle&amp; result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.EventWaitHandle.TryOpenExisting(System.String,System.Security.AccessControl.EventWaitHandleRights,System.Threading.EventWaitHandle@)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function TryOpenExisting (name As String, rights As EventWaitHandleRights, ByRef result As EventWaitHandle) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool TryOpenExisting(System::String ^ name, System::Security::AccessControl::EventWaitHandleRights rights, [Runtime::InteropServices::Out] System::Threading::EventWaitHandle ^ % result);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="rights" Type="System.Security.AccessControl.EventWaitHandleRights" />
+        <Parameter Name="result" Type="System.Threading.EventWaitHandle&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="3d893-318">要開啟的系統同步處理事件名稱。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-318">The name of the system synchronization event to open.</span>
+          </span>
+        </param>
+        <param name="rights">
+          <span data-ttu-id="3d893-319">列舉值的位元組合，表示所需的安全性存取。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-319">A bitwise combination of the enumeration values that represent the desired security access.</span>
+          </span>
+        </param>
+        <param name="result">
+          <span data-ttu-id="3d893-320">這個方法傳回時，如果呼叫成功，則包含 <see cref="T:System.Threading.EventWaitHandle" /> 物件，此物件代表具名同步處理事件，如果呼叫失敗，則為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-320">When this method returns, contains a <see cref="T:System.Threading.EventWaitHandle" /> object that represents the named synchronization event if the call succeeded, or <see langword="null" /> if the call failed.</span>
+          </span>
+          <span data-ttu-id="3d893-321">這個參數會被視為未初始化。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-321">This parameter is treated as uninitialized.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3d893-322">使用所需的安全性存取權，開啟指定的具名同步處理事件 (如果已經存在)，並傳回值，指出作業是否成功。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-322">Opens the specified named synchronization event, if it already exists, with the desired security access, and returns a value that indicates whether the operation succeeded.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3d893-323">如果已成功開啟具名同步處理事件，則為 <see langword="true" />；否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-323">
+              <see langword="true" /> if the named synchronization event was opened successfully; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3d893-324">如果具名同步處理事件不存在，這個方法不會建立它。</span><span class="sxs-lookup"><span data-stu-id="3d893-324">If the named synchronization event does not exist, this method does not create it.</span></span> <span data-ttu-id="3d893-325">若要建立的系統事件不存在時，使用其中一種<xref:System.Threading.EventWaitHandle.%23ctor%2A>建構函式具有`name`參數。</span><span class="sxs-lookup"><span data-stu-id="3d893-325">To create the system event when it does not already exist, use one of the <xref:System.Threading.EventWaitHandle.%23ctor%2A> constructors that has a `name` parameter.</span></span>  
+  
+ <span data-ttu-id="3d893-326">如果您不確定具名同步處理事件是否存在，請使用這個方法多載，而不是<xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%29>方法多載，如果同步處理事件不存在，擲回例外狀況。</span><span class="sxs-lookup"><span data-stu-id="3d893-326">If you are uncertain whether a named synchronization event exists, use this method overload instead of the <xref:System.Threading.EventWaitHandle.OpenExisting%28System.String%2CSystem.Security.AccessControl.EventWaitHandleRights%29> method overload, which throws an exception if the synchronization event does not exist.</span></span>  
+  
+ <span data-ttu-id="3d893-327">`rights`參數必須包含<xref:System.Security.AccessControl.EventWaitHandleRights.Synchronize?displayProperty=nameWithType>旗標以允許的執行緒等待事件，而<xref:System.Security.AccessControl.EventWaitHandleRights.Modify?displayProperty=nameWithType>旗標以允許呼叫的執行緒<xref:System.Threading.EventWaitHandle.Set%2A>和<xref:System.Threading.EventWaitHandle.Reset%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="3d893-327">The `rights` parameter must include the <xref:System.Security.AccessControl.EventWaitHandleRights.Synchronize?displayProperty=nameWithType> flag to allow threads to wait on the event, and the <xref:System.Security.AccessControl.EventWaitHandleRights.Modify?displayProperty=nameWithType> flag to allow threads to call the <xref:System.Threading.EventWaitHandle.Set%2A> and <xref:System.Threading.EventWaitHandle.Reset%2A> methods.</span></span>  
+  
+ <span data-ttu-id="3d893-328">使用相同的值，這個方法的多次呼叫`name`不一定會傳回相同<xref:System.Threading.EventWaitHandle>物件，即使傳回的物件代表相同的具名的系統事件。</span><span class="sxs-lookup"><span data-stu-id="3d893-328">Multiple calls to this method that use the same value for `name` do not necessarily return the same <xref:System.Threading.EventWaitHandle> object, even though the objects that are returned represent the same named system event.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="3d893-329">
+            <paramref name="name" /> 為空字串。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-329">
+              <paramref name="name" /> is an empty string.</span>
+          </span>
+          <span data-ttu-id="3d893-330">-或-</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-330">-or-</span>
+          </span>
+          <span data-ttu-id="3d893-331">
+            <paramref name="name" /> 的長度超過 260 個字元。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-331">
+              <paramref name="name" /> is longer than 260 characters.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="3d893-332">
+            <paramref name="name" /> 為 <see langword="null" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-332">
+              <paramref name="name" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="3d893-333">發生 Win32 錯誤。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-333">A Win32 error occurred.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.UnauthorizedAccessException">
+          <span data-ttu-id="3d893-334">具名事件存在，但使用者沒有所需的安全性存取權。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-334">The named event exists, but the user does not have the desired security access.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">
+          <span data-ttu-id="3d893-335">需要完全信任立即呼叫者。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-335">requires full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="3d893-336">這個成員無法供部分信任或安全性透明程式碼。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3d893-336">This member cannot be used by partially trusted or transparent code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

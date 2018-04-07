@@ -1,0 +1,1368 @@
+<Type Name="ReaderWriterLock" FullName="System.Threading.ReaderWriterLock">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="fc1a0c88765040869d8ad919aeb575e304c71bde" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public sealed class ReaderWriterLock : System.Runtime.ConstrainedExecution.CriticalFinalizerObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit ReaderWriterLock extends System.Runtime.ConstrainedExecution.CriticalFinalizerObject" />
+  <TypeSignature Language="DocId" Value="T:System.Threading.ReaderWriterLock" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class ReaderWriterLock&#xA;Inherits CriticalFinalizerObject" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ReaderWriterLock sealed : System::Runtime::ConstrainedExecution::CriticalFinalizerObject" />
+  <AssemblyInfo>
+    <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Threading</AssemblyName>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Runtime.ConstrainedExecution.CriticalFinalizerObject</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Runtime.InteropServices.ComVisible(true)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>
+      <span data-ttu-id="ab0c0-101">定義鎖定，它支援單一寫入器和多重讀取器。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="ab0c0-101">Defines a lock that supports single writers and multiple readers.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!IMPORTANT]
+>  <span data-ttu-id="ab0c0-102">[!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)] 擁有 <xref:System.Threading.ReaderWriterLockSlim> 和 <xref:System.Threading.ReaderWriterLock> 這兩個 Reader-Writer 鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-102">The [!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)] has two reader-writer locks, <xref:System.Threading.ReaderWriterLockSlim> and <xref:System.Threading.ReaderWriterLock>.</span></span> <span data-ttu-id="ab0c0-103">建議針對所有新的開發使用 <xref:System.Threading.ReaderWriterLockSlim>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-103"><xref:System.Threading.ReaderWriterLockSlim> is recommended for all new development.</span></span> <span data-ttu-id="ab0c0-104"><xref:System.Threading.ReaderWriterLockSlim> 類似於 <xref:System.Threading.ReaderWriterLock>，但是它有遞迴以及升級和降級鎖定狀態的簡化規則。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-104"><xref:System.Threading.ReaderWriterLockSlim> is similar to <xref:System.Threading.ReaderWriterLock>, but it has simplified rules for recursion and for upgrading and downgrading lock state.</span></span> <span data-ttu-id="ab0c0-105"><xref:System.Threading.ReaderWriterLockSlim> 可避免可能發生死結的許多情況。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-105"><xref:System.Threading.ReaderWriterLockSlim> avoids many cases of potential deadlock.</span></span> <span data-ttu-id="ab0c0-106">此外，<xref:System.Threading.ReaderWriterLockSlim> 的效能明顯優於 <xref:System.Threading.ReaderWriterLock>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-106">In addition, the performance of <xref:System.Threading.ReaderWriterLockSlim> is significantly better than <xref:System.Threading.ReaderWriterLock>.</span></span>  
+  
+ <span data-ttu-id="ab0c0-107"><xref:System.Threading.ReaderWriterLock> 用來同步處理資源的存取權。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-107"><xref:System.Threading.ReaderWriterLock> is used to synchronize access to a resource.</span></span> <span data-ttu-id="ab0c0-108">在任何時候，它可讓多重執行緒的並行讀取權限，或是單一執行緒的寫入權限。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-108">At any given time, it allows either concurrent read access for multiple threads, or write access for a single thread.</span></span> <span data-ttu-id="ab0c0-109">資源不常變更的情況下`ReaderWriterLock`提供更佳的輸送量，比簡單的其中一個-一次鎖定，例如<xref:System.Threading.Monitor>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-109">In a situation where a resource is changed infrequently, a `ReaderWriterLock` provides better throughput than a simple one-at-a-time lock, such as <xref:System.Threading.Monitor>.</span></span>  
+  
+ <span data-ttu-id="ab0c0-110">`ReaderWriterLock` 其中大部分的存取，則讀取、 寫入不頻繁和短時間內，效果最好。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-110">`ReaderWriterLock` works best where most accesses are reads, while writes are infrequent and of short duration.</span></span> <span data-ttu-id="ab0c0-111">多個讀取器的替代與單一寫入器，因此會讀取器或寫入器會封鎖長時間。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-111">Multiple readers alternate with single writers, so that neither readers nor writers are blocked for long periods.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="ab0c0-112">長期保留讀取鎖定或寫入器鎖定會影響其他執行緒。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-112">Holding reader locks or writer locks for long periods will starve other threads.</span></span> <span data-ttu-id="ab0c0-113">為了達到最佳效能，請考慮重建您的應用程式寫入的持續時間降至最低。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-113">For best performance, consider restructuring your application to minimize the duration of writes.</span></span>  
+  
+ <span data-ttu-id="ab0c0-114">執行緒可以保留讀取鎖定或寫入器鎖定，但不可同時在相同的時間。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-114">A thread can hold a reader lock or a writer lock, but not both at the same time.</span></span> <span data-ttu-id="ab0c0-115">而不是為了取得寫入器鎖定釋放讀取器的鎖定，您可以使用<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>和<xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-115">Instead of releasing a reader lock in order to acquire the writer lock, you can use <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A> and <xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A>.</span></span>  
+  
+ <span data-ttu-id="ab0c0-116">遞迴的鎖定要求增加上鎖定的鎖定計數。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-116">Recursive lock requests increase the lock count on a lock.</span></span>  
+  
+ <span data-ttu-id="ab0c0-117">是個別佇列讀取器和寫入器。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-117">Readers and writers are queued separately.</span></span> <span data-ttu-id="ab0c0-118">當執行緒釋放寫入器的鎖定時，那時讀取器佇列中等待的所有執行緒授都與讀取器鎖定。當這些讀取器鎖定的所有已發行下, 一個執行緒等候寫入器中排入佇列，如果任何，授與寫入器的鎖定，等等。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-118">When a thread releases the writer lock, all threads waiting in the reader queue at that instant are granted reader locks; when all of those reader locks have been released, the next thread waiting in the writer queue, if any, is granted the writer lock, and so on.</span></span> <span data-ttu-id="ab0c0-119">換句話說，`ReaderWriterLock`交替讀取器，集合和一個寫入器。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-119">In other words, `ReaderWriterLock` alternates between a collection of readers, and one writer.</span></span>  
+  
+ <span data-ttu-id="ab0c0-120">當寫入器佇列中的執行緒正在等候讀取器鎖定釋出時，要求新的讀取器鎖定的執行緒會累積讀取器佇列中。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-120">While a thread in the writer queue is waiting for active reader locks to be released, threads requesting new reader locks accumulate in the reader queue.</span></span> <span data-ttu-id="ab0c0-121">要求未獲授予，即使它們無法與現有的讀取器鎖定持有者; 共用的並行存取這有助於保護針對讀取者無限期發生封鎖情形等的寫入器。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-121">Their requests are not granted, even though they could share concurrent access with existing reader-lock holders; this helps protect writers against indefinite blockage by readers.</span></span>  
+  
+ <span data-ttu-id="ab0c0-122">大部分的方法上取得鎖定`ReaderWriterLock`接受逾時值。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-122">Most methods for acquiring locks on a `ReaderWriterLock` accept time-out values.</span></span> <span data-ttu-id="ab0c0-123">若要避免死結，應用程式中的使用逾時。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-123">Use time-outs to avoid deadlocks in your application.</span></span> <span data-ttu-id="ab0c0-124">比方說，執行緒可能會取得一個資源寫入器鎖定，而且然後要求第二個資源; 讀取器鎖定在此同時，另一個執行緒可能取得寫入器鎖定，第二個資源，並要求在第一個讀取器的鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-124">For example, a thread might acquire the writer lock on one resource and then request a reader lock on a second resource; in the meantime, another thread might acquire the writer lock on the second resource, and request a reader lock on the first.</span></span> <span data-ttu-id="ab0c0-125">除非使用逾時，執行緒會鎖死。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-125">Unless time-outs are used, the threads deadlock.</span></span>  
+  
+ <span data-ttu-id="ab0c0-126">如果逾時間隔到期且未被授與鎖定要求，方法會傳回控制項至呼叫的執行緒所擲回<xref:System.ApplicationException>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-126">If the time-out interval expires and the lock request has not been granted, the method returns control to the calling thread by throwing an <xref:System.ApplicationException>.</span></span> <span data-ttu-id="ab0c0-127">執行緒可以捕捉此例外狀況，並判斷要採取的後續動作。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-127">A thread can catch this exception and determine what action to take next.</span></span>  
+  
+ <span data-ttu-id="ab0c0-128">逾時值被以毫秒為單位。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-128">Time-outs are expressed in milliseconds.</span></span> <span data-ttu-id="ab0c0-129">如果您使用<xref:System.TimeSpan?displayProperty=nameWithType>指定逾時，所使用的值是由表示整數毫秒總數<xref:System.TimeSpan>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-129">If you use a <xref:System.TimeSpan?displayProperty=nameWithType> to specify the time-out, the value used is the total number of whole milliseconds represented by the <xref:System.TimeSpan>.</span></span> <span data-ttu-id="ab0c0-130">下表顯示有效的逾時值以毫秒為單位。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-130">The following table shows the valid time-out values in milliseconds.</span></span>  
+  
+|<span data-ttu-id="ab0c0-131">值</span><span class="sxs-lookup"><span data-stu-id="ab0c0-131">Value</span></span>|<span data-ttu-id="ab0c0-132">描述</span><span class="sxs-lookup"><span data-stu-id="ab0c0-132">Description</span></span>|  
+|-----------|-----------------|  
+|<span data-ttu-id="ab0c0-133">-1</span><span class="sxs-lookup"><span data-stu-id="ab0c0-133">-1</span></span>|<span data-ttu-id="ab0c0-134">執行緒等候，直到鎖定，則不論花費的時間。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-134">The thread waits until the lock is acquired, regardless of how long it takes.</span></span> <span data-ttu-id="ab0c0-135">指定的整數逾時、 常數的方法<xref:System.Threading.Timeout.Infinite>可用。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-135">For methods that specify integer time-outs, the constant <xref:System.Threading.Timeout.Infinite> can be used.</span></span>|  
+|<span data-ttu-id="ab0c0-136">0</span><span class="sxs-lookup"><span data-stu-id="ab0c0-136">0</span></span>|<span data-ttu-id="ab0c0-137">執行緒不會等候取得鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-137">The thread does not wait to acquire the lock.</span></span> <span data-ttu-id="ab0c0-138">如果無法立即取得鎖定，則方法傳回。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-138">If the lock cannot be acquired immediately, the method returns.</span></span>|  
+|<span data-ttu-id="ab0c0-139">>0</span><span class="sxs-lookup"><span data-stu-id="ab0c0-139">>0</span></span>|<span data-ttu-id="ab0c0-140">要等候的毫秒數。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-140">The number of milliseconds to wait.</span></span>|  
+  
+ <span data-ttu-id="ab0c0-141">-1，除了不允許負值。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-141">With the exception of -1, negative time-out values are not allowed.</span></span> <span data-ttu-id="ab0c0-142">如果您指定-1 以外的負數的整數，改為使用零的逾時值。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-142">If you specify a negative integer other than -1, a time-out value of zero is used instead.</span></span> <span data-ttu-id="ab0c0-143">（亦即，方法會傳回而不要等候，如果無法立即取得鎖定。）如果您指定<xref:System.TimeSpan>表示毫秒-1，以外的負數<xref:System.ArgumentOutOfRangeException>就會擲回。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-143">(That is, the method returns without waiting, if the lock cannot be acquired immediately.) If you specify a <xref:System.TimeSpan> that represents a negative number of milliseconds other than -1, <xref:System.ArgumentOutOfRangeException> is thrown.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="ab0c0-144">下列範例示範如何使用<xref:System.Threading.ReaderWriterLock>若要保護的共用的資源，整數值，名為`resource`，也就是同時讀取和寫入專屬的多個執行緒。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-144">The following example demonstrates how to use a <xref:System.Threading.ReaderWriterLock> to protect a shared resource, an integer value named `resource`, that is read concurrently and written exclusively by multiple threads.</span></span> <span data-ttu-id="ab0c0-145">請注意，<xref:System.Threading.ReaderWriterLock>宣告類別層級，因此它會顯示所有執行緒。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-145">Note that the <xref:System.Threading.ReaderWriterLock> is declared at the class level so that it is visible to all threads.</span></span>  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.ReaderWriterLock#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#1)]
+ [!code-vb[System.Threading.ReaderWriterLock#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+    <threadsafe>
+      <span data-ttu-id="ab0c0-146">此型別具備執行緒安全。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="ab0c0-146">This type is thread safe.</span>
+      </span>
+    </threadsafe>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ReaderWriterLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ReaderWriterLock();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="ab0c0-147">初始化 <see cref="T:System.Threading.ReaderWriterLock" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-147">Initializes a new instance of the <see cref="T:System.Threading.ReaderWriterLock" /> class.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="ab0c0-148">下列程式碼範例示範如何建立 <xref:System.Threading.ReaderWriterLock> 類別的新執行個體。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-148">The following code example demonstrates how to create a new instance of the <xref:System.Threading.ReaderWriterLock> class.</span></span>  
+  
+ <span data-ttu-id="ab0c0-149">這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-149">This code is part of a larger example provided for the <xref:System.Threading.ReaderWriterLock> class.</span></span>  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="AcquireReaderLock">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="ab0c0-150">取得讀取器的鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-150">Acquires a reader lock.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="AcquireReaderLock">
+      <MemberSignature Language="C#" Value="public void AcquireReaderLock (int millisecondsTimeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AcquireReaderLock(int32 millisecondsTimeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.AcquireReaderLock(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub AcquireReaderLock (millisecondsTimeout As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AcquireReaderLock(int millisecondsTimeout);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="millisecondsTimeout" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="millisecondsTimeout">
+          <span data-ttu-id="ab0c0-151">逾時以毫秒為單位。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-151">The time-out in milliseconds.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="ab0c0-152">使用逾時值 <see cref="T:System.Int32" /> 取得讀取器的鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-152">Acquires a reader lock, using an <see cref="T:System.Int32" /> value for the time-out.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ab0c0-153"><xref:System.Threading.ReaderWriterLock.AcquireReaderLock%2A> 如果在不同的執行緒寫入器的鎖定，或至少一個執行緒正在等候寫入器的鎖定封鎖。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-153"><xref:System.Threading.ReaderWriterLock.AcquireReaderLock%2A> blocks if a different thread has the writer lock, or if at least one thread is waiting for the writer lock.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="ab0c0-154">如果目前執行緒已寫入器的鎖定，沒有讀取器鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-154">If the current thread already has the writer lock, no reader lock is acquired.</span></span> <span data-ttu-id="ab0c0-155">相反地，寫入器的鎖定上的鎖定計數會遞增。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-155">Instead, the lock count on the writer lock is incremented.</span></span> <span data-ttu-id="ab0c0-156">這可防止在其本身的寫入器鎖定上封鎖執行緒。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-156">This prevents a thread from blocking on its own writer lock.</span></span> <span data-ttu-id="ab0c0-157">結果是完全呼叫相同<xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>，以及額外的呼叫<xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>釋放寫入器鎖定時，就需要。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-157">The result is exactly the same as calling <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>, and an additional call to <xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A> is required when releasing the writer lock.</span></span>  
+  
+ <span data-ttu-id="ab0c0-158">`AcquireReaderLock` 支援遞迴的讀取器鎖定要求。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-158">`AcquireReaderLock` supports recursive reader-lock requests.</span></span> <span data-ttu-id="ab0c0-159">也就是說，執行緒可以呼叫 AcquireReaderLock 多次，這在每次增加的鎖定計數。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-159">That is, a thread can call AcquireReaderLock multiple times, which increments the lock count each time.</span></span> <span data-ttu-id="ab0c0-160">您必須呼叫<xref:System.Threading.ReaderWriterLock.ReleaseReaderLock%2A>一次針對每次呼叫`AcquireReaderLock`。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-160">You must call <xref:System.Threading.ReaderWriterLock.ReleaseReaderLock%2A> once for each time you call `AcquireReaderLock`.</span></span> <span data-ttu-id="ab0c0-161">或者，您可以呼叫<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>減少鎖定計數為零立即。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-161">Alternatively, you can call <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> to reduce the lock count to zero immediately.</span></span>  
+  
+ <span data-ttu-id="ab0c0-162">遞迴的鎖定要求會一律立即授與，而不會讓讀取器佇列中要求的執行緒。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-162">Recursive lock requests are always granted immediately, without placing the requesting thread in the reader queue.</span></span> <span data-ttu-id="ab0c0-163">遞迴鎖定謹慎使用，以避免長時間封鎖寫入器鎖定要求。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-163">Use recursive locks with caution, to avoid blocking writer-lock requests for long periods.</span></span>  
+  
+ <span data-ttu-id="ab0c0-164">有效的逾時值，請參閱<xref:System.Threading.ReaderWriterLock>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-164">For valid time-out values, see <xref:System.Threading.ReaderWriterLock>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="ab0c0-165">下列程式碼範例示範如何取得及釋放讀取器的鎖定，以及如何處理時要求逾時擲回的例外狀況。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-165">The following code example shows how to acquire and release a reader lock, and how to handle the exception thrown when a request times out.</span></span>  
+  
+ <span data-ttu-id="ab0c0-166">這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-166">This code is part of a larger example provided for the <xref:System.Threading.ReaderWriterLock> class.</span></span>  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#3)]
+[!code-csharp[System.Threading.ReaderWriterLock#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#3)]
+[!code-vb[System.Threading.ReaderWriterLock#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#3)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">
+          <span data-ttu-id="ab0c0-167">
+            <paramref name="millisecondsTimeout" /> 在授與鎖定要求前過期。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-167">
+              <paramref name="millisecondsTimeout" /> expires before the lock request is granted.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="AcquireReaderLock">
+      <MemberSignature Language="C#" Value="public void AcquireReaderLock (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AcquireReaderLock(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.AcquireReaderLock(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub AcquireReaderLock (timeout As TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AcquireReaderLock(TimeSpan timeout);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">
+          <span data-ttu-id="ab0c0-168">
+            <see langword="TimeSpan" />，指定逾時期間。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-168">A <see langword="TimeSpan" /> specifying the time-out period.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="ab0c0-169">使用逾時值 <see cref="T:System.TimeSpan" /> 取得讀取器的鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-169">Acquires a reader lock, using a <see cref="T:System.TimeSpan" /> value for the time-out.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ab0c0-170"><xref:System.Threading.ReaderWriterLock.AcquireReaderLock%2A> 如果在不同的執行緒寫入器的鎖定，或至少一個執行緒正在等候寫入器的鎖定封鎖。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-170"><xref:System.Threading.ReaderWriterLock.AcquireReaderLock%2A> blocks if a different thread has the writer lock, or if at least one thread is waiting for the writer lock.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="ab0c0-171">如果目前執行緒已寫入器的鎖定，沒有讀取器鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-171">If the current thread already has the writer lock, no reader lock is acquired.</span></span> <span data-ttu-id="ab0c0-172">相反地，寫入器的鎖定上的鎖定計數會遞增。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-172">Instead, the lock count on the writer lock is incremented.</span></span> <span data-ttu-id="ab0c0-173">這可防止在其本身的寫入器鎖定上封鎖執行緒。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-173">This prevents a thread from blocking on its own writer lock.</span></span> <span data-ttu-id="ab0c0-174">結果是完全呼叫相同<xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>，以及額外的呼叫<xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>釋放寫入器鎖定時，就需要。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-174">The result is exactly the same as calling <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>, and an additional call to <xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A> is required when releasing the writer lock.</span></span>  
+  
+ <span data-ttu-id="ab0c0-175">`AcquireReaderLock` 支援遞迴的讀取器鎖定要求。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-175">`AcquireReaderLock` supports recursive reader-lock requests.</span></span> <span data-ttu-id="ab0c0-176">也就是說，執行緒可以呼叫 AcquireReaderLock 多次，這在每次增加的鎖定計數。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-176">That is, a thread can call AcquireReaderLock multiple times, which increments the lock count each time.</span></span> <span data-ttu-id="ab0c0-177">您必須呼叫<xref:System.Threading.ReaderWriterLock.ReleaseReaderLock%2A>一次針對每次呼叫`AcquireReaderLock`。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-177">You must call <xref:System.Threading.ReaderWriterLock.ReleaseReaderLock%2A> once for each time you call `AcquireReaderLock`.</span></span> <span data-ttu-id="ab0c0-178">或者，您可以呼叫<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>減少鎖定計數為零立即。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-178">Alternatively, you can call <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> to reduce the lock count to zero immediately.</span></span>  
+  
+ <span data-ttu-id="ab0c0-179">遞迴的鎖定要求會一律立即授與，而不會讓讀取器佇列中要求的執行緒。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-179">Recursive lock requests are always granted immediately, without placing the requesting thread in the reader queue.</span></span> <span data-ttu-id="ab0c0-180">遞迴鎖定謹慎使用，以避免長時間封鎖寫入器鎖定要求。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-180">Use recursive locks with caution, to avoid blocking writer-lock requests for long periods.</span></span>  
+  
+ <span data-ttu-id="ab0c0-181">有效的逾時值，請參閱<xref:System.Threading.ReaderWriterLock>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-181">For valid time-out values, see <xref:System.Threading.ReaderWriterLock>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">
+          <span data-ttu-id="ab0c0-182">
+            <paramref name="timeout" /> 在授與鎖定要求前過期。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-182">
+              <paramref name="timeout" /> expires before the lock request is granted.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="ab0c0-183">
+            <paramref name="timeout" /> 可以指定 -1 毫秒以外的負值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-183">
+              <paramref name="timeout" /> specifies a negative value other than -1 milliseconds.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="AcquireWriterLock">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="ab0c0-184">取得寫入器的鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-184">Acquires the writer lock.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="AcquireWriterLock">
+      <MemberSignature Language="C#" Value="public void AcquireWriterLock (int millisecondsTimeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AcquireWriterLock(int32 millisecondsTimeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.AcquireWriterLock(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub AcquireWriterLock (millisecondsTimeout As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AcquireWriterLock(int millisecondsTimeout);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="millisecondsTimeout" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="millisecondsTimeout">
+          <span data-ttu-id="ab0c0-185">逾時以毫秒為單位。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-185">The time-out in milliseconds.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="ab0c0-186">使用逾時值 <see cref="T:System.Int32" /> 取得寫入器的鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-186">Acquires the writer lock, using an <see cref="T:System.Int32" /> value for the time-out.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ab0c0-187">這個方法會封鎖，如果另一個執行緒讀取器的鎖定或寫入器鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-187">This method blocks if another thread has a reader lock or writer lock.</span></span> <span data-ttu-id="ab0c0-188">如需寫入器的鎖定會與多個並行讀取器鎖定交替出現的方式的說明，請參閱<xref:System.Threading.ReaderWriterLock>類別。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-188">For a description of the way the writer lock alternates with multiple concurrent reader locks, see the <xref:System.Threading.ReaderWriterLock> class.</span></span>  
+  
+ <span data-ttu-id="ab0c0-189">已讀取器的鎖定的執行緒可以取得寫入器鎖定在兩種方式之一： 釋放讀取鎖定，然後再呼叫<xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>，或藉由呼叫<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-189">A thread that already has a reader lock can acquire the writer lock in one of two ways: by releasing the reader lock before calling <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>, or by calling <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>.</span></span>  
+  
+> [!CAUTION]
+>  <span data-ttu-id="ab0c0-190">如果呼叫執行緒`AcquireWriterLock`時仍有讀取器的鎖定，它會封鎖讀取器鎖定上; 如果指定無限逾時，就會鎖死的執行緒。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-190">If a thread calls `AcquireWriterLock` while it still has a reader lock, it will block on its own reader lock; if an infinite time-out is specified, the thread will deadlock.</span></span> <span data-ttu-id="ab0c0-191">若要避免這類死結，請使用<xref:System.Threading.ReaderWriterLock.IsReaderLockHeld%2A>來判斷目前的執行緒是否已有讀取器的鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-191">To avoid such deadlocks, use <xref:System.Threading.ReaderWriterLock.IsReaderLockHeld%2A> to determine whether the current thread already has a reader lock.</span></span>  
+  
+ <span data-ttu-id="ab0c0-192">`AcquireWriterLock` 支援遞迴的寫入器鎖定要求。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-192">`AcquireWriterLock` supports recursive writer-lock requests.</span></span> <span data-ttu-id="ab0c0-193">也就是說，執行緒可以呼叫`AcquireWriterLock`許多次，其中的鎖定計數遞增每一次。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-193">That is, a thread can call `AcquireWriterLock` multiple times, which increments the lock count each time.</span></span> <span data-ttu-id="ab0c0-194">您必須呼叫<xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>一次針對每次呼叫`AcquireWriterLock`。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-194">You must call <xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A> once for each time you call `AcquireWriterLock`.</span></span> <span data-ttu-id="ab0c0-195">或者，您可以呼叫<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>減少鎖定計數為零立即。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-195">Alternatively, you can call <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> to reduce the lock count to zero immediately.</span></span>  
+  
+ <span data-ttu-id="ab0c0-196">遞迴的鎖定要求會一律立即授與，而不會讓寫入器佇列中要求的執行緒。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-196">Recursive lock requests are always granted immediately, without placing the requesting thread in the writer queue.</span></span>  
+  
+ <span data-ttu-id="ab0c0-197">有效的逾時值，請參閱<xref:System.Threading.ReaderWriterLock>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-197">For valid time-out values, see <xref:System.Threading.ReaderWriterLock>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="ab0c0-198">下列程式碼範例示範如何取得並發行寫入器鎖定，以及如何處理時要求逾時擲回的例外狀況。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-198">The following code example shows how to acquire and release a writer lock, and how to handle the exception thrown when a request times out.</span></span>  
+  
+ <span data-ttu-id="ab0c0-199">這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-199">This code is part of a larger example provided for the <xref:System.Threading.ReaderWriterLock> class.</span></span>  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#4](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#4)]
+[!code-csharp[System.Threading.ReaderWriterLock#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#4)]
+[!code-vb[System.Threading.ReaderWriterLock#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#4)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">
+          <span data-ttu-id="ab0c0-200">
+            <paramref name="timeout" /> 在授與鎖定要求前過期。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-200">
+              <paramref name="timeout" /> expires before the lock request is granted.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="AcquireWriterLock">
+      <MemberSignature Language="C#" Value="public void AcquireWriterLock (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AcquireWriterLock(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.AcquireWriterLock(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub AcquireWriterLock (timeout As TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AcquireWriterLock(TimeSpan timeout);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">
+          <span data-ttu-id="ab0c0-201">
+            <see langword="TimeSpan" />，指定逾時期間。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-201">The <see langword="TimeSpan" /> specifying the time-out period.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="ab0c0-202">使用逾時值 <see cref="T:System.TimeSpan" /> 取得寫入器的鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-202">Acquires the writer lock, using a <see cref="T:System.TimeSpan" /> value for the time-out.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ab0c0-203">這個方法會封鎖，如果另一個執行緒讀取器的鎖定或寫入器鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-203">This method blocks if another thread has a reader lock or writer lock.</span></span> <span data-ttu-id="ab0c0-204">如需寫入器的鎖定會與多個並行讀取器鎖定交替出現的方式的說明，請參閱<xref:System.Threading.ReaderWriterLock>類別。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-204">For a description of the way the writer lock alternates with multiple concurrent reader locks, see the <xref:System.Threading.ReaderWriterLock> class.</span></span>  
+  
+ <span data-ttu-id="ab0c0-205">已讀取器的鎖定的執行緒可以取得寫入器鎖定在兩種方式之一： 釋放讀取鎖定，然後再呼叫<xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>，或藉由呼叫<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-205">A thread that already has a reader lock can acquire the writer lock in one of two ways: by releasing the reader lock before calling <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>, or by calling <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>.</span></span>  
+  
+> [!CAUTION]
+>  <span data-ttu-id="ab0c0-206">如果呼叫執行緒`AcquireWriterLock`時仍有讀取器的鎖定，它會封鎖讀取器鎖定上; 如果指定無限逾時，就會鎖死的執行緒。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-206">If a thread calls `AcquireWriterLock` while it still has a reader lock, it will block on its own reader lock; if an infinite time-out is specified, the thread will deadlock.</span></span> <span data-ttu-id="ab0c0-207">若要避免這類死結，請使用<xref:System.Threading.ReaderWriterLock.IsReaderLockHeld%2A>來判斷目前的執行緒是否已有讀取器的鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-207">To avoid such deadlocks, use <xref:System.Threading.ReaderWriterLock.IsReaderLockHeld%2A> to determine whether the current thread already has a reader lock.</span></span>  
+  
+ <span data-ttu-id="ab0c0-208">`AcquireWriterLock` 支援遞迴的寫入器鎖定要求。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-208">`AcquireWriterLock` supports recursive writer-lock requests.</span></span> <span data-ttu-id="ab0c0-209">也就是說，執行緒可以呼叫`AcquireWriterLock`許多次，其中的鎖定計數遞增每一次。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-209">That is, a thread can call `AcquireWriterLock` multiple times, which increments the lock count each time.</span></span> <span data-ttu-id="ab0c0-210">您必須呼叫<xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>一次針對每次呼叫`AcquireWriterLock`。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-210">You must call <xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A> once for each time you call `AcquireWriterLock`.</span></span> <span data-ttu-id="ab0c0-211">或者，您可以呼叫<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>減少鎖定計數為零立即。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-211">Alternatively, you can call <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> to reduce the lock count to zero immediately.</span></span>  
+  
+ <span data-ttu-id="ab0c0-212">遞迴的鎖定要求會一律立即授與，而不會讓寫入器佇列中要求的執行緒。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-212">Recursive lock requests are always granted immediately, without placing the requesting thread in the writer queue.</span></span>  
+  
+ <span data-ttu-id="ab0c0-213">有效的逾時值，請參閱<xref:System.Threading.ReaderWriterLock>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-213">For valid time-out values, see <xref:System.Threading.ReaderWriterLock>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">
+          <span data-ttu-id="ab0c0-214">
+            <paramref name="timeout" /> 在授與鎖定要求前過期。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-214">
+              <paramref name="timeout" /> expires before the lock request is granted.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="ab0c0-215">
+            <paramref name="timeout" /> 可以指定 -1 毫秒以外的負值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-215">
+              <paramref name="timeout" /> specifies a negative value other than -1 milliseconds.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="AnyWritersSince">
+      <MemberSignature Language="C#" Value="public bool AnyWritersSince (int seqNum);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool AnyWritersSince(int32 seqNum) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.AnyWritersSince(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Function AnyWritersSince (seqNum As Integer) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool AnyWritersSince(int seqNum);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="seqNum" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="seqNum">
+          <span data-ttu-id="ab0c0-216">序號。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-216">The sequence number.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="ab0c0-217">指示取得序號之後有無將寫入器鎖定授與至任何執行緒。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-217">Indicates whether the writer lock has been granted to any thread since the sequence number was obtained.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="ab0c0-218">如果取得序號之後有將寫入器鎖定授與至任何執行緒，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-218">
+              <see langword="true" /> if the writer lock has been granted to any thread since the sequence number was obtained; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ab0c0-219">您可以使用<xref:System.Threading.ReaderWriterLock.WriterSeqNum%2A>和`AnyWritersSince`改善應用程式效能。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-219">You can use <xref:System.Threading.ReaderWriterLock.WriterSeqNum%2A> and `AnyWritersSince` to improve application performance.</span></span> <span data-ttu-id="ab0c0-220">例如，執行緒可能會快取保留讀取鎖定時取得的資訊。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-220">For example, a thread might cache the information it obtains while holding a reader lock.</span></span> <span data-ttu-id="ab0c0-221">釋出和更新版本重新取得鎖定之後, 可以使用執行緒`AnyWritersSince`來判斷是否其他執行緒的資源寫入暫時; 如果沒有，可以使用快取的資訊。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-221">After releasing and later reacquiring the lock, the thread can use `AnyWritersSince` to determine whether other threads have written to the resource in the interim; if not, the cached information can be used.</span></span> <span data-ttu-id="ab0c0-222">這個技術非常有用是高度耗費資源; 讀取鎖定所保護的資訊例如，執行資料庫查詢。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-222">This technique is useful where reading the information protected by the lock is expensive; for example, running a database query.</span></span>  
+  
+ <span data-ttu-id="ab0c0-223">呼叫端必須寫入器鎖定或讀取器鎖定保留順序，序號才能發揮作用。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-223">The caller must be holding a reader lock or a writer lock in order for the sequence number to be useful.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="ab0c0-224">下列程式碼範例示範如何使用<xref:System.Threading.ReaderWriterLock.AnyWritersSince%2A>方法和<xref:System.Threading.ReaderWriterLock.WriterSeqNum%2A>屬性來判斷另一個執行緒是否已受保護的資源寫入器鎖定，因為目前的執行緒上一次保留寫入器的鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-224">The following code example shows how to use the <xref:System.Threading.ReaderWriterLock.AnyWritersSince%2A> method and the <xref:System.Threading.ReaderWriterLock.WriterSeqNum%2A> property to determine whether another thread acquired the writer lock on the protected resource since the current thread last held the writer lock.</span></span>  
+  
+ <span data-ttu-id="ab0c0-225">這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-225">This code is part of a larger example provided for the <xref:System.Threading.ReaderWriterLock> class.</span></span>  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#6](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#6)]
+[!code-csharp[System.Threading.ReaderWriterLock#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#6)]
+[!code-vb[System.Threading.ReaderWriterLock#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#6)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DowngradeFromWriterLock">
+      <MemberSignature Language="C#" Value="public void DowngradeFromWriterLock (ref System.Threading.LockCookie lockCookie);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void DowngradeFromWriterLock(valuetype System.Threading.LockCookie&amp; lockCookie) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.DowngradeFromWriterLock(System.Threading.LockCookie@)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub DowngradeFromWriterLock (ByRef lockCookie As LockCookie)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void DowngradeFromWriterLock(System::Threading::LockCookie % lockCookie);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="lockCookie" Type="System.Threading.LockCookie&amp;" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="lockCookie">
+          <span data-ttu-id="ab0c0-226">
+            <see cref="T:System.Threading.LockCookie" /> 所傳回的 <see cref="M:System.Threading.ReaderWriterLock.UpgradeToWriterLock(System.Int32)" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-226">A <see cref="T:System.Threading.LockCookie" /> returned by <see cref="M:System.Threading.ReaderWriterLock.UpgradeToWriterLock(System.Int32)" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="ab0c0-227">將執行緒的鎖定狀態還原到呼叫 <see cref="M:System.Threading.ReaderWriterLock.UpgradeToWriterLock(System.Int32)" /> 之前的狀態。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-227">Restores the lock status of the thread to what it was before <see cref="M:System.Threading.ReaderWriterLock.UpgradeToWriterLock(System.Int32)" /> was called.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ab0c0-228"><xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A> 釋放寫入器的鎖定，不論遞迴鎖定計數，並還原已由執行緒持有然後再升級至寫入器鎖定的讀取器鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-228"><xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A> releases the writer lock, regardless of the recursive lock count, and restores the reader lock that was held by the thread before upgrading to the writer lock.</span></span> <span data-ttu-id="ab0c0-229">在讀取器鎖定的鎖定計數就會還原。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-229">The lock count on the reader lock is restored.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="ab0c0-230">`DowngradeFromWriterLock` 接受<xref:System.Threading.LockCookie>藉由呼叫取得<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-230">`DowngradeFromWriterLock` accepts a <xref:System.Threading.LockCookie> obtained by calling <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>.</span></span> <span data-ttu-id="ab0c0-231">請勿使用`LockCookie`傳回<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-231">Do not use a `LockCookie` returned by <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>.</span></span>  
+  
+ <span data-ttu-id="ab0c0-232">執行緒不會封鎖寫入器的鎖定，從降級時，即使其他執行緒正在等候寫入器的鎖定，因為當使用者放開寫入器鎖定授與所有的讀取器鎖定要求。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-232">A thread does not block when downgrading from the writer lock, even if other threads are waiting for the writer lock, because all reader-lock requests are granted when the writer lock is released.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="ab0c0-233">下列程式碼範例示範如何要求讀取器的鎖定、 將讀取器鎖定升級至寫入器鎖定，以及一次降級為讀取器的鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-233">The following code example shows how to request a reader lock, upgrade the reader lock to a writer lock, and downgrade to a reader lock again.</span></span>  
+  
+ <span data-ttu-id="ab0c0-234">這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-234">This code is part of a larger example provided for the <xref:System.Threading.ReaderWriterLock> class.</span></span>  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#5](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#5)]
+[!code-csharp[System.Threading.ReaderWriterLock#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#5)]
+[!code-vb[System.Threading.ReaderWriterLock#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#5)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">
+          <span data-ttu-id="ab0c0-235">執行緒沒有寫入器鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-235">The thread does not have the writer lock.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.NullReferenceException">
+          <span data-ttu-id="ab0c0-236">
+            <paramref name="lockCookie" /> 的位址為 null 指標。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-236">The address of <paramref name="lockCookie" /> is a null pointer.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~ReaderWriterLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.Finalize" />
+      <MemberSignature Language="VB.NET" Value="Finalize ()" />
+      <MemberSignature Language="C++ CLI" Value="!ReaderWriterLock ()" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="ab0c0-237">確認釋出資源，並在記憶體回收行程再利用 <see cref="T:System.Threading.ReaderWriterLock" /> 物件時執行其他清除作業。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-237">Ensures that resources are freed and other cleanup operations are performed when the garbage collector reclaims the <see cref="T:System.Threading.ReaderWriterLock" /> object.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ab0c0-238">記憶體回收行程呼叫<xref:System.Threading.ReaderWriterLock.Finalize%2A>時目前<xref:System.Threading.ReaderWriterLock>物件已經準備完成。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-238">The garbage collector calls <xref:System.Threading.ReaderWriterLock.Finalize%2A> when the current <xref:System.Threading.ReaderWriterLock> object is ready to be finalized.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsReaderLockHeld">
+      <MemberSignature Language="C#" Value="public bool IsReaderLockHeld { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsReaderLockHeld" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLock.IsReaderLockHeld" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsReaderLockHeld As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsReaderLockHeld { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="ab0c0-239">取得值，指出目前的執行緒是否掌握讀取器的鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-239">Gets a value indicating whether the current thread holds a reader lock.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="ab0c0-240">如果目前的執行緒掌握讀取器的鎖定，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-240">
+              <see langword="true" /> if the current thread holds a reader lock; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="ab0c0-241">下列程式碼範例示範如何使用`IsReaderLockHeld`若要避免死結。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-241">The following code example demonstrates how to use `IsReaderLockHeld` to avoid deadlocks.</span></span>  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/CS/source.cs#1)]
+ [!code-vb[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsWriterLockHeld">
+      <MemberSignature Language="C#" Value="public bool IsWriterLockHeld { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsWriterLockHeld" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLock.IsWriterLockHeld" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsWriterLockHeld As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsWriterLockHeld { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="ab0c0-242">取得值，指出目前的執行緒是否掌握寫入器的鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-242">Gets a value indicating whether the current thread holds the writer lock.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="ab0c0-243">如果目前的執行緒掌握寫入器的鎖定，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-243">
+              <see langword="true" /> if the current thread holds the writer lock; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="ab0c0-244">下列程式碼範例示範當嘗試取得具有寫入器鎖定，在執行緒上的讀取器鎖定`ReaderWriterLock`不授與讀取器鎖定，但改為遞增寫入器的鎖定上的鎖定計數。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-244">The following code example demonstrates that when an attempt is made to acquire a reader lock on a thread that has a writer lock, `ReaderWriterLock` does not grant the reader lock but instead increments the lock count on the writer lock.</span></span>  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/CS/source.cs#1)]
+ [!code-vb[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReleaseLock">
+      <MemberSignature Language="C#" Value="public System.Threading.LockCookie ReleaseLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype System.Threading.LockCookie ReleaseLock() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.ReleaseLock" />
+      <MemberSignature Language="VB.NET" Value="Public Function ReleaseLock () As LockCookie" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::LockCookie ReleaseLock();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.LockCookie</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="ab0c0-245">無論執行緒取得鎖定的次數為多少，都會釋放鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-245">Releases the lock, regardless of the number of times the thread acquired the lock.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="ab0c0-246">
+            <see cref="T:System.Threading.LockCookie" /> 值，代表釋放的鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-246">A <see cref="T:System.Threading.LockCookie" /> value representing the released lock.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ab0c0-247"><xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> 釋放讀取器鎖定或寫入器鎖定，不論遞迴鎖定計數。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-247"><xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> releases the reader lock or writer lock, regardless of the recursive lock count.</span></span> <span data-ttu-id="ab0c0-248">若要還原狀態的鎖定，包括的鎖定計數，將傳遞<xref:System.Threading.LockCookie>至<xref:System.Threading.ReaderWriterLock.RestoreLock%2A>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-248">To restore the state of the lock, including the lock count, pass the <xref:System.Threading.LockCookie> to <xref:System.Threading.ReaderWriterLock.RestoreLock%2A>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="ab0c0-249">下列程式碼範例示範如何使用<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>方法，以釋出鎖定，不論多少次它已經取得的執行緒，以及如何還原的更新版本的鎖定狀態。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-249">The following code example shows how to use the <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> method to release the lock, regardless of how many times it has been acquired by the thread, and how to restore the state of the lock later.</span></span>  
+  
+ <span data-ttu-id="ab0c0-250">這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-250">This code is part of a larger example provided for the <xref:System.Threading.ReaderWriterLock> class.</span></span>  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#6](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#6)]
+[!code-csharp[System.Threading.ReaderWriterLock#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#6)]
+[!code-vb[System.Threading.ReaderWriterLock#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#6)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReleaseReaderLock">
+      <MemberSignature Language="C#" Value="public void ReleaseReaderLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ReleaseReaderLock() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.ReleaseReaderLock" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ReleaseReaderLock ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ReleaseReaderLock();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="ab0c0-251">減量鎖定計數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-251">Decrements the lock count.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ab0c0-252"><xref:System.Threading.ReaderWriterLock.ReleaseReaderLock%2A> 減量鎖定計數。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-252"><xref:System.Threading.ReaderWriterLock.ReleaseReaderLock%2A> decrements the lock count.</span></span> <span data-ttu-id="ab0c0-253">當計數到達零時，會釋放鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-253">When the count reaches zero, the lock is released.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="ab0c0-254">如果執行緒有將寫入器鎖定，則呼叫`ReleaseReaderLock`具有相同的效果與呼叫<xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-254">If a thread has the writer lock, calling `ReleaseReaderLock` has the same effect as calling <xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>.</span></span> <span data-ttu-id="ab0c0-255">如果執行緒不有任何鎖定，則呼叫`ReleaseReaderLock`會擲回<xref:System.ApplicationException>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-255">If a thread has no locks, calling `ReleaseReaderLock` throws an <xref:System.ApplicationException>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="ab0c0-256">下列程式碼範例示範如何取得及釋放讀取器的鎖定，以及如何處理時要求逾時擲回的例外狀況。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-256">The following code example shows how to acquire and release a reader lock, and how to handle the exception thrown when a request times out.</span></span>  
+  
+ <span data-ttu-id="ab0c0-257">這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-257">This code is part of a larger example provided for the <xref:System.Threading.ReaderWriterLock> class.</span></span>  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#3)]
+[!code-csharp[System.Threading.ReaderWriterLock#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#3)]
+[!code-vb[System.Threading.ReaderWriterLock#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#3)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">
+          <span data-ttu-id="ab0c0-258">執行緒沒有任何讀取器或寫入器鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-258">The thread does not have any reader or writer locks.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ReleaseWriterLock">
+      <MemberSignature Language="C#" Value="public void ReleaseWriterLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ReleaseWriterLock() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.ReleaseWriterLock" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ReleaseWriterLock ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ReleaseWriterLock();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="ab0c0-259">減量寫入器鎖定上的鎖定計數。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-259">Decrements the lock count on the writer lock.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ab0c0-260"><xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A> 減量寫入器的鎖定計數。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-260"><xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A> decrements the writer lock count.</span></span> <span data-ttu-id="ab0c0-261">當計數到達零時，就會寫入器鎖定釋放。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-261">When the count reaches zero, the writer lock is released.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="ab0c0-262">如果執行緒有讀取器的鎖定或沒有鎖定，則呼叫`ReleaseWriterLock`會擲回<xref:System.ApplicationException>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-262">If a thread has a reader lock, or no locks, calling `ReleaseWriterLock` throws an <xref:System.ApplicationException>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="ab0c0-263">下列程式碼範例示範如何取得並發行寫入器鎖定，以及如何處理時要求逾時擲回的例外狀況。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-263">The following code example shows how to acquire and release a writer lock, and how to handle the exception thrown when a request times out.</span></span>  
+  
+ <span data-ttu-id="ab0c0-264">這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-264">This code is part of a larger example provided for the <xref:System.Threading.ReaderWriterLock> class.</span></span>  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#4](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#4)]
+[!code-csharp[System.Threading.ReaderWriterLock#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#4)]
+[!code-vb[System.Threading.ReaderWriterLock#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#4)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">
+          <span data-ttu-id="ab0c0-265">執行緒沒有寫入器鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-265">The thread does not have the writer lock.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RestoreLock">
+      <MemberSignature Language="C#" Value="public void RestoreLock (ref System.Threading.LockCookie lockCookie);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RestoreLock(valuetype System.Threading.LockCookie&amp; lockCookie) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.RestoreLock(System.Threading.LockCookie@)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub RestoreLock (ByRef lockCookie As LockCookie)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RestoreLock(System::Threading::LockCookie % lockCookie);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="lockCookie" Type="System.Threading.LockCookie&amp;" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="lockCookie">
+          <span data-ttu-id="ab0c0-266">
+            <see cref="T:System.Threading.LockCookie" /> 所傳回的 <see cref="M:System.Threading.ReaderWriterLock.ReleaseLock" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-266">A <see cref="T:System.Threading.LockCookie" /> returned by <see cref="M:System.Threading.ReaderWriterLock.ReleaseLock" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="ab0c0-267">將執行緒的鎖定狀態還原到呼叫 <see cref="M:System.Threading.ReaderWriterLock.ReleaseLock" /> 之前的狀態。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-267">Restores the lock status of the thread to what it was before calling <see cref="M:System.Threading.ReaderWriterLock.ReleaseLock" />.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ab0c0-268">還原狀態`RestoreLock`包含遞迴鎖定計數。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-268">The state restored by `RestoreLock` includes the recursive lock count.</span></span>  
+  
+ <span data-ttu-id="ab0c0-269">如果它嘗試還原另一個執行緒取得寫入器鎖定之後，或如果它嘗試還原另一個執行緒取得讀取器鎖定或寫入器鎖定之後的寫入器鎖定的讀取器的鎖定的執行緒封鎖。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-269">A thread blocks if it tries to restore a reader lock after another thread has acquired the writer lock, or if it tries to restore the writer lock after another thread has acquired a reader lock or writer lock.</span></span> <span data-ttu-id="ab0c0-270">因為`RestoreLock`不接受逾時，您應謹慎避免可能的死結。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-270">Because `RestoreLock` does not accept a time-out, you should take care to avoid possible deadlocks.</span></span>  
+  
+> [!CAUTION]
+>  <span data-ttu-id="ab0c0-271">然後再呼叫`RestoreLock`，請確定在您釋放所有的呼叫取得的鎖定<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-271">Before calling `RestoreLock`, make sure you have released all locks acquired since the call to <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>.</span></span> <span data-ttu-id="ab0c0-272">例如，執行緒死結若取得讀取器的鎖定，然後再嘗試還原較早的寫入器鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-272">For example, a thread deadlocks if it acquires a reader lock, and then attempts to restore an earlier writer lock.</span></span> <span data-ttu-id="ab0c0-273">使用<xref:System.Threading.ReaderWriterLock.IsReaderLockHeld%2A>和<xref:System.Threading.ReaderWriterLock.IsWriterLockHeld%2A>偵測這類額外的鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-273">Use <xref:System.Threading.ReaderWriterLock.IsReaderLockHeld%2A> and <xref:System.Threading.ReaderWriterLock.IsWriterLockHeld%2A> to detect such additional locks.</span></span>  
+  
+ <span data-ttu-id="ab0c0-274">請勿使用<xref:System.Threading.LockCookie>從傳回<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-274">Do not use a <xref:System.Threading.LockCookie> returned from <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="ab0c0-275">下列程式碼範例示範如何使用<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>方法，以釋出鎖定，不論多少次它已經取得的執行緒，以及如何還原的更新版本的鎖定狀態。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-275">The following code example shows how to use the <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> method to release the lock, regardless of how many times it has been acquired by the thread, and how to restore the state of the lock later.</span></span>  
+  
+ <span data-ttu-id="ab0c0-276">這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-276">This code is part of a larger example provided for the <xref:System.Threading.ReaderWriterLock> class.</span></span>  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#6](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#6)]
+[!code-csharp[System.Threading.ReaderWriterLock#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#6)]
+[!code-vb[System.Threading.ReaderWriterLock#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#6)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NullReferenceException">
+          <span data-ttu-id="ab0c0-277">
+            <paramref name="lockCookie" /> 的位址為 null 指標。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-277">The address of <paramref name="lockCookie" /> is a null pointer.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="UpgradeToWriterLock">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="ab0c0-278">讀取器鎖定升級至寫入器鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-278">Upgrades a reader lock to the writer lock.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="UpgradeToWriterLock">
+      <MemberSignature Language="C#" Value="public System.Threading.LockCookie UpgradeToWriterLock (int millisecondsTimeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype System.Threading.LockCookie UpgradeToWriterLock(int32 millisecondsTimeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.UpgradeToWriterLock(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Function UpgradeToWriterLock (millisecondsTimeout As Integer) As LockCookie" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::LockCookie UpgradeToWriterLock(int millisecondsTimeout);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.LockCookie</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="millisecondsTimeout" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="millisecondsTimeout">
+          <span data-ttu-id="ab0c0-279">逾時以毫秒為單位。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-279">The time-out in milliseconds.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="ab0c0-280">使用逾時值 <see langword="Int32" />，將讀取器鎖定升級至寫入器鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-280">Upgrades a reader lock to the writer lock, using an <see langword="Int32" /> value for the time-out.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="ab0c0-281">
+            <see cref="T:System.Threading.LockCookie" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-281">A <see cref="T:System.Threading.LockCookie" /> value.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ab0c0-282">當一個執行緒呼叫`UpgradeToWriterLock`釋放讀取器鎖定，鎖定計數，不管和執行緒進行的寫入器鎖定的佇列結尾。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-282">When a thread calls `UpgradeToWriterLock` the reader lock is released, regardless of the lock count, and the thread goes to the end of the queue for the writer lock.</span></span> <span data-ttu-id="ab0c0-283">因此，其他執行緒可能會寫入之前要求升級會授與寫入器鎖定的執行緒資源。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-283">Thus, other threads might write to the resource before the thread that requested the upgrade is granted the writer lock.</span></span>  
+  
+> [!IMPORTANT]
+>  <span data-ttu-id="ab0c0-284">逾時例外狀況不會擲回呼叫執行緒直到<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法可以取得讀取器鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-284">The time-out exception is not thrown until the thread that called the <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A> method can reacquire the reader lock.</span></span> <span data-ttu-id="ab0c0-285">如果沒有其他執行緒等候寫入器鎖定，此事件會立即發生。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-285">If there are no other threads waiting for the writer lock, this happens immediately.</span></span> <span data-ttu-id="ab0c0-286">不過，如果另一個執行緒在佇列中等候寫入器的鎖定，執行緒的呼叫<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法不能重新取得讀取器鎖定，直到所有目前的讀取器已釋放其鎖定，以及一個執行緒具有取得和釋放寫入器的鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-286">However, if another thread is queued for the writer lock, the thread that called the <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A> method cannot reacquire the reader lock until all current readers have released their locks, and one thread has acquired and released the writer lock.</span></span> <span data-ttu-id="ab0c0-287">這是 true，即使要求寫入器鎖定的執行緒在目前的執行緒呼叫之後要求<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-287">This is true even if the other thread that requested the writer lock requested it after the current thread called the <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A> method.</span></span>  
+  
+ <span data-ttu-id="ab0c0-288">若要還原的鎖定狀態，請呼叫<xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A>使用<xref:System.Threading.LockCookie>傳回`UpgradeToWriterLock`。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-288">To restore the lock state, call <xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A> using the <xref:System.Threading.LockCookie> returned by `UpgradeToWriterLock`.</span></span> <span data-ttu-id="ab0c0-289">不使用這個`LockCookie`與<xref:System.Threading.ReaderWriterLock.RestoreLock%2A>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-289">Do not use this `LockCookie` with <xref:System.Threading.ReaderWriterLock.RestoreLock%2A>.</span></span>  
+  
+ <span data-ttu-id="ab0c0-290">當執行緒必須沒有讀取器的鎖定時，請勿使用`UpgradeToWriterLock`。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-290">When a thread has no reader lock, do not use `UpgradeToWriterLock`.</span></span> <span data-ttu-id="ab0c0-291">請改用 <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-291">Use <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A> instead.</span></span>  
+  
+ <span data-ttu-id="ab0c0-292">有效的逾時值，請參閱<xref:System.Threading.ReaderWriterLock>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-292">For valid time-out values, see <xref:System.Threading.ReaderWriterLock>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="ab0c0-293">下列程式碼範例示範如何要求讀取器的鎖定、 將讀取器鎖定升級至寫入器鎖定，以及一次降級為讀取器的鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-293">The following code example shows how to request a reader lock, upgrade the reader lock to a writer lock, and downgrade to a reader lock again.</span></span>  
+  
+ <span data-ttu-id="ab0c0-294">這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-294">This code is part of a larger example provided for the <xref:System.Threading.ReaderWriterLock> class.</span></span>  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#5](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#5)]
+[!code-csharp[System.Threading.ReaderWriterLock#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#5)]
+[!code-vb[System.Threading.ReaderWriterLock#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#5)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">
+          <span data-ttu-id="ab0c0-295">
+            <paramref name="millisecondsTimeout" /> 在授與鎖定要求前過期。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-295">
+              <paramref name="millisecondsTimeout" /> expires before the lock request is granted.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="UpgradeToWriterLock">
+      <MemberSignature Language="C#" Value="public System.Threading.LockCookie UpgradeToWriterLock (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype System.Threading.LockCookie UpgradeToWriterLock(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.UpgradeToWriterLock(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Public Function UpgradeToWriterLock (timeout As TimeSpan) As LockCookie" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::LockCookie UpgradeToWriterLock(TimeSpan timeout);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.LockCookie</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">
+          <span data-ttu-id="ab0c0-296">
+            <see langword="TimeSpan" />，指定逾時期間。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-296">The <see langword="TimeSpan" /> specifying the time-out period.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="ab0c0-297">使用逾時值 <see langword="TimeSpan" />，將讀取器鎖定升級至寫入器鎖定。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-297">Upgrades a reader lock to the writer lock, using a <see langword="TimeSpan" /> value for the time-out.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="ab0c0-298">
+            <see cref="T:System.Threading.LockCookie" /> 值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-298">A <see cref="T:System.Threading.LockCookie" /> value.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ab0c0-299">當一個執行緒呼叫`UpgradeToWriterLock`釋放讀取器鎖定，鎖定計數，不管和執行緒進行的寫入器鎖定的佇列結尾。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-299">When a thread calls `UpgradeToWriterLock` the reader lock is released, regardless of the lock count, and the thread goes to the end of the queue for the writer lock.</span></span> <span data-ttu-id="ab0c0-300">因此，其他執行緒可能會寫入之前要求升級會授與寫入器鎖定的執行緒資源。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-300">Thus, other threads might write to the resource before the thread that requested the upgrade is granted the writer lock.</span></span>  
+  
+> [!IMPORTANT]
+>  <span data-ttu-id="ab0c0-301">逾時例外狀況不會擲回呼叫執行緒直到<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法可以取得讀取器鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-301">The time-out exception is not thrown until the thread that called the <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A> method can reacquire the reader lock.</span></span> <span data-ttu-id="ab0c0-302">如果沒有其他執行緒等候寫入器鎖定，此事件會立即發生。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-302">If there are no other threads waiting for the writer lock, this happens immediately.</span></span> <span data-ttu-id="ab0c0-303">不過，如果另一個執行緒在佇列中等候寫入器的鎖定，執行緒的呼叫<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法不能重新取得讀取器鎖定，直到所有目前的讀取器已釋放其鎖定，以及一個執行緒具有取得和釋放寫入器的鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-303">However, if another thread is queued for the writer lock, the thread that called the <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A> method cannot reacquire the reader lock until all current readers have released their locks, and one thread has acquired and released the writer lock.</span></span> <span data-ttu-id="ab0c0-304">這是 true，即使要求寫入器鎖定的執行緒在目前的執行緒呼叫之後要求<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-304">This is true even if the other thread that requested the writer lock requested it after the current thread called the <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A> method.</span></span>  
+  
+ <span data-ttu-id="ab0c0-305">若要還原的鎖定狀態，請呼叫<xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A>使用<xref:System.Threading.LockCookie>傳回`UpgradeToWriterLock`。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-305">To restore the lock state, call <xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A> using the <xref:System.Threading.LockCookie> returned by `UpgradeToWriterLock`.</span></span> <span data-ttu-id="ab0c0-306">不使用這個`LockCookie`與<xref:System.Threading.ReaderWriterLock.RestoreLock%2A>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-306">Do not use this `LockCookie` with <xref:System.Threading.ReaderWriterLock.RestoreLock%2A>.</span></span>  
+  
+ <span data-ttu-id="ab0c0-307">當執行緒必須沒有讀取器的鎖定時，請勿使用`UpgradeToWriterLock`。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-307">When a thread has no reader lock, do not use `UpgradeToWriterLock`.</span></span> <span data-ttu-id="ab0c0-308">請改用 <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-308">Use <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A> instead.</span></span>  
+  
+ <span data-ttu-id="ab0c0-309">有效的逾時值，請參閱<xref:System.Threading.ReaderWriterLock>。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-309">For valid time-out values, see <xref:System.Threading.ReaderWriterLock>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">
+          <span data-ttu-id="ab0c0-310">
+            <paramref name="timeout" /> 在授與鎖定要求前過期。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-310">
+              <paramref name="timeout" /> expires before the lock request is granted.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="ab0c0-311">
+            <paramref name="timeout" /> 可以指定 -1 毫秒以外的負值。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-311">
+              <paramref name="timeout" /> specifies a negative value other than -1 milliseconds.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriterSeqNum">
+      <MemberSignature Language="C#" Value="public int WriterSeqNum { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 WriterSeqNum" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLock.WriterSeqNum" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property WriterSeqNum As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int WriterSeqNum { int get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="ab0c0-312">取得目前的序號。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-312">Gets the current sequence number.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="ab0c0-313">目前的序號。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ab0c0-313">The current sequence number.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ab0c0-314">此順序數字會增加每當執行緒取得寫入器的鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-314">The sequence number increases whenever a thread acquires the writer lock.</span></span> <span data-ttu-id="ab0c0-315">您可以儲存的序號，並將它傳遞給<xref:System.Threading.ReaderWriterLock.AnyWritersSince%2A>稍後，如果您想要判斷是否其他執行緒已取得寫入器鎖定同時。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-315">You can save the sequence number and pass it to <xref:System.Threading.ReaderWriterLock.AnyWritersSince%2A> at a later time, if you want to determine whether other threads have acquired the writer lock in the meantime.</span></span>  
+  
+ <span data-ttu-id="ab0c0-316">您可以使用`WriterSeqNum`改善應用程式效能。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-316">You can use `WriterSeqNum` to improve application performance.</span></span> <span data-ttu-id="ab0c0-317">例如，執行緒可能會快取保留讀取鎖定時取得的資訊。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-317">For example, a thread might cache the information it obtains while holding a reader lock.</span></span> <span data-ttu-id="ab0c0-318">之後釋出和更新版本重新取得鎖定，執行緒可以判斷其他的執行緒是否已寫入至資源藉由呼叫`AnyWritersSince`; 如果沒有，可以使用快取的資訊。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-318">After releasing and later reacquiring the lock, the thread can determine whether other threads have written to the resource by calling `AnyWritersSince`; if not, the cached information can be used.</span></span> <span data-ttu-id="ab0c0-319">讀取鎖定所保護的資訊是高度耗費資源; 時，這項技術非常有用例如，執行資料庫查詢。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-319">This technique is useful when reading the information protected by the lock is expensive; for example, running a database query.</span></span>  
+  
+ <span data-ttu-id="ab0c0-320">呼叫端必須寫入器鎖定或讀取器鎖定保留順序，序號才能發揮作用。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-320">The caller must be holding a reader lock or a writer lock in order for the sequence number to be useful.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="ab0c0-321">下列程式碼範例示範如何使用<xref:System.Threading.ReaderWriterLock.WriterSeqNum%2A>屬性和<xref:System.Threading.ReaderWriterLock.AnyWritersSince%2A>方法來判斷另一個執行緒是否已受保護的資源寫入器鎖定，因為目前的執行緒上一次保留寫入器的鎖定。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-321">The following code example shows how to use the <xref:System.Threading.ReaderWriterLock.WriterSeqNum%2A> property and the <xref:System.Threading.ReaderWriterLock.AnyWritersSince%2A> method to determine whether another thread acquired the writer lock on the protected resource since the current thread last held the writer lock.</span></span>  
+  
+ <span data-ttu-id="ab0c0-322">這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。</span><span class="sxs-lookup"><span data-stu-id="ab0c0-322">This code is part of a larger example provided for the <xref:System.Threading.ReaderWriterLock> class.</span></span>  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#6](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#6)]
+[!code-csharp[System.Threading.ReaderWriterLock#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#6)]
+[!code-vb[System.Threading.ReaderWriterLock#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#6)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

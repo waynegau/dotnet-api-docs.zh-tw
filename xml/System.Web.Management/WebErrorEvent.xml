@@ -1,0 +1,354 @@
+<Type Name="WebErrorEvent" FullName="System.Web.Management.WebErrorEvent">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="6a8e66439b726af051938ee477937d049cf624a5" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class WebErrorEvent : System.Web.Management.WebBaseErrorEvent" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit WebErrorEvent extends System.Web.Management.WebBaseErrorEvent" />
+  <TypeSignature Language="DocId" Value="T:System.Web.Management.WebErrorEvent" />
+  <TypeSignature Language="VB.NET" Value="Public Class WebErrorEvent&#xA;Inherits WebBaseErrorEvent" />
+  <TypeSignature Language="C++ CLI" Value="public ref class WebErrorEvent : System::Web::Management::WebBaseErrorEvent" />
+  <AssemblyInfo>
+    <AssemblyName>System.Web</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Web.Management.WebBaseErrorEvent</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="ce736-101">提供關於系統錯誤的資訊。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="ce736-101">Provides information about systemic errors.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ce736-102">ASP.NET 健康監視，可讓管理已部署的 Web 應用程式的生產環境和作業人員。</span><span class="sxs-lookup"><span data-stu-id="ce736-102">ASP.NET health monitoring allows production and operations staff to manage deployed Web applications.</span></span> <span data-ttu-id="ce736-103"><xref:System.Web.Management>命名空間包含負責封裝應用程式健全狀況狀態資料和負責處理此資料提供者類型的健全狀況事件型別。</span><span class="sxs-lookup"><span data-stu-id="ce736-103">The <xref:System.Web.Management> namespace contains the health-event types responsible for packaging application health-status data and the provider types responsible for processing this data.</span></span> <span data-ttu-id="ce736-104">它也會包含有助於管理健全狀況事件的支援型別。</span><span class="sxs-lookup"><span data-stu-id="ce736-104">It also contains supporting types that help during the management of health events.</span></span>  
+  
+ <span data-ttu-id="ce736-105"><xref:System.Web.Management.WebErrorEvent>提供組態或應用程式的程式碼的問題所造成的錯誤的相關資訊。</span><span class="sxs-lookup"><span data-stu-id="ce736-105">The <xref:System.Web.Management.WebErrorEvent> provides information about errors caused by problems with configuration or application code.</span></span> <span data-ttu-id="ce736-106">範例是在網頁中發現錯誤時，ASP.NET 所發出的錯誤。</span><span class="sxs-lookup"><span data-stu-id="ce736-106">An example is the error issued by ASP.NET when an error is found in a page.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="ce736-107">在大部分情況下您將能夠實作時，使用 ASP.NET 健康監視類型，而您會藉由指定的值控制健全狀況監視系統`healthMonitoring`組態區段。</span><span class="sxs-lookup"><span data-stu-id="ce736-107">In most cases you will be able to use the ASP.NET health-monitoring types as implemented, and you will control the health-monitoring system by specifying values in the `healthMonitoring` configuration section.</span></span> <span data-ttu-id="ce736-108">您也可以衍生自健全狀況監視類型的類型來建立您自己的自訂事件和提供者。</span><span class="sxs-lookup"><span data-stu-id="ce736-108">You can also derive from the health-monitoring types to create your own custom events and providers.</span></span> <span data-ttu-id="ce736-109">如需範例衍生自<xref:System.Web.Management.WebErrorEvent>類別，請參閱本主題中所提供的範例。</span><span class="sxs-lookup"><span data-stu-id="ce736-109">For an example of deriving from the <xref:System.Web.Management.WebErrorEvent> class, see the example provided in this topic.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="ce736-110">下列程式碼範例示範如何衍生自<xref:System.Web.Management.WebErrorEvent>類別來建立自訂的事件。</span><span class="sxs-lookup"><span data-stu-id="ce736-110">The following code example shows how to derive from the <xref:System.Web.Management.WebErrorEvent> class to create a custom event.</span></span>  
+  
+ <span data-ttu-id="ce736-111">也顯示是組態檔，可讓 ASP.NET 可以使用這個自訂事件的摘錄。</span><span class="sxs-lookup"><span data-stu-id="ce736-111">Also shown is an excerpt of the configuration file that enables ASP.NET to use this custom event.</span></span>  
+  
+```  
+<healthMonitoring   
+  enabled="true" heartBeatInterval="0">  
+  
+  <eventMappings>  
+  
+    <add  name="SampleWebErrorEvent" type="SamplesAspNet.SampleWebErrorEvent,weberrorevent,Version=1.0.1573.21549, Culture=neutral, PublicKeyToken=2a0b23915ac7352b, processorArchitecture=MSIL"/>  
+  
+  </eventMappings>  
+  
+  <profiles>  
+    <add name="Custom"  
+      minInstances="1"  
+      maxLimit="Infinite"  
+      minInterval="00:00:00" />  
+  </profiles>  
+  
+  <rules>  
+    <clear />  
+  
+    <add name="Custom Web Error Event"   
+      eventName="SampleWebErrorEvent"  
+      provider="EventLogProvider"   
+      profile="Custom" />  
+  </rules>  
+  
+</healthMonitoring>  
+```  
+  
+ [!code-csharp[System.Web.Management.WebErrorEvent#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Management.WebErrorEvent/CS/weberrorevent.cs#1)]
+ [!code-vb[System.Web.Management.WebErrorEvent#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Management.WebErrorEvent/VB/weberrorevent.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="ce736-112">初始化 <see cref="T:System.Web.Management.WebErrorEvent" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-112">Initializes a new instance of the <see cref="T:System.Web.Management.WebErrorEvent" /> class.</span>
+          </span>
+        </summary>
+        <altmember cref="T:System.Web.Management.WebEventCodes" />
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected internal WebErrorEvent (string message, object eventSource, int eventCode, Exception exception);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(string message, object eventSource, int32 eventCode, class System.Exception exception) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Management.WebErrorEvent.#ctor(System.String,System.Object,System.Int32,System.Exception)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; WebErrorEvent(System::String ^ message, System::Object ^ eventSource, int eventCode, Exception ^ exception);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="message" Type="System.String" />
+        <Parameter Name="eventSource" Type="System.Object" />
+        <Parameter Name="eventCode" Type="System.Int32" />
+        <Parameter Name="exception" Type="System.Exception" />
+      </Parameters>
+      <Docs>
+        <param name="message">
+          <span data-ttu-id="ce736-113">事件描述。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-113">The event description.</span>
+          </span>
+        </param>
+        <param name="eventSource">
+          <span data-ttu-id="ce736-114">做為事件來源的物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-114">The object that is the source of the event.</span>
+          </span>
+        </param>
+        <param name="eventCode">
+          <span data-ttu-id="ce736-115">與事件關聯的代碼。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-115">The code associated with the event.</span>
+          </span>
+          <span data-ttu-id="ce736-116">當您實作自訂事件時，事件代碼必須大於 <see cref="F:System.Web.Management.WebEventCodes.WebExtendedBase" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-116">When you implement a custom event, the event code must be greater than <see cref="F:System.Web.Management.WebEventCodes.WebExtendedBase" />.</span>
+          </span>
+        </param>
+        <param name="exception">
+          <span data-ttu-id="ce736-117">與錯誤關聯的 <see cref="T:System.Exception" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-117">The <see cref="T:System.Exception" /> associated with the error.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="ce736-118">使用提供的參數來初始化 <see cref="T:System.Web.Management.WebErrorEvent" /> 類別。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-118">Initializes the <see cref="T:System.Web.Management.WebErrorEvent" /> class using the supplied parameters.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ce736-119"><xref:System.Web.Management.WebErrorEvent.%23ctor%2A>建構函式不適合直接從您的程式碼使用。</span><span class="sxs-lookup"><span data-stu-id="ce736-119">The <xref:System.Web.Management.WebErrorEvent.%23ctor%2A> constructor is not intended to be used directly from your code.</span></span> <span data-ttu-id="ce736-120">它是由 ASP.NET 呼叫。</span><span class="sxs-lookup"><span data-stu-id="ce736-120">It is called by ASP.NET.</span></span> <span data-ttu-id="ce736-121">您可以呼叫<xref:System.Web.Management.WebErrorEvent.%23ctor%2A>建構函式會衍生自<xref:System.Web.Management.WebErrorEvent>類別。</span><span class="sxs-lookup"><span data-stu-id="ce736-121">You can call the <xref:System.Web.Management.WebErrorEvent.%23ctor%2A> constructor when deriving from the <xref:System.Web.Management.WebErrorEvent> class.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="ce736-122">下列程式碼範例示範如何自訂此建構函式。</span><span class="sxs-lookup"><span data-stu-id="ce736-122">The following code example shows how to customize this constructor.</span></span>  
+  
+ [!code-csharp[System.Web.Management.WebErrorEvent#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Management.WebErrorEvent/CS/weberrorevent.cs#2)]
+ [!code-vb[System.Web.Management.WebErrorEvent#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Management.WebErrorEvent/VB/weberrorevent.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Web.Management.WebEventCodes" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected internal WebErrorEvent (string message, object eventSource, int eventCode, int eventDetailCode, Exception exception);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig specialname rtspecialname instance void .ctor(string message, object eventSource, int32 eventCode, int32 eventDetailCode, class System.Exception exception) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Management.WebErrorEvent.#ctor(System.String,System.Object,System.Int32,System.Int32,System.Exception)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; WebErrorEvent(System::String ^ message, System::Object ^ eventSource, int eventCode, int eventDetailCode, Exception ^ exception);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="message" Type="System.String" />
+        <Parameter Name="eventSource" Type="System.Object" />
+        <Parameter Name="eventCode" Type="System.Int32" />
+        <Parameter Name="eventDetailCode" Type="System.Int32" />
+        <Parameter Name="exception" Type="System.Exception" />
+      </Parameters>
+      <Docs>
+        <param name="message">
+          <span data-ttu-id="ce736-123">事件描述。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-123">The event description.</span>
+          </span>
+        </param>
+        <param name="eventSource">
+          <span data-ttu-id="ce736-124">做為事件來源的物件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-124">The object that is the source of the event.</span>
+          </span>
+        </param>
+        <param name="eventCode">
+          <span data-ttu-id="ce736-125">與事件關聯的代碼。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-125">The code associated with the event.</span>
+          </span>
+          <span data-ttu-id="ce736-126">當您實作自訂事件時，事件代碼必須大於 <see cref="F:System.Web.Management.WebEventCodes.WebExtendedBase" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-126">When you implement a custom event, the event code must be greater than <see cref="F:System.Web.Management.WebEventCodes.WebExtendedBase" />.</span>
+          </span>
+        </param>
+        <param name="eventDetailCode">
+          <span data-ttu-id="ce736-127">
+            <see cref="T:System.Web.Management.WebEventCodes" /> 值，指定事件的詳細資料識別項。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-127">The <see cref="T:System.Web.Management.WebEventCodes" /> value that specifies the detailed identifier for the event.</span>
+          </span>
+        </param>
+        <param name="exception">
+          <span data-ttu-id="ce736-128">與錯誤關聯的 <see cref="T:System.Exception" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-128">The <see cref="T:System.Exception" /> associated with the error.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="ce736-129">使用提供的參數來初始化 <see cref="T:System.Web.Management.WebErrorEvent" /> 類別的新執行個體。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-129">Initializes a new instance of the <see cref="T:System.Web.Management.WebErrorEvent" /> class using the supplied parameters.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="ce736-130"><xref:System.Web.Management.WebErrorEvent.%23ctor%2A>建構函式不適合直接從您的程式碼使用。</span><span class="sxs-lookup"><span data-stu-id="ce736-130">The <xref:System.Web.Management.WebErrorEvent.%23ctor%2A> constructor is not intended to be used directly from your code.</span></span> <span data-ttu-id="ce736-131">它是由 ASP.NET 呼叫。</span><span class="sxs-lookup"><span data-stu-id="ce736-131">It is called by ASP.NET.</span></span> <span data-ttu-id="ce736-132">您可以呼叫<xref:System.Web.Management.WebErrorEvent.%23ctor%2A>建構函式會衍生自<xref:System.Web.Management.WebErrorEvent>類別。</span><span class="sxs-lookup"><span data-stu-id="ce736-132">You can call the <xref:System.Web.Management.WebErrorEvent.%23ctor%2A> constructor when deriving from the <xref:System.Web.Management.WebErrorEvent> class.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="ce736-133">下列程式碼範例示範如何衍生自<xref:System.Web.Management.WebErrorEvent>類別來建立自訂的事件。</span><span class="sxs-lookup"><span data-stu-id="ce736-133">The following code example shows how to derive from the <xref:System.Web.Management.WebErrorEvent> class to create a custom event.</span></span>  
+  
+ [!code-csharp[System.Web.Management.WebErrorEvent#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Management.WebErrorEvent/CS/weberrorevent.cs#3)]
+ [!code-vb[System.Web.Management.WebErrorEvent#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Management.WebErrorEvent/VB/weberrorevent.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Web.Management.WebEventCodes" />
+      </Docs>
+    </Member>
+    <Member MemberName="IncrementPerfCounters">
+      <MemberSignature Language="C#" Value="protected internal override void IncrementPerfCounters ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance void IncrementPerfCounters() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Management.WebErrorEvent.IncrementPerfCounters" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Sub IncrementPerfCounters ()" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override void IncrementPerfCounters();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="ce736-134">在內部使用，以逐步遞增效能計數器。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-134">Used internally to increment performance counters.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RequestInformation">
+      <MemberSignature Language="C#" Value="public System.Web.Management.WebRequestInformation RequestInformation { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Management.WebRequestInformation RequestInformation" />
+      <MemberSignature Language="DocId" Value="P:System.Web.Management.WebErrorEvent.RequestInformation" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property RequestInformation As WebRequestInformation" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Management::WebRequestInformation ^ RequestInformation { System::Web::Management::WebRequestInformation ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.Management.WebRequestInformation</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="ce736-135">取得應用程式要求的資訊。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-135">Gets the application request information.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="ce736-136">
+            <see cref="T:System.Web.Management.WebRequestInformation" /> 物件，含有關於目前要求的資訊。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-136">A <see cref="T:System.Web.Management.WebRequestInformation" /> object that contains information about the current request.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="ce736-137">下列程式碼範例示範如何取得<xref:System.Web.Management.WebErrorEvent.RequestInformation%2A>值。</span><span class="sxs-lookup"><span data-stu-id="ce736-137">The following code example shows how to obtain the <xref:System.Web.Management.WebErrorEvent.RequestInformation%2A> value.</span></span>  
+  
+ [!code-csharp[System.Web.Management.WebErrorEvent#5](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Management.WebErrorEvent/CS/weberrorevent.cs#5)]
+ [!code-vb[System.Web.Management.WebErrorEvent#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Management.WebErrorEvent/VB/weberrorevent.vb#5)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ThreadInformation">
+      <MemberSignature Language="C#" Value="public System.Web.Management.WebThreadInformation ThreadInformation { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Management.WebThreadInformation ThreadInformation" />
+      <MemberSignature Language="DocId" Value="P:System.Web.Management.WebErrorEvent.ThreadInformation" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ThreadInformation As WebThreadInformation" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Management::WebThreadInformation ^ ThreadInformation { System::Web::Management::WebThreadInformation ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.Management.WebThreadInformation</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="ce736-138">取得應用程式執行緒的資訊。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-138">Gets the application-thread information.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="ce736-139">
+            <see cref="T:System.Web.Management.WebThreadInformation" /> 物件，含有關於目前執行緒的資訊。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="ce736-139">A <see cref="T:System.Web.Management.WebThreadInformation" /> object that contains information about the current thread.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="ce736-140">下列程式碼範例示範如何取得應用程式<xref:System.Web.Management.WebErrorEvent.ThreadInformation%2A>值。</span><span class="sxs-lookup"><span data-stu-id="ce736-140">The following code example shows how to obtain the application <xref:System.Web.Management.WebErrorEvent.ThreadInformation%2A> value.</span></span>  
+  
+ [!code-csharp[System.Web.Management.WebErrorEvent#6](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Management.WebErrorEvent/CS/weberrorevent.cs#6)]
+ [!code-vb[System.Web.Management.WebErrorEvent#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Management.WebErrorEvent/VB/weberrorevent.vb#6)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

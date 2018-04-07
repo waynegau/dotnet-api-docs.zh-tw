@@ -1,0 +1,152 @@
+<Type Name="IWebEventCustomEvaluator" FullName="System.Web.Management.IWebEventCustomEvaluator">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="b9a2e49f2eda981b0e7697061fc167c84346d85f" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="zh-TW" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public interface IWebEventCustomEvaluator" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IWebEventCustomEvaluator" />
+  <TypeSignature Language="DocId" Value="T:System.Web.Management.IWebEventCustomEvaluator" />
+  <TypeSignature Language="VB.NET" Value="Public Interface IWebEventCustomEvaluator" />
+  <TypeSignature Language="C++ CLI" Value="public interface class IWebEventCustomEvaluator" />
+  <AssemblyInfo>
+    <AssemblyName>System.Web</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="62752-101">評估事件是否要傳送給相關的提供者以進行處理。</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="62752-101">Evaluates whether an event should be sent to the related provider for processing.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="62752-102">ASP.NET 健康監視，可讓管理已部署的 Web 應用程式的生產環境和作業人員。</span><span class="sxs-lookup"><span data-stu-id="62752-102">ASP.NET health monitoring allows production and operations staff to manage deployed Web applications.</span></span> <span data-ttu-id="62752-103"><xref:System.Web.Management>命名空間包含負責封裝應用程式健全狀況狀態資料和負責處理此資料提供者類型的健全狀況事件型別。</span><span class="sxs-lookup"><span data-stu-id="62752-103">The <xref:System.Web.Management> namespace contains the health-event types responsible for packaging application health-status data and the provider types responsible for processing this data.</span></span> <span data-ttu-id="62752-104">它也會包含有助於管理健全狀況事件的支援型別。</span><span class="sxs-lookup"><span data-stu-id="62752-104">It also contains supporting types that help during the management of health events.</span></span>  
+  
+ <span data-ttu-id="62752-105">這個介面允許啟用或停用特定事件的引發。</span><span class="sxs-lookup"><span data-stu-id="62752-105">This interface allows enabling or disabling the firing of a specific event.</span></span> <span data-ttu-id="62752-106">當您實作您自己的自訂事件，而且想要控制的速率，它傳送至相關的提供者進行處理時，這是特別有用。</span><span class="sxs-lookup"><span data-stu-id="62752-106">This is especially useful when you implement your own custom event and want to control the rate at which it is sent to the related provider for processing.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="62752-107">這個介面不會控制此事件的引發頻率。</span><span class="sxs-lookup"><span data-stu-id="62752-107">This interface does not control how often the event is raised.</span></span> <span data-ttu-id="62752-108">它只會控制事件資訊傳送給提供者處理的頻率。</span><span class="sxs-lookup"><span data-stu-id="62752-108">It only controls how often the event information is sent to the provider for processing.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="62752-109">下列程式碼範例示範如何衍生自<xref:System.Web.Management.IWebEventCustomEvaluator>介面時建立自訂事件。</span><span class="sxs-lookup"><span data-stu-id="62752-109">The following code example shows how to derive from the <xref:System.Web.Management.IWebEventCustomEvaluator> interface when creating a custom event.</span></span>  
+  
+ [!code-csharp[System.Web.Management.WebBaseEvent#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Management.WebBaseEvent/CS/webbaseevent.cs#1)]
+ [!code-vb[System.Web.Management.WebBaseEvent#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Management.WebBaseEvent/VB/webbaseevent.vb#1)]  
+  
+ <span data-ttu-id="62752-110">下列是允許使用 ASP.NET 的組態檔的摘錄<xref:System.Web.Management.IWebEventCustomEvaluator.CanFire%2A>方法，以決定是否引發的事件必須傳送至提供者進行處理。</span><span class="sxs-lookup"><span data-stu-id="62752-110">The following is an excerpt of the configuration file that enables ASP.NET to use the <xref:System.Web.Management.IWebEventCustomEvaluator.CanFire%2A> method to decide whether the raised event must be sent to the provider for processing.</span></span>  
+  
+```  
+<healthMonitoring   
+  heartBeatInterval="0" enabled="true">  
+  
+    <providers>  
+      <add name="SampleWebEventProvider"   
+        type="SamplesAspNet.SampleEventProvider, webeventprovider, Version=1.0.1741.20369, Culture=neutral, PublicKeyToken=cf85aa6c978d9dea, processorArchitecture=MSIL" />  
+    </providers>  
+  
+    <profiles>  
+      <add   
+        name="Custom"   
+        minInstances="1"   
+        maxLimit="Infinite"   
+        minInterval="00:00:00"   
+        custom ="SamplesAspNet.SampleWebRequestEvent,webrequestevent"   
+        />  
+    </profiles>  
+  
+    <eventMappings>  
+  
+      <add name="SampleWebRequestEvent" type="SamplesAspNet.SampleWebRequestEvent,webrequestevent, Version=1.0.1759.20533, Culture=neutral, PublicKeyToken=0d72899b07049076, processorArchitecture=MSIL" />  
+  
+    </eventMappings>  
+  
+    <rules>  
+      <clear />  
+  
+        <add name="Custom Web Request Event"   
+          eventName="SampleWebRequestEvent"  
+          provider="SampleWebEventProvider" profile="Custom" />  
+    </rules>  
+  
+</healthMonitoring>  
+```  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Web.Management.RuleFiringRecord" />
+  </Docs>
+  <Members>
+    <Member MemberName="CanFire">
+      <MemberSignature Language="C#" Value="public bool CanFire (System.Web.Management.WebBaseEvent raisedEvent, System.Web.Management.RuleFiringRecord record);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanFire(class System.Web.Management.WebBaseEvent raisedEvent, class System.Web.Management.RuleFiringRecord record) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Management.IWebEventCustomEvaluator.CanFire(System.Web.Management.WebBaseEvent,System.Web.Management.RuleFiringRecord)" />
+      <MemberSignature Language="VB.NET" Value="Public Function CanFire (raisedEvent As WebBaseEvent, record As RuleFiringRecord) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool CanFire(System::Web::Management::WebBaseEvent ^ raisedEvent, System::Web::Management::RuleFiringRecord ^ record);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="raisedEvent" Type="System.Web.Management.WebBaseEvent" />
+        <Parameter Name="record" Type="System.Web.Management.RuleFiringRecord" />
+      </Parameters>
+      <Docs>
+        <param name="raisedEvent">
+          <span data-ttu-id="62752-111">要引發的事件。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="62752-111">The event to raise.</span>
+          </span>
+        </param>
+        <param name="record">
+          <span data-ttu-id="62752-112">
+            <see cref="T:System.Web.Management.RuleFiringRecord" />，包含關於事件的資訊。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="62752-112">The <see cref="T:System.Web.Management.RuleFiringRecord" /> containing information about the event.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="62752-113">評估事件是否應該引發。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="62752-113">Evaluates whether an event should be raised.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="62752-114">如果要引發事件則為 <see langword="true" />，否則為 <see langword="false" />。</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="62752-114">
+              <see langword="true" /> if the event should be raised; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="62752-115">如果傳回的自訂事件評估工具`true`，會引發事件，並接著會處理相關聯的提供者。</span><span class="sxs-lookup"><span data-stu-id="62752-115">If the custom event evaluator returns `true`, the event is raised and then processed by the associated provider.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="62752-116">下列程式碼範例顯示的自訂實作<xref:System.Web.Management.IWebEventCustomEvaluator.CanFire%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="62752-116">The following code example shows a custom implementation of the <xref:System.Web.Management.IWebEventCustomEvaluator.CanFire%2A> method.</span></span>  
+  
+ [!code-csharp[System.Web.Management.WebBaseEvent#22](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Management.WebBaseEvent/CS/webbaseevent.cs#22)]
+ [!code-vb[System.Web.Management.WebBaseEvent#22](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Management.WebBaseEvent/VB/webbaseevent.vb#22)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
