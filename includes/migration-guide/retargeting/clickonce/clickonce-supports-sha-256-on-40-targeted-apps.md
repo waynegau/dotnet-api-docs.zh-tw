@@ -1,0 +1,10 @@
+### <a name="clickonce-supports-sha-256-on-40-targeted-apps"></a><span data-ttu-id="e4a3f-101">ClickOnce 支援 sha-256 4.0 為目標的應用程式</span><span class="sxs-lookup"><span data-stu-id="e4a3f-101">ClickOnce supports SHA-256 on 4.0-targeted apps</span></span>
+
+|   |   |
+|---|---|
+|<span data-ttu-id="e4a3f-102">詳細資料</span><span class="sxs-lookup"><span data-stu-id="e4a3f-102">Details</span></span>|<span data-ttu-id="e4a3f-103">先前，與憑證使用 sha-256 簽署的 ClickOnce 應用程式需要.NET 4.5 或更新版本為存在，即使應用程式目標 4.0。</span><span class="sxs-lookup"><span data-stu-id="e4a3f-103">Previously, a ClickOnce app with a certificate signed with SHA-256 would require .NET 4.5 or later to be present, even if the app targeted 4.0.</span></span> <span data-ttu-id="e4a3f-104">現在，4.0 為目標的 ClickOnce 應用程式可以在執行 4.0 中，即使使用 SHA 256 進行簽署。</span><span class="sxs-lookup"><span data-stu-id="e4a3f-104">Now, 4.0-targeted ClickOnce apps can run on 4.0, even if signed with SHA-256.</span></span>|
+|<span data-ttu-id="e4a3f-105">建議</span><span class="sxs-lookup"><span data-stu-id="e4a3f-105">Suggestion</span></span>|<span data-ttu-id="e4a3f-106">這項變更移除了該相依性，並允許使用 sha-256 憑證用來簽署 ClickOnce 應用程式，以.NET Framework 4 和舊版為目標。</span><span class="sxs-lookup"><span data-stu-id="e4a3f-106">This change removes that dependency and allows SHA-256 certificates to be used to sign ClickOnce apps that target .NET Framework 4 and earlier versions.</span></span>|
+|<span data-ttu-id="e4a3f-107">範圍</span><span class="sxs-lookup"><span data-stu-id="e4a3f-107">Scope</span></span>|<span data-ttu-id="e4a3f-108">次要</span><span class="sxs-lookup"><span data-stu-id="e4a3f-108">Minor</span></span>|
+|<span data-ttu-id="e4a3f-109">版本</span><span class="sxs-lookup"><span data-stu-id="e4a3f-109">Version</span></span>|<span data-ttu-id="e4a3f-110">4.6</span><span class="sxs-lookup"><span data-stu-id="e4a3f-110">4.6</span></span>|
+|<span data-ttu-id="e4a3f-111">類型</span><span class="sxs-lookup"><span data-stu-id="e4a3f-111">Type</span></span>|<span data-ttu-id="e4a3f-112">正在重定目標</span><span class="sxs-lookup"><span data-stu-id="e4a3f-112">Retargeting</span></span>|
+

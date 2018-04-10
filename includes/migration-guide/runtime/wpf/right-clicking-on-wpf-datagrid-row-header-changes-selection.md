@@ -1,0 +1,11 @@
+### <a name="right-clicking-on-a-wpf-datagrid-row-header-changes-the-datagrid-selection"></a><span data-ttu-id="c4309-101">在 WPF DataGrid 上以滑鼠右鍵按一下資料列標頭變更 DataGrid 選取項目</span><span class="sxs-lookup"><span data-stu-id="c4309-101">Right clicking on a WPF DataGrid row header changes the DataGrid selection</span></span>
+
+|   |   |
+|---|---|
+|<span data-ttu-id="c4309-102">詳細資料</span><span class="sxs-lookup"><span data-stu-id="c4309-102">Details</span></span>|<span data-ttu-id="c4309-103">以滑鼠右鍵按一下 選取<xref:System.Windows.Controls.DataGrid?displayProperty=name>多個資料列時選取的結果中的資料列標頭<xref:System.Windows.Controls.DataGrid?displayProperty=name>的選取範圍變更至該資料列。</span><span class="sxs-lookup"><span data-stu-id="c4309-103">Right-clicking a selected <xref:System.Windows.Controls.DataGrid?displayProperty=name> row header while multiple rows are selected results in the <xref:System.Windows.Controls.DataGrid?displayProperty=name>'s selection changing to only that row.</span></span>|
+|<span data-ttu-id="c4309-104">建議</span><span class="sxs-lookup"><span data-stu-id="c4309-104">Suggestion</span></span>|<span data-ttu-id="c4309-105">.NET Framework 4.6 中已修正此問題，而且定址方式可透過升級至.NET Framework 的版本。</span><span class="sxs-lookup"><span data-stu-id="c4309-105">This issue has been fixed in the .NET Framework 4.6 and may be addressed by upgrading to that version of the .NET Framework.</span></span>|
+|<span data-ttu-id="c4309-106">範圍</span><span class="sxs-lookup"><span data-stu-id="c4309-106">Scope</span></span>|<span data-ttu-id="c4309-107">Edge</span><span class="sxs-lookup"><span data-stu-id="c4309-107">Edge</span></span>|
+|<span data-ttu-id="c4309-108">版本</span><span class="sxs-lookup"><span data-stu-id="c4309-108">Version</span></span>|<span data-ttu-id="c4309-109">4.5</span><span class="sxs-lookup"><span data-stu-id="c4309-109">4.5</span></span>|
+|<span data-ttu-id="c4309-110">類型</span><span class="sxs-lookup"><span data-stu-id="c4309-110">Type</span></span>|<span data-ttu-id="c4309-111">執行階段</span><span class="sxs-lookup"><span data-stu-id="c4309-111">Runtime</span></span>|
+|<span data-ttu-id="c4309-112">受影響的 API</span><span class="sxs-lookup"><span data-stu-id="c4309-112">Affected APIs</span></span>|<ul><li><xref:System.Windows.Controls.DataGrid.%23ctor?displayProperty=nameWithType></li></ul>|
+

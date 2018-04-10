@@ -1,0 +1,25 @@
+<span data-ttu-id="151e0-101">使用以字元為基礎的索引與<xref:System.Text.StringBuilder.Chars%2A>屬性可以是很慢，在下列情況下：</span><span class="sxs-lookup"><span data-stu-id="151e0-101">Using character-based indexing with the <xref:System.Text.StringBuilder.Chars%2A> property can be extremely slow under the following conditions:</span></span>
+
+- <span data-ttu-id="151e0-102"><xref:System.Text.StringBuilder>很大的執行個體 （例如，它包含數個數以萬計的字元）。</span><span class="sxs-lookup"><span data-stu-id="151e0-102">The <xref:System.Text.StringBuilder> instance is large (for example, it consists of several tens of thousands of characters).</span></span>
+- <span data-ttu-id="151e0-103"><xref:System.Text.StringBuilder>是 「 大量 」。</span><span class="sxs-lookup"><span data-stu-id="151e0-103">The <xref:System.Text.StringBuilder> is "chunky."</span></span> <span data-ttu-id="151e0-104">也就是說，例如重複方法的呼叫<xref:System.Text.StringBuilder.Append%2A?displayProperty=nameWithType>自動展開物件的<xref:System.Text.StringBuilder.Capacity%2A?displayProperty=nameWithType>屬性和配置的記憶體給它的新區塊。</span><span class="sxs-lookup"><span data-stu-id="151e0-104">That is, repeated calls to methods such as <xref:System.Text.StringBuilder.Append%2A?displayProperty=nameWithType> have automatically expanded the object's <xref:System.Text.StringBuilder.Capacity%2A?displayProperty=nameWithType> property and allocated new chunks of memory to it.</span></span>
+
+<span data-ttu-id="151e0-105">因為每個字元的存取會逐步引導整個連結的清單來尋找正確的緩衝區索引的區塊會嚴重影響效能。</span><span class="sxs-lookup"><span data-stu-id="151e0-105">Performance is severely impacted because each character access walks the entire linked list of chunks to find the correct buffer to index into.</span></span>
+
+> [!NOTE]
+>  <span data-ttu-id="151e0-106">即使對於大型 「 大量 」<xref:System.Text.StringBuilder>物件、 使用<xref:System.Text.StringBuilder.Chars%2A>索引為基礎的存取，其中一個或少數幾個字元的屬性些許的效能影響; 一般來說，這是**0 （n)**作業。</span><span class="sxs-lookup"><span data-stu-id="151e0-106">Even for a large "chunky" <xref:System.Text.StringBuilder> object, using the <xref:System.Text.StringBuilder.Chars%2A> property for index-based access to one or a small number of characters has a negligible performance impact; typically, it is an **0(n)** operation.</span></span> <span data-ttu-id="151e0-107">反覆查看中的字元時，就會發生顯著的效能影響<xref:System.Text.StringBuilder>物件，它是**O(n^2)**作業。</span><span class="sxs-lookup"><span data-stu-id="151e0-107">The significant performance impact occurs when iterating the characters in the <xref:System.Text.StringBuilder> object, which is an **O(n^2)** operation.</span></span> 
+
+<span data-ttu-id="151e0-108">如果使用以字元為基礎的索引時，會遇到效能問題<xref:System.Text.StringBuilder>物件，您可以使用任何下列因應措施：</span><span class="sxs-lookup"><span data-stu-id="151e0-108">If you encounter performance issues when using character-based indexing with <xref:System.Text.StringBuilder> objects, you can use any of the following workarounds:</span></span>
+
+- <span data-ttu-id="151e0-109">轉換<xref:System.Text.StringBuilder>執行個體<xref:System.String>藉由呼叫<xref:System.Text.StringBuilder.ToString%2A>方法，然後存取字串中的字元。</span><span class="sxs-lookup"><span data-stu-id="151e0-109">Convert the <xref:System.Text.StringBuilder> instance to a <xref:System.String> by calling the <xref:System.Text.StringBuilder.ToString%2A> method, then access the characters in the string.</span></span>
+
+- <span data-ttu-id="151e0-110">將現有的內容複製<xref:System.Text.StringBuilder>物件至新預留的大小<xref:System.Text.StringBuilder>物件。</span><span class="sxs-lookup"><span data-stu-id="151e0-110">Copy the contents of the existing <xref:System.Text.StringBuilder> object to a new pre-sized <xref:System.Text.StringBuilder> object.</span></span> <span data-ttu-id="151e0-111">效能改善，因為新<xref:System.Text.StringBuilder>物件不是大量。</span><span class="sxs-lookup"><span data-stu-id="151e0-111">Performance improves because the new <xref:System.Text.StringBuilder> object is not chunky.</span></span> <span data-ttu-id="151e0-112">例如: </span><span class="sxs-lookup"><span data-stu-id="151e0-112">For example:</span></span>
+
+   ```csharp
+   // sbOriginal is the existing StringBuilder object
+   var sbNew = new StringBuilder(sbOriginal.ToString(), sbOriginal.Length);
+   ```
+   ```vb
+   ' sbOriginal is the existing StringBuilder object
+   Dim sbNew = New StringBuilder(sbOriginal.ToString(), sbOriginal.Length)
+   ```
+- <span data-ttu-id="151e0-113">設定的初始容量<xref:System.Text.StringBuilder>物件的值，藉由呼叫是大約等於其大小上限的預期<xref:System.Text.StringBuilder.%23ctor(System.Int32)>建構函式。</span><span class="sxs-lookup"><span data-stu-id="151e0-113">Set the initial capacity of the <xref:System.Text.StringBuilder> object to a value that is approximately equal to its maximum expected size by calling the <xref:System.Text.StringBuilder.%23ctor(System.Int32)> constructor.</span></span> <span data-ttu-id="151e0-114">請注意這會配置記憶體，即使整個區塊<xref:System.Text.StringBuilder>很少達到最大容量。</span><span class="sxs-lookup"><span data-stu-id="151e0-114">Note that this allocates the entire block of memory even if the <xref:System.Text.StringBuilder> rarely reaches its maximum capacity.</span></span>

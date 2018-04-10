@@ -1,0 +1,11 @@
+### <a name="wpf-textbox-selected-text-appears-a-different-color-when-the-text-box-is-inactive"></a><span data-ttu-id="ef748-101">WPF 文字方塊中選取文字會在文字方塊中非使用中時，會顯示不同的色彩</span><span class="sxs-lookup"><span data-stu-id="ef748-101">WPF TextBox selected text appears a different color when the text box is inactive</span></span>
+
+|   |   |
+|---|---|
+|<span data-ttu-id="ef748-102">詳細資料</span><span class="sxs-lookup"><span data-stu-id="ef748-102">Details</span></span>|<span data-ttu-id="ef748-103">在 .NET 4.5 中，當 WPF 文字方塊控制項非作用中時 (沒有焦點)，方塊內的選取文字會以不同於控制項作用中的色彩來顯示。</span><span class="sxs-lookup"><span data-stu-id="ef748-103">In .NET 4.5, when a WPF text box control is inactive (it doesn't have focus), the selected text inside the box will appear a different color than when the control is active.</span></span>|
+|<span data-ttu-id="ef748-104">建議</span><span class="sxs-lookup"><span data-stu-id="ef748-104">Suggestion</span></span>|<span data-ttu-id="ef748-105">可能還原先前的 (.NET 4.0) 行為，藉由設定<xref:System.Windows.FrameworkCompatibilityPreferences.AreInactiveSelectionHighlightBrushKeysSupported>屬性<code>false</code>。</span><span class="sxs-lookup"><span data-stu-id="ef748-105">Previous (.NET 4.0) behavior may be restored by setting the <xref:System.Windows.FrameworkCompatibilityPreferences.AreInactiveSelectionHighlightBrushKeysSupported> property to <code>false</code>.</span></span>|
+|<span data-ttu-id="ef748-106">範圍</span><span class="sxs-lookup"><span data-stu-id="ef748-106">Scope</span></span>|<span data-ttu-id="ef748-107">Edge</span><span class="sxs-lookup"><span data-stu-id="ef748-107">Edge</span></span>|
+|<span data-ttu-id="ef748-108">版本</span><span class="sxs-lookup"><span data-stu-id="ef748-108">Version</span></span>|<span data-ttu-id="ef748-109">4.5</span><span class="sxs-lookup"><span data-stu-id="ef748-109">4.5</span></span>|
+|<span data-ttu-id="ef748-110">類型</span><span class="sxs-lookup"><span data-stu-id="ef748-110">Type</span></span>|<span data-ttu-id="ef748-111">執行階段</span><span class="sxs-lookup"><span data-stu-id="ef748-111">Runtime</span></span>|
+|<span data-ttu-id="ef748-112">受影響的 API</span><span class="sxs-lookup"><span data-stu-id="ef748-112">Affected APIs</span></span>|<ul><li><xref:System.Windows.Controls.TextBox?displayProperty=nameWithType></li></ul>|
+

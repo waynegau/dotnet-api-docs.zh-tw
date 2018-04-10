@@ -1,0 +1,10 @@
+### <a name="ipad-should-not-be-used-in-custom-capabilities-file-because-it-is-now-a-browser-capability"></a><span data-ttu-id="a7821-101">IPad 不應在自訂的功能檔案，所以現在瀏覽器功能</span><span class="sxs-lookup"><span data-stu-id="a7821-101">IPad should not be used in custom capabilities file because it is now a browser capability</span></span>
+
+|   |   |
+|---|---|
+|<span data-ttu-id="a7821-102">詳細資料</span><span class="sxs-lookup"><span data-stu-id="a7821-102">Details</span></span>|<span data-ttu-id="a7821-103">從.NET 4.5 開始，iPad 是識別項在預設 ASP.NET 瀏覽器的功能檔案中，所以不應該使用自訂的功能檔案中</span><span class="sxs-lookup"><span data-stu-id="a7821-103">Beginning in .NET 4.5, iPad is an identifier in the default ASP.NET browser capabilities file, so it should not be used in a custom capabilities file</span></span>|
+|<span data-ttu-id="a7821-104">建議</span><span class="sxs-lookup"><span data-stu-id="a7821-104">Suggestion</span></span>|<span data-ttu-id="a7821-105">如果 iPad 特定功能是必要的則必須以修改 iPad 上預先定義的閘道 refID 設定功能&quot;IPad&quot;而不是透過產生新&quot;IPad&quot;使用者代理程式的識別碼比對。</span><span class="sxs-lookup"><span data-stu-id="a7821-105">If iPad-specific capabilities are required, it is necessary to modify iPad behavior by setting capabilities on the pre-defined gateway refID &quot;IPad&quot; instead of by generating a new &quot;IPad&quot; ID by user agent matching.</span></span>|
+|<span data-ttu-id="a7821-106">範圍</span><span class="sxs-lookup"><span data-stu-id="a7821-106">Scope</span></span>|<span data-ttu-id="a7821-107">Edge</span><span class="sxs-lookup"><span data-stu-id="a7821-107">Edge</span></span>|
+|<span data-ttu-id="a7821-108">版本</span><span class="sxs-lookup"><span data-stu-id="a7821-108">Version</span></span>|<span data-ttu-id="a7821-109">4.5</span><span class="sxs-lookup"><span data-stu-id="a7821-109">4.5</span></span>|
+|<span data-ttu-id="a7821-110">類型</span><span class="sxs-lookup"><span data-stu-id="a7821-110">Type</span></span>|<span data-ttu-id="a7821-111">執行階段</span><span class="sxs-lookup"><span data-stu-id="a7821-111">Runtime</span></span>|
+
