@@ -1,0 +1,11 @@
+### <a name="calls-to-claimsidentity-constructors"></a>呼叫 ClaimsIdentity 建構函式
+
+|   |   |
+|---|---|
+|詳細資料|從.NET Framework 4.6.2 開始，沒有方式變更<xref:System.Security.Claims.ClaimsIdentity>的建構函式<xref:System.Security.Principal.IIdentity?displayProperty=name>參數集<xref:System.Security.Claims.ClaimsIdentity.Actor?displayProperty=name>屬性。 如果 <xref:System.Security.Principal.IIdentity?displayProperty=name> 引數是 <xref:System.Security.Claims.ClaimsIdentity> 物件，而且該 <xref:System.Security.Claims.ClaimsIdentity> 物件的 <xref:System.Security.Claims.ClaimsIdentity.Actor?displayProperty=name> 屬性不是 <code>null</code>，則會使用 <xref:System.Security.Claims.ClaimsIdentity.Clone> 方法來附加 <xref:System.Security.Claims.ClaimsIdentity.Actor?displayProperty=name> 屬性。 在 Framework 4.6.1 及更新版本、<xref:System.Security.Claims.ClaimsIdentity.Actor?displayProperty=name>做為現有的參考附加屬性。由於此項變更，以.NET Framework 4.6.2，啟動<xref:System.Security.Claims.ClaimsIdentity.Actor?displayProperty=name>屬性的新<xref:System.Security.Claims.ClaimsIdentity>物件是否不等於<xref:System.Security.Claims.ClaimsIdentity.Actor?displayProperty=name>屬性建構函式的<xref:System.Security.Principal.IIdentity?displayProperty=name>引數。 在.NET Framework 4.6.1 和更早版本中，它是相等。|
+|建議|如果不想要這種行為，您可以將應用程式組態檔中的 <code>Switch.System.Security.ClaimsIdentity.SetActorAsReferenceWhenCopyingClaimsIdentity</code> 參數設為 <code>true</code> 來還原舊版行為。 這需要您將下列內容加入<code>&lt;runtime&gt;</code>web.config 檔案區段：<pre><code class="language-xml">&lt;configuration&gt;&#13;&#10;&lt;runtime&gt;&#13;&#10;&lt;AppContextSwitchOverrides value=&quot;Switch.System.Security.ClaimsIdentity.SetActorAsReferenceWhenCopyingClaimsIdentity=true&quot; /&gt;&#13;&#10;&lt;/runtime&gt;&#13;&#10;&lt;/configuration&gt;&#13;&#10;</code></pre>|
+|範圍|Edge|
+|版本|4.6.2|
+|類型|正在重定目標|
+|受影響的 API|<ul><li><xref:System.Security.Claims.ClaimsIdentity.%23ctor(System.Security.Principal.IIdentity)?displayProperty=nameWithType></li><li><xref:System.Security.Claims.ClaimsIdentity.%23ctor(System.Security.Principal.IIdentity,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})?displayProperty=nameWithType></li><li><xref:System.Security.Claims.ClaimsIdentity.%23ctor(System.Security.Principal.IIdentity,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.String,System.String,System.String)?displayProperty=nameWithType></li></ul>|
+

@@ -1,0 +1,11 @@
+### <a name="rsacng-and-dsacng-are-once-again-usable-in-partial-trust-scenarios"></a>RSACng 和 DSACng 都同樣能在部分信任案例
+
+|   |   |
+|---|---|
+|詳細資料|CngLightup (用於數個較高層級的 crypto api，例如<xref:System.Security.Cryptography.Xml.EncryptedXml?displayProperty=nameWithType>) 和<xref:System.Security.Cryptography.RSACng?displayProperty=nameWithType>在某些情況下需要完全信任。 這些包括 P/Invokes 不判斷提示<xref:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode?displayProperty=nameWithType>權限，以及程式碼路徑其中<xref:System.Security.Cryptography.CngKey?displayProperty=nameWithType>具有的權限要求<xref:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode?displayProperty=nameWithType>。 從.NET Framework 4.6.2 開始，CngLightup 用來切換至<xref:System.Security.Cryptography.RSACng?displayProperty=nameWithType>只要做得到。 如此一來，部分信任應用程式，已順利使用<xref:System.Security.Cryptography.Xml.EncryptedXml?displayProperty=nameWithType>開始失敗並擲回<xref:System.Security.SecurityException>例外狀況。這項變更將新增所需的判斷提示，讓所有的函式使用 CngLightup 具有必要權限。|
+|建議|如果這項變更.NET Framework 4.6.2 中的有受到負面影響，部分信任應用程式，升級至.NET Framework 4.7.1。|
+|範圍|Edge|
+|版本|4.6.2|
+|類型|執行階段|
+|受影響的 API|<ul><li><xref:System.Security.Cryptography.DSACng.%23ctor(System.Security.Cryptography.CngKey)?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.DSACng.Key?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.DSACng.LegalKeySizes?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.DSACng.CreateSignature(System.Byte[])?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.DSACng.VerifySignature(System.Byte[],System.Byte[])?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.RSACng.%23ctor(System.Security.Cryptography.CngKey)?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.RSACng.Key?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.RSACng.Decrypt(System.Byte[],System.Security.Cryptography.RSAEncryptionPadding)?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.RSACng.SignHash(System.Byte[],System.Security.Cryptography.HashAlgorithmName,System.Security.Cryptography.RSASignaturePadding)?displayProperty=nameWithType></li></ul>|
+

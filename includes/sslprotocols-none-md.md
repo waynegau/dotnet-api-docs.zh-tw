@@ -1,0 +1,1 @@
+從.NET Framework 4.7 開始，這個方法會驗證使用<xref:System.Security.Authentication.SslProtocols.None>、 可讓作業系統選擇最適合的通訊協定，若要使用，以及封鎖通訊協定，並不安全。 在.NET Framework 4.6 （和最新安全性修補程式安裝.NET Framework 4.5） 中，允許的 TLS/SSL 通訊協定版本為 1.2、 1.1 和 1.0 （除非您停用強式密碼編譯編輯 Windows 登錄）。
