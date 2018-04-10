@@ -1,0 +1,1 @@
+<span data-ttu-id="f3d5f-101">使用者介面 (UI)</span><span class="sxs-lookup"><span data-stu-id="f3d5f-101">user interface (UI)</span></span>

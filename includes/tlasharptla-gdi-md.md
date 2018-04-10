@@ -1,0 +1,1 @@
+<span data-ttu-id="c790a-101">Microsoft Windows 圖形裝置介面 (GDI)</span><span class="sxs-lookup"><span data-stu-id="c790a-101">Microsoft Windows Graphics Device Interface (GDI)</span></span>

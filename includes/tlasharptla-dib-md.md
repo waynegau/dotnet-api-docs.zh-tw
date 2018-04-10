@@ -1,0 +1,1 @@
+<span data-ttu-id="cd63f-101">裝置獨立點陣圖 (DIB)</span><span class="sxs-lookup"><span data-stu-id="cd63f-101">device-independent bitmap (DIB)</span></span>

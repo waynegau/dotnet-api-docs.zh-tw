@@ -1,0 +1,1 @@
+<span data-ttu-id="f6b20-101">Text Services Framework (TSF)</span><span class="sxs-lookup"><span data-stu-id="f6b20-101">Text Services Framework (TSF)</span></span>

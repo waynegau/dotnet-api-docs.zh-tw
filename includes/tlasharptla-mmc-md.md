@@ -1,0 +1,1 @@
+<span data-ttu-id="f1e64-101">Microsoft Management Console (MMC)</span><span class="sxs-lookup"><span data-stu-id="f1e64-101">Microsoft Management Console (MMC)</span></span>

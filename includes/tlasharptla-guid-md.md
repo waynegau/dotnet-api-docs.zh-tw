@@ -1,0 +1,1 @@
+<span data-ttu-id="4c70c-101">通用唯一識別碼 (GUID)</span><span class="sxs-lookup"><span data-stu-id="4c70c-101">globally unique identifier (GUID)</span></span>

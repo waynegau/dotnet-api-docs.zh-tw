@@ -1,0 +1,1 @@
+<span data-ttu-id="00d0e-101">WPF Designer for Visual Studio</span><span class="sxs-lookup"><span data-stu-id="00d0e-101">WPF Designer for Visual Studio</span></span>
