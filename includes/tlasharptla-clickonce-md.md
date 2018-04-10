@@ -1,0 +1,1 @@
+<span data-ttu-id="ed3cb-101">ClickOnce</span><span class="sxs-lookup"><span data-stu-id="ed3cb-101">ClickOnce</span></span>

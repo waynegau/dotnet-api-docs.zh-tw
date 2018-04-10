@@ -1,0 +1,1 @@
+<span data-ttu-id="e9002-101">開放式封裝慣例 (OPC)</span><span class="sxs-lookup"><span data-stu-id="e9002-101">Open Packaging Conventions (OPC)</span></span>

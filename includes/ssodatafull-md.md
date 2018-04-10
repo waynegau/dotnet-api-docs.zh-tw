@@ -1,0 +1,1 @@
+<span data-ttu-id="133e7-101">開放式資料通訊協定 (OData)</span><span class="sxs-lookup"><span data-stu-id="133e7-101">Open Data Protocol (OData)</span></span>

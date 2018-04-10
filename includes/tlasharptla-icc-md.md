@@ -1,0 +1,1 @@
+<span data-ttu-id="08d7e-101">國際色彩聯盟 (ICC)</span><span class="sxs-lookup"><span data-stu-id="08d7e-101">International Color Consortium (ICC)</span></span>

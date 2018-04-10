@@ -1,0 +1,1 @@
+<span data-ttu-id="4d653-101">URI</span><span class="sxs-lookup"><span data-stu-id="4d653-101">URIs</span></span>

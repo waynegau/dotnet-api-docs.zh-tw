@@ -1,0 +1,1 @@
+<span data-ttu-id="cb556-101">Microsoft Internet Information Services (IIS) 6.0</span><span class="sxs-lookup"><span data-stu-id="cb556-101">Microsoft Internet Information Services (IIS) 6.0</span></span>

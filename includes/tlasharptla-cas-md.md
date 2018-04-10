@@ -1,0 +1,1 @@
+<span data-ttu-id="701c0-101">程式碼存取安全性 (CAS)</span><span class="sxs-lookup"><span data-stu-id="701c0-101">Code Access Security (CAS)</span></span>

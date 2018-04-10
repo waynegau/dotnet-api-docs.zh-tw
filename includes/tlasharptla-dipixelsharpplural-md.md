@@ -1,0 +1,1 @@
+<span data-ttu-id="ede5c-101">裝置獨立單位 (每單位 1/96 英吋)</span><span class="sxs-lookup"><span data-stu-id="ede5c-101">device-independent units (1/96th inch per unit)</span></span>
