@@ -1,9 +1,9 @@
-### <a name="workflowdesignerload-doesnt-remove-symbol-property"></a>WorkflowDesigner.Load 並不會移除符號屬性
+### <a name="workflowdesignerload-doesnt-remove-symbol-property"></a>WorkflowDesigner.Load 不會移除符號屬性
 
 |   |   |
 |---|---|
-|詳細資料|當目標為.NET Framework 4.5，在工作流程設計工具，以及載入與 3.5 的重新裝載工作流程時<xref:System.Activities.Presentation.WorkflowDesigner.Load>方法，<xref:System.Xaml.XamlDuplicateMemberException?displayProperty=name>儲存工作流程時擲回。|
-|建議|.NET Framework 4.5 中的工作流程設計工具中，為目標，讓它可以克服藉由設定時，這個 bug 只資訊清單<code>WorkflowDesigner.Context.Services.GetService&lt;DesignerConfigurationService&gt;().TargetFrameworkName</code>至 4.0.NET Framework.Alternatively，問題可能避免使用<xref:System.Activities.Presentation.WorkflowDesigner.Load(System.String)>方法來載入工作流程，而不是<xref:System.Activities.Presentation.WorkflowDesigner.Load>。|
+|詳細資料|如果工作流程設計工具是以 .NET Framework 4.5 為目標，並使用 <xref:System.Activities.Presentation.WorkflowDesigner.Load> 方法載入重新裝載的 3.5 工作流程，則會在儲存工作流程時擲回 <xref:System.Xaml.XamlDuplicateMemberException?displayProperty=name>。|
+|建議|只有在工作流程設計工具是以 .NET Framework 4.5 為目標時才會出現此 Bug，因此可藉由將 <code>WorkflowDesigner.Context.Services.GetService&lt;DesignerConfigurationService&gt;().TargetFrameworkName</code> 設定為 .NET Framework 4.0 來解決。或者，可以使用 <xref:System.Activities.Presentation.WorkflowDesigner.Load(System.String)> 方法載入工作流桯來避免問題，而不要使用 <xref:System.Activities.Presentation.WorkflowDesigner.Load>。|
 |範圍|主要|
 |版本|4.5|
 |類型|正在重定目標|

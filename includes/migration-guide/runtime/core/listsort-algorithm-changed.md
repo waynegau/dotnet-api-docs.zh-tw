@@ -2,8 +2,8 @@
 
 |   |   |
 |---|---|
-|詳細資料|從.NET Framework 4.5、<xref:System.Collections.Generic.List%601?displayProperty=name>的排序演算法已變更 （要內省式排序，而不是快速排序）。 <xref:System.Collections.Generic.List%601?displayProperty=name>排序從未穩定，但這項變更可能會導致不同的案例來排序不穩定的方式。 這只是表示對等項目可能會以不同的應用程式開發介面的後續呼叫中的順序排序。|
-|建議|因為舊的排序演算法也不穩定 （即使在不同的方式），應一律以特定順序排序的對等項目所依賴的任何程式碼。 如果執行個體的程式碼，而定，而且正在幸運與舊的行為，該程式碼應該更新為使用決定性的方式會比較子來排序所需的順序中的項目。|
+|詳細資料|從 .NET Framework 4.5 開始，<xref:System.Collections.Generic.List%601?displayProperty=name> 的排序演算法已變更 (變更為內省式排序，而不是快速排序)。 <xref:System.Collections.Generic.List%601?displayProperty=name> 的排序從未穩定，但這項變更可能會導致不同的案例以不穩定的方式排序。 這只是表示對等項目可能會在 API 的後續呼叫中以不同的順序排序。|
+|建議|因為舊的排序演算法也不穩定 (儘管方式略有不同)，應該沒有任何程式碼相依於一律以特定順序排序的對等項目。 如果有程式碼的執行個體相依於該項目，且湊巧使用舊行為，該程式碼應該更新為使用將明確地以所需順序排序項目的比較子。|
 |範圍|透明|
 |版本|4.5|
 |類型|執行階段|

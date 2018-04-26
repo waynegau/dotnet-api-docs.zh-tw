@@ -1,9 +1,9 @@
-### <a name="xmlschemaexception-now-sets-line-positions-properly"></a>XmlSchemaException 現在設定列位置正確
+### <a name="xmlschemaexception-now-sets-line-positions-properly"></a>XmlSchemaException 現在會正確設定行位置
 
 |   |   |
 |---|---|
-|詳細資料|如果<xref:System.Xml.Linq.LoadOptions.SetLineInfo>值會傳遞給 Load 方法且發生驗證錯誤，<xref:System.Xml.Schema.XmlSchemaException.LineNumber>和<xref:System.Xml.Schema.XmlSchemaException.LinePosition>屬性現在會包含行資訊。|
-|建議|例外狀況處理程式碼假設<xref:System.Xml.Schema.XmlSchemaException.LineNumber>和<xref:System.Xml.Schema.XmlSchemaException.LinePosition>將不會因為這些屬性現在會設定正確載入 XML 時使用 SetLineInfo 時，就應該更新集。|
+|詳細資料|如果將 <xref:System.Xml.Linq.LoadOptions.SetLineInfo> 值傳遞至 Load 方法且發生驗證錯誤，則 <xref:System.Xml.Schema.XmlSchemaException.LineNumber> 和 <xref:System.Xml.Schema.XmlSchemaException.LinePosition> 屬性現在會包含行資訊。|
+|建議|您應該更新假設不會設定 <xref:System.Xml.Schema.XmlSchemaException.LineNumber> 和 <xref:System.Xml.Schema.XmlSchemaException.LinePosition> 的例外狀況處理程式碼，因為當使用 SetLineInfo 載入 XML 時，現在會正確設定這些屬性。|
 |範圍|Edge|
 |版本|4.5|
 |類型|執行階段|

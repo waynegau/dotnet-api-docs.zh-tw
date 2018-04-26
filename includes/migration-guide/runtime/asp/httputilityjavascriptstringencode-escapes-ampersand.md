@@ -1,8 +1,8 @@
-### <a name="httputilityjavascriptstringencode-escapes-ampersand"></a>HttpUtility.JavaScriptStringEncode 逸出連字號
+### <a name="httputilityjavascriptstringencode-escapes-ampersand"></a>HttpUtility.JavaScriptStringEncode 會逸出 & 符號
 
 |   |   |
 |---|---|
-|詳細資料|從.NET Framework 4.5、<xref:System.Web.HttpUtility.JavaScriptStringEncode(System.String)?displayProperty=name>逸出連字號 (&amp;) 字元。|
+|詳細資料|從 .NET Framework 4.5 開始，<xref:System.Web.HttpUtility.JavaScriptStringEncode(System.String)?displayProperty=name> 會逸出 &amp; 字元。|
 |建議|如果您的應用程式相依於此方法的舊版行為，您可以將 aspnet:JavaScriptDoNotEncodeAmpersand 設定新增至組態檔中的 [ASP.NET appSettings 項目](https://msdn.microsoft.com/library/hh975440.aspx)。|
 |範圍|次要|
 |版本|4.5|

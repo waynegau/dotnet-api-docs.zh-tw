@@ -1,9 +1,9 @@
-### <a name="unicode-standard-version-80-categories-now-supported"></a>現在支援 Unicode 標準 8.0 版類別
+### <a name="unicode-standard-version-80-categories-now-supported"></a>現在支援 Unicode 標準 8.0 版分類
 
 |   |   |
 |---|---|
-|詳細資料|在.NET Framework 4.6.2 framework 中的 Unicode 資料已升級從 Unicode 標準 6.3 版至 8.0 版。  當.NET Framework 4.6.2 中的 Unicode 字元分類要求時，某些結果可能不符合舊版的.NET Framework 中的結果。  這項變更通常會影響 Cherokee 音節和新的 Ta1 Lue 母音符號和音調標記。|
-|建議|檢閱程式碼，並移除/變更邏輯取決於硬式編碼的 Unicode 字元分類。|
+|詳細資料|在 .NET Framework 4.6.2 中，Framework 的 Unicode 資料已從 Unicode 標準 6.3 版升級至 8.0 版。  在 .NET Framework 4.6.2 中要求 Unicode 字元分類時，某些結果可能不符合舊版 .NET Framework 中的結果。  這項變更主要會影響卻洛奇文音節和新傣文母音符號和音調標記。|
+|建議|請檢閱程式碼，並移除/變更仰賴硬式編碼的 Unicode 字元分類的邏輯。|
 |範圍|次要|
 |版本|4.6.2|
 |類型|執行階段|

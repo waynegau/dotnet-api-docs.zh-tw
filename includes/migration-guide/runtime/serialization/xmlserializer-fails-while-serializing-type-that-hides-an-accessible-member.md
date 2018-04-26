@@ -1,9 +1,9 @@
-### <a name="xmlserializer-fails-while-serializing-a-type-that-hides-an-accessible-member-with-an-inaccessible-one"></a>XmlSerializer 序列化的型別，會隱藏與一個將無法存取的可存取成員時的失敗
+### <a name="xmlserializer-fails-while-serializing-a-type-that-hides-an-accessible-member-with-an-inaccessible-one"></a>在序列化以無法存取的成員隱藏可存取成員的類型時，XmlSerializer 會失敗
 
 |   |   |
 |---|---|
-|詳細資料|當序列化衍生的型別，<xref:System.Xml.Serialization.XmlSerializer?displayProperty=name>如果型別包含的無法存取欄位或屬性，會隱藏 （透過 'new' 關鍵字中） 的欄位或屬性，先前可存取 （公用，例如） 的相同名稱的基底類型上可能會失敗。|
-|建議|來解決這個問題，請讓新的、 隱藏的成員能夠存取<xref:System.Xml.Serialization.XmlSerializer?displayProperty=name>（依標示為公用的例如）。此外，下列組態設定會還原成 4.0<xref:System.Xml.Serialization.XmlSerializer?displayProperty=name>行為，將會修正此問題：<pre><code class="language-xml">&lt;system.xml.serialization&gt;&#13;&#10;&lt;xmlSerializer useLegacySerializerGeneration=&quot;true&quot; /&gt;&#13;&#10;&lt;/system.xml.serialization&gt;&#13;&#10;</code></pre>|
+|詳細資料|序列化衍生的類型時，如果類型包含無法存取的欄位或屬性，而此欄位或屬性隱藏 (透過 'new' 關鍵字) 先前在基底類型上可存取 (例如，公用) 之相同名稱的欄位或屬性，<xref:System.Xml.Serialization.XmlSerializer?displayProperty=name> 可能會失敗。|
+|建議|請使隱藏成員可供 <xref:System.Xml.Serialization.XmlSerializer?displayProperty=name> 存取 (例如，將其設為公開) 來解決這個問題。此外，下列組態設定會還原為 4.0 <xref:System.Xml.Serialization.XmlSerializer?displayProperty=name> 行為，以修正此問題：<pre><code class="language-xml">&lt;system.xml.serialization&gt;&#13;&#10;&lt;xmlSerializer useLegacySerializerGeneration=&quot;true&quot; /&gt;&#13;&#10;&lt;/system.xml.serialization&gt;&#13;&#10;</code></pre>|
 |範圍|次要|
 |版本|4.5|
 |類型|執行階段|

@@ -2,8 +2,8 @@
 
 |   |   |
 |---|---|
-|詳細資料|由於.NET Framework 4.5 的事件處理常式中的 bug<xref:System.Windows.Controls.DataGrid>涉及一個資料列中的移除的事件可能會導致<xref:System.NullReferenceException?displayProperty=name>如它們存取擲回<xref:System.Windows.Controls.DataGrid>的<xref:System.Windows.Controls.Primitives.Selector.SelectedItem?displayProperty=name>或<xref:System.Windows.Controls.Primitives.MultiSelector.SelectedItems?displayProperty=name>屬性。|
-|建議|.NET Framework 4.6 中已修正此問題，而且定址方式可透過升級至.NET Framework 的版本。|
+|詳細資料|由於 .NET Framework 4.5 中的 Bug)，涉及移除資料列之 <xref:System.Windows.Controls.DataGrid> 事件的事件處理常式，可能會在它們存取 <xref:System.Windows.Controls.DataGrid> 的 <xref:System.Windows.Controls.Primitives.Selector.SelectedItem?displayProperty=name> 或 <xref:System.Windows.Controls.Primitives.MultiSelector.SelectedItems?displayProperty=name> 屬性時導致擲回 <xref:System.NullReferenceException?displayProperty=name>。|
+|建議|此問題在 .NET Framework 4.6 中已修正，因此可藉由升級至該版 .NET Framework 來解決。|
 |範圍|次要|
 |版本|4.5|
 |類型|執行階段|

@@ -2,8 +2,8 @@
 
 |   |   |
 |---|---|
-|詳細資料|包含動作的特定順序<xref:System.Windows.Controls.ComboBox?displayProperty=name>和其資料來源可能會導致<xref:System.NullReferenceException?displayProperty=name>。|
-|建議|可能的話，請升級至.NET 4.6.2。|
+|詳細資料|涉及 <xref:System.Windows.Controls.ComboBox?displayProperty=name> 及其資料來源的特定動作順序會導致 <xref:System.NullReferenceException?displayProperty=name>。|
+|建議|可能的話，請升級至 .NET 4.6.2。|
 |範圍|次要|
 |版本|4.6|
 |類型|執行階段|

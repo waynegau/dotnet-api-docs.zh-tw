@@ -1,4 +1,4 @@
-### <a name="workflow-30-types-are-obsolete"></a>工作流程 3.0 型別已經過時
+### <a name="workflow-30-types-are-obsolete"></a>WorkFlow 3.0 類型已淘汰
 
 |   |   |
 |---|---|

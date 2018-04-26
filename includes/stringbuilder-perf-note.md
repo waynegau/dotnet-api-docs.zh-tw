@@ -1,18 +1,18 @@
-使用以字元為基礎的索引與<xref:System.Text.StringBuilder.Chars%2A>屬性可以是很慢，在下列情況下：
+在下列狀況下，搭配使用以字元為主的索引與 <xref:System.Text.StringBuilder.Chars%2A> 屬性可能極為緩慢：
 
-- <xref:System.Text.StringBuilder>很大的執行個體 （例如，它包含數個數以萬計的字元）。
-- <xref:System.Text.StringBuilder>是 「 大量 」。 也就是說，例如重複方法的呼叫<xref:System.Text.StringBuilder.Append%2A?displayProperty=nameWithType>自動展開物件的<xref:System.Text.StringBuilder.Capacity%2A?displayProperty=nameWithType>屬性和配置的記憶體給它的新區塊。
+- <xref:System.Text.StringBuilder> 執行個體很大 (例如，它包含幾萬個字元)。
+- <xref:System.Text.StringBuilder> 是「塊狀」。 也就是說，重複呼叫方法 (例如 <xref:System.Text.StringBuilder.Append%2A?displayProperty=nameWithType>) 已自動展開物件的 <xref:System.Text.StringBuilder.Capacity%2A?displayProperty=nameWithType> 屬性並配置記憶體的新區塊給它。
 
-因為每個字元的存取會逐步引導整個連結的清單來尋找正確的緩衝區索引的區塊會嚴重影響效能。
+由於每個字元的存取會行經整個連結的區塊清單來尋找要編入索引的正確緩衝區，因此會嚴重影響效能。
 
 > [!NOTE]
->  即使對於大型 「 大量 」<xref:System.Text.StringBuilder>物件、 使用<xref:System.Text.StringBuilder.Chars%2A>索引為基礎的存取，其中一個或少數幾個字元的屬性些許的效能影響; 一般來說，這是**0 （n)**作業。 反覆查看中的字元時，就會發生顯著的效能影響<xref:System.Text.StringBuilder>物件，它是**O(n^2)**作業。 
+>  即使對於大型「塊狀」<xref:System.Text.StringBuilder> 物件，使用 <xref:System.Text.StringBuilder.Chars%2A> 對一個或少數字元進行以索引為主的存取，也只有些許的效能影響；一般來說，這是 **0(n)** 作業。 逐一查看 <xref:System.Text.StringBuilder> 物件中的字元時，就會發生顯著的效能影響，這是 **O(n^2)** 作業。 
 
-如果使用以字元為基礎的索引時，會遇到效能問題<xref:System.Text.StringBuilder>物件，您可以使用任何下列因應措施：
+如果在 <xref:System.Text.StringBuilder> 物件中使用以字元為主的索引時遇到效能問題，您可以使用下列任一因應措施：
 
-- 轉換<xref:System.Text.StringBuilder>執行個體<xref:System.String>藉由呼叫<xref:System.Text.StringBuilder.ToString%2A>方法，然後存取字串中的字元。
+- 藉由呼叫 <xref:System.Text.StringBuilder.ToString%2A> 方法將 <xref:System.Text.StringBuilder> 執行個體轉換為 <xref:System.String>，然後存取字串中的字元。
 
-- 將現有的內容複製<xref:System.Text.StringBuilder>物件至新預留的大小<xref:System.Text.StringBuilder>物件。 效能改善，因為新<xref:System.Text.StringBuilder>物件不是大量。 例如: 
+- 將現有 <xref:System.Text.StringBuilder> 物件的內容複製到預留大小的新 <xref:System.Text.StringBuilder> 物件。 因為新的 <xref:System.Text.StringBuilder> 物件不是塊狀，所以會改善效能。 例如: 
 
    ```csharp
    // sbOriginal is the existing StringBuilder object
@@ -22,4 +22,4 @@
    ' sbOriginal is the existing StringBuilder object
    Dim sbNew = New StringBuilder(sbOriginal.ToString(), sbOriginal.Length)
    ```
-- 設定的初始容量<xref:System.Text.StringBuilder>物件的值，藉由呼叫是大約等於其大小上限的預期<xref:System.Text.StringBuilder.%23ctor(System.Int32)>建構函式。 請注意這會配置記憶體，即使整個區塊<xref:System.Text.StringBuilder>很少達到最大容量。
+- 藉由呼叫 <xref:System.Text.StringBuilder.%23ctor(System.Int32)> 建構函式，將 <xref:System.Text.StringBuilder> 物件的初始容量設定為大約等於其預期大小上限的值。 請注意，即使 <xref:System.Text.StringBuilder> 很少達到其最大容量，這也會配置整個記憶體區塊。

@@ -2,8 +2,8 @@
 
 |   |   |
 |---|---|
-|詳細資料|從.NET Framework 4.7.1，開始<xref:System.Windows.Controls.TabControl>值更新其<xref:System.Windows.Controls.TabControl.SelectedContent>屬性引發之前<xref:System.Windows.Controls.Primitives.Selector.SelectionChanged>當其選取項目變更時引發的事件。在.NET Framework 4.7 和更早版本中，更新 SelectedContent 發生事件之後。|
-|建議|目標為.NET Framework 4.7.1 或更新版本可以退出此應用程式變更，並使用舊版行為新增至以下<code>&lt;runtime&gt;</code>應用程式組態檔區段：<pre><code class="language-xml">&lt;runtime&gt;&#13;&#10;&lt;AppContextSwitchOverrides value=&quot;Switch.System.Windows.Controls.TabControl.SelectionPropertiesCanLagBehindSelectionChangedEvent=true&quot; /&gt;&#13;&#10;&lt;/runtime&gt;&#13;&#10;</code></pre>目標為.NET Framework 4.7 或舊版，但應用程式在.NET Framework 4.7.1 上正在執行，或稍後可以啟用新的行為將下列這一行加入<code>&lt;runtime&gt;</code>應用程式.configuration 檔區段：<pre><code class="language-xml">&lt;runtime&gt;&#13;&#10;&lt;AppContextSwitchOverrides value=&quot;Switch.System.Windows.Controls.TabControl.SelectionPropertiesCanLagBehindSelectionChangedEvent=false&quot; /&gt;&#13;&#10;&lt;/runtime&gt;&#13;&#10;</code></pre>|
+|詳細資料|從 .NET Framework 4.7.1 開始，<xref:System.Windows.Controls.TabControl> 會在其選取項目變更時先更新其 <xref:System.Windows.Controls.TabControl.SelectedContent> 屬性的值，再引發 <xref:System.Windows.Controls.Primitives.Selector.SelectionChanged> 事件。在 .NET Framework 4.7 和舊版中，更新 SelectedContent 發生在事件之後。|
+|建議|以 .NET Framework 4.7.1 或更新版本為目標的應用程式可透過在應用程式組態檔的 <code>&lt;runtime&gt;</code> 區段中新增下列內容來選擇退出此變更，並使用舊版行為：<pre><code class="language-xml">&lt;runtime&gt;&#13;&#10;&lt;AppContextSwitchOverrides value=&quot;Switch.System.Windows.Controls.TabControl.SelectionPropertiesCanLagBehindSelectionChangedEvent=true&quot; /&gt;&#13;&#10;&lt;/runtime&gt;&#13;&#10;</code></pre>以 .NET Framework 4.7 或舊版為目標但在 .NET Framework 4.7.1 或更新版本上執行的應用程式，只要在應用程式組態檔的 <code>&lt;runtime&gt;</code> 區段新增下列程式行，就能啟用新行為：<pre><code class="language-xml">&lt;runtime&gt;&#13;&#10;&lt;AppContextSwitchOverrides value=&quot;Switch.System.Windows.Controls.TabControl.SelectionPropertiesCanLagBehindSelectionChangedEvent=false&quot; /&gt;&#13;&#10;&lt;/runtime&gt;&#13;&#10;</code></pre>|
 |範圍|次要|
 |版本|4.7.1|
 |類型|正在重定目標|

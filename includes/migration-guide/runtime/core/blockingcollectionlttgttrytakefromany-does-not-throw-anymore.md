@@ -1,4 +1,4 @@
-### <a name="blockingcollectionlttgttrytakefromany-does-not-throw-anymore"></a>BlockingCollection&lt;T&gt;。TryTakeFromAny 不會擲回不再
+### <a name="blockingcollectionlttgttrytakefromany-does-not-throw-anymore"></a>lBlockingCollection&lt;T&gt;.TryTakeFromAny 不會再擲回例外狀況
 
 |   |   |
 |---|---|

@@ -1,9 +1,9 @@
-### <a name="webutilityhtmlencode-and-webutilityhtmldecode-round-trip-bmp-correctly"></a>WebUtility.HtmlEncode 和 WebUtility.HtmlDecode 反覆存取 BMP 正確
+### <a name="webutilityhtmlencode-and-webutilityhtmldecode-round-trip-bmp-correctly"></a>WebUtility.HtmlEncode 和 WebUtility.HtmlDecode 正確地反覆存取 BMP
 
 |   |   |
 |---|---|
-|詳細資料|目標.NET Framework 4.5、 字元以外的基本多語文平面 (BMP) 來回正確時傳遞至的應用程式<xref:System.Net.WebUtility.HtmlDecode(System.String)>方法。|
-|建議|這項變更應該不會影響目前的應用程式，但若要還原原始行為，設定<code>targetFramework</code>屬性<code>&lt;httpRuntime&gt;</code>字串以外的項目&quot;4.5&quot;。 您也可以設定 <code>unicodeEncodingConformance</code> 組態項目的 <code>unicodeDecodingConformance</code> 和 <code>&lt;webUtility&gt;</code> 屬性，以與目標 .NET Framework 版本不相關的方式控制這個行為。|
+|詳細資料|若是目標為 .NET Framework 4.5 的應用程式，當 Basic Multilingual Plane (BMP) 以外的字元傳遞至 <xref:System.Net.WebUtility.HtmlDecode(System.String)> 方法時，會正確地來回轉譯。|
+|建議|這項變更應該不會影響目前的應用程式，但若要還原原始行為，請將 <code>&lt;httpRuntime&gt;</code> 項目的 <code>targetFramework</code> 屬性設為非 &quot;4.5&quot; 的字串。 您也可以設定 <code>unicodeEncodingConformance</code> 組態項目的 <code>unicodeDecodingConformance</code> 和 <code>&lt;webUtility&gt;</code> 屬性，以與目標 .NET Framework 版本不相關的方式控制這個行為。|
 |範圍|Edge|
 |版本|4.5|
 |類型|正在重定目標|

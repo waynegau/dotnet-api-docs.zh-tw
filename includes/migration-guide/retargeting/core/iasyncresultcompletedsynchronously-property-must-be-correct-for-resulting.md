@@ -1,9 +1,9 @@
-### <a name="iasyncresultcompletedsynchronously-property-must-be-correct-for-the-resulting-task-to-complete"></a>IAsyncResult.CompletedSynchronously 屬性必須是正確完成產生的工作
+### <a name="iasyncresultcompletedsynchronously-property-must-be-correct-for-the-resulting-task-to-complete"></a>IAsyncResult.CompletedSynchronously 屬性必須正確，產生的工作才能完成
 
 |   |   |
 |---|---|
-|詳細資料|當呼叫的實作，TaskFactory.FromAsync<xref:System.IAsyncResult.CompletedSynchronously>屬性必須是正確的結果的工作完成。 也就是說，只有在實作同步完成時，屬性才必須傳回 true。 以往不會檢查屬性。|
-|建議|如果<xref:System.IAsyncResult?displayProperty=name>正確實作傳回 true<xref:System.IAsyncResult.CompletedSynchronously?displayProperty=name>屬性時，才完成同步，則將會觀察不到任何中斷的工作。 使用者應檢閱<xref:System.IAsyncResult?displayProperty=name>實作自己 （如果有的話） 以確保它們正確評估是否以同步方式或未完成的工作。|
+|詳細資料|呼叫 TaskFactory.FromAsync 時，<xref:System.IAsyncResult.CompletedSynchronously> 屬性的實作必須正確，產生的工作才能完成。 也就是說，只有在實作同步完成時，屬性才必須傳回 true。 以往不會檢查屬性。|
+|建議|如果 <xref:System.IAsyncResult?displayProperty=name> 實作只在工作同步完成時，才針對 <xref:System.IAsyncResult.CompletedSynchronously?displayProperty=name> 屬性正確地傳回 true，則不會觀察到中斷情況。 使用者應檢閱其擁有的 <xref:System.IAsyncResult?displayProperty=name> 實作 (如果有的話)，以確保正確評估工作是否同步完成。|
 |範圍|Edge|
 |版本|4.5|
 |類型|正在重定目標|
