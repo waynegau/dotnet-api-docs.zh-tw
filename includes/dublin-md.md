@@ -1,1 +1,0 @@
-Windows Server AppFabric 的裝載功能

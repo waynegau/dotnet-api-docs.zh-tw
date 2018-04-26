@@ -1,1 +1,0 @@
-Microsoft 背景智慧型傳送服務 (BITS)

@@ -1,1 +1,0 @@
-Microsoft 安全性開發週期 (SDL)
