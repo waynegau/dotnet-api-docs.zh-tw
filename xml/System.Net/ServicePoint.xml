@@ -1,1166 +1,432 @@
-<Type Name="ServicePoint" FullName="System.Net.ServicePoint">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="a3a675cc93f75ebd7462a2679bc072e59694b049" />
-    <Meta Name="ms.sourcegitcommit" Value="3507e865a3613c00760f25ad1045aaa11bae4dd8" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/23/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public class ServicePoint" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit ServicePoint extends System.Object" />
-  <TypeSignature Language="DocId" Value="T:System.Net.ServicePoint" />
-  <TypeSignature Language="VB.NET" Value="Public Class ServicePoint" />
-  <TypeSignature Language="C++ CLI" Value="public ref class ServicePoint" />
-  <AssemblyInfo>
-    <AssemblyName>System</AssemblyName>
-    <AssemblyVersion>2.0.5.0</AssemblyVersion>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>netstandard</AssemblyName>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>System.Net.ServicePoint</AssemblyName>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-    <AssemblyVersion>4.0.1.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces />
-  <Docs>
-    <summary>
-      <span data-ttu-id="6cb89-101">提供 HTTP 連接的連接管理。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="6cb89-101">Provides connection management for HTTP connections.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-102"><xref:System.Net.ServicePoint>類別處理傳遞中資源的統一資源識別元 (URI) 的主機資訊為基礎的網際網路資源的連接。</span><span class="sxs-lookup"><span data-stu-id="6cb89-102">The <xref:System.Net.ServicePoint> class handles connections to an Internet resource based on the host information passed in the resource's Uniform Resource Identifier (URI).</span></span> <span data-ttu-id="6cb89-103">資源的初始連接判定資訊的<xref:System.Net.ServicePoint>物件維護，這就會共用該資源的所有後續要求。</span><span class="sxs-lookup"><span data-stu-id="6cb89-103">The initial connection to the resource determines the information that the <xref:System.Net.ServicePoint> object maintains, which is then shared by all subsequent requests to that resource.</span></span>  
-  
- <span data-ttu-id="6cb89-104"><xref:System.Net.ServicePoint> 物件由<xref:System.Net.ServicePointManager>類別，並建立，如有必要，由<xref:System.Net.ServicePointManager.FindServicePoint%2A?displayProperty=nameWithType>方法。</span><span class="sxs-lookup"><span data-stu-id="6cb89-104"><xref:System.Net.ServicePoint> objects are managed by the <xref:System.Net.ServicePointManager> class and are created, if necessary, by the <xref:System.Net.ServicePointManager.FindServicePoint%2A?displayProperty=nameWithType> method.</span></span> <span data-ttu-id="6cb89-105"><xref:System.Net.ServicePoint> 物件永遠不會直接建立，但永遠建立和管理由<xref:System.Net.ServicePointManager>類別。</span><span class="sxs-lookup"><span data-stu-id="6cb89-105"><xref:System.Net.ServicePoint> objects are never created directly but are always created and managed by the <xref:System.Net.ServicePointManager> class.</span></span> <span data-ttu-id="6cb89-106">最大數目<xref:System.Net.ServicePoint>可以建立的物件由設定<xref:System.Net.ServicePointManager.MaxServicePoints?displayProperty=nameWithType>屬性。</span><span class="sxs-lookup"><span data-stu-id="6cb89-106">The maximum number of <xref:System.Net.ServicePoint> objects that can be created is set by the <xref:System.Net.ServicePointManager.MaxServicePoints?displayProperty=nameWithType> property.</span></span>  
-  
- <span data-ttu-id="6cb89-107">每個<xref:System.Net.ServicePoint>物件會維護與網際網路資源的連接直到已閒置超過指定的時間<xref:System.Net.ServicePoint.MaxIdleTime>屬性。</span><span class="sxs-lookup"><span data-stu-id="6cb89-107">Each <xref:System.Net.ServicePoint> object maintains its connection to an Internet resource until it has been idle longer than the time specified in the <xref:System.Net.ServicePoint.MaxIdleTime> property.</span></span> <span data-ttu-id="6cb89-108">當<xref:System.Net.ServicePoint>超過<xref:System.Net.ServicePoint.MaxIdleTime>值，它可以是回收，以另一個連接。</span><span class="sxs-lookup"><span data-stu-id="6cb89-108">When a <xref:System.Net.ServicePoint> exceeds the <xref:System.Net.ServicePoint.MaxIdleTime> value, it can be recycled to another connection.</span></span> <span data-ttu-id="6cb89-109">預設值<xref:System.Net.ServicePoint.MaxIdleTime>由設定<xref:System.Net.ServicePointManager.MaxServicePointIdleTime?displayProperty=nameWithType>屬性。</span><span class="sxs-lookup"><span data-stu-id="6cb89-109">The default value of <xref:System.Net.ServicePoint.MaxIdleTime> is set by the <xref:System.Net.ServicePointManager.MaxServicePointIdleTime?displayProperty=nameWithType> property.</span></span>  
-  
- <span data-ttu-id="6cb89-110">當<xref:System.Net.ServicePoint.ConnectionLeaseTimeout>屬性設定為-1，且指定的時間之後結束作用中以外的值<xref:System.Net.ServicePoint>它所服務的下一個要求之後，連接關閉。</span><span class="sxs-lookup"><span data-stu-id="6cb89-110">When the <xref:System.Net.ServicePoint.ConnectionLeaseTimeout> property is set to a value other than -1, and after the specified time elapses, an active <xref:System.Net.ServicePoint> connection is closed after it services the next request.</span></span> <span data-ttu-id="6cb89-111">這非常有用，因為它們是依預設不需要無限期地開啟的作用中連線的應用程式。</span><span class="sxs-lookup"><span data-stu-id="6cb89-111">This is useful for applications that do not require active connections that are opened indefinitely, as they are by default.</span></span>  
-  
-> [!NOTE]
->  <span data-ttu-id="6cb89-112">在高負載情況下，某些應用程式可能會用完可用的執行緒中執行緒集區，可能會導致系統效能很低 （例如高和變數的交易時間）。</span><span class="sxs-lookup"><span data-stu-id="6cb89-112">In high load conditions, some applications may run out of free threads in the ThreadPool, which may lead to poor system performance (such as high and variable transaction times).</span></span> <span data-ttu-id="6cb89-113">請參閱[ http://msdn.microsoft.com/library/default.asp?url=/library/dnpag/html/scalenetchapt17.asp ](http://msdn.microsoft.com/library/default.asp?url=/library/dnpag/html/scalenetchapt17.asp)數目的組態變更，您可以對修正此問題。</span><span class="sxs-lookup"><span data-stu-id="6cb89-113">See [http://msdn.microsoft.com/library/default.asp?url=/library/dnpag/html/scalenetchapt17.asp](http://msdn.microsoft.com/library/default.asp?url=/library/dnpag/html/scalenetchapt17.asp) for a number of configuration changes you can make to fix this issue.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="6cb89-114">下列程式碼範例會建立<xref:System.Net.ServicePoint>物件來連接到 URI www.contoso.com。</span><span class="sxs-lookup"><span data-stu-id="6cb89-114">The following code example creates a <xref:System.Net.ServicePoint> object that connects to the URI www.contoso.com.</span></span>  
-  
- [!code-cpp[System.Net.ServicePoint#1](~/samples/snippets/cpp/VS_Snippets_Remoting/System.Net.ServicePoint/CPP/servicepoint.cpp#1)]
- [!code-csharp[System.Net.ServicePoint#1](~/samples/snippets/csharp/VS_Snippets_Remoting/System.Net.ServicePoint/CS/servicepoint.cs#1)]
- [!code-vb[System.Net.ServicePoint#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/System.Net.ServicePoint/VB/servicepoint.vb#1)]  
-  
- ]]></format>
-    </remarks>
-  </Docs>
-  <Members>
-    <Member MemberName="Address">
-      <MemberSignature Language="C#" Value="public Uri Address { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Uri Address" />
-      <MemberSignature Language="DocId" Value="P:System.Net.ServicePoint.Address" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Address As Uri" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property Uri ^ Address { Uri ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Uri</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="6cb89-115">取得這個 <see cref="T:System.Net.ServicePoint" /> 物件連接之伺服器的統一資源識別碼 (URI)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-115">Gets the Uniform Resource Identifier (URI) of the server that this <see cref="T:System.Net.ServicePoint" /> object connects to.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="6cb89-116">
-            <see cref="T:System.Uri" /> 類別的執行個體，包含這個 <see cref="T:System.Net.ServicePoint" /> 物件連接之網際網路伺服器的 URI。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-116">An instance of the <see cref="T:System.Uri" /> class that contains the URI of the Internet server that this <see cref="T:System.Net.ServicePoint" /> object connects to.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="6cb89-117">下列程式碼範例會顯示這個屬性的值。</span><span class="sxs-lookup"><span data-stu-id="6cb89-117">The following code example displays the value of this property.</span></span>  
-  
- [!code-cpp[System.Net.ServicePoint#2](~/samples/snippets/cpp/VS_Snippets_Remoting/System.Net.ServicePoint/CPP/servicepoint.cpp#2)]
- [!code-csharp[System.Net.ServicePoint#2](~/samples/snippets/csharp/VS_Snippets_Remoting/System.Net.ServicePoint/CS/servicepoint.cs#2)]
- [!code-vb[System.Net.ServicePoint#2](~/samples/snippets/visualbasic/VS_Snippets_Remoting/System.Net.ServicePoint/VB/servicepoint.vb#2)]  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.NotSupportedException">
-          <span data-ttu-id="6cb89-118">
-            <see cref="T:System.Net.ServicePoint" /> 處於主機模式中。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-118">The <see cref="T:System.Net.ServicePoint" /> is in host mode.</span>
-          </span>
-        </exception>
-        <permission cref="T:System.Net.WebPermission">
-          <span data-ttu-id="6cb89-119">使用<see cref="P:System.Net.ServicePoint.Address" />如果<see cref="T:System.Net.ServicePoint" />透過 proxy 伺服器連接。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-119">For using <see cref="P:System.Net.ServicePoint.Address" /> if the <see cref="T:System.Net.ServicePoint" /> connects through a proxy server.</span>
-          </span>
-        </permission>
-      </Docs>
-    </Member>
-    <Member MemberName="BindIPEndPointDelegate">
-      <MemberSignature Language="C#" Value="public System.Net.BindIPEndPoint BindIPEndPointDelegate { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Net.BindIPEndPoint BindIPEndPointDelegate" />
-      <MemberSignature Language="DocId" Value="P:System.Net.ServicePoint.BindIPEndPointDelegate" />
-      <MemberSignature Language="VB.NET" Value="Public Property BindIPEndPointDelegate As BindIPEndPoint" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Net::BindIPEndPoint ^ BindIPEndPointDelegate { System::Net::BindIPEndPoint ^ get(); void set(System::Net::BindIPEndPoint ^ value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Net.BindIPEndPoint</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="6cb89-120">指定使本機 <see cref="T:System.Net.IPEndPoint" /> 與 <see cref="T:System.Net.ServicePoint" /> 產生關聯的委派。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-120">Specifies the delegate to associate a local <see cref="T:System.Net.IPEndPoint" /> with a <see cref="T:System.Net.ServicePoint" />.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="6cb89-121">一種委派，可強制 <see cref="T:System.Net.ServicePoint" /> 使用特定的本機網際網路通訊協定 (IP) 位址和連接埠編號。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-121">A delegate that forces a <see cref="T:System.Net.ServicePoint" /> to use a particular local Internet Protocol (IP) address and port number.</span>
-          </span>
-          <span data-ttu-id="6cb89-122">預設值是 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-122">The default value is <see langword="null" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-123">某些負載平衡技術需要用戶端使用特定本機 IP 位址和通訊埠編號，而非<xref:System.Net.IPAddress.Any?displayProperty=nameWithType>(或<xref:System.Net.IPAddress.IPv6Any?displayProperty=nameWithType>的網際網路通訊協定第 6 版) 和暫時的連接埠。</span><span class="sxs-lookup"><span data-stu-id="6cb89-123">Some load balancing techniques require a client to use a specific local IP address and port number, rather than <xref:System.Net.IPAddress.Any?displayProperty=nameWithType> (or <xref:System.Net.IPAddress.IPv6Any?displayProperty=nameWithType> for Internet Protocol Version 6) and an ephemeral port.</span></span> <span data-ttu-id="6cb89-124">您<xref:System.Net.ServicePoint.BindIPEndPointDelegate>可以滿足此需求。</span><span class="sxs-lookup"><span data-stu-id="6cb89-124">Your <xref:System.Net.ServicePoint.BindIPEndPointDelegate> can satisfy this requirement.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">
-          <span data-ttu-id="6cb89-125">本機連接埠繫結。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-125">for binding to a local port.</span>
-          </span>
-          <span data-ttu-id="6cb89-126">相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-126">Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          </span>
-        </permission>
-      </Docs>
-    </Member>
-    <Member MemberName="Certificate">
-      <MemberSignature Language="C#" Value="public System.Security.Cryptography.X509Certificates.X509Certificate Certificate { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Cryptography.X509Certificates.X509Certificate Certificate" />
-      <MemberSignature Language="DocId" Value="P:System.Net.ServicePoint.Certificate" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Certificate As X509Certificate" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Cryptography::X509Certificates::X509Certificate ^ Certificate { System::Security::Cryptography::X509Certificates::X509Certificate ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Security.Cryptography.X509Certificates.X509Certificate</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="6cb89-127">取得為這個 <see cref="T:System.Net.ServicePoint" /> 物件接收的憑證。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-127">Gets the certificate received for this <see cref="T:System.Net.ServicePoint" /> object.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="6cb89-128">
-            <see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate" /> 類別的執行個體，包含為這個 <see cref="T:System.Net.ServicePoint" /> 物件接收的安全性憑證。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-128">An instance of the <see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate" /> class that contains the security certificate received for this <see cref="T:System.Net.ServicePoint" /> object.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-129">雖然<xref:System.Net.ServicePoint>物件會讓對網際網路資源的多個連接時，它可以維護只有一個憑證。</span><span class="sxs-lookup"><span data-stu-id="6cb89-129">Although a <xref:System.Net.ServicePoint> object can make multiple connections to an Internet resource, it can maintain only one certificate.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="6cb89-130">下列程式碼範例會顯示這個屬性的值。</span><span class="sxs-lookup"><span data-stu-id="6cb89-130">The following code example displays the value of this property.</span></span>  
-  
- [!code-cpp[System.Net.ServicePoint#5](~/samples/snippets/cpp/VS_Snippets_Remoting/System.Net.ServicePoint/CPP/servicepoint.cpp#5)]
- [!code-csharp[System.Net.ServicePoint#5](~/samples/snippets/csharp/VS_Snippets_Remoting/System.Net.ServicePoint/CS/servicepoint.cs#5)]
- [!code-vb[System.Net.ServicePoint#5](~/samples/snippets/visualbasic/VS_Snippets_Remoting/System.Net.ServicePoint/VB/servicepoint.vb#5)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ClientCertificate">
-      <MemberSignature Language="C#" Value="public System.Security.Cryptography.X509Certificates.X509Certificate ClientCertificate { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Cryptography.X509Certificates.X509Certificate ClientCertificate" />
-      <MemberSignature Language="DocId" Value="P:System.Net.ServicePoint.ClientCertificate" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ClientCertificate As X509Certificate" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Cryptography::X509Certificates::X509Certificate ^ ClientCertificate { System::Security::Cryptography::X509Certificates::X509Certificate ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Security.Cryptography.X509Certificates.X509Certificate</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="6cb89-131">取得傳送到伺服器的最後一個用戶端憑證。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-131">Gets the last client certificate sent to the server.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="6cb89-132">
-            <see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate" /> 物件，包含傳送到伺服器之最後用戶端憑證的公用值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-132">An <see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate" /> object that contains the public values of the last client certificate sent to the server.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="6cb89-133">下列程式碼範例會顯示這個屬性的值。</span><span class="sxs-lookup"><span data-stu-id="6cb89-133">The following code example displays the value of this property.</span></span>  
-  
- [!code-cpp[System.Net.ServicePoint#5](~/samples/snippets/cpp/VS_Snippets_Remoting/System.Net.ServicePoint/CPP/servicepoint.cpp#5)]
- [!code-csharp[System.Net.ServicePoint#5](~/samples/snippets/csharp/VS_Snippets_Remoting/System.Net.ServicePoint/CS/servicepoint.cs#5)]
- [!code-vb[System.Net.ServicePoint#5](~/samples/snippets/visualbasic/VS_Snippets_Remoting/System.Net.ServicePoint/VB/servicepoint.vb#5)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CloseConnectionGroup">
-      <MemberSignature Language="C#" Value="public bool CloseConnectionGroup (string connectionGroupName);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool CloseConnectionGroup(string connectionGroupName) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Net.ServicePoint.CloseConnectionGroup(System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Function CloseConnectionGroup (connectionGroupName As String) As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool CloseConnectionGroup(System::String ^ connectionGroupName);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="connectionGroupName" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="connectionGroupName">
-          <span data-ttu-id="6cb89-134">連接群組的名稱，這個連接群組包含要從這個服務點關閉和移除的連接。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-134">The name of the connection group that contains the connections to close and remove from this service point.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="6cb89-135">將指定的連接群組從這個 <see cref="T:System.Net.ServicePoint" /> 物件移除。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-135">Removes the specified connection group from this <see cref="T:System.Net.ServicePoint" /> object.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="6cb89-136">
-            <see cref="T:System.Boolean" /> 值，指出連接群組是否已關閉。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-136">A <see cref="T:System.Boolean" /> value that indicates whether the connection group was closed.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-137">連線群組會要求一組關聯的特定連線或連線集。</span><span class="sxs-lookup"><span data-stu-id="6cb89-137">Connection groups associate a set of requests with a particular connection or set of connections.</span></span> <span data-ttu-id="6cb89-138">這個方法會移除，並關閉所有屬於指定的連接群組的連線。</span><span class="sxs-lookup"><span data-stu-id="6cb89-138">This method removes and closes all connections that belong to the specified connection group.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ConnectionLeaseTimeout">
-      <MemberSignature Language="C#" Value="public int ConnectionLeaseTimeout { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 ConnectionLeaseTimeout" />
-      <MemberSignature Language="DocId" Value="P:System.Net.ServicePoint.ConnectionLeaseTimeout" />
-      <MemberSignature Language="VB.NET" Value="Public Property ConnectionLeaseTimeout As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int ConnectionLeaseTimeout { int get(); void set(int value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.MonoTODO</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="6cb89-139">取得或設定作用中 <see cref="T:System.Net.ServicePoint" /> 連接關閉前的毫秒數。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-139">Gets or sets the number of milliseconds after which an active <see cref="T:System.Net.ServicePoint" /> connection is closed.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="6cb89-140">
-            <see cref="T:System.Int32" />，指定作用中 <see cref="T:System.Net.ServicePoint" /> 連接維持開啟的毫秒數。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-140">A <see cref="T:System.Int32" /> that specifies the number of milliseconds that an active <see cref="T:System.Net.ServicePoint" /> connection remains open.</span>
-          </span>
-          <span data-ttu-id="6cb89-141">預設值為 -1，這允許作用中 <see cref="T:System.Net.ServicePoint" /> 連接無限期保持連接。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-141">The default is -1, which allows an active <see cref="T:System.Net.ServicePoint" /> connection to stay connected indefinitely.</span>
-          </span>
-          <span data-ttu-id="6cb89-142">將這個屬性設為 0，可以強制 <see cref="T:System.Net.ServicePoint" /> 連接在服務要求之後關閉。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-142">Set this property to 0 to force <see cref="T:System.Net.ServicePoint" /> connections to close after servicing a request.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-143">您可以使用這個屬性，以確保<xref:System.Net.ServicePoint>物件的作用中連線不會持續開啟無限期。</span><span class="sxs-lookup"><span data-stu-id="6cb89-143">You can use this property to ensure that a <xref:System.Net.ServicePoint> object's active connections do not remain open indefinitely.</span></span> <span data-ttu-id="6cb89-144">這個屬性適用於案例應該卸除並重新建立定期，例如負載平衡案例連線。</span><span class="sxs-lookup"><span data-stu-id="6cb89-144">This property is intended for scenarios where connections should be dropped and reestablished periodically, such as load balancing scenarios.</span></span>  
-  
- <span data-ttu-id="6cb89-145">根據預設，當<xref:System.Net.HttpWebRequest.KeepAlive>是`true`要求，<xref:System.Net.ServicePoint.MaxIdleTime>屬性會設定用於關閉逾時<xref:System.Net.ServicePoint>因為無活動的連線。</span><span class="sxs-lookup"><span data-stu-id="6cb89-145">By default, when <xref:System.Net.HttpWebRequest.KeepAlive> is `true` for a request, the <xref:System.Net.ServicePoint.MaxIdleTime> property sets the time-out for closing <xref:System.Net.ServicePoint> connections due to inactivity.</span></span> <span data-ttu-id="6cb89-146">如果<xref:System.Net.ServicePoint>有使用中連接時，<xref:System.Net.ServicePoint.MaxIdleTime>沒有任何作用，而且連接無限期地保持開啟。</span><span class="sxs-lookup"><span data-stu-id="6cb89-146">If the <xref:System.Net.ServicePoint> has active connections, <xref:System.Net.ServicePoint.MaxIdleTime> has no effect and the connections remain open indefinitely.</span></span>  
-  
- <span data-ttu-id="6cb89-147">當<xref:System.Net.ServicePoint.ConnectionLeaseTimeout>屬性設定為-1，且指定的時間之後結束作用中以外的值<xref:System.Net.ServicePoint>藉由設定服務要求之後關閉連接<xref:System.Net.HttpWebRequest.KeepAlive>至`false`該要求中。</span><span class="sxs-lookup"><span data-stu-id="6cb89-147">When the <xref:System.Net.ServicePoint.ConnectionLeaseTimeout> property is set to a value other than -1, and after the specified time elapses, an active <xref:System.Net.ServicePoint> connection is closed after servicing a request by setting <xref:System.Net.HttpWebRequest.KeepAlive> to `false` in that request.</span></span>  
-  
- <span data-ttu-id="6cb89-148">設定這個值會影響所管理的所有連線<xref:System.Net.ServicePoint>物件。</span><span class="sxs-lookup"><span data-stu-id="6cb89-148">Setting this value affects all connections managed by the <xref:System.Net.ServicePoint> object.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="6cb89-149">下列程式碼範例會設定這個屬性的值。</span><span class="sxs-lookup"><span data-stu-id="6cb89-149">The following code example sets the value of this property.</span></span>  
-  
- [!code-cpp[NCLServicePoint#1](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLServicePoint/CPP/nclservicepoint.cpp#1)]
- [!code-csharp[NCLServicePoint#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLServicePoint/CS/nclservicepoint.cs#1)]
- [!code-vb[NCLServicePoint#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NCLServicePoint/VB/nclservicepoint.vb#1)]  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">
-          <span data-ttu-id="6cb89-150">為設定作業指定的值是小於 -1 的負數。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-150">The value specified for a set operation is a negative number less than -1.</span>
-          </span>
-        </exception>
-        <altmember cref="P:System.Net.HttpWebRequest.KeepAlive" />
-        <altmember cref="P:System.Net.FtpWebRequest.KeepAlive" />
-        <altmember cref="P:System.Net.HttpListenerRequest.KeepAlive" />
-      </Docs>
-    </Member>
-    <Member MemberName="ConnectionLimit">
-      <MemberSignature Language="C#" Value="public int ConnectionLimit { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 ConnectionLimit" />
-      <MemberSignature Language="DocId" Value="P:System.Net.ServicePoint.ConnectionLimit" />
-      <MemberSignature Language="VB.NET" Value="Public Property ConnectionLimit As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int ConnectionLimit { int get(); void set(int value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="6cb89-151">取得或設定這個 <see cref="T:System.Net.ServicePoint" /> 物件上所允許的最大連接數目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-151">Gets or sets the maximum number of connections allowed on this <see cref="T:System.Net.ServicePoint" /> object.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="6cb89-152">這個 <see cref="T:System.Net.ServicePoint" /> 物件上所允許的最大連接數目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-152">The maximum number of connections allowed on this <see cref="T:System.Net.ServicePoint" /> object.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-153"><xref:System.Net.ServicePoint.ConnectionLimit>屬性設定的連線數目上限，<xref:System.Net.ServicePoint>物件可以對網際網路資源。</span><span class="sxs-lookup"><span data-stu-id="6cb89-153">The <xref:System.Net.ServicePoint.ConnectionLimit> property sets the maximum number of connections that the <xref:System.Net.ServicePoint> object can make to an Internet resource.</span></span> <span data-ttu-id="6cb89-154">值<xref:System.Net.ServicePoint.ConnectionLimit>屬性設定的值為<xref:System.Net.ServicePointManager.DefaultConnectionLimit?displayProperty=nameWithType>屬性時<xref:System.Net.ServicePoint>建立物件; 後續變更為<xref:System.Net.ServicePointManager.DefaultConnectionLimit>不影響現有<xref:System.Net.ServicePoint>物件。</span><span class="sxs-lookup"><span data-stu-id="6cb89-154">The value of the <xref:System.Net.ServicePoint.ConnectionLimit> property is set to the value of the <xref:System.Net.ServicePointManager.DefaultConnectionLimit?displayProperty=nameWithType> property when the <xref:System.Net.ServicePoint> object is created; subsequent changes to <xref:System.Net.ServicePointManager.DefaultConnectionLimit> have no effect on existing <xref:System.Net.ServicePoint> objects.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="6cb89-155">下列程式碼範例使用<xref:System.Net.ServicePoint.ConnectionLimit>屬性來檢查最大連接數目，<xref:System.Net.ServicePoint>物件可以進行到指定的統一資源識別元 (URI)。</span><span class="sxs-lookup"><span data-stu-id="6cb89-155">The following code example uses the <xref:System.Net.ServicePoint.ConnectionLimit> property to check the maximum number of connections that the <xref:System.Net.ServicePoint> object can make to the specified Uniform Resource Identifier (URI).</span></span>  
-  
- [!code-cpp[System.Net.ServicePoint#4](~/samples/snippets/cpp/VS_Snippets_Remoting/System.Net.ServicePoint/CPP/servicepoint.cpp#4)]
- [!code-csharp[System.Net.ServicePoint#4](~/samples/snippets/csharp/VS_Snippets_Remoting/System.Net.ServicePoint/CS/servicepoint.cs#4)]
- [!code-vb[System.Net.ServicePoint#4](~/samples/snippets/visualbasic/VS_Snippets_Remoting/System.Net.ServicePoint/VB/servicepoint.vb#4)]  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">
-          <span data-ttu-id="6cb89-156">連接限制等於或小於 0。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-156">The connection limit is equal to or less than 0.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="ConnectionName">
-      <MemberSignature Language="C#" Value="public string ConnectionName { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance string ConnectionName" />
-      <MemberSignature Language="DocId" Value="P:System.Net.ServicePoint.ConnectionName" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ConnectionName As String" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ ConnectionName { System::String ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="6cb89-157">取得連接名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-157">Gets the connection name.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="6cb89-158">表示連接名稱的 <see cref="T:System.String" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-158">A <see cref="T:System.String" /> that represents the connection name.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-159">如果<xref:System.Net.ServicePoint>物件藉由呼叫建構<xref:System.Net.ServicePointManager.FindServicePoint%2A>多載<xref:System.Uri>引數，則<xref:System.Net.ServicePoint.ConnectionName>屬性代表<xref:System.Uri.Scheme>屬性<xref:System.Uri>用物件。</span><span class="sxs-lookup"><span data-stu-id="6cb89-159">If the <xref:System.Net.ServicePoint> object was constructed by calling a <xref:System.Net.ServicePointManager.FindServicePoint%2A> overload with a <xref:System.Uri> argument, then the <xref:System.Net.ServicePoint.ConnectionName> property represents the <xref:System.Uri.Scheme> property of the <xref:System.Uri> object used.</span></span>  
-  
- <span data-ttu-id="6cb89-160">如果<xref:System.Net.ServicePoint>物件根據網路主機和連接埠，建構<xref:System.Net.ServicePoint.ConnectionName>屬性包含字串，代表主機和網路連接埠。</span><span class="sxs-lookup"><span data-stu-id="6cb89-160">If the <xref:System.Net.ServicePoint> object was constructed from a network host and port, the <xref:System.Net.ServicePoint.ConnectionName> property contains a string that represents the host and the network port.</span></span> <span data-ttu-id="6cb89-161">如果<xref:System.Net.ServicePoint.ConnectionName>屬性會從主機和連接埠，只有建構時設定<xref:System.Net.WebRequest>物件具有相同<xref:System.Net.WebRequest.ConnectionGroupName>值可以使用這個<xref:System.Net.ServicePoint>物件。</span><span class="sxs-lookup"><span data-stu-id="6cb89-161">If the <xref:System.Net.ServicePoint.ConnectionName> property is set when constructed from a host and port, only <xref:System.Net.WebRequest> objects with the same <xref:System.Net.WebRequest.ConnectionGroupName> value can use this <xref:System.Net.ServicePoint> object.</span></span>  
-  
-   
-  
-## Examples  
- [!code-cpp[System.Net.ServicePoint#4](~/samples/snippets/cpp/VS_Snippets_Remoting/System.Net.ServicePoint/CPP/servicepoint.cpp#4)]
- [!code-csharp[System.Net.ServicePoint#4](~/samples/snippets/csharp/VS_Snippets_Remoting/System.Net.ServicePoint/CS/servicepoint.cs#4)]
- [!code-vb[System.Net.ServicePoint#4](~/samples/snippets/visualbasic/VS_Snippets_Remoting/System.Net.ServicePoint/VB/servicepoint.vb#4)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CurrentConnections">
-      <MemberSignature Language="C#" Value="public int CurrentConnections { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 CurrentConnections" />
-      <MemberSignature Language="DocId" Value="P:System.Net.ServicePoint.CurrentConnections" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property CurrentConnections As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int CurrentConnections { int get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="6cb89-162">取得與這個 <see cref="T:System.Net.ServicePoint" /> 物件相關聯的開啟連接數。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-162">Gets the number of open connections associated with this <see cref="T:System.Net.ServicePoint" /> object.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="6cb89-163">與這個 <see cref="T:System.Net.ServicePoint" /> 物件相關聯的開啟連接數。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-163">The number of open connections associated with this <see cref="T:System.Net.ServicePoint" /> object.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-164"><xref:System.Net.ServicePoint.CurrentConnections>屬性包含與此相關聯的開啟網際網路連線的數目<xref:System.Net.ServicePoint>物件。</span><span class="sxs-lookup"><span data-stu-id="6cb89-164">The <xref:System.Net.ServicePoint.CurrentConnections> property contains the number of open Internet connections associated with this <xref:System.Net.ServicePoint> object.</span></span> <span data-ttu-id="6cb89-165">值<xref:System.Net.ServicePoint.CurrentConnections>不能超過包含<xref:System.Net.ServicePoint.ConnectionLimit>。</span><span class="sxs-lookup"><span data-stu-id="6cb89-165">The value of <xref:System.Net.ServicePoint.CurrentConnections> cannot exceed that of <xref:System.Net.ServicePoint.ConnectionLimit>.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="6cb89-166">下列程式碼範例使用<xref:System.Net.ServicePoint.CurrentConnections>屬性來判斷與此相關聯的開啟網際網路連線的數目<xref:System.Net.ServicePoint>物件。</span><span class="sxs-lookup"><span data-stu-id="6cb89-166">The following code example uses the <xref:System.Net.ServicePoint.CurrentConnections> property to determine the number of open Internet connections associated with this <xref:System.Net.ServicePoint> object.</span></span>  
-  
- [!code-cpp[System.Net.ServicePoint#2](~/samples/snippets/cpp/VS_Snippets_Remoting/System.Net.ServicePoint/CPP/servicepoint.cpp#2)]
- [!code-csharp[System.Net.ServicePoint#2](~/samples/snippets/csharp/VS_Snippets_Remoting/System.Net.ServicePoint/CS/servicepoint.cs#2)]
- [!code-vb[System.Net.ServicePoint#2](~/samples/snippets/visualbasic/VS_Snippets_Remoting/System.Net.ServicePoint/VB/servicepoint.vb#2)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Expect100Continue">
-      <MemberSignature Language="C#" Value="public bool Expect100Continue { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool Expect100Continue" />
-      <MemberSignature Language="DocId" Value="P:System.Net.ServicePoint.Expect100Continue" />
-      <MemberSignature Language="VB.NET" Value="Public Property Expect100Continue As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool Expect100Continue { bool get(); void set(bool value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="6cb89-167">取得或設定 <see cref="T:System.Boolean" /> 值，用以判斷是否有使用 100-Continue 行為。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-167">Gets or sets a <see cref="T:System.Boolean" /> value that determines whether 100-Continue behavior is used.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="6cb89-168">預期 <see langword="true" /> 要求有 100-Continue 的回應，則為 <see langword="POST" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-168">
-              <see langword="true" /> to expect 100-Continue responses for <see langword="POST" /> requests; otherwise, <see langword="false" />.</span>
-          </span>
-          <span data-ttu-id="6cb89-169">預設值是 <see langword="true" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-169">The default value is <see langword="true" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-170">當這個屬性設定為`true`，用戶端會要求使用`POST`方法預期收到 100-繼續回應的伺服器，表示用戶端應該傳送的回傳資料。</span><span class="sxs-lookup"><span data-stu-id="6cb89-170">When this property is set to `true`, client requests that use the `POST` method expect to receive a 100-Continue response from the server to indicate that the client should send the data to be posted.</span></span> <span data-ttu-id="6cb89-171">此機制可讓用戶端，以避免透過網路傳送大量資料時的伺服器會根據要求的標頭，想要拒絕的要求。</span><span class="sxs-lookup"><span data-stu-id="6cb89-171">This mechanism allows clients to avoid sending large amounts of data over the network when the server, based on the request headers, intends to reject the request.</span></span>  
-  
- <span data-ttu-id="6cb89-172">例如，假設<xref:System.Net.ServicePoint.Expect100Continue>屬性是`false`。</span><span class="sxs-lookup"><span data-stu-id="6cb89-172">For example, assume the <xref:System.Net.ServicePoint.Expect100Continue> property is `false`.</span></span> <span data-ttu-id="6cb89-173">當要求傳送到伺服器時，它包含的資料。</span><span class="sxs-lookup"><span data-stu-id="6cb89-173">When the request is sent to the server, it includes the data.</span></span> <span data-ttu-id="6cb89-174">如果在讀取之後的要求標頭，伺服器需要驗證，而且傳送 401 回應，用戶端必須重新傳送適當驗證標頭的資料。</span><span class="sxs-lookup"><span data-stu-id="6cb89-174">If, after reading the request headers, the server requires authentication and sends a 401 response, the client must resend the data with proper authentication headers.</span></span>  
-  
- <span data-ttu-id="6cb89-175">如果<xref:System.Net.ServicePoint.Expect100Continue>屬性是`true`，要求標頭傳送到伺服器。</span><span class="sxs-lookup"><span data-stu-id="6cb89-175">If the <xref:System.Net.ServicePoint.Expect100Continue> property is `true`, the request headers are sent to the server.</span></span> <span data-ttu-id="6cb89-176">如果伺服器已拒絕該要求，它會傳送 100-繼續回應信號資料可以傳輸。</span><span class="sxs-lookup"><span data-stu-id="6cb89-176">If the server has not rejected the request, it sends a 100-Continue response signaling that the data can be transmitted.</span></span> <span data-ttu-id="6cb89-177">如果，就如同上述範例中，伺服器需要驗證，它會傳送 401 回應和用戶端已經傳送的資料。</span><span class="sxs-lookup"><span data-stu-id="6cb89-177">If, as in the preceding example, the server requires authentication, it sends the 401 response and the client has not unnecessarily transmitted the data.</span></span>  
-  
- <span data-ttu-id="6cb89-178">變更這個屬性的值不會影響現有的連接。</span><span class="sxs-lookup"><span data-stu-id="6cb89-178">Changing the value of this property does not affect existing connections.</span></span> <span data-ttu-id="6cb89-179">只會影響變更之後所建立的新連線。</span><span class="sxs-lookup"><span data-stu-id="6cb89-179">Only new connections created after the change are affected.</span></span>  
-  
- <span data-ttu-id="6cb89-180">預期 100-繼續行為完全 IETF RFC 2616 一節所述 10.1.1。</span><span class="sxs-lookup"><span data-stu-id="6cb89-180">The Expect 100-Continue behavior is fully described in IETF RFC 2616 Section 10.1.1.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="6cb89-181">下列程式碼範例會顯示這個屬性的值。</span><span class="sxs-lookup"><span data-stu-id="6cb89-181">The following code example displays the value of this property.</span></span>  
-  
- [!code-cpp[System.Net.ServicePoint#9](~/samples/snippets/cpp/VS_Snippets_Remoting/System.Net.ServicePoint/CPP/servicepoint.cpp#9)]
- [!code-csharp[System.Net.ServicePoint#9](~/samples/snippets/csharp/VS_Snippets_Remoting/System.Net.ServicePoint/CS/servicepoint.cs#9)]
- [!code-vb[System.Net.ServicePoint#9](~/samples/snippets/visualbasic/VS_Snippets_Remoting/System.Net.ServicePoint/VB/servicepoint.vb#9)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IdleSince">
-      <MemberSignature Language="C#" Value="public DateTime IdleSince { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.DateTime IdleSince" />
-      <MemberSignature Language="DocId" Value="P:System.Net.ServicePoint.IdleSince" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IdleSince As DateTime" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property DateTime IdleSince { DateTime get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.DateTime</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="6cb89-182">取得 <see cref="T:System.Net.ServicePoint" /> 物件上次連接至主機的日期和時間。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-182">Gets the date and time that the <see cref="T:System.Net.ServicePoint" /> object was last connected to a host.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="6cb89-183">
-            <see cref="T:System.DateTime" /> 物件，包含上次連接 <see cref="T:System.Net.ServicePoint" /> 物件的日期和時間。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-183">A <see cref="T:System.DateTime" /> object that contains the date and time at which the <see cref="T:System.Net.ServicePoint" /> object was last connected.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-184"><xref:System.Net.ServicePoint.IdleSince>屬性記錄的最後一個日期和時間的服務點已中斷連線從主機。</span><span class="sxs-lookup"><span data-stu-id="6cb89-184">The <xref:System.Net.ServicePoint.IdleSince> property records the last date and time at which a service point was disconnected from a host.</span></span> <span data-ttu-id="6cb89-185">當目前的時間之間的差異和<xref:System.Net.ServicePoint.IdleSince>超過的值<xref:System.Net.ServicePoint.MaxIdleTime>、<xref:System.Net.ServicePoint>物件可供使用的循環使用另一個連接。</span><span class="sxs-lookup"><span data-stu-id="6cb89-185">When the difference between the current time and <xref:System.Net.ServicePoint.IdleSince> exceeds the value of <xref:System.Net.ServicePoint.MaxIdleTime>, the <xref:System.Net.ServicePoint> object is available for recycling to another connection.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="6cb89-186">下列程式碼範例使用<xref:System.Net.ServicePoint.IdleSince>屬性來設定和擷取日期和時間<xref:System.Net.ServicePoint>物件上次連接至主機。</span><span class="sxs-lookup"><span data-stu-id="6cb89-186">The following code example uses the <xref:System.Net.ServicePoint.IdleSince> property to set and retrieve the date and time that the <xref:System.Net.ServicePoint> object was last connected to a host.</span></span>  
-  
- [!code-cpp[System.Net.ServicePoint#3](~/samples/snippets/cpp/VS_Snippets_Remoting/System.Net.ServicePoint/CPP/servicepoint.cpp#3)]
- [!code-csharp[System.Net.ServicePoint#3](~/samples/snippets/csharp/VS_Snippets_Remoting/System.Net.ServicePoint/CS/servicepoint.cs#3)]
- [!code-vb[System.Net.ServicePoint#3](~/samples/snippets/visualbasic/VS_Snippets_Remoting/System.Net.ServicePoint/VB/servicepoint.vb#3)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="MaxIdleTime">
-      <MemberSignature Language="C#" Value="public int MaxIdleTime { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 MaxIdleTime" />
-      <MemberSignature Language="DocId" Value="P:System.Net.ServicePoint.MaxIdleTime" />
-      <MemberSignature Language="VB.NET" Value="Public Property MaxIdleTime As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int MaxIdleTime { int get(); void set(int value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="6cb89-187">取得或設定與 <see cref="T:System.Net.ServicePoint" /> 物件相關聯的連接可以維持閒置的時間量，過了這段時間之後，連接即關閉。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-187">Gets or sets the amount of time a connection associated with the <see cref="T:System.Net.ServicePoint" /> object can remain idle before the connection is closed.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="6cb89-188">與 <see cref="T:System.Net.ServicePoint" /> 物件相關聯的連接可以維持閒置的時間長度 (以毫秒為單位)，過了這段時間之後，連接即關閉，並供另一個連接重複使用。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-188">The length of time, in milliseconds, that a connection associated with the <see cref="T:System.Net.ServicePoint" /> object can remain idle before it is closed and reused for another connection.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-189">您可以設定<xref:System.Net.ServicePoint.MaxIdleTime>至<xref:System.Threading.Timeout.Infinite?displayProperty=nameWithType>，表示與相關聯的連接<xref:System.Net.ServicePoint>物件應該永遠不會逾時。</span><span class="sxs-lookup"><span data-stu-id="6cb89-189">You can set <xref:System.Net.ServicePoint.MaxIdleTime> to <xref:System.Threading.Timeout.Infinite?displayProperty=nameWithType> to indicate that a connection associated with the <xref:System.Net.ServicePoint> object should never time out.</span></span>  
-  
- <span data-ttu-id="6cb89-190">預設值<xref:System.Net.ServicePoint.MaxIdleTime>屬性是值<xref:System.Net.ServicePointManager.MaxServicePointIdleTime?displayProperty=nameWithType>屬性時<xref:System.Net.ServicePoint>建立物件。</span><span class="sxs-lookup"><span data-stu-id="6cb89-190">The default value of the <xref:System.Net.ServicePoint.MaxIdleTime> property is the value of the <xref:System.Net.ServicePointManager.MaxServicePointIdleTime?displayProperty=nameWithType> property when the <xref:System.Net.ServicePoint> object is created.</span></span> <span data-ttu-id="6cb89-191">後續變更<xref:System.Net.ServicePointManager.MaxServicePointIdleTime>屬性有不會影響現有<xref:System.Net.ServicePoint>物件。</span><span class="sxs-lookup"><span data-stu-id="6cb89-191">Subsequent changes to the <xref:System.Net.ServicePointManager.MaxServicePointIdleTime> property have no effect on existing <xref:System.Net.ServicePoint> objects.</span></span>  
-  
- <span data-ttu-id="6cb89-192">當<xref:System.Net.ServicePoint.MaxIdleTime>連接相關聯<xref:System.Net.ServicePoint>是超過，連接會維持開啟直到應用程式會嘗試使用的連接。</span><span class="sxs-lookup"><span data-stu-id="6cb89-192">When the <xref:System.Net.ServicePoint.MaxIdleTime> for a connection associated with a <xref:System.Net.ServicePoint> is exceeded, the connection remains open until the application tries to use the connection.</span></span> <span data-ttu-id="6cb89-193">在這段時間，架構會關閉連接，並建立新的連接至遠端主機。</span><span class="sxs-lookup"><span data-stu-id="6cb89-193">At that time, the Framework closes the connection and creates a new connection to the remote host.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="6cb89-194">下列程式碼範例使用<xref:System.Net.ServicePoint.MaxIdleTime>屬性來設定及擷取<xref:System.Net.ServicePoint>閒置時間。</span><span class="sxs-lookup"><span data-stu-id="6cb89-194">The following code example uses the <xref:System.Net.ServicePoint.MaxIdleTime> property to set and retrieve the <xref:System.Net.ServicePoint> idle time.</span></span>  
-  
- [!code-cpp[System.Net.ServicePoint#3](~/samples/snippets/cpp/VS_Snippets_Remoting/System.Net.ServicePoint/CPP/servicepoint.cpp#3)]
- [!code-csharp[System.Net.ServicePoint#3](~/samples/snippets/csharp/VS_Snippets_Remoting/System.Net.ServicePoint/CS/servicepoint.cs#3)]
- [!code-vb[System.Net.ServicePoint#3](~/samples/snippets/visualbasic/VS_Snippets_Remoting/System.Net.ServicePoint/VB/servicepoint.vb#3)]  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">
-          <span data-ttu-id="6cb89-195">
-            <see cref="P:System.Net.ServicePoint.MaxIdleTime" /> 被設定為小於 <see cref="F:System.Threading.Timeout.Infinite" /> 或大於 <see cref="F:System.Int32.MaxValue" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-195">
-              <see cref="P:System.Net.ServicePoint.MaxIdleTime" /> is set to less than <see cref="F:System.Threading.Timeout.Infinite" /> or greater than <see cref="F:System.Int32.MaxValue" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="ProtocolVersion">
-      <MemberSignature Language="C#" Value="public virtual Version ProtocolVersion { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Version ProtocolVersion" />
-      <MemberSignature Language="DocId" Value="P:System.Net.ServicePoint.ProtocolVersion" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property ProtocolVersion As Version" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property Version ^ ProtocolVersion { Version ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Version</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="6cb89-196">取得 <see cref="T:System.Net.ServicePoint" /> 物件使用的 HTTP 通訊協定版本。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-196">Gets the version of the HTTP protocol that the <see cref="T:System.Net.ServicePoint" /> object uses.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="6cb89-197">
-            <see cref="T:System.Version" /> 物件，包含 <see cref="T:System.Net.ServicePoint" /> 物件使用的 HTTP 通訊協定版本。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-197">A <see cref="T:System.Version" /> object that contains the HTTP protocol version that the <see cref="T:System.Net.ServicePoint" /> object uses.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-198">HTTP 通訊協定版本為 HTTP/1.0 和 HTTP/1.1。</span><span class="sxs-lookup"><span data-stu-id="6cb89-198">The HTTP protocol versions are HTTP/1.0 and HTTP/1.1.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="6cb89-199">下列程式碼範例會顯示這個屬性的值。</span><span class="sxs-lookup"><span data-stu-id="6cb89-199">The following code example displays the value of this property.</span></span>  
-  
- [!code-cpp[System.Net.ServicePoint#5](~/samples/snippets/cpp/VS_Snippets_Remoting/System.Net.ServicePoint/CPP/servicepoint.cpp#5)]
- [!code-csharp[System.Net.ServicePoint#5](~/samples/snippets/csharp/VS_Snippets_Remoting/System.Net.ServicePoint/CS/servicepoint.cs#5)]
- [!code-vb[System.Net.ServicePoint#5](~/samples/snippets/visualbasic/VS_Snippets_Remoting/System.Net.ServicePoint/VB/servicepoint.vb#5)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ReceiveBufferSize">
-      <MemberSignature Language="C#" Value="public int ReceiveBufferSize { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 ReceiveBufferSize" />
-      <MemberSignature Language="DocId" Value="P:System.Net.ServicePoint.ReceiveBufferSize" />
-      <MemberSignature Language="VB.NET" Value="Public Property ReceiveBufferSize As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int ReceiveBufferSize { int get(); void set(int value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.MonoTODO</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="6cb89-200">取得或設定這個 <see cref="T:System.Net.ServicePoint" /> 所使用之通訊端的接收緩衝區大小。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-200">Gets or sets the size of the receiving buffer for the socket used by this <see cref="T:System.Net.ServicePoint" />.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="6cb89-201">
-            <see cref="T:System.Int32" />，包含接收緩衝區的大小，以位元組為單位。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-201">A <see cref="T:System.Int32" /> that contains the size, in bytes, of the receive buffer.</span>
-          </span>
-          <span data-ttu-id="6cb89-202">預設值為 8192。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-202">The default is 8192.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-203">如需詳細資訊，請參閱 <xref:System.Net.Sockets.Socket.ReceiveBufferSize>。</span><span class="sxs-lookup"><span data-stu-id="6cb89-203">For additional information, see <xref:System.Net.Sockets.Socket.ReceiveBufferSize>.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="6cb89-204">下列程式碼範例會設定這個屬性的值。</span><span class="sxs-lookup"><span data-stu-id="6cb89-204">The following code example sets the value of this property.</span></span>  
-  
- [!code-cpp[NCLServicePoint#1](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLServicePoint/CPP/nclservicepoint.cpp#1)]
- [!code-csharp[NCLServicePoint#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLServicePoint/CS/nclservicepoint.cs#1)]
- [!code-vb[NCLServicePoint#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NCLServicePoint/VB/nclservicepoint.vb#1)]  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">
-          <span data-ttu-id="6cb89-205">指定給設定作業的值大於 <see cref="F:System.Int32.MaxValue" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-205">The value specified for a set operation is greater than <see cref="F:System.Int32.MaxValue" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="SetTcpKeepAlive">
-      <MemberSignature Language="C#" Value="public void SetTcpKeepAlive (bool enabled, int keepAliveTime, int keepAliveInterval);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetTcpKeepAlive(bool enabled, int32 keepAliveTime, int32 keepAliveInterval) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub SetTcpKeepAlive (enabled As Boolean, keepAliveTime As Integer, keepAliveInterval As Integer)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SetTcpKeepAlive(bool enabled, int keepAliveTime, int keepAliveInterval);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="enabled" Type="System.Boolean" />
-        <Parameter Name="keepAliveTime" Type="System.Int32" />
-        <Parameter Name="keepAliveInterval" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="enabled">
-          <span data-ttu-id="6cb89-206">如果設定為 True，表示會使用指定的 <c>keepAliveTime</c> 和 <c>keepAliveInterval</c> 值啟用 TCP 連線的 TCP 保持連線選項。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-206">If set to true, then the TCP keep-alive option on a TCP connection will be enabled using the specified <c>keepAliveTime</c> and <c>keepAliveInterval</c> values.</span>
-          </span>
-          <span data-ttu-id="6cb89-207">如果設定為 False，則表示會停用 TCP 保持連線選項，並忽略其餘的參數。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-207">If set to false, then the TCP keep-alive option is disabled and the remaining parameters are ignored.</span>
-          </span>
-          <span data-ttu-id="6cb89-208">預設值為 false。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-208">The default value is false.</span>
-          </span>
-        </param>
-        <param name="keepAliveTime">
-          <span data-ttu-id="6cb89-209">指定第一個 Keep-Alive 封包傳送之前的無活動逾時 (以毫秒為單位)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-209">Specifies the timeout, in milliseconds, with no activity until the first keep-alive packet is sent.</span>
-          </span>
-          <span data-ttu-id="6cb89-210">這個值必須大於 0。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-210">The value must be greater than 0.</span>
-          </span>
-          <span data-ttu-id="6cb89-211">如果傳遞的值小於或等於零，則擲回 <see cref="T:System.ArgumentOutOfRangeException" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-211">If a value of less than or equal to zero is passed an <see cref="T:System.ArgumentOutOfRangeException" /> is thrown.</span>
-          </span>
-        </param>
-        <param name="keepAliveInterval">
-          <span data-ttu-id="6cb89-212">指定若未接收認可，後續 Keep-Alive 封包傳送的間隔 (以毫秒為單位)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-212">Specifies the interval, in milliseconds, between when successive keep-alive packets are sent if no acknowledgement is received.</span>
-          </span>
-          <span data-ttu-id="6cb89-213">這個值必須大於 0。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-213">The value must be greater than 0.</span>
-          </span>
-          <span data-ttu-id="6cb89-214">如果傳遞的值小於或等於零，則擲回 <see cref="T:System.ArgumentOutOfRangeException" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-214">If a value of less than or equal to zero is passed an <see cref="T:System.ArgumentOutOfRangeException" /> is thrown.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="6cb89-215">啟用或停用 TCP 連線的 Keep-Alive 選項。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-215">Enables or disables the keep-alive option on a TCP connection.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-216">應用程式可以要求 TCP/IP 提供者使用的 TCP 連線的 keep-alive 封包。</span><span class="sxs-lookup"><span data-stu-id="6cb89-216">An application can request that a TCP/IP provider enable the use of keep-alive packets on a TCP connection.</span></span> <span data-ttu-id="6cb89-217">預設為使用 TCP 連線的 keep-alive 封包會停用。</span><span class="sxs-lookup"><span data-stu-id="6cb89-217">The default is that the use of keep-alive packets on a TCP connection is disabled.</span></span>  
-  
- <span data-ttu-id="6cb89-218">TCP 通訊端時的預設設定初始化 2 小時的設定保持逾時和保持連接間隔為 1 秒。</span><span class="sxs-lookup"><span data-stu-id="6cb89-218">The default settings when a TCP socket is initialized sets the keep-alive timeout to 2 hours and the keep-alive interval to 1 second.</span></span> <span data-ttu-id="6cb89-219">`keepAliveTime`參數指定以毫秒為單位，與第一個 keep-alive 封包傳送之前的無活動逾時。</span><span class="sxs-lookup"><span data-stu-id="6cb89-219">The `keepAliveTime` parameter specifies the timeout, in milliseconds, with no activity until the first keep-alive packet is sent.</span></span> <span data-ttu-id="6cb89-220">`keepAliveInterval`參數指定的間隔，以毫秒為單位，介於時如果未收到收條，後續 keep-alive 封包會傳送。</span><span class="sxs-lookup"><span data-stu-id="6cb89-220">The `keepAliveInterval` parameter specifies the interval, in milliseconds, between when successive keep-alive packets are sent if no acknowledgement is received.</span></span> <span data-ttu-id="6cb89-221">保持運作的探查數目不能變更，並設為 10。</span><span class="sxs-lookup"><span data-stu-id="6cb89-221">The number of keep-alive probes cannot be changed and is set to 10.</span></span>  
-  
- <span data-ttu-id="6cb89-222">如果 TCP 連線中斷時持續作用，因為<xref:System.Net.Sockets.SocketError>的<xref:System.Net.Sockets.SocketError.NetworkReset>會傳回到任何呼叫正在進行中通訊端，而且任何後續呼叫都會失敗並<xref:System.Net.Sockets.SocketError>的<xref:System.Net.Sockets.SocketError.NotConnected>。</span><span class="sxs-lookup"><span data-stu-id="6cb89-222">If a TCP connection is dropped as the result of keep-alives, a <xref:System.Net.Sockets.SocketError> of <xref:System.Net.Sockets.SocketError.NetworkReset> is returned to any calls in progress on the socket, and any subsequent calls will fail with a <xref:System.Net.Sockets.SocketError> of <xref:System.Net.Sockets.SocketError.NotConnected>.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">
-          <span data-ttu-id="6cb89-223">
-            <paramref name="keepAliveTime" /> 或 <paramref name="keepAliveInterval" /> 參數的指定值會小於或等於 0。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-223">The value specified for <paramref name="keepAliveTime" /> or <paramref name="keepAliveInterval" /> parameter is less than or equal to 0.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="SupportsPipelining">
-      <MemberSignature Language="C#" Value="public bool SupportsPipelining { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool SupportsPipelining" />
-      <MemberSignature Language="DocId" Value="P:System.Net.ServicePoint.SupportsPipelining" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SupportsPipelining As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool SupportsPipelining { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="6cb89-224">指出 <see cref="T:System.Net.ServicePoint" /> 物件是否支援以管線連接。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-224">Indicates whether the <see cref="T:System.Net.ServicePoint" /> object supports pipelined connections.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="6cb89-225">如果 <see cref="T:System.Net.ServicePoint" /> 物件支援以管線連接，則為 <see langword="true" />；否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-225">
-              <see langword="true" /> if the <see cref="T:System.Net.ServicePoint" /> object supports pipelined connections; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-226">管線可將用戶端可以透過持續連線傳送多個要求，而不等候來自伺服器的每個回應。</span><span class="sxs-lookup"><span data-stu-id="6cb89-226">Pipelining allows clients to send multiple requests across a persistent connection without waiting for each response from the server.</span></span> <span data-ttu-id="6cb89-227">如已收到要求，伺服器會傳送回應相同的順序。</span><span class="sxs-lookup"><span data-stu-id="6cb89-227">The server sends the responses in the same order as the requests were received.</span></span>  
-  
- <span data-ttu-id="6cb89-228">IETF RFC 2616 8.1.2.2 節中詳細說明管線。</span><span class="sxs-lookup"><span data-stu-id="6cb89-228">Pipelining is described in detail in IETF RFC 2616 section 8.1.2.2.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="6cb89-229">下列程式碼範例會顯示這個屬性的值。</span><span class="sxs-lookup"><span data-stu-id="6cb89-229">The following code example displays the value of this property.</span></span>  
-  
- [!code-cpp[System.Net.ServicePoint#5](~/samples/snippets/cpp/VS_Snippets_Remoting/System.Net.ServicePoint/CPP/servicepoint.cpp#5)]
- [!code-csharp[System.Net.ServicePoint#5](~/samples/snippets/csharp/VS_Snippets_Remoting/System.Net.ServicePoint/CS/servicepoint.cs#5)]
- [!code-vb[System.Net.ServicePoint#5](~/samples/snippets/visualbasic/VS_Snippets_Remoting/System.Net.ServicePoint/VB/servicepoint.vb#5)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="UseNagleAlgorithm">
-      <MemberSignature Language="C#" Value="public bool UseNagleAlgorithm { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool UseNagleAlgorithm" />
-      <MemberSignature Language="DocId" Value="P:System.Net.ServicePoint.UseNagleAlgorithm" />
-      <MemberSignature Language="VB.NET" Value="Public Property UseNagleAlgorithm As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool UseNagleAlgorithm { bool get(); void set(bool value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Net.ServicePoint</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="6cb89-230">取得或設定 <see cref="T:System.Boolean" /> 值，以決定是否在由此 <see cref="T:System.Net.ServicePoint" /> 物件管理的連接上使用 Nagle 演算法。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-230">Gets or sets a <see cref="T:System.Boolean" /> value that determines whether the Nagle algorithm is used on connections managed by this <see cref="T:System.Net.ServicePoint" /> object.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="6cb89-231">
-            <see langword="true" /> 表示使用 Nagle 演算法；否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-231">
-              <see langword="true" /> to use the Nagle algorithm; otherwise, <see langword="false" />.</span>
-          </span>
-          <span data-ttu-id="6cb89-232">預設值是 <see langword="true" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="6cb89-232">The default value is <see langword="true" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="6cb89-233">Nagle 演算法用來緩衝小型資料封包，並以單一封包。</span><span class="sxs-lookup"><span data-stu-id="6cb89-233">The Nagle algorithm is used to buffer small packets of data and transmit them as a single packet.</span></span> <span data-ttu-id="6cb89-234">此程序，稱為 「 nagling 」 廣泛使用，因為它可以減少傳送的封包數目，並降低每個封包的額外負荷。</span><span class="sxs-lookup"><span data-stu-id="6cb89-234">This process, referred to as "nagling," is widely used because it reduces the number of packets transmitted and lowers the overhead per packet.</span></span>  
-  
- <span data-ttu-id="6cb89-235">變更這個屬性的值不會影響現有的連接。</span><span class="sxs-lookup"><span data-stu-id="6cb89-235">Changing the value of this property does not affect existing connections.</span></span> <span data-ttu-id="6cb89-236">只會影響變更之後所建立的新連線。</span><span class="sxs-lookup"><span data-stu-id="6cb89-236">Only new connections created after the change are affected.</span></span>  
-  
- <span data-ttu-id="6cb89-237">IETF RFC 896 的完整說明 Nagle 演算法。</span><span class="sxs-lookup"><span data-stu-id="6cb89-237">The Nagle algorithm is fully described in IETF RFC 896.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="6cb89-238">下列程式碼範例會顯示這個屬性的值。</span><span class="sxs-lookup"><span data-stu-id="6cb89-238">The following code example displays the value of this property.</span></span>  
-  
- [!code-cpp[System.Net.ServicePoint#9](~/samples/snippets/cpp/VS_Snippets_Remoting/System.Net.ServicePoint/CPP/servicepoint.cpp#9)]
- [!code-csharp[System.Net.ServicePoint#9](~/samples/snippets/csharp/VS_Snippets_Remoting/System.Net.ServicePoint/CS/servicepoint.cs#9)]
- [!code-vb[System.Net.ServicePoint#9](~/samples/snippets/visualbasic/VS_Snippets_Remoting/System.Net.ServicePoint/VB/servicepoint.vb#9)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="ServicePoint.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-567ae5a" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">7c5b04be-ac4f-4958-bcde-0afae0584552a3a675cc93f75ebd7462a2679bc072e59694b049.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">a3a675cc93f75ebd7462a2679bc072e59694b049</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">3507e865a3613c00760f25ad1045aaa11bae4dd8</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/23/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netcore-2.0,netcore-2.1,netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7.2,netframework-4.7,netstandard-2.0,xamarinandroid-7.1,xamarinios-10.8,xamarinmac-3.0</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Net.ServicePoint">
+          <source>Provides connection management for HTTP connections.</source>
+          <target state="translated">提供 HTTP 連接的連接管理。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Net.ServicePoint">
+          <source>The <ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> class handles connections to an Internet resource based on the host information passed in the resource's Uniform Resource Identifier (URI).</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph>類別處理傳遞中資源的統一資源識別元 (URI) 的主機資訊為基礎的網際網路資源的連接。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Net.ServicePoint">
+          <source>The initial connection to the resource determines the information that the <ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> object maintains, which is then shared by all subsequent requests to that resource.</source>
+          <target state="translated">資源的初始連接判定資訊的<ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph>物件維護，這就會共用該資源的所有後續要求。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Net.ServicePoint">
+          <source><ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> objects are managed by the <ph id="ph2">&lt;xref:System.Net.ServicePointManager&gt;</ph> class and are created, if necessary, by the <ph id="ph3">&lt;xref:System.Net.ServicePointManager.FindServicePoint%2A?displayProperty=nameWithType&gt;</ph> method.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> 物件由<ph id="ph2">&lt;xref:System.Net.ServicePointManager&gt;</ph>類別，並建立，如有必要，由<ph id="ph3">&lt;xref:System.Net.ServicePointManager.FindServicePoint%2A?displayProperty=nameWithType&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Net.ServicePoint">
+          <source><ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> objects are never created directly but are always created and managed by the <ph id="ph2">&lt;xref:System.Net.ServicePointManager&gt;</ph> class.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> 物件永遠不會直接建立，但永遠建立和管理由<ph id="ph2">&lt;xref:System.Net.ServicePointManager&gt;</ph>類別。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Net.ServicePoint">
+          <source>The maximum number of <ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> objects that can be created is set by the <ph id="ph2">&lt;xref:System.Net.ServicePointManager.MaxServicePoints?displayProperty=nameWithType&gt;</ph> property.</source>
+          <target state="translated">最大數目<ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph>可以建立的物件由設定<ph id="ph2">&lt;xref:System.Net.ServicePointManager.MaxServicePoints?displayProperty=nameWithType&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Net.ServicePoint">
+          <source>Each <ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> object maintains its connection to an Internet resource until it has been idle longer than the time specified in the <ph id="ph2">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph> property.</source>
+          <target state="translated">每個<ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph>物件會維護與網際網路資源的連接直到已閒置超過指定的時間<ph id="ph2">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Net.ServicePoint">
+          <source>When a <ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> exceeds the <ph id="ph2">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph> value, it can be recycled to another connection.</source>
+          <target state="translated">當<ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph>超過<ph id="ph2">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph>值，它可以是回收，以另一個連接。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Net.ServicePoint">
+          <source>The default value of <ph id="ph1">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph> is set by the <ph id="ph2">&lt;xref:System.Net.ServicePointManager.MaxServicePointIdleTime?displayProperty=nameWithType&gt;</ph> property.</source>
+          <target state="translated">預設值<ph id="ph1">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph>由設定<ph id="ph2">&lt;xref:System.Net.ServicePointManager.MaxServicePointIdleTime?displayProperty=nameWithType&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Net.ServicePoint">
+          <source>When the <ph id="ph1">&lt;xref:System.Net.ServicePoint.ConnectionLeaseTimeout&gt;</ph> property is set to a value other than -1, and after the specified time elapses, an active <ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph> connection is closed after it services the next request.</source>
+          <target state="translated">當<ph id="ph1">&lt;xref:System.Net.ServicePoint.ConnectionLeaseTimeout&gt;</ph>屬性設定為-1，且指定的時間之後結束作用中以外的值<ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph>它所服務的下一個要求之後，連接關閉。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Net.ServicePoint">
+          <source>This is useful for applications that do not require active connections that are opened indefinitely, as they are by default.</source>
+          <target state="translated">這非常有用，因為它們是依預設不需要無限期地開啟的作用中連線的應用程式。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Net.ServicePoint">
+          <source>In high load conditions, some applications may run out of free threads in the ThreadPool, which may lead to poor system performance (such as high and variable transaction times).</source>
+          <target state="translated">在高負載情況下，某些應用程式可能會用完可用的執行緒中執行緒集區，可能會導致系統效能很低 （例如高和變數的交易時間）。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Net.ServicePoint">
+          <source>See <bpt id="p1">[</bpt><ph id="ph1">http://msdn.microsoft.com/library/default.asp?url=/library/dnpag/html/scalenetchapt17.asp</ph><ept id="p1">](http://msdn.microsoft.com/library/default.asp?url=/library/dnpag/html/scalenetchapt17.asp)</ept> for a number of configuration changes you can make to fix this issue.</source>
+          <target state="translated">請參閱<bpt id="p1">[</bpt> <ph id="ph1">http://msdn.microsoft.com/library/default.asp?url=/library/dnpag/html/scalenetchapt17.asp</ph> <ept id="p1">](http://msdn.microsoft.com/library/default.asp?url=/library/dnpag/html/scalenetchapt17.asp)</ept>數目的組態變更，您可以對修正此問題。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Net.ServicePoint">
+          <source>The following code example creates a <ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> object that connects to the URI www.contoso.com.</source>
+          <target state="translated">下列程式碼範例會建立<ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph>物件來連接到 URI www.contoso.com。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.Address">
+          <source>Gets the Uniform Resource Identifier (URI) of the server that this <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object connects to.</source>
+          <target state="translated">取得這個 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件連接之伺服器的統一資源識別碼 (URI)。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Address">
+          <source>An instance of the <ph id="ph1">&lt;see cref="T:System.Uri" /&gt;</ph> class that contains the URI of the Internet server that this <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object connects to.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Uri" /&gt;</ph> 類別的執行個體，包含這個 <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件連接之網際網路伺服器的 URI。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Address">
+          <source>The following code example displays the value of this property.</source>
+          <target state="translated">下列程式碼範例會顯示這個屬性的值。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.Address">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> is in host mode.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 處於主機模式中。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Address">
+          <source>For using <ph id="ph1">&lt;see cref="P:System.Net.ServicePoint.Address" /&gt;</ph> if the <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> connects through a proxy server.</source>
+          <target state="translated">使用<ph id="ph1">&lt;see cref="P:System.Net.ServicePoint.Address" /&gt;</ph>如果<ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph>透過 proxy 伺服器連接。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.BindIPEndPointDelegate">
+          <source>Specifies the delegate to associate a local <ph id="ph1">&lt;see cref="T:System.Net.IPEndPoint" /&gt;</ph> with a <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph>.</source>
+          <target state="translated">指定使本機 <ph id="ph1">&lt;see cref="T:System.Net.IPEndPoint" /&gt;</ph> 與 <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 產生關聯的委派。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.BindIPEndPointDelegate">
+          <source>A delegate that forces a <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> to use a particular local Internet Protocol (IP) address and port number.</source>
+          <target state="translated">一種委派，可強制 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 使用特定的本機網際網路通訊協定 (IP) 位址和連接埠編號。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.BindIPEndPointDelegate">
+          <source>The default value is <ph id="ph1">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated">預設值是 <ph id="ph1">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.BindIPEndPointDelegate">
+          <source>Some load balancing techniques require a client to use a specific local IP address and port number, rather than <ph id="ph1">&lt;xref:System.Net.IPAddress.Any?displayProperty=nameWithType&gt;</ph> (or <ph id="ph2">&lt;xref:System.Net.IPAddress.IPv6Any?displayProperty=nameWithType&gt;</ph> for Internet Protocol Version 6) and an ephemeral port.</source>
+          <target state="translated">某些負載平衡技術需要用戶端使用特定本機 IP 位址和通訊埠編號，而非<ph id="ph1">&lt;xref:System.Net.IPAddress.Any?displayProperty=nameWithType&gt;</ph>(或<ph id="ph2">&lt;xref:System.Net.IPAddress.IPv6Any?displayProperty=nameWithType&gt;</ph>的網際網路通訊協定第 6 版) 和暫時的連接埠。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.BindIPEndPointDelegate">
+          <source>Your <ph id="ph1">&lt;xref:System.Net.ServicePoint.BindIPEndPointDelegate&gt;</ph> can satisfy this requirement.</source>
+          <target state="translated">您<ph id="ph1">&lt;xref:System.Net.ServicePoint.BindIPEndPointDelegate&gt;</ph>可以滿足此需求。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.BindIPEndPointDelegate">
+          <source>for binding to a local port.</source>
+          <target state="translated">本機連接埠繫結。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.BindIPEndPointDelegate">
+          <source>Associated enumeration: <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></source>
+          <target state="translated">相關聯的列舉型別： <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.Certificate">
+          <source>Gets the certificate received for this <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object.</source>
+          <target state="translated">取得為這個 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件接收的憑證。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Certificate">
+          <source>An instance of the <ph id="ph1">&lt;see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate" /&gt;</ph> class that contains the security certificate received for this <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate" /&gt;</ph> 類別的執行個體，包含為這個 <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件接收的安全性憑證。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Certificate">
+          <source>Although a <ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> object can make multiple connections to an Internet resource, it can maintain only one certificate.</source>
+          <target state="translated">雖然<ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph>物件會讓對網際網路資源的多個連接時，它可以維護只有一個憑證。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Certificate">
+          <source>The following code example displays the value of this property.</source>
+          <target state="translated">下列程式碼範例會顯示這個屬性的值。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.ClientCertificate">
+          <source>Gets the last client certificate sent to the server.</source>
+          <target state="translated">取得傳送到伺服器的最後一個用戶端憑證。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ClientCertificate">
+          <source>An <ph id="ph1">&lt;see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate" /&gt;</ph> object that contains the public values of the last client certificate sent to the server.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate" /&gt;</ph> 物件，包含傳送到伺服器之最後用戶端憑證的公用值。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ClientCertificate">
+          <source>The following code example displays the value of this property.</source>
+          <target state="translated">下列程式碼範例會顯示這個屬性的值。</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" uid="M:System.Net.ServicePoint.CloseConnectionGroup(System.String)">
+          <source>The name of the connection group that contains the connections to close and remove from this service point.</source>
+          <target state="translated">連接群組的名稱，這個連接群組包含要從這個服務點關閉和移除的連接。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" uid="M:System.Net.ServicePoint.CloseConnectionGroup(System.String)">
+          <source>Removes the specified connection group from this <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object.</source>
+          <target state="translated">將指定的連接群組從這個 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件移除。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" uid="M:System.Net.ServicePoint.CloseConnectionGroup(System.String)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Boolean" /&gt;</ph> value that indicates whether the connection group was closed.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Boolean" /&gt;</ph> 值，指出連接群組是否已關閉。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Net.ServicePoint.CloseConnectionGroup(System.String)">
+          <source>Connection groups associate a set of requests with a particular connection or set of connections.</source>
+          <target state="translated">連線群組會要求一組關聯的特定連線或連線集。</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Net.ServicePoint.CloseConnectionGroup(System.String)">
+          <source>This method removes and closes all connections that belong to the specified connection group.</source>
+          <target state="translated">這個方法會移除，並關閉所有屬於指定的連接群組的連線。</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.ConnectionLeaseTimeout">
+          <source>Gets or sets the number of milliseconds after which an active <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> connection is closed.</source>
+          <target state="translated">取得或設定作用中 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 連接關閉前的毫秒數。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionLeaseTimeout">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Int32" /&gt;</ph> that specifies the number of milliseconds that an active <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> connection remains open.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Int32" /&gt;</ph>，指定作用中 <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 連接維持開啟的毫秒數。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionLeaseTimeout">
+          <source>The default is -1, which allows an active <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> connection to stay connected indefinitely.</source>
+          <target state="translated">預設值為 -1，這允許作用中 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 連接無限期保持連接。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionLeaseTimeout">
+          <source>Set this property to 0 to force <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> connections to close after servicing a request.</source>
+          <target state="translated">將這個屬性設為 0，可以強制 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 連接在服務要求之後關閉。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionLeaseTimeout">
+          <source>You can use this property to ensure that a <ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> object's active connections do not remain open indefinitely.</source>
+          <target state="translated">您可以使用這個屬性，以確保<ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph>物件的作用中連線不會持續開啟無限期。</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionLeaseTimeout">
+          <source>This property is intended for scenarios where connections should be dropped and reestablished periodically, such as load balancing scenarios.</source>
+          <target state="translated">這個屬性適用於案例應該卸除並重新建立定期，例如負載平衡案例連線。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionLeaseTimeout">
+          <source>By default, when <ph id="ph1">&lt;xref:System.Net.HttpWebRequest.KeepAlive&gt;</ph> is <ph id="ph2">`true`</ph> for a request, the <ph id="ph3">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph> property sets the time-out for closing <ph id="ph4">&lt;xref:System.Net.ServicePoint&gt;</ph> connections due to inactivity.</source>
+          <target state="translated">根據預設，當<ph id="ph1">&lt;xref:System.Net.HttpWebRequest.KeepAlive&gt;</ph>是<ph id="ph2">`true`</ph>要求，<ph id="ph3">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph>屬性會設定用於關閉逾時<ph id="ph4">&lt;xref:System.Net.ServicePoint&gt;</ph>因為無活動的連線。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionLeaseTimeout">
+          <source>If the <ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> has active connections, <ph id="ph2">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph> has no effect and the connections remain open indefinitely.</source>
+          <target state="translated">如果<ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph>有使用中連接時，<ph id="ph2">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph>沒有任何作用，而且連接無限期地保持開啟。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionLeaseTimeout">
+          <source>When the <ph id="ph1">&lt;xref:System.Net.ServicePoint.ConnectionLeaseTimeout&gt;</ph> property is set to a value other than -1, and after the specified time elapses, an active <ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph> connection is closed after servicing a request by setting <ph id="ph3">&lt;xref:System.Net.HttpWebRequest.KeepAlive&gt;</ph> to <ph id="ph4">`false`</ph> in that request.</source>
+          <target state="translated">當<ph id="ph1">&lt;xref:System.Net.ServicePoint.ConnectionLeaseTimeout&gt;</ph>屬性設定為-1，且指定的時間之後結束作用中以外的值<ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph>藉由設定服務要求之後關閉連接<ph id="ph3">&lt;xref:System.Net.HttpWebRequest.KeepAlive&gt;</ph>至<ph id="ph4">`false`</ph>該要求中。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionLeaseTimeout">
+          <source>Setting this value affects all connections managed by the <ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> object.</source>
+          <target state="translated">設定這個值會影響所管理的所有連線<ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionLeaseTimeout">
+          <source>The following code example sets the value of this property.</source>
+          <target state="translated">下列程式碼範例會設定這個屬性的值。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.ConnectionLeaseTimeout">
+          <source>The value specified for a set operation is a negative number less than -1.</source>
+          <target state="translated">為設定作業指定的值是小於 -1 的負數。</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.ConnectionLimit">
+          <source>Gets or sets the maximum number of connections allowed on this <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object.</source>
+          <target state="translated">取得或設定這個 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件上所允許的最大連接數目。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionLimit">
+          <source>The maximum number of connections allowed on this <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object.</source>
+          <target state="translated">這個 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件上所允許的最大連接數目。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionLimit">
+          <source>The <ph id="ph1">&lt;xref:System.Net.ServicePoint.ConnectionLimit&gt;</ph> property sets the maximum number of connections that the <ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph> object can make to an Internet resource.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Net.ServicePoint.ConnectionLimit&gt;</ph>屬性設定的連線數目上限，<ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph>物件可以對網際網路資源。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionLimit">
+          <source>The value of the <ph id="ph1">&lt;xref:System.Net.ServicePoint.ConnectionLimit&gt;</ph> property is set to the value of the <ph id="ph2">&lt;xref:System.Net.ServicePointManager.DefaultConnectionLimit?displayProperty=nameWithType&gt;</ph> property when the <ph id="ph3">&lt;xref:System.Net.ServicePoint&gt;</ph> object is created; subsequent changes to <ph id="ph4">&lt;xref:System.Net.ServicePointManager.DefaultConnectionLimit&gt;</ph> have no effect on existing <ph id="ph5">&lt;xref:System.Net.ServicePoint&gt;</ph> objects.</source>
+          <target state="translated">值<ph id="ph1">&lt;xref:System.Net.ServicePoint.ConnectionLimit&gt;</ph>屬性設定的值為<ph id="ph2">&lt;xref:System.Net.ServicePointManager.DefaultConnectionLimit?displayProperty=nameWithType&gt;</ph>屬性時<ph id="ph3">&lt;xref:System.Net.ServicePoint&gt;</ph>建立物件; 後續變更為<ph id="ph4">&lt;xref:System.Net.ServicePointManager.DefaultConnectionLimit&gt;</ph>不影響現有<ph id="ph5">&lt;xref:System.Net.ServicePoint&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionLimit">
+          <source>The following code example uses the <ph id="ph1">&lt;xref:System.Net.ServicePoint.ConnectionLimit&gt;</ph> property to check the maximum number of connections that the <ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph> object can make to the specified Uniform Resource Identifier (URI).</source>
+          <target state="translated">下列程式碼範例使用<ph id="ph1">&lt;xref:System.Net.ServicePoint.ConnectionLimit&gt;</ph>屬性來檢查最大連接數目，<ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph>物件可以進行到指定的統一資源識別元 (URI)。</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.ConnectionLimit">
+          <source>The connection limit is equal to or less than 0.</source>
+          <target state="translated">連接限制等於或小於 0。</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.ConnectionName">
+          <source>Gets the connection name.</source>
+          <target state="translated">取得連接名稱。</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionName">
+          <source>A <ph id="ph1">&lt;see cref="T:System.String" /&gt;</ph> that represents the connection name.</source>
+          <target state="translated">表示連接名稱的 <ph id="ph1">&lt;see cref="T:System.String" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionName">
+          <source>If the <ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> object was constructed by calling a <ph id="ph2">&lt;xref:System.Net.ServicePointManager.FindServicePoint%2A&gt;</ph> overload with a <ph id="ph3">&lt;xref:System.Uri&gt;</ph> argument, then the <ph id="ph4">&lt;xref:System.Net.ServicePoint.ConnectionName&gt;</ph> property represents the <ph id="ph5">&lt;xref:System.Uri.Scheme&gt;</ph> property of the <ph id="ph6">&lt;xref:System.Uri&gt;</ph> object used.</source>
+          <target state="translated">如果<ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph>物件藉由呼叫建構<ph id="ph2">&lt;xref:System.Net.ServicePointManager.FindServicePoint%2A&gt;</ph>多載<ph id="ph3">&lt;xref:System.Uri&gt;</ph>引數，則<ph id="ph4">&lt;xref:System.Net.ServicePoint.ConnectionName&gt;</ph>屬性代表<ph id="ph5">&lt;xref:System.Uri.Scheme&gt;</ph>屬性<ph id="ph6">&lt;xref:System.Uri&gt;</ph>用物件。</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionName">
+          <source>If the <ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph> object was constructed from a network host and port, the <ph id="ph2">&lt;xref:System.Net.ServicePoint.ConnectionName&gt;</ph> property contains a string that represents the host and the network port.</source>
+          <target state="translated">如果<ph id="ph1">&lt;xref:System.Net.ServicePoint&gt;</ph>物件根據網路主機和連接埠，建構<ph id="ph2">&lt;xref:System.Net.ServicePoint.ConnectionName&gt;</ph>屬性包含字串，代表主機和網路連接埠。</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ConnectionName">
+          <source>If the <ph id="ph1">&lt;xref:System.Net.ServicePoint.ConnectionName&gt;</ph> property is set when constructed from a host and port, only <ph id="ph2">&lt;xref:System.Net.WebRequest&gt;</ph> objects with the same <ph id="ph3">&lt;xref:System.Net.WebRequest.ConnectionGroupName&gt;</ph> value can use this <ph id="ph4">&lt;xref:System.Net.ServicePoint&gt;</ph> object.</source>
+          <target state="translated">如果<ph id="ph1">&lt;xref:System.Net.ServicePoint.ConnectionName&gt;</ph>屬性會從主機和連接埠，只有建構時設定<ph id="ph2">&lt;xref:System.Net.WebRequest&gt;</ph>物件具有相同<ph id="ph3">&lt;xref:System.Net.WebRequest.ConnectionGroupName&gt;</ph>值可以使用這個<ph id="ph4">&lt;xref:System.Net.ServicePoint&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.CurrentConnections">
+          <source>Gets the number of open connections associated with this <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object.</source>
+          <target state="translated">取得與這個 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件相關聯的開啟連接數。</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.CurrentConnections">
+          <source>The number of open connections associated with this <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object.</source>
+          <target state="translated">與這個 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件相關聯的開啟連接數。</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.CurrentConnections">
+          <source>The <ph id="ph1">&lt;xref:System.Net.ServicePoint.CurrentConnections&gt;</ph> property contains the number of open Internet connections associated with this <ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph> object.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Net.ServicePoint.CurrentConnections&gt;</ph>屬性包含與此相關聯的開啟網際網路連線的數目<ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.CurrentConnections">
+          <source>The value of <ph id="ph1">&lt;xref:System.Net.ServicePoint.CurrentConnections&gt;</ph> cannot exceed that of <ph id="ph2">&lt;xref:System.Net.ServicePoint.ConnectionLimit&gt;</ph>.</source>
+          <target state="translated">值<ph id="ph1">&lt;xref:System.Net.ServicePoint.CurrentConnections&gt;</ph>不能超過包含<ph id="ph2">&lt;xref:System.Net.ServicePoint.ConnectionLimit&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.CurrentConnections">
+          <source>The following code example uses the <ph id="ph1">&lt;xref:System.Net.ServicePoint.CurrentConnections&gt;</ph> property to determine the number of open Internet connections associated with this <ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph> object.</source>
+          <target state="translated">下列程式碼範例使用<ph id="ph1">&lt;xref:System.Net.ServicePoint.CurrentConnections&gt;</ph>屬性來判斷與此相關聯的開啟網際網路連線的數目<ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.Expect100Continue">
+          <source>Gets or sets a <ph id="ph1">&lt;see cref="T:System.Boolean" /&gt;</ph> value that determines whether 100-Continue behavior is used.</source>
+          <target state="translated">取得或設定 <ph id="ph1">&lt;see cref="T:System.Boolean" /&gt;</ph> 值，用以判斷是否有使用 100-Continue 行為。</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Expect100Continue">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> to expect 100-Continue responses for <ph id="ph2">&lt;see langword="POST" /&gt;</ph> requests; otherwise, <ph id="ph3">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">預期 <ph id="ph1">&lt;see langword="true" /&gt;</ph> 要求有 100-Continue 的回應，則為 <ph id="ph2">&lt;see langword="POST" /&gt;</ph>，否則為 <ph id="ph3">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Expect100Continue">
+          <source>The default value is <ph id="ph1">&lt;see langword="true" /&gt;</ph>.</source>
+          <target state="translated">預設值是 <ph id="ph1">&lt;see langword="true" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Expect100Continue">
+          <source>When this property is set to <ph id="ph1">`true`</ph>, client requests that use the <ph id="ph2">`POST`</ph> method expect to receive a 100-Continue response from the server to indicate that the client should send the data to be posted.</source>
+          <target state="translated">當這個屬性設定為<ph id="ph1">`true`</ph>，用戶端會要求使用<ph id="ph2">`POST`</ph>方法預期收到 100-繼續回應的伺服器，表示用戶端應該傳送的回傳資料。</target>       </trans-unit>
+        <trans-unit id="171" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Expect100Continue">
+          <source>This mechanism allows clients to avoid sending large amounts of data over the network when the server, based on the request headers, intends to reject the request.</source>
+          <target state="translated">此機制可讓用戶端，以避免透過網路傳送大量資料時的伺服器會根據要求的標頭，想要拒絕的要求。</target>       </trans-unit>
+        <trans-unit id="172" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Expect100Continue">
+          <source>For example, assume the <ph id="ph1">&lt;xref:System.Net.ServicePoint.Expect100Continue&gt;</ph> property is <ph id="ph2">`false`</ph>.</source>
+          <target state="translated">例如，假設<ph id="ph1">&lt;xref:System.Net.ServicePoint.Expect100Continue&gt;</ph>屬性是<ph id="ph2">`false`</ph>。</target>       </trans-unit>
+        <trans-unit id="173" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Expect100Continue">
+          <source>When the request is sent to the server, it includes the data.</source>
+          <target state="translated">當要求傳送到伺服器時，它包含的資料。</target>       </trans-unit>
+        <trans-unit id="174" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Expect100Continue">
+          <source>If, after reading the request headers, the server requires authentication and sends a 401 response, the client must resend the data with proper authentication headers.</source>
+          <target state="translated">如果在讀取之後的要求標頭，伺服器需要驗證，而且傳送 401 回應，用戶端必須重新傳送適當驗證標頭的資料。</target>       </trans-unit>
+        <trans-unit id="175" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Expect100Continue">
+          <source>If the <ph id="ph1">&lt;xref:System.Net.ServicePoint.Expect100Continue&gt;</ph> property is <ph id="ph2">`true`</ph>, the request headers are sent to the server.</source>
+          <target state="translated">如果<ph id="ph1">&lt;xref:System.Net.ServicePoint.Expect100Continue&gt;</ph>屬性是<ph id="ph2">`true`</ph>，要求標頭傳送到伺服器。</target>       </trans-unit>
+        <trans-unit id="176" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Expect100Continue">
+          <source>If the server has not rejected the request, it sends a 100-Continue response signaling that the data can be transmitted.</source>
+          <target state="translated">如果伺服器已拒絕該要求，它會傳送 100-繼續回應信號資料可以傳輸。</target>       </trans-unit>
+        <trans-unit id="177" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Expect100Continue">
+          <source>If, as in the preceding example, the server requires authentication, it sends the 401 response and the client has not unnecessarily transmitted the data.</source>
+          <target state="translated">如果，就如同上述範例中，伺服器需要驗證，它會傳送 401 回應和用戶端已經傳送的資料。</target>       </trans-unit>
+        <trans-unit id="178" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Expect100Continue">
+          <source>Changing the value of this property does not affect existing connections.</source>
+          <target state="translated">變更這個屬性的值不會影響現有的連接。</target>       </trans-unit>
+        <trans-unit id="179" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Expect100Continue">
+          <source>Only new connections created after the change are affected.</source>
+          <target state="translated">只會影響變更之後所建立的新連線。</target>       </trans-unit>
+        <trans-unit id="180" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Expect100Continue">
+          <source>The Expect 100-Continue behavior is fully described in IETF RFC 2616 Section 10.1.1.</source>
+          <target state="translated">預期 100-繼續行為完全 IETF RFC 2616 一節所述 10.1.1。</target>       </trans-unit>
+        <trans-unit id="181" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.Expect100Continue">
+          <source>The following code example displays the value of this property.</source>
+          <target state="translated">下列程式碼範例會顯示這個屬性的值。</target>       </trans-unit>
+        <trans-unit id="182" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.IdleSince">
+          <source>Gets the date and time that the <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object was last connected to a host.</source>
+          <target state="translated">取得 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件上次連接至主機的日期和時間。</target>       </trans-unit>
+        <trans-unit id="183" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.IdleSince">
+          <source>A <ph id="ph1">&lt;see cref="T:System.DateTime" /&gt;</ph> object that contains the date and time at which the <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object was last connected.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.DateTime" /&gt;</ph> 物件，包含上次連接 <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件的日期和時間。</target>       </trans-unit>
+        <trans-unit id="184" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.IdleSince">
+          <source>The <ph id="ph1">&lt;xref:System.Net.ServicePoint.IdleSince&gt;</ph> property records the last date and time at which a service point was disconnected from a host.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Net.ServicePoint.IdleSince&gt;</ph>屬性記錄的最後一個日期和時間的服務點已中斷連線從主機。</target>       </trans-unit>
+        <trans-unit id="185" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.IdleSince">
+          <source>When the difference between the current time and <ph id="ph1">&lt;xref:System.Net.ServicePoint.IdleSince&gt;</ph> exceeds the value of <ph id="ph2">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph>, the <ph id="ph3">&lt;xref:System.Net.ServicePoint&gt;</ph> object is available for recycling to another connection.</source>
+          <target state="translated">當目前的時間之間的差異和<ph id="ph1">&lt;xref:System.Net.ServicePoint.IdleSince&gt;</ph>超過的值<ph id="ph2">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph>、<ph id="ph3">&lt;xref:System.Net.ServicePoint&gt;</ph>物件可供使用的循環使用另一個連接。</target>       </trans-unit>
+        <trans-unit id="186" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.IdleSince">
+          <source>The following code example uses the <ph id="ph1">&lt;xref:System.Net.ServicePoint.IdleSince&gt;</ph> property to set and retrieve the date and time that the <ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph> object was last connected to a host.</source>
+          <target state="translated">下列程式碼範例使用<ph id="ph1">&lt;xref:System.Net.ServicePoint.IdleSince&gt;</ph>屬性來設定和擷取日期和時間<ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph>物件上次連接至主機。</target>       </trans-unit>
+        <trans-unit id="187" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.MaxIdleTime">
+          <source>Gets or sets the amount of time a connection associated with the <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object can remain idle before the connection is closed.</source>
+          <target state="translated">取得或設定與 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件相關聯的連接可以維持閒置的時間量，過了這段時間之後，連接即關閉。</target>       </trans-unit>
+        <trans-unit id="188" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.MaxIdleTime">
+          <source>The length of time, in milliseconds, that a connection associated with the <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object can remain idle before it is closed and reused for another connection.</source>
+          <target state="translated">與 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件相關聯的連接可以維持閒置的時間長度 (以毫秒為單位)，過了這段時間之後，連接即關閉，並供另一個連接重複使用。</target>       </trans-unit>
+        <trans-unit id="189" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.MaxIdleTime">
+          <source>You can set <ph id="ph1">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph> to <ph id="ph2">&lt;xref:System.Threading.Timeout.Infinite?displayProperty=nameWithType&gt;</ph> to indicate that a connection associated with the <ph id="ph3">&lt;xref:System.Net.ServicePoint&gt;</ph> object should never time out.</source>
+          <target state="translated">您可以設定<ph id="ph1">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph>至<ph id="ph2">&lt;xref:System.Threading.Timeout.Infinite?displayProperty=nameWithType&gt;</ph>，表示與相關聯的連接<ph id="ph3">&lt;xref:System.Net.ServicePoint&gt;</ph>物件應該永遠不會逾時。</target>       </trans-unit>
+        <trans-unit id="190" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.MaxIdleTime">
+          <source>The default value of the <ph id="ph1">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph> property is the value of the <ph id="ph2">&lt;xref:System.Net.ServicePointManager.MaxServicePointIdleTime?displayProperty=nameWithType&gt;</ph> property when the <ph id="ph3">&lt;xref:System.Net.ServicePoint&gt;</ph> object is created.</source>
+          <target state="translated">預設值<ph id="ph1">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph>屬性是值<ph id="ph2">&lt;xref:System.Net.ServicePointManager.MaxServicePointIdleTime?displayProperty=nameWithType&gt;</ph>屬性時<ph id="ph3">&lt;xref:System.Net.ServicePoint&gt;</ph>建立物件。</target>       </trans-unit>
+        <trans-unit id="191" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.MaxIdleTime">
+          <source>Subsequent changes to the <ph id="ph1">&lt;xref:System.Net.ServicePointManager.MaxServicePointIdleTime&gt;</ph> property have no effect on existing <ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph> objects.</source>
+          <target state="translated">後續變更<ph id="ph1">&lt;xref:System.Net.ServicePointManager.MaxServicePointIdleTime&gt;</ph>屬性有不會影響現有<ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="192" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.MaxIdleTime">
+          <source>When the <ph id="ph1">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph> for a connection associated with a <ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph> is exceeded, the connection remains open until the application tries to use the connection.</source>
+          <target state="translated">當<ph id="ph1">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph>連接相關聯<ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph>是超過，連接會維持開啟直到應用程式會嘗試使用的連接。</target>       </trans-unit>
+        <trans-unit id="193" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.MaxIdleTime">
+          <source>At that time, the Framework closes the connection and creates a new connection to the remote host.</source>
+          <target state="translated">在這段時間，架構會關閉連接，並建立新的連接至遠端主機。</target>       </trans-unit>
+        <trans-unit id="194" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.MaxIdleTime">
+          <source>The following code example uses the <ph id="ph1">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph> property to set and retrieve the <ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph> idle time.</source>
+          <target state="translated">下列程式碼範例使用<ph id="ph1">&lt;xref:System.Net.ServicePoint.MaxIdleTime&gt;</ph>屬性來設定及擷取<ph id="ph2">&lt;xref:System.Net.ServicePoint&gt;</ph>閒置時間。</target>       </trans-unit>
+        <trans-unit id="195" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.MaxIdleTime">
+          <source><ph id="ph1">&lt;see cref="P:System.Net.ServicePoint.MaxIdleTime" /&gt;</ph> is set to less than <ph id="ph2">&lt;see cref="F:System.Threading.Timeout.Infinite" /&gt;</ph> or greater than <ph id="ph3">&lt;see cref="F:System.Int32.MaxValue" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="P:System.Net.ServicePoint.MaxIdleTime" /&gt;</ph> 被設定為小於 <ph id="ph2">&lt;see cref="F:System.Threading.Timeout.Infinite" /&gt;</ph> 或大於 <ph id="ph3">&lt;see cref="F:System.Int32.MaxValue" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="196" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.ProtocolVersion">
+          <source>Gets the version of the HTTP protocol that the <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object uses.</source>
+          <target state="translated">取得 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件使用的 HTTP 通訊協定版本。</target>       </trans-unit>
+        <trans-unit id="197" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ProtocolVersion">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Version" /&gt;</ph> object that contains the HTTP protocol version that the <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object uses.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Version" /&gt;</ph> 物件，包含 <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件使用的 HTTP 通訊協定版本。</target>       </trans-unit>
+        <trans-unit id="198" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ProtocolVersion">
+          <source>The HTTP protocol versions are HTTP/1.0 and HTTP/1.1.</source>
+          <target state="translated">HTTP 通訊協定版本為 HTTP/1.0 和 HTTP/1.1。</target>       </trans-unit>
+        <trans-unit id="199" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ProtocolVersion">
+          <source>The following code example displays the value of this property.</source>
+          <target state="translated">下列程式碼範例會顯示這個屬性的值。</target>       </trans-unit>
+        <trans-unit id="200" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.ReceiveBufferSize">
+          <source>Gets or sets the size of the receiving buffer for the socket used by this <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph>.</source>
+          <target state="translated">取得或設定這個 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 所使用之通訊端的接收緩衝區大小。</target>       </trans-unit>
+        <trans-unit id="201" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ReceiveBufferSize">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Int32" /&gt;</ph> that contains the size, in bytes, of the receive buffer.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Int32" /&gt;</ph>，包含接收緩衝區的大小，以位元組為單位。</target>       </trans-unit>
+        <trans-unit id="202" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ReceiveBufferSize">
+          <source>The default is 8192.</source>
+          <target state="translated">預設值為 8192。</target>       </trans-unit>
+        <trans-unit id="203" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ReceiveBufferSize">
+          <source>For additional information, see <ph id="ph1">&lt;xref:System.Net.Sockets.Socket.ReceiveBufferSize&gt;</ph>.</source>
+          <target state="translated">如需詳細資訊，請參閱 <ph id="ph1">&lt;xref:System.Net.Sockets.Socket.ReceiveBufferSize&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="204" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.ReceiveBufferSize">
+          <source>The following code example sets the value of this property.</source>
+          <target state="translated">下列程式碼範例會設定這個屬性的值。</target>       </trans-unit>
+        <trans-unit id="205" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.ReceiveBufferSize">
+          <source>The value specified for a set operation is greater than <ph id="ph1">&lt;see cref="F:System.Int32.MaxValue" /&gt;</ph>.</source>
+          <target state="translated">指定給設定作業的值大於 <ph id="ph1">&lt;see cref="F:System.Int32.MaxValue" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="206" translate="yes" xml:space="preserve" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>If set to true, then the TCP keep-alive option on a TCP connection will be enabled using the specified <bpt id="p1">&lt;c&gt;</bpt>keepAliveTime<ept id="p1">&lt;/c&gt;</ept> and <bpt id="p2">&lt;c&gt;</bpt>keepAliveInterval<ept id="p2">&lt;/c&gt;</ept> values.</source>
+          <target state="translated">如果設定為 True，表示會使用指定的 <bpt id="p1">&lt;c&gt;</bpt>keepAliveTime<ept id="p1">&lt;/c&gt;</ept> 和 <bpt id="p2">&lt;c&gt;</bpt>keepAliveInterval<ept id="p2">&lt;/c&gt;</ept> 值啟用 TCP 連線的 TCP 保持連線選項。</target>       </trans-unit>
+        <trans-unit id="207" translate="yes" xml:space="preserve" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>If set to false, then the TCP keep-alive option is disabled and the remaining parameters are ignored.</source>
+          <target state="translated">如果設定為 False，則表示會停用 TCP 保持連線選項，並忽略其餘的參數。</target>       </trans-unit>
+        <trans-unit id="208" translate="yes" xml:space="preserve" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>The default value is false.</source>
+          <target state="translated">預設值為 false。</target>       </trans-unit>
+        <trans-unit id="209" translate="yes" xml:space="preserve" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>Specifies the timeout, in milliseconds, with no activity until the first keep-alive packet is sent.</source>
+          <target state="translated">指定第一個 Keep-Alive 封包傳送之前的無活動逾時 (以毫秒為單位)。</target>       </trans-unit>
+        <trans-unit id="210" translate="yes" xml:space="preserve" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>The value must be greater than 0.</source>
+          <target state="translated">這個值必須大於 0。</target>       </trans-unit>
+        <trans-unit id="211" translate="yes" xml:space="preserve" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>If a value of less than or equal to zero is passed an <ph id="ph1">&lt;see cref="T:System.ArgumentOutOfRangeException" /&gt;</ph> is thrown.</source>
+          <target state="translated">如果傳遞的值小於或等於零，則擲回 <ph id="ph1">&lt;see cref="T:System.ArgumentOutOfRangeException" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="212" translate="yes" xml:space="preserve" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>Specifies the interval, in milliseconds, between when successive keep-alive packets are sent if no acknowledgement is received.</source>
+          <target state="translated">指定若未接收認可，後續 Keep-Alive 封包傳送的間隔 (以毫秒為單位)。</target>       </trans-unit>
+        <trans-unit id="213" translate="yes" xml:space="preserve" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>The value must be greater than 0.</source>
+          <target state="translated">這個值必須大於 0。</target>       </trans-unit>
+        <trans-unit id="214" translate="yes" xml:space="preserve" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>If a value of less than or equal to zero is passed an <ph id="ph1">&lt;see cref="T:System.ArgumentOutOfRangeException" /&gt;</ph> is thrown.</source>
+          <target state="translated">如果傳遞的值小於或等於零，則擲回 <ph id="ph1">&lt;see cref="T:System.ArgumentOutOfRangeException" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="215" translate="yes" xml:space="preserve" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>Enables or disables the keep-alive option on a TCP connection.</source>
+          <target state="translated">啟用或停用 TCP 連線的 Keep-Alive 選項。</target>       </trans-unit>
+        <trans-unit id="216" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>An application can request that a TCP/IP provider enable the use of keep-alive packets on a TCP connection.</source>
+          <target state="translated">應用程式可以要求 TCP/IP 提供者使用的 TCP 連線的 keep-alive 封包。</target>       </trans-unit>
+        <trans-unit id="217" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>The default is that the use of keep-alive packets on a TCP connection is disabled.</source>
+          <target state="translated">預設為使用 TCP 連線的 keep-alive 封包會停用。</target>       </trans-unit>
+        <trans-unit id="218" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>The default settings when a TCP socket is initialized sets the keep-alive timeout to 2 hours and the keep-alive interval to 1 second.</source>
+          <target state="translated">TCP 通訊端時的預設設定初始化 2 小時的設定保持逾時和保持連接間隔為 1 秒。</target>       </trans-unit>
+        <trans-unit id="219" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>The <ph id="ph1">`keepAliveTime`</ph> parameter specifies the timeout, in milliseconds, with no activity until the first keep-alive packet is sent.</source>
+          <target state="translated"><ph id="ph1">`keepAliveTime`</ph>參數指定以毫秒為單位，與第一個 keep-alive 封包傳送之前的無活動逾時。</target>       </trans-unit>
+        <trans-unit id="220" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>The <ph id="ph1">`keepAliveInterval`</ph> parameter specifies the interval, in milliseconds, between when successive keep-alive packets are sent if no acknowledgement is received.</source>
+          <target state="translated"><ph id="ph1">`keepAliveInterval`</ph>參數指定的間隔，以毫秒為單位，介於時如果未收到收條，後續 keep-alive 封包會傳送。</target>       </trans-unit>
+        <trans-unit id="221" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>The number of keep-alive probes cannot be changed and is set to 10.</source>
+          <target state="translated">保持運作的探查數目不能變更，並設為 10。</target>       </trans-unit>
+        <trans-unit id="222" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>If a TCP connection is dropped as the result of keep-alives, a <ph id="ph1">&lt;xref:System.Net.Sockets.SocketError&gt;</ph> of <ph id="ph2">&lt;xref:System.Net.Sockets.SocketError.NetworkReset&gt;</ph> is returned to any calls in progress on the socket, and any subsequent calls will fail with a <ph id="ph3">&lt;xref:System.Net.Sockets.SocketError&gt;</ph> of <ph id="ph4">&lt;xref:System.Net.Sockets.SocketError.NotConnected&gt;</ph>.</source>
+          <target state="translated">如果 TCP 連線中斷時持續作用，因為<ph id="ph1">&lt;xref:System.Net.Sockets.SocketError&gt;</ph>的<ph id="ph2">&lt;xref:System.Net.Sockets.SocketError.NetworkReset&gt;</ph>會傳回到任何呼叫正在進行中通訊端，而且任何後續呼叫都會失敗並<ph id="ph3">&lt;xref:System.Net.Sockets.SocketError&gt;</ph>的<ph id="ph4">&lt;xref:System.Net.Sockets.SocketError.NotConnected&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="223" translate="yes" xml:space="preserve" uid="M:System.Net.ServicePoint.SetTcpKeepAlive(System.Boolean,System.Int32,System.Int32)">
+          <source>The value specified for <ph id="ph1">&lt;paramref name="keepAliveTime" /&gt;</ph> or <ph id="ph2">&lt;paramref name="keepAliveInterval" /&gt;</ph> parameter is less than or equal to 0.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="keepAliveTime" /&gt;</ph> 或 <ph id="ph2">&lt;paramref name="keepAliveInterval" /&gt;</ph> 參數的指定值會小於或等於 0。</target>       </trans-unit>
+        <trans-unit id="224" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.SupportsPipelining">
+          <source>Indicates whether the <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object supports pipelined connections.</source>
+          <target state="translated">指出 <ph id="ph1">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件是否支援以管線連接。</target>       </trans-unit>
+        <trans-unit id="225" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.SupportsPipelining">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object supports pipelined connections; otherwise, <ph id="ph3">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果 <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件支援以管線連接，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>；否則為 <ph id="ph3">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="226" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.SupportsPipelining">
+          <source>Pipelining allows clients to send multiple requests across a persistent connection without waiting for each response from the server.</source>
+          <target state="translated">管線可將用戶端可以透過持續連線傳送多個要求，而不等候來自伺服器的每個回應。</target>       </trans-unit>
+        <trans-unit id="227" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.SupportsPipelining">
+          <source>The server sends the responses in the same order as the requests were received.</source>
+          <target state="translated">如已收到要求，伺服器會傳送回應相同的順序。</target>       </trans-unit>
+        <trans-unit id="228" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.SupportsPipelining">
+          <source>Pipelining is described in detail in IETF RFC 2616 section 8.1.2.2.</source>
+          <target state="translated">IETF RFC 2616 8.1.2.2 節中詳細說明管線。</target>       </trans-unit>
+        <trans-unit id="229" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.SupportsPipelining">
+          <source>The following code example displays the value of this property.</source>
+          <target state="translated">下列程式碼範例會顯示這個屬性的值。</target>       </trans-unit>
+        <trans-unit id="230" translate="yes" xml:space="preserve" uid="P:System.Net.ServicePoint.UseNagleAlgorithm">
+          <source>Gets or sets a <ph id="ph1">&lt;see cref="T:System.Boolean" /&gt;</ph> value that determines whether the Nagle algorithm is used on connections managed by this <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> object.</source>
+          <target state="translated">取得或設定 <ph id="ph1">&lt;see cref="T:System.Boolean" /&gt;</ph> 值，以決定是否在由此 <ph id="ph2">&lt;see cref="T:System.Net.ServicePoint" /&gt;</ph> 物件管理的連接上使用 Nagle 演算法。</target>       </trans-unit>
+        <trans-unit id="231" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.UseNagleAlgorithm">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> to use the Nagle algorithm; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see langword="true" /&gt;</ph> 表示使用 Nagle 演算法；否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="232" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.UseNagleAlgorithm">
+          <source>The default value is <ph id="ph1">&lt;see langword="true" /&gt;</ph>.</source>
+          <target state="translated">預設值是 <ph id="ph1">&lt;see langword="true" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="233" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.UseNagleAlgorithm">
+          <source>The Nagle algorithm is used to buffer small packets of data and transmit them as a single packet.</source>
+          <target state="translated">Nagle 演算法用來緩衝小型資料封包，並以單一封包。</target>       </trans-unit>
+        <trans-unit id="234" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.UseNagleAlgorithm">
+          <source>This process, referred to as "nagling," is widely used because it reduces the number of packets transmitted and lowers the overhead per packet.</source>
+          <target state="translated">此程序，稱為 「 nagling 」 廣泛使用，因為它可以減少傳送的封包數目，並降低每個封包的額外負荷。</target>       </trans-unit>
+        <trans-unit id="235" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.UseNagleAlgorithm">
+          <source>Changing the value of this property does not affect existing connections.</source>
+          <target state="translated">變更這個屬性的值不會影響現有的連接。</target>       </trans-unit>
+        <trans-unit id="236" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.UseNagleAlgorithm">
+          <source>Only new connections created after the change are affected.</source>
+          <target state="translated">只會影響變更之後所建立的新連線。</target>       </trans-unit>
+        <trans-unit id="237" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.UseNagleAlgorithm">
+          <source>The Nagle algorithm is fully described in IETF RFC 896.</source>
+          <target state="translated">IETF RFC 896 的完整說明 Nagle 演算法。</target>       </trans-unit>
+        <trans-unit id="238" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Net.ServicePoint.UseNagleAlgorithm">
+          <source>The following code example displays the value of this property.</source>
+          <target state="translated">下列程式碼範例會顯示這個屬性的值。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

@@ -1,1393 +1,375 @@
-<Type Name="ConcurrentStack&lt;T&gt;" FullName="System.Collections.Concurrent.ConcurrentStack&lt;T&gt;">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="fc28ba389f962213b1756c3fb932c646cd356440" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public class ConcurrentStack&lt;T&gt; : System.Collections.Concurrent.IProducerConsumerCollection&lt;T&gt;, System.Collections.Generic.IEnumerable&lt;T&gt;, System.Collections.Generic.IReadOnlyCollection&lt;T&gt;" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit ConcurrentStack`1&lt;T&gt; extends System.Object implements class System.Collections.Concurrent.IProducerConsumerCollection`1&lt;!T&gt;, class System.Collections.Generic.IEnumerable`1&lt;!T&gt;, class System.Collections.Generic.IReadOnlyCollection`1&lt;!T&gt;, class System.Collections.ICollection, class System.Collections.IEnumerable" />
-  <TypeSignature Language="DocId" Value="T:System.Collections.Concurrent.ConcurrentStack`1" />
-  <TypeSignature Language="VB.NET" Value="Public Class ConcurrentStack(Of T)&#xA;Implements IEnumerable(Of T), IProducerConsumerCollection(Of T), IReadOnlyCollection(Of T)" />
-  <TypeSignature Language="C++ CLI" Value="generic &lt;typename T&gt;&#xA;public ref class ConcurrentStack : System::Collections::Concurrent::IProducerConsumerCollection&lt;T&gt;, System::Collections::Generic::IEnumerable&lt;T&gt;, System::Collections::Generic::IReadOnlyCollection&lt;T&gt;" />
-  <AssemblyInfo>
-    <AssemblyName>System.Collections.Concurrent</AssemblyName>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-    <AssemblyVersion>4.0.10.0</AssemblyVersion>
-    <AssemblyVersion>4.0.14.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>mscorlib</AssemblyName>
-    <AssemblyVersion>2.0.5.0</AssemblyVersion>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>netstandard</AssemblyName>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <TypeParameters>
-    <TypeParameter Name="T" />
-  </TypeParameters>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>System.Collections.Concurrent.IProducerConsumerCollection&lt;T&gt;</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.Collections.Generic.IEnumerable&lt;T&gt;</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.Collections.Generic.IReadOnlyCollection&lt;T&gt;</InterfaceName>
-    </Interface>
-  </Interfaces>
-  <Attributes>
-    <Attribute>
-      <AttributeName>System.Diagnostics.DebuggerDisplay("Count = {Count}")</AttributeName>
-    </Attribute>
-    <Attribute>
-      <AttributeName>System.Diagnostics.DebuggerTypeProxy(typeof(System.Collections.Concurrent.SystemCollectionsConcurrent_ProducerConsumerCollectionDebugView`1))</AttributeName>
-    </Attribute>
-  </Attributes>
-  <Docs>
-    <typeparam name="T">
-      <span data-ttu-id="59d17-101">堆疊中所含項目的類型。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="59d17-101">The type of the elements contained in the stack.</span>
-      </span>
-    </typeparam>
-    <summary>
-      <span data-ttu-id="59d17-102">表示安全執行緒的後進先出 (Last In-First Out，LIFO) 集合。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="59d17-102">Represents a thread-safe last in-first out (LIFO) collection.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
-  
-> [!NOTE]
->  <span data-ttu-id="59d17-103"><xref:System.Collections.Concurrent.ConcurrentStack%601> 實作<xref:System.Collections.Generic.IReadOnlyCollection%601>開頭的介面[!INCLUDE[net_v46](~/includes/net-v46-md.md)]; 在舊版的.NET Framework 中，<xref:System.Collections.Concurrent.ConcurrentStack%601>類別並未實作這個介面。</span><span class="sxs-lookup"><span data-stu-id="59d17-103"><xref:System.Collections.Concurrent.ConcurrentStack%601> implements the <xref:System.Collections.Generic.IReadOnlyCollection%601> interface starting with the [!INCLUDE[net_v46](~/includes/net-v46-md.md)]; in previous versions of the .NET Framework, the <xref:System.Collections.Concurrent.ConcurrentStack%601> class did not implement this interface.</span></span>  
-  
- <span data-ttu-id="59d17-104"><xref:System.Collections.Concurrent.ConcurrentStack%601> 提供幾個主要作業：</span><span class="sxs-lookup"><span data-stu-id="59d17-104"><xref:System.Collections.Concurrent.ConcurrentStack%601> provides a few main operations:</span></span>  
-  
--   <span data-ttu-id="59d17-105"><xref:System.Collections.Concurrent.ConcurrentStack%601.Push%2A> 插入的項目頂端<xref:System.Collections.Concurrent.ConcurrentStack%601>。</span><span class="sxs-lookup"><span data-stu-id="59d17-105"><xref:System.Collections.Concurrent.ConcurrentStack%601.Push%2A> inserts an element at the top of the <xref:System.Collections.Concurrent.ConcurrentStack%601>.</span></span>  
-  
--   <span data-ttu-id="59d17-106"><xref:System.Collections.Concurrent.ConcurrentStack%601.TryPop%2A> 從頂端移除項目<xref:System.Collections.Concurrent.ConcurrentStack%601>，或傳回`false`如果無法移除項目。</span><span class="sxs-lookup"><span data-stu-id="59d17-106"><xref:System.Collections.Concurrent.ConcurrentStack%601.TryPop%2A> removes an element from the top of the <xref:System.Collections.Concurrent.ConcurrentStack%601>, or returns `false` if the item cannot be removed.</span></span>  
-  
--   <span data-ttu-id="59d17-107"><xref:System.Collections.Concurrent.ConcurrentStack%601.TryPeek%2A> 傳回的項目頂端，<xref:System.Collections.Concurrent.ConcurrentStack%601>但不會移除從<xref:System.Collections.Concurrent.ConcurrentStack%601>。</span><span class="sxs-lookup"><span data-stu-id="59d17-107"><xref:System.Collections.Concurrent.ConcurrentStack%601.TryPeek%2A> returns an element that is at the top of the <xref:System.Collections.Concurrent.ConcurrentStack%601> but does not remove it from the <xref:System.Collections.Concurrent.ConcurrentStack%601>.</span></span>  
-  
--   <span data-ttu-id="59d17-108"><xref:System.Collections.Concurrent.ConcurrentStack%601.TryPopRange%2A>和<xref:System.Collections.Concurrent.ConcurrentStack%601.PushRange%2A>方法會提供有效率的推送和多個項目在單一作業中移除。</span><span class="sxs-lookup"><span data-stu-id="59d17-108">The <xref:System.Collections.Concurrent.ConcurrentStack%601.TryPopRange%2A> and <xref:System.Collections.Concurrent.ConcurrentStack%601.PushRange%2A> methods provide efficient pushing and popping of multiple elements in a single operation.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="59d17-109">下列範例示範如何使用<xref:System.Collections.Concurrent.ConcurrentStack%601>推入和彈出個別項目：</span><span class="sxs-lookup"><span data-stu-id="59d17-109">The following example shows how to use a <xref:System.Collections.Concurrent.ConcurrentStack%601> to push and pop individual items:</span></span>  
-  
- [!code-csharp[System.Collections.Concurrent.ConcurrentStack#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.collections.concurrent.concurrentstack/cs/concstack.cs#2)]
- [!code-vb[System.Collections.Concurrent.ConcurrentStack#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.collections.concurrent.concurrentstack/vb/concstack.vb#2)]  
-  
- <span data-ttu-id="59d17-110">下列範例示範如何使用<xref:System.Collections.Concurrent.ConcurrentStack%601>推入和彈出範圍的項目：</span><span class="sxs-lookup"><span data-stu-id="59d17-110">The following example shows how to use a <xref:System.Collections.Concurrent.ConcurrentStack%601> to push and pop ranges of items:</span></span>  
-  
- [!code-csharp[System.Collections.Concurrent.ConcurrentStack#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.collections.concurrent.concurrentstack/cs/concstack.cs#1)]
- [!code-vb[System.Collections.Concurrent.ConcurrentStack#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.collections.concurrent.concurrentstack/vb/concstack.vb#1)]  
-  
- ]]></format>
-    </remarks>
-    <threadsafe>
-      <span data-ttu-id="59d17-111">所有的 public 和 protected 成員的<see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />是安全執行緒，且可能會從多個執行緒同時使用。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="59d17-111">All public and protected members of <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> are thread-safe and may be used concurrently from multiple threads.</span>
-      </span>
-    </threadsafe>
-  </Docs>
-  <Members>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ConcurrentStack ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.#ctor" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; ConcurrentStack();" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="59d17-112">初始化 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-112">Initializes a new instance of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> class.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ConcurrentStack (System.Collections.Generic.IEnumerable&lt;T&gt; collection);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Collections.Generic.IEnumerable`1&lt;!T&gt; collection) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.#ctor(System.Collections.Generic.IEnumerable{`0})" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (collection As IEnumerable(Of T))" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; ConcurrentStack(System::Collections::Generic::IEnumerable&lt;T&gt; ^ collection);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="collection" Type="System.Collections.Generic.IEnumerable&lt;T&gt;" />
-      </Parameters>
-      <Docs>
-        <param name="collection">
-          <span data-ttu-id="59d17-113">集合，要將其項目複製至新的 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-113">The collection whose elements are copied to the new <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="59d17-114">初始化 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 類別的新執行個體，這個類別包含自指定之集合複製過來的項目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-114">Initializes a new instance of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> class that contains elements copied from the specified collection</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="59d17-115">
-            <paramref name="collection" /> 引數為 null。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-115">The <paramref name="collection" /> argument is null.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="Clear">
-      <MemberSignature Language="C#" Value="public void Clear ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Clear() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.Clear" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Clear ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Clear();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="59d17-116">從 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 移除所有物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-116">Removes all objects from the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CopyTo">
-      <MemberSignature Language="C#" Value="public void CopyTo (T[] array, int index);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void CopyTo(!T[] array, int32 index) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.CopyTo(`0[],System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub CopyTo (array As T(), index As Integer)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void CopyTo(cli::array &lt;T&gt; ^ array, int index);" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.Concurrent.IProducerConsumerCollection`1.CopyTo(`0[],System.Int32)</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="array" Type="T[]" />
-        <Parameter Name="index" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="array">
-          <span data-ttu-id="59d17-117">一維 <see cref="T:System.Array" />，這個項目是從 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 複製之項目的目的端。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-117">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-          <span data-ttu-id="59d17-118">
-            <see cref="T:System.Array" /> 必須有以零為起始的索引。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-118">The <see cref="T:System.Array" /> must have zero-based indexing.</span>
-          </span>
-        </param>
-        <param name="index">
-          <span data-ttu-id="59d17-119">
-            <c>array</c> 中以零起始的索引，複製作業從此處開始。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-119">The zero-based index in <c>array</c> at which copying begins.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="59d17-120">從指定的陣列索引處開始，複製 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 項目至現有一維 <see cref="T:System.Array" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-120">Copies the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> elements to an existing one-dimensional <see cref="T:System.Array" />, starting at the specified array index.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="59d17-121">
-            <paramref name="array" /> 是 null 參考 (在 Visual Basic 中為 Nothing)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-121">
-              <paramref name="array" /> is a null reference (Nothing in Visual Basic).</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">
-          <span data-ttu-id="59d17-122">
-            <paramref name="index" /> 小於零。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-122">
-              <paramref name="index" /> is less than zero.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentException">
-          <span data-ttu-id="59d17-123">
-            <paramref name="index" /> 等於或大於 <paramref name="array" /> 的長度，或來源 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 中的項目個數超過從 <paramref name="index" /> 到目的 <paramref name="array" /> 末尾的可用空間。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-123">
-              <paramref name="index" /> is equal to or greater than the length of the <paramref name="array" /> -or- The number of elements in the source <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> is greater than the available space from <paramref name="index" /> to the end of the destination <paramref name="array" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="Count">
-      <MemberSignature Language="C#" Value="public int Count { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 Count" />
-      <MemberSignature Language="DocId" Value="P:System.Collections.Concurrent.ConcurrentStack`1.Count" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Count As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int Count { int get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Collections.Generic.IReadOnlyCollection`1.Count</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="59d17-124">取得 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 中所包含的項目數。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-124">Gets the number of elements contained in the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="59d17-125">
-            <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 中所包含的項目數。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-125">The number of elements contained in the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="59d17-126">判斷集合是否包含任何項目，使用<xref:System.Collections.Concurrent.ConcurrentStack%601.IsEmpty%2A>建議屬性而不是擷取的項目從<xref:System.Collections.Concurrent.ConcurrentStack%601.Count%2A>屬性和比較為 0。</span><span class="sxs-lookup"><span data-stu-id="59d17-126">For determining whether the collection contains any items, use of the <xref:System.Collections.Concurrent.ConcurrentStack%601.IsEmpty%2A> property is recommended rather than retrieving the number of items from the <xref:System.Collections.Concurrent.ConcurrentStack%601.Count%2A> property and comparing it to 0.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetEnumerator">
-      <MemberSignature Language="C#" Value="public System.Collections.Generic.IEnumerator&lt;T&gt; GetEnumerator ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Collections.Generic.IEnumerator`1&lt;!T&gt; GetEnumerator() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.GetEnumerator" />
-      <MemberSignature Language="VB.NET" Value="Public Function GetEnumerator () As IEnumerator(Of T)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Collections::Generic::IEnumerator&lt;T&gt; ^ GetEnumerator();" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.Generic.IEnumerable`1.GetEnumerator</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.Generic.IEnumerator&lt;T&gt;</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="59d17-127">傳回在 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 中逐一查看的列舉值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-127">Returns an enumerator that iterates through the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="59d17-128">
-            <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 的列舉程式。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-128">An enumerator for the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="59d17-129">列舉，代表目前時間的快照集的堆疊內容。</span><span class="sxs-lookup"><span data-stu-id="59d17-129">The enumeration represents a moment-in-time snapshot of the contents of the stack.</span></span> <span data-ttu-id="59d17-130">它並不會反映任何更新之後集合<xref:System.Collections.Concurrent.ConcurrentStack%601.GetEnumerator%2A>呼叫。</span><span class="sxs-lookup"><span data-stu-id="59d17-130">It does not reflect any updates to the collection after <xref:System.Collections.Concurrent.ConcurrentStack%601.GetEnumerator%2A> was called.</span></span> <span data-ttu-id="59d17-131">列舉值會安全地使用並行的讀取次數，並寫入堆疊。</span><span class="sxs-lookup"><span data-stu-id="59d17-131">The enumerator is safe to use concurrently with reads from and writes to the stack.</span></span> <span data-ttu-id="59d17-132">列舉值傳回 LIFO （後進、 先進先出） 順序中的項目。</span><span class="sxs-lookup"><span data-stu-id="59d17-132">The enumerator returns items in LIFO (last-in, first-out) order.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IsEmpty">
-      <MemberSignature Language="C#" Value="public bool IsEmpty { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool IsEmpty" />
-      <MemberSignature Language="DocId" Value="P:System.Collections.Concurrent.ConcurrentStack`1.IsEmpty" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsEmpty As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsEmpty { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="59d17-133">取得值，這個值指出 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 是否是空的。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-133">Gets a value that indicates whether the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> is empty.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="59d17-134">如果 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 是空的則為 true，否則為 false。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-134">true if the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> is empty; otherwise, false.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="59d17-135">判斷集合是否包含任何項目，建議使用這個屬性，而不是擷取的項目從<xref:System.Collections.Concurrent.ConcurrentStack%601.Count%2A>屬性和比較為 0。</span><span class="sxs-lookup"><span data-stu-id="59d17-135">For determining whether the collection contains any items, use of this property is recommended rather than retrieving the number of items from the <xref:System.Collections.Concurrent.ConcurrentStack%601.Count%2A> property and comparing it to 0.</span></span> <span data-ttu-id="59d17-136">不過，這個集合要並行存取，因為可能的情況，另一個執行緒將修改後的集合<xref:System.Collections.Concurrent.ConcurrentStack%601.IsEmpty%2A>傳回，因此使得結果無效。</span><span class="sxs-lookup"><span data-stu-id="59d17-136">However, as this collection is intended to be accessed concurrently, it may be the case that another thread will modify the collection after <xref:System.Collections.Concurrent.ConcurrentStack%601.IsEmpty%2A> returns, thus invalidating the result.</span></span>  
-  
- <span data-ttu-id="59d17-137">如需程式碼範例，請參閱<xref:System.Collections.Concurrent.ConcurrentStack%601>。</span><span class="sxs-lookup"><span data-stu-id="59d17-137">For a code example, see <xref:System.Collections.Concurrent.ConcurrentStack%601>.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Push">
-      <MemberSignature Language="C#" Value="public void Push (T item);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Push(!T item) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.Push(`0)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Push (item As T)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Push(T item);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="item" Type="T" />
-      </Parameters>
-      <Docs>
-        <param name="item">
-          <span data-ttu-id="59d17-138">要推送至 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-138">The object to push onto the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-          <span data-ttu-id="59d17-139">值可以是參考類型的 null 參考 (在 Visual Basic 中為 Nothing)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-139">The value can be a null reference (Nothing in Visual Basic) for reference types.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="59d17-140">將物件插入 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 的頂端。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-140">Inserts an object at the top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <MemberGroup MemberName="PushRange">
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <remarks />
-      </Docs>
-    </MemberGroup>
-    <Member MemberName="PushRange">
-      <MemberSignature Language="C#" Value="public void PushRange (T[] items);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void PushRange(!T[] items) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[])" />
-      <MemberSignature Language="VB.NET" Value="Public Sub PushRange (items As T())" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void PushRange(cli::array &lt;T&gt; ^ items);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="items" Type="T[]" />
-      </Parameters>
-      <Docs>
-        <param name="items">
-          <span data-ttu-id="59d17-141">要推送至 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-141">The objects to push onto the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="59d17-142">將多個物件以不可分割方式插入 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 的頂端。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-142">Inserts multiple objects at the top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> atomically.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="59d17-143">將多個項目加入至堆疊中，使用 PushRange 是更有效率的機制，比使用<xref:System.Collections.Concurrent.ConcurrentStack%601.Push%2A>一次的一個項目。</span><span class="sxs-lookup"><span data-stu-id="59d17-143">When adding multiple items to the stack, using PushRange is a more efficient mechanism than using <xref:System.Collections.Concurrent.ConcurrentStack%601.Push%2A> one item at a time.</span></span> <span data-ttu-id="59d17-144">此外，PushRange 可保證，所有項目將會加入以不可分割方式，這表示沒有其他執行緒都能夠插入被推入的項目之間的項目。</span><span class="sxs-lookup"><span data-stu-id="59d17-144">Additionally, PushRange guarantees that all of the elements will be added atomically, meaning that no other threads will be able to inject elements between the elements being pushed.</span></span> <span data-ttu-id="59d17-145">在較低的索引中的項目`items`較高的索引處的項目之前，就會推送陣列。</span><span class="sxs-lookup"><span data-stu-id="59d17-145">Items at lower indices in the `items` array will be pushed before items at higher indices.</span></span>  
-  
- <span data-ttu-id="59d17-146">如需程式碼範例，請參閱<xref:System.Collections.Concurrent.ConcurrentStack%601>。</span><span class="sxs-lookup"><span data-stu-id="59d17-146">For a code example, see <xref:System.Collections.Concurrent.ConcurrentStack%601>.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="59d17-147">
-            <paramref name="items" /> 是 null 參考 (在 Visual Basic 中為 Nothing)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-147">
-              <paramref name="items" /> is a null reference (Nothing in Visual Basic).</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="PushRange">
-      <MemberSignature Language="C#" Value="public void PushRange (T[] items, int startIndex, int count);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void PushRange(!T[] items, int32 startIndex, int32 count) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[],System.Int32,System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub PushRange (items As T(), startIndex As Integer, count As Integer)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void PushRange(cli::array &lt;T&gt; ^ items, int startIndex, int count);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="items" Type="T[]" />
-        <Parameter Name="startIndex" Type="System.Int32" />
-        <Parameter Name="count" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="items">
-          <span data-ttu-id="59d17-148">要推送至 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-148">The objects to push onto the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-        </param>
-        <param name="startIndex">
-          <span data-ttu-id="59d17-149">「項目」<c></c>中以零為起始的位移，此處為開始將項目插入 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 頂端的位置。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-149">The zero-based offset in <c>items</c> at which to begin inserting elements onto the top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-        </param>
-        <param name="count">
-          <span data-ttu-id="59d17-150">要插入 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 頂端的項目數目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-150">The number of elements to be inserted onto the top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="59d17-151">將多個物件以不可分割方式插入 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 的頂端。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-151">Inserts multiple objects at the top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> atomically.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="59d17-152">將多個項目加入至堆疊中，使用 PushRange 是更有效率的機制，比使用<xref:System.Collections.Concurrent.ConcurrentStack%601.Push%2A>一次的一個項目。</span><span class="sxs-lookup"><span data-stu-id="59d17-152">When adding multiple items to the stack, using PushRange is a more efficient mechanism than using <xref:System.Collections.Concurrent.ConcurrentStack%601.Push%2A> one item at a time.</span></span> <span data-ttu-id="59d17-153">此外，PushRange 可保證，所有項目將會加入以不可分割方式，這表示沒有其他執行緒都能夠插入被推入的項目之間的項目。</span><span class="sxs-lookup"><span data-stu-id="59d17-153">Additionally, PushRange guarantees that all of the elements will be added atomically, meaning that no other threads will be able to inject elements between the elements being pushed.</span></span> <span data-ttu-id="59d17-154">在較低的索引中的項目`items`較高的索引處的項目之前，就會推送陣列。</span><span class="sxs-lookup"><span data-stu-id="59d17-154">Items at lower indices in the `items` array will be pushed before items at higher indices.</span></span>  
-  
- <span data-ttu-id="59d17-155">如需程式碼範例，請參閱<xref:System.Collections.Concurrent.ConcurrentStack%601>。</span><span class="sxs-lookup"><span data-stu-id="59d17-155">For a code example, see <xref:System.Collections.Concurrent.ConcurrentStack%601>.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="59d17-156">
-            <paramref name="items" /> 是 null 參考 (在 Visual Basic 中為 Nothing)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-156">
-              <paramref name="items" /> is a null reference (Nothing in Visual Basic).</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">
-          <span data-ttu-id="59d17-157">
-            <paramref name="startIndex" /> 或 <paramref name="count" /> 為負。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-157">
-              <paramref name="startIndex" /> or <paramref name="count" /> is negative.</span>
-          </span>
-          <span data-ttu-id="59d17-158">或 <paramref name="startIndex" /> 大於或等於 <paramref name="items" /> 的長度。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-158">Or <paramref name="startIndex" /> is greater than or equal to the length of <paramref name="items" />.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentException">
-          <span data-ttu-id="59d17-159">
-            <paramref name="startIndex" /> + <paramref name="count" /> 大於 <paramref name="items" /> 的長度。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-159">
-              <paramref name="startIndex" /> + <paramref name="count" /> is greater than the length of <paramref name="items" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.Concurrent.IProducerConsumerCollection&lt;T&gt;.TryAdd">
-      <MemberSignature Language="C#" Value="bool IProducerConsumerCollection&lt;T&gt;.TryAdd (T item);" />
-      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance bool System.Collections.Concurrent.IProducerConsumerCollection&lt;T&gt;.TryAdd(!T item) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#Concurrent#IProducerConsumerCollection&lt;T&gt;#TryAdd(`0)" />
-      <MemberSignature Language="VB.NET" Value="Function TryAdd (item As T) As Boolean Implements IProducerConsumerCollection(Of T).TryAdd" />
-      <MemberSignature Language="C++ CLI" Value=" virtual bool System.Collections.Concurrent.IProducerConsumerCollection&lt;T&gt;.TryAdd(T item) = System::Collections::Concurrent::IProducerConsumerCollection&lt;T&gt;::TryAdd;" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.Concurrent.IProducerConsumerCollection`1.TryAdd(`0)</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="item" Type="T" />
-      </Parameters>
-      <Docs>
-        <param name="item">
-          <span data-ttu-id="59d17-160">要加入至 <see cref="T:System.Collections.Concurrent.IProducerConsumerCollection`1" /> 的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-160">The object to add to the <see cref="T:System.Collections.Concurrent.IProducerConsumerCollection`1" />.</span>
-          </span>
-          <span data-ttu-id="59d17-161">值可以是參考類型的 null 參考 (在 Visual Basic 中為 Nothing)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-161">The value can be a null reference (Nothing in Visual Basic) for reference types.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="59d17-162">嘗試將物件加入至 <see cref="T:System.Collections.Concurrent.IProducerConsumerCollection`1" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-162">Attempts to add an object to the <see cref="T:System.Collections.Concurrent.IProducerConsumerCollection`1" />.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="59d17-163">如果物件加入成功則為 true，否則為 false。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-163">true if the object was added successfully; otherwise, false.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="59d17-164">如<xref:System.Collections.Concurrent.ConcurrentStack%601>，這項作業一定會插入頂端的物件<xref:System.Collections.Concurrent.ConcurrentStack%601>並傳回 true。</span><span class="sxs-lookup"><span data-stu-id="59d17-164">For <xref:System.Collections.Concurrent.ConcurrentStack%601>, this operation will always insert the object onto the top of the <xref:System.Collections.Concurrent.ConcurrentStack%601> and return true.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.Concurrent.IProducerConsumerCollection&lt;T&gt;.TryTake">
-      <MemberSignature Language="C#" Value="bool IProducerConsumerCollection&lt;T&gt;.TryTake (out T item);" />
-      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance bool System.Collections.Concurrent.IProducerConsumerCollection&lt;T&gt;.TryTake([out] !T&amp; item) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#Concurrent#IProducerConsumerCollection&lt;T&gt;#TryTake(`0@)" />
-      <MemberSignature Language="VB.NET" Value="Function TryTake (ByRef item As T) As Boolean Implements IProducerConsumerCollection(Of T).TryTake" />
-      <MemberSignature Language="C++ CLI" Value=" virtual bool System.Collections.Concurrent.IProducerConsumerCollection&lt;T&gt;.TryTake([Runtime::InteropServices::Out] T % item) = System::Collections::Concurrent::IProducerConsumerCollection&lt;T&gt;::TryTake;" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.Concurrent.IProducerConsumerCollection`1.TryTake(`0@)</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="item" Type="T&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <param name="item">
-          <span data-ttu-id="59d17-165">如果這個方法會傳回且作業成功，則「項目」<c></c>會包含移除的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-165">When this method returns, if the operation was successful, <c>item</c> contains the object removed.</span>
-          </span>
-          <span data-ttu-id="59d17-166">如果沒有可移除的物件，值會是 unspecified。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-166">If no object was available to be removed, the value is unspecified.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="59d17-167">嘗試從 <see cref="T:System.Collections.Concurrent.IProducerConsumerCollection`1" /> 中移除及傳回物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-167">Attempts to remove and return an object from the <see cref="T:System.Collections.Concurrent.IProducerConsumerCollection`1" />.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="59d17-168">如果項目成功移除及傳回則為 true，否則為 false。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-168">true if an element was removed and returned succesfully; otherwise, false.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="59d17-169">如<xref:System.Collections.Concurrent.ConcurrentStack%601>，這項作業將會嘗試在頂端顯示物件<xref:System.Collections.Concurrent.ConcurrentStack%601>。</span><span class="sxs-lookup"><span data-stu-id="59d17-169">For <xref:System.Collections.Concurrent.ConcurrentStack%601>, this operation will attempt to pop the object at the top of the <xref:System.Collections.Concurrent.ConcurrentStack%601>.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.ICollection.CopyTo">
-      <MemberSignature Language="C#" Value="void ICollection.CopyTo (Array array, int index);" />
-      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.Collections.ICollection.CopyTo(class System.Array array, int32 index) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#CopyTo(System.Array,System.Int32)" />
-      <MemberSignature Language="C++ CLI" Value=" virtual void System.Collections.ICollection.CopyTo(Array ^ array, int index) = System::Collections::ICollection::CopyTo;" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.ICollection.CopyTo(System.Array,System.Int32)</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="array" Type="System.Array" />
-        <Parameter Name="index" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="array">
-          <span data-ttu-id="59d17-170">一維 <see cref="T:System.Array" />，這個項目是從 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 複製之項目的目的端。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-170">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-          <span data-ttu-id="59d17-171">
-            <see cref="T:System.Array" /> 必須有以零為起始的索引。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-171">The <see cref="T:System.Array" /> must have zero-based indexing.</span>
-          </span>
-        </param>
-        <param name="index">
-          <span data-ttu-id="59d17-172">
-            <c>array</c> 中以零起始的索引，複製作業從此處開始。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-172">The zero-based index in <c>array</c> at which copying begins.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="59d17-173">從特定的 <see cref="T:System.Collections.ICollection" /> 索引開始，將 <see cref="T:System.Array" /> 的項目複製至 <see cref="T:System.Array" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-173">Copies the elements of the <see cref="T:System.Collections.ICollection" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="59d17-174">
-            <paramref name="array" /> 是 null 參考 (在 Visual Basic 中為 Nothing)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-174">
-              <paramref name="array" /> is a null reference (Nothing in Visual Basic).</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">
-          <span data-ttu-id="59d17-175">
-            <paramref name="index" /> 小於零。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-175">
-              <paramref name="index" /> is less than zero.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentException">
-          <span data-ttu-id="59d17-176">
-            <paramref name="array" /> 是多維的。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-176">
-              <paramref name="array" /> is multidimensional.</span>
-          </span>
-          <span data-ttu-id="59d17-177">或 <paramref name="array" /> 沒有以零起始的索引。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-177">-or- <paramref name="array" /> does not have zero-based indexing.</span>
-          </span>
-          <span data-ttu-id="59d17-178">或 <paramref name="index" /> 是等於或大於 <paramref name="array" /> 的長度，或者來源 <see cref="T:System.Collections.ICollection" /> 中的項目數大於從 <paramref name="index" /> 到目的地 <paramref name="array" /> 結尾的可用空間。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-178">-or- <paramref name="index" /> is equal to or greater than the length of the <paramref name="array" /> -or- The number of elements in the source <see cref="T:System.Collections.ICollection" /> is greater than the available space from <paramref name="index" /> to the end of the destination <paramref name="array" />.</span>
-          </span>
-          <span data-ttu-id="59d17-179">或來源 <see cref="T:System.Collections.ICollection" /> 的型別無法自動轉換為目的 <paramref name="array" /> 的型別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-179">-or- The type of the source <see cref="T:System.Collections.ICollection" /> cannot be cast automatically to the type of the destination <paramref name="array" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.ICollection.IsSynchronized">
-      <MemberSignature Language="C#" Value="bool System.Collections.ICollection.IsSynchronized { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool System.Collections.ICollection.IsSynchronized" />
-      <MemberSignature Language="DocId" Value="P:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#IsSynchronized" />
-      <MemberSignature Language="VB.NET" Value=" ReadOnly Property IsSynchronized As Boolean Implements ICollection.IsSynchronized" />
-      <MemberSignature Language="C++ CLI" Value="property bool System.Collections.ICollection.IsSynchronized { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Collections.ICollection.IsSynchronized</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="59d17-180">取得值，這個值表示對 <see cref="T:System.Collections.ICollection" /> 的存取是否已經與 SyncRoot 同步。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-180">Gets a value indicating whether access to the <see cref="T:System.Collections.ICollection" /> is synchronized with the SyncRoot.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="59d17-181">如果對 <see cref="T:System.Collections.ICollection" /> 的存取與 SyncRoot 同步則為 true，否則為 false。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-181">true if access to the <see cref="T:System.Collections.ICollection" /> is synchronized with the SyncRoot; otherwise, false.</span>
-          </span>
-          <span data-ttu-id="59d17-182">對於 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />，這個屬性永遠傳回 false。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-182">For <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />, this property always returns false.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.ICollection.SyncRoot">
-      <MemberSignature Language="C#" Value="object System.Collections.ICollection.SyncRoot { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance object System.Collections.ICollection.SyncRoot" />
-      <MemberSignature Language="DocId" Value="P:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#SyncRoot" />
-      <MemberSignature Language="VB.NET" Value=" ReadOnly Property SyncRoot As Object Implements ICollection.SyncRoot" />
-      <MemberSignature Language="C++ CLI" Value="property System::Object ^ System.Collections.ICollection.SyncRoot { System::Object ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Collections.ICollection.SyncRoot</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="59d17-183">取得可用以同步存取 <see cref="T:System.Collections.ICollection" /> 的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-183">Gets an object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection" />.</span>
-          </span>
-          <span data-ttu-id="59d17-184">不支援這個屬性。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-184">This property is not supported.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="59d17-185">傳回 null (在 Visual Basic 中為 Nothing)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-185">Returns null (Nothing in Visual Basic).</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.NotSupportedException">
-          <span data-ttu-id="59d17-186">不支援 SyncRoot 屬性</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-186">The SyncRoot property is not supported</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.IEnumerable.GetEnumerator">
-      <MemberSignature Language="C#" Value="System.Collections.IEnumerator IEnumerable.GetEnumerator ();" />
-      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance class System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#IEnumerable#GetEnumerator" />
-      <MemberSignature Language="VB.NET" Value="Function GetEnumerator () As IEnumerator Implements IEnumerable.GetEnumerator" />
-      <MemberSignature Language="C++ CLI" Value=" virtual System::Collections::IEnumerator ^ System.Collections.IEnumerable.GetEnumerator() = System::Collections::IEnumerable::GetEnumerator;" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.IEnumerable.GetEnumerator</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.IEnumerator</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="59d17-187">傳回逐一查看集合的列舉值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-187">Returns an enumerator that iterates through a collection.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="59d17-188">
-            <see cref="T:System.Collections.IEnumerator" />，可用於逐一查看集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-188">An <see cref="T:System.Collections.IEnumerator" /> that can be used to iterate through the collection.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="59d17-189">列舉，代表目前時間的快照集的堆疊內容。</span><span class="sxs-lookup"><span data-stu-id="59d17-189">The enumeration represents a moment-in-time snapshot of the contents of the stack.</span></span> <span data-ttu-id="59d17-190">它並不會反映任何更新之後集合<xref:System.Collections.Concurrent.ConcurrentStack%601.GetEnumerator%2A>呼叫。</span><span class="sxs-lookup"><span data-stu-id="59d17-190">It does not reflect any updates to the collection after <xref:System.Collections.Concurrent.ConcurrentStack%601.GetEnumerator%2A> was called.</span></span> <span data-ttu-id="59d17-191">列舉值會安全地使用並行的讀取次數，並寫入堆疊。</span><span class="sxs-lookup"><span data-stu-id="59d17-191">The enumerator is safe to use concurrently with reads from and writes to the stack.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ToArray">
-      <MemberSignature Language="C#" Value="public T[] ToArray ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance !T[] ToArray() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.ToArray" />
-      <MemberSignature Language="VB.NET" Value="Public Function ToArray () As T()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual cli::array &lt;T&gt; ^ ToArray();" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.Concurrent.IProducerConsumerCollection`1.ToArray</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>T[]</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="59d17-192">將存放在 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 中的項目複製到新的陣列。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-192">Copies the items stored in the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> to a new array.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="59d17-193">新的陣列，其中包含從 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 複製之項目的快照。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-193">A new array containing a snapshot of elements copied from the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-        </returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TryPeek">
-      <MemberSignature Language="C#" Value="public bool TryPeek (out T result);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool TryPeek([out] !T&amp; result) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.TryPeek(`0@)" />
-      <MemberSignature Language="VB.NET" Value="Public Function TryPeek (ByRef result As T) As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool TryPeek([Runtime::InteropServices::Out] T % result);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="result" Type="T&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <param name="result">
-          <span data-ttu-id="59d17-194">當這個方法傳回時，<c>result</c> 會包含來自 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 頂端的物件，如果作業失敗則傳回未指定的值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-194">When this method returns, <c>result</c> contains an object from the top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> or an unspecified value if the operation failed.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="59d17-195">嘗試從 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 頂端位置傳回物件，但不將它移除。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-195">Attempts to return an object from the top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> without removing it.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="59d17-196">如果成功傳回物件則為 true，否則為 false。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-196">true if and object was returned successfully; otherwise, false.</span>
-          </span>
-        </returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="TryPop">
-      <MemberSignature Language="C#" Value="public bool TryPop (out T result);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool TryPop([out] !T&amp; result) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.TryPop(`0@)" />
-      <MemberSignature Language="VB.NET" Value="Public Function TryPop (ByRef result As T) As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool TryPop([Runtime::InteropServices::Out] T % result);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="result" Type="T&amp;" RefType="out" />
-      </Parameters>
-      <Docs>
-        <param name="result">
-          <span data-ttu-id="59d17-197">如果這個方法會傳回且作業成功，則「項目」<c></c> 會包含移除的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-197">When this method returns, if the operation was successful, <c>result</c> contains the object removed.</span>
-          </span>
-          <span data-ttu-id="59d17-198">如果沒有可移除的物件，值會是 unspecified。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-198">If no object was available to be removed, the value is unspecified.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="59d17-199">嘗試快顯並傳回位在 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 頂端位置的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-199">Attempts to pop and return the object at the top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="59d17-200">如果成功地從 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 頂端位置移除及傳回項目則為 true，否則為 false。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-200">true if an element was removed and returned from the top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> successfully; otherwise, false.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="59d17-201">如需程式碼範例，請參閱<xref:System.Collections.Concurrent.ConcurrentStack%601>。</span><span class="sxs-lookup"><span data-stu-id="59d17-201">For a code example, see <xref:System.Collections.Concurrent.ConcurrentStack%601>.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <MemberGroup MemberName="TryPopRange">
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <remarks />
-      </Docs>
-    </MemberGroup>
-    <Member MemberName="TryPopRange">
-      <MemberSignature Language="C#" Value="public int TryPopRange (T[] items);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 TryPopRange(!T[] items) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[])" />
-      <MemberSignature Language="VB.NET" Value="Public Function TryPopRange (items As T()) As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; int TryPopRange(cli::array &lt;T&gt; ^ items);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="items" Type="T[]" />
-      </Parameters>
-      <Docs>
-        <param name="items">
-          <span data-ttu-id="59d17-202">
-            <see cref="T:System.Array" />，將在其中加入從 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 頂端位置快顯的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-202">The <see cref="T:System.Array" /> to which objects popped from the top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> will be added.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="59d17-203">嘗試從 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 頂端以不可分割方式快顯並傳回多個物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-203">Attempts to pop and return multiple objects from the top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> atomically.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="59d17-204">從 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 頂端位置快顯，並且插入 <paramref name="items" /> 中的物件數目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-204">The number of objects successfully popped from the top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> and inserted in <paramref name="items" />.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="59d17-205">請取出多個項目，如果是在堆疊上的小爭用，當使用`TryPopRange`可以更有效率使用<xref:System.Collections.Concurrent.ConcurrentStack%601.TryPop%2A>一次，每個要移除的項目。</span><span class="sxs-lookup"><span data-stu-id="59d17-205">When popping multiple items, if there is little contention on the stack, using `TryPopRange` can be more efficient than using <xref:System.Collections.Concurrent.ConcurrentStack%601.TryPop%2A> once per item to be removed.</span></span> <span data-ttu-id="59d17-206">節點填滿`items`即可推出 startIndex，推出在 startIndex + 1，依此類推的第二個項目在第一個項目的陣列。</span><span class="sxs-lookup"><span data-stu-id="59d17-206">Nodes fill the `items` array with the first item to be popped at the startIndex, the second item to be popped at startIndex + 1, and so on.</span></span>  
-  
- <span data-ttu-id="59d17-207">如需程式碼範例，請參閱<xref:System.Collections.Concurrent.ConcurrentStack%601>。</span><span class="sxs-lookup"><span data-stu-id="59d17-207">For a code example, see <xref:System.Collections.Concurrent.ConcurrentStack%601>.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="59d17-208">
-            <paramref name="items" /> 是 null 引數 (在 Visual Basic 中為 Nothing)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-208">
-              <paramref name="items" /> is a null argument (Nothing in Visual Basic).</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="TryPopRange">
-      <MemberSignature Language="C#" Value="public int TryPopRange (T[] items, int startIndex, int count);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 TryPopRange(!T[] items, int32 startIndex, int32 count) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[],System.Int32,System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Public Function TryPopRange (items As T(), startIndex As Integer, count As Integer) As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; int TryPopRange(cli::array &lt;T&gt; ^ items, int startIndex, int count);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Collections.Concurrent</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.0.14.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="items" Type="T[]" />
-        <Parameter Name="startIndex" Type="System.Int32" />
-        <Parameter Name="count" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="items">
-          <span data-ttu-id="59d17-209">
-            <see cref="T:System.Array" />，將在其中加入從 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 頂端位置快顯的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-209">The <see cref="T:System.Array" /> to which objects popped from the top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> will be added.</span>
-          </span>
-        </param>
-        <param name="startIndex">
-          <span data-ttu-id="59d17-210">「項目」<c></c>中以零為起始的位移，從此處開始將項目插入 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 頂端。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-210">The zero-based offset in <c>items</c> at which to begin inserting elements from the top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" />.</span>
-          </span>
-        </param>
-        <param name="count">
-          <span data-ttu-id="59d17-211">要從 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 頂端快顯，並插入「項目」<c></c> 中的項目數目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-211">The number of elements to be popped from top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> and inserted into <c>items</c>.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="59d17-212">嘗試從 <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> 頂端以不可分割方式快顯並傳回多個物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-212">Attempts to pop and return multiple objects from the top of the <see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /> atomically.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="59d17-213">從堆疊頂端位置順利快顯並插入 <paramref name="items" /> 中的物件數目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-213">The number of objects successfully popped from the top of the stack and inserted in <paramref name="items" />.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="59d17-214">請取出多個項目，如果是在堆疊上的小爭用，當使用 TryPopRange 可能會更有效率使用<xref:System.Collections.Concurrent.ConcurrentStack%601.TryPop%2A>一次，每個要移除的項目。</span><span class="sxs-lookup"><span data-stu-id="59d17-214">When popping multiple items, if there is little contention on the stack, using TryPopRange can be more efficient than using <xref:System.Collections.Concurrent.ConcurrentStack%601.TryPop%2A> once per item to be removed.</span></span> <span data-ttu-id="59d17-215">節點填滿`items`即可推出 startIndex，推出在 startIndex + 1，依此類推的第二個項目在第一個項目的陣列。</span><span class="sxs-lookup"><span data-stu-id="59d17-215">Nodes fill the `items` array with the first item to be popped at the startIndex, the second item to be popped at startIndex + 1, and so on.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="59d17-216">
-            <paramref name="items" /> 是 null 參考 (在 Visual Basic 中為 Nothing)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-216">
-              <paramref name="items" /> is a null reference (Nothing in Visual Basic).</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">
-          <span data-ttu-id="59d17-217">
-            <paramref name="startIndex" /> 或 <paramref name="count" /> 為負。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-217">
-              <paramref name="startIndex" /> or <paramref name="count" /> is negative.</span>
-          </span>
-          <span data-ttu-id="59d17-218">或 <paramref name="startIndex" /> 大於或等於 <paramref name="items" /> 的長度。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-218">Or <paramref name="startIndex" /> is greater than or equal to the length of <paramref name="items" />.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentException">
-          <span data-ttu-id="59d17-219">
-            <paramref name="startIndex" /> + <paramref name="count" /> 大於 <paramref name="items" /> 的長度。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="59d17-219">
-              <paramref name="startIndex" /> + <paramref name="count" /> is greater than the length of <paramref name="items" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="ConcurrentStack`1.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac5fc28ba389f962213b1756c3fb932c646cd356440.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">fc28ba389f962213b1756c3fb932c646cd356440</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netcore-1.0,netcore-1.1,netcore-2.0,netcore-2.1,netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7,netstandard-1.1,netstandard-1.2,netstandard-1.3,netstandard-1.4,netstandard-1.6,netstandard-2.0,xamarinandroid-7.1,xamarinios-10.8,xamarinmac-3.0</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Collections.Concurrent.ConcurrentStack`1">
+          <source>The type of the elements contained in the stack.</source>
+          <target state="translated">堆疊中所含項目的類型。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" uid="T:System.Collections.Concurrent.ConcurrentStack`1">
+          <source>Represents a thread-safe last in-first out (LIFO) collection.</source>
+          <target state="translated">表示安全執行緒的後進先出 (Last In-First Out，LIFO) 集合。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Collections.Concurrent.ConcurrentStack`1">
+          <source><ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph> implements the <ph id="ph2">&lt;xref:System.Collections.Generic.IReadOnlyCollection%601&gt;</ph> interface starting with the <ph id="ph3">[!INCLUDE[net_v46](~/includes/net-v46-md.md)]</ph>; in previous versions of the .NET Framework, the <ph id="ph4">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph> class did not implement this interface.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph> 實作<ph id="ph2">&lt;xref:System.Collections.Generic.IReadOnlyCollection%601&gt;</ph>開頭的介面<ph id="ph3">[!INCLUDE[net_v46](~/includes/net-v46-md.md)]</ph>; 在舊版的.NET Framework 中，<ph id="ph4">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>類別並未實作這個介面。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Collections.Concurrent.ConcurrentStack`1">
+          <source><ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph> provides a few main operations:</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph> 提供幾個主要作業：</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Collections.Concurrent.ConcurrentStack`1">
+          <source><ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.Push%2A&gt;</ph> inserts an element at the top of the <ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.Push%2A&gt;</ph> 插入的項目頂端<ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Collections.Concurrent.ConcurrentStack`1">
+          <source><ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.TryPop%2A&gt;</ph> removes an element from the top of the <ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>, or returns <ph id="ph3">`false`</ph> if the item cannot be removed.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.TryPop%2A&gt;</ph> 從頂端移除項目<ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>，或傳回<ph id="ph3">`false`</ph>如果無法移除項目。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Collections.Concurrent.ConcurrentStack`1">
+          <source><ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.TryPeek%2A&gt;</ph> returns an element that is at the top of the <ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph> but does not remove it from the <ph id="ph3">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.TryPeek%2A&gt;</ph> 傳回的項目頂端，<ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>但不會移除從<ph id="ph3">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Collections.Concurrent.ConcurrentStack`1">
+          <source>The <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.TryPopRange%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.PushRange%2A&gt;</ph> methods provide efficient pushing and popping of multiple elements in a single operation.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.TryPopRange%2A&gt;</ph>和<ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.PushRange%2A&gt;</ph>方法會提供有效率的推送和多個項目在單一作業中移除。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Collections.Concurrent.ConcurrentStack`1">
+          <source>The following example shows how to use a <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph> to push and pop individual items:</source>
+          <target state="translated">下列範例示範如何使用<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>推入和彈出個別項目：</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Collections.Concurrent.ConcurrentStack`1">
+          <source>The following example shows how to use a <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph> to push and pop ranges of items:</source>
+          <target state="translated">下列範例示範如何使用<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>推入和彈出範圍的項目：</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Collections.Concurrent.ConcurrentStack`1">
+          <source>All public and protected members of <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> are thread-safe and may be used concurrently from multiple threads.</source>
+          <target state="translated">所有的 public 和 protected 成員的<ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>是安全執行緒，且可能會從多個執行緒同時使用。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.#ctor">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> class.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+          <source>The collection whose elements are copied to the new <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated">集合，要將其項目複製至新的 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> class that contains elements copied from the specified collection</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 類別的新執行個體，這個類別包含自指定之集合複製過來的項目。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+          <source>The <ph id="ph1">&lt;paramref name="collection" /&gt;</ph> argument is null.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="collection" /&gt;</ph> 引數為 null。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.Clear">
+          <source>Removes all objects from the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated">從 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 移除所有物件。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.CopyTo(`0[],System.Int32)">
+          <source>The one-dimensional <ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph> that is the destination of the elements copied from the <ph id="ph2">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated">一維 <ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph>，這個項目是從 <ph id="ph2">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 複製之項目的目的端。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.CopyTo(`0[],System.Int32)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph> must have zero-based indexing.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph> 必須有以零為起始的索引。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.CopyTo(`0[],System.Int32)">
+          <source>The zero-based index in <bpt id="p1">&lt;c&gt;</bpt>array<ept id="p1">&lt;/c&gt;</ept> at which copying begins.</source>
+          <target state="translated"><bpt id="p1">&lt;c&gt;</bpt>array<ept id="p1">&lt;/c&gt;</ept> 中以零起始的索引，複製作業從此處開始。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.CopyTo(`0[],System.Int32)">
+          <source>Copies the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> elements to an existing one-dimensional <ph id="ph2">&lt;see cref="T:System.Array" /&gt;</ph>, starting at the specified array index.</source>
+          <target state="translated">從指定的陣列索引處開始，複製 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 項目至現有一維 <ph id="ph2">&lt;see cref="T:System.Array" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.CopyTo(`0[],System.Int32)">
+          <source><ph id="ph1">&lt;paramref name="array" /&gt;</ph> is a null reference (Nothing in Visual Basic).</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="array" /&gt;</ph> 是 null 參考 (在 Visual Basic 中為 Nothing)。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.CopyTo(`0[],System.Int32)">
+          <source><ph id="ph1">&lt;paramref name="index" /&gt;</ph> is less than zero.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="index" /&gt;</ph> 小於零。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.CopyTo(`0[],System.Int32)">
+          <source><ph id="ph1">&lt;paramref name="index" /&gt;</ph> is equal to or greater than the length of the <ph id="ph2">&lt;paramref name="array" /&gt;</ph> -or- The number of elements in the source <ph id="ph3">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> is greater than the available space from <ph id="ph4">&lt;paramref name="index" /&gt;</ph> to the end of the destination <ph id="ph5">&lt;paramref name="array" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="index" /&gt;</ph> 等於或大於 <ph id="ph2">&lt;paramref name="array" /&gt;</ph> 的長度，或來源 <ph id="ph3">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 中的項目個數超過從 <ph id="ph4">&lt;paramref name="index" /&gt;</ph> 到目的 <ph id="ph5">&lt;paramref name="array" /&gt;</ph> 末尾的可用空間。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" uid="P:System.Collections.Concurrent.ConcurrentStack`1.Count">
+          <source>Gets the number of elements contained in the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated">取得 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 中所包含的項目數。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Collections.Concurrent.ConcurrentStack`1.Count">
+          <source>The number of elements contained in the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 中所包含的項目數。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Collections.Concurrent.ConcurrentStack`1.Count">
+          <source>For determining whether the collection contains any items, use of the <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.IsEmpty%2A&gt;</ph> property is recommended rather than retrieving the number of items from the <ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.Count%2A&gt;</ph> property and comparing it to 0.</source>
+          <target state="translated">判斷集合是否包含任何項目，使用<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.IsEmpty%2A&gt;</ph>建議屬性而不是擷取的項目從<ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.Count%2A&gt;</ph>屬性和比較為 0。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.GetEnumerator">
+          <source>Returns an enumerator that iterates through the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated">傳回在 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 中逐一查看的列舉值。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.GetEnumerator">
+          <source>An enumerator for the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 的列舉程式。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.GetEnumerator">
+          <source>The enumeration represents a moment-in-time snapshot of the contents of the stack.</source>
+          <target state="translated">列舉，代表目前時間的快照集的堆疊內容。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.GetEnumerator">
+          <source>It does not reflect any updates to the collection after <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.GetEnumerator%2A&gt;</ph> was called.</source>
+          <target state="translated">它並不會反映任何更新之後集合<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.GetEnumerator%2A&gt;</ph>呼叫。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.GetEnumerator">
+          <source>The enumerator is safe to use concurrently with reads from and writes to the stack.</source>
+          <target state="translated">列舉值會安全地使用並行的讀取次數，並寫入堆疊。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.GetEnumerator">
+          <source>The enumerator returns items in LIFO (last-in, first-out) order.</source>
+          <target state="translated">列舉值傳回 LIFO （後進、 先進先出） 順序中的項目。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" uid="P:System.Collections.Concurrent.ConcurrentStack`1.IsEmpty">
+          <source>Gets a value that indicates whether the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> is empty.</source>
+          <target state="translated">取得值，這個值指出 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 是否是空的。</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Collections.Concurrent.ConcurrentStack`1.IsEmpty">
+          <source>true if the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> is empty; otherwise, false.</source>
+          <target state="translated">如果 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 是空的則為 true，否則為 false。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Collections.Concurrent.ConcurrentStack`1.IsEmpty">
+          <source>For determining whether the collection contains any items, use of this property is recommended rather than retrieving the number of items from the <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.Count%2A&gt;</ph> property and comparing it to 0.</source>
+          <target state="translated">判斷集合是否包含任何項目，建議使用這個屬性，而不是擷取的項目從<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.Count%2A&gt;</ph>屬性和比較為 0。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Collections.Concurrent.ConcurrentStack`1.IsEmpty">
+          <source>However, as this collection is intended to be accessed concurrently, it may be the case that another thread will modify the collection after <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.IsEmpty%2A&gt;</ph> returns, thus invalidating the result.</source>
+          <target state="translated">不過，這個集合要並行存取，因為可能的情況，另一個執行緒將修改後的集合<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.IsEmpty%2A&gt;</ph>傳回，因此使得結果無效。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Collections.Concurrent.ConcurrentStack`1.IsEmpty">
+          <source>For a code example, see <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>.</source>
+          <target state="translated">如需程式碼範例，請參閱<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.Push(`0)">
+          <source>The object to push onto the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated">要推送至 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 的物件。</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.Push(`0)">
+          <source>The value can be a null reference (Nothing in Visual Basic) for reference types.</source>
+          <target state="translated">值可以是參考類型的 null 參考 (在 Visual Basic 中為 Nothing)。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.Push(`0)">
+          <source>Inserts an object at the top of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated">將物件插入 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 的頂端。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[])">
+          <source>The objects to push onto the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated">要推送至 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 的物件。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[])">
+          <source>Inserts multiple objects at the top of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> atomically.</source>
+          <target state="translated">將多個物件以不可分割方式插入 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 的頂端。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[])">
+          <source>When adding multiple items to the stack, using PushRange is a more efficient mechanism than using <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.Push%2A&gt;</ph> one item at a time.</source>
+          <target state="translated">將多個項目加入至堆疊中，使用 PushRange 是更有效率的機制，比使用<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.Push%2A&gt;</ph>一次的一個項目。</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[])">
+          <source>Additionally, PushRange guarantees that all of the elements will be added atomically, meaning that no other threads will be able to inject elements between the elements being pushed.</source>
+          <target state="translated">此外，PushRange 可保證，所有項目將會加入以不可分割方式，這表示沒有其他執行緒都能夠插入被推入的項目之間的項目。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[])">
+          <source>Items at lower indices in the <ph id="ph1">`items`</ph> array will be pushed before items at higher indices.</source>
+          <target state="translated">在較低的索引中的項目<ph id="ph1">`items`</ph>較高的索引處的項目之前，就會推送陣列。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[])">
+          <source>For a code example, see <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>.</source>
+          <target state="translated">如需程式碼範例，請參閱<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[])">
+          <source><ph id="ph1">&lt;paramref name="items" /&gt;</ph> is a null reference (Nothing in Visual Basic).</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="items" /&gt;</ph> 是 null 參考 (在 Visual Basic 中為 Nothing)。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[],System.Int32,System.Int32)">
+          <source>The objects to push onto the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated">要推送至 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 的物件。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[],System.Int32,System.Int32)">
+          <source>The zero-based offset in <bpt id="p1">&lt;c&gt;</bpt>items<ept id="p1">&lt;/c&gt;</ept> at which to begin inserting elements onto the top of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated">「項目」<bpt id="p1">&lt;c&gt;</bpt><ept id="p1">&lt;/c&gt;</ept>中以零為起始的位移，此處為開始將項目插入 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 頂端的位置。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[],System.Int32,System.Int32)">
+          <source>The number of elements to be inserted onto the top of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated">要插入 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 頂端的項目數目。</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[],System.Int32,System.Int32)">
+          <source>Inserts multiple objects at the top of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> atomically.</source>
+          <target state="translated">將多個物件以不可分割方式插入 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 的頂端。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[],System.Int32,System.Int32)">
+          <source>When adding multiple items to the stack, using PushRange is a more efficient mechanism than using <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.Push%2A&gt;</ph> one item at a time.</source>
+          <target state="translated">將多個項目加入至堆疊中，使用 PushRange 是更有效率的機制，比使用<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.Push%2A&gt;</ph>一次的一個項目。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[],System.Int32,System.Int32)">
+          <source>Additionally, PushRange guarantees that all of the elements will be added atomically, meaning that no other threads will be able to inject elements between the elements being pushed.</source>
+          <target state="translated">此外，PushRange 可保證，所有項目將會加入以不可分割方式，這表示沒有其他執行緒都能夠插入被推入的項目之間的項目。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[],System.Int32,System.Int32)">
+          <source>Items at lower indices in the <ph id="ph1">`items`</ph> array will be pushed before items at higher indices.</source>
+          <target state="translated">在較低的索引中的項目<ph id="ph1">`items`</ph>較高的索引處的項目之前，就會推送陣列。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[],System.Int32,System.Int32)">
+          <source>For a code example, see <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>.</source>
+          <target state="translated">如需程式碼範例，請參閱<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[],System.Int32,System.Int32)">
+          <source><ph id="ph1">&lt;paramref name="items" /&gt;</ph> is a null reference (Nothing in Visual Basic).</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="items" /&gt;</ph> 是 null 參考 (在 Visual Basic 中為 Nothing)。</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[],System.Int32,System.Int32)">
+          <source><ph id="ph1">&lt;paramref name="startIndex" /&gt;</ph> or <ph id="ph2">&lt;paramref name="count" /&gt;</ph> is negative.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="startIndex" /&gt;</ph> 或 <ph id="ph2">&lt;paramref name="count" /&gt;</ph> 為負。</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[],System.Int32,System.Int32)">
+          <source>Or <ph id="ph1">&lt;paramref name="startIndex" /&gt;</ph> is greater than or equal to the length of <ph id="ph2">&lt;paramref name="items" /&gt;</ph>.</source>
+          <target state="translated">或 <ph id="ph1">&lt;paramref name="startIndex" /&gt;</ph> 大於或等於 <ph id="ph2">&lt;paramref name="items" /&gt;</ph> 的長度。</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.PushRange(`0[],System.Int32,System.Int32)">
+          <source><ph id="ph1">&lt;paramref name="startIndex" /&gt;</ph><ph id="ph2"> + </ph><ph id="ph3">&lt;paramref name="count" /&gt;</ph> is greater than the length of <ph id="ph4">&lt;paramref name="items" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="startIndex" /&gt;</ph><ph id="ph2"> + </ph><ph id="ph3">&lt;paramref name="count" /&gt;</ph> 大於 <ph id="ph4">&lt;paramref name="items" /&gt;</ph> 的長度。</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#Concurrent#IProducerConsumerCollection&amp;lt;T&amp;gt;#TryAdd(`0)">
+          <source>The object to add to the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.IProducerConsumerCollection`1" /&gt;</ph>.</source>
+          <target state="translated">要加入至 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.IProducerConsumerCollection`1" /&gt;</ph> 的物件。</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#Concurrent#IProducerConsumerCollection&amp;lt;T&amp;gt;#TryAdd(`0)">
+          <source>The value can be a null reference (Nothing in Visual Basic) for reference types.</source>
+          <target state="translated">值可以是參考類型的 null 參考 (在 Visual Basic 中為 Nothing)。</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#Concurrent#IProducerConsumerCollection&amp;lt;T&amp;gt;#TryAdd(`0)">
+          <source>Attempts to add an object to the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.IProducerConsumerCollection`1" /&gt;</ph>.</source>
+          <target state="translated">嘗試將物件加入至 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.IProducerConsumerCollection`1" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#Concurrent#IProducerConsumerCollection&amp;lt;T&amp;gt;#TryAdd(`0)">
+          <source>true if the object was added successfully; otherwise, false.</source>
+          <target state="translated">如果物件加入成功則為 true，否則為 false。</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#Concurrent#IProducerConsumerCollection&amp;lt;T&amp;gt;#TryAdd(`0)">
+          <source>For <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>, this operation will always insert the object onto the top of the <ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph> and return true.</source>
+          <target state="translated">如<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>，這項作業一定會插入頂端的物件<ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>並傳回 true。</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#Concurrent#IProducerConsumerCollection&amp;lt;T&amp;gt;#TryTake(`0@)">
+          <source>When this method returns, if the operation was successful, <bpt id="p1">&lt;c&gt;</bpt>item<ept id="p1">&lt;/c&gt;</ept> contains the object removed.</source>
+          <target state="translated">如果這個方法會傳回且作業成功，則「項目」<bpt id="p1">&lt;c&gt;</bpt><ept id="p1">&lt;/c&gt;</ept>會包含移除的物件。</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#Concurrent#IProducerConsumerCollection&amp;lt;T&amp;gt;#TryTake(`0@)">
+          <source>If no object was available to be removed, the value is unspecified.</source>
+          <target state="translated">如果沒有可移除的物件，值會是 unspecified。</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#Concurrent#IProducerConsumerCollection&amp;lt;T&amp;gt;#TryTake(`0@)">
+          <source>Attempts to remove and return an object from the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.IProducerConsumerCollection`1" /&gt;</ph>.</source>
+          <target state="translated">嘗試從 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.IProducerConsumerCollection`1" /&gt;</ph> 中移除及傳回物件。</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#Concurrent#IProducerConsumerCollection&amp;lt;T&amp;gt;#TryTake(`0@)">
+          <source>true if an element was removed and returned succesfully; otherwise, false.</source>
+          <target state="translated">如果項目成功移除及傳回則為 true，否則為 false。</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#Concurrent#IProducerConsumerCollection&amp;lt;T&amp;gt;#TryTake(`0@)">
+          <source>For <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>, this operation will attempt to pop the object at the top of the <ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>.</source>
+          <target state="translated">如<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>，這項作業將會嘗試在頂端顯示物件<ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source>The one-dimensional <ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph> that is the destination of the elements copied from the <ph id="ph2">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated">一維 <ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph>，這個項目是從 <ph id="ph2">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 複製之項目的目的端。</target>       </trans-unit>
+        <trans-unit id="171" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph> must have zero-based indexing.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph> 必須有以零為起始的索引。</target>       </trans-unit>
+        <trans-unit id="172" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source>The zero-based index in <bpt id="p1">&lt;c&gt;</bpt>array<ept id="p1">&lt;/c&gt;</ept> at which copying begins.</source>
+          <target state="translated"><bpt id="p1">&lt;c&gt;</bpt>array<ept id="p1">&lt;/c&gt;</ept> 中以零起始的索引，複製作業從此處開始。</target>       </trans-unit>
+        <trans-unit id="173" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source>Copies the elements of the <ph id="ph1">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph> to an <ph id="ph2">&lt;see cref="T:System.Array" /&gt;</ph>, starting at a particular <ph id="ph3">&lt;see cref="T:System.Array" /&gt;</ph> index.</source>
+          <target state="translated">從特定的 <ph id="ph1">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph> 索引開始，將 <ph id="ph2">&lt;see cref="T:System.Array" /&gt;</ph> 的項目複製至 <ph id="ph3">&lt;see cref="T:System.Array" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="174" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source><ph id="ph1">&lt;paramref name="array" /&gt;</ph> is a null reference (Nothing in Visual Basic).</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="array" /&gt;</ph> 是 null 參考 (在 Visual Basic 中為 Nothing)。</target>       </trans-unit>
+        <trans-unit id="175" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source><ph id="ph1">&lt;paramref name="index" /&gt;</ph> is less than zero.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="index" /&gt;</ph> 小於零。</target>       </trans-unit>
+        <trans-unit id="176" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source><ph id="ph1">&lt;paramref name="array" /&gt;</ph> is multidimensional.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="array" /&gt;</ph> 是多維的。</target>       </trans-unit>
+        <trans-unit id="177" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source>-or- <ph id="ph1">&lt;paramref name="array" /&gt;</ph> does not have zero-based indexing.</source>
+          <target state="translated">或 <ph id="ph1">&lt;paramref name="array" /&gt;</ph> 沒有以零起始的索引。</target>       </trans-unit>
+        <trans-unit id="178" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source>-or- <ph id="ph1">&lt;paramref name="index" /&gt;</ph> is equal to or greater than the length of the <ph id="ph2">&lt;paramref name="array" /&gt;</ph> -or- The number of elements in the source <ph id="ph3">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph> is greater than the available space from <ph id="ph4">&lt;paramref name="index" /&gt;</ph> to the end of the destination <ph id="ph5">&lt;paramref name="array" /&gt;</ph>.</source>
+          <target state="translated">或 <ph id="ph1">&lt;paramref name="index" /&gt;</ph> 是等於或大於 <ph id="ph2">&lt;paramref name="array" /&gt;</ph> 的長度，或者來源 <ph id="ph3">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph> 中的項目數大於從 <ph id="ph4">&lt;paramref name="index" /&gt;</ph> 到目的地 <ph id="ph5">&lt;paramref name="array" /&gt;</ph> 結尾的可用空間。</target>       </trans-unit>
+        <trans-unit id="179" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source>-or- The type of the source <ph id="ph1">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph> cannot be cast automatically to the type of the destination <ph id="ph2">&lt;paramref name="array" /&gt;</ph>.</source>
+          <target state="translated">或來源 <ph id="ph1">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph> 的型別無法自動轉換為目的 <ph id="ph2">&lt;paramref name="array" /&gt;</ph> 的型別。</target>       </trans-unit>
+        <trans-unit id="180" translate="yes" xml:space="preserve" uid="P:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#IsSynchronized">
+          <source>Gets a value indicating whether access to the <ph id="ph1">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph> is synchronized with the SyncRoot.</source>
+          <target state="translated">取得值，這個值表示對 <ph id="ph1">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph> 的存取是否已經與 SyncRoot 同步。</target>       </trans-unit>
+        <trans-unit id="181" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#IsSynchronized">
+          <source>true if access to the <ph id="ph1">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph> is synchronized with the SyncRoot; otherwise, false.</source>
+          <target state="translated">如果對 <ph id="ph1">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph> 的存取與 SyncRoot 同步則為 true，否則為 false。</target>       </trans-unit>
+        <trans-unit id="182" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#IsSynchronized">
+          <source>For <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>, this property always returns false.</source>
+          <target state="translated">對於 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>，這個屬性永遠傳回 false。</target>       </trans-unit>
+        <trans-unit id="183" translate="yes" xml:space="preserve" uid="P:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#SyncRoot">
+          <source>Gets an object that can be used to synchronize access to the <ph id="ph1">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph>.</source>
+          <target state="translated">取得可用以同步存取 <ph id="ph1">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph> 的物件。</target>       </trans-unit>
+        <trans-unit id="184" translate="yes" xml:space="preserve" uid="P:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#SyncRoot">
+          <source>This property is not supported.</source>
+          <target state="translated">不支援這個屬性。</target>       </trans-unit>
+        <trans-unit id="185" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#SyncRoot">
+          <source>Returns null (Nothing in Visual Basic).</source>
+          <target state="translated">傳回 null (在 Visual Basic 中為 Nothing)。</target>       </trans-unit>
+        <trans-unit id="186" translate="yes" xml:space="preserve" uid="P:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#ICollection#SyncRoot">
+          <source>The SyncRoot property is not supported</source>
+          <target state="translated">不支援 SyncRoot 屬性</target>       </trans-unit>
+        <trans-unit id="187" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#IEnumerable#GetEnumerator">
+          <source>Returns an enumerator that iterates through a collection.</source>
+          <target state="translated">傳回逐一查看集合的列舉值。</target>       </trans-unit>
+        <trans-unit id="188" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#IEnumerable#GetEnumerator">
+          <source>An <ph id="ph1">&lt;see cref="T:System.Collections.IEnumerator" /&gt;</ph> that can be used to iterate through the collection.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Collections.IEnumerator" /&gt;</ph>，可用於逐一查看集合。</target>       </trans-unit>
+        <trans-unit id="189" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#IEnumerable#GetEnumerator">
+          <source>The enumeration represents a moment-in-time snapshot of the contents of the stack.</source>
+          <target state="translated">列舉，代表目前時間的快照集的堆疊內容。</target>       </trans-unit>
+        <trans-unit id="190" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#IEnumerable#GetEnumerator">
+          <source>It does not reflect any updates to the collection after <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.GetEnumerator%2A&gt;</ph> was called.</source>
+          <target state="translated">它並不會反映任何更新之後集合<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.GetEnumerator%2A&gt;</ph>呼叫。</target>       </trans-unit>
+        <trans-unit id="191" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.System#Collections#IEnumerable#GetEnumerator">
+          <source>The enumerator is safe to use concurrently with reads from and writes to the stack.</source>
+          <target state="translated">列舉值會安全地使用並行的讀取次數，並寫入堆疊。</target>       </trans-unit>
+        <trans-unit id="192" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.ToArray">
+          <source>Copies the items stored in the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> to a new array.</source>
+          <target state="translated">將存放在 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 中的項目複製到新的陣列。</target>       </trans-unit>
+        <trans-unit id="193" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.ToArray">
+          <source>A new array containing a snapshot of elements copied from the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated">新的陣列，其中包含從 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 複製之項目的快照。</target>       </trans-unit>
+        <trans-unit id="194" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPeek(`0@)">
+          <source>When this method returns, <bpt id="p1">&lt;c&gt;</bpt>result<ept id="p1">&lt;/c&gt;</ept> contains an object from the top of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> or an unspecified value if the operation failed.</source>
+          <target state="translated">當這個方法傳回時，<bpt id="p1">&lt;c&gt;</bpt>result<ept id="p1">&lt;/c&gt;</ept> 會包含來自 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 頂端的物件，如果作業失敗則傳回未指定的值。</target>       </trans-unit>
+        <trans-unit id="195" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPeek(`0@)">
+          <source>Attempts to return an object from the top of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> without removing it.</source>
+          <target state="translated">嘗試從 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 頂端位置傳回物件，但不將它移除。</target>       </trans-unit>
+        <trans-unit id="196" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPeek(`0@)">
+          <source>true if and object was returned successfully; otherwise, false.</source>
+          <target state="translated">如果成功傳回物件則為 true，否則為 false。</target>       </trans-unit>
+        <trans-unit id="197" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPop(`0@)">
+          <source>When this method returns, if the operation was successful, <bpt id="p1">&lt;c&gt;</bpt>result<ept id="p1">&lt;/c&gt;</ept> contains the object removed.</source>
+          <target state="translated">如果這個方法會傳回且作業成功，則「項目」<bpt id="p1">&lt;c&gt;</bpt><ept id="p1">&lt;/c&gt;</ept> 會包含移除的物件。</target>       </trans-unit>
+        <trans-unit id="198" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPop(`0@)">
+          <source>If no object was available to be removed, the value is unspecified.</source>
+          <target state="translated">如果沒有可移除的物件，值會是 unspecified。</target>       </trans-unit>
+        <trans-unit id="199" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPop(`0@)">
+          <source>Attempts to pop and return the object at the top of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated">嘗試快顯並傳回位在 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 頂端位置的物件。</target>       </trans-unit>
+        <trans-unit id="200" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPop(`0@)">
+          <source>true if an element was removed and returned from the top of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> successfully; otherwise, false.</source>
+          <target state="translated">如果成功地從 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 頂端位置移除及傳回項目則為 true，否則為 false。</target>       </trans-unit>
+        <trans-unit id="201" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPop(`0@)">
+          <source>For a code example, see <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>.</source>
+          <target state="translated">如需程式碼範例，請參閱<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="202" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[])">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph> to which objects popped from the top of the <ph id="ph2">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> will be added.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph>，將在其中加入從 <ph id="ph2">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 頂端位置快顯的物件。</target>       </trans-unit>
+        <trans-unit id="203" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[])">
+          <source>Attempts to pop and return multiple objects from the top of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> atomically.</source>
+          <target state="translated">嘗試從 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 頂端以不可分割方式快顯並傳回多個物件。</target>       </trans-unit>
+        <trans-unit id="204" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[])">
+          <source>The number of objects successfully popped from the top of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> and inserted in <ph id="ph2">&lt;paramref name="items" /&gt;</ph>.</source>
+          <target state="translated">從 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 頂端位置快顯，並且插入 <ph id="ph2">&lt;paramref name="items" /&gt;</ph> 中的物件數目。</target>       </trans-unit>
+        <trans-unit id="205" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[])">
+          <source>When popping multiple items, if there is little contention on the stack, using <ph id="ph1">`TryPopRange`</ph> can be more efficient than using <ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.TryPop%2A&gt;</ph> once per item to be removed.</source>
+          <target state="translated">請取出多個項目，如果是在堆疊上的小爭用，當使用<ph id="ph1">`TryPopRange`</ph>可以更有效率使用<ph id="ph2">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.TryPop%2A&gt;</ph>一次，每個要移除的項目。</target>       </trans-unit>
+        <trans-unit id="206" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[])">
+          <source>Nodes fill the <ph id="ph1">`items`</ph> array with the first item to be popped at the startIndex, the second item to be popped at startIndex + 1, and so on.</source>
+          <target state="translated">節點填滿<ph id="ph1">`items`</ph>即可推出 startIndex，推出在 startIndex + 1，依此類推的第二個項目在第一個項目的陣列。</target>       </trans-unit>
+        <trans-unit id="207" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[])">
+          <source>For a code example, see <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>.</source>
+          <target state="translated">如需程式碼範例，請參閱<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="208" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[])">
+          <source><ph id="ph1">&lt;paramref name="items" /&gt;</ph> is a null argument (Nothing in Visual Basic).</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="items" /&gt;</ph> 是 null 引數 (在 Visual Basic 中為 Nothing)。</target>       </trans-unit>
+        <trans-unit id="209" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[],System.Int32,System.Int32)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph> to which objects popped from the top of the <ph id="ph2">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> will be added.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph>，將在其中加入從 <ph id="ph2">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 頂端位置快顯的物件。</target>       </trans-unit>
+        <trans-unit id="210" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[],System.Int32,System.Int32)">
+          <source>The zero-based offset in <bpt id="p1">&lt;c&gt;</bpt>items<ept id="p1">&lt;/c&gt;</ept> at which to begin inserting elements from the top of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph>.</source>
+          <target state="translated">「項目」<bpt id="p1">&lt;c&gt;</bpt><ept id="p1">&lt;/c&gt;</ept>中以零為起始的位移，從此處開始將項目插入 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 頂端。</target>       </trans-unit>
+        <trans-unit id="211" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[],System.Int32,System.Int32)">
+          <source>The number of elements to be popped from top of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> and inserted into <bpt id="p1">&lt;c&gt;</bpt>items<ept id="p1">&lt;/c&gt;</ept>.</source>
+          <target state="translated">要從 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 頂端快顯，並插入「項目」<bpt id="p1">&lt;c&gt;</bpt><ept id="p1">&lt;/c&gt;</ept> 中的項目數目。</target>       </trans-unit>
+        <trans-unit id="212" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[],System.Int32,System.Int32)">
+          <source>Attempts to pop and return multiple objects from the top of the <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> atomically.</source>
+          <target state="translated">嘗試從 <ph id="ph1">&lt;see cref="T:System.Collections.Concurrent.ConcurrentStack`1" /&gt;</ph> 頂端以不可分割方式快顯並傳回多個物件。</target>       </trans-unit>
+        <trans-unit id="213" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[],System.Int32,System.Int32)">
+          <source>The number of objects successfully popped from the top of the stack and inserted in <ph id="ph1">&lt;paramref name="items" /&gt;</ph>.</source>
+          <target state="translated">從堆疊頂端位置順利快顯並插入 <ph id="ph1">&lt;paramref name="items" /&gt;</ph> 中的物件數目。</target>       </trans-unit>
+        <trans-unit id="214" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[],System.Int32,System.Int32)">
+          <source>When popping multiple items, if there is little contention on the stack, using TryPopRange can be more efficient than using <ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.TryPop%2A&gt;</ph> once per item to be removed.</source>
+          <target state="translated">請取出多個項目，如果是在堆疊上的小爭用，當使用 TryPopRange 可能會更有效率使用<ph id="ph1">&lt;xref:System.Collections.Concurrent.ConcurrentStack%601.TryPop%2A&gt;</ph>一次，每個要移除的項目。</target>       </trans-unit>
+        <trans-unit id="215" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[],System.Int32,System.Int32)">
+          <source>Nodes fill the <ph id="ph1">`items`</ph> array with the first item to be popped at the startIndex, the second item to be popped at startIndex + 1, and so on.</source>
+          <target state="translated">節點填滿<ph id="ph1">`items`</ph>即可推出 startIndex，推出在 startIndex + 1，依此類推的第二個項目在第一個項目的陣列。</target>       </trans-unit>
+        <trans-unit id="216" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[],System.Int32,System.Int32)">
+          <source><ph id="ph1">&lt;paramref name="items" /&gt;</ph> is a null reference (Nothing in Visual Basic).</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="items" /&gt;</ph> 是 null 參考 (在 Visual Basic 中為 Nothing)。</target>       </trans-unit>
+        <trans-unit id="217" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[],System.Int32,System.Int32)">
+          <source><ph id="ph1">&lt;paramref name="startIndex" /&gt;</ph> or <ph id="ph2">&lt;paramref name="count" /&gt;</ph> is negative.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="startIndex" /&gt;</ph> 或 <ph id="ph2">&lt;paramref name="count" /&gt;</ph> 為負。</target>       </trans-unit>
+        <trans-unit id="218" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[],System.Int32,System.Int32)">
+          <source>Or <ph id="ph1">&lt;paramref name="startIndex" /&gt;</ph> is greater than or equal to the length of <ph id="ph2">&lt;paramref name="items" /&gt;</ph>.</source>
+          <target state="translated">或 <ph id="ph1">&lt;paramref name="startIndex" /&gt;</ph> 大於或等於 <ph id="ph2">&lt;paramref name="items" /&gt;</ph> 的長度。</target>       </trans-unit>
+        <trans-unit id="219" translate="yes" xml:space="preserve" uid="M:System.Collections.Concurrent.ConcurrentStack`1.TryPopRange(`0[],System.Int32,System.Int32)">
+          <source><ph id="ph1">&lt;paramref name="startIndex" /&gt;</ph><ph id="ph2"> + </ph><ph id="ph3">&lt;paramref name="count" /&gt;</ph> is greater than the length of <ph id="ph4">&lt;paramref name="items" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="startIndex" /&gt;</ph><ph id="ph2"> + </ph><ph id="ph3">&lt;paramref name="count" /&gt;</ph> 大於 <ph id="ph4">&lt;paramref name="items" /&gt;</ph> 的長度。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

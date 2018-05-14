@@ -1,310 +1,114 @@
-<Type Name="WebThreadInformation" FullName="System.Web.Management.WebThreadInformation">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="bd0a1e1db24b039457901125154d3e1f62fd61e2" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public sealed class WebThreadInformation" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit WebThreadInformation extends System.Object" />
-  <TypeSignature Language="DocId" Value="T:System.Web.Management.WebThreadInformation" />
-  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class WebThreadInformation" />
-  <TypeSignature Language="C++ CLI" Value="public ref class WebThreadInformation sealed" />
-  <AssemblyInfo>
-    <AssemblyName>System.Web</AssemblyName>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces />
-  <Docs>
-    <summary>
-      <span data-ttu-id="3ff41-101">提供關於 ASP.NET 處理序中執行緒狀態的資訊。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="3ff41-101">Provides information about the state of a thread in an ASP.NET process.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="3ff41-102">ASP.NET 健康監視，可讓管理已部署的 Web 應用程式的生產環境和作業人員。</span><span class="sxs-lookup"><span data-stu-id="3ff41-102">ASP.NET health monitoring allows production and operations staff to manage deployed Web applications.</span></span> <span data-ttu-id="3ff41-103"><xref:System.Web.Management>命名空間包含負責封裝應用程式健全狀況狀態資料和負責處理此資料提供者類型的健全狀況事件型別。</span><span class="sxs-lookup"><span data-stu-id="3ff41-103">The <xref:System.Web.Management> namespace contains the health-event types responsible for packaging application health-status data and the provider types responsible for processing this data.</span></span> <span data-ttu-id="3ff41-104">它也會包含有助於管理健全狀況事件的支援型別。</span><span class="sxs-lookup"><span data-stu-id="3ff41-104">It also contains supporting types that help during the management of health events.</span></span>  
-  
- <span data-ttu-id="3ff41-105">執行個體<xref:System.Web.Management.WebThreadInformation>類別包含使用取得的資訊<xref:System.Web.Management.WebErrorEvent>類型或<xref:System.Web.Management.WebRequestErrorEvent>型別。</span><span class="sxs-lookup"><span data-stu-id="3ff41-105">Instances of the <xref:System.Web.Management.WebThreadInformation> class contain information that is obtained using either the <xref:System.Web.Management.WebErrorEvent> type or the <xref:System.Web.Management.WebRequestErrorEvent> type.</span></span>  
-  
- <span data-ttu-id="3ff41-106">您的應用程式需要存取受保護的資訊，此類型所提供的適當權限。</span><span class="sxs-lookup"><span data-stu-id="3ff41-106">Your application needs the appropriate permissions to access protected information provided by this type.</span></span>  
-  
-> [!NOTE]
->  <span data-ttu-id="3ff41-107">在大部分情況下您將能夠實作時，使用 ASP.NET 健康監視類型，而您會藉由指定的值控制健全狀況監視系統`healthMonitoring`組態區段。</span><span class="sxs-lookup"><span data-stu-id="3ff41-107">In most cases you will be able to use the ASP.NET health-monitoring types as implemented, and you will control the health-monitoring system by specifying values in the `healthMonitoring` configuration section.</span></span> <span data-ttu-id="3ff41-108">您也可以衍生自健全狀況監視類型的類型來建立您自己的自訂事件和提供者。</span><span class="sxs-lookup"><span data-stu-id="3ff41-108">You can also derive from the health-monitoring types to create your own custom events and providers.</span></span> <span data-ttu-id="3ff41-109">如需建立自訂的事件類別的範例，請參閱本主題中所提供的範例。</span><span class="sxs-lookup"><span data-stu-id="3ff41-109">For an example of creating a custom event class, see the example provided in this topic.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="3ff41-110">下列程式碼範例有兩個部分。</span><span class="sxs-lookup"><span data-stu-id="3ff41-110">The following code example has two parts.</span></span> <span data-ttu-id="3ff41-111">第一個是讓 ASP.NET 可以使用自訂事件使用的組態檔的摘錄<xref:System.Web.Management.WebThreadInformation>型別。</span><span class="sxs-lookup"><span data-stu-id="3ff41-111">The first is an excerpt of a configuration file that enables ASP.NET to use a custom event that uses the <xref:System.Web.Management.WebThreadInformation> type.</span></span> <span data-ttu-id="3ff41-112">第二個示範如何實作自訂事件使用<xref:System.Web.Management.WebThreadInformation>型別。</span><span class="sxs-lookup"><span data-stu-id="3ff41-112">The second shows how to implement the custom event that uses the <xref:System.Web.Management.WebThreadInformation> type.</span></span>  
-  
- <span data-ttu-id="3ff41-113">請確定您的自訂事件在引發適當的時間，也就是時就會引發取代的對等系統健全狀況事件。</span><span class="sxs-lookup"><span data-stu-id="3ff41-113">Ensure that your custom event is raised at the proper time, that is, when the equivalent system health event it replaces would be raised.</span></span>  
-  
-```  
-<healthMonitoring  
-    heartBeatInterval="0" enabled="true">  
-  
-  <profiles>  
-    <add name="Custom"   
-      minInstances="1"   
-      maxLimit="Infinite"   
-      minInterval="00:00:00" />  
-  </profiles>  
-  
-  <eventMappings>  
-  
-    <add   
-      name="SampleWebThreadInformation"   
-type="SamplesAspNet.SampleWebThreadInformation,webthreadinformation, Version=1.0.1782.29648, Culture=neutral, PublicKeyToken=b3283a2de7dd3f27, processorArchitecture=MSIL" />  
-  
-  </eventMappings>  
-  
-  <rules>  
-  
-    <add name="Custom Web Thread Info Event"   
-      eventName="SampleWebThreadInformation"   
-      provider="EventLogProvider"  
-      profile="Custom" />  
-  
-  </rules>  
-  
-</healthMonitoring>  
-```  
-  
- [!code-csharp[System.Web.Management.WebThreadInformation#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Management.WebThreadInformation/CS/webthreadinformation.cs#1)]
- [!code-vb[System.Web.Management.WebThreadInformation#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Management.WebThreadInformation/VB/webthreadinformation.vb#1)]  
-  
- ]]></format>
-    </remarks>
-    <altmember cref="T:System.Web.Management.WebErrorEvent" />
-    <altmember cref="T:System.Web.Management.WebRequestErrorEvent" />
-    <altmember cref="T:System.Web.Management.WebManagementEvent" />
-  </Docs>
-  <Members>
-    <Member MemberName="FormatToString">
-      <MemberSignature Language="C#" Value="public void FormatToString (System.Web.Management.WebEventFormatter formatter);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void FormatToString(class System.Web.Management.WebEventFormatter formatter) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Management.WebThreadInformation.FormatToString(System.Web.Management.WebEventFormatter)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub FormatToString (formatter As WebEventFormatter)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void FormatToString(System::Web::Management::WebEventFormatter ^ formatter);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="formatter" Type="System.Web.Management.WebEventFormatter" />
-      </Parameters>
-      <Docs>
-        <param name="formatter">
-          <span data-ttu-id="3ff41-114">包含用來將 Web 健康情況事件資訊格式化之定位和縮排設定的 <see cref="T:System.Web.Management.WebEventFormatter" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3ff41-114">The <see cref="T:System.Web.Management.WebEventFormatter" /> that contains the tab and indentation settings used to format the Web health event information.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="3ff41-115">格式化執行緒相關的資訊。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3ff41-115">Formats thread-related information.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="3ff41-116"><xref:System.Web.Management.WebThreadInformation.FormatToString%2A>方法可為事件的資訊，這非常有用，如果事件資料必須記錄，並向使用者顯示更新版本提供統一的格式。</span><span class="sxs-lookup"><span data-stu-id="3ff41-116">The <xref:System.Web.Management.WebThreadInformation.FormatToString%2A> method provides a uniform format for event information, which is useful if the event data must be logged and later presented to the user.</span></span> <span data-ttu-id="3ff41-117">它時，內部呼叫提供者會叫用的其中一個<xref:System.Web.Management.WebBaseEvent.ToString%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="3ff41-117">It is called internally when the provider invokes one of the <xref:System.Web.Management.WebBaseEvent.ToString%2A> methods.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="3ff41-118">下列程式碼範例示範如何設定自訂資訊的格式。</span><span class="sxs-lookup"><span data-stu-id="3ff41-118">The following code example shows how to format custom information.</span></span>  
-  
- [!code-csharp[System.Web.Management.WebThreadInformation#8](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Management.WebThreadInformation/CS/webthreadinformation.cs#8)]
- [!code-vb[System.Web.Management.WebThreadInformation#8](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Management.WebThreadInformation/VB/webthreadinformation.vb#8)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IsImpersonating">
-      <MemberSignature Language="C#" Value="public bool IsImpersonating { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool IsImpersonating" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Management.WebThreadInformation.IsImpersonating" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsImpersonating As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsImpersonating { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3ff41-119">取得目前的執行緒模擬模式。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3ff41-119">Gets the current thread-impersonation mode.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3ff41-120">如果執行緒是在模擬模式中執行則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3ff41-120">
-              <see langword="true" /> if the thread is executing in impersonation mode; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3ff41-121">下列程式碼範例示範如何取得執行緒模擬模式。</span><span class="sxs-lookup"><span data-stu-id="3ff41-121">The following code example shows how to get the thread-impersonation mode.</span></span>  
-  
- [!code-csharp[System.Web.Management.WebThreadInformation#4](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Management.WebThreadInformation/CS/webthreadinformation.cs#4)]
- [!code-vb[System.Web.Management.WebThreadInformation#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Management.WebThreadInformation/VB/webthreadinformation.vb#4)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="StackTrace">
-      <MemberSignature Language="C#" Value="public string StackTrace { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance string StackTrace" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Management.WebThreadInformation.StackTrace" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property StackTrace As String" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ StackTrace { System::String ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3ff41-122">取得目前執行緒管理的堆疊追蹤。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3ff41-122">Gets the current thread-managed stack trace.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3ff41-123">執行緒管理的堆疊追蹤。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3ff41-123">The thread-managed stack trace.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3ff41-124">下列程式碼範例示範如何取得執行緒的堆疊追蹤。</span><span class="sxs-lookup"><span data-stu-id="3ff41-124">The following code example shows how to get the thread stack trace.</span></span>  
-  
- [!code-csharp[System.Web.Management.WebThreadInformation#5](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Management.WebThreadInformation/CS/webthreadinformation.cs#5)]
- [!code-vb[System.Web.Management.WebThreadInformation#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Management.WebThreadInformation/VB/webthreadinformation.vb#5)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ThreadAccountName">
-      <MemberSignature Language="C#" Value="public string ThreadAccountName { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance string ThreadAccountName" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Management.WebThreadInformation.ThreadAccountName" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ThreadAccountName As String" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ ThreadAccountName { System::String ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3ff41-125">取得執行緒帳戶名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3ff41-125">Gets the thread account name.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3ff41-126">執行緒帳戶名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3ff41-126">The thread account name.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="3ff41-127">這個屬性所傳回的帳戶可能是任意如果執行緒正在模擬模式執行。</span><span class="sxs-lookup"><span data-stu-id="3ff41-127">The account returned by this property might be arbitrary if the thread is executing in impersonation mode.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="3ff41-128">下列程式碼範例示範如何取得執行緒帳戶名稱。</span><span class="sxs-lookup"><span data-stu-id="3ff41-128">The following code example shows how to get the thread account name.</span></span>  
-  
- [!code-csharp[System.Web.Management.WebThreadInformation#6](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Management.WebThreadInformation/CS/webthreadinformation.cs#6)]
- [!code-vb[System.Web.Management.WebThreadInformation#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Management.WebThreadInformation/VB/webthreadinformation.vb#6)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ThreadID">
-      <MemberSignature Language="C#" Value="public int ThreadID { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 ThreadID" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Management.WebThreadInformation.ThreadID" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ThreadID As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int ThreadID { int get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3ff41-129">取得目前的執行緒識別項。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3ff41-129">Gets the current thread identifier.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3ff41-130">目前的執行緒識別項。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3ff41-130">The current thread identifier.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="3ff41-131">即使 managed 的執行緒可能沒有直接對應至 OS 執行緒，以進行偵錯，它很適合用來隔離特定的執行緒可能有問題。</span><span class="sxs-lookup"><span data-stu-id="3ff41-131">Even if managed threads might not have direct mapping to the OS threads, for debugging purposes, it is always useful to isolate a specific thread where problems might exist.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="3ff41-132">下列程式碼範例示範如何取得執行緒識別項。</span><span class="sxs-lookup"><span data-stu-id="3ff41-132">The following code example shows how to get the thread identifier.</span></span>  
-  
- [!code-csharp[System.Web.Management.WebThreadInformation#7](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Management.WebThreadInformation/CS/webthreadinformation.cs#7)]
- [!code-vb[System.Web.Management.WebThreadInformation#7](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Management.WebThreadInformation/VB/webthreadinformation.vb#7)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="WebThreadInformation.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac5bd0a1e1db24b039457901125154d3e1f62fd61e2.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">bd0a1e1db24b039457901125154d3e1f62fd61e2</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Web.Management.WebThreadInformation">
+          <source>Provides information about the state of a thread in an ASP.NET process.</source>
+          <target state="translated">提供關於 ASP.NET 處理序中執行緒狀態的資訊。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Management.WebThreadInformation">
+          <source>ASP.NET health monitoring allows production and operations staff to manage deployed Web applications.</source>
+          <target state="translated">ASP.NET 健康監視，可讓管理已部署的 Web 應用程式的生產環境和作業人員。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Management.WebThreadInformation">
+          <source>The <ph id="ph1">&lt;xref:System.Web.Management&gt;</ph> namespace contains the health-event types responsible for packaging application health-status data and the provider types responsible for processing this data.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Management&gt;</ph>命名空間包含負責封裝應用程式健全狀況狀態資料和負責處理此資料提供者類型的健全狀況事件型別。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Management.WebThreadInformation">
+          <source>It also contains supporting types that help during the management of health events.</source>
+          <target state="translated">它也會包含有助於管理健全狀況事件的支援型別。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Management.WebThreadInformation">
+          <source>Instances of the <ph id="ph1">&lt;xref:System.Web.Management.WebThreadInformation&gt;</ph> class contain information that is obtained using either the <ph id="ph2">&lt;xref:System.Web.Management.WebErrorEvent&gt;</ph> type or the <ph id="ph3">&lt;xref:System.Web.Management.WebRequestErrorEvent&gt;</ph> type.</source>
+          <target state="translated">執行個體<ph id="ph1">&lt;xref:System.Web.Management.WebThreadInformation&gt;</ph>類別包含使用取得的資訊<ph id="ph2">&lt;xref:System.Web.Management.WebErrorEvent&gt;</ph>類型或<ph id="ph3">&lt;xref:System.Web.Management.WebRequestErrorEvent&gt;</ph>型別。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Management.WebThreadInformation">
+          <source>Your application needs the appropriate permissions to access protected information provided by this type.</source>
+          <target state="translated">您的應用程式需要存取受保護的資訊，此類型所提供的適當權限。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Management.WebThreadInformation">
+          <source>In most cases you will be able to use the ASP.NET health-monitoring types as implemented, and you will control the health-monitoring system by specifying values in the <ph id="ph1">`healthMonitoring`</ph> configuration section.</source>
+          <target state="translated">在大部分情況下您將能夠實作時，使用 ASP.NET 健康監視類型，而您會藉由指定的值控制健全狀況監視系統<ph id="ph1">`healthMonitoring`</ph>組態區段。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Management.WebThreadInformation">
+          <source>You can also derive from the health-monitoring types to create your own custom events and providers.</source>
+          <target state="translated">您也可以衍生自健全狀況監視類型的類型來建立您自己的自訂事件和提供者。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Management.WebThreadInformation">
+          <source>For an example of creating a custom event class, see the example provided in this topic.</source>
+          <target state="translated">如需建立自訂的事件類別的範例，請參閱本主題中所提供的範例。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Management.WebThreadInformation">
+          <source>The following code example has two parts.</source>
+          <target state="translated">下列程式碼範例有兩個部分。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Management.WebThreadInformation">
+          <source>The first is an excerpt of a configuration file that enables ASP.NET to use a custom event that uses the <ph id="ph1">&lt;xref:System.Web.Management.WebThreadInformation&gt;</ph> type.</source>
+          <target state="translated">第一個是讓 ASP.NET 可以使用自訂事件使用的組態檔的摘錄<ph id="ph1">&lt;xref:System.Web.Management.WebThreadInformation&gt;</ph>型別。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Management.WebThreadInformation">
+          <source>The second shows how to implement the custom event that uses the <ph id="ph1">&lt;xref:System.Web.Management.WebThreadInformation&gt;</ph> type.</source>
+          <target state="translated">第二個示範如何實作自訂事件使用<ph id="ph1">&lt;xref:System.Web.Management.WebThreadInformation&gt;</ph>型別。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Management.WebThreadInformation">
+          <source>Ensure that your custom event is raised at the proper time, that is, when the equivalent system health event it replaces would be raised.</source>
+          <target state="translated">請確定您的自訂事件在引發適當的時間，也就是時就會引發取代的對等系統健全狀況事件。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" uid="M:System.Web.Management.WebThreadInformation.FormatToString(System.Web.Management.WebEventFormatter)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Web.Management.WebEventFormatter" /&gt;</ph> that contains the tab and indentation settings used to format the Web health event information.</source>
+          <target state="translated">包含用來將 Web 健康情況事件資訊格式化之定位和縮排設定的 <ph id="ph1">&lt;see cref="T:System.Web.Management.WebEventFormatter" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" uid="M:System.Web.Management.WebThreadInformation.FormatToString(System.Web.Management.WebEventFormatter)">
+          <source>Formats thread-related information.</source>
+          <target state="translated">格式化執行緒相關的資訊。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Management.WebThreadInformation.FormatToString(System.Web.Management.WebEventFormatter)">
+          <source>The <ph id="ph1">&lt;xref:System.Web.Management.WebThreadInformation.FormatToString%2A&gt;</ph> method provides a uniform format for event information, which is useful if the event data must be logged and later presented to the user.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Management.WebThreadInformation.FormatToString%2A&gt;</ph>方法可為事件的資訊，這非常有用，如果事件資料必須記錄，並向使用者顯示更新版本提供統一的格式。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Management.WebThreadInformation.FormatToString(System.Web.Management.WebEventFormatter)">
+          <source>It is called internally when the provider invokes one of the <ph id="ph1">&lt;xref:System.Web.Management.WebBaseEvent.ToString%2A&gt;</ph> methods.</source>
+          <target state="translated">它時，內部呼叫提供者會叫用的其中一個<ph id="ph1">&lt;xref:System.Web.Management.WebBaseEvent.ToString%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Management.WebThreadInformation.FormatToString(System.Web.Management.WebEventFormatter)">
+          <source>The following code example shows how to format custom information.</source>
+          <target state="translated">下列程式碼範例示範如何設定自訂資訊的格式。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" uid="P:System.Web.Management.WebThreadInformation.IsImpersonating">
+          <source>Gets the current thread-impersonation mode.</source>
+          <target state="translated">取得目前的執行緒模擬模式。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Management.WebThreadInformation.IsImpersonating">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the thread is executing in impersonation mode; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果執行緒是在模擬模式中執行則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Management.WebThreadInformation.IsImpersonating">
+          <source>The following code example shows how to get the thread-impersonation mode.</source>
+          <target state="translated">下列程式碼範例示範如何取得執行緒模擬模式。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" uid="P:System.Web.Management.WebThreadInformation.StackTrace">
+          <source>Gets the current thread-managed stack trace.</source>
+          <target state="translated">取得目前執行緒管理的堆疊追蹤。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Management.WebThreadInformation.StackTrace">
+          <source>The thread-managed stack trace.</source>
+          <target state="translated">執行緒管理的堆疊追蹤。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Management.WebThreadInformation.StackTrace">
+          <source>The following code example shows how to get the thread stack trace.</source>
+          <target state="translated">下列程式碼範例示範如何取得執行緒的堆疊追蹤。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" uid="P:System.Web.Management.WebThreadInformation.ThreadAccountName">
+          <source>Gets the thread account name.</source>
+          <target state="translated">取得執行緒帳戶名稱。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Management.WebThreadInformation.ThreadAccountName">
+          <source>The thread account name.</source>
+          <target state="translated">執行緒帳戶名稱。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Management.WebThreadInformation.ThreadAccountName">
+          <source>The account returned by this property might be arbitrary if the thread is executing in impersonation mode.</source>
+          <target state="translated">這個屬性所傳回的帳戶可能是任意如果執行緒正在模擬模式執行。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Management.WebThreadInformation.ThreadAccountName">
+          <source>The following code example shows how to get the thread account name.</source>
+          <target state="translated">下列程式碼範例示範如何取得執行緒帳戶名稱。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" uid="P:System.Web.Management.WebThreadInformation.ThreadID">
+          <source>Gets the current thread identifier.</source>
+          <target state="translated">取得目前的執行緒識別項。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Management.WebThreadInformation.ThreadID">
+          <source>The current thread identifier.</source>
+          <target state="translated">目前的執行緒識別項。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Management.WebThreadInformation.ThreadID">
+          <source>Even if managed threads might not have direct mapping to the OS threads, for debugging purposes, it is always useful to isolate a specific thread where problems might exist.</source>
+          <target state="translated">即使 managed 的執行緒可能沒有直接對應至 OS 執行緒，以進行偵錯，它很適合用來隔離特定的執行緒可能有問題。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Management.WebThreadInformation.ThreadID">
+          <source>The following code example shows how to get the thread identifier.</source>
+          <target state="translated">下列程式碼範例示範如何取得執行緒識別項。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

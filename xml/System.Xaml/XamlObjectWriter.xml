@@ -1,1026 +1,444 @@
-<Type Name="XamlObjectWriter" FullName="System.Xaml.XamlObjectWriter">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="ca402de94a9fb4c2404a3eb885b3a1fc9d0fc4b6" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public class XamlObjectWriter : System.Xaml.XamlWriter, System.Xaml.IXamlLineInfoConsumer" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit XamlObjectWriter extends System.Xaml.XamlWriter implements class System.Xaml.IXamlLineInfoConsumer" />
-  <TypeSignature Language="DocId" Value="T:System.Xaml.XamlObjectWriter" />
-  <TypeSignature Language="VB.NET" Value="Public Class XamlObjectWriter&#xA;Inherits XamlWriter&#xA;Implements IXamlLineInfoConsumer" />
-  <TypeSignature Language="C++ CLI" Value="public ref class XamlObjectWriter : System::Xaml::XamlWriter, System::Xaml::IXamlLineInfoConsumer" />
-  <AssemblyInfo>
-    <AssemblyName>System.Xaml</AssemblyName>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Xaml.XamlWriter</BaseTypeName>
-  </Base>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>System.Xaml.IXamlLineInfoConsumer</InterfaceName>
-    </Interface>
-  </Interfaces>
-  <Docs>
-    <summary>
-      <span data-ttu-id="361eb-101">從來源 XAML 節點資料流建立物件圖形。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="361eb-101">Creates an object graph from a source XAML node stream.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="361eb-102">`Write`方法<xref:System.Xaml.XamlObjectWriter>實作模式，讓<xref:System.Xaml.XamlObjectWriter>使用<xref:System.Xaml.XamlWriter>所定義的<xref:System.Xaml.XamlWriter.WriteNode%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="361eb-102">The `Write` methods of <xref:System.Xaml.XamlObjectWriter> implement a pattern so that the <xref:System.Xaml.XamlObjectWriter> uses the <xref:System.Xaml.XamlWriter> that is defined by the <xref:System.Xaml.XamlWriter.WriteNode%2A> method.</span></span> <span data-ttu-id="361eb-103"><xref:System.Xaml.XamlWriter.WriteNode%2A> 邏輯交換器之間`Write`方法，根據哪個節點型別是讀取器中目前的位置。</span><span class="sxs-lookup"><span data-stu-id="361eb-103"><xref:System.Xaml.XamlWriter.WriteNode%2A> logic switches between the `Write` methods, depending on which node type is at the current position in the reader.</span></span>  
-  
-## <a name="scope"></a><span data-ttu-id="361eb-104">範圍</span><span class="sxs-lookup"><span data-stu-id="361eb-104">Scope</span></span>  
- <span data-ttu-id="361eb-105">A<xref:System.Xaml.XamlObjectWriter>範圍; 的概念、<xref:System.Xaml.XamlObjectWriter>維護概念的其輸出的物件圖形中的參考點。</span><span class="sxs-lookup"><span data-stu-id="361eb-105">A <xref:System.Xaml.XamlObjectWriter> has a concept of scope; that is, the <xref:System.Xaml.XamlObjectWriter> maintains a conceptual point of reference in its output object graph.</span></span> <span data-ttu-id="361eb-106">針對特定範圍，某些作業可能會有效或無效，或產生無作業的結果。</span><span class="sxs-lookup"><span data-stu-id="361eb-106">For a particular scope, certain operations might be valid or invalid, or produce a no-operation result.</span></span> <span data-ttu-id="361eb-107">例如，如果您呼叫<xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A>物件上的初始化已存在做為執行個體，請撰寫指示詞的預設實作會擲回例外狀況。</span><span class="sxs-lookup"><span data-stu-id="361eb-107">For example, if you call <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A> to write directives for initialization on an object that already exists as an instance, the default implementation throws an exception.</span></span>  
-  
- <span data-ttu-id="361eb-108">追蹤中自訂的範圍可能技巧<xref:System.Xaml.XamlObjectWriter>是對齊堆疊或框架的類別使用的節點動作。</span><span class="sxs-lookup"><span data-stu-id="361eb-108">A possible technique for tracking scope in a custom <xref:System.Xaml.XamlObjectWriter> is to align the node actions with a stack or frame class.</span></span> <span data-ttu-id="361eb-109">框架的堆疊可以追蹤的 push 和 pop 每個層級的物件模型的深度，進入或離開時<xref:System.Xaml.XamlObjectWriter>寫入物件圖形。</span><span class="sxs-lookup"><span data-stu-id="361eb-109">The stack or frame can keep track of push and pop for each level of object-model depth that is entered or exited while the <xref:System.Xaml.XamlObjectWriter> writes the object graph.</span></span>  
-  
-## <a name="callbacks"></a><span data-ttu-id="361eb-110">回呼</span><span class="sxs-lookup"><span data-stu-id="361eb-110">Callbacks</span></span>  
- <span data-ttu-id="361eb-111">若要支援中繼和進階<xref:System.Xaml.XamlObjectWriter>案例中，撰寫物件圖形的機制提供回呼發生的進入點時<xref:System.Xaml.XamlObjectWriter>認可或即將認可某些動作。</span><span class="sxs-lookup"><span data-stu-id="361eb-111">To support intermediate and advanced <xref:System.Xaml.XamlObjectWriter> scenarios, the mechanism of writing an object graph provides callback entry points that occur when a <xref:System.Xaml.XamlObjectWriter> commits or is about to commit certain actions.</span></span> <span data-ttu-id="361eb-112">某些回呼會在設定中啟用和並非所特有物件類型或成員正在寫入;不過，回呼資訊通常是在內容中使用，或者是在事件會透過回呼傳送的資料。</span><span class="sxs-lookup"><span data-stu-id="361eb-112">Some callbacks are enabled in the settings and are not specific to the object type or the member being written; however, callback information is often available in context or is in the event data that is sent through the callback.</span></span> <span data-ttu-id="361eb-113">下列是一份相關回呼：</span><span class="sxs-lookup"><span data-stu-id="361eb-113">The following is a list of relevant callbacks:</span></span>  
-  
--   <span data-ttu-id="361eb-114">由宣告回呼<xref:System.Xaml.XamlObjectWriterSettings.AfterBeginInitHandler%2A>時範圍會移入新的物件，並在叫用<xref:System.ComponentModel.ISupportInitialize.BeginInit%2A>階段建立的每個物件的物件存留期。</span><span class="sxs-lookup"><span data-stu-id="361eb-114">The callback that is declared by <xref:System.Xaml.XamlObjectWriterSettings.AfterBeginInitHandler%2A> is invoked when the scope goes to a new object and at the <xref:System.ComponentModel.ISupportInitialize.BeginInit%2A> phase of object lifetime for each created object.</span></span>  
-  
--   <span data-ttu-id="361eb-115">由宣告回呼<xref:System.Xaml.XamlObjectWriterSettings.AfterEndInitHandler%2A>時範圍會移入新的物件，並在叫用<xref:System.ComponentModel.ISupportInitialize.EndInit%2A>階段建立的每個物件的物件存留期。</span><span class="sxs-lookup"><span data-stu-id="361eb-115">The callback that is declared by <xref:System.Xaml.XamlObjectWriterSettings.AfterEndInitHandler%2A> is invoked when the scope goes to a new object and at the <xref:System.ComponentModel.ISupportInitialize.EndInit%2A> phase of object lifetime for each created object.</span></span>  
-  
--   <span data-ttu-id="361eb-116">由宣告回呼<xref:System.Xaml.XamlObjectWriterSettings.BeforePropertiesHandler%2A>範圍物件，一開始，而發生時叫用時第一個<xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A>呼叫該物件範圍時進行，但尚未認可。</span><span class="sxs-lookup"><span data-stu-id="361eb-116">The callback that is declared by <xref:System.Xaml.XamlObjectWriterSettings.BeforePropertiesHandler%2A> is invoked when the scope starts in an object, and occurs when the first <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A> call to that object scope is made but not yet committed.</span></span>  
-  
--   <span data-ttu-id="361eb-117">由宣告回呼<xref:System.Xaml.XamlObjectWriterSettings.AfterPropertiesHandler%2A>範圍物件，一開始，而發生時叫用時<xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A>呼叫該物件範圍時進行，但尚未認可。</span><span class="sxs-lookup"><span data-stu-id="361eb-117">The callback that is declared by <xref:System.Xaml.XamlObjectWriterSettings.AfterPropertiesHandler%2A> is invoked when the scope starts in an object, and happens when the <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> call to that object scope is made but not yet committed.</span></span>  
-  
--   <span data-ttu-id="361eb-118">由宣告回呼<xref:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler%2A>時叫用<xref:System.Xaml.XamlObjectWriter.OnSetValue%2A>呼叫。</span><span class="sxs-lookup"><span data-stu-id="361eb-118">The callback that is declared by <xref:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler%2A> is invoked when <xref:System.Xaml.XamlObjectWriter.OnSetValue%2A> is called.</span></span>  
-  
-## <a name="writing-dictionary-keys"></a><span data-ttu-id="361eb-119">手寫字典索引鍵</span><span class="sxs-lookup"><span data-stu-id="361eb-119">Writing Dictionary Keys</span></span>  
- <span data-ttu-id="361eb-120">預設實作<xref:System.Xaml.XamlObjectWriter>支援類型轉換的條件約束<xref:System.Collections.Generic.Dictionary%602>之前字典內容加入物件圖形。</span><span class="sxs-lookup"><span data-stu-id="361eb-120">The default implementation of <xref:System.Xaml.XamlObjectWriter> supports type conversion on the constraints of a <xref:System.Collections.Generic.Dictionary%602> before the dictionary contents are added to the object graph.</span></span> <span data-ttu-id="361eb-121">如此一來，在泛型字典可以在執行階段物件索引鍵，而且符合相關的一般`Add`和索引子的行為。</span><span class="sxs-lookup"><span data-stu-id="361eb-121">In this manner, a generic dictionary can be keyed at run time by objects and can match the relevant generic `Add` and indexer behavior.</span></span> <span data-ttu-id="361eb-122">不過，做為基底實作<xref:System.Xaml.XamlObjectWriter>，這項功能只存在於物件圖形建立基底<xref:System.Collections.Generic.Dictionary%602>類別，衍生的類別不能用於<xref:System.Collections.Generic.Dictionary%602>。</span><span class="sxs-lookup"><span data-stu-id="361eb-122">However, as implemented for the base <xref:System.Xaml.XamlObjectWriter>, this capability exists only for object graph creation from the base <xref:System.Collections.Generic.Dictionary%602> class and not for derived classes of <xref:System.Collections.Generic.Dictionary%602>.</span></span>  
-  
-## <a name="checks-for-disposed"></a><span data-ttu-id="361eb-123">檢查有無處置</span><span class="sxs-lookup"><span data-stu-id="361eb-123">Checks for Disposed</span></span>  
- <span data-ttu-id="361eb-124">XAML 寫入器可能會用來延後的作業，或針對在過渡期中已處置的 XAML 寫入器執行個體進行呼叫的位置。</span><span class="sxs-lookup"><span data-stu-id="361eb-124">XAML writers are potentially used for deferred operations or where a call is made against a XAML writer instance that has been disposed in the interim.</span></span> <span data-ttu-id="361eb-125">各種 Api<xref:System.Xaml.XamlObjectWriter>可能會擲回<xref:System.ObjectDisposedException>在這些情況下。</span><span class="sxs-lookup"><span data-stu-id="361eb-125">Various APIs of <xref:System.Xaml.XamlObjectWriter> might throw <xref:System.ObjectDisposedException> in these cases.</span></span>  
-  
- ]]></format>
-    </remarks>
-    <altmember cref="T:System.Xaml.XamlWriter" />
-    <altmember cref="T:System.Xaml.XamlObjectReader" />
-  </Docs>
-  <Members>
-    <MemberGroup MemberName=".ctor">
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary>
-          <span data-ttu-id="361eb-126">初始化 <see cref="T:System.Xaml.XamlObjectWriter" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-126">Initializes a new instance of the <see cref="T:System.Xaml.XamlObjectWriter" /> class.</span>
-          </span>
-        </summary>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public XamlObjectWriter (System.Xaml.XamlSchemaContext schemaContext);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Xaml.XamlSchemaContext schemaContext) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.#ctor(System.Xaml.XamlSchemaContext)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (schemaContext As XamlSchemaContext)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; XamlObjectWriter(System::Xaml::XamlSchemaContext ^ schemaContext);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
-      </Parameters>
-      <Docs>
-        <param name="schemaContext">
-          <span data-ttu-id="361eb-127">與提供寫入之節點的 XAML 讀取器共用的 XAML 結構描述內容。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-127">A XAML schema context that is shared with the XAML reader that provides nodes for writing.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="361eb-128">使用 <see cref="T:System.Xaml.XamlObjectWriter" /> 所使用的 XAML 結構描述內容，初始化 <see cref="T:System.Xaml.XamlReader" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-128">Initializes a new instance of the <see cref="T:System.Xaml.XamlObjectWriter" /> class using  the XAML schema context that is used by a <see cref="T:System.Xaml.XamlReader" />.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="361eb-129">
-            <paramref name="schemaContext" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-129">
-              <paramref name="schemaContext" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public XamlObjectWriter (System.Xaml.XamlSchemaContext schemaContext, System.Xaml.XamlObjectWriterSettings settings);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Xaml.XamlSchemaContext schemaContext, class System.Xaml.XamlObjectWriterSettings settings) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.#ctor(System.Xaml.XamlSchemaContext,System.Xaml.XamlObjectWriterSettings)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (schemaContext As XamlSchemaContext, settings As XamlObjectWriterSettings)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; XamlObjectWriter(System::Xaml::XamlSchemaContext ^ schemaContext, System::Xaml::XamlObjectWriterSettings ^ settings);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
-        <Parameter Name="settings" Type="System.Xaml.XamlObjectWriterSettings" />
-      </Parameters>
-      <Docs>
-        <param name="schemaContext">
-          <span data-ttu-id="361eb-130">與提供寫入之節點的 XAML 讀取器共用的 XAML 結構描述內容。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-130">A XAML schema context that is shared with the XAML reader that provides nodes for writing.</span>
-          </span>
-        </param>
-        <param name="settings">
-          <span data-ttu-id="361eb-131">指定 <see cref="T:System.Xaml.XamlObjectWriter" /> 行為和輸出之特定選項的設定物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-131">A settings object that specifies certain options for <see cref="T:System.Xaml.XamlObjectWriter" /> behavior and output.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="361eb-132">使用 <see cref="T:System.Xaml.XamlObjectWriter" /> 所使用的內容和其設定，初始化 <see cref="T:System.Xaml.XamlReader" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-132">Initializes a new instance of the <see cref="T:System.Xaml.XamlObjectWriter" /> class using the context that is used by a <see cref="T:System.Xaml.XamlReader" /> and its settings.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="361eb-133">
-            <paramref name="schemaContext" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-133">
-              <paramref name="schemaContext" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="Clear">
-      <MemberSignature Language="C#" Value="public void Clear ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Clear() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.Clear" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Clear ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Clear();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="361eb-134">重設所有可能的框架並清除物件圖形。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-134">Resets all possible frames and clears the object graph.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Dispose">
-      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.Dispose(System.Boolean)" />
-      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub Dispose (disposing As Boolean)" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void Dispose(bool disposing);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="disposing" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="disposing">
-          <span data-ttu-id="361eb-135">
-            <see langword="true" /> 表示釋放 Managed 資源，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-135">
-              <see langword="true" /> to release the managed resources; otherwise, <see langword="false" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="361eb-136">釋放 <see cref="T:System.Xaml.XamlObjectWriter" /> 所使用的 Unmanaged 資源，並選擇性釋放 Managed 資源。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-136">Releases the unmanaged resources used by the <see cref="T:System.Xaml.XamlObjectWriter" />, and optionally, releases the managed resources.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnAfterBeginInit">
-      <MemberSignature Language="C#" Value="protected virtual void OnAfterBeginInit (object value);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnAfterBeginInit(object value) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.OnAfterBeginInit(System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnAfterBeginInit (value As Object)" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnAfterBeginInit(System::Object ^ value);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="value" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="value">
-          <span data-ttu-id="361eb-137">要報告的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-137">The object to report on.</span>
-          </span>
-          <span data-ttu-id="361eb-138">叫用處理常式時，會將物件封裝至 <see cref="T:System.Xaml.XamlObjectEventArgs" /> 中。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-138">The object is packaged into <see cref="T:System.Xaml.XamlObjectEventArgs" /> when the handler is invoked.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="361eb-139">叫用與這個 <see cref="P:System.Xaml.XamlObjectWriterSettings.AfterBeginInitHandler" /> 之 <see cref="T:System.Xaml.XamlObjectWriterSettings" /> 相關聯的任何 <see cref="T:System.Xaml.XamlObjectWriter" /> 方法。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-139">Invokes any <see cref="P:System.Xaml.XamlObjectWriterSettings.AfterBeginInitHandler" /> method that is associated with <see cref="T:System.Xaml.XamlObjectWriterSettings" /> for this <see cref="T:System.Xaml.XamlObjectWriter" />.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnAfterEndInit">
-      <MemberSignature Language="C#" Value="protected virtual void OnAfterEndInit (object value);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnAfterEndInit(object value) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.OnAfterEndInit(System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnAfterEndInit (value As Object)" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnAfterEndInit(System::Object ^ value);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="value" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="value">
-          <span data-ttu-id="361eb-140">要報告的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-140">The object to report on.</span>
-          </span>
-          <span data-ttu-id="361eb-141">叫用處理常式時，值會封裝至 <see cref="T:System.Xaml.XamlObjectEventArgs" /> 中。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-141">The value  is packaged into <see cref="T:System.Xaml.XamlObjectEventArgs" /> when the handler is invoked.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="361eb-142">叫用與這個 <see cref="P:System.Xaml.XamlObjectWriterSettings.AfterEndInitHandler" /> 之 <see cref="T:System.Xaml.XamlObjectWriterSettings" /> 相關聯的任何 <see cref="T:System.Xaml.XamlObjectWriter" /> 方法。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-142">Invokes any <see cref="P:System.Xaml.XamlObjectWriterSettings.AfterEndInitHandler" /> method that is associated with <see cref="T:System.Xaml.XamlObjectWriterSettings" /> for this <see cref="T:System.Xaml.XamlObjectWriter" />.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnAfterProperties">
-      <MemberSignature Language="C#" Value="protected virtual void OnAfterProperties (object value);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnAfterProperties(object value) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.OnAfterProperties(System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnAfterProperties (value As Object)" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnAfterProperties(System::Object ^ value);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="value" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="value">
-          <span data-ttu-id="361eb-143">要報告的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-143">The object to report on.</span>
-          </span>
-          <span data-ttu-id="361eb-144">會在叫用處理常式將其封裝至 <see cref="T:System.Xaml.XamlObjectEventArgs" /> 中。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-144">This is packaged into <see cref="T:System.Xaml.XamlObjectEventArgs" /> when the handler is invoked.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="361eb-145">叫用與這個 <see cref="P:System.Xaml.XamlObjectWriterSettings.AfterPropertiesHandler" /> 之 <see cref="T:System.Xaml.XamlObjectWriterSettings" /> 相關聯的任何 <see cref="T:System.Xaml.XamlObjectWriter" /> 參考方法。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-145">Invokes any <see cref="P:System.Xaml.XamlObjectWriterSettings.AfterPropertiesHandler" /> referenced method that is associated with <see cref="T:System.Xaml.XamlObjectWriterSettings" /> for this <see cref="T:System.Xaml.XamlObjectWriter" />.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnBeforeProperties">
-      <MemberSignature Language="C#" Value="protected virtual void OnBeforeProperties (object value);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnBeforeProperties(object value) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.OnBeforeProperties(System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnBeforeProperties (value As Object)" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnBeforeProperties(System::Object ^ value);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="value" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="value">
-          <span data-ttu-id="361eb-146">在叫用處理常式時要透過 <see cref="T:System.Xaml.XamlObjectEventArgs" /> 傳遞的值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-146">The value to pass through <see cref="T:System.Xaml.XamlObjectEventArgs" /> when the handler is invoked.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="361eb-147">叫用與這個 <see cref="P:System.Xaml.XamlObjectWriterSettings.BeforePropertiesHandler" /> 之 <see cref="T:System.Xaml.XamlObjectWriterSettings" /> 相關聯的任何 <see cref="T:System.Xaml.XamlObjectWriter" /> 參考方法。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-147">Invokes any <see cref="P:System.Xaml.XamlObjectWriterSettings.BeforePropertiesHandler" /> referenced method that is associated with <see cref="T:System.Xaml.XamlObjectWriterSettings" /> for this <see cref="T:System.Xaml.XamlObjectWriter" />.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnSetValue">
-      <MemberSignature Language="C#" Value="protected virtual bool OnSetValue (object eventSender, System.Xaml.XamlMember member, object value);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnSetValue(object eventSender, class System.Xaml.XamlMember member, object value) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.OnSetValue(System.Object,System.Xaml.XamlMember,System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Protected Overridable Function OnSetValue (eventSender As Object, member As XamlMember, value As Object) As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual bool OnSetValue(System::Object ^ eventSender, System::Xaml::XamlMember ^ member, System::Object ^ value);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="eventSender" Type="System.Object" />
-        <Parameter Name="member" Type="System.Xaml.XamlMember" />
-        <Parameter Name="value" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="eventSender">
-          <span data-ttu-id="361eb-148">要向處理常式報告做為來源的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-148">The object to report as the source to the handler.</span>
-          </span>
-        </param>
-        <param name="member">
-          <span data-ttu-id="361eb-149">要設定之屬性的名稱，這個名稱會在 <see cref="T:System.Windows.Markup.XamlSetValueEventArgs" /> 中傳遞至處理常式。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-149">The name of the property to set, which is passed to the handler as part of <see cref="T:System.Windows.Markup.XamlSetValueEventArgs" />.</span>
-          </span>
-        </param>
-        <param name="value">
-          <span data-ttu-id="361eb-150">要提供給由 <c>property</c> 命名之屬性的值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-150">The value to provide for the property that is named by <c>property</c>.</span>
-          </span>
-          <span data-ttu-id="361eb-151">這個值會在 <see cref="T:System.Windows.Markup.XamlSetValueEventArgs" /> 中傳遞至處理常式。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-151">The value is passed to the handler as part of <see cref="T:System.Windows.Markup.XamlSetValueEventArgs" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="361eb-152">叫用與這個寫入器之 <see cref="P:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler" /> 相關聯的任何 <see cref="T:System.Xaml.XamlObjectWriterSettings" /> 參考方法 (只要 <see cref="T:System.Windows.Markup.XamlSetValueEventArgs" /> 事件資料中的 <paramref name="handled" /> 不是 <see langword="true" /> 即可)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-152">Invokes any <see cref="P:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler" /> referenced method that is associated with <see cref="T:System.Xaml.XamlObjectWriterSettings" /> for this writer, as long as <paramref name="handled" /> in <see cref="T:System.Windows.Markup.XamlSetValueEventArgs" /> event data is not <see langword="true" />.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="361eb-153">任何相關聯處理常式所設定的布林值，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-153">A Boolean value that is set by any associated handler; otherwise, <see langword="false" />.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="361eb-154">如果`SetValue`此 XAML 寫入器的作業有關聯的處理常式 (<xref:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler%2A>中宣告<xref:System.Xaml.XamlObjectWriterSettings>)，這個方法建立新<xref:System.Windows.Markup.XamlSetValueEventArgs>並將其傳遞至處理常式。</span><span class="sxs-lookup"><span data-stu-id="361eb-154">If the `SetValue` operation for this XAML writer has an associated handler (a <xref:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler%2A> is declared in <xref:System.Xaml.XamlObjectWriterSettings>), this method creates new <xref:System.Windows.Markup.XamlSetValueEventArgs> and passes them to the handler.</span></span> <span data-ttu-id="361eb-155">傳回的值由讀取設定<xref:System.Windows.Markup.XamlSetValueEventArgs.Handled%2A>事件資料會傳遞的值。</span><span class="sxs-lookup"><span data-stu-id="361eb-155">The return value is set by reading the <xref:System.Windows.Markup.XamlSetValueEventArgs.Handled%2A> value that is passed through the event data.</span></span> <span data-ttu-id="361eb-156">如果處理常式不存在，而且這個方法會叫用，則呼叫會傳回`false`。</span><span class="sxs-lookup"><span data-stu-id="361eb-156">If no handler exists and this method is invoked, the call returns `false`.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Result">
-      <MemberSignature Language="C#" Value="public virtual object Result { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance object Result" />
-      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlObjectWriter.Result" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property Result As Object" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Object ^ Result { System::Object ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="361eb-157">取得最後一個寫入的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-157">Gets the last object that was written.</span>
-          </span>
-          <span data-ttu-id="361eb-158">通常只有在節點資料流位在結尾且物件圖形完成時才會加以呼叫。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-158">Typically only called when the node stream is at its end and the object graph is complete.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="361eb-159">最後一個寫入的物件，或 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-159">The last object written, or <see langword="null" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="361eb-160">最常見的使用方式的<xref:System.Xaml.XamlObjectWriter.Result%2A>是只有在節點資料流是否已知為其結尾，且已完成的物件圖形呼叫它。</span><span class="sxs-lookup"><span data-stu-id="361eb-160">The most typical usage of <xref:System.Xaml.XamlObjectWriter.Result%2A> is to call it only when the node stream is known to be at its end, and the object graph is complete.</span></span> <span data-ttu-id="361eb-161">否則，物件圖形可能會不完整，並不是適用於大部分平台案例。</span><span class="sxs-lookup"><span data-stu-id="361eb-161">Otherwise, the object graph is likely to be incomplete, and is not useful for most platform scenarios.</span></span>  
-  
- <span data-ttu-id="361eb-162"><xref:System.Xaml.XamlObjectWriter.Result%2A> 如果呼叫之後立即呼叫通常只包含非 null 值<xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A>，而且如果目前的範圍是處於其中的物件會提供值的成員。</span><span class="sxs-lookup"><span data-stu-id="361eb-162"><xref:System.Xaml.XamlObjectWriter.Result%2A> typically only contains a non-null value if it is called immediately after a call to <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A>, and if the current scope is in the member where the object provides a value.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RootNameScope">
-      <MemberSignature Language="C#" Value="public System.Windows.Markup.INameScope RootNameScope { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Markup.INameScope RootNameScope" />
-      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlObjectWriter.RootNameScope" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property RootNameScope As INameScope" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Windows::Markup::INameScope ^ RootNameScope { System::Windows::Markup::INameScope ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Windows.Markup.INameScope</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="361eb-163">取得 <see cref="T:System.Windows.Markup.INameScope" /> 服務，這個服務會維護 XAML 物件寫入器之絕對節點根的 XAML 名稱範圍。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-163">Gets the <see cref="T:System.Windows.Markup.INameScope" /> service that maintains the XAML namescope for the absolute node root of the XAML object writer.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="361eb-164">
-            <see cref="T:System.Windows.Markup.INameScope" /> 服務，這個服務會維護物件寫入器目前根的 XAML 名稱範圍。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-164">The <see cref="T:System.Windows.Markup.INameScope" /> service that maintains the XAML namescope for the current root of the object writer.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="361eb-165">這個屬性的值可能來自物件寫入器內容。</span><span class="sxs-lookup"><span data-stu-id="361eb-165">The value of this property may come from the object writer context.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SchemaContext">
-      <MemberSignature Language="C#" Value="public override System.Xaml.XamlSchemaContext SchemaContext { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Xaml.XamlSchemaContext SchemaContext" />
-      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlObjectWriter.SchemaContext" />
-      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property SchemaContext As XamlSchemaContext" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Xaml::XamlSchemaContext ^ SchemaContext { System::Xaml::XamlSchemaContext ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Xaml.XamlSchemaContext</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="361eb-166">取得作用中 XAML 結構描述內容。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-166">Gets the active XAML schema context.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="361eb-167">XAML 結構描述內容。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-167">The XAML schema context.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="361eb-168">XAML 結構描述內容是最實用的物件撰寫案例所需的資訊來源。</span><span class="sxs-lookup"><span data-stu-id="361eb-168">XAML schema context is a necessary information source for most practical object-writing scenarios.</span></span> <span data-ttu-id="361eb-169">XAML 結構描述內容影響的備份類型的型別查閱，並保留其中備份類型，存在於組件的相關資訊。</span><span class="sxs-lookup"><span data-stu-id="361eb-169">The XAML schema context influences the type lookup for backing types and holds information about the assemblies where backing types exist.</span></span> <span data-ttu-id="361eb-170">預設 XAML 結構描述內容為基礎 CLR 型別對應規則。</span><span class="sxs-lookup"><span data-stu-id="361eb-170">The default XAML schema context is based on CLR type-mapping rules.</span></span> <span data-ttu-id="361eb-171">通常，架構會提供自己的 XAML 結構描述內容以確保組件載入機制符合架構的程式設計 amd 應用程式模型。</span><span class="sxs-lookup"><span data-stu-id="361eb-171">Frameworks typically provide their own XAML schema context in order to assure that that the assembly-loading mechanisms match the framework's programming amd application models.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SetLineInfo">
-      <MemberSignature Language="C#" Value="public void SetLineInfo (int lineNumber, int linePosition);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetLineInfo(int32 lineNumber, int32 linePosition) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.SetLineInfo(System.Int32,System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub SetLineInfo (lineNumber As Integer, linePosition As Integer)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void SetLineInfo(int lineNumber, int linePosition);" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="lineNumber" Type="System.Int32" />
-        <Parameter Name="linePosition" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="lineNumber">
-          <span data-ttu-id="361eb-172">來自讀取器的行號。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-172">The line number from the reader.</span>
-          </span>
-        </param>
-        <param name="linePosition">
-          <span data-ttu-id="361eb-173">來自讀取器的行位置。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-173">The line position from the reader.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="361eb-174">實作 <see cref="M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)" />，並提供例外狀況的行資訊。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-174">Implements <see cref="M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)" /> and provides line information for exceptions.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="361eb-175">此服務方法不是直接從您的程式碼呼叫。</span><span class="sxs-lookup"><span data-stu-id="361eb-175">This service method is not intended to be called directly from your code.</span></span> <span data-ttu-id="361eb-176">不過，如果您要建立衍生的類別從<xref:System.Xaml.XamlObjectWriter>並預期要報告的內容位置的行號會無法使用或不實用，這個方法可能會呼叫。</span><span class="sxs-lookup"><span data-stu-id="361eb-176">However, if you are creating a derived class from <xref:System.Xaml.XamlObjectWriter> and expect to report a context where line numbers are unavailable or not useful, this method may be called.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ShouldProvideLineInfo">
-      <MemberSignature Language="C#" Value="public bool ShouldProvideLineInfo { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool ShouldProvideLineInfo" />
-      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlObjectWriter.ShouldProvideLineInfo" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ShouldProvideLineInfo As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool ShouldProvideLineInfo { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Xaml.IXamlLineInfoConsumer.ShouldProvideLineInfo</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="361eb-177">取得值，這個值會報告行資訊服務是否應該提供值 (因此也應該在必要時呼叫 <see cref="M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)" /> 方法)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-177">Gets a value that reports whether a line information service should provide values and therefore, should also call the <see cref="M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)" /> method when it is relevant.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="361eb-178">如果寫入器會使用行資訊，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-178">
-              <see langword="true" /> if line information is used by the writer; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="361eb-179">這個實作永遠會傳回 `true`。</span><span class="sxs-lookup"><span data-stu-id="361eb-179">This implementation always returns `true`.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="WriteEndMember">
-      <MemberSignature Language="C#" Value="public override void WriteEndMember ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteEndMember() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.WriteEndMember" />
-      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteEndMember ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteEndMember();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="361eb-180">關閉目前成員範圍，並且可能在關閉成員範圍期間寫入其值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-180">Closes the current member scope, and may write the value of the member scope while it closes.</span>
-          </span>
-          <span data-ttu-id="361eb-181">新的範圍會成為成員的父物件範圍。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-181">The new scope becomes the parent object scope of the member.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.Xaml.XamlObjectWriterException">
-          <span data-ttu-id="361eb-182">無法從在這次呼叫和前一次 <see langword="StartMember" /> 之間遇到的值節點建立成員值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-182">Failed to create member value from a value node that is encountered between this call and a previous <see langword="StartMember" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="WriteEndObject">
-      <MemberSignature Language="C#" Value="public override void WriteEndObject ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteEndObject() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.WriteEndObject" />
-      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteEndObject ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteEndObject();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="361eb-183">關閉寫入器中的目前物件範圍。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-183">Closes the current object scope in the writer.</span>
-          </span>
-          <span data-ttu-id="361eb-184">新的物件範圍會成為父成員範圍。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-184">The new object scope becomes the parent member scope.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="361eb-185">如果這個`EndObject`位置範圍關閉的根物件，新的物件範圍會成為根範圍。</span><span class="sxs-lookup"><span data-stu-id="361eb-185">If this `EndObject` position scope is closing the root object, the new object scope becomes the root scope.</span></span>  
-  
- <span data-ttu-id="361eb-186">若要呼叫<xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A>可能尚未建立物件由於該物件成員可能是必要的初始化路徑，例如初始文字或初始化參數。</span><span class="sxs-lookup"><span data-stu-id="361eb-186">The call to <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> might not yet have created the object because an object member might be a necessary initialization pathway, such as initialization text or initialization parameters.</span></span> <span data-ttu-id="361eb-187">這些情況下，呼叫<xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A>實際寫入的物件。</span><span class="sxs-lookup"><span data-stu-id="361eb-187">For these cases, the call to <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> actually writes the object.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="WriteGetObject">
-      <MemberSignature Language="C#" Value="public override void WriteGetObject ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteGetObject() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.WriteGetObject" />
-      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteGetObject ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteGetObject();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="361eb-188">當指定之物件為父屬性的預設值或隱含值時，將概念 <see langword="StartObject" /> 寫入物件圖形。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-188">Writes the conceptual <see langword="StartObject" /> into the object graph when the specified object is a default or implicit value of the parent property.</span>
-          </span>
-          <span data-ttu-id="361eb-189">隱含值來自從 XAML 結構描述內容及支援型別資訊取得的資訊，而非指定為在輸入 XAML 節點集中的物件值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-189">The implicit value comes from information that is obtained from the XAML schema context and backing type information, instead of being specified as an object value in the input XAML node set.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="361eb-190">與寫入之間的差異<xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A>和寫入與<xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A>結果物件圖形中可以看到。</span><span class="sxs-lookup"><span data-stu-id="361eb-190">The difference between writing with <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> and writing with <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> can be seen in the resulting object graph.</span></span> <span data-ttu-id="361eb-191"><xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> 將不會建構類型的執行個體因為<xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A>應用程式開發介面有任何資訊來通知所要建構的物件圖形。</span><span class="sxs-lookup"><span data-stu-id="361eb-191"><xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> does not construct an instance of a type because the <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> API has no information to inform the object graph of what to construct.</span></span> <span data-ttu-id="361eb-192">初始化 parent 屬性; 時，相反地，建立物件因此<xref:System.Xaml.XamlObjectWriter>不必建構它。</span><span class="sxs-lookup"><span data-stu-id="361eb-192">Instead, the object was created when the parent property was initialized; so a <xref:System.Xaml.XamlObjectWriter> does not need to construct it.</span></span> <span data-ttu-id="361eb-193">相反地，<xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A>指定應該建構該類型的執行個體，並插入的物件圖形。</span><span class="sxs-lookup"><span data-stu-id="361eb-193">In contrast, <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> specifies that an instance of that type should be constructed and inserted into the object graph.</span></span>  
-  
- <span data-ttu-id="361eb-194">如果您將一系列的框架，視為 XAML 節點資料流<xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A>平衡轉送到<xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A>呼叫。</span><span class="sxs-lookup"><span data-stu-id="361eb-194">If you think of the XAML node stream as a series of frames, a <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> is balanced to a <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> call.</span></span> <span data-ttu-id="361eb-195">因此，數目<xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A>加上<xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A>呼叫應該會等於數目<xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A>呼叫做為 XAML 節點資料流的完整物件寫入評估的一部分。</span><span class="sxs-lookup"><span data-stu-id="361eb-195">Therefore, the number of <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> plus <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> calls should equal the number of <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> calls as part of a complete object-writing evaluation of the XAML node stream.</span></span>  
-  
- <span data-ttu-id="361eb-196">將概念`StartObject`位置物件圖形中的隱含物件是必要的因為雖然本身的物件值的隱含預設值，該物件仍可能需要寫入可根據 XAML 節點資料流的成員。</span><span class="sxs-lookup"><span data-stu-id="361eb-196">The conceptual `StartObject` position for an implicit object in the object graph is necessary because although the object value itself is an implicit default, that object might still have members that need to be written based on the XAML node stream.</span></span> <span data-ttu-id="361eb-197">典型的案例，這種情況是當<xref:System.Xaml.XamlObjectWriter>寫入成員節點的集合屬性，以及集合初始設定是隱含建立擁有集合屬性的物件。</span><span class="sxs-lookup"><span data-stu-id="361eb-197">A typical scenario where this occurs is when <xref:System.Xaml.XamlObjectWriter> writes member nodes for a collection property, and the collection initialization is implicit to creating the object that owns the collection property.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="WriteNamespace">
-      <MemberSignature Language="C#" Value="public override void WriteNamespace (System.Xaml.NamespaceDeclaration namespaceDeclaration);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteNamespace(class System.Xaml.NamespaceDeclaration namespaceDeclaration) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteNamespace(System::Xaml::NamespaceDeclaration ^ namespaceDeclaration);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="namespaceDeclaration" Type="System.Xaml.NamespaceDeclaration" />
-      </Parameters>
-      <Docs>
-        <param name="namespaceDeclaration">
-          <span data-ttu-id="361eb-198">要寫入的命名空間宣告。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-198">The namespace declaration to write.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="361eb-199">定義會套用至下一個物件範圍或成員範圍的命名空間宣告。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-199">Defines a namespace declaration that applies to the next object scope or member scope.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="361eb-200">如果目前的範圍是根範圍、 物件範圍或成員範圍可以寫入命名空間宣告。</span><span class="sxs-lookup"><span data-stu-id="361eb-200">A namespace declaration can be written if the current scope is a root scope, object scope, or member scope.</span></span> <span data-ttu-id="361eb-201">不過，<xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A>只能呼叫之前呼叫下列其中之一： <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A>， <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A>，或<xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A>。</span><span class="sxs-lookup"><span data-stu-id="361eb-201">However, <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A> can only be called immediately before a call to one of the following: <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A>, <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A>, or <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A>.</span></span> <span data-ttu-id="361eb-202">連續<xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A>案例是撰寫多個命名空間宣告相同的節點。</span><span class="sxs-lookup"><span data-stu-id="361eb-202">The consecutive <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A> case is for writing multiple namespace declarations to the same node.</span></span> <span data-ttu-id="361eb-203">最後，請<xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A>或<xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A>必須呼叫。</span><span class="sxs-lookup"><span data-stu-id="361eb-203">Eventually, either <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> or <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A> must be called.</span></span>  
-  
- <span data-ttu-id="361eb-204"><xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A> 不會使用`Start` / `End`比喻。</span><span class="sxs-lookup"><span data-stu-id="361eb-204"><xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A> does not use a `Start`/`End` metaphor.</span></span> <span data-ttu-id="361eb-205">雖然 XAML 命名空間中的 CLR 表示意義成員，成員為已知，而且不需要表示為一種特殊型別的<xref:System.Xaml.XamlMember>擴充性。</span><span class="sxs-lookup"><span data-stu-id="361eb-205">Although a XAML namespace has members in the CLR representation sense, the members are known and do not need to be represented as a special type of <xref:System.Xaml.XamlMember> for extensibility.</span></span> <span data-ttu-id="361eb-206">若要存取的值<xref:System.Xaml.NamespaceDeclaration>，您存取其<xref:System.Xaml.NamespaceDeclaration.Namespace%2A>和<xref:System.Xaml.NamespaceDeclaration.Prefix%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="361eb-206">To access the values of a <xref:System.Xaml.NamespaceDeclaration>, you access its <xref:System.Xaml.NamespaceDeclaration.Namespace%2A> and <xref:System.Xaml.NamespaceDeclaration.Prefix%2A> properties.</span></span>  
-  
- <span data-ttu-id="361eb-207">命名空間宣告可能<xref:System.String.Empty?displayProperty=nameWithType>前置詞的值。</span><span class="sxs-lookup"><span data-stu-id="361eb-207">A namespace declaration may have a <xref:System.String.Empty?displayProperty=nameWithType> value for the prefix.</span></span> <span data-ttu-id="361eb-208">A<xref:System.String.Empty?displayProperty=nameWithType>前置詞表示的預設 XAML 命名空間宣告。</span><span class="sxs-lookup"><span data-stu-id="361eb-208">A <xref:System.String.Empty?displayProperty=nameWithType> prefix represents a declaration of the default XAML namespace.</span></span> <span data-ttu-id="361eb-209">請勿嘗試使用 null 來代表預設前置詞。 這個 API 中擲回例外狀況。</span><span class="sxs-lookup"><span data-stu-id="361eb-209">Do not attempt to use null to represent the default prefix;  it throws an exception in this API.</span></span> <span data-ttu-id="361eb-210">如需詳細資訊，請參閱<xref:System.Xaml.NamespaceDeclaration>。</span><span class="sxs-lookup"><span data-stu-id="361eb-210">For more information, see <xref:System.Xaml.NamespaceDeclaration>.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="361eb-211">
-            <paramref name="namespaceDeclaration" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-211">The <paramref name="namespaceDeclaration" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentException">
-          <span data-ttu-id="361eb-212">
-            <paramref name="namespaceDeclaration" /> 的元件為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-212">A component of <paramref name="namespaceDeclaration" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.Xaml.XamlObjectReaderException">
-          <span data-ttu-id="361eb-213">嘗試在無效的範圍中寫入 XAML 命名空間節點。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-213">Tried to write a XAML namespace node in an invalid scope.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="WriteStartMember">
-      <MemberSignature Language="C#" Value="public override void WriteStartMember (System.Xaml.XamlMember property);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteStartMember(class System.Xaml.XamlMember property) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)" />
-      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteStartMember (property As XamlMember)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteStartMember(System::Xaml::XamlMember ^ property);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="property" Type="System.Xaml.XamlMember" />
-      </Parameters>
-      <Docs>
-        <param name="property">
-          <span data-ttu-id="361eb-214">要寫入的 XAML 屬性。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-214">The XAML property to write.</span>
-          </span>
-          <span data-ttu-id="361eb-215">您通常會從 XAML 讀取器透過 XAML 節點資料流媒介取得這個值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-215">Typically you obtain this value from a XAML reader through the XAML node stream intermediate.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="361eb-216">將新的成員節點寫入至目前物件範圍，而這個範圍會成為新的成員範圍。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-216">Writes a new member node into the current object scope, and the scope becomes a new member scope.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
-  
-> [!TIP]
->  <span data-ttu-id="361eb-217">監看<xref:System.Xaml.XamlDuplicateMemberException>，它發生於兩次輸入 XAML 中設定相同的 XAML 屬性。</span><span class="sxs-lookup"><span data-stu-id="361eb-217">Watch for a <xref:System.Xaml.XamlDuplicateMemberException>, which occurs when the same XAML property is set twice in the XAML input.</span></span> <span data-ttu-id="361eb-218">在簡單的情況下，例如當相同的屬性設定的屬性語法和屬性項目語法，您可以輕鬆地查看此輸入標記中的例外狀況。</span><span class="sxs-lookup"><span data-stu-id="361eb-218">In simple cases, such as when the same property is set in both attribute syntax and property element syntax, you can easily see this exception in the input markup.</span></span> <span data-ttu-id="361eb-219">不過，多個難以察覺的情況下，可能會發生更難以找出。</span><span class="sxs-lookup"><span data-stu-id="361eb-219">However, more subtle cases can occur that are more difficult to spot.</span></span> <span data-ttu-id="361eb-220">例如，如果您將 XAML 內容屬性，如果涉及 XAML 環境的屬性，且如果屬性可讓可附加的使用量和執行個體使用，可能會發生這個例外狀況。</span><span class="sxs-lookup"><span data-stu-id="361eb-220">For example, this exception might occur if you set a XAML content property, if you involve XAML ambient properties, and if a property enables both an attachable usage and an instance usage.</span></span> <span data-ttu-id="361eb-221">在偵錯開發階段，您通常可以找到此例外狀況檢視讀取的標記和物件圖形寫入連接 XAML 中繼節點表示。</span><span class="sxs-lookup"><span data-stu-id="361eb-221">In the debugging phases of development, you can often locate this exception by viewing the intermediate XAML node representation that connects the markup read and the object graph write.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.Xaml.XamlObjectWriterException">
-          <span data-ttu-id="361eb-222">
-            <paramref name="property" /> 的 <see cref="P:System.Xaml.XamlMember.IsUnknown" /> 已設定為 <see langword="true" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-222">
-              <paramref name="property" /> has <see cref="P:System.Xaml.XamlMember.IsUnknown" /> set to <see langword="true" />.</span>
-          </span>
-          <span data-ttu-id="361eb-223">-或-</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-223">-or-</span>
-          </span>
-          <span data-ttu-id="361eb-224">傳遞 <see cref="P:System.Xaml.XamlLanguage.UnknownContent" />，表示不支援內容之物件內容所包含的 XAML 節點資料流。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-224">
-              <see cref="P:System.Xaml.XamlLanguage.UnknownContent" /> passed, which indicates that the XAML node stream contained content for an object that does not support content.</span>
-          </span>
-          <span data-ttu-id="361eb-225">-或-</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-225">-or-</span>
-          </span>
-          <span data-ttu-id="361eb-226">嘗試在無效的範圍中寫入開始成員。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-226">Attempted to write a start member in an invalid scope.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.Xaml.XamlDuplicateMemberException">
-          <span data-ttu-id="361eb-227">
-            <paramref name="property" /> 會指定已經在父代物件範圍中明確設定的屬性。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-227">
-              <paramref name="property" /> specifies a property that is already explicitly set in the parent object scope.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="361eb-228">
-            <paramref name="property" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-228">
-              <paramref name="property" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="WriteStartObject">
-      <MemberSignature Language="C#" Value="public override void WriteStartObject (System.Xaml.XamlType xamlType);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteStartObject(class System.Xaml.XamlType xamlType) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.WriteStartObject(System.Xaml.XamlType)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteStartObject(System::Xaml::XamlType ^ xamlType);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="xamlType" Type="System.Xaml.XamlType" />
-      </Parameters>
-      <Docs>
-        <param name="xamlType">
-          <span data-ttu-id="361eb-229">要寫入的型別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-229">The type to write.</span>
-          </span>
-          <span data-ttu-id="361eb-230">您通常是從 XAML 讀取器取得這個值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-230">Typically you obtain this value from a XAML reader.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="361eb-231">將物件節點寫入至目前範圍，並將這個範圍設為新的物件範圍。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-231">Writes an object node into the current scope, and sets the scope to a new object scope.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.Xaml.XamlObjectWriterException">
-          <span data-ttu-id="361eb-232">正在處理 <see cref="P:System.Xaml.XamlType.IsUnknown" /> 型別，而且無法建立物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-232">Processing an <see cref="P:System.Xaml.XamlType.IsUnknown" /> type and cannot create an object.</span>
-          </span>
-          <span data-ttu-id="361eb-233">-或-</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-233">-or-</span>
-          </span>
-          <span data-ttu-id="361eb-234">嘗試在無效的範圍中寫入一個開始物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-234">Attempted to write a start object in an invalid scope.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.Xaml.XamlParseException">
-          <span data-ttu-id="361eb-235">嘗試於已經在設定中提供根物件時寫入根物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-235">Attempted to write a root object when the root object was already provided in the settings.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="361eb-236">
-            <paramref name="xamlType" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-236">
-              <paramref name="xamlType" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-        <block subset="none" type="overrides">
-          <para>
-            <span data-ttu-id="361eb-237">如果目前的範圍內的集合、 字典或陣列，新的執行個體應該加入至集合、 字典或陣列使用<see langword="Add" />相關類型的方法。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="361eb-237">If the current scope is inside a collection, dictionary, or array, the new instance should be added to the collection, dictionary, or array by using the <see langword="Add" /> method of the relevant type.</span>
-            </span>
-            <span data-ttu-id="361eb-238">否則，成員應該指派到的新執行個體。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="361eb-238">Otherwise, the member should be assigned to the new instance.</span>
-            </span>
-          </para>
-        </block>
-      </Docs>
-    </Member>
-    <Member MemberName="WriteValue">
-      <MemberSignature Language="C#" Value="public override void WriteValue (object value);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteValue(object value) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.WriteValue(System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteValue (value As Object)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteValue(System::Object ^ value);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Xaml</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="value" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="value">
-          <span data-ttu-id="361eb-239">要寫入的值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-239">The value to write.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="361eb-240">將值寫入至目前成員範圍。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-240">Writes a value to the current member scope.</span>
-          </span>
-          <span data-ttu-id="361eb-241">如果目前範圍在集合、字典或陣列物件內，則應將此值加入至集合、字典或陣列。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-241">If the current scope is inside a collection, dictionary, or array object, the value should be added to the collection, dictionary, or array.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.Xaml.XamlObjectWriterException">
-          <span data-ttu-id="361eb-242">嘗試在無效的範圍中寫入值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="361eb-242">Attempted to write a value in an invalid scope.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="XamlObjectWriter.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac5ca402de94a9fb4c2404a3eb885b3a1fc9d0fc4b6.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">ca402de94a9fb4c2404a3eb885b3a1fc9d0fc4b6</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Xaml.XamlObjectWriter">
+          <source>Creates an object graph from a source XAML node stream.</source>
+          <target state="translated">從來源 XAML 節點資料流建立物件圖形。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>The <ph id="ph1">`Write`</ph> methods of <ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph> implement a pattern so that the <ph id="ph3">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph> uses the <ph id="ph4">&lt;xref:System.Xaml.XamlWriter&gt;</ph> that is defined by the <ph id="ph5">&lt;xref:System.Xaml.XamlWriter.WriteNode%2A&gt;</ph> method.</source>
+          <target state="translated"><ph id="ph1">`Write`</ph>方法<ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph>實作模式，讓<ph id="ph3">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph>使用<ph id="ph4">&lt;xref:System.Xaml.XamlWriter&gt;</ph>所定義的<ph id="ph5">&lt;xref:System.Xaml.XamlWriter.WriteNode%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source><ph id="ph1">&lt;xref:System.Xaml.XamlWriter.WriteNode%2A&gt;</ph> logic switches between the <ph id="ph2">`Write`</ph> methods, depending on which node type is at the current position in the reader.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Xaml.XamlWriter.WriteNode%2A&gt;</ph> 邏輯交換器之間<ph id="ph2">`Write`</ph>方法，根據哪個節點型別是讀取器中目前的位置。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>Scope</source>
+          <target state="translated">範圍</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>A <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph> has a concept of scope; that is, the <ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph> maintains a conceptual point of reference in its output object graph.</source>
+          <target state="translated">A<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph>範圍; 的概念、<ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph>維護概念的其輸出的物件圖形中的參考點。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>For a particular scope, certain operations might be valid or invalid, or produce a no-operation result.</source>
+          <target state="translated">針對特定範圍，某些作業可能會有效或無效，或產生無作業的結果。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>For example, if you call <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A&gt;</ph> to write directives for initialization on an object that already exists as an instance, the default implementation throws an exception.</source>
+          <target state="translated">例如，如果您呼叫<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A&gt;</ph>物件上的初始化已存在做為執行個體，請撰寫指示詞的預設實作會擲回例外狀況。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>A possible technique for tracking scope in a custom <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph> is to align the node actions with a stack or frame class.</source>
+          <target state="translated">追蹤中自訂的範圍可能技巧<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph>是對齊堆疊或框架的類別使用的節點動作。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>The stack or frame can keep track of push and pop for each level of object-model depth that is entered or exited while the <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph> writes the object graph.</source>
+          <target state="translated">框架的堆疊可以追蹤的 push 和 pop 每個層級的物件模型的深度，進入或離開時<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph>寫入物件圖形。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>Callbacks</source>
+          <target state="translated">回呼</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>To support intermediate and advanced <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph> scenarios, the mechanism of writing an object graph provides callback entry points that occur when a <ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph> commits or is about to commit certain actions.</source>
+          <target state="translated">若要支援中繼和進階<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph>案例中，撰寫物件圖形的機制提供回呼發生的進入點時<ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph>認可或即將認可某些動作。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>Some callbacks are enabled in the settings and are not specific to the object type or the member being written; however, callback information is often available in context or is in the event data that is sent through the callback.</source>
+          <target state="translated">某些回呼會在設定中啟用和並非所特有物件類型或成員正在寫入;不過，回呼資訊通常是在內容中使用，或者是在事件會透過回呼傳送的資料。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>The following is a list of relevant callbacks:</source>
+          <target state="translated">下列是一份相關回呼：</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>The callback that is declared by <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriterSettings.AfterBeginInitHandler%2A&gt;</ph> is invoked when the scope goes to a new object and at the <ph id="ph2">&lt;xref:System.ComponentModel.ISupportInitialize.BeginInit%2A&gt;</ph> phase of object lifetime for each created object.</source>
+          <target state="translated">由宣告回呼<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriterSettings.AfterBeginInitHandler%2A&gt;</ph>時範圍會移入新的物件，並在叫用<ph id="ph2">&lt;xref:System.ComponentModel.ISupportInitialize.BeginInit%2A&gt;</ph>階段建立的每個物件的物件存留期。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>The callback that is declared by <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriterSettings.AfterEndInitHandler%2A&gt;</ph> is invoked when the scope goes to a new object and at the <ph id="ph2">&lt;xref:System.ComponentModel.ISupportInitialize.EndInit%2A&gt;</ph> phase of object lifetime for each created object.</source>
+          <target state="translated">由宣告回呼<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriterSettings.AfterEndInitHandler%2A&gt;</ph>時範圍會移入新的物件，並在叫用<ph id="ph2">&lt;xref:System.ComponentModel.ISupportInitialize.EndInit%2A&gt;</ph>階段建立的每個物件的物件存留期。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>The callback that is declared by <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriterSettings.BeforePropertiesHandler%2A&gt;</ph> is invoked when the scope starts in an object, and occurs when the first <ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A&gt;</ph> call to that object scope is made but not yet committed.</source>
+          <target state="translated">由宣告回呼<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriterSettings.BeforePropertiesHandler%2A&gt;</ph>範圍物件，一開始，而發生時叫用時第一個<ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A&gt;</ph>呼叫該物件範圍時進行，但尚未認可。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>The callback that is declared by <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriterSettings.AfterPropertiesHandler%2A&gt;</ph> is invoked when the scope starts in an object, and happens when the <ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A&gt;</ph> call to that object scope is made but not yet committed.</source>
+          <target state="translated">由宣告回呼<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriterSettings.AfterPropertiesHandler%2A&gt;</ph>範圍物件，一開始，而發生時叫用時<ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A&gt;</ph>呼叫該物件範圍時進行，但尚未認可。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>The callback that is declared by <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler%2A&gt;</ph> is invoked when <ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.OnSetValue%2A&gt;</ph> is called.</source>
+          <target state="translated">由宣告回呼<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler%2A&gt;</ph>時叫用<ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.OnSetValue%2A&gt;</ph>呼叫。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>Writing Dictionary Keys</source>
+          <target state="translated">手寫字典索引鍵</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>The default implementation of <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph> supports type conversion on the constraints of a <ph id="ph2">&lt;xref:System.Collections.Generic.Dictionary%602&gt;</ph> before the dictionary contents are added to the object graph.</source>
+          <target state="translated">預設實作<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph>支援類型轉換的條件約束<ph id="ph2">&lt;xref:System.Collections.Generic.Dictionary%602&gt;</ph>之前字典內容加入物件圖形。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>In this manner, a generic dictionary can be keyed at run time by objects and can match the relevant generic <ph id="ph1">`Add`</ph> and indexer behavior.</source>
+          <target state="translated">如此一來，在泛型字典可以在執行階段物件索引鍵，而且符合相關的一般<ph id="ph1">`Add`</ph>和索引子的行為。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>However, as implemented for the base <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph>, this capability exists only for object graph creation from the base <ph id="ph2">&lt;xref:System.Collections.Generic.Dictionary%602&gt;</ph> class and not for derived classes of <ph id="ph3">&lt;xref:System.Collections.Generic.Dictionary%602&gt;</ph>.</source>
+          <target state="translated">不過，做為基底實作<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph>，這項功能只存在於物件圖形建立基底<ph id="ph2">&lt;xref:System.Collections.Generic.Dictionary%602&gt;</ph>類別，衍生的類別不能用於<ph id="ph3">&lt;xref:System.Collections.Generic.Dictionary%602&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>Checks for Disposed</source>
+          <target state="translated">檢查有無處置</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>XAML writers are potentially used for deferred operations or where a call is made against a XAML writer instance that has been disposed in the interim.</source>
+          <target state="translated">XAML 寫入器可能會用來延後的作業，或針對在過渡期中已處置的 XAML 寫入器執行個體進行呼叫的位置。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Xaml.XamlObjectWriter">
+          <source>Various APIs of <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph> might throw <ph id="ph2">&lt;xref:System.ObjectDisposedException&gt;</ph> in these cases.</source>
+          <target state="translated">各種 Api<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph>可能會擲回<ph id="ph2">&lt;xref:System.ObjectDisposedException&gt;</ph>在這些情況下。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" uid="T:System.Xaml.XamlObjectWriter">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph> class.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.#ctor(System.Xaml.XamlSchemaContext)">
+          <source>A XAML schema context that is shared with the XAML reader that provides nodes for writing.</source>
+          <target state="translated">與提供寫入之節點的 XAML 讀取器共用的 XAML 結構描述內容。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.#ctor(System.Xaml.XamlSchemaContext)">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph> class using  the XAML schema context that is used by a <ph id="ph2">&lt;see cref="T:System.Xaml.XamlReader" /&gt;</ph>.</source>
+          <target state="translated">使用 <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph> 所使用的 XAML 結構描述內容，初始化 <ph id="ph2">&lt;see cref="T:System.Xaml.XamlReader" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.#ctor(System.Xaml.XamlSchemaContext)">
+          <source><ph id="ph1">&lt;paramref name="schemaContext" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="schemaContext" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.#ctor(System.Xaml.XamlSchemaContext,System.Xaml.XamlObjectWriterSettings)">
+          <source>A XAML schema context that is shared with the XAML reader that provides nodes for writing.</source>
+          <target state="translated">與提供寫入之節點的 XAML 讀取器共用的 XAML 結構描述內容。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.#ctor(System.Xaml.XamlSchemaContext,System.Xaml.XamlObjectWriterSettings)">
+          <source>A settings object that specifies certain options for <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph> behavior and output.</source>
+          <target state="translated">指定 <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph> 行為和輸出之特定選項的設定物件。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.#ctor(System.Xaml.XamlSchemaContext,System.Xaml.XamlObjectWriterSettings)">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph> class using the context that is used by a <ph id="ph2">&lt;see cref="T:System.Xaml.XamlReader" /&gt;</ph> and its settings.</source>
+          <target state="translated">使用 <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph> 所使用的內容和其設定，初始化 <ph id="ph2">&lt;see cref="T:System.Xaml.XamlReader" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.#ctor(System.Xaml.XamlSchemaContext,System.Xaml.XamlObjectWriterSettings)">
+          <source><ph id="ph1">&lt;paramref name="schemaContext" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="schemaContext" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.Clear">
+          <source>Resets all possible frames and clears the object graph.</source>
+          <target state="translated">重設所有可能的框架並清除物件圖形。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.Dispose(System.Boolean)">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> to release the managed resources; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see langword="true" /&gt;</ph> 表示釋放 Managed 資源，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.Dispose(System.Boolean)">
+          <source>Releases the unmanaged resources used by the <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph>, and optionally, releases the managed resources.</source>
+          <target state="translated">釋放 <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph> 所使用的 Unmanaged 資源，並選擇性釋放 Managed 資源。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnAfterBeginInit(System.Object)">
+          <source>The object to report on.</source>
+          <target state="translated">要報告的物件。</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnAfterBeginInit(System.Object)">
+          <source>The object is packaged into <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectEventArgs" /&gt;</ph> when the handler is invoked.</source>
+          <target state="translated">叫用處理常式時，會將物件封裝至 <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectEventArgs" /&gt;</ph> 中。</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnAfterBeginInit(System.Object)">
+          <source>Invokes any <ph id="ph1">&lt;see cref="P:System.Xaml.XamlObjectWriterSettings.AfterBeginInitHandler" /&gt;</ph> method that is associated with <ph id="ph2">&lt;see cref="T:System.Xaml.XamlObjectWriterSettings" /&gt;</ph> for this <ph id="ph3">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph>.</source>
+          <target state="translated">叫用與這個 <ph id="ph1">&lt;see cref="P:System.Xaml.XamlObjectWriterSettings.AfterBeginInitHandler" /&gt;</ph> 之 <ph id="ph2">&lt;see cref="T:System.Xaml.XamlObjectWriterSettings" /&gt;</ph> 相關聯的任何 <ph id="ph3">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph> 方法。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnAfterEndInit(System.Object)">
+          <source>The object to report on.</source>
+          <target state="translated">要報告的物件。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnAfterEndInit(System.Object)">
+          <source>The value  is packaged into <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectEventArgs" /&gt;</ph> when the handler is invoked.</source>
+          <target state="translated">叫用處理常式時，值會封裝至 <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectEventArgs" /&gt;</ph> 中。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnAfterEndInit(System.Object)">
+          <source>Invokes any <ph id="ph1">&lt;see cref="P:System.Xaml.XamlObjectWriterSettings.AfterEndInitHandler" /&gt;</ph> method that is associated with <ph id="ph2">&lt;see cref="T:System.Xaml.XamlObjectWriterSettings" /&gt;</ph> for this <ph id="ph3">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph>.</source>
+          <target state="translated">叫用與這個 <ph id="ph1">&lt;see cref="P:System.Xaml.XamlObjectWriterSettings.AfterEndInitHandler" /&gt;</ph> 之 <ph id="ph2">&lt;see cref="T:System.Xaml.XamlObjectWriterSettings" /&gt;</ph> 相關聯的任何 <ph id="ph3">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph> 方法。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnAfterProperties(System.Object)">
+          <source>The object to report on.</source>
+          <target state="translated">要報告的物件。</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnAfterProperties(System.Object)">
+          <source>This is packaged into <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectEventArgs" /&gt;</ph> when the handler is invoked.</source>
+          <target state="translated">會在叫用處理常式將其封裝至 <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectEventArgs" /&gt;</ph> 中。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnAfterProperties(System.Object)">
+          <source>Invokes any <ph id="ph1">&lt;see cref="P:System.Xaml.XamlObjectWriterSettings.AfterPropertiesHandler" /&gt;</ph> referenced method that is associated with <ph id="ph2">&lt;see cref="T:System.Xaml.XamlObjectWriterSettings" /&gt;</ph> for this <ph id="ph3">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph>.</source>
+          <target state="translated">叫用與這個 <ph id="ph1">&lt;see cref="P:System.Xaml.XamlObjectWriterSettings.AfterPropertiesHandler" /&gt;</ph> 之 <ph id="ph2">&lt;see cref="T:System.Xaml.XamlObjectWriterSettings" /&gt;</ph> 相關聯的任何 <ph id="ph3">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph> 參考方法。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnBeforeProperties(System.Object)">
+          <source>The value to pass through <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectEventArgs" /&gt;</ph> when the handler is invoked.</source>
+          <target state="translated">在叫用處理常式時要透過 <ph id="ph1">&lt;see cref="T:System.Xaml.XamlObjectEventArgs" /&gt;</ph> 傳遞的值。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnBeforeProperties(System.Object)">
+          <source>Invokes any <ph id="ph1">&lt;see cref="P:System.Xaml.XamlObjectWriterSettings.BeforePropertiesHandler" /&gt;</ph> referenced method that is associated with <ph id="ph2">&lt;see cref="T:System.Xaml.XamlObjectWriterSettings" /&gt;</ph> for this <ph id="ph3">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph>.</source>
+          <target state="translated">叫用與這個 <ph id="ph1">&lt;see cref="P:System.Xaml.XamlObjectWriterSettings.BeforePropertiesHandler" /&gt;</ph> 之 <ph id="ph2">&lt;see cref="T:System.Xaml.XamlObjectWriterSettings" /&gt;</ph> 相關聯的任何 <ph id="ph3">&lt;see cref="T:System.Xaml.XamlObjectWriter" /&gt;</ph> 參考方法。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnSetValue(System.Object,System.Xaml.XamlMember,System.Object)">
+          <source>The object to report as the source to the handler.</source>
+          <target state="translated">要向處理常式報告做為來源的物件。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnSetValue(System.Object,System.Xaml.XamlMember,System.Object)">
+          <source>The name of the property to set, which is passed to the handler as part of <ph id="ph1">&lt;see cref="T:System.Windows.Markup.XamlSetValueEventArgs" /&gt;</ph>.</source>
+          <target state="translated">要設定之屬性的名稱，這個名稱會在 <ph id="ph1">&lt;see cref="T:System.Windows.Markup.XamlSetValueEventArgs" /&gt;</ph> 中傳遞至處理常式。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnSetValue(System.Object,System.Xaml.XamlMember,System.Object)">
+          <source>The value to provide for the property that is named by <bpt id="p1">&lt;c&gt;</bpt>property<ept id="p1">&lt;/c&gt;</ept>.</source>
+          <target state="translated">要提供給由 <bpt id="p1">&lt;c&gt;</bpt>property<ept id="p1">&lt;/c&gt;</ept> 命名之屬性的值。</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnSetValue(System.Object,System.Xaml.XamlMember,System.Object)">
+          <source>The value is passed to the handler as part of <ph id="ph1">&lt;see cref="T:System.Windows.Markup.XamlSetValueEventArgs" /&gt;</ph>.</source>
+          <target state="translated">這個值會在 <ph id="ph1">&lt;see cref="T:System.Windows.Markup.XamlSetValueEventArgs" /&gt;</ph> 中傳遞至處理常式。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnSetValue(System.Object,System.Xaml.XamlMember,System.Object)">
+          <source>Invokes any <ph id="ph1">&lt;see cref="P:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler" /&gt;</ph> referenced method that is associated with <ph id="ph2">&lt;see cref="T:System.Xaml.XamlObjectWriterSettings" /&gt;</ph> for this writer, as long as <ph id="ph3">&lt;paramref name="handled" /&gt;</ph> in <ph id="ph4">&lt;see cref="T:System.Windows.Markup.XamlSetValueEventArgs" /&gt;</ph> event data is not <ph id="ph5">&lt;see langword="true" /&gt;</ph>.</source>
+          <target state="translated">叫用與這個寫入器之 <ph id="ph1">&lt;see cref="P:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler" /&gt;</ph> 相關聯的任何 <ph id="ph2">&lt;see cref="T:System.Xaml.XamlObjectWriterSettings" /&gt;</ph> 參考方法 (只要 <ph id="ph4">&lt;see cref="T:System.Windows.Markup.XamlSetValueEventArgs" /&gt;</ph> 事件資料中的 <ph id="ph3">&lt;paramref name="handled" /&gt;</ph> 不是 <ph id="ph5">&lt;see langword="true" /&gt;</ph> 即可)。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.OnSetValue(System.Object,System.Xaml.XamlMember,System.Object)">
+          <source>A Boolean value that is set by any associated handler; otherwise, <ph id="ph1">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">任何相關聯處理常式所設定的布林值，否則為 <ph id="ph1">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.OnSetValue(System.Object,System.Xaml.XamlMember,System.Object)">
+          <source>If the <ph id="ph1">`SetValue`</ph> operation for this XAML writer has an associated handler (a <ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler%2A&gt;</ph> is declared in <ph id="ph3">&lt;xref:System.Xaml.XamlObjectWriterSettings&gt;</ph>), this method creates new <ph id="ph4">&lt;xref:System.Windows.Markup.XamlSetValueEventArgs&gt;</ph> and passes them to the handler.</source>
+          <target state="translated">如果<ph id="ph1">`SetValue`</ph>此 XAML 寫入器的作業有關聯的處理常式 (<ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler%2A&gt;</ph>中宣告<ph id="ph3">&lt;xref:System.Xaml.XamlObjectWriterSettings&gt;</ph>)，這個方法建立新<ph id="ph4">&lt;xref:System.Windows.Markup.XamlSetValueEventArgs&gt;</ph>並將其傳遞至處理常式。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.OnSetValue(System.Object,System.Xaml.XamlMember,System.Object)">
+          <source>The return value is set by reading the <ph id="ph1">&lt;xref:System.Windows.Markup.XamlSetValueEventArgs.Handled%2A&gt;</ph> value that is passed through the event data.</source>
+          <target state="translated">傳回的值由讀取設定<ph id="ph1">&lt;xref:System.Windows.Markup.XamlSetValueEventArgs.Handled%2A&gt;</ph>事件資料會傳遞的值。</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.OnSetValue(System.Object,System.Xaml.XamlMember,System.Object)">
+          <source>If no handler exists and this method is invoked, the call returns <ph id="ph1">`false`</ph>.</source>
+          <target state="translated">如果處理常式不存在，而且這個方法會叫用，則呼叫會傳回<ph id="ph1">`false`</ph>。</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" uid="P:System.Xaml.XamlObjectWriter.Result">
+          <source>Gets the last object that was written.</source>
+          <target state="translated">取得最後一個寫入的物件。</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" uid="P:System.Xaml.XamlObjectWriter.Result">
+          <source>Typically only called when the node stream is at its end and the object graph is complete.</source>
+          <target state="translated">通常只有在節點資料流位在結尾且物件圖形完成時才會加以呼叫。</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Xaml.XamlObjectWriter.Result">
+          <source>The last object written, or <ph id="ph1">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated">最後一個寫入的物件，或 <ph id="ph1">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Xaml.XamlObjectWriter.Result">
+          <source>The most typical usage of <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.Result%2A&gt;</ph> is to call it only when the node stream is known to be at its end, and the object graph is complete.</source>
+          <target state="translated">最常見的使用方式的<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.Result%2A&gt;</ph>是只有在節點資料流是否已知為其結尾，且已完成的物件圖形呼叫它。</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Xaml.XamlObjectWriter.Result">
+          <source>Otherwise, the object graph is likely to be incomplete, and is not useful for most platform scenarios.</source>
+          <target state="translated">否則，物件圖形可能會不完整，並不是適用於大部分平台案例。</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Xaml.XamlObjectWriter.Result">
+          <source><ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.Result%2A&gt;</ph> typically only contains a non-null value if it is called immediately after a call to <ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A&gt;</ph>, and if the current scope is in the member where the object provides a value.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.Result%2A&gt;</ph> 如果呼叫之後立即呼叫通常只包含非 null 值<ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A&gt;</ph>，而且如果目前的範圍是處於其中的物件會提供值的成員。</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" uid="P:System.Xaml.XamlObjectWriter.RootNameScope">
+          <source>Gets the <ph id="ph1">&lt;see cref="T:System.Windows.Markup.INameScope" /&gt;</ph> service that maintains the XAML namescope for the absolute node root of the XAML object writer.</source>
+          <target state="translated">取得 <ph id="ph1">&lt;see cref="T:System.Windows.Markup.INameScope" /&gt;</ph> 服務，這個服務會維護 XAML 物件寫入器之絕對節點根的 XAML 名稱範圍。</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Xaml.XamlObjectWriter.RootNameScope">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Windows.Markup.INameScope" /&gt;</ph> service that maintains the XAML namescope for the current root of the object writer.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Windows.Markup.INameScope" /&gt;</ph> 服務，這個服務會維護物件寫入器目前根的 XAML 名稱範圍。</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Xaml.XamlObjectWriter.RootNameScope">
+          <source>The value of this property may come from the object writer context.</source>
+          <target state="translated">這個屬性的值可能來自物件寫入器內容。</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" uid="P:System.Xaml.XamlObjectWriter.SchemaContext">
+          <source>Gets the active XAML schema context.</source>
+          <target state="translated">取得作用中 XAML 結構描述內容。</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Xaml.XamlObjectWriter.SchemaContext">
+          <source>The XAML schema context.</source>
+          <target state="translated">XAML 結構描述內容。</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Xaml.XamlObjectWriter.SchemaContext">
+          <source>XAML schema context is a necessary information source for most practical object-writing scenarios.</source>
+          <target state="translated">XAML 結構描述內容是最實用的物件撰寫案例所需的資訊來源。</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Xaml.XamlObjectWriter.SchemaContext">
+          <source>The XAML schema context influences the type lookup for backing types and holds information about the assemblies where backing types exist.</source>
+          <target state="translated">XAML 結構描述內容影響的備份類型的型別查閱，並保留其中備份類型，存在於組件的相關資訊。</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Xaml.XamlObjectWriter.SchemaContext">
+          <source>The default XAML schema context is based on CLR type-mapping rules.</source>
+          <target state="translated">預設 XAML 結構描述內容為基礎 CLR 型別對應規則。</target>       </trans-unit>
+        <trans-unit id="171" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Xaml.XamlObjectWriter.SchemaContext">
+          <source>Frameworks typically provide their own XAML schema context in order to assure that that the assembly-loading mechanisms match the framework's programming amd application models.</source>
+          <target state="translated">通常，架構會提供自己的 XAML 結構描述內容以確保組件載入機制符合架構的程式設計 amd 應用程式模型。</target>       </trans-unit>
+        <trans-unit id="172" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.SetLineInfo(System.Int32,System.Int32)">
+          <source>The line number from the reader.</source>
+          <target state="translated">來自讀取器的行號。</target>       </trans-unit>
+        <trans-unit id="173" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.SetLineInfo(System.Int32,System.Int32)">
+          <source>The line position from the reader.</source>
+          <target state="translated">來自讀取器的行位置。</target>       </trans-unit>
+        <trans-unit id="174" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.SetLineInfo(System.Int32,System.Int32)">
+          <source>Implements <ph id="ph1">&lt;see cref="M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)" /&gt;</ph> and provides line information for exceptions.</source>
+          <target state="translated">實作 <ph id="ph1">&lt;see cref="M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)" /&gt;</ph>，並提供例外狀況的行資訊。</target>       </trans-unit>
+        <trans-unit id="175" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.SetLineInfo(System.Int32,System.Int32)">
+          <source>This service method is not intended to be called directly from your code.</source>
+          <target state="translated">此服務方法不是直接從您的程式碼呼叫。</target>       </trans-unit>
+        <trans-unit id="176" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.SetLineInfo(System.Int32,System.Int32)">
+          <source>However, if you are creating a derived class from <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph> and expect to report a context where line numbers are unavailable or not useful, this method may be called.</source>
+          <target state="translated">不過，如果您要建立衍生的類別從<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph>並預期要報告的內容位置的行號會無法使用或不實用，這個方法可能會呼叫。</target>       </trans-unit>
+        <trans-unit id="177" translate="yes" xml:space="preserve" uid="P:System.Xaml.XamlObjectWriter.ShouldProvideLineInfo">
+          <source>Gets a value that reports whether a line information service should provide values and therefore, should also call the <ph id="ph1">&lt;see cref="M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)" /&gt;</ph> method when it is relevant.</source>
+          <target state="translated">取得值，這個值會報告行資訊服務是否應該提供值 (因此也應該在必要時呼叫 <ph id="ph1">&lt;see cref="M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)" /&gt;</ph> 方法)。</target>       </trans-unit>
+        <trans-unit id="178" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Xaml.XamlObjectWriter.ShouldProvideLineInfo">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if line information is used by the writer; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果寫入器會使用行資訊，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="179" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Xaml.XamlObjectWriter.ShouldProvideLineInfo">
+          <source>This implementation always returns <ph id="ph1">`true`</ph>.</source>
+          <target state="translated">這個實作永遠會傳回 <ph id="ph1">`true`</ph>。</target>       </trans-unit>
+        <trans-unit id="180" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteEndMember">
+          <source>Closes the current member scope, and may write the value of the member scope while it closes.</source>
+          <target state="translated">關閉目前成員範圍，並且可能在關閉成員範圍期間寫入其值。</target>       </trans-unit>
+        <trans-unit id="181" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteEndMember">
+          <source>The new scope becomes the parent object scope of the member.</source>
+          <target state="translated">新的範圍會成為成員的父物件範圍。</target>       </trans-unit>
+        <trans-unit id="182" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteEndMember">
+          <source>Failed to create member value from a value node that is encountered between this call and a previous <ph id="ph1">&lt;see langword="StartMember" /&gt;</ph>.</source>
+          <target state="translated">無法從在這次呼叫和前一次 <ph id="ph1">&lt;see langword="StartMember" /&gt;</ph> 之間遇到的值節點建立成員值。</target>       </trans-unit>
+        <trans-unit id="183" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteEndObject">
+          <source>Closes the current object scope in the writer.</source>
+          <target state="translated">關閉寫入器中的目前物件範圍。</target>       </trans-unit>
+        <trans-unit id="184" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteEndObject">
+          <source>The new object scope becomes the parent member scope.</source>
+          <target state="translated">新的物件範圍會成為父成員範圍。</target>       </trans-unit>
+        <trans-unit id="185" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteEndObject">
+          <source>If this <ph id="ph1">`EndObject`</ph> position scope is closing the root object, the new object scope becomes the root scope.</source>
+          <target state="translated">如果這個<ph id="ph1">`EndObject`</ph>位置範圍關閉的根物件，新的物件範圍會成為根範圍。</target>       </trans-unit>
+        <trans-unit id="186" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteEndObject">
+          <source>The call to <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A&gt;</ph> might not yet have created the object because an object member might be a necessary initialization pathway, such as initialization text or initialization parameters.</source>
+          <target state="translated">若要呼叫<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A&gt;</ph>可能尚未建立物件由於該物件成員可能是必要的初始化路徑，例如初始文字或初始化參數。</target>       </trans-unit>
+        <trans-unit id="187" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteEndObject">
+          <source>For these cases, the call to <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A&gt;</ph> actually writes the object.</source>
+          <target state="translated">這些情況下，呼叫<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A&gt;</ph>實際寫入的物件。</target>       </trans-unit>
+        <trans-unit id="188" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteGetObject">
+          <source>Writes the conceptual <ph id="ph1">&lt;see langword="StartObject" /&gt;</ph> into the object graph when the specified object is a default or implicit value of the parent property.</source>
+          <target state="translated">當指定之物件為父屬性的預設值或隱含值時，將概念 <ph id="ph1">&lt;see langword="StartObject" /&gt;</ph> 寫入物件圖形。</target>       </trans-unit>
+        <trans-unit id="189" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteGetObject">
+          <source>The implicit value comes from information that is obtained from the XAML schema context and backing type information, instead of being specified as an object value in the input XAML node set.</source>
+          <target state="translated">隱含值來自從 XAML 結構描述內容及支援型別資訊取得的資訊，而非指定為在輸入 XAML 節點集中的物件值。</target>       </trans-unit>
+        <trans-unit id="190" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteGetObject">
+          <source>The difference between writing with <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A&gt;</ph> and writing with <ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A&gt;</ph> can be seen in the resulting object graph.</source>
+          <target state="translated">與寫入之間的差異<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A&gt;</ph>和寫入與<ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A&gt;</ph>結果物件圖形中可以看到。</target>       </trans-unit>
+        <trans-unit id="191" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteGetObject">
+          <source><ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A&gt;</ph> does not construct an instance of a type because the <ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A&gt;</ph> API has no information to inform the object graph of what to construct.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A&gt;</ph> 將不會建構類型的執行個體因為<ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A&gt;</ph>應用程式開發介面有任何資訊來通知所要建構的物件圖形。</target>       </trans-unit>
+        <trans-unit id="192" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteGetObject">
+          <source>Instead, the object was created when the parent property was initialized; so a <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph> does not need to construct it.</source>
+          <target state="translated">初始化 parent 屬性; 時，相反地，建立物件因此<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph>不必建構它。</target>       </trans-unit>
+        <trans-unit id="193" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteGetObject">
+          <source>In contrast, <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A&gt;</ph> specifies that an instance of that type should be constructed and inserted into the object graph.</source>
+          <target state="translated">相反地，<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A&gt;</ph>指定應該建構該類型的執行個體，並插入的物件圖形。</target>       </trans-unit>
+        <trans-unit id="194" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteGetObject">
+          <source>If you think of the XAML node stream as a series of frames, a <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A&gt;</ph> is balanced to a <ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A&gt;</ph> call.</source>
+          <target state="translated">如果您將一系列的框架，視為 XAML 節點資料流<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A&gt;</ph>平衡轉送到<ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A&gt;</ph>呼叫。</target>       </trans-unit>
+        <trans-unit id="195" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteGetObject">
+          <source>Therefore, the number of <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A&gt;</ph> plus <ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A&gt;</ph> calls should equal the number of <ph id="ph3">&lt;xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A&gt;</ph> calls as part of a complete object-writing evaluation of the XAML node stream.</source>
+          <target state="translated">因此，數目<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A&gt;</ph>加上<ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A&gt;</ph>呼叫應該會等於數目<ph id="ph3">&lt;xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A&gt;</ph>呼叫做為 XAML 節點資料流的完整物件寫入評估的一部分。</target>       </trans-unit>
+        <trans-unit id="196" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteGetObject">
+          <source>The conceptual <ph id="ph1">`StartObject`</ph> position for an implicit object in the object graph is necessary because although the object value itself is an implicit default, that object might still have members that need to be written based on the XAML node stream.</source>
+          <target state="translated">將概念<ph id="ph1">`StartObject`</ph>位置物件圖形中的隱含物件是必要的因為雖然本身的物件值的隱含預設值，該物件仍可能需要寫入可根據 XAML 節點資料流的成員。</target>       </trans-unit>
+        <trans-unit id="197" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteGetObject">
+          <source>A typical scenario where this occurs is when <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph> writes member nodes for a collection property, and the collection initialization is implicit to creating the object that owns the collection property.</source>
+          <target state="translated">典型的案例，這種情況是當<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter&gt;</ph>寫入成員節點的集合屬性，以及集合初始設定是隱含建立擁有集合屬性的物件。</target>       </trans-unit>
+        <trans-unit id="198" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source>The namespace declaration to write.</source>
+          <target state="translated">要寫入的命名空間宣告。</target>       </trans-unit>
+        <trans-unit id="199" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source>Defines a namespace declaration that applies to the next object scope or member scope.</source>
+          <target state="translated">定義會套用至下一個物件範圍或成員範圍的命名空間宣告。</target>       </trans-unit>
+        <trans-unit id="200" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source>A namespace declaration can be written if the current scope is a root scope, object scope, or member scope.</source>
+          <target state="translated">如果目前的範圍是根範圍、 物件範圍或成員範圍可以寫入命名空間宣告。</target>       </trans-unit>
+        <trans-unit id="201" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source>However, <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A&gt;</ph> can only be called immediately before a call to one of the following: <ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A&gt;</ph>, <ph id="ph3">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A&gt;</ph>, or <ph id="ph4">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A&gt;</ph>.</source>
+          <target state="translated">不過，<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A&gt;</ph>只能呼叫之前呼叫下列其中之一： <ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A&gt;</ph>， <ph id="ph3">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A&gt;</ph>，或<ph id="ph4">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="202" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source>The consecutive <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A&gt;</ph> case is for writing multiple namespace declarations to the same node.</source>
+          <target state="translated">連續<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A&gt;</ph>案例是撰寫多個命名空間宣告相同的節點。</target>       </trans-unit>
+        <trans-unit id="203" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source>Eventually, either <ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A&gt;</ph> or <ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A&gt;</ph> must be called.</source>
+          <target state="translated">最後，請<ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A&gt;</ph>或<ph id="ph2">&lt;xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A&gt;</ph>必須呼叫。</target>       </trans-unit>
+        <trans-unit id="204" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source><ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A&gt;</ph> does not use a <ph id="ph2">`Start`</ph><ph id="ph3">/</ph><ph id="ph4">`End`</ph> metaphor.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A&gt;</ph> 不會使用<ph id="ph2">`Start`</ph> <ph id="ph3">/</ph> <ph id="ph4">`End`</ph>比喻。</target>       </trans-unit>
+        <trans-unit id="205" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source>Although a XAML namespace has members in the CLR representation sense, the members are known and do not need to be represented as a special type of <ph id="ph1">&lt;xref:System.Xaml.XamlMember&gt;</ph> for extensibility.</source>
+          <target state="translated">雖然 XAML 命名空間中的 CLR 表示意義成員，成員為已知，而且不需要表示為一種特殊型別的<ph id="ph1">&lt;xref:System.Xaml.XamlMember&gt;</ph>擴充性。</target>       </trans-unit>
+        <trans-unit id="206" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source>To access the values of a <ph id="ph1">&lt;xref:System.Xaml.NamespaceDeclaration&gt;</ph>, you access its <ph id="ph2">&lt;xref:System.Xaml.NamespaceDeclaration.Namespace%2A&gt;</ph> and <ph id="ph3">&lt;xref:System.Xaml.NamespaceDeclaration.Prefix%2A&gt;</ph> properties.</source>
+          <target state="translated">若要存取的值<ph id="ph1">&lt;xref:System.Xaml.NamespaceDeclaration&gt;</ph>，您存取其<ph id="ph2">&lt;xref:System.Xaml.NamespaceDeclaration.Namespace%2A&gt;</ph>和<ph id="ph3">&lt;xref:System.Xaml.NamespaceDeclaration.Prefix%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="207" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source>A namespace declaration may have a <ph id="ph1">&lt;xref:System.String.Empty?displayProperty=nameWithType&gt;</ph> value for the prefix.</source>
+          <target state="translated">命名空間宣告可能<ph id="ph1">&lt;xref:System.String.Empty?displayProperty=nameWithType&gt;</ph>前置詞的值。</target>       </trans-unit>
+        <trans-unit id="208" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source>A <ph id="ph1">&lt;xref:System.String.Empty?displayProperty=nameWithType&gt;</ph> prefix represents a declaration of the default XAML namespace.</source>
+          <target state="translated">A<ph id="ph1">&lt;xref:System.String.Empty?displayProperty=nameWithType&gt;</ph>前置詞表示的預設 XAML 命名空間宣告。</target>       </trans-unit>
+        <trans-unit id="209" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source>Do not attempt to use null to represent the default prefix;  it throws an exception in this API.</source>
+          <target state="translated">請勿嘗試使用 null 來代表預設前置詞。 這個 API 中擲回例外狀況。</target>       </trans-unit>
+        <trans-unit id="210" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source>For more information, see <ph id="ph1">&lt;xref:System.Xaml.NamespaceDeclaration&gt;</ph>.</source>
+          <target state="translated">如需詳細資訊，請參閱<ph id="ph1">&lt;xref:System.Xaml.NamespaceDeclaration&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="211" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source>The <ph id="ph1">&lt;paramref name="namespaceDeclaration" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="namespaceDeclaration" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="212" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source>A component of <ph id="ph1">&lt;paramref name="namespaceDeclaration" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="namespaceDeclaration" /&gt;</ph> 的元件為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="213" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)">
+          <source>Tried to write a XAML namespace node in an invalid scope.</source>
+          <target state="translated">嘗試在無效的範圍中寫入 XAML 命名空間節點。</target>       </trans-unit>
+        <trans-unit id="214" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)">
+          <source>The XAML property to write.</source>
+          <target state="translated">要寫入的 XAML 屬性。</target>       </trans-unit>
+        <trans-unit id="215" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)">
+          <source>Typically you obtain this value from a XAML reader through the XAML node stream intermediate.</source>
+          <target state="translated">您通常會從 XAML 讀取器透過 XAML 節點資料流媒介取得這個值。</target>       </trans-unit>
+        <trans-unit id="216" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)">
+          <source>Writes a new member node into the current object scope, and the scope becomes a new member scope.</source>
+          <target state="translated">將新的成員節點寫入至目前物件範圍，而這個範圍會成為新的成員範圍。</target>       </trans-unit>
+        <trans-unit id="217" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)">
+          <source>Watch for a <ph id="ph1">&lt;xref:System.Xaml.XamlDuplicateMemberException&gt;</ph>, which occurs when the same XAML property is set twice in the XAML input.</source>
+          <target state="translated">監看<ph id="ph1">&lt;xref:System.Xaml.XamlDuplicateMemberException&gt;</ph>，它發生於兩次輸入 XAML 中設定相同的 XAML 屬性。</target>       </trans-unit>
+        <trans-unit id="218" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)">
+          <source>In simple cases, such as when the same property is set in both attribute syntax and property element syntax, you can easily see this exception in the input markup.</source>
+          <target state="translated">在簡單的情況下，例如當相同的屬性設定的屬性語法和屬性項目語法，您可以輕鬆地查看此輸入標記中的例外狀況。</target>       </trans-unit>
+        <trans-unit id="219" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)">
+          <source>However, more subtle cases can occur that are more difficult to spot.</source>
+          <target state="translated">不過，多個難以察覺的情況下，可能會發生更難以找出。</target>       </trans-unit>
+        <trans-unit id="220" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)">
+          <source>For example, this exception might occur if you set a XAML content property, if you involve XAML ambient properties, and if a property enables both an attachable usage and an instance usage.</source>
+          <target state="translated">例如，如果您將 XAML 內容屬性，如果涉及 XAML 環境的屬性，且如果屬性可讓可附加的使用量和執行個體使用，可能會發生這個例外狀況。</target>       </trans-unit>
+        <trans-unit id="221" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)">
+          <source>In the debugging phases of development, you can often locate this exception by viewing the intermediate XAML node representation that connects the markup read and the object graph write.</source>
+          <target state="translated">在偵錯開發階段，您通常可以找到此例外狀況檢視讀取的標記和物件圖形寫入連接 XAML 中繼節點表示。</target>       </trans-unit>
+        <trans-unit id="222" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)">
+          <source><ph id="ph1">&lt;paramref name="property" /&gt;</ph> has <ph id="ph2">&lt;see cref="P:System.Xaml.XamlMember.IsUnknown" /&gt;</ph> set to <ph id="ph3">&lt;see langword="true" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="property" /&gt;</ph> 的 <ph id="ph2">&lt;see cref="P:System.Xaml.XamlMember.IsUnknown" /&gt;</ph> 已設定為 <ph id="ph3">&lt;see langword="true" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="223" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)">
+          <source>-or-</source>
+          <target state="translated">-或-</target>       </trans-unit>
+        <trans-unit id="224" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)">
+          <source><ph id="ph1">&lt;see cref="P:System.Xaml.XamlLanguage.UnknownContent" /&gt;</ph> passed, which indicates that the XAML node stream contained content for an object that does not support content.</source>
+          <target state="translated">傳遞 <ph id="ph1">&lt;see cref="P:System.Xaml.XamlLanguage.UnknownContent" /&gt;</ph>，表示不支援內容之物件內容所包含的 XAML 節點資料流。</target>       </trans-unit>
+        <trans-unit id="225" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)">
+          <source>-or-</source>
+          <target state="translated">-或-</target>       </trans-unit>
+        <trans-unit id="226" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)">
+          <source>Attempted to write a start member in an invalid scope.</source>
+          <target state="translated">嘗試在無效的範圍中寫入開始成員。</target>       </trans-unit>
+        <trans-unit id="227" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)">
+          <source><ph id="ph1">&lt;paramref name="property" /&gt;</ph> specifies a property that is already explicitly set in the parent object scope.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="property" /&gt;</ph> 會指定已經在父代物件範圍中明確設定的屬性。</target>       </trans-unit>
+        <trans-unit id="228" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)">
+          <source><ph id="ph1">&lt;paramref name="property" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="property" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="229" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartObject(System.Xaml.XamlType)">
+          <source>The type to write.</source>
+          <target state="translated">要寫入的型別。</target>       </trans-unit>
+        <trans-unit id="230" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartObject(System.Xaml.XamlType)">
+          <source>Typically you obtain this value from a XAML reader.</source>
+          <target state="translated">您通常是從 XAML 讀取器取得這個值。</target>       </trans-unit>
+        <trans-unit id="231" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartObject(System.Xaml.XamlType)">
+          <source>Writes an object node into the current scope, and sets the scope to a new object scope.</source>
+          <target state="translated">將物件節點寫入至目前範圍，並將這個範圍設為新的物件範圍。</target>       </trans-unit>
+        <trans-unit id="232" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartObject(System.Xaml.XamlType)">
+          <source>Processing an <ph id="ph1">&lt;see cref="P:System.Xaml.XamlType.IsUnknown" /&gt;</ph> type and cannot create an object.</source>
+          <target state="translated">正在處理 <ph id="ph1">&lt;see cref="P:System.Xaml.XamlType.IsUnknown" /&gt;</ph> 型別，而且無法建立物件。</target>       </trans-unit>
+        <trans-unit id="233" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartObject(System.Xaml.XamlType)">
+          <source>-or-</source>
+          <target state="translated">-或-</target>       </trans-unit>
+        <trans-unit id="234" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartObject(System.Xaml.XamlType)">
+          <source>Attempted to write a start object in an invalid scope.</source>
+          <target state="translated">嘗試在無效的範圍中寫入一個開始物件。</target>       </trans-unit>
+        <trans-unit id="235" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartObject(System.Xaml.XamlType)">
+          <source>Attempted to write a root object when the root object was already provided in the settings.</source>
+          <target state="translated">嘗試於已經在設定中提供根物件時寫入根物件。</target>       </trans-unit>
+        <trans-unit id="236" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteStartObject(System.Xaml.XamlType)">
+          <source><ph id="ph1">&lt;paramref name="xamlType" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="xamlType" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="237" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteStartObject(System.Xaml.XamlType)">
+          <source>If the current scope is inside a collection, dictionary, or array, the new instance should be added to the collection, dictionary, or array by using the <ph id="ph1">&lt;see langword="Add" /&gt;</ph> method of the relevant type.</source>
+          <target state="translated">如果目前的範圍內的集合、 字典或陣列，新的執行個體應該加入至集合、 字典或陣列使用<ph id="ph1">&lt;see langword="Add" /&gt;</ph>相關類型的方法。</target>       </trans-unit>
+        <trans-unit id="238" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Xaml.XamlObjectWriter.WriteStartObject(System.Xaml.XamlType)">
+          <source>Otherwise, the member should be assigned to the new instance.</source>
+          <target state="translated">否則，成員應該指派到的新執行個體。</target>       </trans-unit>
+        <trans-unit id="239" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteValue(System.Object)">
+          <source>The value to write.</source>
+          <target state="translated">要寫入的值。</target>       </trans-unit>
+        <trans-unit id="240" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteValue(System.Object)">
+          <source>Writes a value to the current member scope.</source>
+          <target state="translated">將值寫入至目前成員範圍。</target>       </trans-unit>
+        <trans-unit id="241" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteValue(System.Object)">
+          <source>If the current scope is inside a collection, dictionary, or array object, the value should be added to the collection, dictionary, or array.</source>
+          <target state="translated">如果目前範圍在集合、字典或陣列物件內，則應將此值加入至集合、字典或陣列。</target>       </trans-unit>
+        <trans-unit id="242" translate="yes" xml:space="preserve" uid="M:System.Xaml.XamlObjectWriter.WriteValue(System.Object)">
+          <source>Attempted to write a value in an invalid scope.</source>
+          <target state="translated">嘗試在無效的範圍中寫入值。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

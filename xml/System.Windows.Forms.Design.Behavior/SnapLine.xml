@@ -1,714 +1,327 @@
-<Type Name="SnapLine" FullName="System.Windows.Forms.Design.Behavior.SnapLine">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="5937806b6fa452ca7b10e4c50a281390020772cd" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public sealed class SnapLine" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit SnapLine extends System.Object" />
-  <TypeSignature Language="DocId" Value="T:System.Windows.Forms.Design.Behavior.SnapLine" />
-  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class SnapLine" />
-  <TypeSignature Language="C++ CLI" Value="public ref class SnapLine sealed" />
-  <AssemblyInfo>
-    <AssemblyName>System.Design</AssemblyName>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces />
-  <Docs>
-    <summary>
-      <span data-ttu-id="0d3e9-101">表示在使用者介面 (UI) 中動態建立的水平和垂直線段，用於協助容器中控制項的設計階段配置。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="0d3e9-101">Represents the horizontal and vertical line segments that are dynamically created in the user interface (UI) to assist in the design-time layout of controls in a container.</span>
-      </span>
-      <span data-ttu-id="0d3e9-102">這個類別無法被繼承。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="0d3e9-102">This class cannot be inherited.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0d3e9-103">下表列出常見的模式，視覺化設計工具支援，協助您定位和調整設計介面上的控制項的大小。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-103">The following table lists the common modes that visual design tools support to assist you with positioning and sizing controls on a design surface.</span></span>  
-  
-|<span data-ttu-id="0d3e9-104">模式</span><span class="sxs-lookup"><span data-stu-id="0d3e9-104">Mode</span></span>|<span data-ttu-id="0d3e9-105">描述</span><span class="sxs-lookup"><span data-stu-id="0d3e9-105">Description</span></span>|  
-|----------|-----------------|  
-|<span data-ttu-id="0d3e9-106">自由格式</span><span class="sxs-lookup"><span data-stu-id="0d3e9-106">Freeform</span></span>|<span data-ttu-id="0d3e9-107">可讓您自由地配置控制項。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-107">Enables you to freely lay out controls.</span></span>|  
-|<span data-ttu-id="0d3e9-108">Grid</span><span class="sxs-lookup"><span data-stu-id="0d3e9-108">Grid</span></span>|<span data-ttu-id="0d3e9-109">顯示可協助您在控制項的版面配置的靜態覆疊的方格。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-109">Displays a static overlaid grid that assists you in laying out controls.</span></span>|  
-|<span data-ttu-id="0d3e9-110">對齊線</span><span class="sxs-lookup"><span data-stu-id="0d3e9-110">Snapline</span></span>|<span data-ttu-id="0d3e9-111">顯示協助您在配置容器的控制項相對於彼此的輔助線。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-111">Displays guide lines that assist you in laying out the container's controls relative to each other.</span></span> <span data-ttu-id="0d3e9-112">對齊線是來自控制項和其容器。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-112">Snaplines originate from controls and their container.</span></span>|  
-  
- <span data-ttu-id="0d3e9-113"><xref:System.Windows.Forms.Design.Behavior.SnapLine>類別和相關的類型說明支援的對齊線 」 模式。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-113">The <xref:System.Windows.Forms.Design.Behavior.SnapLine> class and related types help support the Snapline mode.</span></span>  
-  
- <span data-ttu-id="0d3e9-114">動態產生的對齊線，自動做為控制項邊緣移至另一個控制項附近或接近其容器的界限。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-114">Snaplines are generated dynamically and automatically as a control edge moves near another control or near the boundaries of its container.</span></span> <span data-ttu-id="0d3e9-115">發生這個問題控制項從工具箱 加入、 移動或調整大小作業滑鼠或鍵盤命令。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-115">This can occur when a control is added from the toolbox, or moved or resized by mouse operations or keyboard commands.</span></span> <span data-ttu-id="0d3e9-116">控制項通常會有定義; 水平及垂直對齊線矩形控制項，這些通常從延伸所有四個邊。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-116">Controls typically have both horizontal and vertical snaplines defined; for rectangular controls, these typically extend from all four edges.</span></span>  
-  
- <span data-ttu-id="0d3e9-117"><xref:System.Windows.Forms.Design.Behavior.SnapLine>類別會使用只有少數屬性來描述每個對齊線下, 表所示。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-117">The <xref:System.Windows.Forms.Design.Behavior.SnapLine> class uses only a few properties to describe each snapline, as shown in the following table.</span></span>  
-  
-|<span data-ttu-id="0d3e9-118">屬性</span><span class="sxs-lookup"><span data-stu-id="0d3e9-118">Property</span></span>|<span data-ttu-id="0d3e9-119">描述</span><span class="sxs-lookup"><span data-stu-id="0d3e9-119">Description</span></span>|  
-|--------------|-----------------|  
-|<xref:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType%2A>|<span data-ttu-id="0d3e9-120">指定的位置和方向相對於其相關聯的控制項列。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-120">Specifies the location and direction of the line with respect to its associated control.</span></span> <span data-ttu-id="0d3e9-121">一般而言，只有相似類型的對齊線會自動對齊彼此。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-121">Typically, only snaplines of similar types will auto-align to each other.</span></span>|  
-|<xref:System.Windows.Forms.Design.Behavior.SnapLine.Offset%2A>|<span data-ttu-id="0d3e9-122">指定的距離，單位為像素從原點，也就是控制項的左上角，以對齊線的開始位置。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-122">Specifies the distance in pixels from the origin, which is the upper-left corner of the control, to where the snapline starts.</span></span>|  
-|<xref:System.Windows.Forms.Design.Behavior.SnapLine.Priority%2A>|<span data-ttu-id="0d3e9-123">指定對齊線的相對的重要性。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-123">Specifies the relative importance of the snapline.</span></span> <span data-ttu-id="0d3e9-124">在任何給定的配置的決策點，會顯示作用中且具有最高優先權對齊。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-124">During any given layout decision point, only the snaplines that are active and have the highest priority are displayed.</span></span>|  
-|<xref:System.Windows.Forms.Design.Behavior.SnapLine.Filter%2A>|<span data-ttu-id="0d3e9-125">定義自訂的對齊線的分類。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-125">Defines custom categories of snaplines.</span></span> <span data-ttu-id="0d3e9-126">這是選擇性的字串。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-126">This is an optional string.</span></span>|  
-|<span data-ttu-id="0d3e9-127"><xref:System.Windows.Forms.Design.Behavior.SnapLine.IsHorizontal%2A> 和 <xref:System.Windows.Forms.Design.Behavior.SnapLine.IsVertical%2A></span><span class="sxs-lookup"><span data-stu-id="0d3e9-127"><xref:System.Windows.Forms.Design.Behavior.SnapLine.IsHorizontal%2A> and <xref:System.Windows.Forms.Design.Behavior.SnapLine.IsVertical%2A></span></span>|<span data-ttu-id="0d3e9-128">指出是否對齊線可分別有水平或垂直方向。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-128">Indicates whether a snapline has horizontal or vertical orientation, respectively.</span></span>|  
-  
- <span data-ttu-id="0d3e9-129"><xref:System.Windows.Forms.Design.ControlDesigner>類別會儲存在其對應的控制項類型的對齊線<xref:System.Windows.Forms.Design.ControlDesigner.SnapLines%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-129">The <xref:System.Windows.Forms.Design.ControlDesigner> class stores snaplines for its corresponding control type in the <xref:System.Windows.Forms.Design.ControlDesigner.SnapLines%2A> property.</span></span> <span data-ttu-id="0d3e9-130">對齊線的此基底類別處理就可以滿足大多數的控制項，因為它會定義<xref:System.Windows.Forms.Design.Behavior.SnapLineType.Left>， <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Right>， <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Top>，和<xref:System.Windows.Forms.Design.Behavior.SnapLineType.Bottom>對齊線，控制項的邊緣對齊。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-130">This base class handling of snaplines will suffice for the majority of controls, as it defines the <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Left>, <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Right>, <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Top>, and <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Bottom> snaplines, which are aligned along the edges of the control.</span></span> <span data-ttu-id="0d3e9-131">當您開發自訂控制項，如果此預設組織不敷使用時，覆寫<xref:System.Windows.Forms.Design.ControlDesigner.SnapLines%2A>屬性的類別衍生自<xref:System.Windows.Forms.Design.ControlDesigner>。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-131">When you are developing a custom control, if this default organization does not suffice, override the <xref:System.Windows.Forms.Design.ControlDesigner.SnapLines%2A> property of the class derived from <xref:System.Windows.Forms.Design.ControlDesigner>.</span></span> <span data-ttu-id="0d3e9-132">例如，您可以對齊水平對齊文字為基礎的控制項，例如標籤，使用 top 和基準線 （而不是控制項的頂端和底端邊緣） 的文字。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-132">For example, you may want to align the horizontal snaplines of text-based controls, such as labels, with the top and base lines of the text (instead of the top and bottom edges of the control).</span></span>  
-  
- <span data-ttu-id="0d3e9-133"><xref:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType%2A>類別不可衍生自。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-133">The <xref:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType%2A> class cannot be derived from.</span></span>  
-  
- <span data-ttu-id="0d3e9-134">在 Visual Studio 中的這項功能有廣泛的支援，請參閱[逐步解說： 在 Windows Form 使用對齊線排列的控制項](~/docs/framework/winforms/controls/walkthrough-arranging-controls-on-windows-forms-using-snaplines.md)。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-134">There is extensive support for this feature in Visual Studio, see [Walkthrough: Arranging Controls on Windows Forms Using Snaplines](~/docs/framework/winforms/controls/walkthrough-arranging-controls-on-windows-forms-using-snaplines.md).</span></span>  
-  
- ]]></format>
-    </remarks>
-    <altmember cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" />
-    <altmember cref="T:System.Windows.Forms.Design.Behavior.SnapLinePriority" />
-    <altmember cref="P:System.Windows.Forms.Design.ControlDesigner.SnapLines" />
-  </Docs>
-  <Members>
-    <MemberGroup MemberName=".ctor">
-      <AssemblyInfo>
-        <AssemblyName>System.Design</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0d3e9-135">初始化 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-135">Initializes a new instance of the <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> class.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0d3e9-136">您應該只明確建立對齊線來取代或補充視覺化設計工具所提供的預設對齊線行為。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-136">You should only explicitly create snaplines to replace or supplement the default snapline behavior offered by the visual designer.</span></span> <span data-ttu-id="0d3e9-137">若要建立對齊線，您應該執行個體對齊線，並再將它加入<xref:System.Windows.Forms.Design.ControlDesigner.SnapLines%2A>屬性<xref:System.Windows.Forms.Design.ControlDesigner>類別。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-137">To create a snapline, you should instance a snapline and then add it to the <xref:System.Windows.Forms.Design.ControlDesigner.SnapLines%2A> property of the <xref:System.Windows.Forms.Design.ControlDesigner> class.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public SnapLine (System.Windows.Forms.Design.Behavior.SnapLineType type, int offset);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Windows.Forms.Design.Behavior.SnapLineType type, int32 offset) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (type As SnapLineType, offset As Integer)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; SnapLine(System::Windows::Forms::Design::Behavior::SnapLineType type, int offset);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Design</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="type" Type="System.Windows.Forms.Design.Behavior.SnapLineType" />
-        <Parameter Name="offset" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="type">
-          <span data-ttu-id="0d3e9-138">要建立的 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-138">The <see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" /> to create.</span>
-          </span>
-          <span data-ttu-id="0d3e9-139">描述對齊線的相對位置和方向。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-139">Describes the relative position and orientation of the snapline.</span>
-          </span>
-        </param>
-        <param name="offset">
-          <span data-ttu-id="0d3e9-140">以像素計算的對齊線位置，相對於擁有的控制項的左上方原點。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-140">The position of the snapline, in pixels, relative to the upper-left origin of the owning control.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0d3e9-141">使用指定的對齊線類型和位移，初始化 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-141">Initializes a new instance of the <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> class using the specified snapline type and offset.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0d3e9-142">這個建構函式設定<xref:System.Windows.Forms.Design.Behavior.SnapLine.Filter%2A>屬性`null`和<xref:System.Windows.Forms.Design.Behavior.SnapLine.Priority%2A>屬性<xref:System.Windows.Forms.Design.Behavior.SnapLinePriority.Low>。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-142">This constructor sets the <xref:System.Windows.Forms.Design.Behavior.SnapLine.Filter%2A> property to `null` and the <xref:System.Windows.Forms.Design.Behavior.SnapLine.Priority%2A> property to <xref:System.Windows.Forms.Design.Behavior.SnapLinePriority.Low>.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType" />
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public SnapLine (System.Windows.Forms.Design.Behavior.SnapLineType type, int offset, string filter);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Windows.Forms.Design.Behavior.SnapLineType type, int32 offset, string filter) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (type As SnapLineType, offset As Integer, filter As String)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; SnapLine(System::Windows::Forms::Design::Behavior::SnapLineType type, int offset, System::String ^ filter);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Design</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="type" Type="System.Windows.Forms.Design.Behavior.SnapLineType" />
-        <Parameter Name="offset" Type="System.Int32" />
-        <Parameter Name="filter" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="type">
-          <span data-ttu-id="0d3e9-143">要建立的 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-143">The <see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" /> to create.</span>
-          </span>
-          <span data-ttu-id="0d3e9-144">描述對齊線的相對位置和方向。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-144">Describes the relative position and orientation of the snapline.</span>
-          </span>
-        </param>
-        <param name="offset">
-          <span data-ttu-id="0d3e9-145">以像素計算的對齊線位置，相對於擁有的控制項的左上方原點。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-145">The position of the snapline, in pixels, relative to the upper-left origin of the owning control.</span>
-          </span>
-        </param>
-        <param name="filter">
-          <span data-ttu-id="0d3e9-146">
-            <see cref="T:System.String" />，用於指定程式設計人員定義的對齊線分類。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-146">A <see cref="T:System.String" /> used to specify a programmer-defined category of snaplines.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0d3e9-147">使用指定的對齊線類型、位移和篩選條件名稱，初始化 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-147">Initializes a new instance of the <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> class using the specified snapline type, offset, and filter name.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0d3e9-148">這個建構函式設定<xref:System.Windows.Forms.Design.Behavior.SnapLine.Priority%2A>屬性<xref:System.Windows.Forms.Design.Behavior.SnapLinePriority.Low>。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-148">This constructor sets the <xref:System.Windows.Forms.Design.Behavior.SnapLine.Priority%2A> property to <xref:System.Windows.Forms.Design.Behavior.SnapLinePriority.Low>.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType" />
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset" />
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Filter" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public SnapLine (System.Windows.Forms.Design.Behavior.SnapLineType type, int offset, System.Windows.Forms.Design.Behavior.SnapLinePriority priority);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Windows.Forms.Design.Behavior.SnapLineType type, int32 offset, valuetype System.Windows.Forms.Design.Behavior.SnapLinePriority priority) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.Windows.Forms.Design.Behavior.SnapLinePriority)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (type As SnapLineType, offset As Integer, priority As SnapLinePriority)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; SnapLine(System::Windows::Forms::Design::Behavior::SnapLineType type, int offset, System::Windows::Forms::Design::Behavior::SnapLinePriority priority);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Design</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="type" Type="System.Windows.Forms.Design.Behavior.SnapLineType" />
-        <Parameter Name="offset" Type="System.Int32" />
-        <Parameter Name="priority" Type="System.Windows.Forms.Design.Behavior.SnapLinePriority" />
-      </Parameters>
-      <Docs>
-        <param name="type">
-          <span data-ttu-id="0d3e9-149">要建立的 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-149">The <see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" /> to create.</span>
-          </span>
-          <span data-ttu-id="0d3e9-150">描述對齊線的相對位置和方向。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-150">Describes the relative position and orientation of the snapline.</span>
-          </span>
-        </param>
-        <param name="offset">
-          <span data-ttu-id="0d3e9-151">以像素計算的對齊線位置，相對於擁有的控制項的左上方原點。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-151">The position of the snapline, in pixels, relative to the upper-left origin of the owning control.</span>
-          </span>
-        </param>
-        <param name="priority">
-          <span data-ttu-id="0d3e9-152">對齊線的 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLinePriority" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-152">The <see cref="T:System.Windows.Forms.Design.Behavior.SnapLinePriority" /> of the snapline.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0d3e9-153">使用指定的對齊線類型、位移和優先權，初始化 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-153">Initializes a new instance of the <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> class using the specified snapline type, offset, and priority.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0d3e9-154">這個建構函式設定<xref:System.Windows.Forms.Design.Behavior.SnapLine.Filter%2A>屬性`null`。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-154">This constructor sets the <xref:System.Windows.Forms.Design.Behavior.SnapLine.Filter%2A> property to `null`.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType" />
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset" />
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Priority" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public SnapLine (System.Windows.Forms.Design.Behavior.SnapLineType type, int offset, string filter, System.Windows.Forms.Design.Behavior.SnapLinePriority priority);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Windows.Forms.Design.Behavior.SnapLineType type, int32 offset, string filter, valuetype System.Windows.Forms.Design.Behavior.SnapLinePriority priority) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.String,System.Windows.Forms.Design.Behavior.SnapLinePriority)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (type As SnapLineType, offset As Integer, filter As String, priority As SnapLinePriority)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; SnapLine(System::Windows::Forms::Design::Behavior::SnapLineType type, int offset, System::String ^ filter, System::Windows::Forms::Design::Behavior::SnapLinePriority priority);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Design</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="type" Type="System.Windows.Forms.Design.Behavior.SnapLineType" />
-        <Parameter Name="offset" Type="System.Int32" />
-        <Parameter Name="filter" Type="System.String" />
-        <Parameter Name="priority" Type="System.Windows.Forms.Design.Behavior.SnapLinePriority" />
-      </Parameters>
-      <Docs>
-        <param name="type">
-          <span data-ttu-id="0d3e9-155">要建立的 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-155">The <see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" /> to create.</span>
-          </span>
-          <span data-ttu-id="0d3e9-156">描述對齊線的相對位置和方向。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-156">Describes the relative position and orientation of the snapline.</span>
-          </span>
-        </param>
-        <param name="offset">
-          <span data-ttu-id="0d3e9-157">以像素計算的對齊線位置，相對於擁有的控制項的左上方原點。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-157">The position of the snapline, in pixels, relative to the upper-left origin of the owning control.</span>
-          </span>
-        </param>
-        <param name="filter">
-          <span data-ttu-id="0d3e9-158">
-            <see cref="T:System.String" />，用於指定程式設計人員定義的對齊線分類。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-158">A <see cref="T:System.String" /> used to specify a programmer-defined category of snaplines.</span>
-          </span>
-        </param>
-        <param name="priority">
-          <span data-ttu-id="0d3e9-159">對齊線的 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLinePriority" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-159">The <see cref="T:System.Windows.Forms.Design.Behavior.SnapLinePriority" /> of the snapline.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0d3e9-160">使用指定的對齊線類型、位移、篩選條件名稱和優先權，初始化 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-160">Initializes a new instance of the <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> class using the specified snapline type, offset, filter name, and priority.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0d3e9-161">這個建構函式會將所有內容的對齊線設定程式設計人員提供的值。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-161">This constructor sets all of the properties of a snapline to programmer-supplied values.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType" />
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset" />
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Filter" />
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Priority" />
-      </Docs>
-    </Member>
-    <Member MemberName="AdjustOffset">
-      <MemberSignature Language="C#" Value="public void AdjustOffset (int adjustment);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AdjustOffset(int32 adjustment) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Windows.Forms.Design.Behavior.SnapLine.AdjustOffset(System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub AdjustOffset (adjustment As Integer)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AdjustOffset(int adjustment);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Design</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="adjustment" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="adjustment">
-          <span data-ttu-id="0d3e9-162">要變更對齊線位移的像素數目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-162">The number of pixels to change the snapline offset by.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0d3e9-163">調整對齊線的 <see cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset" /> 屬性。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-163">Adjusts the <see cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset" /> property of the snapline.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0d3e9-164">對齊線的此位移為距離，單位為像素線所在從相關聯的控制項的左上方原點。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-164">The offset of a snapline is the distance, in pixels, that the snapline is located from the associated control's upper-left origin.</span></span> <span data-ttu-id="0d3e9-165">雖然位移可設定為任何整數值，通常對齊保留空間所隱含的關聯性及其<xref:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType%2A>屬性值。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-165">Although the offset can be set to any integer value, typically the snaplines retain the spatial relationships implied by their <xref:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType%2A> property value.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset" />
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType" />
-      </Docs>
-    </Member>
-    <Member MemberName="Filter">
-      <MemberSignature Language="C#" Value="public string Filter { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance string Filter" />
-      <MemberSignature Language="DocId" Value="P:System.Windows.Forms.Design.Behavior.SnapLine.Filter" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Filter As String" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Filter { System::String ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Design</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0d3e9-166">取得與這個對齊線相關聯之程式設計人員定義的篩選條件分類。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-166">Gets the programmer-defined filter category associated with this snapline.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0d3e9-167">
-            <see cref="T:System.String" />，定義篩選分類。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-167">A <see cref="T:System.String" /> that defines the filter category.</span>
-          </span>
-          <span data-ttu-id="0d3e9-168">預設值為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-168">The default is <see langword="null" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0d3e9-169"><xref:System.Windows.Forms.Design.Behavior.SnapLine.Filter%2A>屬性用來定義對齊線的自訂類別。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-169">The <xref:System.Windows.Forms.Design.Behavior.SnapLine.Filter%2A> property is used to define custom categories of snaplines.</span></span> <span data-ttu-id="0d3e9-170">有同名的篩選器的對齊線可彼此貼齊。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-170">Only snaplines with the same filter name are able to snap to each other.</span></span> <span data-ttu-id="0d3e9-171">這個屬性可以用於自訂控制項設計工具，來公開控制項的狀態或正在執行作業的類型而定的對齊線的不同類別。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-171">This property can be used in custom control designers to expose different categories of snaplines depending upon the state of the control or the type of operation being performed.</span></span> <span data-ttu-id="0d3e9-172">例如，圓形控制項可以提供 「 中心 」 的篩選值的自訂對齊線。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-172">For example, round controls could offer a custom snapline with the filter value of "Center".</span></span>  
-  
- <span data-ttu-id="0d3e9-173">這個屬性在建構期間初始化，且之後無法變更。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-173">This property is initialized during construction and cannot be changed thereafter.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="Overload:System.Windows.Forms.Design.Behavior.SnapLine.#ctor" />
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Priority" />
-      </Docs>
-    </Member>
-    <Member MemberName="IsHorizontal">
-      <MemberSignature Language="C#" Value="public bool IsHorizontal { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool IsHorizontal" />
-      <MemberSignature Language="DocId" Value="P:System.Windows.Forms.Design.Behavior.SnapLine.IsHorizontal" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsHorizontal As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsHorizontal { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Design</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0d3e9-174">取得值，指出對齊線是否具有水平方向。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-174">Gets a value indicating whether the snapline has a horizontal orientation.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0d3e9-175">如果對齊線是水平的則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-175">
-              <see langword="true" /> if the snapline is horizontal; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0d3e9-176">下列的對齊線類型是水平： <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Top>， <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Bottom>， <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Horizontal>，和<xref:System.Windows.Forms.Design.Behavior.SnapLineType.Baseline>。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-176">The following snapline types are horizontal: <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Top>, <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Bottom>, <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Horizontal>, and <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Baseline>.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType" />
-      </Docs>
-    </Member>
-    <Member MemberName="IsVertical">
-      <MemberSignature Language="C#" Value="public bool IsVertical { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool IsVertical" />
-      <MemberSignature Language="DocId" Value="P:System.Windows.Forms.Design.Behavior.SnapLine.IsVertical" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsVertical As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsVertical { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Design</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0d3e9-177">取得值，指出對齊線是否具有垂直方向。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-177">Gets a value indicating whether the snapline has a vertical orientation.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0d3e9-178">如果對齊線是垂直的則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-178">
-              <see langword="true" /> if the snapline is vertical; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0d3e9-179">下列的對齊線類型是垂直： <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Left>， <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Right>，和<xref:System.Windows.Forms.Design.Behavior.SnapLineType.Vertical>。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-179">The following snapline types are vertical: <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Left>, <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Right>, and <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Vertical>.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType" />
-      </Docs>
-    </Member>
-    <Member MemberName="Offset">
-      <MemberSignature Language="C#" Value="public int Offset { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 Offset" />
-      <MemberSignature Language="DocId" Value="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Offset As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int Offset { int get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Design</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0d3e9-180">取得對齊線從相關聯控制項的原點位移的像素數目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-180">Gets the number of pixels that the snapline is offset from the origin of the associated control.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0d3e9-181">對齊線的位移 (以像素為單位)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-181">The offset, in pixels, of the snapline.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0d3e9-182">控制項的原點是控制項的左上方點。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-182">The origin of a control is the upper-left point of the control.</span></span> <span data-ttu-id="0d3e9-183">單一位移可以描述對齊線位置，因為垂直對齊線可能僅為非零，x 軸位移，而水平對齊線只能有零的 y 軸位移。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-183">A single offset can describe the position of a snapline, because vertical snaplines may have only a nonzero x-axis offset, whereas horizontal snaplines may only have a nonzero y-axis offset.</span></span>  
-  
- <span data-ttu-id="0d3e9-184"><xref:System.Windows.Forms.Design.Behavior.SnapLine.Offset%2A>屬性會初始化在建構階段，但它可以以進行變更之後<xref:System.Windows.Forms.Design.Behavior.SnapLine.AdjustOffset%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-184">The <xref:System.Windows.Forms.Design.Behavior.SnapLine.Offset%2A> property is initialized at construction time, but it can be changed thereafter with the <xref:System.Windows.Forms.Design.Behavior.SnapLine.AdjustOffset%2A> method.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="M:System.Windows.Forms.Design.Behavior.SnapLine.AdjustOffset(System.Int32)" />
-      </Docs>
-    </Member>
-    <Member MemberName="Priority">
-      <MemberSignature Language="C#" Value="public System.Windows.Forms.Design.Behavior.SnapLinePriority Priority { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Windows.Forms.Design.Behavior.SnapLinePriority Priority" />
-      <MemberSignature Language="DocId" Value="P:System.Windows.Forms.Design.Behavior.SnapLine.Priority" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Priority As SnapLinePriority" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Windows::Forms::Design::Behavior::SnapLinePriority Priority { System::Windows::Forms::Design::Behavior::SnapLinePriority get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Design</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Windows.Forms.Design.Behavior.SnapLinePriority</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0d3e9-185">取得值，表示對齊線的相對重要性。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-185">Gets a value indicating the relative importance of the snapline.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0d3e9-186">
-            <see cref="T:System.Windows.Forms.Design.Behavior.SnapLinePriority" />，表示對齊線的優先權分類。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-186">A <see cref="T:System.Windows.Forms.Design.Behavior.SnapLinePriority" /> that represents the priority category of a snapline.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0d3e9-187"><xref:System.Windows.Forms.Design.Behavior.SnapLine.Priority%2A>屬性建立的重要性與控制項關聯的對齊線的類別。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-187">The <xref:System.Windows.Forms.Design.Behavior.SnapLine.Priority%2A> property establishes categories of importance for the snaplines associated with a control.</span></span>  
-  
- <span data-ttu-id="0d3e9-188">Windows Form 設計工具會使用這個屬性來判斷哪些對齊線來顯示在控制項以外的地方，調整大小或移動作業。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-188">The Windows Forms Designer uses this property to determine which snaplines to display during a control addition, resize, or move operation.</span></span> <span data-ttu-id="0d3e9-189">如需詳細資訊，請參閱 <xref:System.Windows.Forms.Design.Behavior.SnapLinePriority> 列舉。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-189">For more information, see the <xref:System.Windows.Forms.Design.Behavior.SnapLinePriority> enumeration.</span></span>  
-  
- <span data-ttu-id="0d3e9-190">這個屬性在建構期間初始化，且之後無法變更。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-190">This property is initialized during construction and cannot be changed thereafter.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Windows.Forms.Design.Behavior.SnapLinePriority" />
-        <altmember cref="Overload:System.Windows.Forms.Design.Behavior.SnapLine.#ctor" />
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType" />
-      </Docs>
-    </Member>
-    <Member MemberName="ShouldSnap">
-      <MemberSignature Language="C#" Value="public static bool ShouldSnap (System.Windows.Forms.Design.Behavior.SnapLine line1, System.Windows.Forms.Design.Behavior.SnapLine line2);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool ShouldSnap(class System.Windows.Forms.Design.Behavior.SnapLine line1, class System.Windows.Forms.Design.Behavior.SnapLine line2) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Windows.Forms.Design.Behavior.SnapLine.ShouldSnap(System.Windows.Forms.Design.Behavior.SnapLine,System.Windows.Forms.Design.Behavior.SnapLine)" />
-      <MemberSignature Language="VB.NET" Value="Public Shared Function ShouldSnap (line1 As SnapLine, line2 As SnapLine) As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool ShouldSnap(System::Windows::Forms::Design::Behavior::SnapLine ^ line1, System::Windows::Forms::Design::Behavior::SnapLine ^ line2);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Design</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="line1" Type="System.Windows.Forms.Design.Behavior.SnapLine" />
-        <Parameter Name="line2" Type="System.Windows.Forms.Design.Behavior.SnapLine" />
-      </Parameters>
-      <Docs>
-        <param name="line1">
-          <span data-ttu-id="0d3e9-191">指定的 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-191">The specified <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" />.</span>
-          </span>
-        </param>
-        <param name="line2">
-          <span data-ttu-id="0d3e9-192">
-            <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" />，指定的 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> 必須與之貼齊。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-192">The <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> to which the specified <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> is expected to snap.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0d3e9-193">傳回值，指出指定的 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> 是否應該與另一個 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> 貼齊。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-193">Returns a value indicating whether the specified <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /> should snap to another <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" />.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="0d3e9-194">如果 <paramref name="line1" /> 應該與 <paramref name="line2" /> 貼齊則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-194">
-              <see langword="true" /> if <paramref name="line1" /> should snap to <paramref name="line2" />; otherwise, <see langword="false" />.</span>
-          </span>
-        </returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SnapLineType">
-      <MemberSignature Language="C#" Value="public System.Windows.Forms.Design.Behavior.SnapLineType SnapLineType { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Windows.Forms.Design.Behavior.SnapLineType SnapLineType" />
-      <MemberSignature Language="DocId" Value="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SnapLineType As SnapLineType" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Windows::Forms::Design::Behavior::SnapLineType SnapLineType { System::Windows::Forms::Design::Behavior::SnapLineType get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Design</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Windows.Forms.Design.Behavior.SnapLineType</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0d3e9-195">取得對齊線的類型，指出一般位置和方向。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-195">Gets the type of a snapline, which indicates the general location and orientation.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0d3e9-196">
-            <see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" />，表示對齊線相對於控制項邊緣的方向和一般位置。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-196">A <see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" /> that represents the orientation and general location, relative to control edges, of a snapline.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0d3e9-197">視覺化設計工具使用<xref:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType%2A>導向嵌入式管理單元對齊作業的屬性。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-197">Visual designers use the <xref:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType%2A> property to direct snap alignment operations.</span></span> <span data-ttu-id="0d3e9-198">通常可以彼此貼齊方向類似的對齊線。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-198">Typically only snaplines that are similarly oriented can snap to each other.</span></span> <span data-ttu-id="0d3e9-199">例如，兩個對齊線類型的<xref:System.Windows.Forms.Design.Behavior.SnapLineType.Horizontal>可以貼齊在一起，但<xref:System.Windows.Forms.Design.Behavior.SnapLineType.Horizontal>和<xref:System.Windows.Forms.Design.Behavior.SnapLineType.Vertical>無法對齊線。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-199">For example, two snaplines of type <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Horizontal> can snap together, but a <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Horizontal> and a <xref:System.Windows.Forms.Design.Behavior.SnapLineType.Vertical> snapline cannot.</span></span>  
-  
- <span data-ttu-id="0d3e9-200">這個屬性在建構期間初始化，且之後無法變更。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-200">This property is initialized during construction and cannot be changed thereafter.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" />
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Priority" />
-        <altmember cref="M:System.Windows.Forms.Design.Behavior.SnapLine.AdjustOffset(System.Int32)" />
-      </Docs>
-    </Member>
-    <Member MemberName="ToString">
-      <MemberSignature Language="C#" Value="public override string ToString ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance string ToString() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Windows.Forms.Design.Behavior.SnapLine.ToString" />
-      <MemberSignature Language="VB.NET" Value="Public Overrides Function ToString () As String" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::String ^ ToString();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Design</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="0d3e9-201">傳回目前對齊線的字串表示。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-201">Returns a string representation of the current snapline.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="0d3e9-202">
-            <see cref="T:System.String" /> ，代表目前的 <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0d3e9-202">A <see cref="T:System.String" /> that represents the current <see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" />.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0d3e9-203">這個方法會傳回字串，包含有關類型、 位移、 優先權和對齊線的篩選值的詳細資料。</span><span class="sxs-lookup"><span data-stu-id="0d3e9-203">This method returns a string that contains details about the type, offset, priority, and filter values of the snapline.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType" />
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset" />
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Priority" />
-        <altmember cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Filter" />
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="SnapLine.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac55937806b6fa452ca7b10e4c50a281390020772cd.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">5937806b6fa452ca7b10e4c50a281390020772cd</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Represents the horizontal and vertical line segments that are dynamically created in the user interface (UI) to assist in the design-time layout of controls in a container.</source>
+          <target state="translated">表示在使用者介面 (UI) 中動態建立的水平和垂直線段，用於協助容器中控制項的設計階段配置。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>This class cannot be inherited.</source>
+          <target state="translated">這個類別無法被繼承。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>The following table lists the common modes that visual design tools support to assist you with positioning and sizing controls on a design surface.</source>
+          <target state="translated">下表列出常見的模式，視覺化設計工具支援，協助您定位和調整設計介面上的控制項的大小。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Mode</source>
+          <target state="translated">模式</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Description</source>
+          <target state="translated">描述</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Freeform</source>
+          <target state="translated">自由格式</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Enables you to freely lay out controls.</source>
+          <target state="translated">可讓您自由地配置控制項。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Grid</source>
+          <target state="translated">Grid</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Displays a static overlaid grid that assists you in laying out controls.</source>
+          <target state="translated">顯示可協助您在控制項的版面配置的靜態覆疊的方格。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Snapline</source>
+          <target state="translated">對齊線</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Displays guide lines that assist you in laying out the container's controls relative to each other.</source>
+          <target state="translated">顯示協助您在配置容器的控制項相對於彼此的輔助線。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Snaplines originate from controls and their container.</source>
+          <target state="translated">對齊線是來自控制項和其容器。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>The <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine&gt;</ph> class and related types help support the Snapline mode.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine&gt;</ph>類別和相關的類型說明支援的對齊線 」 模式。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Snaplines are generated dynamically and automatically as a control edge moves near another control or near the boundaries of its container.</source>
+          <target state="translated">動態產生的對齊線，自動做為控制項邊緣移至另一個控制項附近或接近其容器的界限。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>This can occur when a control is added from the toolbox, or moved or resized by mouse operations or keyboard commands.</source>
+          <target state="translated">發生這個問題控制項從工具箱 加入、 移動或調整大小作業滑鼠或鍵盤命令。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Controls typically have both horizontal and vertical snaplines defined; for rectangular controls, these typically extend from all four edges.</source>
+          <target state="translated">控制項通常會有定義; 水平及垂直對齊線矩形控制項，這些通常從延伸所有四個邊。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>The <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine&gt;</ph> class uses only a few properties to describe each snapline, as shown in the following table.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine&gt;</ph>類別會使用只有少數屬性來描述每個對齊線下, 表所示。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Property</source>
+          <target state="translated">屬性</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Description</source>
+          <target state="translated">描述</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Specifies the location and direction of the line with respect to its associated control.</source>
+          <target state="translated">指定的位置和方向相對於其相關聯的控制項列。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Typically, only snaplines of similar types will auto-align to each other.</source>
+          <target state="translated">一般而言，只有相似類型的對齊線會自動對齊彼此。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Specifies the distance in pixels from the origin, which is the upper-left corner of the control, to where the snapline starts.</source>
+          <target state="translated">指定的距離，單位為像素從原點，也就是控制項的左上角，以對齊線的開始位置。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Specifies the relative importance of the snapline.</source>
+          <target state="translated">指定對齊線的相對的重要性。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>During any given layout decision point, only the snaplines that are active and have the highest priority are displayed.</source>
+          <target state="translated">在任何給定的配置的決策點，會顯示作用中且具有最高優先權對齊。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Defines custom categories of snaplines.</source>
+          <target state="translated">定義自訂的對齊線的分類。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>This is an optional string.</source>
+          <target state="translated">這是選擇性的字串。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source><ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.IsHorizontal%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.IsVertical%2A&gt;</ph></source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.IsHorizontal%2A&gt;</ph> 和 <ph id="ph2">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.IsVertical%2A&gt;</ph></target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Indicates whether a snapline has horizontal or vertical orientation, respectively.</source>
+          <target state="translated">指出是否對齊線可分別有水平或垂直方向。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>The <ph id="ph1">&lt;xref:System.Windows.Forms.Design.ControlDesigner&gt;</ph> class stores snaplines for its corresponding control type in the <ph id="ph2">&lt;xref:System.Windows.Forms.Design.ControlDesigner.SnapLines%2A&gt;</ph> property.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Windows.Forms.Design.ControlDesigner&gt;</ph>類別會儲存在其對應的控制項類型的對齊線<ph id="ph2">&lt;xref:System.Windows.Forms.Design.ControlDesigner.SnapLines%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>This base class handling of snaplines will suffice for the majority of controls, as it defines the <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Left&gt;</ph>, <ph id="ph2">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Right&gt;</ph>, <ph id="ph3">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Top&gt;</ph>, and <ph id="ph4">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Bottom&gt;</ph> snaplines, which are aligned along the edges of the control.</source>
+          <target state="translated">對齊線的此基底類別處理就可以滿足大多數的控制項，因為它會定義<ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Left&gt;</ph>， <ph id="ph2">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Right&gt;</ph>， <ph id="ph3">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Top&gt;</ph>，和<ph id="ph4">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Bottom&gt;</ph>對齊線，控制項的邊緣對齊。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>When you are developing a custom control, if this default organization does not suffice, override the <ph id="ph1">&lt;xref:System.Windows.Forms.Design.ControlDesigner.SnapLines%2A&gt;</ph> property of the class derived from <ph id="ph2">&lt;xref:System.Windows.Forms.Design.ControlDesigner&gt;</ph>.</source>
+          <target state="translated">當您開發自訂控制項，如果此預設組織不敷使用時，覆寫<ph id="ph1">&lt;xref:System.Windows.Forms.Design.ControlDesigner.SnapLines%2A&gt;</ph>屬性的類別衍生自<ph id="ph2">&lt;xref:System.Windows.Forms.Design.ControlDesigner&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>For example, you may want to align the horizontal snaplines of text-based controls, such as labels, with the top and base lines of the text (instead of the top and bottom edges of the control).</source>
+          <target state="translated">例如，您可以對齊水平對齊文字為基礎的控制項，例如標籤，使用 top 和基準線 （而不是控制項的頂端和底端邊緣） 的文字。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>The <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType%2A&gt;</ph> class cannot be derived from.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType%2A&gt;</ph>類別不可衍生自。</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>There is extensive support for this feature in Visual Studio, see <bpt id="p1">[</bpt>Walkthrough: Arranging Controls on Windows Forms Using Snaplines<ept id="p1">](~/docs/framework/winforms/controls/walkthrough-arranging-controls-on-windows-forms-using-snaplines.md)</ept>.</source>
+          <target state="translated">在 Visual Studio 中的這項功能有廣泛的支援，請參閱<bpt id="p1">[</bpt>逐步解說： 在 Windows Form 使用對齊線排列的控制項<ept id="p1">](~/docs/framework/winforms/controls/walkthrough-arranging-controls-on-windows-forms-using-snaplines.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> class.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>You should only explicitly create snaplines to replace or supplement the default snapline behavior offered by the visual designer.</source>
+          <target state="translated">您應該只明確建立對齊線來取代或補充視覺化設計工具所提供的預設對齊線行為。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Windows.Forms.Design.Behavior.SnapLine">
+          <source>To create a snapline, you should instance a snapline and then add it to the <ph id="ph1">&lt;xref:System.Windows.Forms.Design.ControlDesigner.SnapLines%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Windows.Forms.Design.ControlDesigner&gt;</ph> class.</source>
+          <target state="translated">若要建立對齊線，您應該執行個體對齊線，並再將它加入<ph id="ph1">&lt;xref:System.Windows.Forms.Design.ControlDesigner.SnapLines%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Windows.Forms.Design.ControlDesigner&gt;</ph>類別。</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" /&gt;</ph> to create.</source>
+          <target state="translated">要建立的 <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32)">
+          <source>Describes the relative position and orientation of the snapline.</source>
+          <target state="translated">描述對齊線的相對位置和方向。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32)">
+          <source>The position of the snapline, in pixels, relative to the upper-left origin of the owning control.</source>
+          <target state="translated">以像素計算的對齊線位置，相對於擁有的控制項的左上方原點。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32)">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> class using the specified snapline type and offset.</source>
+          <target state="translated">使用指定的對齊線類型和位移，初始化 <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32)">
+          <source>This constructor sets the <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.Filter%2A&gt;</ph> property to <ph id="ph2">`null`</ph> and the <ph id="ph3">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.Priority%2A&gt;</ph> property to <ph id="ph4">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLinePriority.Low&gt;</ph>.</source>
+          <target state="translated">這個建構函式設定<ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.Filter%2A&gt;</ph>屬性<ph id="ph2">`null`</ph>和<ph id="ph3">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.Priority%2A&gt;</ph>屬性<ph id="ph4">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLinePriority.Low&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.String)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" /&gt;</ph> to create.</source>
+          <target state="translated">要建立的 <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.String)">
+          <source>Describes the relative position and orientation of the snapline.</source>
+          <target state="translated">描述對齊線的相對位置和方向。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.String)">
+          <source>The position of the snapline, in pixels, relative to the upper-left origin of the owning control.</source>
+          <target state="translated">以像素計算的對齊線位置，相對於擁有的控制項的左上方原點。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.String)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.String" /&gt;</ph> used to specify a programmer-defined category of snaplines.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.String" /&gt;</ph>，用於指定程式設計人員定義的對齊線分類。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.String)">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> class using the specified snapline type, offset, and filter name.</source>
+          <target state="translated">使用指定的對齊線類型、位移和篩選條件名稱，初始化 <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.String)">
+          <source>This constructor sets the <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.Priority%2A&gt;</ph> property to <ph id="ph2">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLinePriority.Low&gt;</ph>.</source>
+          <target state="translated">這個建構函式設定<ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.Priority%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLinePriority.Low&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.Windows.Forms.Design.Behavior.SnapLinePriority)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" /&gt;</ph> to create.</source>
+          <target state="translated">要建立的 <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.Windows.Forms.Design.Behavior.SnapLinePriority)">
+          <source>Describes the relative position and orientation of the snapline.</source>
+          <target state="translated">描述對齊線的相對位置和方向。</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.Windows.Forms.Design.Behavior.SnapLinePriority)">
+          <source>The position of the snapline, in pixels, relative to the upper-left origin of the owning control.</source>
+          <target state="translated">以像素計算的對齊線位置，相對於擁有的控制項的左上方原點。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.Windows.Forms.Design.Behavior.SnapLinePriority)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLinePriority" /&gt;</ph> of the snapline.</source>
+          <target state="translated">對齊線的 <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLinePriority" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.Windows.Forms.Design.Behavior.SnapLinePriority)">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> class using the specified snapline type, offset, and priority.</source>
+          <target state="translated">使用指定的對齊線類型、位移和優先權，初始化 <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.Windows.Forms.Design.Behavior.SnapLinePriority)">
+          <source>This constructor sets the <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.Filter%2A&gt;</ph> property to <ph id="ph2">`null`</ph>.</source>
+          <target state="translated">這個建構函式設定<ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.Filter%2A&gt;</ph>屬性<ph id="ph2">`null`</ph>。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.String,System.Windows.Forms.Design.Behavior.SnapLinePriority)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" /&gt;</ph> to create.</source>
+          <target state="translated">要建立的 <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.String,System.Windows.Forms.Design.Behavior.SnapLinePriority)">
+          <source>Describes the relative position and orientation of the snapline.</source>
+          <target state="translated">描述對齊線的相對位置和方向。</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.String,System.Windows.Forms.Design.Behavior.SnapLinePriority)">
+          <source>The position of the snapline, in pixels, relative to the upper-left origin of the owning control.</source>
+          <target state="translated">以像素計算的對齊線位置，相對於擁有的控制項的左上方原點。</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.String,System.Windows.Forms.Design.Behavior.SnapLinePriority)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.String" /&gt;</ph> used to specify a programmer-defined category of snaplines.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.String" /&gt;</ph>，用於指定程式設計人員定義的對齊線分類。</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.String,System.Windows.Forms.Design.Behavior.SnapLinePriority)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLinePriority" /&gt;</ph> of the snapline.</source>
+          <target state="translated">對齊線的 <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLinePriority" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.String,System.Windows.Forms.Design.Behavior.SnapLinePriority)">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> class using the specified snapline type, offset, filter name, and priority.</source>
+          <target state="translated">使用指定的對齊線類型、位移、篩選條件名稱和優先權，初始化 <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.#ctor(System.Windows.Forms.Design.Behavior.SnapLineType,System.Int32,System.String,System.Windows.Forms.Design.Behavior.SnapLinePriority)">
+          <source>This constructor sets all of the properties of a snapline to programmer-supplied values.</source>
+          <target state="translated">這個建構函式會將所有內容的對齊線設定程式設計人員提供的值。</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.AdjustOffset(System.Int32)">
+          <source>The number of pixels to change the snapline offset by.</source>
+          <target state="translated">要變更對齊線位移的像素數目。</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.AdjustOffset(System.Int32)">
+          <source>Adjusts the <ph id="ph1">&lt;see cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset" /&gt;</ph> property of the snapline.</source>
+          <target state="translated">調整對齊線的 <ph id="ph1">&lt;see cref="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset" /&gt;</ph> 屬性。</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.AdjustOffset(System.Int32)">
+          <source>The offset of a snapline is the distance, in pixels, that the snapline is located from the associated control's upper-left origin.</source>
+          <target state="translated">對齊線的此位移為距離，單位為像素線所在從相關聯的控制項的左上方原點。</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.AdjustOffset(System.Int32)">
+          <source>Although the offset can be set to any integer value, typically the snaplines retain the spatial relationships implied by their <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType%2A&gt;</ph> property value.</source>
+          <target state="translated">雖然位移可設定為任何整數值，通常對齊保留空間所隱含的關聯性及其<ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType%2A&gt;</ph>屬性值。</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Filter">
+          <source>Gets the programmer-defined filter category associated with this snapline.</source>
+          <target state="translated">取得與這個對齊線相關聯之程式設計人員定義的篩選條件分類。</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Filter">
+          <source>A <ph id="ph1">&lt;see cref="T:System.String" /&gt;</ph> that defines the filter category.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.String" /&gt;</ph>，定義篩選分類。</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Filter">
+          <source>The default is <ph id="ph1">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated">預設值為 <ph id="ph1">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Filter">
+          <source>The <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.Filter%2A&gt;</ph> property is used to define custom categories of snaplines.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.Filter%2A&gt;</ph>屬性用來定義對齊線的自訂類別。</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Filter">
+          <source>Only snaplines with the same filter name are able to snap to each other.</source>
+          <target state="translated">有同名的篩選器的對齊線可彼此貼齊。</target>       </trans-unit>
+        <trans-unit id="171" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Filter">
+          <source>This property can be used in custom control designers to expose different categories of snaplines depending upon the state of the control or the type of operation being performed.</source>
+          <target state="translated">這個屬性可以用於自訂控制項設計工具，來公開控制項的狀態或正在執行作業的類型而定的對齊線的不同類別。</target>       </trans-unit>
+        <trans-unit id="172" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Filter">
+          <source>For example, round controls could offer a custom snapline with the filter value of "Center".</source>
+          <target state="translated">例如，圓形控制項可以提供 「 中心 」 的篩選值的自訂對齊線。</target>       </trans-unit>
+        <trans-unit id="173" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Filter">
+          <source>This property is initialized during construction and cannot be changed thereafter.</source>
+          <target state="translated">這個屬性在建構期間初始化，且之後無法變更。</target>       </trans-unit>
+        <trans-unit id="174" translate="yes" xml:space="preserve" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.IsHorizontal">
+          <source>Gets a value indicating whether the snapline has a horizontal orientation.</source>
+          <target state="translated">取得值，指出對齊線是否具有水平方向。</target>       </trans-unit>
+        <trans-unit id="175" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.IsHorizontal">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the snapline is horizontal; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果對齊線是水平的則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="176" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.IsHorizontal">
+          <source>The following snapline types are horizontal: <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Top&gt;</ph>, <ph id="ph2">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Bottom&gt;</ph>, <ph id="ph3">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Horizontal&gt;</ph>, and <ph id="ph4">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Baseline&gt;</ph>.</source>
+          <target state="translated">下列的對齊線類型是水平： <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Top&gt;</ph>， <ph id="ph2">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Bottom&gt;</ph>， <ph id="ph3">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Horizontal&gt;</ph>，和<ph id="ph4">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Baseline&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="177" translate="yes" xml:space="preserve" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.IsVertical">
+          <source>Gets a value indicating whether the snapline has a vertical orientation.</source>
+          <target state="translated">取得值，指出對齊線是否具有垂直方向。</target>       </trans-unit>
+        <trans-unit id="178" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.IsVertical">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the snapline is vertical; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果對齊線是垂直的則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="179" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.IsVertical">
+          <source>The following snapline types are vertical: <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Left&gt;</ph>, <ph id="ph2">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Right&gt;</ph>, and <ph id="ph3">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Vertical&gt;</ph>.</source>
+          <target state="translated">下列的對齊線類型是垂直： <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Left&gt;</ph>， <ph id="ph2">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Right&gt;</ph>，和<ph id="ph3">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Vertical&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="180" translate="yes" xml:space="preserve" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset">
+          <source>Gets the number of pixels that the snapline is offset from the origin of the associated control.</source>
+          <target state="translated">取得對齊線從相關聯控制項的原點位移的像素數目。</target>       </trans-unit>
+        <trans-unit id="181" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset">
+          <source>The offset, in pixels, of the snapline.</source>
+          <target state="translated">對齊線的位移 (以像素為單位)。</target>       </trans-unit>
+        <trans-unit id="182" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset">
+          <source>The origin of a control is the upper-left point of the control.</source>
+          <target state="translated">控制項的原點是控制項的左上方點。</target>       </trans-unit>
+        <trans-unit id="183" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset">
+          <source>A single offset can describe the position of a snapline, because vertical snaplines may have only a nonzero x-axis offset, whereas horizontal snaplines may only have a nonzero y-axis offset.</source>
+          <target state="translated">單一位移可以描述對齊線位置，因為垂直對齊線可能僅為非零，x 軸位移，而水平對齊線只能有零的 y 軸位移。</target>       </trans-unit>
+        <trans-unit id="184" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Offset">
+          <source>The <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.Offset%2A&gt;</ph> property is initialized at construction time, but it can be changed thereafter with the <ph id="ph2">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.AdjustOffset%2A&gt;</ph> method.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.Offset%2A&gt;</ph>屬性會初始化在建構階段，但它可以以進行變更之後<ph id="ph2">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.AdjustOffset%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="185" translate="yes" xml:space="preserve" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Priority">
+          <source>Gets a value indicating the relative importance of the snapline.</source>
+          <target state="translated">取得值，表示對齊線的相對重要性。</target>       </trans-unit>
+        <trans-unit id="186" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Priority">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLinePriority" /&gt;</ph> that represents the priority category of a snapline.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLinePriority" /&gt;</ph>，表示對齊線的優先權分類。</target>       </trans-unit>
+        <trans-unit id="187" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Priority">
+          <source>The <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.Priority%2A&gt;</ph> property establishes categories of importance for the snaplines associated with a control.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.Priority%2A&gt;</ph>屬性建立的重要性與控制項關聯的對齊線的類別。</target>       </trans-unit>
+        <trans-unit id="188" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Priority">
+          <source>The Windows Forms Designer uses this property to determine which snaplines to display during a control addition, resize, or move operation.</source>
+          <target state="translated">Windows Form 設計工具會使用這個屬性來判斷哪些對齊線來顯示在控制項以外的地方，調整大小或移動作業。</target>       </trans-unit>
+        <trans-unit id="189" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Priority">
+          <source>For more information, see the <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLinePriority&gt;</ph> enumeration.</source>
+          <target state="translated">如需詳細資訊，請參閱 <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLinePriority&gt;</ph> 列舉。</target>       </trans-unit>
+        <trans-unit id="190" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.Priority">
+          <source>This property is initialized during construction and cannot be changed thereafter.</source>
+          <target state="translated">這個屬性在建構期間初始化，且之後無法變更。</target>       </trans-unit>
+        <trans-unit id="191" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.ShouldSnap(System.Windows.Forms.Design.Behavior.SnapLine,System.Windows.Forms.Design.Behavior.SnapLine)">
+          <source>The specified <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph>.</source>
+          <target state="translated">指定的 <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="192" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.ShouldSnap(System.Windows.Forms.Design.Behavior.SnapLine,System.Windows.Forms.Design.Behavior.SnapLine)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> to which the specified <ph id="ph2">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> is expected to snap.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph>，指定的 <ph id="ph2">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> 必須與之貼齊。</target>       </trans-unit>
+        <trans-unit id="193" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.ShouldSnap(System.Windows.Forms.Design.Behavior.SnapLine,System.Windows.Forms.Design.Behavior.SnapLine)">
+          <source>Returns a value indicating whether the specified <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> should snap to another <ph id="ph2">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph>.</source>
+          <target state="translated">傳回值，指出指定的 <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> 是否應該與另一個 <ph id="ph2">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph> 貼齊。</target>       </trans-unit>
+        <trans-unit id="194" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.ShouldSnap(System.Windows.Forms.Design.Behavior.SnapLine,System.Windows.Forms.Design.Behavior.SnapLine)">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if <ph id="ph2">&lt;paramref name="line1" /&gt;</ph> should snap to <ph id="ph3">&lt;paramref name="line2" /&gt;</ph>; otherwise, <ph id="ph4">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果 <ph id="ph2">&lt;paramref name="line1" /&gt;</ph> 應該與 <ph id="ph3">&lt;paramref name="line2" /&gt;</ph> 貼齊則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph4">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="195" translate="yes" xml:space="preserve" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType">
+          <source>Gets the type of a snapline, which indicates the general location and orientation.</source>
+          <target state="translated">取得對齊線的類型，指出一般位置和方向。</target>       </trans-unit>
+        <trans-unit id="196" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" /&gt;</ph> that represents the orientation and general location, relative to control edges, of a snapline.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLineType" /&gt;</ph>，表示對齊線相對於控制項邊緣的方向和一般位置。</target>       </trans-unit>
+        <trans-unit id="197" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType">
+          <source>Visual designers use the <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType%2A&gt;</ph> property to direct snap alignment operations.</source>
+          <target state="translated">視覺化設計工具使用<ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType%2A&gt;</ph>導向嵌入式管理單元對齊作業的屬性。</target>       </trans-unit>
+        <trans-unit id="198" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType">
+          <source>Typically only snaplines that are similarly oriented can snap to each other.</source>
+          <target state="translated">通常可以彼此貼齊方向類似的對齊線。</target>       </trans-unit>
+        <trans-unit id="199" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType">
+          <source>For example, two snaplines of type <ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Horizontal&gt;</ph> can snap together, but a <ph id="ph2">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Horizontal&gt;</ph> and a <ph id="ph3">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Vertical&gt;</ph> snapline cannot.</source>
+          <target state="translated">例如，兩個對齊線類型的<ph id="ph1">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Horizontal&gt;</ph>可以貼齊在一起，但<ph id="ph2">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Horizontal&gt;</ph>和<ph id="ph3">&lt;xref:System.Windows.Forms.Design.Behavior.SnapLineType.Vertical&gt;</ph>無法對齊線。</target>       </trans-unit>
+        <trans-unit id="200" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Windows.Forms.Design.Behavior.SnapLine.SnapLineType">
+          <source>This property is initialized during construction and cannot be changed thereafter.</source>
+          <target state="translated">這個屬性在建構期間初始化，且之後無法變更。</target>       </trans-unit>
+        <trans-unit id="201" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.ToString">
+          <source>Returns a string representation of the current snapline.</source>
+          <target state="translated">傳回目前對齊線的字串表示。</target>       </trans-unit>
+        <trans-unit id="202" translate="yes" xml:space="preserve" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.ToString">
+          <source>A <ph id="ph1">&lt;see cref="T:System.String" /&gt;</ph> that represents the current <ph id="ph2">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.String" /&gt;</ph> ，代表目前的 <ph id="ph2">&lt;see cref="T:System.Windows.Forms.Design.Behavior.SnapLine" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="203" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Windows.Forms.Design.Behavior.SnapLine.ToString">
+          <source>This method returns a string that contains details about the type, offset, priority, and filter values of the snapline.</source>
+          <target state="translated">這個方法會傳回字串，包含有關類型、 位移、 優先權和對齊線的篩選值的詳細資料。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

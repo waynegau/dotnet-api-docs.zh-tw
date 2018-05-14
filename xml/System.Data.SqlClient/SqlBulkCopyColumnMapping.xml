@@ -1,608 +1,318 @@
-<Type Name="SqlBulkCopyColumnMapping" FullName="System.Data.SqlClient.SqlBulkCopyColumnMapping">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="cd6c332c29dba696e66e055fcaf32d4c12ca4fa3" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public sealed class SqlBulkCopyColumnMapping" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit SqlBulkCopyColumnMapping extends System.Object" />
-  <TypeSignature Language="DocId" Value="T:System.Data.SqlClient.SqlBulkCopyColumnMapping" />
-  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class SqlBulkCopyColumnMapping" />
-  <TypeSignature Language="C++ CLI" Value="public ref class SqlBulkCopyColumnMapping sealed" />
-  <AssemblyInfo>
-    <AssemblyName>System.Data.SqlClient</AssemblyName>
-    <AssemblyVersion>4.1.0.0</AssemblyVersion>
-    <AssemblyVersion>4.2.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>System.Data</AssemblyName>
-    <AssemblyVersion>2.0.5.0</AssemblyVersion>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>netstandard</AssemblyName>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces />
-  <Docs>
-    <summary>
-      <span data-ttu-id="70125-101">定義 <see cref="T:System.Data.SqlClient.SqlBulkCopy" /> 執行個體 (instance) 之資料來源中資料行，與執行個體之目的資料表中資料行間的對應。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="70125-101">Defines the mapping between a column in a <see cref="T:System.Data.SqlClient.SqlBulkCopy" /> instance's data source and a column in the instance's destination table.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="70125-102">資料行對應會定義資料來源和目標資料表之間的對應。</span><span class="sxs-lookup"><span data-stu-id="70125-102">Column mappings define the mapping between data source and the target table.</span></span>  
-  
- <span data-ttu-id="70125-103">如果未定義對應 — 也就是<xref:System.Data.SqlClient.SqlBulkCopy.ColumnMappings%2A>集合是空的資料行的序數位置上對應隱含型。</span><span class="sxs-lookup"><span data-stu-id="70125-103">If mappings are not defined—that is, the <xref:System.Data.SqlClient.SqlBulkCopy.ColumnMappings%2A> collection is empty—the columns are mapped implicitly based on ordinal position.</span></span> <span data-ttu-id="70125-104">針對此目的，必須符合來源和目標結構描述。</span><span class="sxs-lookup"><span data-stu-id="70125-104">For this to work, source and target schemas must match.</span></span> <span data-ttu-id="70125-105">如果沒有的話，<xref:System.InvalidOperationException>就會擲回。</span><span class="sxs-lookup"><span data-stu-id="70125-105">If they do not, an <xref:System.InvalidOperationException> will be thrown.</span></span>  
-  
- <span data-ttu-id="70125-106">如果<xref:System.Data.SqlClient.SqlBulkCopy.ColumnMappings%2A>集合不是空的指定已存在於資料來源不是每個資料行。</span><span class="sxs-lookup"><span data-stu-id="70125-106">If the <xref:System.Data.SqlClient.SqlBulkCopy.ColumnMappings%2A> collection is not empty, not every column present in the data source has to be specified.</span></span> <span data-ttu-id="70125-107">未對應的集合都會被忽略。</span><span class="sxs-lookup"><span data-stu-id="70125-107">Those not mapped by the collection are ignored.</span></span>  
-  
- <span data-ttu-id="70125-108">您可以依名稱或序數參考到來源和目標資料行。</span><span class="sxs-lookup"><span data-stu-id="70125-108">You can refer to source and target columns by either name or ordinal.</span></span> <span data-ttu-id="70125-109">您也可以混用依名稱和相同的對應集合中的 order by 序數資料行參考。</span><span class="sxs-lookup"><span data-stu-id="70125-109">You can also mix by-name and by-ordinal column references in the same mappings collection.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="70125-110">下列範例會大量複製資料從來源資料表中**AdventureWorks**相同資料庫中的目的地資料表的範例資料庫。</span><span class="sxs-lookup"><span data-stu-id="70125-110">The following example bulk copies data from a source table in the **AdventureWorks** sample database to a destination table in the same database.</span></span> <span data-ttu-id="70125-111">雖然目的地資料行數目符合來源中的資料行數目，而且每個目的地資料行是在相同的序數位置做為其對應的來源資料行，資料行名稱不相符。</span><span class="sxs-lookup"><span data-stu-id="70125-111">Although the number of columns in the destination matches the number of columns in the source, and each destination column is in the same ordinal position as its corresponding source column, the column names do not match.</span></span> <span data-ttu-id="70125-112"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> 物件可用來建立大量複製的資料行對應。</span><span class="sxs-lookup"><span data-stu-id="70125-112"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> objects are used to create a column map for the bulk copy.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="70125-113">此範例不會執行，除非您已建立工作資料表中所述[大量複製範例設定](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)。</span><span class="sxs-lookup"><span data-stu-id="70125-113">This sample will not run unless you have created the work tables as described in [Bulk Copy Example Setup](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md).</span></span> <span data-ttu-id="70125-114">此程式碼可示範如何使用的語法**SqlBulkCopy**只。</span><span class="sxs-lookup"><span data-stu-id="70125-114">This code is provided to demonstrate the syntax for using **SqlBulkCopy** only.</span></span> <span data-ttu-id="70125-115">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL`INSERT … SELECT`陳述式來複製資料。</span><span class="sxs-lookup"><span data-stu-id="70125-115">If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL `INSERT … SELECT` statement to copy the data.</span></span>  
-  
- [!code-csharp[DataWorks SqlBulkCopy.ColumnMapping#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMapping/CS/source.cs#1)]
- [!code-vb[DataWorks SqlBulkCopy.ColumnMapping#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMapping/VB/source.vb#1)]  
-  
- ]]></format>
-    </remarks>
-  </Docs>
-  <Members>
-    <MemberGroup MemberName=".ctor">
-      <AssemblyInfo>
-        <AssemblyName>System.Data.SqlClient</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary>
-          <span data-ttu-id="70125-116">初始化 <see cref="T:System.Data.SqlClient.SqlBulkCopyColumnMapping" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-116">Initializes a new instance of the <see cref="T:System.Data.SqlClient.SqlBulkCopyColumnMapping" /> class.</span>
-          </span>
-        </summary>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public SqlBulkCopyColumnMapping ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; SqlBulkCopyColumnMapping();" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.SqlClient</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="70125-117">初始化新 <see cref="T:System.Data.SqlClient.SqlBulkCopyColumnMapping" /> 物件的預設建構函式。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-117">Default constructor that initializes a new <see cref="T:System.Data.SqlClient.SqlBulkCopyColumnMapping" /> object.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="70125-118">如果您使用這個建構函式，您必須再定義的來源對應使用<xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn%2A>屬性或<xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal%2A>屬性，並定義對應的使用目的<xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn%2A>屬性或<xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="70125-118">If you use this constructor, you must then define the source for the mapping using the <xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn%2A> property or the <xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal%2A> property, and define the destination for the mapping using the <xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn%2A> property or the <xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal%2A> property.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="70125-119">下列範例會大量複製資料從來源資料表中**AdventureWorks**相同資料庫中的目的地資料表的範例資料庫。</span><span class="sxs-lookup"><span data-stu-id="70125-119">The following example bulk copies data from a source table in the **AdventureWorks** sample database to a destination table in the same database.</span></span> <span data-ttu-id="70125-120">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</span><span class="sxs-lookup"><span data-stu-id="70125-120">Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</span></span> <span data-ttu-id="70125-121"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> 物件可用來建立大量複製的資料行對應。</span><span class="sxs-lookup"><span data-stu-id="70125-121"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> objects are used to create a column map for the bulk copy.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="70125-122">此範例不會執行，除非您已建立工作資料表中所述[大量複製範例設定](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)。</span><span class="sxs-lookup"><span data-stu-id="70125-122">This sample will not run unless you have created the work tables as described in [Bulk Copy Example Setup](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md).</span></span> <span data-ttu-id="70125-123">此程式碼可示範如何使用的語法**SqlBulkCopy**只。</span><span class="sxs-lookup"><span data-stu-id="70125-123">This code is provided to demonstrate the syntax for using **SqlBulkCopy** only.</span></span> <span data-ttu-id="70125-124">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL`INSERT … SELECT`陳述式來複製資料。</span><span class="sxs-lookup"><span data-stu-id="70125-124">If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL `INSERT … SELECT` statement to copy the data.</span></span>  
-  
- [!code-csharp[DataWorks SqlBulkCopy.ColumnMapping#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMapping/CS/source.cs#1)]
- [!code-vb[DataWorks SqlBulkCopy.ColumnMapping#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMapping/VB/source.vb#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public SqlBulkCopyColumnMapping (int sourceColumnOrdinal, int destinationOrdinal);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(int32 sourceColumnOrdinal, int32 destinationOrdinal) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (sourceColumnOrdinal As Integer, destinationOrdinal As Integer)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; SqlBulkCopyColumnMapping(int sourceColumnOrdinal, int destinationOrdinal);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.SqlClient</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="sourceColumnOrdinal" Type="System.Int32" />
-        <Parameter Name="destinationOrdinal" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="sourceColumnOrdinal">
-          <span data-ttu-id="70125-125">資料來源內來源資料行的序數位置。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-125">The ordinal position of the source column within the data source.</span>
-          </span>
-        </param>
-        <param name="destinationOrdinal">
-          <span data-ttu-id="70125-126">目的資料表中目的資料行的序數位置。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-126">The ordinal position of the destination column within the destination table.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="70125-127">建立新的資料行對應，使用資料行序數參考來源和目的資料行。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-127">Creates a new column mapping, using column ordinals to refer to source and destination columns.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="70125-128">下列範例會大量複製資料從來源資料表中**AdventureWorks**相同資料庫中的目的地資料表的範例資料庫。</span><span class="sxs-lookup"><span data-stu-id="70125-128">The following example bulk copies data from a source table in the **AdventureWorks** sample database to a destination table in the same database.</span></span> <span data-ttu-id="70125-129">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</span><span class="sxs-lookup"><span data-stu-id="70125-129">Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</span></span> <span data-ttu-id="70125-130"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> 物件可用來建立資料行的序數位置為基礎的大量複製的資料行對應。</span><span class="sxs-lookup"><span data-stu-id="70125-130"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> objects are used to create a column map for the bulk copy based on the ordinal positions of the columns.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="70125-131">此範例不會執行，除非您已建立工作資料表中所述[大量複製範例設定](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)。</span><span class="sxs-lookup"><span data-stu-id="70125-131">This sample will not run unless you have created the work tables as described in [Bulk Copy Example Setup](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md).</span></span> <span data-ttu-id="70125-132">此程式碼可示範如何使用的語法**SqlBulkCopy**只。</span><span class="sxs-lookup"><span data-stu-id="70125-132">This code is provided to demonstrate the syntax for using **SqlBulkCopy** only.</span></span> <span data-ttu-id="70125-133">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL`INSERT … SELECT`陳述式來複製資料。</span><span class="sxs-lookup"><span data-stu-id="70125-133">If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL `INSERT … SELECT` statement to copy the data.</span></span>  
-  
- [!code-csharp[DataWorks SqlBulkCopy.ColumnMappingOrdinal#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMappingOrdinal/CS/source.cs#1)]
- [!code-vb[DataWorks SqlBulkCopy.ColumnMappingOrdinal#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMappingOrdinal/VB/source.vb#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public SqlBulkCopyColumnMapping (int sourceColumnOrdinal, string destinationColumn);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(int32 sourceColumnOrdinal, string destinationColumn) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (sourceColumnOrdinal As Integer, destinationColumn As String)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; SqlBulkCopyColumnMapping(int sourceColumnOrdinal, System::String ^ destinationColumn);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.SqlClient</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="sourceColumnOrdinal" Type="System.Int32" />
-        <Parameter Name="destinationColumn" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="sourceColumnOrdinal">
-          <span data-ttu-id="70125-134">資料來源內來源資料行的序數位置。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-134">The ordinal position of the source column within the data source.</span>
-          </span>
-        </param>
-        <param name="destinationColumn">
-          <span data-ttu-id="70125-135">目的資料表中目的資料行的名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-135">The name of the destination column within the destination table.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="70125-136">建立新的資料行對應，使用資料行序數參考來源資料行和目標資料行的資料行名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-136">Creates a new column mapping, using a column ordinal to refer to the source column and a column name for the target column.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="70125-137">下列範例會大量複製資料從來源資料表中**AdventureWorks**相同資料庫中的目的地資料表的範例資料庫。</span><span class="sxs-lookup"><span data-stu-id="70125-137">The following example bulk copies data from a source table in the **AdventureWorks** sample database to a destination table in the same database.</span></span> <span data-ttu-id="70125-138">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</span><span class="sxs-lookup"><span data-stu-id="70125-138">Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</span></span> <span data-ttu-id="70125-139"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> 物件可用來建立大量複製的資料行對應。</span><span class="sxs-lookup"><span data-stu-id="70125-139"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> objects are used to create a column map for the bulk copy.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="70125-140">此範例不會執行，除非您已建立工作資料表中所述[大量複製範例設定](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)。</span><span class="sxs-lookup"><span data-stu-id="70125-140">This sample will not run unless you have created the work tables as described in [Bulk Copy Example Setup](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md).</span></span> <span data-ttu-id="70125-141">此程式碼可示範如何使用的語法**SqlBulkCopy**只。</span><span class="sxs-lookup"><span data-stu-id="70125-141">This code is provided to demonstrate the syntax for using **SqlBulkCopy** only.</span></span> <span data-ttu-id="70125-142">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL`INSERT … SELECT`陳述式來複製資料。</span><span class="sxs-lookup"><span data-stu-id="70125-142">If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL `INSERT … SELECT` statement to copy the data.</span></span>  
-  
- [!code-csharp[DataWorks SqlBulkCopy.ColumnMappingOrdinalName#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMappingOrdinalName/CS/source.cs#1)]
- [!code-vb[DataWorks SqlBulkCopy.ColumnMappingOrdinalName#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMappingOrdinalName/VB/source.vb#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public SqlBulkCopyColumnMapping (string sourceColumn, int destinationOrdinal);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string sourceColumn, int32 destinationOrdinal) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (sourceColumn As String, destinationOrdinal As Integer)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; SqlBulkCopyColumnMapping(System::String ^ sourceColumn, int destinationOrdinal);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.SqlClient</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="sourceColumn" Type="System.String" />
-        <Parameter Name="destinationOrdinal" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="sourceColumn">
-          <span data-ttu-id="70125-143">資料來源中來源資料行的名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-143">The name of the source column within the data source.</span>
-          </span>
-        </param>
-        <param name="destinationOrdinal">
-          <span data-ttu-id="70125-144">目的資料表中目的資料行的序數位置。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-144">The ordinal position of the destination column within the destination table.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="70125-145">建立新的資料行對應，使用資料行名稱參考來源資料行和目標資料行的資料行序數。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-145">Creates a new column mapping, using a column name to refer to the source column and a column ordinal for the target column.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="70125-146">下列範例會大量複製資料從來源資料表中**AdventureWorks**相同資料庫中的目的地資料表的範例資料庫。</span><span class="sxs-lookup"><span data-stu-id="70125-146">The following example bulk copies data from a source table in the **AdventureWorks** sample database to a destination table in the same database.</span></span> <span data-ttu-id="70125-147">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</span><span class="sxs-lookup"><span data-stu-id="70125-147">Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</span></span> <span data-ttu-id="70125-148"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> 物件可用來建立大量複製的資料行對應。</span><span class="sxs-lookup"><span data-stu-id="70125-148"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> objects are used to create a column map for the bulk copy.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="70125-149">此範例不會執行，除非您已建立工作資料表中所述[大量複製範例設定](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)。</span><span class="sxs-lookup"><span data-stu-id="70125-149">This sample will not run unless you have created the work tables as described in [Bulk Copy Example Setup](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md).</span></span> <span data-ttu-id="70125-150">此程式碼可示範如何使用的語法**SqlBulkCopy**只。</span><span class="sxs-lookup"><span data-stu-id="70125-150">This code is provided to demonstrate the syntax for using **SqlBulkCopy** only.</span></span> <span data-ttu-id="70125-151">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL`INSERT … SELECT`陳述式來複製資料。</span><span class="sxs-lookup"><span data-stu-id="70125-151">If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL `INSERT … SELECT` statement to copy the data.</span></span>  
-  
- [!code-csharp[DataWorks SqlBulkCopy.ColumnMappingNameOrdinal#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMappingNameOrdinal/CS/source.cs#1)]
- [!code-vb[DataWorks SqlBulkCopy.ColumnMappingNameOrdinal#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMappingNameOrdinal/VB/source.vb#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public SqlBulkCopyColumnMapping (string sourceColumn, string destinationColumn);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string sourceColumn, string destinationColumn) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (sourceColumn As String, destinationColumn As String)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; SqlBulkCopyColumnMapping(System::String ^ sourceColumn, System::String ^ destinationColumn);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.SqlClient</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="sourceColumn" Type="System.String" />
-        <Parameter Name="destinationColumn" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="sourceColumn">
-          <span data-ttu-id="70125-152">資料來源中來源資料行的名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-152">The name of the source column within the data source.</span>
-          </span>
-        </param>
-        <param name="destinationColumn">
-          <span data-ttu-id="70125-153">目的資料表中目的資料行的名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-153">The name of the destination column within the destination table.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="70125-154">建立新的資料行對應，使用資料行名稱參考來源和目的資料行。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-154">Creates a new column mapping, using column names to refer to source and destination columns.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="70125-155">下列範例會大量複製資料從來源資料表中**AdventureWorks**相同資料庫中的目的地資料表的範例資料庫。</span><span class="sxs-lookup"><span data-stu-id="70125-155">The following example bulk copies data from a source table in the **AdventureWorks** sample database to a destination table in the same database.</span></span> <span data-ttu-id="70125-156">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</span><span class="sxs-lookup"><span data-stu-id="70125-156">Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</span></span> <span data-ttu-id="70125-157"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> 物件可用來建立大量複製的資料行對應。</span><span class="sxs-lookup"><span data-stu-id="70125-157"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> objects are used to create a column map for the bulk copy.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="70125-158">此範例不會執行，除非您已建立工作資料表中所述[大量複製範例設定](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)。</span><span class="sxs-lookup"><span data-stu-id="70125-158">This sample will not run unless you have created the work tables as described in [Bulk Copy Example Setup](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md).</span></span> <span data-ttu-id="70125-159">此程式碼可示範如何使用的語法**SqlBulkCopy**只。</span><span class="sxs-lookup"><span data-stu-id="70125-159">This code is provided to demonstrate the syntax for using **SqlBulkCopy** only.</span></span> <span data-ttu-id="70125-160">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL`INSERT … SELECT`陳述式來複製資料。</span><span class="sxs-lookup"><span data-stu-id="70125-160">If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL `INSERT … SELECT` statement to copy the data.</span></span>  
-  
- [!code-csharp[DataWorks SqlBulkCopy.ColumnMapping#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMapping/CS/source.cs#1)]
- [!code-vb[DataWorks SqlBulkCopy.ColumnMapping#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMapping/VB/source.vb#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="DestinationColumn">
-      <MemberSignature Language="C#" Value="public string DestinationColumn { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance string DestinationColumn" />
-      <MemberSignature Language="DocId" Value="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn" />
-      <MemberSignature Language="VB.NET" Value="Public Property DestinationColumn As String" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ DestinationColumn { System::String ^ get(); void set(System::String ^ value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.SqlClient</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="70125-161">目的資料庫資料表中正在對應的資料行名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-161">Name of the column being mapped in the destination database table.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="70125-162">
-            <see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn" /> 屬性的字串值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-162">The string value of the <see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn" /> property.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="70125-163"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn%2A>和<xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal%2A>屬性互斥。</span><span class="sxs-lookup"><span data-stu-id="70125-163">The <xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn%2A> and <xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal%2A> properties are mutually exclusive.</span></span> <span data-ttu-id="70125-164">最後一個值將會優先採用。</span><span class="sxs-lookup"><span data-stu-id="70125-164">The last value set takes precedence.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="70125-165">下列範例會大量複製資料從來源資料表中**AdventureWorks**相同資料庫中的目的地資料表的範例資料庫。</span><span class="sxs-lookup"><span data-stu-id="70125-165">The following example bulk copies data from a source table in the **AdventureWorks** sample database to a destination table in the same database.</span></span> <span data-ttu-id="70125-166">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</span><span class="sxs-lookup"><span data-stu-id="70125-166">Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</span></span> <span data-ttu-id="70125-167"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> 物件可用來建立大量複製的資料行對應。</span><span class="sxs-lookup"><span data-stu-id="70125-167"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> objects are used to create a column map for the bulk copy.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="70125-168">此範例不會執行，除非您已建立工作資料表中所述[大量複製範例設定](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)。</span><span class="sxs-lookup"><span data-stu-id="70125-168">This sample will not run unless you have created the work tables as described in [Bulk Copy Example Setup](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md).</span></span> <span data-ttu-id="70125-169">此程式碼可示範如何使用的語法**SqlBulkCopy**只。</span><span class="sxs-lookup"><span data-stu-id="70125-169">This code is provided to demonstrate the syntax for using **SqlBulkCopy** only.</span></span> <span data-ttu-id="70125-170">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL`INSERT … SELECT`陳述式來複製資料。</span><span class="sxs-lookup"><span data-stu-id="70125-170">If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL `INSERT … SELECT` statement to copy the data.</span></span>  
-  
- [!code-csharp[DataWorks SqlBulkCopy.ColumnMappingDestinationColumn#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMappingDestinationColumn/CS/source.cs#1)]
- [!code-vb[DataWorks SqlBulkCopy.ColumnMappingDestinationColumn#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMappingDestinationColumn/VB/source.vb#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="DestinationOrdinal">
-      <MemberSignature Language="C#" Value="public int DestinationOrdinal { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 DestinationOrdinal" />
-      <MemberSignature Language="DocId" Value="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal" />
-      <MemberSignature Language="VB.NET" Value="Public Property DestinationOrdinal As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int DestinationOrdinal { int get(); void set(int value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.SqlClient</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="70125-171">目的資料表中目的資料行的序數值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-171">Ordinal value of the destination column within the destination table.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="70125-172">
-            <see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal" /> 屬性的整數值，如果尚未設定屬性，則為 -1。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-172">The integer value of the <see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal" /> property, or -1 if the property has not been set.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="70125-173"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn%2A>和<xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal%2A>屬性互斥。</span><span class="sxs-lookup"><span data-stu-id="70125-173">The <xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn%2A> and <xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal%2A> properties are mutually exclusive.</span></span> <span data-ttu-id="70125-174">最後一個值將會優先採用。</span><span class="sxs-lookup"><span data-stu-id="70125-174">The last value set takes precedence.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="70125-175">下列範例會大量複製資料從來源資料表中**AdventureWorks**相同資料庫中的目的地資料表的範例資料庫。</span><span class="sxs-lookup"><span data-stu-id="70125-175">The following example bulk copies data from a source table in the **AdventureWorks** sample database to a destination table in the same database.</span></span> <span data-ttu-id="70125-176">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</span><span class="sxs-lookup"><span data-stu-id="70125-176">Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</span></span> <span data-ttu-id="70125-177"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> 物件可用來建立大量複製的資料行對應。</span><span class="sxs-lookup"><span data-stu-id="70125-177"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> objects are used to create a column map for the bulk copy.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="70125-178">此範例不會執行，除非您已建立工作資料表中所述[大量複製範例設定](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)。</span><span class="sxs-lookup"><span data-stu-id="70125-178">This sample will not run unless you have created the work tables as described in [Bulk Copy Example Setup](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md).</span></span> <span data-ttu-id="70125-179">此程式碼可示範如何使用的語法**SqlBulkCopy**只。</span><span class="sxs-lookup"><span data-stu-id="70125-179">This code is provided to demonstrate the syntax for using **SqlBulkCopy** only.</span></span> <span data-ttu-id="70125-180">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL`INSERT … SELECT`陳述式來複製資料。</span><span class="sxs-lookup"><span data-stu-id="70125-180">If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL `INSERT … SELECT` statement to copy the data.</span></span>  
-  
- [!code-csharp[DataWorks SqlBulkCopy.ColumnMappingDestinationOrdinal#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMappingDestinationOrdinal/CS/source.cs#1)]
- [!code-vb[DataWorks SqlBulkCopy.ColumnMappingDestinationOrdinal#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMappingDestinationOrdinal/VB/source.vb#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SourceColumn">
-      <MemberSignature Language="C#" Value="public string SourceColumn { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance string SourceColumn" />
-      <MemberSignature Language="DocId" Value="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn" />
-      <MemberSignature Language="VB.NET" Value="Public Property SourceColumn As String" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ SourceColumn { System::String ^ get(); void set(System::String ^ value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.SqlClient</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="70125-181">資料來源中正在對應的資料行名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-181">Name of the column being mapped in the data source.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="70125-182">
-            <see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn" /> 屬性的字串值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-182">The string value of the <see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn" /> property.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="70125-183"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn%2A>和<xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal%2A>屬性互斥。</span><span class="sxs-lookup"><span data-stu-id="70125-183">The <xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn%2A> and <xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal%2A> properties are mutually exclusive.</span></span> <span data-ttu-id="70125-184">最後一個值將會優先採用。</span><span class="sxs-lookup"><span data-stu-id="70125-184">The last value set takes precedence.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="70125-185">下列範例會大量複製資料從來源資料表中**AdventureWorks**相同資料庫中的目的地資料表的範例資料庫。</span><span class="sxs-lookup"><span data-stu-id="70125-185">The following example bulk copies data from a source table in the **AdventureWorks** sample database to a destination table in the same database.</span></span> <span data-ttu-id="70125-186">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</span><span class="sxs-lookup"><span data-stu-id="70125-186">Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</span></span> <span data-ttu-id="70125-187"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> 物件可用來建立大量複製的資料行對應。</span><span class="sxs-lookup"><span data-stu-id="70125-187"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> objects are used to create a column map for the bulk copy.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="70125-188">此範例不會執行，除非您已建立工作資料表中所述[大量複製範例設定](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)。</span><span class="sxs-lookup"><span data-stu-id="70125-188">This sample will not run unless you have created the work tables as described in [Bulk Copy Example Setup](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md).</span></span> <span data-ttu-id="70125-189">此程式碼可示範如何使用的語法**SqlBulkCopy**只。</span><span class="sxs-lookup"><span data-stu-id="70125-189">This code is provided to demonstrate the syntax for using **SqlBulkCopy** only.</span></span> <span data-ttu-id="70125-190">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL`INSERT … SELECT`陳述式來複製資料。</span><span class="sxs-lookup"><span data-stu-id="70125-190">If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL `INSERT … SELECT` statement to copy the data.</span></span>  
-  
- [!code-csharp[DataWorks SqlBulkCopy.ColumnMappingDestinationColumn#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMappingDestinationColumn/CS/source.cs#1)]
- [!code-vb[DataWorks SqlBulkCopy.ColumnMappingDestinationColumn#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMappingDestinationColumn/VB/source.vb#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SourceOrdinal">
-      <MemberSignature Language="C#" Value="public int SourceOrdinal { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 SourceOrdinal" />
-      <MemberSignature Language="DocId" Value="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal" />
-      <MemberSignature Language="VB.NET" Value="Public Property SourceOrdinal As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int SourceOrdinal { int get(); void set(int value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.SqlClient</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="70125-191">資料來源內來源資料行的序數位置。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-191">The ordinal position of the source column within the data source.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="70125-192">
-            <see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal" /> 屬性的整數值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="70125-192">The integer value of the <see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal" /> property.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="70125-193"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn%2A>和<xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal%2A>屬性互斥。</span><span class="sxs-lookup"><span data-stu-id="70125-193">The <xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn%2A> and <xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal%2A> properties are mutually exclusive.</span></span> <span data-ttu-id="70125-194">最後一個值將會優先採用。</span><span class="sxs-lookup"><span data-stu-id="70125-194">The last value set takes precedence.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="70125-195">下列範例會大量複製資料從來源資料表中**AdventureWorks**相同資料庫中的目的地資料表的範例資料庫。</span><span class="sxs-lookup"><span data-stu-id="70125-195">The following example bulk copies data from a source table in the **AdventureWorks** sample database to a destination table in the same database.</span></span> <span data-ttu-id="70125-196">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</span><span class="sxs-lookup"><span data-stu-id="70125-196">Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</span></span> <span data-ttu-id="70125-197"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> 物件可用來建立大量複製的資料行對應。</span><span class="sxs-lookup"><span data-stu-id="70125-197"><xref:System.Data.SqlClient.SqlBulkCopyColumnMapping> objects are used to create a column map for the bulk copy.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="70125-198">此範例不會執行，除非您已建立工作資料表中所述[大量複製範例設定](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)。</span><span class="sxs-lookup"><span data-stu-id="70125-198">This sample will not run unless you have created the work tables as described in [Bulk Copy Example Setup](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md).</span></span> <span data-ttu-id="70125-199">此程式碼可示範如何使用的語法**SqlBulkCopy**只。</span><span class="sxs-lookup"><span data-stu-id="70125-199">This code is provided to demonstrate the syntax for using **SqlBulkCopy** only.</span></span> <span data-ttu-id="70125-200">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL`INSERT … SELECT`陳述式來複製資料。</span><span class="sxs-lookup"><span data-stu-id="70125-200">If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL `INSERT … SELECT` statement to copy the data.</span></span>  
-  
- [!code-csharp[DataWorks SqlBulkCopy.ColumnMappingDestinationOrdinal#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMappingDestinationOrdinal/CS/source.cs#1)]
- [!code-vb[DataWorks SqlBulkCopy.ColumnMappingDestinationOrdinal#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlBulkCopy.ColumnMappingDestinationOrdinal/VB/source.vb#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="SqlBulkCopyColumnMapping.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac5cd6c332c29dba696e66e055fcaf32d4c12ca4fa3.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">cd6c332c29dba696e66e055fcaf32d4c12ca4fa3</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netcore-1.0,netcore-1.1,netcore-2.0,netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7,xamarinandroid-7.1,xamarinios-10.8,xamarinmac-3.0</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source>Defines the mapping between a column in a <ph id="ph1">&lt;see cref="T:System.Data.SqlClient.SqlBulkCopy" /&gt;</ph> instance's data source and a column in the instance's destination table.</source>
+          <target state="translated">定義 <ph id="ph1">&lt;see cref="T:System.Data.SqlClient.SqlBulkCopy" /&gt;</ph> 執行個體 (instance) 之資料來源中資料行，與執行個體之目的資料表中資料行間的對應。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source>Column mappings define the mapping between data source and the target table.</source>
+          <target state="translated">資料行對應會定義資料來源和目標資料表之間的對應。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source>If mappings are not defined—that is, the <ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopy.ColumnMappings%2A&gt;</ph> collection is empty—the columns are mapped implicitly based on ordinal position.</source>
+          <target state="translated">如果未定義對應 — 也就是<ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopy.ColumnMappings%2A&gt;</ph>集合是空的資料行的序數位置上對應隱含型。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source>For this to work, source and target schemas must match.</source>
+          <target state="translated">針對此目的，必須符合來源和目標結構描述。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source>If they do not, an <ph id="ph1">&lt;xref:System.InvalidOperationException&gt;</ph> will be thrown.</source>
+          <target state="translated">如果沒有的話，<ph id="ph1">&lt;xref:System.InvalidOperationException&gt;</ph>就會擲回。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source>If the <ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopy.ColumnMappings%2A&gt;</ph> collection is not empty, not every column present in the data source has to be specified.</source>
+          <target state="translated">如果<ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopy.ColumnMappings%2A&gt;</ph>集合不是空的指定已存在於資料來源不是每個資料行。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source>Those not mapped by the collection are ignored.</source>
+          <target state="translated">未對應的集合都會被忽略。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source>You can refer to source and target columns by either name or ordinal.</source>
+          <target state="translated">您可以依名稱或序數參考到來源和目標資料行。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source>You can also mix by-name and by-ordinal column references in the same mappings collection.</source>
+          <target state="translated">您也可以混用依名稱和相同的對應集合中的 order by 序數資料行參考。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source>The following example bulk copies data from a source table in the <bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept> sample database to a destination table in the same database.</source>
+          <target state="translated">下列範例會大量複製資料從來源資料表中<bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept>相同資料庫中的目的地資料表的範例資料庫。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source>Although the number of columns in the destination matches the number of columns in the source, and each destination column is in the same ordinal position as its corresponding source column, the column names do not match.</source>
+          <target state="translated">雖然目的地資料行數目符合來源中的資料行數目，而且每個目的地資料行是在相同的序數位置做為其對應的來源資料行，資料行名稱不相符。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> objects are used to create a column map for the bulk copy.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> 物件可用來建立大量複製的資料行對應。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source>This sample will not run unless you have created the work tables as described in <bpt id="p1">[</bpt>Bulk Copy Example Setup<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>.</source>
+          <target state="translated">此範例不會執行，除非您已建立工作資料表中所述<bpt id="p1">[</bpt>大量複製範例設定<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source>This code is provided to demonstrate the syntax for using <bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept> only.</source>
+          <target state="translated">此程式碼可示範如何使用的語法<bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept>只。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source>If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL <ph id="ph1">`INSERT … SELECT`</ph> statement to copy the data.</source>
+          <target state="translated">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL<ph id="ph1">`INSERT … SELECT`</ph>陳述式來複製資料。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" uid="T:System.Data.SqlClient.SqlBulkCopyColumnMapping">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Data.SqlClient.SqlBulkCopyColumnMapping" /&gt;</ph> class.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.Data.SqlClient.SqlBulkCopyColumnMapping" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor">
+          <source>Default constructor that initializes a new <ph id="ph1">&lt;see cref="T:System.Data.SqlClient.SqlBulkCopyColumnMapping" /&gt;</ph> object.</source>
+          <target state="translated">初始化新 <ph id="ph1">&lt;see cref="T:System.Data.SqlClient.SqlBulkCopyColumnMapping" /&gt;</ph> 物件的預設建構函式。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor">
+          <source>If you use this constructor, you must then define the source for the mapping using the <ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn%2A&gt;</ph> property or the <ph id="ph2">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal%2A&gt;</ph> property, and define the destination for the mapping using the <ph id="ph3">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn%2A&gt;</ph> property or the <ph id="ph4">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal%2A&gt;</ph> property.</source>
+          <target state="translated">如果您使用這個建構函式，您必須再定義的來源對應使用<ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn%2A&gt;</ph>屬性或<ph id="ph2">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal%2A&gt;</ph>屬性，並定義對應的使用目的<ph id="ph3">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn%2A&gt;</ph>屬性或<ph id="ph4">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor">
+          <source>The following example bulk copies data from a source table in the <bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept> sample database to a destination table in the same database.</source>
+          <target state="translated">下列範例會大量複製資料從來源資料表中<bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept>相同資料庫中的目的地資料表的範例資料庫。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor">
+          <source>Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</source>
+          <target state="translated">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor">
+          <source><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> objects are used to create a column map for the bulk copy.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> 物件可用來建立大量複製的資料行對應。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor">
+          <source>This sample will not run unless you have created the work tables as described in <bpt id="p1">[</bpt>Bulk Copy Example Setup<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>.</source>
+          <target state="translated">此範例不會執行，除非您已建立工作資料表中所述<bpt id="p1">[</bpt>大量複製範例設定<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor">
+          <source>This code is provided to demonstrate the syntax for using <bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept> only.</source>
+          <target state="translated">此程式碼可示範如何使用的語法<bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept>只。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor">
+          <source>If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL <ph id="ph1">`INSERT … SELECT`</ph> statement to copy the data.</source>
+          <target state="translated">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL<ph id="ph1">`INSERT … SELECT`</ph>陳述式來複製資料。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.Int32)">
+          <source>The ordinal position of the source column within the data source.</source>
+          <target state="translated">資料來源內來源資料行的序數位置。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.Int32)">
+          <source>The ordinal position of the destination column within the destination table.</source>
+          <target state="translated">目的資料表中目的資料行的序數位置。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.Int32)">
+          <source>Creates a new column mapping, using column ordinals to refer to source and destination columns.</source>
+          <target state="translated">建立新的資料行對應，使用資料行序數參考來源和目的資料行。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.Int32)">
+          <source>The following example bulk copies data from a source table in the <bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept> sample database to a destination table in the same database.</source>
+          <target state="translated">下列範例會大量複製資料從來源資料表中<bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept>相同資料庫中的目的地資料表的範例資料庫。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.Int32)">
+          <source>Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</source>
+          <target state="translated">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.Int32)">
+          <source><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> objects are used to create a column map for the bulk copy based on the ordinal positions of the columns.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> 物件可用來建立資料行的序數位置為基礎的大量複製的資料行對應。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.Int32)">
+          <source>This sample will not run unless you have created the work tables as described in <bpt id="p1">[</bpt>Bulk Copy Example Setup<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>.</source>
+          <target state="translated">此範例不會執行，除非您已建立工作資料表中所述<bpt id="p1">[</bpt>大量複製範例設定<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.Int32)">
+          <source>This code is provided to demonstrate the syntax for using <bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept> only.</source>
+          <target state="translated">此程式碼可示範如何使用的語法<bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept>只。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.Int32)">
+          <source>If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL <ph id="ph1">`INSERT … SELECT`</ph> statement to copy the data.</source>
+          <target state="translated">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL<ph id="ph1">`INSERT … SELECT`</ph>陳述式來複製資料。</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.String)">
+          <source>The ordinal position of the source column within the data source.</source>
+          <target state="translated">資料來源內來源資料行的序數位置。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.String)">
+          <source>The name of the destination column within the destination table.</source>
+          <target state="translated">目的資料表中目的資料行的名稱。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.String)">
+          <source>Creates a new column mapping, using a column ordinal to refer to the source column and a column name for the target column.</source>
+          <target state="translated">建立新的資料行對應，使用資料行序數參考來源資料行和目標資料行的資料行名稱。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.String)">
+          <source>The following example bulk copies data from a source table in the <bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept> sample database to a destination table in the same database.</source>
+          <target state="translated">下列範例會大量複製資料從來源資料表中<bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept>相同資料庫中的目的地資料表的範例資料庫。</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.String)">
+          <source>Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</source>
+          <target state="translated">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.String)">
+          <source><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> objects are used to create a column map for the bulk copy.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> 物件可用來建立大量複製的資料行對應。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.String)">
+          <source>This sample will not run unless you have created the work tables as described in <bpt id="p1">[</bpt>Bulk Copy Example Setup<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>.</source>
+          <target state="translated">此範例不會執行，除非您已建立工作資料表中所述<bpt id="p1">[</bpt>大量複製範例設定<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.String)">
+          <source>This code is provided to demonstrate the syntax for using <bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept> only.</source>
+          <target state="translated">此程式碼可示範如何使用的語法<bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept>只。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.Int32,System.String)">
+          <source>If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL <ph id="ph1">`INSERT … SELECT`</ph> statement to copy the data.</source>
+          <target state="translated">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL<ph id="ph1">`INSERT … SELECT`</ph>陳述式來複製資料。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.Int32)">
+          <source>The name of the source column within the data source.</source>
+          <target state="translated">資料來源中來源資料行的名稱。</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.Int32)">
+          <source>The ordinal position of the destination column within the destination table.</source>
+          <target state="translated">目的資料表中目的資料行的序數位置。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.Int32)">
+          <source>Creates a new column mapping, using a column name to refer to the source column and a column ordinal for the target column.</source>
+          <target state="translated">建立新的資料行對應，使用資料行名稱參考來源資料行和目標資料行的資料行序數。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.Int32)">
+          <source>The following example bulk copies data from a source table in the <bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept> sample database to a destination table in the same database.</source>
+          <target state="translated">下列範例會大量複製資料從來源資料表中<bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept>相同資料庫中的目的地資料表的範例資料庫。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.Int32)">
+          <source>Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</source>
+          <target state="translated">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.Int32)">
+          <source><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> objects are used to create a column map for the bulk copy.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> 物件可用來建立大量複製的資料行對應。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.Int32)">
+          <source>This sample will not run unless you have created the work tables as described in <bpt id="p1">[</bpt>Bulk Copy Example Setup<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>.</source>
+          <target state="translated">此範例不會執行，除非您已建立工作資料表中所述<bpt id="p1">[</bpt>大量複製範例設定<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.Int32)">
+          <source>This code is provided to demonstrate the syntax for using <bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept> only.</source>
+          <target state="translated">此程式碼可示範如何使用的語法<bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept>只。</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.Int32)">
+          <source>If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL <ph id="ph1">`INSERT … SELECT`</ph> statement to copy the data.</source>
+          <target state="translated">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL<ph id="ph1">`INSERT … SELECT`</ph>陳述式來複製資料。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.String)">
+          <source>The name of the source column within the data source.</source>
+          <target state="translated">資料來源中來源資料行的名稱。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.String)">
+          <source>The name of the destination column within the destination table.</source>
+          <target state="translated">目的資料表中目的資料行的名稱。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.String)">
+          <source>Creates a new column mapping, using column names to refer to source and destination columns.</source>
+          <target state="translated">建立新的資料行對應，使用資料行名稱參考來源和目的資料行。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.String)">
+          <source>The following example bulk copies data from a source table in the <bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept> sample database to a destination table in the same database.</source>
+          <target state="translated">下列範例會大量複製資料從來源資料表中<bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept>相同資料庫中的目的地資料表的範例資料庫。</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.String)">
+          <source>Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</source>
+          <target state="translated">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.String)">
+          <source><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> objects are used to create a column map for the bulk copy.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> 物件可用來建立大量複製的資料行對應。</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.String)">
+          <source>This sample will not run unless you have created the work tables as described in <bpt id="p1">[</bpt>Bulk Copy Example Setup<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>.</source>
+          <target state="translated">此範例不會執行，除非您已建立工作資料表中所述<bpt id="p1">[</bpt>大量複製範例設定<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.String)">
+          <source>This code is provided to demonstrate the syntax for using <bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept> only.</source>
+          <target state="translated">此程式碼可示範如何使用的語法<bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept>只。</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Data.SqlClient.SqlBulkCopyColumnMapping.#ctor(System.String,System.String)">
+          <source>If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL <ph id="ph1">`INSERT … SELECT`</ph> statement to copy the data.</source>
+          <target state="translated">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL<ph id="ph1">`INSERT … SELECT`</ph>陳述式來複製資料。</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn">
+          <source>Name of the column being mapped in the destination database table.</source>
+          <target state="translated">目的資料庫資料表中正在對應的資料行名稱。</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn">
+          <source>The string value of the <ph id="ph1">&lt;see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn" /&gt;</ph> property.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn" /&gt;</ph> 屬性的字串值。</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn">
+          <source>The <ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal%2A&gt;</ph> properties are mutually exclusive.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn%2A&gt;</ph>和<ph id="ph2">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal%2A&gt;</ph>屬性互斥。</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn">
+          <source>The last value set takes precedence.</source>
+          <target state="translated">最後一個值將會優先採用。</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn">
+          <source>The following example bulk copies data from a source table in the <bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept> sample database to a destination table in the same database.</source>
+          <target state="translated">下列範例會大量複製資料從來源資料表中<bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept>相同資料庫中的目的地資料表的範例資料庫。</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn">
+          <source>Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</source>
+          <target state="translated">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn">
+          <source><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> objects are used to create a column map for the bulk copy.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> 物件可用來建立大量複製的資料行對應。</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn">
+          <source>This sample will not run unless you have created the work tables as described in <bpt id="p1">[</bpt>Bulk Copy Example Setup<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>.</source>
+          <target state="translated">此範例不會執行，除非您已建立工作資料表中所述<bpt id="p1">[</bpt>大量複製範例設定<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn">
+          <source>This code is provided to demonstrate the syntax for using <bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept> only.</source>
+          <target state="translated">此程式碼可示範如何使用的語法<bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept>只。</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn">
+          <source>If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL <ph id="ph1">`INSERT … SELECT`</ph> statement to copy the data.</source>
+          <target state="translated">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL<ph id="ph1">`INSERT … SELECT`</ph>陳述式來複製資料。</target>       </trans-unit>
+        <trans-unit id="171" translate="yes" xml:space="preserve" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal">
+          <source>Ordinal value of the destination column within the destination table.</source>
+          <target state="translated">目的資料表中目的資料行的序數值。</target>       </trans-unit>
+        <trans-unit id="172" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal">
+          <source>The integer value of the <ph id="ph1">&lt;see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal" /&gt;</ph> property, or -1 if the property has not been set.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal" /&gt;</ph> 屬性的整數值，如果尚未設定屬性，則為 -1。</target>       </trans-unit>
+        <trans-unit id="173" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal">
+          <source>The <ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal%2A&gt;</ph> properties are mutually exclusive.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationColumn%2A&gt;</ph>和<ph id="ph2">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal%2A&gt;</ph>屬性互斥。</target>       </trans-unit>
+        <trans-unit id="174" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal">
+          <source>The last value set takes precedence.</source>
+          <target state="translated">最後一個值將會優先採用。</target>       </trans-unit>
+        <trans-unit id="175" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal">
+          <source>The following example bulk copies data from a source table in the <bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept> sample database to a destination table in the same database.</source>
+          <target state="translated">下列範例會大量複製資料從來源資料表中<bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept>相同資料庫中的目的地資料表的範例資料庫。</target>       </trans-unit>
+        <trans-unit id="176" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal">
+          <source>Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</source>
+          <target state="translated">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</target>       </trans-unit>
+        <trans-unit id="177" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal">
+          <source><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> objects are used to create a column map for the bulk copy.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> 物件可用來建立大量複製的資料行對應。</target>       </trans-unit>
+        <trans-unit id="178" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal">
+          <source>This sample will not run unless you have created the work tables as described in <bpt id="p1">[</bpt>Bulk Copy Example Setup<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>.</source>
+          <target state="translated">此範例不會執行，除非您已建立工作資料表中所述<bpt id="p1">[</bpt>大量複製範例設定<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="179" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal">
+          <source>This code is provided to demonstrate the syntax for using <bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept> only.</source>
+          <target state="translated">此程式碼可示範如何使用的語法<bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept>只。</target>       </trans-unit>
+        <trans-unit id="180" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.DestinationOrdinal">
+          <source>If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL <ph id="ph1">`INSERT … SELECT`</ph> statement to copy the data.</source>
+          <target state="translated">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL<ph id="ph1">`INSERT … SELECT`</ph>陳述式來複製資料。</target>       </trans-unit>
+        <trans-unit id="181" translate="yes" xml:space="preserve" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn">
+          <source>Name of the column being mapped in the data source.</source>
+          <target state="translated">資料來源中正在對應的資料行名稱。</target>       </trans-unit>
+        <trans-unit id="182" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn">
+          <source>The string value of the <ph id="ph1">&lt;see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn" /&gt;</ph> property.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn" /&gt;</ph> 屬性的字串值。</target>       </trans-unit>
+        <trans-unit id="183" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn">
+          <source>The <ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal%2A&gt;</ph> properties are mutually exclusive.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn%2A&gt;</ph>和<ph id="ph2">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal%2A&gt;</ph>屬性互斥。</target>       </trans-unit>
+        <trans-unit id="184" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn">
+          <source>The last value set takes precedence.</source>
+          <target state="translated">最後一個值將會優先採用。</target>       </trans-unit>
+        <trans-unit id="185" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn">
+          <source>The following example bulk copies data from a source table in the <bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept> sample database to a destination table in the same database.</source>
+          <target state="translated">下列範例會大量複製資料從來源資料表中<bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept>相同資料庫中的目的地資料表的範例資料庫。</target>       </trans-unit>
+        <trans-unit id="186" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn">
+          <source>Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</source>
+          <target state="translated">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</target>       </trans-unit>
+        <trans-unit id="187" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn">
+          <source><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> objects are used to create a column map for the bulk copy.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> 物件可用來建立大量複製的資料行對應。</target>       </trans-unit>
+        <trans-unit id="188" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn">
+          <source>This sample will not run unless you have created the work tables as described in <bpt id="p1">[</bpt>Bulk Copy Example Setup<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>.</source>
+          <target state="translated">此範例不會執行，除非您已建立工作資料表中所述<bpt id="p1">[</bpt>大量複製範例設定<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="189" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn">
+          <source>This code is provided to demonstrate the syntax for using <bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept> only.</source>
+          <target state="translated">此程式碼可示範如何使用的語法<bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept>只。</target>       </trans-unit>
+        <trans-unit id="190" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn">
+          <source>If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL <ph id="ph1">`INSERT … SELECT`</ph> statement to copy the data.</source>
+          <target state="translated">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL<ph id="ph1">`INSERT … SELECT`</ph>陳述式來複製資料。</target>       </trans-unit>
+        <trans-unit id="191" translate="yes" xml:space="preserve" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal">
+          <source>The ordinal position of the source column within the data source.</source>
+          <target state="translated">資料來源內來源資料行的序數位置。</target>       </trans-unit>
+        <trans-unit id="192" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal">
+          <source>The integer value of the <ph id="ph1">&lt;see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal" /&gt;</ph> property.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal" /&gt;</ph> 屬性的整數值。</target>       </trans-unit>
+        <trans-unit id="193" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal">
+          <source>The <ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal%2A&gt;</ph> properties are mutually exclusive.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceColumn%2A&gt;</ph>和<ph id="ph2">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal%2A&gt;</ph>屬性互斥。</target>       </trans-unit>
+        <trans-unit id="194" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal">
+          <source>The last value set takes precedence.</source>
+          <target state="translated">最後一個值將會優先採用。</target>       </trans-unit>
+        <trans-unit id="195" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal">
+          <source>The following example bulk copies data from a source table in the <bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept> sample database to a destination table in the same database.</source>
+          <target state="translated">下列範例會大量複製資料從來源資料表中<bpt id="p1">**</bpt>AdventureWorks<ept id="p1">**</ept>相同資料庫中的目的地資料表的範例資料庫。</target>       </trans-unit>
+        <trans-unit id="196" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal">
+          <source>Although the number of columns in the destination matches the number of columns in the source, the column names and ordinal positions do not match.</source>
+          <target state="translated">雖然在來源中的資料行數目相符目的地資料行的數目，資料行名稱和序數位置並不相符。</target>       </trans-unit>
+        <trans-unit id="197" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal">
+          <source><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> objects are used to create a column map for the bulk copy.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.SqlClient.SqlBulkCopyColumnMapping&gt;</ph> 物件可用來建立大量複製的資料行對應。</target>       </trans-unit>
+        <trans-unit id="198" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal">
+          <source>This sample will not run unless you have created the work tables as described in <bpt id="p1">[</bpt>Bulk Copy Example Setup<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>.</source>
+          <target state="translated">此範例不會執行，除非您已建立工作資料表中所述<bpt id="p1">[</bpt>大量複製範例設定<ept id="p1">](~/docs/framework/data/adonet/sql/bulk-copy-example-setup.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="199" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal">
+          <source>This code is provided to demonstrate the syntax for using <bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept> only.</source>
+          <target state="translated">此程式碼可示範如何使用的語法<bpt id="p1">**</bpt>SqlBulkCopy<ept id="p1">**</ept>只。</target>       </trans-unit>
+        <trans-unit id="200" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Data.SqlClient.SqlBulkCopyColumnMapping.SourceOrdinal">
+          <source>If the source and destination tables are in the same SQL Server instance, it is easier and faster to use a Transact-SQL <ph id="ph1">`INSERT … SELECT`</ph> statement to copy the data.</source>
+          <target state="translated">如果來源和目的地資料表位於相同的 SQL Server 執行個體，則您更輕鬆且快速地使用 Transact SQL<ph id="ph1">`INSERT … SELECT`</ph>陳述式來複製資料。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

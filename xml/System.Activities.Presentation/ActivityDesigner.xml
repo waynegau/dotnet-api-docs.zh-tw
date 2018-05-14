@@ -1,426 +1,87 @@
-<Type Name="ActivityDesigner" FullName="System.Activities.Presentation.ActivityDesigner">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="b76608e78061541052b8d4568af47af5dd61cead" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public class ActivityDesigner : System.Activities.Presentation.WorkflowViewElement" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi ActivityDesigner extends System.Activities.Presentation.WorkflowViewElement" />
-  <TypeSignature Language="DocId" Value="T:System.Activities.Presentation.ActivityDesigner" />
-  <TypeSignature Language="VB.NET" Value="Public Class ActivityDesigner&#xA;Inherits WorkflowViewElement" />
-  <TypeSignature Language="C++ CLI" Value="public ref class ActivityDesigner : System::Activities::Presentation::WorkflowViewElement" />
-  <AssemblyInfo>
-    <AssemblyName>System.Activities.Presentation</AssemblyName>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Activities.Presentation.WorkflowViewElement</BaseTypeName>
-  </Base>
-  <Interfaces />
-  <Docs>
-    <summary>
-      <span data-ttu-id="4ece6-101">為所有的活動設計工具元件提供基底類別。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="4ece6-101">Provides a base class for all activity designer components.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="4ece6-102">這個型別會針對其他活動設計工具提供基本的外觀及操作功能，並且可讓開發人員將額外的功能加入至活動設計工具介面。</span><span class="sxs-lookup"><span data-stu-id="4ece6-102">This type provides the basic look-and-feel functionality for other activity designers and allows a developer to add additional capabilities to an activity designer surface.</span></span> <span data-ttu-id="4ece6-103">這通常是為了可能顯示有趣的其他資訊給使用者的活動，建立好編輯經驗的畫布上 (例如，使用`ExpressionTextBox`上`If`活動設計工具)，或允許包含若要編輯的項目 (請再次考慮<xref:System.Activities.Statements.If.Then%2A>和<xref:System.Activities.Statements.If.Else%2A>屬性<xref:System.Activities.Statements.If>活動)。</span><span class="sxs-lookup"><span data-stu-id="4ece6-103">This is typically done in order to either display additional interesting information to the user of the activity, create a better on canvas editing experience  (for example, using the `ExpressionTextBox` on an `If` activity designer), or to allow contained elements to be edited (again, consider the <xref:System.Activities.Statements.If.Then%2A> and <xref:System.Activities.Statements.If.Else%2A> properties of the <xref:System.Activities.Statements.If> activity).</span></span>  
-  
- <span data-ttu-id="4ece6-104"><xref:System.Activities.Presentation.ActivityDesigner> 繼承自 <xref:System.Activities.Presentation.WorkflowViewElement> 屬性，主要會加入預設的樣式，以及透過 <xref:System.Activities.Presentation.ActivityDesigner.Icon%2A> 屬性自訂圖示的功能。</span><span class="sxs-lookup"><span data-stu-id="4ece6-104">The <xref:System.Activities.Presentation.ActivityDesigner> inherits from <xref:System.Activities.Presentation.WorkflowViewElement> and primarily adds the default styling, as well as the ability to customize the icon via the <xref:System.Activities.Presentation.ActivityDesigner.Icon%2A> property.</span></span> <span data-ttu-id="4ece6-105">每當您為衍生自 <xref:System.Activities.Activity> 的型別建立設計工具時，都應使用它。</span><span class="sxs-lookup"><span data-stu-id="4ece6-105">It should be used whenever you are creating a designer for a type which derives from <xref:System.Activities.Activity>.</span></span> <span data-ttu-id="4ece6-106">與 <xref:System.Activities.Activity> 型別相關聯時，<xref:System.Activities.Presentation.WorkflowViewElement.ModelItem%2A> 屬性會指向 ModelItem 階層，這個階層會描述要編輯之型別的執行個體。</span><span class="sxs-lookup"><span data-stu-id="4ece6-106">When associated with an <xref:System.Activities.Activity> type, the <xref:System.Activities.Presentation.WorkflowViewElement.ModelItem%2A> property will point to the ModelItem hierarchy describing the instance of that type being edited.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="4ece6-107">下列範例程式碼會先定義 `First2of3` 活動，然後顯示 First2of3 設計工具的程式碼，最後則顯示如何使用 Designer 屬性，讓活動與所提供的設計工具相關聯。</span><span class="sxs-lookup"><span data-stu-id="4ece6-107">In the sample code below, a `First2of3` activity is defined first, then the code for the First2of3 designer is shown, and finally it is shown how to use the Designer attribute to associate the activity with the designer is provided.</span></span>  
-  
-```  
-  
-//The First2of3 activity  
-using System.Activities;  
-using System.Collections.Generic;  
-using System.Linq;  
-  
-namespace Microsoft.Activities.Documentation.ActivityTypes  
-{  
-  
-    public sealed class First2of3 : NativeActivity  
-    {  
-        public Activity Activity1 { get; set; }  
-        public Activity Activity2 { get; set; }  
-        public Activity Activity3 { get; set; }  
-  
-        Variable<List<ActivityInstance>> ExecutingActivities { get; set; }  
-  
-        public First2of3()  
-        {  
-            ExecutingActivities = new Variable<List<ActivityInstance>>();  
-        }  
-  
-        // If your activity returns a value, derive from CodeActivity<TResult>  
-        // and return the value from the Execute method.  
-        protected override void Execute(NativeActivityContext context)  
-        {  
-            // Obtain the runtime value of the Text input argument  
-            var l = new List<ActivityInstance>();  
-            ExecutingActivities.Set(context, l);  
-            l.Add(context.ScheduleActivity(Activity1, onComplete));  
-            l.Add(context.ScheduleActivity(Activity2, onComplete));  
-            l.Add(context.ScheduleActivity(Activity3, onComplete));  
-        }  
-  
-        protected override void CacheMetadata(NativeActivityMetadata metadata)  
-        {  
-            metadata.AddImplementationVariable(ExecutingActivities);  
-            metadata.AddChild(Activity1);  
-            metadata.AddChild(Activity2);  
-            metadata.AddChild(Activity3);  
-        }  
-  
-        private void onComplete(NativeActivityContext context, ActivityInstance completedInstance)  
-        {  
-            var l = ExecutingActivities.Get(context);  
-            l.Remove(completedInstance);  
-            if (l.Count == 1)  
-            {  
-                context.CancelChild(l.Single());  
-            }  
-        }  
-    }  
-}  
-  
-//’Code for the First2of3 Designer:  
-<sap:ActivityDesigner x:Class="Microsoft.Activites.Documentation.First2of3Designer"  
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"  
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
-    xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"  
-    xmlns:sapv="clr-namespace:System.Activities.Presentation.View;assembly=System.Activities.Presentation">  
-    <StackPanel>  
-        <Label Content="2 of 3 activity">  
-            <Label.ToolTip>  
-                This activity has 3 child activities which will be scheduled in parallel.    
-                Upon completion of any 2, the third will be cancelled  
-            </Label.ToolTip>  
-        </Label>  
-        <StackPanel Orientation="Horizontal">  
-            <Border BorderBrush="Blue" BorderThickness="2" CornerRadius="2" Margin="2" Padding="2">  
-                <sap:WorkflowItemPresenter HintText="Drop Activity1 Here" Item="{Binding Path=ModelItem.Activity1, Mode=TwoWay}" />  
-            </Border>  
-            <Border BorderBrush="Blue" BorderThickness="2" CornerRadius="2" Margin="2" Padding="2">  
-                <sap:WorkflowItemPresenter HintText="Drop Activity2 Here" Item="{Binding Path=ModelItem.Activity2, Mode=TwoWay}" />  
-  
-            </Border>  
-            <Border BorderBrush="Blue" BorderThickness="2" CornerRadius="2" Margin="2" Padding="2">  
-                <sap:WorkflowItemPresenter HintText="Drop Activity3 Here" Item="{Binding Path=ModelItem.Activity3, Mode=TwoWay}" />  
-  
-            </Border>  
-        </StackPanel>  
-    </StackPanel>  
-</sap:ActivityDesigner>  
-  
-//Code for associating the activity with the designer using the Designer attribute.  
-[Designer(typeof(First2of3Designer))]  
-public sealed class First2of3 : NativeActivity  
-  
-```  
-  
- ]]></format>
-    </remarks>
-  </Docs>
-  <Members>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ActivityDesigner ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.#ctor" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; ActivityDesigner();" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Activities.Presentation</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="4ece6-108">初始化 <see cref="T:System.Activities.Presentation.ActivityDesigner" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-108">Initializes a new instance of the <see cref="T:System.Activities.Presentation.ActivityDesigner" /> class.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAutomationIdMemberName">
-      <MemberSignature Language="C#" Value="protected override string GetAutomationIdMemberName ();" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance string GetAutomationIdMemberName() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.GetAutomationIdMemberName" />
-      <MemberSignature Language="VB.NET" Value="Protected Overrides Function GetAutomationIdMemberName () As String" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override System::String ^ GetAutomationIdMemberName();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Activities.Presentation</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="4ece6-109">在這個覆寫方法實作中傳回 "DisplayName" 字串。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-109">Returns the string "DisplayName" in this overridden method implementation.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="4ece6-110">在這個覆寫方法實作中的 "DisplayName" 字串。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-110">The string "DisplayName" in this overridden method implementation.</span>
-          </span>
-        </returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetAutomationItemStatus">
-      <MemberSignature Language="C#" Value="protected internal override string GetAutomationItemStatus ();" />
-      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance string GetAutomationItemStatus() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.GetAutomationItemStatus" />
-      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Function GetAutomationItemStatus () As String" />
-      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override System::String ^ GetAutomationItemStatus();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Activities.Presentation</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="4ece6-111">傳迴自動化項目的狀態。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-111">Returns the status of the automation item.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="4ece6-112">自動化項目的狀態。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-112">The status of the automation item.</span>
-          </span>
-        </returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Icon">
-      <MemberSignature Language="C#" Value="public System.Windows.Media.DrawingBrush Icon { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Media.DrawingBrush Icon" />
-      <MemberSignature Language="DocId" Value="P:System.Activities.Presentation.ActivityDesigner.Icon" />
-      <MemberSignature Language="VB.NET" Value="Public Property Icon As DrawingBrush" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Windows::Media::DrawingBrush ^ Icon { System::Windows::Media::DrawingBrush ^ get(); void set(System::Windows::Media::DrawingBrush ^ value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Activities.Presentation</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Windows.Media.DrawingBrush</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="4ece6-113">取得或設定與這個 <see cref="T:System.Activities.Presentation.ActivityDesigner" /> 相關聯的圖示。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-113">Gets or sets the icon associated with this <see cref="T:System.Activities.Presentation.ActivityDesigner" />.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="4ece6-114">傳回代表與這個 <see cref="T:System.Windows.Media.DrawingBrush" /> 相關聯之圖示的 <see cref="T:System.Activities.Presentation.ActivityDesigner" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-114">Returns a <see cref="T:System.Windows.Media.DrawingBrush" /> that represents the icon associated with this <see cref="T:System.Activities.Presentation.ActivityDesigner" />.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IconProperty">
-      <MemberSignature Language="C#" Value="public static readonly System.Windows.DependencyProperty IconProperty;" />
-      <MemberSignature Language="ILAsm" Value=".field public static initonly class System.Windows.DependencyProperty IconProperty" />
-      <MemberSignature Language="DocId" Value="F:System.Activities.Presentation.ActivityDesigner.IconProperty" />
-      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly IconProperty As DependencyProperty " />
-      <MemberSignature Language="C++ CLI" Value="public: static initonly System::Windows::DependencyProperty ^ IconProperty;" />
-      <MemberType>Field</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Activities.Presentation</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Windows.DependencyProperty</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="4ece6-115">識別 <see cref="F:System.Activities.Presentation.ActivityDesigner.IconProperty" /> 相依性屬性。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-115">Identifies the <see cref="F:System.Activities.Presentation.ActivityDesigner.IconProperty" /> dependency property.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnApplyTemplate">
-      <MemberSignature Language="C#" Value="public override void OnApplyTemplate ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void OnApplyTemplate() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.OnApplyTemplate" />
-      <MemberSignature Language="VB.NET" Value="Public Overrides Sub OnApplyTemplate ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void OnApplyTemplate();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Activities.Presentation</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="4ece6-116">開始套用範本以建立 <see cref="T:System.Activities.Presentation.ActivityDesigner" /> 的處理程序。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-116">Begins the process of applying a template to create an <see cref="T:System.Activities.Presentation.ActivityDesigner" />.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnEditAnnotation">
-      <MemberSignature Language="C#" Value="protected internal override void OnEditAnnotation ();" />
-      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance void OnEditAnnotation() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.OnEditAnnotation" />
-      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Sub OnEditAnnotation ()" />
-      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override void OnEditAnnotation();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Activities.Presentation</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="4ece6-117">開始進行會在編輯註釋時發生的處理。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-117">Begins the processing that occurs when editing annotation.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnModelItemChanged">
-      <MemberSignature Language="C#" Value="protected override void OnModelItemChanged (object newItem);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void OnModelItemChanged(object newItem) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.OnModelItemChanged(System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub OnModelItemChanged (newItem As Object)" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void OnModelItemChanged(System::Object ^ newItem);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Activities.Presentation</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="newItem" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="newItem">
-          <span data-ttu-id="4ece6-118">新項目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-118">The new item.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="4ece6-119">開始進行會在模型項目變更時發生的處理。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-119">Begins the processing that occurs when the model item is changed..</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnMouseUp">
-      <MemberSignature Language="C#" Value="protected override void OnMouseUp (System.Windows.Input.MouseButtonEventArgs e);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void OnMouseUp(class System.Windows.Input.MouseButtonEventArgs e) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.OnMouseUp(System.Windows.Input.MouseButtonEventArgs)" />
-      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub OnMouseUp (e As MouseButtonEventArgs)" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void OnMouseUp(System::Windows::Input::MouseButtonEventArgs ^ e);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Activities.Presentation</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="e" Type="System.Windows.Input.MouseButtonEventArgs" />
-      </Parameters>
-      <Docs>
-        <param name="e">
-          <span data-ttu-id="4ece6-120">
-            <see cref="T:System.Windows.Forms.DragEventArgs" />，其中包含事件資料。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-120">A <see cref="T:System.Windows.Forms.DragEventArgs" /> that contains the event data.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="4ece6-121">開始釋放任何滑鼠按鈕時所發生的處理作業。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-121">Begins the processing that occurs when any mouse button is released.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OnPreviewMouseDown">
-      <MemberSignature Language="C#" Value="protected override void OnPreviewMouseDown (System.Windows.Input.MouseButtonEventArgs e);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void OnPreviewMouseDown(class System.Windows.Input.MouseButtonEventArgs e) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.OnPreviewMouseDown(System.Windows.Input.MouseButtonEventArgs)" />
-      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub OnPreviewMouseDown (e As MouseButtonEventArgs)" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void OnPreviewMouseDown(System::Windows::Input::MouseButtonEventArgs ^ e);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Activities.Presentation</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="e" Type="System.Windows.Input.MouseButtonEventArgs" />
-      </Parameters>
-      <Docs>
-        <param name="e">
-          <span data-ttu-id="4ece6-122">
-            <see cref="T:System.Windows.Forms.DragEventArgs" />，其中包含事件資料。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-122">A <see cref="T:System.Windows.Forms.DragEventArgs" /> that contains the event data.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="4ece6-123">開始在未處理之 <see cref="T:System.Windows.Input.Mouse.PreviewMouseDown" /> 附加路由事件到達其路徑中的元素 (衍生自這個類別) 時發生的處理作業。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="4ece6-123">Begins the processing that occurs when an unhandled <see cref="T:System.Windows.Input.Mouse.PreviewMouseDown" /> attached routed event reaches an element in its route that is derived from this class.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="ActivityDesigner.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac5b76608e78061541052b8d4568af47af5dd61cead.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">b76608e78061541052b8d4568af47af5dd61cead</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Activities.Presentation.ActivityDesigner">
+          <source>Provides a base class for all activity designer components.</source>
+          <target state="translated">為所有的活動設計工具元件提供基底類別。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Activities.Presentation.ActivityDesigner">
+          <source>This type provides the basic look-and-feel functionality for other activity designers and allows a developer to add additional capabilities to an activity designer surface.</source>
+          <target state="translated">這個型別會針對其他活動設計工具提供基本的外觀及操作功能，並且可讓開發人員將額外的功能加入至活動設計工具介面。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Activities.Presentation.ActivityDesigner">
+          <source>This is typically done in order to either display additional interesting information to the user of the activity, create a better on canvas editing experience  (for example, using the <ph id="ph1">`ExpressionTextBox`</ph> on an <ph id="ph2">`If`</ph> activity designer), or to allow contained elements to be edited (again, consider the <ph id="ph3">&lt;xref:System.Activities.Statements.If.Then%2A&gt;</ph> and <ph id="ph4">&lt;xref:System.Activities.Statements.If.Else%2A&gt;</ph> properties of the <ph id="ph5">&lt;xref:System.Activities.Statements.If&gt;</ph> activity).</source>
+          <target state="translated">這通常是為了可能顯示有趣的其他資訊給使用者的活動，建立好編輯經驗的畫布上 (例如，使用<ph id="ph1">`ExpressionTextBox`</ph>上<ph id="ph2">`If`</ph>活動設計工具)，或允許包含若要編輯的項目 (請再次考慮<ph id="ph3">&lt;xref:System.Activities.Statements.If.Then%2A&gt;</ph>和<ph id="ph4">&lt;xref:System.Activities.Statements.If.Else%2A&gt;</ph>屬性<ph id="ph5">&lt;xref:System.Activities.Statements.If&gt;</ph>活動)。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Activities.Presentation.ActivityDesigner">
+          <source>The <ph id="ph1">&lt;xref:System.Activities.Presentation.ActivityDesigner&gt;</ph> inherits from <ph id="ph2">&lt;xref:System.Activities.Presentation.WorkflowViewElement&gt;</ph> and primarily adds the default styling, as well as the ability to customize the icon via the <ph id="ph3">&lt;xref:System.Activities.Presentation.ActivityDesigner.Icon%2A&gt;</ph> property.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Activities.Presentation.ActivityDesigner&gt;</ph> 繼承自 <ph id="ph2">&lt;xref:System.Activities.Presentation.WorkflowViewElement&gt;</ph> 屬性，主要會加入預設的樣式，以及透過 <ph id="ph3">&lt;xref:System.Activities.Presentation.ActivityDesigner.Icon%2A&gt;</ph> 屬性自訂圖示的功能。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Activities.Presentation.ActivityDesigner">
+          <source>It should be used whenever you are creating a designer for a type which derives from <ph id="ph1">&lt;xref:System.Activities.Activity&gt;</ph>.</source>
+          <target state="translated">每當您為衍生自 <ph id="ph1">&lt;xref:System.Activities.Activity&gt;</ph> 的型別建立設計工具時，都應使用它。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Activities.Presentation.ActivityDesigner">
+          <source>When associated with an <ph id="ph1">&lt;xref:System.Activities.Activity&gt;</ph> type, the <ph id="ph2">&lt;xref:System.Activities.Presentation.WorkflowViewElement.ModelItem%2A&gt;</ph> property will point to the ModelItem hierarchy describing the instance of that type being edited.</source>
+          <target state="translated">與 <ph id="ph1">&lt;xref:System.Activities.Activity&gt;</ph> 型別相關聯時，<ph id="ph2">&lt;xref:System.Activities.Presentation.WorkflowViewElement.ModelItem%2A&gt;</ph> 屬性會指向 ModelItem 階層，這個階層會描述要編輯之型別的執行個體。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Activities.Presentation.ActivityDesigner">
+          <source>In the sample code below, a <ph id="ph1">`First2of3`</ph> activity is defined first, then the code for the First2of3 designer is shown, and finally it is shown how to use the Designer attribute to associate the activity with the designer is provided.</source>
+          <target state="translated">下列範例程式碼會先定義 <ph id="ph1">`First2of3`</ph> 活動，然後顯示 First2of3 設計工具的程式碼，最後則顯示如何使用 Designer 屬性，讓活動與所提供的設計工具相關聯。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" uid="M:System.Activities.Presentation.ActivityDesigner.#ctor">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Activities.Presentation.ActivityDesigner" /&gt;</ph> class.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.Activities.Presentation.ActivityDesigner" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" uid="M:System.Activities.Presentation.ActivityDesigner.GetAutomationIdMemberName">
+          <source>Returns the string "DisplayName" in this overridden method implementation.</source>
+          <target state="translated">在這個覆寫方法實作中傳回 "DisplayName" 字串。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" uid="M:System.Activities.Presentation.ActivityDesigner.GetAutomationIdMemberName">
+          <source>The string "DisplayName" in this overridden method implementation.</source>
+          <target state="translated">在這個覆寫方法實作中的 "DisplayName" 字串。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" uid="M:System.Activities.Presentation.ActivityDesigner.GetAutomationItemStatus">
+          <source>Returns the status of the automation item.</source>
+          <target state="translated">傳迴自動化項目的狀態。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" uid="M:System.Activities.Presentation.ActivityDesigner.GetAutomationItemStatus">
+          <source>The status of the automation item.</source>
+          <target state="translated">自動化項目的狀態。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" uid="P:System.Activities.Presentation.ActivityDesigner.Icon">
+          <source>Gets or sets the icon associated with this <ph id="ph1">&lt;see cref="T:System.Activities.Presentation.ActivityDesigner" /&gt;</ph>.</source>
+          <target state="translated">取得或設定與這個 <ph id="ph1">&lt;see cref="T:System.Activities.Presentation.ActivityDesigner" /&gt;</ph> 相關聯的圖示。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Activities.Presentation.ActivityDesigner.Icon">
+          <source>Returns a <ph id="ph1">&lt;see cref="T:System.Windows.Media.DrawingBrush" /&gt;</ph> that represents the icon associated with this <ph id="ph2">&lt;see cref="T:System.Activities.Presentation.ActivityDesigner" /&gt;</ph>.</source>
+          <target state="translated">傳回代表與這個 <ph id="ph1">&lt;see cref="T:System.Windows.Media.DrawingBrush" /&gt;</ph> 相關聯之圖示的 <ph id="ph2">&lt;see cref="T:System.Activities.Presentation.ActivityDesigner" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" uid="F:System.Activities.Presentation.ActivityDesigner.IconProperty">
+          <source>Identifies the <ph id="ph1">&lt;see cref="F:System.Activities.Presentation.ActivityDesigner.IconProperty" /&gt;</ph> dependency property.</source>
+          <target state="translated">識別 <ph id="ph1">&lt;see cref="F:System.Activities.Presentation.ActivityDesigner.IconProperty" /&gt;</ph> 相依性屬性。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" uid="M:System.Activities.Presentation.ActivityDesigner.OnApplyTemplate">
+          <source>Begins the process of applying a template to create an <ph id="ph1">&lt;see cref="T:System.Activities.Presentation.ActivityDesigner" /&gt;</ph>.</source>
+          <target state="translated">開始套用範本以建立 <ph id="ph1">&lt;see cref="T:System.Activities.Presentation.ActivityDesigner" /&gt;</ph> 的處理程序。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" uid="M:System.Activities.Presentation.ActivityDesigner.OnEditAnnotation">
+          <source>Begins the processing that occurs when editing annotation.</source>
+          <target state="translated">開始進行會在編輯註釋時發生的處理。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" uid="M:System.Activities.Presentation.ActivityDesigner.OnModelItemChanged(System.Object)">
+          <source>The new item.</source>
+          <target state="translated">新項目。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" uid="M:System.Activities.Presentation.ActivityDesigner.OnModelItemChanged(System.Object)">
+          <source>Begins the processing that occurs when the model item is changed..</source>
+          <target state="translated">開始進行會在模型項目變更時發生的處理。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" uid="M:System.Activities.Presentation.ActivityDesigner.OnMouseUp(System.Windows.Input.MouseButtonEventArgs)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Windows.Forms.DragEventArgs" /&gt;</ph> that contains the event data.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Windows.Forms.DragEventArgs" /&gt;</ph>，其中包含事件資料。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" uid="M:System.Activities.Presentation.ActivityDesigner.OnMouseUp(System.Windows.Input.MouseButtonEventArgs)">
+          <source>Begins the processing that occurs when any mouse button is released.</source>
+          <target state="translated">開始釋放任何滑鼠按鈕時所發生的處理作業。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" uid="M:System.Activities.Presentation.ActivityDesigner.OnPreviewMouseDown(System.Windows.Input.MouseButtonEventArgs)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Windows.Forms.DragEventArgs" /&gt;</ph> that contains the event data.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Windows.Forms.DragEventArgs" /&gt;</ph>，其中包含事件資料。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" uid="M:System.Activities.Presentation.ActivityDesigner.OnPreviewMouseDown(System.Windows.Input.MouseButtonEventArgs)">
+          <source>Begins the processing that occurs when an unhandled <ph id="ph1">&lt;see cref="T:System.Windows.Input.Mouse.PreviewMouseDown" /&gt;</ph> attached routed event reaches an element in its route that is derived from this class.</source>
+          <target state="translated">開始在未處理之 <ph id="ph1">&lt;see cref="T:System.Windows.Input.Mouse.PreviewMouseDown" /&gt;</ph> 附加路由事件到達其路徑中的元素 (衍生自這個類別) 時發生的處理作業。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

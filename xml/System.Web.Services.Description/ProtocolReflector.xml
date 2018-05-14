@@ -1,926 +1,228 @@
-<Type Name="ProtocolReflector" FullName="System.Web.Services.Description.ProtocolReflector">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="d89c01606e05d4d23a69727279ef6a36263606aa" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public abstract class ProtocolReflector" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit ProtocolReflector extends System.Object" />
-  <TypeSignature Language="DocId" Value="T:System.Web.Services.Description.ProtocolReflector" />
-  <TypeSignature Language="VB.NET" Value="Public MustInherit Class ProtocolReflector" />
-  <TypeSignature Language="C++ CLI" Value="public ref class ProtocolReflector abstract" />
-  <AssemblyInfo>
-    <AssemblyName>System.Web.Services</AssemblyName>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces />
-  <Docs>
-    <summary>
-      <span data-ttu-id="48cf0-101">提供跨通訊協定 (Protocol) 的通用功能，用於從識別為 Web 服務的類別建立 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="48cf0-101">Provides common functionality across communication protocols for creating <see cref="T:System.Web.Services.Description.ServiceDescription" /> objects from classes that are identified as Web services.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="48cf0-102">抽象<xref:System.Web.Services.Description.ProtocolReflector>類別和其實體衍生的類別建立<xref:System.Web.Services.Description.ServiceDescription>物件類別識別為與 Web 服務從<xref:System.Web.Services.WebServiceAttribute>屬性。</span><span class="sxs-lookup"><span data-stu-id="48cf0-102">The abstract <xref:System.Web.Services.Description.ProtocolReflector> class and its concrete derived classes create <xref:System.Web.Services.Description.ServiceDescription> objects from classes that are identified as Web services with the <xref:System.Web.Services.WebServiceAttribute> attribute.</span></span> <span data-ttu-id="48cf0-103">每個實體<xref:System.Web.Services.Description.ProtocolReflector>-衍生的類別會產生<xref:System.Web.Services.Description.ServiceDescription>根據指定的通訊協定; 物件<xref:System.Web.Services.Description.ProtocolReflector>提供不論通訊協定的一般功能。</span><span class="sxs-lookup"><span data-stu-id="48cf0-103">Each concrete <xref:System.Web.Services.Description.ProtocolReflector>-derived class generates <xref:System.Web.Services.Description.ServiceDescription> objects according to a specified communication protocol; <xref:System.Web.Services.Description.ProtocolReflector> provides common functionality regardless of the protocol.</span></span>  
-  
- <span data-ttu-id="48cf0-104">輸出<xref:System.Web.Services.Description.ServiceDescription>執行個體可以用來產生 Web 服務描述語言 (WSDL) 文件與<xref:System.Web.Services.Description.ServiceDescription.Write%2A>方法或其中一個可用的多載。</span><span class="sxs-lookup"><span data-stu-id="48cf0-104">An output <xref:System.Web.Services.Description.ServiceDescription> instance can be used to generate a Web Services Description Language (WSDL) document with the <xref:System.Web.Services.Description.ServiceDescription.Write%2A> method or one of the available overloads.</span></span> <span data-ttu-id="48cf0-105"><xref:System.Web.Services.Description.ServiceDescription>執行個體也會供<xref:System.Web.Services.Description.ServiceDescriptionImporter>類別和相關的類別來產生用戶端 proxy 程式碼，或是抽象伺服端程式碼。</span><span class="sxs-lookup"><span data-stu-id="48cf0-105">The <xref:System.Web.Services.Description.ServiceDescription> instance can also be used by the <xref:System.Web.Services.Description.ServiceDescriptionImporter> class and related classes to generate client proxy code or abstract server code.</span></span>  
-  
- <span data-ttu-id="48cf0-106"><xref:System.Web.Services.Description.ProtocolReflector>類別會使用<xref:System.Web.Services.WebServiceBindingAttribute>建立<xref:System.Web.Services.Description.ServiceDescription>對於每一個繫結它識別在 Web 服務類別。</span><span class="sxs-lookup"><span data-stu-id="48cf0-106">The <xref:System.Web.Services.Description.ProtocolReflector> class uses the <xref:System.Web.Services.WebServiceBindingAttribute> to create a <xref:System.Web.Services.Description.ServiceDescription> for each binding it identifies in the Web service class.</span></span> <span data-ttu-id="48cf0-107">如果該屬性不存在，<xref:System.Web.Services.Description.ProtocolReflector>類別會建立單一繫結為整個類別。</span><span class="sxs-lookup"><span data-stu-id="48cf0-107">If that attribute is not present, the <xref:System.Web.Services.Description.ProtocolReflector> class creates a single binding for the entire class.</span></span> <span data-ttu-id="48cf0-108">每個 Web 服務方法 (Web 服務類別顯示使用中的方法<xref:System.Web.Services.WebMethodAttribute>) 屬於繫結的類別衍生自<xref:System.Web.Services.Description.ProtocolReflector>產生作業與相關聯的訊息加入至<xref:System.Web.Services.Description.ServiceDescription>物件。</span><span class="sxs-lookup"><span data-stu-id="48cf0-108">For each Web service method (a method in the Web service class appearing with the <xref:System.Web.Services.WebMethodAttribute>) belonging to a binding, a class derived from <xref:System.Web.Services.Description.ProtocolReflector> generates an operation and associated messages that are added to the <xref:System.Web.Services.Description.ServiceDescription> object.</span></span>  
-  
- <span data-ttu-id="48cf0-109">一般而言，開發人員會使用間接透過這些類別<xref:System.Web.Services.Description.ServiceDescriptionReflector>類別，而不是直接叫用類別衍生自<xref:System.Web.Services.Description.ProtocolReflector>。</span><span class="sxs-lookup"><span data-stu-id="48cf0-109">Typically, a developer uses these classes indirectly through the <xref:System.Web.Services.Description.ServiceDescriptionReflector> class, instead of directly invoking classes derived from <xref:System.Web.Services.Description.ProtocolReflector>.</span></span>  
-  
- ]]></format>
-    </remarks>
-  </Docs>
-  <Members>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected ProtocolReflector ();" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Description.ProtocolReflector.#ctor" />
-      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; ProtocolReflector();" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-110">初始化 <see cref="T:System.Web.Services.Description.ProtocolReflector" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-110">Initializes a new instance of the <see cref="T:System.Web.Services.Description.ProtocolReflector" /> class.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="BeginClass">
-      <MemberSignature Language="C#" Value="protected virtual void BeginClass ();" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void BeginClass() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Description.ProtocolReflector.BeginClass" />
-      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub BeginClass ()" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void BeginClass();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-111">當在衍生類別中覆寫時，請在 <see cref="T:System.Web.Services.Description.ProtocolReflector" /> 為繫結的每個方法呼叫 <see cref="M:System.Web.Services.Description.ProtocolReflector.ReflectMethod" /> 方法之前執行處理。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-111">When overridden in a derived class, performs processing before <see cref="T:System.Web.Services.Description.ProtocolReflector" /> calls the <see cref="M:System.Web.Services.Description.ProtocolReflector.ReflectMethod" /> method for each of the methods for a binding.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Binding">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Description.Binding Binding { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Description.Binding Binding" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.Binding" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Binding As Binding" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::Description::Binding ^ Binding { System::Web::Services::Description::Binding ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Description.Binding</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-112">取得目前已產生且加入相關聯之 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 的 Web 服務描述語言 (WSDL) 繫結。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-112">Gets the Web Services Description Language (WSDL) binding currently being generated and added to the associated <see cref="T:System.Web.Services.Description.ServiceDescription" />.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-113">目前已產生且加入相關聯之 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 的 Web 服務描述語言 (WSDL) 繫結。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-113">The Web Services Description Language (WSDL) binding currently being generated and added to the associated <see cref="T:System.Web.Services.Description.ServiceDescription" />.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="DefaultNamespace">
-      <MemberSignature Language="C#" Value="public string DefaultNamespace { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance string DefaultNamespace" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.DefaultNamespace" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property DefaultNamespace As String" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ DefaultNamespace { System::String ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-114">取得預設的命名空間，由相關聯 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件的 <see cref="F:System.Web.Services.Description.ServiceDescription.Namespace" /> 屬性所識別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-114">Gets the default namespace, as identified by the associated <see cref="T:System.Web.Services.Description.ServiceDescription" /> object's <see cref="F:System.Web.Services.Description.ServiceDescription.Namespace" /> property.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-115">預設的命名空間，由相關聯 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件的 <see cref="F:System.Web.Services.Description.ServiceDescription.Namespace" /> 屬性所識別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-115">The default namespace, as identified by the associated <see cref="T:System.Web.Services.Description.ServiceDescription" /> object's <see cref="F:System.Web.Services.Description.ServiceDescription.Namespace" /> property.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="EndClass">
-      <MemberSignature Language="C#" Value="protected virtual void EndClass ();" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void EndClass() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Description.ProtocolReflector.EndClass" />
-      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub EndClass ()" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void EndClass();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-116">在衍生的類別中覆寫時，請在 <see cref="ProtocolReflector" /> 為繫結的每個方法呼叫 <see cref="M:System.Web.Services.Description.ProtocolReflector.ReflectMethod" /> 方法之後執行處理。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-116">When overridden in a derived class, performs processing after <see cref="ProtocolReflector" /> has called the <see cref="M:System.Web.Services.Description.ProtocolReflector.ReflectMethod" /> method for each of the methods for a binding.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetServiceDescription">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Description.ServiceDescription GetServiceDescription (string ns);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Web.Services.Description.ServiceDescription GetServiceDescription(string ns) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Description.ProtocolReflector.GetServiceDescription(System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Function GetServiceDescription (ns As String) As ServiceDescription" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Web::Services::Description::ServiceDescription ^ GetServiceDescription(System::String ^ ns);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Description.ServiceDescription</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="ns" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="ns">
-          <span data-ttu-id="48cf0-117">隨後獲得的 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 執行個體會填入物件，這些物件對應至從輸入 Web 服務類別反映的 Web 服務描述語言 (WSDL) 實體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-117">The <see cref="T:System.Web.Services.Description.ServiceDescription" /> instance obtained subsequently gets populated with objects that correspond to Web Services Description Language (WSDL) entities that are reflected from the input Web service class.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="48cf0-118">取得 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件，用於指定的 XML 命名空間和適用的通訊協定。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-118">Gets a <see cref="T:System.Web.Services.Description.ServiceDescription" /> object for a given XML namespace and the applicable communication protocol.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="48cf0-119">
-            <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件，用於指定的 XML 命名空間和適用的通訊協定。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-119">A <see cref="T:System.Web.Services.Description.ServiceDescription" /> object for a given XML namespace and the applicable communication protocol.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="48cf0-120"><xref:System.Web.Services.Description.ServiceDescription>取得後續的執行個體中會填入來自輸入 Web 服務類別會反映的 WSDL 項目對應的物件。</span><span class="sxs-lookup"><span data-stu-id="48cf0-120">The <xref:System.Web.Services.Description.ServiceDescription> instance obtained subsequently gets populated with objects that correspond to WSDL entities that are reflected from the input Web service class.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="HeaderMessages">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Description.MessageCollection HeaderMessages { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Description.MessageCollection HeaderMessages" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.HeaderMessages" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property HeaderMessages As MessageCollection" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::Description::MessageCollection ^ HeaderMessages { System::Web::Services::Description::MessageCollection ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Description.MessageCollection</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-121">取得要加入相關聯之 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件的 SOAP 標頭訊息定義。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-121">Gets SOAP header message definitions to be added to the associated <see cref="T:System.Web.Services.Description.ServiceDescription" /> object.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-122">要加入至相關聯 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件的 SOAP 標頭訊息定義。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-122">SOAP header message definitions to be added to the associated <see cref="T:System.Web.Services.Description.ServiceDescription" /> object.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="InputMessage">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Description.Message InputMessage { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Description.Message InputMessage" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.InputMessage" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property InputMessage As Message" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::Description::Message ^ InputMessage { System::Web::Services::Description::Message ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Description.Message</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-123">取得抽象作業的 Web 服務描述語言 (WSDL) 輸入訊息，通訊協定反映程式目前正從 Web 服務方法產生該作業。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-123">Gets the Web Services Description Language (WSDL) input message for the abstract operation that the protocol reflector is currently generating from a Web service method.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-124">抽象作業的 Web 服務描述語言 (WSDL) 輸入訊息，通訊協定反映程式目前正從 Web 服務方法產生該作業。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-124">The Web Services Description Language (WSDL) input message for the abstract operation that the protocol reflector is currently generating from a Web service method.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Method">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Protocols.LogicalMethodInfo Method { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Protocols.LogicalMethodInfo Method" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.Method" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Method As LogicalMethodInfo" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::Protocols::LogicalMethodInfo ^ Method { System::Web::Services::Protocols::LogicalMethodInfo ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Protocols.LogicalMethodInfo</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-125">取得 Web 服務方法，通訊協定反映程式目前正在對其處理，以產生要置於所產生之 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 中的 Web 服務描述語言 (WSDL) 作業。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-125">Gets the Web service method that the protocol reflector is currently processing to generate a Web Services Description Language (WSDL) operation to be placed in the generated <see cref="T:System.Web.Services.Description.ServiceDescription" />.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-126">Web 服務方法，通訊協定反映程式目前正在對其處理，以產生要置於所產生之 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 中的 Web 服務描述語言 (WSDL) 作業。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-126">The Web service method that the protocol reflector is currently processing to generate a Web Services Description Language (WSDL) operation to be placed in the generated <see cref="T:System.Web.Services.Description.ServiceDescription" />.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="MethodAttribute">
-      <MemberSignature Language="C#" Value="public System.Web.Services.WebMethodAttribute MethodAttribute { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.WebMethodAttribute MethodAttribute" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.MethodAttribute" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property MethodAttribute As WebMethodAttribute" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::WebMethodAttribute ^ MethodAttribute { System::Web::Services::WebMethodAttribute ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.WebMethodAttribute</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-127">取得方法的 <see cref="T:System.Web.Services.WebMethodAttribute" />，通訊協定反映程式目前正在對其處理，以產生要置於所產生之 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 中的 Web 服務描述語言 (WSDL) 作業。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-127">Gets the <see cref="T:System.Web.Services.WebMethodAttribute" /> for the method that the protocol reflector is currently processing to generate a Web Services Description Language (WSDL) operation to be placed in the generated <see cref="T:System.Web.Services.Description.ServiceDescription" />.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-128">方法的 <see cref="T:System.Web.Services.WebMethodAttribute" />，通訊協定反映程式目前正在對其處理，以產生要置於所產生之 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 中的 Web 服務描述語言 (WSDL) 作業。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-128">The <see cref="T:System.Web.Services.WebMethodAttribute" /> for the method that the protocol reflector is currently processing to generate a Web Services Description Language (WSDL) operation to be placed in the generated <see cref="T:System.Web.Services.Description.ServiceDescription" /></span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Methods">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Protocols.LogicalMethodInfo[] Methods { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Protocols.LogicalMethodInfo[] Methods" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.Methods" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Methods As LogicalMethodInfo()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property cli::array &lt;System::Web::Services::Protocols::LogicalMethodInfo ^&gt; ^ Methods { cli::array &lt;System::Web::Services::Protocols::LogicalMethodInfo ^&gt; ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Protocols.LogicalMethodInfo[]</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-129">取得屬於 Web 服務類別的 Web 服務方法，由相關聯之 <see cref="T:System.Web.Services.Description.ProtocolReflector" /> 物件的 <see cref="P:System.Web.Services.Description.ProtocolReflector.Methods" /> 屬性所識別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-129">Gets the Web service methods belonging to the Web service class, as identified by the associated <see cref="T:System.Web.Services.Description.ProtocolReflector" /> object's <see cref="P:System.Web.Services.Description.ProtocolReflector.Methods" /> property.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-130">屬於 Web 服務類別的 Web 服務方法，由相關聯之 <see cref="T:System.Web.Services.Description.ProtocolReflector" /> 物件的 <see cref="P:System.Web.Services.Description.ProtocolReflector.Methods" /> 屬性所識別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-130">The Web service methods belonging to the Web service class, as identified by the associated <see cref="T:System.Web.Services.Description.ProtocolReflector" /> object's <see cref="P:System.Web.Services.Description.ProtocolReflector.Methods" /> property.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="48cf0-131">Web 服務方法所識別的<xref:System.Web.Services.WebMethodAttribute>。</span><span class="sxs-lookup"><span data-stu-id="48cf0-131">Web service methods are identified by the <xref:System.Web.Services.WebMethodAttribute>.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Operation">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Description.Operation Operation { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Description.Operation Operation" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.Operation" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Operation As Operation" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::Description::Operation ^ Operation { System::Web::Services::Description::Operation ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Description.Operation</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-132">取得抽象 Web 服務描述語言 (WSDL) 作業，通訊協定反映程式目前正從 Web 服務方法產生該作業。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-132">Gets the abstract Web Services Description Language (WSDL) operation that the protocol reflector is currently generating from a Web service method.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-133">抽象 Web 服務描述語言 (WSDL) 作業，通訊協定反映程式目前正從 Web 服務方法產生該作業</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-133">The abstract Web Services Description Language (WSDL) operation that the protocol reflector is currently generating from a Web service method</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="48cf0-134">作業會顯示為的子系`portType`WSDL 文件中的項目。</span><span class="sxs-lookup"><span data-stu-id="48cf0-134">The operation appears as a child of the `portType` element in a WSDL document.</span></span> <span data-ttu-id="48cf0-135">Web 服務方法所識別的<xref:System.Web.Services.WebMethodAttribute>。</span><span class="sxs-lookup"><span data-stu-id="48cf0-135">Web service methods are identified by the <xref:System.Web.Services.WebMethodAttribute>.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OperationBinding">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Description.OperationBinding OperationBinding { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Description.OperationBinding OperationBinding" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.OperationBinding" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property OperationBinding As OperationBinding" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::Description::OperationBinding ^ OperationBinding { System::Web::Services::Description::OperationBinding ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Description.OperationBinding</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-136">取得 Web 服務描述語言 (WSDL) 作業繫結，通訊協定匯入工具目前正從 Web 服務方法產生該作業繫結。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-136">Gets the Web Services Description Language (WSDL) operation binding that the protocol importer is currently generating from a Web service method.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-137">Web 服務描述語言 (WSDL) 作業繫結，通訊協定匯入工具目前正從 Web 服務方法產生該作業繫結。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-137">The Web Services Description Language (WSDL) operation binding that the protocol importer is currently generating from a Web service method.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="48cf0-138">Web 服務方法所識別的<xref:System.Web.Services.WebMethodAttribute>。</span><span class="sxs-lookup"><span data-stu-id="48cf0-138">Web service methods are identified by the <xref:System.Web.Services.WebMethodAttribute>.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OutputMessage">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Description.Message OutputMessage { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Description.Message OutputMessage" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.OutputMessage" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property OutputMessage As Message" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::Description::Message ^ OutputMessage { System::Web::Services::Description::Message ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Description.Message</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-139">取得抽象作業的 Web 服務描述語言 (WSDL) 輸出訊息，通訊協定反映程式目前正從 Web 服務方法產生該作業。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-139">Gets the Web Services Description Language (WSDL) output message for the abstract operation that the protocol reflector is currently generating from a Web service method.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-140">抽象作業的 Web 服務描述語言 (WSDL) 輸出訊息，通訊協定反映程式目前正從 Web 服務方法產生該作業。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-140">The Web Services Description Language (WSDL) output message for the abstract operation that the protocol reflector is currently generating from a Web service method.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Port">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Description.Port Port { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Description.Port Port" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.Port" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Port As Port" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::Description::Port ^ Port { System::Web::Services::Description::Port ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Description.Port</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-141">取得 Web 服務描述語言 (WSDL) 連接埠，通訊協定反映程式目前正在產生它，以包含產生的繫結參考。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-141">Gets the Web Services Description Language (WSDL) port that the protocol reflector is currently generating to contain a reference to the binding being generated.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-142">Web 服務描述語言 (WSDL) 連接埠，通訊協定反映程式目前正在產生它，以包含產生的繫結參考。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-142">The Web Services Description Language (WSDL) port that the protocol reflector is currently generating to contain a reference to the binding being generated.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="PortType">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Description.PortType PortType { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Description.PortType PortType" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.PortType" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property PortType As PortType" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::Description::PortType ^ PortType { System::Web::Services::Description::PortType ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Description.PortType</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-143">取得 Web 服務描述語言 (WSDL) <see langword="portType" />，通訊協定反映程式目前正在產生它，以由所產生的繫結實作。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-143">Gets the Web Services Description Language (WSDL) <see langword="portType" /> that the protocol reflector is currently generating to be implemented by the binding being generated.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-144">Web 服務描述語言 (WSDL) <see langword="portType" />，通訊協定反映程式目前正在產生它，以由所產生的繫結實作。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-144">The Web Services Description Language (WSDL) <see langword="portType" /> that the protocol reflector is currently generating to be implemented by the binding being generated.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ProtocolName">
-      <MemberSignature Language="C#" Value="public abstract string ProtocolName { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance string ProtocolName" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.ProtocolName" />
-      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property ProtocolName As String" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::String ^ ProtocolName { System::String ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-145">在衍生類別中覆寫時，取得所使用的通訊協定名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-145">When overridden in a derived class, gets the name of the protocol being used.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-146">所用通訊協定的名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-146">The name of the protocol being used.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ReflectDescription">
-      <MemberSignature Language="C#" Value="protected virtual void ReflectDescription ();" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void ReflectDescription() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Description.ProtocolReflector.ReflectDescription" />
-      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub ReflectDescription ()" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void ReflectDescription();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-147">在衍生類別中覆寫時，產生服務特定的描述資訊，其會置於對應至繫結的 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件中。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-147">When overridden in a derived class, generates service-specific description information that gets placed in a <see cref="T:System.Web.Services.Description.ServiceDescription" /> object that corresponds to a binding.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ReflectionImporter">
-      <MemberSignature Language="C#" Value="public System.Xml.Serialization.XmlReflectionImporter ReflectionImporter { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Xml.Serialization.XmlReflectionImporter ReflectionImporter" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.ReflectionImporter" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ReflectionImporter As XmlReflectionImporter" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Xml::Serialization::XmlReflectionImporter ^ ReflectionImporter { System::Xml::Serialization::XmlReflectionImporter ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Xml.Serialization.XmlReflectionImporter</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-148">取得由相關聯 <see cref="T:System.Xml.Serialization.XmlReflectionImporter" /> 執行個體使用的 <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> 執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-148">Gets the <see cref="T:System.Xml.Serialization.XmlReflectionImporter" /> instance being used by the associated <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> instance.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-149">由相關聯 <see cref="T:System.Xml.Serialization.XmlReflectionImporter" /> 執行個體使用的 <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> 執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-149">The <see cref="T:System.Xml.Serialization.XmlReflectionImporter" /> instance being used by the associated <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> instance.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ReflectMethod">
-      <MemberSignature Language="C#" Value="protected abstract bool ReflectMethod ();" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool ReflectMethod() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Description.ProtocolReflector.ReflectMethod" />
-      <MemberSignature Language="VB.NET" Value="Protected MustOverride Function ReflectMethod () As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract bool ReflectMethod();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-150">在衍生類別中覆寫時，產生方法特定的資訊，其會置於對應至繫結的 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件中。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-150">When overridden in a derived class, generates method-specific information that gets placed in a <see cref="T:System.Web.Services.Description.ServiceDescription" /> object corresponding to a binding.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="48cf0-151">放置於對應繫結之 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件的特定方法資訊。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-151">Method-specific information that gets placed in a <see cref="T:System.Web.Services.Description.ServiceDescription" /> object corresponding to a binding.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="48cf0-152">實作<xref:System.Web.Services.Description.ProtocolReflector.ReflectMethod%2A>方法應該產生作業繫結、 抽象作業，以及訊息等資訊。</span><span class="sxs-lookup"><span data-stu-id="48cf0-152">An implementation of the <xref:System.Web.Services.Description.ProtocolReflector.ReflectMethod%2A> method should generate information such as operation binding, abstract operation, and messages.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ReflectMethodBinding">
-      <MemberSignature Language="C#" Value="protected virtual string ReflectMethodBinding ();" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance string ReflectMethodBinding() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Description.ProtocolReflector.ReflectMethodBinding" />
-      <MemberSignature Language="VB.NET" Value="Protected Overridable Function ReflectMethodBinding () As String" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::String ^ ReflectMethodBinding();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-153">在衍生類別中覆寫時，傳回方法所屬的繫結名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-153">When overridden in a derived class, returns the name of the binding that a method belongs to.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="48cf0-154">方法所屬的繫結名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-154">The name of the binding that a method belongs to.</span>
-          </span>
-        </returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SchemaExporter">
-      <MemberSignature Language="C#" Value="public System.Xml.Serialization.XmlSchemaExporter SchemaExporter { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Xml.Serialization.XmlSchemaExporter SchemaExporter" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.SchemaExporter" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SchemaExporter As XmlSchemaExporter" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Xml::Serialization::XmlSchemaExporter ^ SchemaExporter { System::Xml::Serialization::XmlSchemaExporter ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Xml.Serialization.XmlSchemaExporter</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-155">取得由相關聯 <see cref="T:System.Xml.Serialization.XmlSchemaExporter" /> 執行個體使用的 <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> 執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-155">Gets the <see cref="T:System.Xml.Serialization.XmlSchemaExporter" /> instance being used by the associated <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> instance.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-156">由相關聯 <see cref="T:System.Xml.Serialization.XmlSchemaExporter" /> 執行個體使用的 <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> 執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-156">The <see cref="T:System.Xml.Serialization.XmlSchemaExporter" /> instance being used by the associated <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> instance.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Schemas">
-      <MemberSignature Language="C#" Value="public System.Xml.Serialization.XmlSchemas Schemas { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Xml.Serialization.XmlSchemas Schemas" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.Schemas" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Schemas As XmlSchemas" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Xml::Serialization::XmlSchemas ^ Schemas { System::Xml::Serialization::XmlSchemas ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Xml.Serialization.XmlSchemas</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-157">取得由相關聯 <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> 執行個體產生的 XML 結構描述。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-157">Gets the XML schemas being generated by the associated <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> instance.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-158">由相關聯 <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> 執行個體產生的 XML 結構描述。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-158">The XML schemas being generated by the associated <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> instance.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Service">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Description.Service Service { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Description.Service Service" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.Service" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Service As Service" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::Description::Service ^ Service { System::Web::Services::Description::Service ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Description.Service</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-159">取得 Web 服務描述語言 (WSDL) 服務，通訊協定反映程式目前正在產生它，以包含產生的繫結參考。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-159">Gets the Web Services Description Language (WSDL) service that the protocol reflector is currently generating to contain a reference to the binding being generated.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-160">Web 服務描述語言 (WSDL) 服務，通訊協定反映程式目前正在產生它，以包含產生的繫結參考。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-160">The Web Services Description Language (WSDL) service that the protocol reflector is currently generating to contain a reference to the binding being generated.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ServiceDescription">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Description.ServiceDescription ServiceDescription { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Description.ServiceDescription ServiceDescription" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.ServiceDescription" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ServiceDescription As ServiceDescription" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::Description::ServiceDescription ^ ServiceDescription { System::Web::Services::Description::ServiceDescription ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Description.ServiceDescription</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-161">取得 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件，目前建立用來包含所產生的繫結。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-161">Gets the <see cref="T:System.Web.Services.Description.ServiceDescription" /> object currently being created to contain the binding being generated.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-162">
-            <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件，這是目前要建立用來包含所產生之繫結的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-162">The <see cref="T:System.Web.Services.Description.ServiceDescription" /> object currently being created to contain the binding being generated.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ServiceDescriptions">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Description.ServiceDescriptionCollection ServiceDescriptions { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Description.ServiceDescriptionCollection ServiceDescriptions" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.ServiceDescriptions" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ServiceDescriptions As ServiceDescriptionCollection" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::Description::ServiceDescriptionCollection ^ ServiceDescriptions { System::Web::Services::Description::ServiceDescriptionCollection ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Description.ServiceDescriptionCollection</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-163">取得 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件，目前已建立並將其對應加入 <see cref="T:System.Web.Services.Description.ServiceDescriptionCollection" />，其透過相關聯之 <see cref="P:System.Web.Services.Description.ServiceDescriptionReflector.ServiceDescriptions" /> 執行個體的 <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> 屬性取得。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-163">Gets the <see cref="T:System.Web.Services.Description.ServiceDescription" /> objects that have so far been created and added to the corresponding to the <see cref="T:System.Web.Services.Description.ServiceDescriptionCollection" /> obtained through the <see cref="P:System.Web.Services.Description.ServiceDescriptionReflector.ServiceDescriptions" /> property of the associated <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> instance.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-164">
-            <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件，目前已建立並將其對應加入 <see cref="T:System.Web.Services.Description.ServiceDescriptionCollection" />，其透過相關聯之 <see cref="P:System.Web.Services.Description.ServiceDescriptionReflector.ServiceDescriptions" /> 執行個體的 <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> 屬性取得。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-164">The <see cref="T:System.Web.Services.Description.ServiceDescription" /> objects that have so far been created and added to the corresponding to the <see cref="T:System.Web.Services.Description.ServiceDescriptionCollection" /> obtained through the <see cref="P:System.Web.Services.Description.ServiceDescriptionReflector.ServiceDescriptions" /> property of the associated <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> instance.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="48cf0-165"><xref:System.Web.Services.Description.ProtocolReflector>類別會建立<xref:System.Web.Services.Description.ServiceDescription>物件每個繫結，但不同的命名空間，它會尋找 Web 服務類別。</span><span class="sxs-lookup"><span data-stu-id="48cf0-165">The <xref:System.Web.Services.Description.ProtocolReflector> class creates a <xref:System.Web.Services.Description.ServiceDescription> object for each binding, with a distinct namespace, that it finds in a Web service class.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ServiceType">
-      <MemberSignature Language="C#" Value="public Type ServiceType { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Type ServiceType" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.ServiceType" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ServiceType As Type" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property Type ^ ServiceType { Type ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Type</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-166">取得所反映的 Web 服務類別型別，以產生 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-166">Gets the type of the Web service class being reflected to produce <see cref="T:System.Web.Services.Description.ServiceDescription" /> objects.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-167">為產生 <see cref="T:System.Web.Services.Description.ServiceDescription" /> 物件所反映之 Web 服務類別的型別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-167">The type of the Web service class being reflected to produce <see cref="T:System.Web.Services.Description.ServiceDescription" /> objects.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="48cf0-168">Web 服務類別由<xref:System.Web.Services.WebServiceAttribute>。</span><span class="sxs-lookup"><span data-stu-id="48cf0-168">A Web service class is identified by the <xref:System.Web.Services.WebServiceAttribute>.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ServiceUrl">
-      <MemberSignature Language="C#" Value="public string ServiceUrl { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance string ServiceUrl" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Description.ProtocolReflector.ServiceUrl" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ServiceUrl As String" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ ServiceUrl { System::String ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="48cf0-169">取得相關聯之 Web 服務的端點做為統一資源定位器 (URL)，其可從相關聯 <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> 物件取得。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-169">Gets the endpoint of the associated Web service as a Uniform Resource Locator (URL), obtained from the associated <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> object.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="48cf0-170">做為統一資源定位器 (URL) 的相關聯 Web 服務的端點，可從相關聯的 <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> 物件取得。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="48cf0-170">The endpoint of the associated Web service as a Uniform Resource Locator (URL), obtained from the associated <see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /> object.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="ProtocolReflector.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac5d89c01606e05d4d23a69727279ef6a36263606aa.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d89c01606e05d4d23a69727279ef6a36263606aa</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Web.Services.Description.ProtocolReflector">
+          <source>Provides common functionality across communication protocols for creating <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> objects from classes that are identified as Web services.</source>
+          <target state="translated">提供跨通訊協定 (Protocol) 的通用功能，用於從識別為 Web 服務的類別建立 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Description.ProtocolReflector">
+          <source>The abstract <ph id="ph1">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph> class and its concrete derived classes create <ph id="ph2">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph> objects from classes that are identified as Web services with the <ph id="ph3">&lt;xref:System.Web.Services.WebServiceAttribute&gt;</ph> attribute.</source>
+          <target state="translated">抽象<ph id="ph1">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph>類別和其實體衍生的類別建立<ph id="ph2">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph>物件類別識別為與 Web 服務從<ph id="ph3">&lt;xref:System.Web.Services.WebServiceAttribute&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Description.ProtocolReflector">
+          <source>Each concrete <ph id="ph1">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph>-derived class generates <ph id="ph2">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph> objects according to a specified communication protocol; <ph id="ph3">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph> provides common functionality regardless of the protocol.</source>
+          <target state="translated">每個實體<ph id="ph1">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph>-衍生的類別會產生<ph id="ph2">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph>根據指定的通訊協定; 物件<ph id="ph3">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph>提供不論通訊協定的一般功能。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Description.ProtocolReflector">
+          <source>An output <ph id="ph1">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph> instance can be used to generate a Web Services Description Language (WSDL) document with the <ph id="ph2">&lt;xref:System.Web.Services.Description.ServiceDescription.Write%2A&gt;</ph> method or one of the available overloads.</source>
+          <target state="translated">輸出<ph id="ph1">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph>執行個體可以用來產生 Web 服務描述語言 (WSDL) 文件與<ph id="ph2">&lt;xref:System.Web.Services.Description.ServiceDescription.Write%2A&gt;</ph>方法或其中一個可用的多載。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Description.ProtocolReflector">
+          <source>The <ph id="ph1">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph> instance can also be used by the <ph id="ph2">&lt;xref:System.Web.Services.Description.ServiceDescriptionImporter&gt;</ph> class and related classes to generate client proxy code or abstract server code.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph>執行個體也會供<ph id="ph2">&lt;xref:System.Web.Services.Description.ServiceDescriptionImporter&gt;</ph>類別和相關的類別來產生用戶端 proxy 程式碼，或是抽象伺服端程式碼。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Description.ProtocolReflector">
+          <source>The <ph id="ph1">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph> class uses the <ph id="ph2">&lt;xref:System.Web.Services.WebServiceBindingAttribute&gt;</ph> to create a <ph id="ph3">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph> for each binding it identifies in the Web service class.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph>類別會使用<ph id="ph2">&lt;xref:System.Web.Services.WebServiceBindingAttribute&gt;</ph>建立<ph id="ph3">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph>對於每一個繫結它識別在 Web 服務類別。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Description.ProtocolReflector">
+          <source>If that attribute is not present, the <ph id="ph1">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph> class creates a single binding for the entire class.</source>
+          <target state="translated">如果該屬性不存在，<ph id="ph1">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph>類別會建立單一繫結為整個類別。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Description.ProtocolReflector">
+          <source>For each Web service method (a method in the Web service class appearing with the <ph id="ph1">&lt;xref:System.Web.Services.WebMethodAttribute&gt;</ph>) belonging to a binding, a class derived from <ph id="ph2">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph> generates an operation and associated messages that are added to the <ph id="ph3">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph> object.</source>
+          <target state="translated">每個 Web 服務方法 (Web 服務類別顯示使用中的方法<ph id="ph1">&lt;xref:System.Web.Services.WebMethodAttribute&gt;</ph>) 屬於繫結的類別衍生自<ph id="ph2">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph>產生作業與相關聯的訊息加入至<ph id="ph3">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Description.ProtocolReflector">
+          <source>Typically, a developer uses these classes indirectly through the <ph id="ph1">&lt;xref:System.Web.Services.Description.ServiceDescriptionReflector&gt;</ph> class, instead of directly invoking classes derived from <ph id="ph2">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph>.</source>
+          <target state="translated">一般而言，開發人員會使用間接透過這些類別<ph id="ph1">&lt;xref:System.Web.Services.Description.ServiceDescriptionReflector&gt;</ph>類別，而不是直接叫用類別衍生自<ph id="ph2">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Description.ProtocolReflector.#ctor">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ProtocolReflector" /&gt;</ph> class.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ProtocolReflector" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Description.ProtocolReflector.BeginClass">
+          <source>When overridden in a derived class, performs processing before <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ProtocolReflector" /&gt;</ph> calls the <ph id="ph2">&lt;see cref="M:System.Web.Services.Description.ProtocolReflector.ReflectMethod" /&gt;</ph> method for each of the methods for a binding.</source>
+          <target state="translated">當在衍生類別中覆寫時，請在 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ProtocolReflector" /&gt;</ph> 為繫結的每個方法呼叫 <ph id="ph2">&lt;see cref="M:System.Web.Services.Description.ProtocolReflector.ReflectMethod" /&gt;</ph> 方法之前執行處理。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.Binding">
+          <source>Gets the Web Services Description Language (WSDL) binding currently being generated and added to the associated <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph>.</source>
+          <target state="translated">取得目前已產生且加入相關聯之 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 的 Web 服務描述語言 (WSDL) 繫結。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.Binding">
+          <source>The Web Services Description Language (WSDL) binding currently being generated and added to the associated <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph>.</source>
+          <target state="translated">目前已產生且加入相關聯之 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 的 Web 服務描述語言 (WSDL) 繫結。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.DefaultNamespace">
+          <source>Gets the default namespace, as identified by the associated <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> object's <ph id="ph2">&lt;see cref="F:System.Web.Services.Description.ServiceDescription.Namespace" /&gt;</ph> property.</source>
+          <target state="translated">取得預設的命名空間，由相關聯 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件的 <ph id="ph2">&lt;see cref="F:System.Web.Services.Description.ServiceDescription.Namespace" /&gt;</ph> 屬性所識別。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.DefaultNamespace">
+          <source>The default namespace, as identified by the associated <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> object's <ph id="ph2">&lt;see cref="F:System.Web.Services.Description.ServiceDescription.Namespace" /&gt;</ph> property.</source>
+          <target state="translated">預設的命名空間，由相關聯 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件的 <ph id="ph2">&lt;see cref="F:System.Web.Services.Description.ServiceDescription.Namespace" /&gt;</ph> 屬性所識別。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Description.ProtocolReflector.EndClass">
+          <source>When overridden in a derived class, performs processing after <ph id="ph1">&lt;see cref="ProtocolReflector" /&gt;</ph> has called the <ph id="ph2">&lt;see cref="M:System.Web.Services.Description.ProtocolReflector.ReflectMethod" /&gt;</ph> method for each of the methods for a binding.</source>
+          <target state="translated">在衍生的類別中覆寫時，請在 <ph id="ph1">&lt;see cref="ProtocolReflector" /&gt;</ph> 為繫結的每個方法呼叫 <ph id="ph2">&lt;see cref="M:System.Web.Services.Description.ProtocolReflector.ReflectMethod" /&gt;</ph> 方法之後執行處理。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Description.ProtocolReflector.GetServiceDescription(System.String)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> instance obtained subsequently gets populated with objects that correspond to Web Services Description Language (WSDL) entities that are reflected from the input Web service class.</source>
+          <target state="translated">隨後獲得的 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 執行個體會填入物件，這些物件對應至從輸入 Web 服務類別反映的 Web 服務描述語言 (WSDL) 實體。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Description.ProtocolReflector.GetServiceDescription(System.String)">
+          <source>Gets a <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> object for a given XML namespace and the applicable communication protocol.</source>
+          <target state="translated">取得 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件，用於指定的 XML 命名空間和適用的通訊協定。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Description.ProtocolReflector.GetServiceDescription(System.String)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> object for a given XML namespace and the applicable communication protocol.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件，用於指定的 XML 命名空間和適用的通訊協定。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Description.ProtocolReflector.GetServiceDescription(System.String)">
+          <source>The <ph id="ph1">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph> instance obtained subsequently gets populated with objects that correspond to WSDL entities that are reflected from the input Web service class.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph>取得後續的執行個體中會填入來自輸入 Web 服務類別會反映的 WSDL 項目對應的物件。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.HeaderMessages">
+          <source>Gets SOAP header message definitions to be added to the associated <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> object.</source>
+          <target state="translated">取得要加入相關聯之 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件的 SOAP 標頭訊息定義。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.HeaderMessages">
+          <source>SOAP header message definitions to be added to the associated <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> object.</source>
+          <target state="translated">要加入至相關聯 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件的 SOAP 標頭訊息定義。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.InputMessage">
+          <source>Gets the Web Services Description Language (WSDL) input message for the abstract operation that the protocol reflector is currently generating from a Web service method.</source>
+          <target state="translated">取得抽象作業的 Web 服務描述語言 (WSDL) 輸入訊息，通訊協定反映程式目前正從 Web 服務方法產生該作業。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.InputMessage">
+          <source>The Web Services Description Language (WSDL) input message for the abstract operation that the protocol reflector is currently generating from a Web service method.</source>
+          <target state="translated">抽象作業的 Web 服務描述語言 (WSDL) 輸入訊息，通訊協定反映程式目前正從 Web 服務方法產生該作業。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.Method">
+          <source>Gets the Web service method that the protocol reflector is currently processing to generate a Web Services Description Language (WSDL) operation to be placed in the generated <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph>.</source>
+          <target state="translated">取得 Web 服務方法，通訊協定反映程式目前正在對其處理，以產生要置於所產生之 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 中的 Web 服務描述語言 (WSDL) 作業。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.Method">
+          <source>The Web service method that the protocol reflector is currently processing to generate a Web Services Description Language (WSDL) operation to be placed in the generated <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph>.</source>
+          <target state="translated">Web 服務方法，通訊協定反映程式目前正在對其處理，以產生要置於所產生之 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 中的 Web 服務描述語言 (WSDL) 作業。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.MethodAttribute">
+          <source>Gets the <ph id="ph1">&lt;see cref="T:System.Web.Services.WebMethodAttribute" /&gt;</ph> for the method that the protocol reflector is currently processing to generate a Web Services Description Language (WSDL) operation to be placed in the generated <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph>.</source>
+          <target state="translated">取得方法的 <ph id="ph1">&lt;see cref="T:System.Web.Services.WebMethodAttribute" /&gt;</ph>，通訊協定反映程式目前正在對其處理，以產生要置於所產生之 <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 中的 Web 服務描述語言 (WSDL) 作業。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.MethodAttribute">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Web.Services.WebMethodAttribute" /&gt;</ph> for the method that the protocol reflector is currently processing to generate a Web Services Description Language (WSDL) operation to be placed in the generated <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph></source>
+          <target state="translated">方法的 <ph id="ph1">&lt;see cref="T:System.Web.Services.WebMethodAttribute" /&gt;</ph>，通訊協定反映程式目前正在對其處理，以產生要置於所產生之 <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 中的 Web 服務描述語言 (WSDL) 作業。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.Methods">
+          <source>Gets the Web service methods belonging to the Web service class, as identified by the associated <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ProtocolReflector" /&gt;</ph> object's <ph id="ph2">&lt;see cref="P:System.Web.Services.Description.ProtocolReflector.Methods" /&gt;</ph> property.</source>
+          <target state="translated">取得屬於 Web 服務類別的 Web 服務方法，由相關聯之 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ProtocolReflector" /&gt;</ph> 物件的 <ph id="ph2">&lt;see cref="P:System.Web.Services.Description.ProtocolReflector.Methods" /&gt;</ph> 屬性所識別。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.Methods">
+          <source>The Web service methods belonging to the Web service class, as identified by the associated <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ProtocolReflector" /&gt;</ph> object's <ph id="ph2">&lt;see cref="P:System.Web.Services.Description.ProtocolReflector.Methods" /&gt;</ph> property.</source>
+          <target state="translated">屬於 Web 服務類別的 Web 服務方法，由相關聯之 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ProtocolReflector" /&gt;</ph> 物件的 <ph id="ph2">&lt;see cref="P:System.Web.Services.Description.ProtocolReflector.Methods" /&gt;</ph> 屬性所識別。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.Methods">
+          <source>Web service methods are identified by the <ph id="ph1">&lt;xref:System.Web.Services.WebMethodAttribute&gt;</ph>.</source>
+          <target state="translated">Web 服務方法所識別的<ph id="ph1">&lt;xref:System.Web.Services.WebMethodAttribute&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.Operation">
+          <source>Gets the abstract Web Services Description Language (WSDL) operation that the protocol reflector is currently generating from a Web service method.</source>
+          <target state="translated">取得抽象 Web 服務描述語言 (WSDL) 作業，通訊協定反映程式目前正從 Web 服務方法產生該作業。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.Operation">
+          <source>The abstract Web Services Description Language (WSDL) operation that the protocol reflector is currently generating from a Web service method</source>
+          <target state="translated">抽象 Web 服務描述語言 (WSDL) 作業，通訊協定反映程式目前正從 Web 服務方法產生該作業</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.Operation">
+          <source>The operation appears as a child of the <ph id="ph1">`portType`</ph> element in a WSDL document.</source>
+          <target state="translated">作業會顯示為的子系<ph id="ph1">`portType`</ph>WSDL 文件中的項目。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.Operation">
+          <source>Web service methods are identified by the <ph id="ph1">&lt;xref:System.Web.Services.WebMethodAttribute&gt;</ph>.</source>
+          <target state="translated">Web 服務方法所識別的<ph id="ph1">&lt;xref:System.Web.Services.WebMethodAttribute&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.OperationBinding">
+          <source>Gets the Web Services Description Language (WSDL) operation binding that the protocol importer is currently generating from a Web service method.</source>
+          <target state="translated">取得 Web 服務描述語言 (WSDL) 作業繫結，通訊協定匯入工具目前正從 Web 服務方法產生該作業繫結。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.OperationBinding">
+          <source>The Web Services Description Language (WSDL) operation binding that the protocol importer is currently generating from a Web service method.</source>
+          <target state="translated">Web 服務描述語言 (WSDL) 作業繫結，通訊協定匯入工具目前正從 Web 服務方法產生該作業繫結。</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.OperationBinding">
+          <source>Web service methods are identified by the <ph id="ph1">&lt;xref:System.Web.Services.WebMethodAttribute&gt;</ph>.</source>
+          <target state="translated">Web 服務方法所識別的<ph id="ph1">&lt;xref:System.Web.Services.WebMethodAttribute&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.OutputMessage">
+          <source>Gets the Web Services Description Language (WSDL) output message for the abstract operation that the protocol reflector is currently generating from a Web service method.</source>
+          <target state="translated">取得抽象作業的 Web 服務描述語言 (WSDL) 輸出訊息，通訊協定反映程式目前正從 Web 服務方法產生該作業。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.OutputMessage">
+          <source>The Web Services Description Language (WSDL) output message for the abstract operation that the protocol reflector is currently generating from a Web service method.</source>
+          <target state="translated">抽象作業的 Web 服務描述語言 (WSDL) 輸出訊息，通訊協定反映程式目前正從 Web 服務方法產生該作業。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.Port">
+          <source>Gets the Web Services Description Language (WSDL) port that the protocol reflector is currently generating to contain a reference to the binding being generated.</source>
+          <target state="translated">取得 Web 服務描述語言 (WSDL) 連接埠，通訊協定反映程式目前正在產生它，以包含產生的繫結參考。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.Port">
+          <source>The Web Services Description Language (WSDL) port that the protocol reflector is currently generating to contain a reference to the binding being generated.</source>
+          <target state="translated">Web 服務描述語言 (WSDL) 連接埠，通訊協定反映程式目前正在產生它，以包含產生的繫結參考。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.PortType">
+          <source>Gets the Web Services Description Language (WSDL) <ph id="ph1">&lt;see langword="portType" /&gt;</ph> that the protocol reflector is currently generating to be implemented by the binding being generated.</source>
+          <target state="translated">取得 Web 服務描述語言 (WSDL) <ph id="ph1">&lt;see langword="portType" /&gt;</ph>，通訊協定反映程式目前正在產生它，以由所產生的繫結實作。</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.PortType">
+          <source>The Web Services Description Language (WSDL) <ph id="ph1">&lt;see langword="portType" /&gt;</ph> that the protocol reflector is currently generating to be implemented by the binding being generated.</source>
+          <target state="translated">Web 服務描述語言 (WSDL) <ph id="ph1">&lt;see langword="portType" /&gt;</ph>，通訊協定反映程式目前正在產生它，以由所產生的繫結實作。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.ProtocolName">
+          <source>When overridden in a derived class, gets the name of the protocol being used.</source>
+          <target state="translated">在衍生類別中覆寫時，取得所使用的通訊協定名稱。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.ProtocolName">
+          <source>The name of the protocol being used.</source>
+          <target state="translated">所用通訊協定的名稱。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Description.ProtocolReflector.ReflectDescription">
+          <source>When overridden in a derived class, generates service-specific description information that gets placed in a <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> object that corresponds to a binding.</source>
+          <target state="translated">在衍生類別中覆寫時，產生服務特定的描述資訊，其會置於對應至繫結的 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件中。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.ReflectionImporter">
+          <source>Gets the <ph id="ph1">&lt;see cref="T:System.Xml.Serialization.XmlReflectionImporter" /&gt;</ph> instance being used by the associated <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> instance.</source>
+          <target state="translated">取得由相關聯 <ph id="ph1">&lt;see cref="T:System.Xml.Serialization.XmlReflectionImporter" /&gt;</ph> 執行個體使用的 <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> 執行個體。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.ReflectionImporter">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Xml.Serialization.XmlReflectionImporter" /&gt;</ph> instance being used by the associated <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> instance.</source>
+          <target state="translated">由相關聯 <ph id="ph1">&lt;see cref="T:System.Xml.Serialization.XmlReflectionImporter" /&gt;</ph> 執行個體使用的 <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> 執行個體。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Description.ProtocolReflector.ReflectMethod">
+          <source>When overridden in a derived class, generates method-specific information that gets placed in a <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> object corresponding to a binding.</source>
+          <target state="translated">在衍生類別中覆寫時，產生方法特定的資訊，其會置於對應至繫結的 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件中。</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Description.ProtocolReflector.ReflectMethod">
+          <source>Method-specific information that gets placed in a <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> object corresponding to a binding.</source>
+          <target state="translated">放置於對應繫結之 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件的特定方法資訊。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Description.ProtocolReflector.ReflectMethod">
+          <source>An implementation of the <ph id="ph1">&lt;xref:System.Web.Services.Description.ProtocolReflector.ReflectMethod%2A&gt;</ph> method should generate information such as operation binding, abstract operation, and messages.</source>
+          <target state="translated">實作<ph id="ph1">&lt;xref:System.Web.Services.Description.ProtocolReflector.ReflectMethod%2A&gt;</ph>方法應該產生作業繫結、 抽象作業，以及訊息等資訊。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Description.ProtocolReflector.ReflectMethodBinding">
+          <source>When overridden in a derived class, returns the name of the binding that a method belongs to.</source>
+          <target state="translated">在衍生類別中覆寫時，傳回方法所屬的繫結名稱。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Description.ProtocolReflector.ReflectMethodBinding">
+          <source>The name of the binding that a method belongs to.</source>
+          <target state="translated">方法所屬的繫結名稱。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.SchemaExporter">
+          <source>Gets the <ph id="ph1">&lt;see cref="T:System.Xml.Serialization.XmlSchemaExporter" /&gt;</ph> instance being used by the associated <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> instance.</source>
+          <target state="translated">取得由相關聯 <ph id="ph1">&lt;see cref="T:System.Xml.Serialization.XmlSchemaExporter" /&gt;</ph> 執行個體使用的 <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> 執行個體。</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.SchemaExporter">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Xml.Serialization.XmlSchemaExporter" /&gt;</ph> instance being used by the associated <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> instance.</source>
+          <target state="translated">由相關聯 <ph id="ph1">&lt;see cref="T:System.Xml.Serialization.XmlSchemaExporter" /&gt;</ph> 執行個體使用的 <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> 執行個體。</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.Schemas">
+          <source>Gets the XML schemas being generated by the associated <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> instance.</source>
+          <target state="translated">取得由相關聯 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> 執行個體產生的 XML 結構描述。</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.Schemas">
+          <source>The XML schemas being generated by the associated <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> instance.</source>
+          <target state="translated">由相關聯 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> 執行個體產生的 XML 結構描述。</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.Service">
+          <source>Gets the Web Services Description Language (WSDL) service that the protocol reflector is currently generating to contain a reference to the binding being generated.</source>
+          <target state="translated">取得 Web 服務描述語言 (WSDL) 服務，通訊協定反映程式目前正在產生它，以包含產生的繫結參考。</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.Service">
+          <source>The Web Services Description Language (WSDL) service that the protocol reflector is currently generating to contain a reference to the binding being generated.</source>
+          <target state="translated">Web 服務描述語言 (WSDL) 服務，通訊協定反映程式目前正在產生它，以包含產生的繫結參考。</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.ServiceDescription">
+          <source>Gets the <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> object currently being created to contain the binding being generated.</source>
+          <target state="translated">取得 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件，目前建立用來包含所產生的繫結。</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.ServiceDescription">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> object currently being created to contain the binding being generated.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件，這是目前要建立用來包含所產生之繫結的物件。</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.ServiceDescriptions">
+          <source>Gets the <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> objects that have so far been created and added to the corresponding to the <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionCollection" /&gt;</ph> obtained through the <ph id="ph3">&lt;see cref="P:System.Web.Services.Description.ServiceDescriptionReflector.ServiceDescriptions" /&gt;</ph> property of the associated <ph id="ph4">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> instance.</source>
+          <target state="translated">取得 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件，目前已建立並將其對應加入 <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionCollection" /&gt;</ph>，其透過相關聯之 <ph id="ph3">&lt;see cref="P:System.Web.Services.Description.ServiceDescriptionReflector.ServiceDescriptions" /&gt;</ph> 執行個體的 <ph id="ph4">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> 屬性取得。</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.ServiceDescriptions">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> objects that have so far been created and added to the corresponding to the <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionCollection" /&gt;</ph> obtained through the <ph id="ph3">&lt;see cref="P:System.Web.Services.Description.ServiceDescriptionReflector.ServiceDescriptions" /&gt;</ph> property of the associated <ph id="ph4">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> instance.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件，目前已建立並將其對應加入 <ph id="ph2">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionCollection" /&gt;</ph>，其透過相關聯之 <ph id="ph3">&lt;see cref="P:System.Web.Services.Description.ServiceDescriptionReflector.ServiceDescriptions" /&gt;</ph> 執行個體的 <ph id="ph4">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> 屬性取得。</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.ServiceDescriptions">
+          <source>The <ph id="ph1">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph> class creates a <ph id="ph2">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph> object for each binding, with a distinct namespace, that it finds in a Web service class.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Description.ProtocolReflector&gt;</ph>類別會建立<ph id="ph2">&lt;xref:System.Web.Services.Description.ServiceDescription&gt;</ph>物件每個繫結，但不同的命名空間，它會尋找 Web 服務類別。</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.ServiceType">
+          <source>Gets the type of the Web service class being reflected to produce <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> objects.</source>
+          <target state="translated">取得所反映的 Web 服務類別型別，以產生 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件。</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.ServiceType">
+          <source>The type of the Web service class being reflected to produce <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> objects.</source>
+          <target state="translated">為產生 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescription" /&gt;</ph> 物件所反映之 Web 服務類別的型別。</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.ServiceType">
+          <source>A Web service class is identified by the <ph id="ph1">&lt;xref:System.Web.Services.WebServiceAttribute&gt;</ph>.</source>
+          <target state="translated">Web 服務類別由<ph id="ph1">&lt;xref:System.Web.Services.WebServiceAttribute&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Description.ProtocolReflector.ServiceUrl">
+          <source>Gets the endpoint of the associated Web service as a Uniform Resource Locator (URL), obtained from the associated <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> object.</source>
+          <target state="translated">取得相關聯之 Web 服務的端點做為統一資源定位器 (URL)，其可從相關聯 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> 物件取得。</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Description.ProtocolReflector.ServiceUrl">
+          <source>The endpoint of the associated Web service as a Uniform Resource Locator (URL), obtained from the associated <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> object.</source>
+          <target state="translated">做為統一資源定位器 (URL) 的相關聯 Web 服務的端點，可從相關聯的 <ph id="ph1">&lt;see cref="T:System.Web.Services.Description.ServiceDescriptionReflector" /&gt;</ph> 物件取得。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

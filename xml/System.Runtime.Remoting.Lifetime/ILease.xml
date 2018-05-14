@@ -1,552 +1,228 @@
-<Type Name="ILease" FullName="System.Runtime.Remoting.Lifetime.ILease">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="a75620e8c62c3a53ec4594fc4caf7c650d7193e5" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public interface ILease" />
-  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract ILease" />
-  <TypeSignature Language="DocId" Value="T:System.Runtime.Remoting.Lifetime.ILease" />
-  <TypeSignature Language="VB.NET" Value="Public Interface ILease" />
-  <TypeSignature Language="C++ CLI" Value="public interface class ILease" />
-  <AssemblyInfo>
-    <AssemblyName>mscorlib</AssemblyName>
-    <AssemblyVersion>2.0.5.0</AssemblyVersion>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Interfaces />
-  <Attributes>
-    <Attribute>
-      <AttributeName>System.Runtime.InteropServices.ComVisible(true)</AttributeName>
-    </Attribute>
-  </Attributes>
-  <Docs>
-    <summary>
-      <span data-ttu-id="94aef-101">定義遠端存留期 (Lifetime) 服務所使用的存留期使用期 (Lease) 物件。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="94aef-101">Defines a lifetime lease object that is used by the remoting lifetime service.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="94aef-102">在刪除伺服器應用程式時，分散式記憶體回收集合控制項。</span><span class="sxs-lookup"><span data-stu-id="94aef-102">Distributed garbage collection controls when server applications can be deleted.</span></span> <span data-ttu-id="94aef-103">傳統上，分散式記憶體回收會使用參考計數和控制的 ping。</span><span class="sxs-lookup"><span data-stu-id="94aef-103">Traditionally, distributed garbage collection uses reference counts and pinging for control.</span></span> <span data-ttu-id="94aef-104">這適用於時有一些用戶端，每個物件，但有數千個用戶端，每一個物件時，也無法運作。</span><span class="sxs-lookup"><span data-stu-id="94aef-104">This works well when there are a few clients per object, but does not work well when there are thousands of clients per each object.</span></span> <span data-ttu-id="94aef-105">存留時間服務的用戶端數目增加時，也就可以假設傳統的分散式記憶體回收行程，與縮放比例的函式。</span><span class="sxs-lookup"><span data-stu-id="94aef-105">The lifetime service can assume the function of a traditional distributed garbage collector, and scales well when the number of clients increases.</span></span>  
-  
- <span data-ttu-id="94aef-106">與每個遠端啟動物件存留期服務產生關聯的租用。</span><span class="sxs-lookup"><span data-stu-id="94aef-106">The lifetime service associates a lease with each remotely activated object.</span></span> <span data-ttu-id="94aef-107">當租用已到期時，則會移除物件。</span><span class="sxs-lookup"><span data-stu-id="94aef-107">When the lease expires, the object is removed.</span></span> <span data-ttu-id="94aef-108">租用可以指定物件有無限的存留期。</span><span class="sxs-lookup"><span data-stu-id="94aef-108">A lease can specify that an object has an infinite lifetime.</span></span>  
-  
- <span data-ttu-id="94aef-109">每個<xref:System.AppDomain>包含管理網域中的租用的租用管理員。</span><span class="sxs-lookup"><span data-stu-id="94aef-109">Each <xref:System.AppDomain> contains a lease manager that administers the leases in the domain.</span></span> <span data-ttu-id="94aef-110">租用管理員會定期檢查時間到期的租用。</span><span class="sxs-lookup"><span data-stu-id="94aef-110">The lease manager periodically examines the leases for time expiration.</span></span> <span data-ttu-id="94aef-111">如果租用到期，它可以是取消藉由移除租用，其參考，或藉由叫用一或多個租用贊助者更新。</span><span class="sxs-lookup"><span data-stu-id="94aef-111">If a lease has expired, it can either be canceled by removing its reference to the lease, or renewed by invoking one or more of the lease's sponsors.</span></span>  
-  
- <span data-ttu-id="94aef-112">租用包含可更新的租用時間，來決定其原則中，屬性和方法。</span><span class="sxs-lookup"><span data-stu-id="94aef-112">A lease contains properties that determine its policies, and methods that renew the lease time.</span></span> <span data-ttu-id="94aef-113">會公開租用<xref:System.Runtime.Remoting.Lifetime.ILease>介面。</span><span class="sxs-lookup"><span data-stu-id="94aef-113">The lease exposes the <xref:System.Runtime.Remoting.Lifetime.ILease> interface.</span></span>  
-  
- <span data-ttu-id="94aef-114">如需範例示範如何使用<xref:System.Runtime.Remoting.Lifetime.ILease>介面，請參閱[存留期](http://msdn.microsoft.com/library/334a30e5-33cb-4f0f-a38a-ed4abc5560fa)。</span><span class="sxs-lookup"><span data-stu-id="94aef-114">For an example showing how to use the <xref:System.Runtime.Remoting.Lifetime.ILease> interface see [Lifetimes](http://msdn.microsoft.com/library/334a30e5-33cb-4f0f-a38a-ed4abc5560fa).</span></span>  
-  
- ]]></format>
-    </remarks>
-  </Docs>
-  <Members>
-    <Member MemberName="CurrentLeaseTime">
-      <MemberSignature Language="C#" Value="public TimeSpan CurrentLeaseTime { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan CurrentLeaseTime" />
-      <MemberSignature Language="DocId" Value="P:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property CurrentLeaseTime As TimeSpan" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property TimeSpan CurrentLeaseTime { TimeSpan get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.TimeSpan</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="94aef-115">取得使用期上剩餘的時間數量。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-115">Gets the amount of time remaining on the lease.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="94aef-116">使用期上剩餘的時間數量。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-116">The amount of time remaining on the lease.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.Security.SecurityException">
-          <span data-ttu-id="94aef-117">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-117">The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</span>
-          </span>
-        </exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">
-          <span data-ttu-id="94aef-118">營運與基礎結構程式碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-118">for operating with infrastructure code.</span>
-          </span>
-          <span data-ttu-id="94aef-119">要求的值： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />;權限的值： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-119">Demand value: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />; Permission value: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          </span>
-        </permission>
-      </Docs>
-    </Member>
-    <Member MemberName="CurrentState">
-      <MemberSignature Language="C#" Value="public System.Runtime.Remoting.Lifetime.LeaseState CurrentState { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Runtime.Remoting.Lifetime.LeaseState CurrentState" />
-      <MemberSignature Language="DocId" Value="P:System.Runtime.Remoting.Lifetime.ILease.CurrentState" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property CurrentState As LeaseState" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Runtime::Remoting::Lifetime::LeaseState CurrentState { System::Runtime::Remoting::Lifetime::LeaseState get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Runtime.Remoting.Lifetime.LeaseState</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="94aef-120">取得使用期的目前 <see cref="T:System.Runtime.Remoting.Lifetime.LeaseState" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-120">Gets the current <see cref="T:System.Runtime.Remoting.Lifetime.LeaseState" /> of the lease.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="94aef-121">使用期的目前 <see cref="T:System.Runtime.Remoting.Lifetime.LeaseState" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-121">The current <see cref="T:System.Runtime.Remoting.Lifetime.LeaseState" /> of the lease.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.Security.SecurityException">
-          <span data-ttu-id="94aef-122">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-122">The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</span>
-          </span>
-        </exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">
-          <span data-ttu-id="94aef-123">營運與基礎結構程式碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-123">for operating with infrastructure code.</span>
-          </span>
-          <span data-ttu-id="94aef-124">要求的值： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />;權限的值： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-124">Demand value: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />; Permission value: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          </span>
-        </permission>
-        <altmember cref="T:System.Runtime.Remoting.Lifetime.LeaseState" />
-      </Docs>
-    </Member>
-    <Member MemberName="InitialLeaseTime">
-      <MemberSignature Language="C#" Value="public TimeSpan InitialLeaseTime { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan InitialLeaseTime" />
-      <MemberSignature Language="DocId" Value="P:System.Runtime.Remoting.Lifetime.ILease.InitialLeaseTime" />
-      <MemberSignature Language="VB.NET" Value="Public Property InitialLeaseTime As TimeSpan" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property TimeSpan InitialLeaseTime { TimeSpan get(); void set(TimeSpan value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.TimeSpan</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="94aef-125">取得或設定使用期的初始時間。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-125">Gets or sets the initial time for the lease.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="94aef-126">使用期的初始時間。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-126">The initial time for the lease.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="94aef-127">如果<xref:System.Runtime.Remoting.Lifetime.ILease.InitialLeaseTime%2A>屬性設定為<xref:System.TimeSpan.Zero?displayProperty=nameWithType>、 租用，將不會逾時時間，然後與它相關聯的物件會有無限的存留期。</span><span class="sxs-lookup"><span data-stu-id="94aef-127">If the <xref:System.Runtime.Remoting.Lifetime.ILease.InitialLeaseTime%2A> property is set to <xref:System.TimeSpan.Zero?displayProperty=nameWithType>, then the lease will never time out and the object associated with it will have an infinite lifetime.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.Security.SecurityException">
-          <span data-ttu-id="94aef-128">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-128">The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</span>
-          </span>
-        </exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">
-          <span data-ttu-id="94aef-129">營運與基礎結構程式碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-129">for operating with infrastructure code.</span>
-          </span>
-          <span data-ttu-id="94aef-130">要求的值： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />;權限的值： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-130">Demand value: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />; Permission value: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          </span>
-        </permission>
-      </Docs>
-    </Member>
-    <MemberGroup MemberName="Register">
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary>
-          <span data-ttu-id="94aef-131">註冊使用期的贊助者。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-131">Registers a sponsor for the lease.</span>
-          </span>
-        </summary>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName="Register">
-      <MemberSignature Language="C#" Value="public void Register (System.Runtime.Remoting.Lifetime.ISponsor obj);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Register(class System.Runtime.Remoting.Lifetime.ISponsor obj) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Runtime.Remoting.Lifetime.ILease.Register(System.Runtime.Remoting.Lifetime.ISponsor)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Register (obj As ISponsor)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Register(System::Runtime::Remoting::Lifetime::ISponsor ^ obj);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="obj" Type="System.Runtime.Remoting.Lifetime.ISponsor" />
-      </Parameters>
-      <Docs>
-        <param name="obj">
-          <span data-ttu-id="94aef-132">贊助者的回呼物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-132">The callback object of the sponsor.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="94aef-133">以不更新使用期的方式來註冊使用期的贊助者。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-133">Registers a sponsor for the lease without renewing the lease.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="94aef-134">如果贊助者已向目前的方法，是不會更新租用。</span><span class="sxs-lookup"><span data-stu-id="94aef-134">If a sponsor is registered with the current method, the lease is not renewed.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.Security.SecurityException">
-          <span data-ttu-id="94aef-135">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-135">The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</span>
-          </span>
-        </exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">
-          <span data-ttu-id="94aef-136">營運與基礎結構程式碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-136">for operating with infrastructure code.</span>
-          </span>
-          <span data-ttu-id="94aef-137">要求的值： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />;權限的值： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-137">Demand value: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />; Permission value: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          </span>
-        </permission>
-      </Docs>
-    </Member>
-    <Member MemberName="Register">
-      <MemberSignature Language="C#" Value="public void Register (System.Runtime.Remoting.Lifetime.ISponsor obj, TimeSpan renewalTime);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Register(class System.Runtime.Remoting.Lifetime.ISponsor obj, valuetype System.TimeSpan renewalTime) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Runtime.Remoting.Lifetime.ILease.Register(System.Runtime.Remoting.Lifetime.ISponsor,System.TimeSpan)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Register (obj As ISponsor, renewalTime As TimeSpan)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Register(System::Runtime::Remoting::Lifetime::ISponsor ^ obj, TimeSpan renewalTime);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="obj" Type="System.Runtime.Remoting.Lifetime.ISponsor" />
-        <Parameter Name="renewalTime" Type="System.TimeSpan" />
-      </Parameters>
-      <Docs>
-        <param name="obj">
-          <span data-ttu-id="94aef-138">贊助者的回呼物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-138">The callback object of the sponsor.</span>
-          </span>
-        </param>
-        <param name="renewalTime">
-          <span data-ttu-id="94aef-139">使用期據以更新的時間長度。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-139">The length of time to renew the lease by.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="94aef-140">註冊使用期的贊助者，並根據指定的 <see cref="T:System.TimeSpan" /> 更新它。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-140">Registers a sponsor for the lease, and renews it by the specified <see cref="T:System.TimeSpan" />.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.Security.SecurityException">
-          <span data-ttu-id="94aef-141">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-141">The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</span>
-          </span>
-        </exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">
-          <span data-ttu-id="94aef-142">營運與基礎結構程式碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-142">for operating with infrastructure code.</span>
-          </span>
-          <span data-ttu-id="94aef-143">要求的值： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />;權限的值： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-143">Demand value: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />; Permission value: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          </span>
-        </permission>
-      </Docs>
-    </Member>
-    <Member MemberName="Renew">
-      <MemberSignature Language="C#" Value="public TimeSpan Renew (TimeSpan renewalTime);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype System.TimeSpan Renew(valuetype System.TimeSpan renewalTime) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Runtime.Remoting.Lifetime.ILease.Renew(System.TimeSpan)" />
-      <MemberSignature Language="VB.NET" Value="Public Function Renew (renewalTime As TimeSpan) As TimeSpan" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; TimeSpan Renew(TimeSpan renewalTime);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.TimeSpan</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="renewalTime" Type="System.TimeSpan" />
-      </Parameters>
-      <Docs>
-        <param name="renewalTime">
-          <span data-ttu-id="94aef-144">使用期據以更新的時間長度。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-144">The length of time to renew the lease by.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="94aef-145">將使用期更新為指定時間。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-145">Renews a lease for the specified time.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="94aef-146">使用期的新到期時間。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-146">The new expiration time of the lease.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="94aef-147">租用時間設定的最大值為<xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A>或目前的時間，加上更新時間。</span><span class="sxs-lookup"><span data-stu-id="94aef-147">The lease time is set to the maximum of the <xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A> or the current time plus the renewal time.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.Security.SecurityException">
-          <span data-ttu-id="94aef-148">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-148">The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</span>
-          </span>
-        </exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">
-          <span data-ttu-id="94aef-149">營運與基礎結構程式碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-149">for operating with infrastructure code.</span>
-          </span>
-          <span data-ttu-id="94aef-150">要求的值： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />;權限的值： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-150">Demand value: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />; Permission value: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          </span>
-        </permission>
-      </Docs>
-    </Member>
-    <Member MemberName="RenewOnCallTime">
-      <MemberSignature Language="C#" Value="public TimeSpan RenewOnCallTime { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan RenewOnCallTime" />
-      <MemberSignature Language="DocId" Value="P:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime" />
-      <MemberSignature Language="VB.NET" Value="Public Property RenewOnCallTime As TimeSpan" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property TimeSpan RenewOnCallTime { TimeSpan get(); void set(TimeSpan value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.TimeSpan</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="94aef-151">取得或設定時間量，對遠端物件的呼叫將據此更新 <see cref="P:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-151">Gets or sets the amount of time by which a call to the remote object renews the <see cref="P:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime" />.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="94aef-152">時間量，對遠端物件的呼叫將據此更新 <see cref="P:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-152">The amount of time by which a call to the remote object renews the <see cref="P:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="94aef-153">當您進行遠端物件的呼叫時，存留時間服務便會新增<xref:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime%2A>至<xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A>才<xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A>低於<xref:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime%2A>。</span><span class="sxs-lookup"><span data-stu-id="94aef-153">When you make a call to a remote object, the lifetime service adds the <xref:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime%2A> to the <xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A> only if the <xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A> has dropped below the <xref:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime%2A>.</span></span> <span data-ttu-id="94aef-154">循序呼叫因此不會增加<xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A>沒有繫結。</span><span class="sxs-lookup"><span data-stu-id="94aef-154">Sequential calls therefore do not increase the <xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A> without bound.</span></span> <span data-ttu-id="94aef-155">相反地，任何呼叫之後立即,<xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A>保證能夠<xref:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime%2A>或更長。</span><span class="sxs-lookup"><span data-stu-id="94aef-155">Instead, immediately after any call, the <xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A> is guaranteed to be the <xref:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime%2A> or longer.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.Security.SecurityException">
-          <span data-ttu-id="94aef-156">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-156">The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</span>
-          </span>
-        </exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">
-          <span data-ttu-id="94aef-157">營運與基礎結構程式碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-157">for operating with infrastructure code.</span>
-          </span>
-          <span data-ttu-id="94aef-158">要求的值： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />;權限的值： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-158">Demand value: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />; Permission value: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          </span>
-        </permission>
-      </Docs>
-    </Member>
-    <Member MemberName="SponsorshipTimeout">
-      <MemberSignature Language="C#" Value="public TimeSpan SponsorshipTimeout { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan SponsorshipTimeout" />
-      <MemberSignature Language="DocId" Value="P:System.Runtime.Remoting.Lifetime.ILease.SponsorshipTimeout" />
-      <MemberSignature Language="VB.NET" Value="Public Property SponsorshipTimeout As TimeSpan" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property TimeSpan SponsorshipTimeout { TimeSpan get(); void set(TimeSpan value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.TimeSpan</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="94aef-159">取得或設定等候贊助者傳回使用期的更新時間所需時間數量。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-159">Gets or sets the amount of time to wait for a sponsor to return with a lease renewal time.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="94aef-160">等候贊助者傳回使用期的更新時間所需時間數量。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-160">The amount of time to wait for a sponsor to return with a lease renewal time.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="94aef-161">如果<xref:System.Runtime.Remoting.Lifetime.ILease.SponsorshipTimeout%2A>是<xref:System.TimeSpan.Zero?displayProperty=nameWithType>，則此租用會等到贊助者。</span><span class="sxs-lookup"><span data-stu-id="94aef-161">If the <xref:System.Runtime.Remoting.Lifetime.ILease.SponsorshipTimeout%2A> is <xref:System.TimeSpan.Zero?displayProperty=nameWithType>, then this lease will not take sponsors.</span></span>  
-  
- <span data-ttu-id="94aef-162">如果贊助者的呼叫，以更新的租用逾時期間內沒有回應，它會假設為無作用，並從目前的租用的贊助者清單中移除。</span><span class="sxs-lookup"><span data-stu-id="94aef-162">If a sponsor does not respond to a call to renew a lease within the time-out period, it is assumed to be dead and is removed from the list of sponsors for the current lease.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.Security.SecurityException">
-          <span data-ttu-id="94aef-163">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-163">The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</span>
-          </span>
-        </exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">
-          <span data-ttu-id="94aef-164">營運與基礎結構程式碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-164">for operating with infrastructure code.</span>
-          </span>
-          <span data-ttu-id="94aef-165">要求的值： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />;權限的值： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-165">Demand value: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />; Permission value: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          </span>
-        </permission>
-      </Docs>
-    </Member>
-    <Member MemberName="Unregister">
-      <MemberSignature Language="C#" Value="public void Unregister (System.Runtime.Remoting.Lifetime.ISponsor obj);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Unregister(class System.Runtime.Remoting.Lifetime.ISponsor obj) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Runtime.Remoting.Lifetime.ILease.Unregister(System.Runtime.Remoting.Lifetime.ISponsor)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Unregister (obj As ISponsor)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Unregister(System::Runtime::Remoting::Lifetime::ISponsor ^ obj);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="obj" Type="System.Runtime.Remoting.Lifetime.ISponsor" />
-      </Parameters>
-      <Docs>
-        <param name="obj">
-          <span data-ttu-id="94aef-166">要取消登錄的租用贊助者。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-166">The lease sponsor to unregister.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="94aef-167">從贊助者清單中移除贊助者。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-167">Removes a sponsor from the sponsor list.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.Security.SecurityException">
-          <span data-ttu-id="94aef-168">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-168">The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</span>
-          </span>
-        </exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">
-          <span data-ttu-id="94aef-169">營運與基礎結構程式碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-169">for operating with infrastructure code.</span>
-          </span>
-          <span data-ttu-id="94aef-170">要求的值： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />;權限的值： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          <span class="sxs-lookup">
-            <span data-stu-id="94aef-170">Demand value: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />; Permission value: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /></span>
-          </span>
-        </permission>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="ILease.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac5a75620e8c62c3a53ec4594fc4caf7c650d7193e5.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">a75620e8c62c3a53ec4594fc4caf7c650d7193e5</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7,xamarinandroid-7.1,xamarinios-10.8,xamarinmac-3.0</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Runtime.Remoting.Lifetime.ILease">
+          <source>Defines a lifetime lease object that is used by the remoting lifetime service.</source>
+          <target state="translated">定義遠端存留期 (Lifetime) 服務所使用的存留期使用期 (Lease) 物件。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Remoting.Lifetime.ILease">
+          <source>Distributed garbage collection controls when server applications can be deleted.</source>
+          <target state="translated">在刪除伺服器應用程式時，分散式記憶體回收集合控制項。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Remoting.Lifetime.ILease">
+          <source>Traditionally, distributed garbage collection uses reference counts and pinging for control.</source>
+          <target state="translated">傳統上，分散式記憶體回收會使用參考計數和控制的 ping。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Remoting.Lifetime.ILease">
+          <source>This works well when there are a few clients per object, but does not work well when there are thousands of clients per each object.</source>
+          <target state="translated">這適用於時有一些用戶端，每個物件，但有數千個用戶端，每一個物件時，也無法運作。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Remoting.Lifetime.ILease">
+          <source>The lifetime service can assume the function of a traditional distributed garbage collector, and scales well when the number of clients increases.</source>
+          <target state="translated">存留時間服務的用戶端數目增加時，也就可以假設傳統的分散式記憶體回收行程，與縮放比例的函式。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Remoting.Lifetime.ILease">
+          <source>The lifetime service associates a lease with each remotely activated object.</source>
+          <target state="translated">與每個遠端啟動物件存留期服務產生關聯的租用。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Remoting.Lifetime.ILease">
+          <source>When the lease expires, the object is removed.</source>
+          <target state="translated">當租用已到期時，則會移除物件。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Remoting.Lifetime.ILease">
+          <source>A lease can specify that an object has an infinite lifetime.</source>
+          <target state="translated">租用可以指定物件有無限的存留期。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Remoting.Lifetime.ILease">
+          <source>Each <ph id="ph1">&lt;xref:System.AppDomain&gt;</ph> contains a lease manager that administers the leases in the domain.</source>
+          <target state="translated">每個<ph id="ph1">&lt;xref:System.AppDomain&gt;</ph>包含管理網域中的租用的租用管理員。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Remoting.Lifetime.ILease">
+          <source>The lease manager periodically examines the leases for time expiration.</source>
+          <target state="translated">租用管理員會定期檢查時間到期的租用。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Remoting.Lifetime.ILease">
+          <source>If a lease has expired, it can either be canceled by removing its reference to the lease, or renewed by invoking one or more of the lease's sponsors.</source>
+          <target state="translated">如果租用到期，它可以是取消藉由移除租用，其參考，或藉由叫用一或多個租用贊助者更新。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Remoting.Lifetime.ILease">
+          <source>A lease contains properties that determine its policies, and methods that renew the lease time.</source>
+          <target state="translated">租用包含可更新的租用時間，來決定其原則中，屬性和方法。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Remoting.Lifetime.ILease">
+          <source>The lease exposes the <ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease&gt;</ph> interface.</source>
+          <target state="translated">會公開租用<ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease&gt;</ph>介面。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Remoting.Lifetime.ILease">
+          <source>For an example showing how to use the <ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease&gt;</ph> interface see <bpt id="p1">[</bpt>Lifetimes<ept id="p1">](http://msdn.microsoft.com/library/334a30e5-33cb-4f0f-a38a-ed4abc5560fa)</ept>.</source>
+          <target state="translated">如需範例示範如何使用<ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease&gt;</ph>介面，請參閱<bpt id="p1">[</bpt>存留期<ept id="p1">](http://msdn.microsoft.com/library/334a30e5-33cb-4f0f-a38a-ed4abc5560fa)</ept>。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" uid="P:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime">
+          <source>Gets the amount of time remaining on the lease.</source>
+          <target state="translated">取得使用期上剩餘的時間數量。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime">
+          <source>The amount of time remaining on the lease.</source>
+          <target state="translated">使用期上剩餘的時間數量。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" uid="P:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime">
+          <source>The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</source>
+          <target state="translated">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime">
+          <source>for operating with infrastructure code.</source>
+          <target state="translated">營運與基礎結構程式碼。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime">
+          <source>Demand value: <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>; Permission value: <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></source>
+          <target state="translated">要求的值： <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>;權限的值： <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" uid="P:System.Runtime.Remoting.Lifetime.ILease.CurrentState">
+          <source>Gets the current <ph id="ph1">&lt;see cref="T:System.Runtime.Remoting.Lifetime.LeaseState" /&gt;</ph> of the lease.</source>
+          <target state="translated">取得使用期的目前 <ph id="ph1">&lt;see cref="T:System.Runtime.Remoting.Lifetime.LeaseState" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.CurrentState">
+          <source>The current <ph id="ph1">&lt;see cref="T:System.Runtime.Remoting.Lifetime.LeaseState" /&gt;</ph> of the lease.</source>
+          <target state="translated">使用期的目前 <ph id="ph1">&lt;see cref="T:System.Runtime.Remoting.Lifetime.LeaseState" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" uid="P:System.Runtime.Remoting.Lifetime.ILease.CurrentState">
+          <source>The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</source>
+          <target state="translated">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.CurrentState">
+          <source>for operating with infrastructure code.</source>
+          <target state="translated">營運與基礎結構程式碼。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.CurrentState">
+          <source>Demand value: <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>; Permission value: <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></source>
+          <target state="translated">要求的值： <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>;權限的值： <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" uid="P:System.Runtime.Remoting.Lifetime.ILease.InitialLeaseTime">
+          <source>Gets or sets the initial time for the lease.</source>
+          <target state="translated">取得或設定使用期的初始時間。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.InitialLeaseTime">
+          <source>The initial time for the lease.</source>
+          <target state="translated">使用期的初始時間。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.InitialLeaseTime">
+          <source>If the <ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.InitialLeaseTime%2A&gt;</ph> property is set to <ph id="ph2">&lt;xref:System.TimeSpan.Zero?displayProperty=nameWithType&gt;</ph>, then the lease will never time out and the object associated with it will have an infinite lifetime.</source>
+          <target state="translated">如果<ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.InitialLeaseTime%2A&gt;</ph>屬性設定為<ph id="ph2">&lt;xref:System.TimeSpan.Zero?displayProperty=nameWithType&gt;</ph>、 租用，將不會逾時時間，然後與它相關聯的物件會有無限的存留期。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" uid="P:System.Runtime.Remoting.Lifetime.ILease.InitialLeaseTime">
+          <source>The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</source>
+          <target state="translated">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.InitialLeaseTime">
+          <source>for operating with infrastructure code.</source>
+          <target state="translated">營運與基礎結構程式碼。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.InitialLeaseTime">
+          <source>Demand value: <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>; Permission value: <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></source>
+          <target state="translated">要求的值： <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>;權限的值： <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" uid="T:System.Runtime.Remoting.Lifetime.ILease">
+          <source>Registers a sponsor for the lease.</source>
+          <target state="translated">註冊使用期的贊助者。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" uid="M:System.Runtime.Remoting.Lifetime.ILease.Register(System.Runtime.Remoting.Lifetime.ISponsor)">
+          <source>The callback object of the sponsor.</source>
+          <target state="translated">贊助者的回呼物件。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" uid="M:System.Runtime.Remoting.Lifetime.ILease.Register(System.Runtime.Remoting.Lifetime.ISponsor)">
+          <source>Registers a sponsor for the lease without renewing the lease.</source>
+          <target state="translated">以不更新使用期的方式來註冊使用期的贊助者。</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Remoting.Lifetime.ILease.Register(System.Runtime.Remoting.Lifetime.ISponsor)">
+          <source>If a sponsor is registered with the current method, the lease is not renewed.</source>
+          <target state="translated">如果贊助者已向目前的方法，是不會更新租用。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" uid="M:System.Runtime.Remoting.Lifetime.ILease.Register(System.Runtime.Remoting.Lifetime.ISponsor)">
+          <source>The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</source>
+          <target state="translated">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Remoting.Lifetime.ILease.Register(System.Runtime.Remoting.Lifetime.ISponsor)">
+          <source>for operating with infrastructure code.</source>
+          <target state="translated">營運與基礎結構程式碼。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Remoting.Lifetime.ILease.Register(System.Runtime.Remoting.Lifetime.ISponsor)">
+          <source>Demand value: <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>; Permission value: <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></source>
+          <target state="translated">要求的值： <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>;權限的值： <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" uid="M:System.Runtime.Remoting.Lifetime.ILease.Register(System.Runtime.Remoting.Lifetime.ISponsor,System.TimeSpan)">
+          <source>The callback object of the sponsor.</source>
+          <target state="translated">贊助者的回呼物件。</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" uid="M:System.Runtime.Remoting.Lifetime.ILease.Register(System.Runtime.Remoting.Lifetime.ISponsor,System.TimeSpan)">
+          <source>The length of time to renew the lease by.</source>
+          <target state="translated">使用期據以更新的時間長度。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" uid="M:System.Runtime.Remoting.Lifetime.ILease.Register(System.Runtime.Remoting.Lifetime.ISponsor,System.TimeSpan)">
+          <source>Registers a sponsor for the lease, and renews it by the specified <ph id="ph1">&lt;see cref="T:System.TimeSpan" /&gt;</ph>.</source>
+          <target state="translated">註冊使用期的贊助者，並根據指定的 <ph id="ph1">&lt;see cref="T:System.TimeSpan" /&gt;</ph> 更新它。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" uid="M:System.Runtime.Remoting.Lifetime.ILease.Register(System.Runtime.Remoting.Lifetime.ISponsor,System.TimeSpan)">
+          <source>The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</source>
+          <target state="translated">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Remoting.Lifetime.ILease.Register(System.Runtime.Remoting.Lifetime.ISponsor,System.TimeSpan)">
+          <source>for operating with infrastructure code.</source>
+          <target state="translated">營運與基礎結構程式碼。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Remoting.Lifetime.ILease.Register(System.Runtime.Remoting.Lifetime.ISponsor,System.TimeSpan)">
+          <source>Demand value: <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>; Permission value: <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></source>
+          <target state="translated">要求的值： <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>;權限的值： <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" uid="M:System.Runtime.Remoting.Lifetime.ILease.Renew(System.TimeSpan)">
+          <source>The length of time to renew the lease by.</source>
+          <target state="translated">使用期據以更新的時間長度。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" uid="M:System.Runtime.Remoting.Lifetime.ILease.Renew(System.TimeSpan)">
+          <source>Renews a lease for the specified time.</source>
+          <target state="translated">將使用期更新為指定時間。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" uid="M:System.Runtime.Remoting.Lifetime.ILease.Renew(System.TimeSpan)">
+          <source>The new expiration time of the lease.</source>
+          <target state="translated">使用期的新到期時間。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Remoting.Lifetime.ILease.Renew(System.TimeSpan)">
+          <source>The lease time is set to the maximum of the <ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A&gt;</ph> or the current time plus the renewal time.</source>
+          <target state="translated">租用時間設定的最大值為<ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A&gt;</ph>或目前的時間，加上更新時間。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" uid="M:System.Runtime.Remoting.Lifetime.ILease.Renew(System.TimeSpan)">
+          <source>The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</source>
+          <target state="translated">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Remoting.Lifetime.ILease.Renew(System.TimeSpan)">
+          <source>for operating with infrastructure code.</source>
+          <target state="translated">營運與基礎結構程式碼。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Remoting.Lifetime.ILease.Renew(System.TimeSpan)">
+          <source>Demand value: <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>; Permission value: <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></source>
+          <target state="translated">要求的值： <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>;權限的值： <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" uid="P:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime">
+          <source>Gets or sets the amount of time by which a call to the remote object renews the <ph id="ph1">&lt;see cref="P:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime" /&gt;</ph>.</source>
+          <target state="translated">取得或設定時間量，對遠端物件的呼叫將據此更新 <ph id="ph1">&lt;see cref="P:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime">
+          <source>The amount of time by which a call to the remote object renews the <ph id="ph1">&lt;see cref="P:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime" /&gt;</ph>.</source>
+          <target state="translated">時間量，對遠端物件的呼叫將據此更新 <ph id="ph1">&lt;see cref="P:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime">
+          <source>When you make a call to a remote object, the lifetime service adds the <ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime%2A&gt;</ph> to the <ph id="ph2">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A&gt;</ph> only if the <ph id="ph3">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A&gt;</ph> has dropped below the <ph id="ph4">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime%2A&gt;</ph>.</source>
+          <target state="translated">當您進行遠端物件的呼叫時，存留時間服務便會新增<ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime%2A&gt;</ph>至<ph id="ph2">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A&gt;</ph>才<ph id="ph3">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A&gt;</ph>低於<ph id="ph4">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime">
+          <source>Sequential calls therefore do not increase the <ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A&gt;</ph> without bound.</source>
+          <target state="translated">循序呼叫因此不會增加<ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A&gt;</ph>沒有繫結。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime">
+          <source>Instead, immediately after any call, the <ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A&gt;</ph> is guaranteed to be the <ph id="ph2">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime%2A&gt;</ph> or longer.</source>
+          <target state="translated">相反地，任何呼叫之後立即,<ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.CurrentLeaseTime%2A&gt;</ph>保證能夠<ph id="ph2">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime%2A&gt;</ph>或更長。</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" uid="P:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime">
+          <source>The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</source>
+          <target state="translated">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime">
+          <source>for operating with infrastructure code.</source>
+          <target state="translated">營運與基礎結構程式碼。</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.RenewOnCallTime">
+          <source>Demand value: <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>; Permission value: <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></source>
+          <target state="translated">要求的值： <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>;權限的值： <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" uid="P:System.Runtime.Remoting.Lifetime.ILease.SponsorshipTimeout">
+          <source>Gets or sets the amount of time to wait for a sponsor to return with a lease renewal time.</source>
+          <target state="translated">取得或設定等候贊助者傳回使用期的更新時間所需時間數量。</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.SponsorshipTimeout">
+          <source>The amount of time to wait for a sponsor to return with a lease renewal time.</source>
+          <target state="translated">等候贊助者傳回使用期的更新時間所需時間數量。</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.SponsorshipTimeout">
+          <source>If the <ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.SponsorshipTimeout%2A&gt;</ph> is <ph id="ph2">&lt;xref:System.TimeSpan.Zero?displayProperty=nameWithType&gt;</ph>, then this lease will not take sponsors.</source>
+          <target state="translated">如果<ph id="ph1">&lt;xref:System.Runtime.Remoting.Lifetime.ILease.SponsorshipTimeout%2A&gt;</ph>是<ph id="ph2">&lt;xref:System.TimeSpan.Zero?displayProperty=nameWithType&gt;</ph>，則此租用會等到贊助者。</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.SponsorshipTimeout">
+          <source>If a sponsor does not respond to a call to renew a lease within the time-out period, it is assumed to be dead and is removed from the list of sponsors for the current lease.</source>
+          <target state="translated">如果贊助者的呼叫，以更新的租用逾時期間內沒有回應，它會假設為無作用，並從目前的租用的贊助者清單中移除。</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" uid="P:System.Runtime.Remoting.Lifetime.ILease.SponsorshipTimeout">
+          <source>The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</source>
+          <target state="translated">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.SponsorshipTimeout">
+          <source>for operating with infrastructure code.</source>
+          <target state="translated">營運與基礎結構程式碼。</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Remoting.Lifetime.ILease.SponsorshipTimeout">
+          <source>Demand value: <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>; Permission value: <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></source>
+          <target state="translated">要求的值： <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>;權限的值： <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" uid="M:System.Runtime.Remoting.Lifetime.ILease.Unregister(System.Runtime.Remoting.Lifetime.ISponsor)">
+          <source>The lease sponsor to unregister.</source>
+          <target state="translated">要取消登錄的租用贊助者。</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" uid="M:System.Runtime.Remoting.Lifetime.ILease.Unregister(System.Runtime.Remoting.Lifetime.ISponsor)">
+          <source>Removes a sponsor from the sponsor list.</source>
+          <target state="translated">從贊助者清單中移除贊助者。</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" uid="M:System.Runtime.Remoting.Lifetime.ILease.Unregister(System.Runtime.Remoting.Lifetime.ISponsor)">
+          <source>The immediate caller makes the call through a reference to the interface and does not have infrastructure permission.</source>
+          <target state="translated">立即呼叫者透過對介面的參考進行呼叫，且沒有基礎結構權限。</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Remoting.Lifetime.ILease.Unregister(System.Runtime.Remoting.Lifetime.ISponsor)">
+          <source>for operating with infrastructure code.</source>
+          <target state="translated">營運與基礎結構程式碼。</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Remoting.Lifetime.ILease.Unregister(System.Runtime.Remoting.Lifetime.ISponsor)">
+          <source>Demand value: <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>; Permission value: <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></source>
+          <target state="translated">要求的值： <ph id="ph1">&lt;see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" /&gt;</ph>;權限的值： <ph id="ph2">&lt;see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" /&gt;</ph></target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

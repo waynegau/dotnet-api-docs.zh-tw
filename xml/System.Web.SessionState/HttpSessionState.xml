@@ -1,1163 +1,543 @@
-<Type Name="HttpSessionState" FullName="System.Web.SessionState.HttpSessionState">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="ae4ca9a4670ae745ae7f68a9bf24402e4ec78440" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public sealed class HttpSessionState : System.Collections.ICollection" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit HttpSessionState extends System.Object implements class System.Collections.ICollection, class System.Collections.IEnumerable" />
-  <TypeSignature Language="DocId" Value="T:System.Web.SessionState.HttpSessionState" />
-  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class HttpSessionState&#xA;Implements ICollection" />
-  <TypeSignature Language="C++ CLI" Value="public ref class HttpSessionState sealed : System::Collections::ICollection" />
-  <AssemblyInfo>
-    <AssemblyName>System.Web</AssemblyName>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>System.Collections.ICollection</InterfaceName>
-    </Interface>
-  </Interfaces>
-  <Docs>
-    <summary>
-      <span data-ttu-id="abb16-101">提供工作階段狀態值以及工作階段層級設定和存留期 (Lifetime) 管理方法的存取權。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="abb16-101">Provides access to session-state values as well as session-level settings and lifetime management methods.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="abb16-102">ASP.NET 提供了工作階段狀態管理，可讓您儲存在多個要求相關聯的唯一瀏覽器工作階段的資訊。</span><span class="sxs-lookup"><span data-stu-id="abb16-102">ASP.NET provides session-state management to enable you to store information associated with a unique browser session across multiple requests.</span></span> <span data-ttu-id="abb16-103">您可以儲存參考索引鍵的名稱或數值索引值的集合。</span><span class="sxs-lookup"><span data-stu-id="abb16-103">You can store a collection of values referenced by a key name or by numerical index.</span></span> <span data-ttu-id="abb16-104">存取工作階段值和功能是提供使用<xref:System.Web.SessionState.HttpSessionState>類別，可透過存取<xref:System.Web.HttpContext.Session%2A>屬性的目前<xref:System.Web.HttpContext>，或<xref:System.Web.UI.Page.Session%2A>屬性<xref:System.Web.UI.Page>。</span><span class="sxs-lookup"><span data-stu-id="abb16-104">Access to session values and functionality is available using the <xref:System.Web.SessionState.HttpSessionState> class, which is accessible through the <xref:System.Web.HttpContext.Session%2A> property of the current <xref:System.Web.HttpContext>, or the <xref:System.Web.UI.Page.Session%2A> property of the <xref:System.Web.UI.Page>.</span></span>  
-  
- <span data-ttu-id="abb16-105">工作階段資料使用的唯一識別碼的特定瀏覽器工作階段都會關聯。</span><span class="sxs-lookup"><span data-stu-id="abb16-105">Session data is associated with a specific browser session using a unique identifier.</span></span> <span data-ttu-id="abb16-106">根據預設，這個識別碼會儲存在不會過期的工作階段 cookie，在瀏覽器中，但是您也可以設定您的應用程式儲存在 URL 中的工作階段識別項，藉由設定`cookieless`屬性`true`或<xref:System.Web.HttpCookieMode.UseUri>項目中您的應用程式組態。</span><span class="sxs-lookup"><span data-stu-id="abb16-106">By default, this identifier is stored in a non-expiring session cookie in the browser, but you can also configure your application to store the session identifier in the URL by setting the `cookieless` attribute to `true` or <xref:System.Web.HttpCookieMode.UseUri> in the  element of your application configuration.</span></span> <span data-ttu-id="abb16-107">您可以判斷是否瀏覽器是否支援 cookie 所指定的值是 ASP.NET<xref:System.Web.HttpCookieMode.UseDeviceProfile>如`cookieless`屬性。</span><span class="sxs-lookup"><span data-stu-id="abb16-107">You can have ASP.NET determine whether cookies are supported by the browser by specifying a value of <xref:System.Web.HttpCookieMode.UseDeviceProfile> for the `cookieless` attribute.</span></span> <span data-ttu-id="abb16-108">您也可以判斷是否啟用 cookie 的瀏覽器所指定的值是 ASP.NET<xref:System.Web.HttpCookieMode.AutoDetect>如`cookieless`屬性。</span><span class="sxs-lookup"><span data-stu-id="abb16-108">You can also have ASP.NET determine whether cookies are enabled for the browser by specifying a value of <xref:System.Web.HttpCookieMode.AutoDetect> for the `cookieless` attribute.</span></span> <span data-ttu-id="abb16-109">如果支援 cookie，則當<xref:System.Web.HttpCookieMode.UseDeviceProfile>已指定，或已啟用時<xref:System.Web.HttpCookieMode.AutoDetect>指定，則工作階段識別碼會儲存在 cookie 中; 否則為將在 URL 中儲存的工作階段識別碼。</span><span class="sxs-lookup"><span data-stu-id="abb16-109">If cookies are supported when <xref:System.Web.HttpCookieMode.UseDeviceProfile> is specified, or enabled when <xref:System.Web.HttpCookieMode.AutoDetect> is specified, then the session identifier will be stored in a cookie; otherwise the session identifier will be stored in the URL.</span></span>  
-  
- <span data-ttu-id="abb16-110">在第一個要求已啟動工作階段和工作階段值會保存下來，只要瀏覽器建立新的要求中指定的分鐘數之前<xref:System.Web.SessionState.HttpSessionState.Timeout%2A>屬性傳遞。</span><span class="sxs-lookup"><span data-stu-id="abb16-110">Sessions are started during the first request and session values will persist as long as a new request is made by the browser before the number of minutes specified in the <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> property pass.</span></span> <span data-ttu-id="abb16-111">新的工作階段開始時，則工作階段<xref:System.Web.SessionState.SessionStateModule.Start>就會引發事件。</span><span class="sxs-lookup"><span data-stu-id="abb16-111">When a new session begins, the session <xref:System.Web.SessionState.SessionStateModule.Start> event is raised.</span></span> <span data-ttu-id="abb16-112">您可以使用此事件執行任何額外的工作，工作階段，例如，設定預設工作階段值的開頭。</span><span class="sxs-lookup"><span data-stu-id="abb16-112">You can use this event to perform any additional work at the start of a session, such as setting default session values.</span></span> <span data-ttu-id="abb16-113">當工作階段逾時時，<xref:System.Web.SessionState.HttpSessionState.Abandon%2A>呼叫方法時，或 ASP.NET 應用程式關閉時，工作階段<xref:System.Web.SessionState.SessionStateModule.End>就會引發事件。</span><span class="sxs-lookup"><span data-stu-id="abb16-113">When a session times out, the <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> method is called, or the ASP.NET application is shut down, the session <xref:System.Web.SessionState.SessionStateModule.End> event is raised.</span></span> <span data-ttu-id="abb16-114">您可以使用此事件執行任何必要的清除。</span><span class="sxs-lookup"><span data-stu-id="abb16-114">You can use this event to perform any necessary cleanup.</span></span> <span data-ttu-id="abb16-115"><xref:System.Web.SessionState.SessionStateModule.End>就會引發事件時，才將工作階段狀態`mode`設<xref:System.Web.SessionState.SessionStateMode.InProc>。</span><span class="sxs-lookup"><span data-stu-id="abb16-115">The <xref:System.Web.SessionState.SessionStateModule.End> event is raised only when the session state `mode` is set to <xref:System.Web.SessionState.SessionStateMode.InProc>.</span></span>  
-  
- <span data-ttu-id="abb16-116">若要改善效能，就會使用 cookie 的工作階段未配置工作階段儲存直到資料實際上儲存在<xref:System.Web.UI.Page.Session%2A>物件。</span><span class="sxs-lookup"><span data-stu-id="abb16-116">To improve performance, sessions that use cookies do not allocate session storage until data is actually stored in the <xref:System.Web.UI.Page.Session%2A> object.</span></span> <span data-ttu-id="abb16-117">如需詳細資訊，請參閱 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 屬性 (Property)。</span><span class="sxs-lookup"><span data-stu-id="abb16-117">For more information, see the <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> property.</span></span>  
-  
- <span data-ttu-id="abb16-118">工作階段狀態不會保存跨 ASP.NET 應用程式界限。</span><span class="sxs-lookup"><span data-stu-id="abb16-118">Session state does not persist across ASP.NET application boundaries.</span></span> <span data-ttu-id="abb16-119">如果瀏覽器瀏覽至其他應用程式，工作階段資訊不適用於新的應用程式。</span><span class="sxs-lookup"><span data-stu-id="abb16-119">If a browser navigates to another application, the session information is not available to the new application.</span></span>  
-  
- <span data-ttu-id="abb16-120">根據預設，工作階段值會儲存在 Web 伺服器上，記憶體中。</span><span class="sxs-lookup"><span data-stu-id="abb16-120">Session values are stored in memory on the Web server, by default.</span></span> <span data-ttu-id="abb16-121">您也可以儲存在 SQL Server 資料庫、 ASP.NET 狀態伺服器或自訂伺服器的工作階段值。</span><span class="sxs-lookup"><span data-stu-id="abb16-121">You can also store session values in a SQL Server database, an ASP.NET state server, or a custom server.</span></span> <span data-ttu-id="abb16-122">這可讓您保留工作階段值，在其中的 ASP.NET 或 IIS 程序或 ASP.NET 應用程式重新啟動的情況下，並使工作階段值可供 Web 伺服陣列中的所有伺服器。</span><span class="sxs-lookup"><span data-stu-id="abb16-122">This enables you to preserve session values in cases where the ASP.NET or IIS process or the ASP.NET application restarts and to make session values available across all the servers in a Web farm.</span></span> <span data-ttu-id="abb16-123">此行為設定，藉由設定`mode`屬性設為有效<xref:System.Web.SessionState.SessionStateMode>的應用程式組態項目中的值。</span><span class="sxs-lookup"><span data-stu-id="abb16-123">This behavior is configured by setting the `mode` attribute to a valid <xref:System.Web.SessionState.SessionStateMode> value in the  element of your application configuration.</span></span> <span data-ttu-id="abb16-124">如需詳細資訊，請參閱[工作階段狀態模式](http://msdn.microsoft.com/library/0bb0a3a3-650f-4c47-a0c5-b08b9b591bb4)。</span><span class="sxs-lookup"><span data-stu-id="abb16-124">For more information, see [Session-State Modes](http://msdn.microsoft.com/library/0bb0a3a3-650f-4c47-a0c5-b08b9b591bb4).</span></span>  
-  
- <span data-ttu-id="abb16-125">工作階段狀態的替代方案包括應用程式狀態 (請參閱<xref:System.Web.HttpApplication.Application%2A>屬性) 和 ASP.NET 快取 (請參閱<xref:System.Web.Caching>命名空間)，可以存取 ASP.NET 應用程式的所有使用者的存放區變數; ASP.NET 設定檔 (請參閱<xref:System.Web.Profile>命名空間)，其中保存資料存放區中的使用者值沒有到期使用逾時。ASP.NET <xref:System.Web.UI.WebControls?displayProperty=nameWithType>，其中保存控制項中的值<xref:System.Web.UI.Control.ViewState%2A>;<xref:System.Web.HttpResponse.Cookies%2A>;<xref:System.Web.HttpRequest.QueryString%2A>屬性; 和 HTML 表單上的欄位，您可以從 HTTP`POST`使用<xref:System.Web.HttpRequest.Form%2A>集合。</span><span class="sxs-lookup"><span data-stu-id="abb16-125">Alternatives to session state include application state (see the <xref:System.Web.HttpApplication.Application%2A> property) and the ASP.NET cache (see the <xref:System.Web.Caching> namespace), which store variables that can be accessed by all users of an ASP.NET application; the ASP.NET profile (see the <xref:System.Web.Profile> namespace), which persists user values in a data store without expiring them using a time-out; ASP.NET <xref:System.Web.UI.WebControls?displayProperty=nameWithType>, which persist control values in the <xref:System.Web.UI.Control.ViewState%2A>; <xref:System.Web.HttpResponse.Cookies%2A>; the <xref:System.Web.HttpRequest.QueryString%2A> property; and fields on an HTML form that are available from an HTTP `POST` using the <xref:System.Web.HttpRequest.Form%2A> collection.</span></span> <span data-ttu-id="abb16-126">如需工作階段狀態和其他狀態管理替代項目之間的差異的詳細資訊，請參閱[ASP.NET 狀態管理建議](http://msdn.microsoft.com/library/af79fa0d-4bc8-47a6-9915-d8e355bfb732)。</span><span class="sxs-lookup"><span data-stu-id="abb16-126">For more details on the differences between session state and other state-management alternatives, see [ASP.NET State Management Recommendations](http://msdn.microsoft.com/library/af79fa0d-4bc8-47a6-9915-d8e355bfb732).</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="abb16-127">下列程式碼範例會設定並擷取工作階段狀態的值。</span><span class="sxs-lookup"><span data-stu-id="abb16-127">The following code example sets and retrieves values from session state.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="abb16-128">這個範例有一個可接受使用者輸入的文字方塊，這可能會造成安全性威脅。</span><span class="sxs-lookup"><span data-stu-id="abb16-128">This example has a text box that accepts user input, which is a potential security threat.</span></span> <span data-ttu-id="abb16-129">根據預設，ASP.NET Web 網頁會驗證使用者輸入未包含指令碼或 HTML 項目。</span><span class="sxs-lookup"><span data-stu-id="abb16-129">By default, ASP.NET Web pages validate that user input does not include script or HTML elements.</span></span> <span data-ttu-id="abb16-130">如需詳細資訊，請參閱 [Script Exploits Overview](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07) (指令碼攻擊概觀)。</span><span class="sxs-lookup"><span data-stu-id="abb16-130">For more information, see [Script Exploits Overview](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07).</span></span>  
-  
- [!code-aspx-csharp[HttpSessionState#30](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/session2cs.aspx#30)]
- [!code-aspx-vb[HttpSessionState#30](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/session2vb.aspx#30)]  
-  
- ]]></format>
-    </remarks>
-    <altmember cref="N:System.Web.Profile" />
-    <altmember cref="N:System.Web.Caching" />
-  </Docs>
-  <Members>
-    <Member MemberName="Abandon">
-      <MemberSignature Language="C#" Value="public void Abandon ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Abandon() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.HttpSessionState.Abandon" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Abandon ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Abandon();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-131">取消目前的工作階段。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-131">Cancels the current session.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="abb16-132">一次<xref:System.Web.SessionState.HttpSessionState.Abandon%2A>呼叫方法時，目前工作階段已不再有效，而且可以啟動新的工作階段。</span><span class="sxs-lookup"><span data-stu-id="abb16-132">Once the <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> method is called, the current session is no longer valid and a new session can be started.</span></span> <span data-ttu-id="abb16-133"><xref:System.Web.SessionState.HttpSessionState.Abandon%2A> 會導致<xref:System.Web.SessionState.SessionStateModule.End>會引發事件。</span><span class="sxs-lookup"><span data-stu-id="abb16-133"><xref:System.Web.SessionState.HttpSessionState.Abandon%2A> causes the <xref:System.Web.SessionState.SessionStateModule.End> event to be raised.</span></span> <span data-ttu-id="abb16-134">新<xref:System.Web.SessionState.SessionStateModule.Start>會引發事件，在下一個要求。</span><span class="sxs-lookup"><span data-stu-id="abb16-134">A new <xref:System.Web.SessionState.SessionStateModule.Start> event will be raised on the next request.</span></span>  
-  
- <span data-ttu-id="abb16-135">已放棄，或已過期的工作階段的工作階段識別項會回收預設。</span><span class="sxs-lookup"><span data-stu-id="abb16-135">Session identifiers for abandoned or expired sessions are recycled by default.</span></span> <span data-ttu-id="abb16-136">也就是提出要求的已過期或已放棄的工作階段包含的工作階段識別碼，如果新的工作階段就會啟動使用相同的工作階段識別項。</span><span class="sxs-lookup"><span data-stu-id="abb16-136">That is, if a request is made that includes the session identifier for an expired or abandoned session, a new session is started using the same session identifier.</span></span> <span data-ttu-id="abb16-137">您可以藉由設定停用此`regenerateExpiredSessionId`屬性的組態項目`true`。</span><span class="sxs-lookup"><span data-stu-id="abb16-137">You can disable this by setting `regenerateExpiredSessionId` attribute of the  configuration element to `true`.</span></span> <span data-ttu-id="abb16-138">如需詳細資訊，請參閱[工作階段識別元](http://msdn.microsoft.com/library/146ca206-d151-4f2e-a548-bcca05ccf0cb)。</span><span class="sxs-lookup"><span data-stu-id="abb16-138">For more information, see [Session Identifiers](http://msdn.microsoft.com/library/146ca206-d151-4f2e-a548-bcca05ccf0cb).</span></span>  
-  
- <span data-ttu-id="abb16-139"><xref:System.Web.SessionState.SessionStateModule.End>支援事件時，才<xref:System.Web.SessionState.HttpSessionState.Mode%2A>屬性設定為<xref:System.Web.SessionState.SessionStateMode.InProc>。</span><span class="sxs-lookup"><span data-stu-id="abb16-139">The <xref:System.Web.SessionState.SessionStateModule.End> event is supported only when the <xref:System.Web.SessionState.HttpSessionState.Mode%2A> property is set to <xref:System.Web.SessionState.SessionStateMode.InProc>.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Add">
-      <MemberSignature Language="C#" Value="public void Add (string name, object value);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Add(string name, object value) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.HttpSessionState.Add(System.String,System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Add (name As String, value As Object)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Add(System::String ^ name, System::Object ^ value);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-        <Parameter Name="value" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="name">
-          <span data-ttu-id="abb16-140">要加入工作階段狀態集合中的項目名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-140">The name of the item to add to the session-state collection.</span>
-          </span>
-        </param>
-        <param name="value">
-          <span data-ttu-id="abb16-141">要加入工作階段狀態集合中的項目值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-141">The value of the item to add to the session-state collection.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="abb16-142">將新項目加入至工作階段狀態集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-142">Adds a new item to the session-state collection.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="abb16-143">如果`name`參數參考現有的工作階段狀態項目時，現有的項目會覆寫具有指定`value`。</span><span class="sxs-lookup"><span data-stu-id="abb16-143">If the `name` parameter refers to an existing session state item, the existing item is overwritten with the specified `value`.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="abb16-144">下列範例示範如何使用工作階段狀態中儲存值<xref:System.Web.SessionState.HttpSessionState.Add%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="abb16-144">The following example shows how to store values in session state by using the <xref:System.Web.SessionState.HttpSessionState.Add%2A> method.</span></span> <span data-ttu-id="abb16-145">它也示範如何使用工作階段狀態中移除值<xref:System.Web.SessionState.HttpSessionState.Remove%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="abb16-145">It also shows how to remove values in session state by using the <xref:System.Web.SessionState.HttpSessionState.Remove%2A> method.</span></span> <span data-ttu-id="abb16-146">A<xref:System.Web.UI.WebControls.Repeater>控制項用來在網頁上顯示內容的工作階段狀態。</span><span class="sxs-lookup"><span data-stu-id="abb16-146">A <xref:System.Web.UI.WebControls.Repeater> control is used to display the contents session state on the Web page.</span></span> <span data-ttu-id="abb16-147"><xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A>方法用來逐一查看工作階段狀態集合，並填入<xref:System.Web.UI.WebControls.Repeater>控制項。</span><span class="sxs-lookup"><span data-stu-id="abb16-147">The <xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A> method is used to iterate through the session-state collection and populate the <xref:System.Web.UI.WebControls.Repeater> control.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="abb16-148">這個範例有一個可接受使用者輸入的文字方塊，這可能會造成安全性威脅。</span><span class="sxs-lookup"><span data-stu-id="abb16-148">This example has a text box that accepts user input, which is a potential security threat.</span></span> <span data-ttu-id="abb16-149">根據預設，ASP.NET Web 網頁會驗證使用者輸入未包含指令碼或 HTML 項目。</span><span class="sxs-lookup"><span data-stu-id="abb16-149">By default, ASP.NET Web pages validate that user input does not include script or HTML elements.</span></span> <span data-ttu-id="abb16-150">如需詳細資訊，請參閱 [Script Exploits Overview](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07) (指令碼攻擊概觀)。</span><span class="sxs-lookup"><span data-stu-id="abb16-150">For more information, see [Script Exploits Overview](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07).</span></span>  
-  
- [!code-aspx-csharp[HttpSessionState#13](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/HttpSessionStateAddCS.aspx#13)]
- [!code-aspx-vb[HttpSessionState#13](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/HttpSessionStateAddVB.aspx#13)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Clear">
-      <MemberSignature Language="C#" Value="public void Clear ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Clear() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.HttpSessionState.Clear" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Clear ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Clear();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-151">從工作階段狀態集合中移除所有索引鍵和值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-151">Removes all keys and values from the session-state collection.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CodePage">
-      <MemberSignature Language="C#" Value="public int CodePage { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 CodePage" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.CodePage" />
-      <MemberSignature Language="VB.NET" Value="Public Property CodePage As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int CodePage { int get(); void set(int value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-152">取得或設定目前工作階段的字集識別項。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-152">Gets or sets the character-set identifier for the current session.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-153">目前工作階段的字元集識別項。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-153">The character-set identifier for the current session.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="abb16-154">字元集 （字碼頁） 用來解譯多位元組字元資料，判斷字元值，並排序次序。</span><span class="sxs-lookup"><span data-stu-id="abb16-154">A character set (code page) is used to interpret multi-byte character data, determining character value, and therefore sort order.</span></span> <span data-ttu-id="abb16-155">字碼頁設定僅適用於多位元組字元資料，而無法 Unicode 字元資料。</span><span class="sxs-lookup"><span data-stu-id="abb16-155">Code-page settings apply only to multi-byte character data, not to Unicode character data.</span></span>  
-  
- <span data-ttu-id="abb16-156">這<xref:System.Web.SessionState.IHttpSessionState.CodePage%2A>提供屬性為了與 ASP 的舊版本只有相容性。</span><span class="sxs-lookup"><span data-stu-id="abb16-156">This <xref:System.Web.SessionState.IHttpSessionState.CodePage%2A> property is provided for compatibility with earlier versions of ASP only.</span></span> <span data-ttu-id="abb16-157">如果您不需要維護回溯相容性的 ASP 頁面，使用<xref:System.Web.HttpResponse.ContentEncoding%2A>屬性改為。</span><span class="sxs-lookup"><span data-stu-id="abb16-157">If you do not need to maintain backward compatibility with ASP pages, use the <xref:System.Web.HttpResponse.ContentEncoding%2A> property instead.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Contents">
-      <MemberSignature Language="C#" Value="public System.Web.SessionState.HttpSessionState Contents { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.SessionState.HttpSessionState Contents" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.Contents" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Contents As HttpSessionState" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::SessionState::HttpSessionState ^ Contents { System::Web::SessionState::HttpSessionState ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.SessionState.HttpSessionState</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-158">取得目前工作階段物件的參考。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-158">Gets a reference to the current session-state object.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-159">目前的 <see cref="T:System.Web.SessionState.HttpSessionState" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-159">The current <see cref="T:System.Web.SessionState.HttpSessionState" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="abb16-160"><xref:System.Web.SessionState.HttpSessionState.Contents%2A>提供屬性為了與 ASP 的舊版本相容性。</span><span class="sxs-lookup"><span data-stu-id="abb16-160">The <xref:System.Web.SessionState.HttpSessionState.Contents%2A> property is provided for compatibility with earlier versions of ASP.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="abb16-161">下列程式碼範例會列出項目名稱和值中<xref:System.Web.SessionState.HttpSessionState.Contents%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="abb16-161">The following code example lists the item names and values in the <xref:System.Web.SessionState.HttpSessionState.Contents%2A> property.</span></span>  
-  
- [!code-csharp[HttpSessionState#9](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/snippetscs.aspx#9)]
- [!code-vb[HttpSessionState#9](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/snippetsvb.aspx#9)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CookieMode">
-      <MemberSignature Language="C#" Value="public System.Web.HttpCookieMode CookieMode { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Web.HttpCookieMode CookieMode" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.CookieMode" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property CookieMode As HttpCookieMode" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::HttpCookieMode CookieMode { System::Web::HttpCookieMode get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.HttpCookieMode</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-162">取得值，指出是否針對無 Cookie 工作階段設定應用程式。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-162">Gets a value that indicates whether the application is configured for cookieless sessions.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-163">其中一個 <see cref="T:System.Web.HttpCookieMode" /> 值，指出應用程式是否設定使用無 Cookie 工作階段。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-163">One of the <see cref="T:System.Web.HttpCookieMode" /> values that indicate whether the application is configured for cookieless sessions.</span>
-          </span>
-          <span data-ttu-id="abb16-164">預設值為 <see cref="F:System.Web.HttpCookieMode.UseCookies" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-164">The default is <see cref="F:System.Web.HttpCookieMode.UseCookies" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="abb16-165">當<xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A>是`true`、<xref:System.Web.SessionState.HttpSessionState.CookieMode%2A>屬性會傳回<xref:System.Web.HttpCookieMode.UseUri>，否則為<xref:System.Web.SessionState.HttpSessionState.CookieMode%2A>屬性會傳回<xref:System.Web.HttpCookieMode.UseCookies>。</span><span class="sxs-lookup"><span data-stu-id="abb16-165">When <xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> is `true`, the <xref:System.Web.SessionState.HttpSessionState.CookieMode%2A> property returns <xref:System.Web.HttpCookieMode.UseUri>; otherwise the <xref:System.Web.SessionState.HttpSessionState.CookieMode%2A> property returns <xref:System.Web.HttpCookieMode.UseCookies>.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="abb16-166">下列程式碼範例會設定`cookieless`工作階段屬性`true`Web.config 檔案中。</span><span class="sxs-lookup"><span data-stu-id="abb16-166">The following code example sets the `cookieless` session attribute to `true` in the Web.config file.</span></span> <span data-ttu-id="abb16-167">此範例應用程式組態，<xref:System.Web.SessionState.HttpSessionState.CookieMode%2A>屬性則會傳回<xref:System.Web.HttpCookieMode.UseUri>。</span><span class="sxs-lookup"><span data-stu-id="abb16-167">For this sample application configuration, the <xref:System.Web.SessionState.HttpSessionState.CookieMode%2A> property would return <xref:System.Web.HttpCookieMode.UseUri>.</span></span>  
-  
-```  
-<configuration>  
-  <system.web>  
-    <sessionState   
-      mode="InProc"  
-      cookieless="true"  
-      timeout="30" />  
-  </system.web>  
-</configuration>  
-```  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CopyTo">
-      <MemberSignature Language="C#" Value="public void CopyTo (Array array, int index);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void CopyTo(class System.Array array, int32 index) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.HttpSessionState.CopyTo(System.Array,System.Int32)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void CopyTo(Array ^ array, int index);" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.ICollection.CopyTo(System.Array,System.Int32)</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="array" Type="System.Array" />
-        <Parameter Name="index" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="array">
-          <span data-ttu-id="abb16-168">接收工作階段值的 <see cref="T:System.Array" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-168">The <see cref="T:System.Array" /> that receives the session values.</span>
-          </span>
-        </param>
-        <param name="index">
-          <span data-ttu-id="abb16-169">
-            <c>array</c> 中以零為起始的索引，即開始複製的位置。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-169">The zero-based index in <c>array</c> from which copying starts.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="abb16-170">從陣列中的指定索引開始，將工作階段狀態值集合複製到一維陣列。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-170">Copies the collection of session-state values to a one-dimensional array, starting at the specified index in the array.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Count">
-      <MemberSignature Language="C#" Value="public int Count { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 Count" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.Count" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Count As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int Count { int get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Collections.ICollection.Count</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-171">取得工作階段狀態集合的項目數目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-171">Gets the number of items in the session-state collection.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-172">集合中的項目數目</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-172">The number of items in the collection.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetEnumerator">
-      <MemberSignature Language="C#" Value="public System.Collections.IEnumerator GetEnumerator ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Collections.IEnumerator GetEnumerator() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.HttpSessionState.GetEnumerator" />
-      <MemberSignature Language="VB.NET" Value="Public Function GetEnumerator () As IEnumerator" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Collections::IEnumerator ^ GetEnumerator();" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.IEnumerable.GetEnumerator</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.IEnumerator</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-173">傳回可用來讀取目前工作階段中所有工作階段狀態變數名稱的列舉值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-173">Returns an enumerator that can be used to read all the session-state variable names in the current session.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="abb16-174">
-            <see cref="T:System.Collections.IEnumerator" />，可逐一查看工作階段狀態集合中的變數名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-174">An <see cref="T:System.Collections.IEnumerator" /> that can iterate through the variable names in the session-state collection.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="abb16-175">下列範例示範如何使用工作階段狀態中儲存值<xref:System.Web.SessionState.HttpSessionState.Add%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="abb16-175">The following example shows how to store values in session state by using the <xref:System.Web.SessionState.HttpSessionState.Add%2A> method.</span></span> <span data-ttu-id="abb16-176">它也示範如何使用工作階段狀態中移除值<xref:System.Web.SessionState.HttpSessionState.Remove%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="abb16-176">It also shows how to remove values in session state by using the <xref:System.Web.SessionState.HttpSessionState.Remove%2A> method.</span></span> <span data-ttu-id="abb16-177">A<xref:System.Web.UI.WebControls.Repeater>控制項用來在網頁上顯示工作階段狀態的內容。</span><span class="sxs-lookup"><span data-stu-id="abb16-177">A <xref:System.Web.UI.WebControls.Repeater> control is used to display the contents of session state on the Web page.</span></span> <span data-ttu-id="abb16-178"><xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A>方法用來逐一查看工作階段狀態集合，並填入<xref:System.Web.UI.WebControls.Repeater>控制項。</span><span class="sxs-lookup"><span data-stu-id="abb16-178">The <xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A> method is used to iterate through the session-state collection and populate the <xref:System.Web.UI.WebControls.Repeater> control.</span></span>  
-  
- [!code-aspx-csharp[HttpSessionState#13](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/HttpSessionStateAddCS.aspx#13)]
- [!code-aspx-vb[HttpSessionState#13](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/HttpSessionStateAddVB.aspx#13)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IsCookieless">
-      <MemberSignature Language="C#" Value="public bool IsCookieless { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool IsCookieless" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.IsCookieless" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsCookieless As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsCookieless { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-179">取得值，指出工作階段 ID 是否內嵌於 URL 或儲存於 HTTP Cookie。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-179">Gets a value indicating whether the session ID is embedded in the URL or stored in an HTTP cookie.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-180">如果工作階段內嵌於 URL，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-180">
-              <see langword="true" /> if the session is embedded in the URL; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="abb16-181">ASP.NET 專門用來識別工作階段與每個瀏覽器。</span><span class="sxs-lookup"><span data-stu-id="abb16-181">ASP.NET identifies sessions uniquely with each browser.</span></span> <span data-ttu-id="abb16-182">根據預設，在瀏覽器中不會過期的工作階段 cookie 中儲存工作階段的唯一識別碼。</span><span class="sxs-lookup"><span data-stu-id="abb16-182">By default, the unique identifier for a session is stored in a non-expiring session cookie in the browser.</span></span> <span data-ttu-id="abb16-183">您可以指定，工作階段識別項不會儲存在 cookie 中設定`cookieless`屬性`true`中的組態項目。</span><span class="sxs-lookup"><span data-stu-id="abb16-183">You can specify that session identifiers not be stored in a cookie by setting the `cookieless` attribute to `true` in the  configuration element.</span></span>  
-  
-> [!NOTE]
->  <span data-ttu-id="abb16-184">若要改善您的應用程式的安全性，您的應用程式可讓的使用者登出，此時它應該呼叫<xref:System.Web.SessionState.HttpSessionState.Abandon%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="abb16-184">To improve the security of your application, your application should allow users to log out, at which point it should call the <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> method.</span></span> <span data-ttu-id="abb16-185">這會減少潛在的不必要的來源，在 URL 中使用的唯一識別碼，以擷取儲存在使用者工作階段中的私用資料。</span><span class="sxs-lookup"><span data-stu-id="abb16-185">This reduces the potential for an unwanted source using the unique identifier in the URL to retrieve private data stored in the session for a user.</span></span>  
-  
- <span data-ttu-id="abb16-186">ASP.NET 會維護無 cookie 工作階段狀態，藉由自動將唯一的工作階段識別碼插入頁面的 URL。</span><span class="sxs-lookup"><span data-stu-id="abb16-186">ASP.NET maintains cookieless session state by automatically inserting a unique session ID into the page's URL.</span></span> <span data-ttu-id="abb16-187">例如，包含唯一的工作階段識別碼 lit3py55t21z5v55vlm25s55 ASP.NET 已經修改下列 URL:</span><span class="sxs-lookup"><span data-stu-id="abb16-187">For example, the following URL has been modified by ASP.NET to include the unique session ID lit3py55t21z5v55vlm25s55:</span></span>  
-  
-```  
-http://www.example.com/(S(4danlfat035muve4g0mvgfrr))/orderform.aspx  
-```  
-  
- <span data-ttu-id="abb16-188">ASP.NET 修改內嵌連結中的工作階段識別碼值之前傳送至瀏覽器的每個頁面包含所有要求的頁面的連結。</span><span class="sxs-lookup"><span data-stu-id="abb16-188">ASP.NET modifies the links contained in all requested pages by embedding a session-ID value in the links just before sending each page to the browser.</span></span> <span data-ttu-id="abb16-189">維護工作階段狀態，只要使用者依照站台提供的連結路徑。</span><span class="sxs-lookup"><span data-stu-id="abb16-189">Session state is maintained as long as the user follows the path of links that the site provides.</span></span> <span data-ttu-id="abb16-190">不過，如果使用者代理程式重寫 URL，工作階段狀態的執行個體將會遺失。</span><span class="sxs-lookup"><span data-stu-id="abb16-190">However, if the user agent rewrites a URL, the session-state instance will be lost.</span></span>  
-  
- <span data-ttu-id="abb16-191">應用程式名稱會遵循的斜線之後和任何剩餘的檔案或虛擬目錄識別項之前在 URL 中內嵌工作階段識別碼。</span><span class="sxs-lookup"><span data-stu-id="abb16-191">The session ID is embedded in the URL after the slash that follows the application name and before any remaining file or virtual-directory identifier.</span></span> <span data-ttu-id="abb16-192">這可讓 ASP.NET 應用程式名稱解析之前涉及<xref:System.Web.SessionState.SessionStateModule>要求中。</span><span class="sxs-lookup"><span data-stu-id="abb16-192">This allows ASP.NET to resolve the application name before involving the <xref:System.Web.SessionState.SessionStateModule> in the request.</span></span>  
-  
- <span data-ttu-id="abb16-193">根據預設，在已經回收無 cookie 工作階段中所使用的工作階段識別碼。</span><span class="sxs-lookup"><span data-stu-id="abb16-193">By default, session identifiers used in cookieless sessions are recycled.</span></span> <span data-ttu-id="abb16-194">也就是提出要求時已過期的工作階段 id，如果新的工作階段會使用啟動要求所提供的工作階段識別碼。</span><span class="sxs-lookup"><span data-stu-id="abb16-194">That is, if a request is made with a session ID that has expired, a new session is started using the session ID supplied with the request.</span></span> <span data-ttu-id="abb16-195">這種行為可能會導致不必要的工作階段資料共用時包含無 cookie 工作階段識別碼的連結共用的多個瀏覽器中，可能是透過搜尋引擎或其他程式。</span><span class="sxs-lookup"><span data-stu-id="abb16-195">This behavior can result in the unwanted sharing of session data when a link that contains a cookieless session ID is shared with multiple browsers, perhaps through a search engine or other program.</span></span> <span data-ttu-id="abb16-196">您可以降低共用多個用戶端停用工作階段識別項的循環的工作階段資料的可能性。</span><span class="sxs-lookup"><span data-stu-id="abb16-196">You can reduce the possibility of session data being shared by multiple clients by disabling the recycling of session identifiers.</span></span> <span data-ttu-id="abb16-197">若要這樣做，請設定`regenerateExpiredSessionId`屬性的組態項目`true`。</span><span class="sxs-lookup"><span data-stu-id="abb16-197">To do this, set the `regenerateExpiredSessionId` attribute of the  configuration element to `true`.</span></span> <span data-ttu-id="abb16-198">這將導致過期的工作階段 id 進行無 cookie 工作階段要求產生新的工作階段識別碼</span><span class="sxs-lookup"><span data-stu-id="abb16-198">This will result in a new session ID being generated when a cookieless session request is made with an expired session ID.</span></span> <span data-ttu-id="abb16-199">請注意，如果過期的工作階段識別碼所提出之要求使用 HTTP`POST`方法，則任何張貼的資料將會遺失時`regenerateExpiredSessionId`是`true`，因為 ASP.NET 執行重新導向，以確保瀏覽器 URL 中有新的工作階段識別項。</span><span class="sxs-lookup"><span data-stu-id="abb16-199">Note that if the request made with the expired session ID uses the HTTP `POST` method, then any posted data will be lost when `regenerateExpiredSessionId` is `true`, as ASP.NET performs a redirect to ensure that the browser has the new session identifier in the URL.</span></span>  
-  
-> [!NOTE]
->  <span data-ttu-id="abb16-200">同時設定`regenerateExpiredSessionId`屬性`true`降低的可能性不想要共用的工作階段資料，它無法防止不必要的來源存取另一位使用者的工作階段取得<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值和包含在伺服器的要求。</span><span class="sxs-lookup"><span data-stu-id="abb16-200">While setting the `regenerateExpiredSessionId` attribute to `true` reduces the possibility of unwanted sharing of session data, it does not protect against an unwanted source gaining access to the session of another user by obtaining the <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value and including it in requests to the server.</span></span> <span data-ttu-id="abb16-201">如果您在工作階段狀態儲存私人或機密資訊，建議您搭配使用 SSL 來加密任何瀏覽器和包含的伺服器之間的通訊<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>。</span><span class="sxs-lookup"><span data-stu-id="abb16-201">If you are storing private or sensitive information in session state, it is recommended that you use SSL to encrypt any communication between the browser and server that includes the <xref:System.Web.SessionState.HttpSessionState.SessionID%2A>.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="abb16-202">下列程式碼範例會設定`cookieless`設為 true，在 Web.config 檔案中的工作階段屬性。</span><span class="sxs-lookup"><span data-stu-id="abb16-202">The following code example sets the `cookieless` session attribute to true in the Web.config file.</span></span>  
-  
-```  
-<configuration>  
-  <system.web>  
-    <sessionState   
-      mode="InProc"  
-      cookieless="true"  
-      regenerateExpiredSessionId="true"  
-      timeout="30" />  
-  </system.web>  
-</configuration>  
-```  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IsNewSession">
-      <MemberSignature Language="C#" Value="public bool IsNewSession { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool IsNewSession" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.IsNewSession" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsNewSession As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsNewSession { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-203">取得值，指出工作階段是否與目前要求一起建立。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-203">Gets a value indicating whether the session was created with the current request.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-204">如果工作階段是以目前要求建立，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-204">
-              <see langword="true" /> if the session was created with the current request; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IsReadOnly">
-      <MemberSignature Language="C#" Value="public bool IsReadOnly { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool IsReadOnly" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.IsReadOnly" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsReadOnly As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsReadOnly { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-205">取得值，指出工作階段是否為唯讀。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-205">Gets a value indicating whether the session is read-only.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-206">如果工作階段是唯讀，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-206">
-              <see langword="true" /> if the session is read-only; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IsSynchronized">
-      <MemberSignature Language="C#" Value="public bool IsSynchronized { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool IsSynchronized" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.IsSynchronized" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsSynchronized As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsSynchronized { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Collections.ICollection.IsSynchronized</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-207">取得值，指出對工作階段狀態值之集合的存取是否為同步的 (安全執行緒，Thread-Safe)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-207">Gets a value indicating whether access to the collection of session-state values is synchronized (thread safe).</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-208">如果對集合的存取是同步處理的 (安全執行緒)，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-208">
-              <see langword="true" /> if access to the collection is synchronized (thread safe); otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <MemberGroup MemberName="Item">
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-209">取得或設定個別的工作階段值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-209">Gets or sets individual session values.</span>
-          </span>
-        </summary>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName="Item">
-      <MemberSignature Language="C#" Value="public object this[int index] { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance object Item(int32)" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.Item(System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Default Public Property Item(index As Integer) As Object" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Object ^ default[int] { System::Object ^ get(int index); void set(int index, System::Object ^ value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="index" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="index">
-          <span data-ttu-id="abb16-210">工作階段值的數值索引。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-210">The numerical index of the session value.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="abb16-211">根據數值索引取得或設定工作階段值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-211">Gets or sets a session value by numerical index.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-212">指定索引處儲存的工作階段狀態值，如果項目不存在則為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-212">The session-state value stored at the specified index, or <see langword="null" /> if the item does not exist.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Item">
-      <MemberSignature Language="C#" Value="public object this[string name] { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance object Item(string)" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.Item(System.String)" />
-      <MemberSignature Language="VB.NET" Value="Default Public Property Item(name As String) As Object" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Object ^ default[System::String ^] { System::Object ^ get(System::String ^ name); void set(System::String ^ name, System::Object ^ value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="name">
-          <span data-ttu-id="abb16-213">工作階段值的索引鍵名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-213">The key name of the session value.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="abb16-214">根據名稱取得或設定工作階段值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-214">Gets or sets a session value by name.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-215">具有指定名稱的工作階段狀態值，如果項目不存在則為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-215">The session-state value with the specified name, or <see langword="null" /> if the item does not exist.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Keys">
-      <MemberSignature Language="C#" Value="public System.Collections.Specialized.NameObjectCollectionBase.KeysCollection Keys { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Specialized.NameObjectCollectionBase/KeysCollection Keys" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.Keys" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Keys As NameObjectCollectionBase.KeysCollection" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::Specialized::NameObjectCollectionBase::KeysCollection ^ Keys { System::Collections::Specialized::NameObjectCollectionBase::KeysCollection ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.Specialized.NameObjectCollectionBase+KeysCollection</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-216">取得儲存在工作階段狀態集合中所有值的索引鍵集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-216">Gets a collection of the keys for all values stored in the session-state collection.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-217">包含所有工作階段索引鍵的 <see cref="T:System.Collections.Specialized.NameObjectCollectionBase.KeysCollection" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-217">The <see cref="T:System.Collections.Specialized.NameObjectCollectionBase.KeysCollection" /> that contains all the session keys.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="LCID">
-      <MemberSignature Language="C#" Value="public int LCID { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 LCID" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.LCID" />
-      <MemberSignature Language="VB.NET" Value="Public Property LCID As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int LCID { int get(); void set(int value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-218">取得或設定目前工作階段的地區設定識別項 (LCID)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-218">Gets or sets the locale identifier (LCID) of the current session.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-219">
-            <see cref="T:System.Globalization.CultureInfo" /> 執行個體，指定目前工作階段的文化特性。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-219">A <see cref="T:System.Globalization.CultureInfo" /> instance that specifies the culture of the current session.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="abb16-220"><xref:System.Web.SessionState.HttpSessionState.LCID%2A>提供屬性為了與 ASP 的舊版本只有相容性。</span><span class="sxs-lookup"><span data-stu-id="abb16-220">The <xref:System.Web.SessionState.HttpSessionState.LCID%2A> property is provided for compatibility with earlier versions of ASP only.</span></span> <span data-ttu-id="abb16-221">如果您不需要維護回溯相容性的 ASP 頁面，使用<xref:System.Globalization.CultureInfo.LCID%2A>屬性改為。</span><span class="sxs-lookup"><span data-stu-id="abb16-221">If you do not need to maintain backward compatibility with ASP pages, use the <xref:System.Globalization.CultureInfo.LCID%2A> property instead.</span></span>  
-  
- <span data-ttu-id="abb16-222">ASP.NET 不會在工作階段狀態儲存的地區設定識別碼。</span><span class="sxs-lookup"><span data-stu-id="abb16-222">ASP.NET does not store the locale identifier in session state.</span></span> <span data-ttu-id="abb16-223"><xref:System.Web.SessionState.HttpSessionState.LCID%2A>屬性存取<xref:System.Globalization.CultureInfo.LCID%2A>屬性以取得設定的識別碼。</span><span class="sxs-lookup"><span data-stu-id="abb16-223">The <xref:System.Web.SessionState.HttpSessionState.LCID%2A> property accesses the <xref:System.Globalization.CultureInfo.LCID%2A> property to get and set the identifier.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Mode">
-      <MemberSignature Language="C#" Value="public System.Web.SessionState.SessionStateMode Mode { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Web.SessionState.SessionStateMode Mode" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.Mode" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Mode As SessionStateMode" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::SessionState::SessionStateMode Mode { System::Web::SessionState::SessionStateMode get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.SessionState.SessionStateMode</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-224">取得目前的工作階段狀態模式。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-224">Gets the current session-state mode.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-225">其中一個 <see cref="T:System.Web.SessionState.SessionStateMode" /> 值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-225">One of the <see cref="T:System.Web.SessionState.SessionStateMode" /> values.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="abb16-226">如需如何設定伺服器供<xref:System.Web.SessionState.SessionStateMode.StateServer>或<xref:System.Web.SessionState.SessionStateMode.SQLServer>工作階段狀態儲存體，請參閱[ASP.NET 工作階段狀態概觀](http://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc)。</span><span class="sxs-lookup"><span data-stu-id="abb16-226">For information about how to configure your server for <xref:System.Web.SessionState.SessionStateMode.StateServer> or <xref:System.Web.SessionState.SessionStateMode.SQLServer> session-state storage, see [ASP.NET Session State Overview](http://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc).</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="abb16-227">下列程式碼範例會設定`mode`工作階段屬性<xref:System.Web.SessionState.SessionStateMode.SQLServer>Web.config 檔案中。</span><span class="sxs-lookup"><span data-stu-id="abb16-227">The following code example sets the `mode` session attribute to <xref:System.Web.SessionState.SessionStateMode.SQLServer> in the Web.config file.</span></span> <span data-ttu-id="abb16-228">SQL Server 工作階段模式中，`sqlConnectionString`也是必要的屬性。</span><span class="sxs-lookup"><span data-stu-id="abb16-228">For SQL Server session mode, the `sqlConnectionString` attribute is also required.</span></span>  
-  
-```  
-<configuration>  
-  <system.web>  
-    <sessionState   
-      mode="SQLServer"  
-      sqlConnectionString="Data Source=localhost;Integrated Security=SSPI"  
-      cookieless="true"  
-      timeout="30" />  
-  </system.web>  
-</configuration>  
-```  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Remove">
-      <MemberSignature Language="C#" Value="public void Remove (string name);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Remove(string name) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.HttpSessionState.Remove(System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Remove (name As String)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Remove(System::String ^ name);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="name">
-          <span data-ttu-id="abb16-229">要從工作階段狀態集合中刪除的項目名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-229">The name of the item to delete from the session-state collection.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="abb16-230">將項目從工作階段狀態集合刪除。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-230">Deletes an item from the session-state collection.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="abb16-231">如果工作階段狀態集合中未包含具有指定的項目`name`，維持不變的集合。</span><span class="sxs-lookup"><span data-stu-id="abb16-231">If the session-state collection does not contain an element with the specified `name`, the collection remains unchanged.</span></span> <span data-ttu-id="abb16-232">不會有例外狀況擲回。</span><span class="sxs-lookup"><span data-stu-id="abb16-232">No exception is thrown.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="abb16-233">下列範例示範如何使用工作階段狀態中儲存值<xref:System.Web.SessionState.HttpSessionState.Add%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="abb16-233">The following example shows how to store values in session state by using the <xref:System.Web.SessionState.HttpSessionState.Add%2A> method.</span></span> <span data-ttu-id="abb16-234">它也示範如何使用工作階段狀態中移除值<xref:System.Web.SessionState.HttpSessionState.Remove%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="abb16-234">It also shows how to remove values in session state by using the <xref:System.Web.SessionState.HttpSessionState.Remove%2A> method.</span></span> <span data-ttu-id="abb16-235">A<xref:System.Web.UI.WebControls.Repeater>控制項用來在網頁上顯示工作階段狀態的內容。</span><span class="sxs-lookup"><span data-stu-id="abb16-235">A <xref:System.Web.UI.WebControls.Repeater> control is used to display the contents of session state on the Web page.</span></span> <span data-ttu-id="abb16-236"><xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A>方法用來逐一查看工作階段狀態集合，並填入<xref:System.Web.UI.WebControls.Repeater>控制項。</span><span class="sxs-lookup"><span data-stu-id="abb16-236">The <xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A> method is used to iterate through the session-state collection and populate the <xref:System.Web.UI.WebControls.Repeater> control.</span></span>  
-  
- [!code-aspx-csharp[HttpSessionState#13](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/HttpSessionStateAddCS.aspx#13)]
- [!code-aspx-vb[HttpSessionState#13](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/HttpSessionStateAddVB.aspx#13)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RemoveAll">
-      <MemberSignature Language="C#" Value="public void RemoveAll ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemoveAll() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.HttpSessionState.RemoveAll" />
-      <MemberSignature Language="VB.NET" Value="Public Sub RemoveAll ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RemoveAll();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-237">從工作階段狀態集合中移除所有索引鍵和值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-237">Removes all keys and values from the session-state collection.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="abb16-238"><xref:System.Web.SessionState.HttpSessionState.RemoveAll%2A> 執行相同的功能<xref:System.Web.SessionState.HttpSessionState.Clear%2A>。</span><span class="sxs-lookup"><span data-stu-id="abb16-238"><xref:System.Web.SessionState.HttpSessionState.RemoveAll%2A> performs the same function as <xref:System.Web.SessionState.HttpSessionState.Clear%2A>.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RemoveAt">
-      <MemberSignature Language="C#" Value="public void RemoveAt (int index);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemoveAt(int32 index) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.HttpSessionState.RemoveAt(System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub RemoveAt (index As Integer)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RemoveAt(int index);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="index" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="index">
-          <span data-ttu-id="abb16-239">要從工作階段狀態集合移除的項目索引。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-239">The index of the item to remove from the session-state collection.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="abb16-240">刪除來自工作階段狀態集合的特定索引的項目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-240">Deletes an item at a specified index from the session-state collection.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">
-          <span data-ttu-id="abb16-241">
-            <paramref name="index" /> 小於零。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-241">
-              <paramref name="index" /> is less than zero.</span>
-          </span>
-          <span data-ttu-id="abb16-242">\-或-</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-242">\- or -</span>
-          </span>
-          <span data-ttu-id="abb16-243">
-            <paramref name="index" /> 等於或大於 <see cref="P:System.Web.SessionState.HttpSessionState.Count" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-243">
-              <paramref name="index" /> is equal to or greater than <see cref="P:System.Web.SessionState.HttpSessionState.Count" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="SessionID">
-      <MemberSignature Language="C#" Value="public string SessionID { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance string SessionID" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.SessionID" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SessionID As String" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ SessionID { System::String ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-244">取得工作階段的唯一識別項。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-244">Gets the unique identifier for the session.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-245">唯一工作階段識別碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-245">The unique session identifier.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="abb16-246"><xref:System.Web.SessionState.HttpSessionState.SessionID%2A>屬性用來唯一識別與伺服器上的工作階段資料的瀏覽器。</span><span class="sxs-lookup"><span data-stu-id="abb16-246">The <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> property is used to uniquely identify a browser with session data on the server.</span></span> <span data-ttu-id="abb16-247"><xref:System.Web.SessionState.HttpSessionState.SessionID%2A>隨機 ASP.NET 產生並儲存在瀏覽器中不會過期的工作階段 cookie 值。</span><span class="sxs-lookup"><span data-stu-id="abb16-247">The <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value is randomly generated by ASP.NET and stored in a non-expiring session cookie in the browser.</span></span> <span data-ttu-id="abb16-248"><xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值然後傳送至 ASP.NET 應用程式的每個要求的 cookie 中。</span><span class="sxs-lookup"><span data-stu-id="abb16-248">The <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value is then sent in a cookie with each request to the ASP.NET application.</span></span>  
-  
- <span data-ttu-id="abb16-249">如果您想要停用的 cookie，ASP.NET 應用程式中使用，仍能使用的工作階段狀態，您可以設定您的應用程式的 URL，而不是 cookie 中儲存的工作階段識別項，藉由設定`cookieless`組態的屬性項目`true`，或<xref:System.Web.HttpCookieMode.UseUri>，在您的應用程式的 Web.config 檔案中。</span><span class="sxs-lookup"><span data-stu-id="abb16-249">If you want to disable the use of cookies in your ASP.NET application and still make use of session state, you can configure your application to store the session identifier in the URL instead of a cookie by setting the `cookieless` attribute of the  configuration element to `true`, or to <xref:System.Web.HttpCookieMode.UseUri>, in the Web.config file for your application.</span></span> <span data-ttu-id="abb16-250">您可以判斷是否瀏覽器是否支援 cookie 所指定的值是 ASP.NET<xref:System.Web.HttpCookieMode.UseDeviceProfile>如`cookieless`屬性。</span><span class="sxs-lookup"><span data-stu-id="abb16-250">You can have ASP.NET determine whether cookies are supported by the browser by specifying a value of <xref:System.Web.HttpCookieMode.UseDeviceProfile> for the `cookieless` attribute.</span></span> <span data-ttu-id="abb16-251">您也可以判斷是否啟用 cookie 的瀏覽器所指定的值是 ASP.NET<xref:System.Web.HttpCookieMode.AutoDetect>如`cookieless`屬性。</span><span class="sxs-lookup"><span data-stu-id="abb16-251">You can also have ASP.NET determine whether cookies are enabled for the browser by specifying a value of <xref:System.Web.HttpCookieMode.AutoDetect> for the `cookieless` attribute.</span></span> <span data-ttu-id="abb16-252">如果支援 cookie，則當<xref:System.Web.HttpCookieMode.UseDeviceProfile>已指定，或已啟用時<xref:System.Web.HttpCookieMode.AutoDetect>指定，則工作階段識別碼會儲存在 cookie 中; 否則為將在 URL 中儲存的工作階段識別碼。</span><span class="sxs-lookup"><span data-stu-id="abb16-252">If cookies are supported when <xref:System.Web.HttpCookieMode.UseDeviceProfile> is specified, or enabled when <xref:System.Web.HttpCookieMode.AutoDetect> is specified, then the session identifier will be stored in a cookie; otherwise the session identifier will be stored in the URL.</span></span> <span data-ttu-id="abb16-253">如需詳細資訊，請參閱 <xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> 屬性 (Property)。</span><span class="sxs-lookup"><span data-stu-id="abb16-253">For more information, see the <xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> property.</span></span>  
-  
- <span data-ttu-id="abb16-254"><xref:System.Web.SessionState.HttpSessionState.SessionID%2A>伺服器與瀏覽器之間傳送以純文字格式在 cookie 或 URL。</span><span class="sxs-lookup"><span data-stu-id="abb16-254">The <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> is sent between the server and the browser in clear text, either in a cookie or in the URL.</span></span> <span data-ttu-id="abb16-255">如此一來，不必要的來源無法存取其他使用者工作階段取得<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值並將其納入中伺服器的要求。</span><span class="sxs-lookup"><span data-stu-id="abb16-255">As a result, an unwanted source could gain access to the session of another user by obtaining the <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> value and including it in requests to the server.</span></span> <span data-ttu-id="abb16-256">如果您在工作階段狀態儲存私人或機密資訊，建議您搭配使用 SSL 來加密任何瀏覽器和包含的伺服器之間的通訊<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>。</span><span class="sxs-lookup"><span data-stu-id="abb16-256">If you are storing private or sensitive information in session state, it is recommended that you use SSL to encrypt any communication between the browser and server that includes the <xref:System.Web.SessionState.HttpSessionState.SessionID%2A>.</span></span>  
-  
- <span data-ttu-id="abb16-257">使用 cookie 架構工作階段狀態，ASP.NET 不會配置儲存體的工作階段資料，直到<xref:System.Web.UI.Page.Session%2A>物件使用。</span><span class="sxs-lookup"><span data-stu-id="abb16-257">When using cookie-based session state, ASP.NET does not allocate storage for session data until the <xref:System.Web.UI.Page.Session%2A> object is used.</span></span> <span data-ttu-id="abb16-258">如此一來，新的工作階段識別碼產生的每個頁面要求，直到存取工作階段物件。</span><span class="sxs-lookup"><span data-stu-id="abb16-258">As a result, a new session ID is generated for each page request until the session object is accessed.</span></span> <span data-ttu-id="abb16-259">如果您的應用程式需要整個工作階段的靜態的工作階段 ID，您可以實作`Session_Start`應用程式的 Global.asax 檔案和存放區中的資料中的方法<xref:System.Web.UI.Page.Session%2A>物件修正的工作階段識別碼，或您可以使用程式碼中的另一個組件您的應用程式明確地將資料儲存在<xref:System.Web.UI.Page.Session%2A>物件。</span><span class="sxs-lookup"><span data-stu-id="abb16-259">If your application requires a static session ID for the entire session, you can either implement the `Session_Start` method in the application's Global.asax file and store data in the <xref:System.Web.UI.Page.Session%2A> object to fix the session ID, or you can use code in another part of your application to explicitly store data in the <xref:System.Web.UI.Page.Session%2A> object.</span></span>  
-  
- <span data-ttu-id="abb16-260">如果您的應用程式使用無 cookie 工作階段狀態，工作階段識別碼所產生的第一個頁面檢視和維護整個工作階段。</span><span class="sxs-lookup"><span data-stu-id="abb16-260">If your application uses cookieless session state, the session ID is generated on the first page view and is maintained for the entire session.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="abb16-261">下列程式碼範例顯示 Web.config 檔案中設定工作階段狀態使用無 cookie 工作階段識別項。</span><span class="sxs-lookup"><span data-stu-id="abb16-261">The following code example shows a Web.config file that configures session state to use cookieless session identifiers.</span></span> <span data-ttu-id="abb16-262">如需詳細資訊，請參閱 <xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> 屬性 (Property)。</span><span class="sxs-lookup"><span data-stu-id="abb16-262">For more information, see the <xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> property.</span></span>  
-  
-```  
-<configuration>  
-  <system.web>  
-    <sessionState   
-      cookieless="true"  
-      regenerateExpiredSessionId="true"  
-      timeout="30" />  
-  </system.web>  
-</configuration>  
-```  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="StaticObjects">
-      <MemberSignature Language="C#" Value="public System.Web.HttpStaticObjectsCollection StaticObjects { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.HttpStaticObjectsCollection StaticObjects" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.StaticObjects" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property StaticObjects As HttpStaticObjectsCollection" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::HttpStaticObjectsCollection ^ StaticObjects { System::Web::HttpStaticObjectsCollection ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.HttpStaticObjectsCollection</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-263">取得由 ASP.NET 應用程式檔 Global.asax 內 <see langword="&lt;object Runat=&quot;Server&quot; Scope=&quot;Session&quot;/&gt;" /> 標記所宣告的物件集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-263">Gets a collection of objects declared by <see langword="&lt;object Runat=&quot;Server&quot; Scope=&quot;Session&quot;/&gt;" /> tags within the ASP.NET application file Global.asax.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-264">
-            <see cref="T:System.Web.HttpStaticObjectsCollection" />，包含 Global.asax 檔案中所宣告的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-264">An <see cref="T:System.Web.HttpStaticObjectsCollection" /> containing objects declared in the Global.asax file.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="abb16-265">如果頁面上的物件不支援序列化和<xref:System.Web.SessionState.HttpSessionState.Mode%2A>是跨處理序 (<xref:System.Web.SessionState.SessionStateMode.SQLServer>或<xref:System.Web.SessionState.SessionStateMode.StateServer>)，將不會建立物件，並將不會加入至這個集合。</span><span class="sxs-lookup"><span data-stu-id="abb16-265">If an object on a page does not support serialization and <xref:System.Web.SessionState.HttpSessionState.Mode%2A> is out-of-process (<xref:System.Web.SessionState.SessionStateMode.SQLServer> or <xref:System.Web.SessionState.SessionStateMode.StateServer>), the object will not be created and will not be added to this collection.</span></span>  
-  
- <span data-ttu-id="abb16-266"><xref:System.Web.SessionState.HttpSessionState.StaticObjects%2A>提供屬性為了與 ASP 的舊版本相容性。</span><span class="sxs-lookup"><span data-stu-id="abb16-266">The <xref:System.Web.SessionState.HttpSessionState.StaticObjects%2A> property is provided for compatibility with earlier versions of ASP.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="abb16-267">下列程式碼範例列出`id`中物件的物件類型和<xref:System.Web.SessionState.HttpSessionState.StaticObjects%2A>集合。</span><span class="sxs-lookup"><span data-stu-id="abb16-267">The following code example lists the `id` and object type of the objects in the <xref:System.Web.SessionState.HttpSessionState.StaticObjects%2A> collection.</span></span>  
-  
- [!code-csharp[HttpSessionState#10](~/samples/snippets/csharp/VS_Snippets_WebNet/HttpSessionState/CS/snippetscs.aspx#10)]
- [!code-vb[HttpSessionState#10](~/samples/snippets/visualbasic/VS_Snippets_WebNet/HttpSessionState/VB/snippetsvb.aspx#10)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SyncRoot">
-      <MemberSignature Language="C#" Value="public object SyncRoot { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance object SyncRoot" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.SyncRoot" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SyncRoot As Object" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Object ^ SyncRoot { System::Object ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Collections.ICollection.SyncRoot</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-268">取得物件，這個物件可以用來對工作階段狀態值集合進行同步存取。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-268">Gets an object that can be used to synchronize access to the collection of session-state values.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-269">Object，可用來對集合同步存取。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-269">An object that can be used to synchronize access to the collection.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Timeout">
-      <MemberSignature Language="C#" Value="public int Timeout { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 Timeout" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.HttpSessionState.Timeout" />
-      <MemberSignature Language="VB.NET" Value="Public Property Timeout As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int Timeout { int get(); void set(int value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="abb16-270">取得並設定工作階段狀態提供者終止工作階段之前，要求之間所允許的時間長度 (以分鐘為單位)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-270">Gets and sets the amount of time, in minutes, allowed between requests before the session-state provider terminates the session.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="abb16-271">逾時期限，以分鐘為單位。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="abb16-271">The time-out period, in minutes.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="abb16-272"><xref:System.Web.SessionState.HttpSessionState.Timeout%2A>屬性可以使用應用程式的 Web.config 檔案中設定`timeout`屬性的組態項目，或者您可以設定<xref:System.Web.SessionState.HttpSessionState.Timeout%2A>直接使用應用程式程式碼的屬性值。</span><span class="sxs-lookup"><span data-stu-id="abb16-272">The <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> property can be set in the Web.config file for an application using the `timeout` attribute of the  configuration element, or you can set the <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> property value directly using application code.</span></span>  
-  
- <span data-ttu-id="abb16-273"><xref:System.Web.SessionState.HttpSessionState.Timeout%2A>屬性無法設定的值大於 525,600 分鐘 （1 年）。</span><span class="sxs-lookup"><span data-stu-id="abb16-273">The <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> property cannot be set to a value greater than 525,600 minutes (1 year).</span></span> <span data-ttu-id="abb16-274">預設值是 20 分鐘。</span><span class="sxs-lookup"><span data-stu-id="abb16-274">The default value is 20 minutes.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="abb16-275">下列程式碼範例會設定`timeout`Web.config 檔案中的工作階段屬性為 30 分鐘。</span><span class="sxs-lookup"><span data-stu-id="abb16-275">The following code example sets the `timeout` session attribute to 30 minutes in the Web.config file.</span></span>  
-  
-```  
-<configuration>  
-  <system.web>  
-    <sessionState   
-      mode="InProc"  
-      cookieless="true"  
-      timeout="30" />  
-  </system.web>  
-</configuration>  
-```  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="HttpSessionState.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac5ae4ca9a4670ae745ae7f68a9bf24402e4ec78440.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">ae4ca9a4670ae745ae7f68a9bf24402e4ec78440</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>Provides access to session-state values as well as session-level settings and lifetime management methods.</source>
+          <target state="translated">提供工作階段狀態值以及工作階段層級設定和存留期 (Lifetime) 管理方法的存取權。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>ASP.NET provides session-state management to enable you to store information associated with a unique browser session across multiple requests.</source>
+          <target state="translated">ASP.NET 提供了工作階段狀態管理，可讓您儲存在多個要求相關聯的唯一瀏覽器工作階段的資訊。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>You can store a collection of values referenced by a key name or by numerical index.</source>
+          <target state="translated">您可以儲存參考索引鍵的名稱或數值索引值的集合。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>Access to session values and functionality is available using the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState&gt;</ph> class, which is accessible through the <ph id="ph2">&lt;xref:System.Web.HttpContext.Session%2A&gt;</ph> property of the current <ph id="ph3">&lt;xref:System.Web.HttpContext&gt;</ph>, or the <ph id="ph4">&lt;xref:System.Web.UI.Page.Session%2A&gt;</ph> property of the <ph id="ph5">&lt;xref:System.Web.UI.Page&gt;</ph>.</source>
+          <target state="translated">存取工作階段值和功能是提供使用<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState&gt;</ph>類別，可透過存取<ph id="ph2">&lt;xref:System.Web.HttpContext.Session%2A&gt;</ph>屬性的目前<ph id="ph3">&lt;xref:System.Web.HttpContext&gt;</ph>，或<ph id="ph4">&lt;xref:System.Web.UI.Page.Session%2A&gt;</ph>屬性<ph id="ph5">&lt;xref:System.Web.UI.Page&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>Session data is associated with a specific browser session using a unique identifier.</source>
+          <target state="translated">工作階段資料使用的唯一識別碼的特定瀏覽器工作階段都會關聯。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>By default, this identifier is stored in a non-expiring session cookie in the browser, but you can also configure your application to store the session identifier in the URL by setting the <ph id="ph1">`cookieless`</ph> attribute to <ph id="ph2">`true`</ph> or <ph id="ph3">&lt;xref:System.Web.HttpCookieMode.UseUri&gt;</ph> in the  element of your application configuration.</source>
+          <target state="translated">根據預設，這個識別碼會儲存在不會過期的工作階段 cookie，在瀏覽器中，但是您也可以設定您的應用程式儲存在 URL 中的工作階段識別項，藉由設定<ph id="ph1">`cookieless`</ph>屬性<ph id="ph2">`true`</ph>或<ph id="ph3">&lt;xref:System.Web.HttpCookieMode.UseUri&gt;</ph>項目中您的應用程式組態。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>You can have ASP.NET determine whether cookies are supported by the browser by specifying a value of <ph id="ph1">&lt;xref:System.Web.HttpCookieMode.UseDeviceProfile&gt;</ph> for the <ph id="ph2">`cookieless`</ph> attribute.</source>
+          <target state="translated">您可以判斷是否瀏覽器是否支援 cookie 所指定的值是 ASP.NET<ph id="ph1">&lt;xref:System.Web.HttpCookieMode.UseDeviceProfile&gt;</ph>如<ph id="ph2">`cookieless`</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>You can also have ASP.NET determine whether cookies are enabled for the browser by specifying a value of <ph id="ph1">&lt;xref:System.Web.HttpCookieMode.AutoDetect&gt;</ph> for the <ph id="ph2">`cookieless`</ph> attribute.</source>
+          <target state="translated">您也可以判斷是否啟用 cookie 的瀏覽器所指定的值是 ASP.NET<ph id="ph1">&lt;xref:System.Web.HttpCookieMode.AutoDetect&gt;</ph>如<ph id="ph2">`cookieless`</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>If cookies are supported when <ph id="ph1">&lt;xref:System.Web.HttpCookieMode.UseDeviceProfile&gt;</ph> is specified, or enabled when <ph id="ph2">&lt;xref:System.Web.HttpCookieMode.AutoDetect&gt;</ph> is specified, then the session identifier will be stored in a cookie; otherwise the session identifier will be stored in the URL.</source>
+          <target state="translated">如果支援 cookie，則當<ph id="ph1">&lt;xref:System.Web.HttpCookieMode.UseDeviceProfile&gt;</ph>已指定，或已啟用時<ph id="ph2">&lt;xref:System.Web.HttpCookieMode.AutoDetect&gt;</ph>指定，則工作階段識別碼會儲存在 cookie 中; 否則為將在 URL 中儲存的工作階段識別碼。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>Sessions are started during the first request and session values will persist as long as a new request is made by the browser before the number of minutes specified in the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Timeout%2A&gt;</ph> property pass.</source>
+          <target state="translated">在第一個要求已啟動工作階段和工作階段值會保存下來，只要瀏覽器建立新的要求中指定的分鐘數之前<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Timeout%2A&gt;</ph>屬性傳遞。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>When a new session begins, the session <ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateModule.Start&gt;</ph> event is raised.</source>
+          <target state="translated">新的工作階段開始時，則工作階段<ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateModule.Start&gt;</ph>就會引發事件。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>You can use this event to perform any additional work at the start of a session, such as setting default session values.</source>
+          <target state="translated">您可以使用此事件執行任何額外的工作，工作階段，例如，設定預設工作階段值的開頭。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>When a session times out, the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Abandon%2A&gt;</ph> method is called, or the ASP.NET application is shut down, the session <ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateModule.End&gt;</ph> event is raised.</source>
+          <target state="translated">當工作階段逾時時，<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Abandon%2A&gt;</ph>呼叫方法時，或 ASP.NET 應用程式關閉時，工作階段<ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateModule.End&gt;</ph>就會引發事件。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>You can use this event to perform any necessary cleanup.</source>
+          <target state="translated">您可以使用此事件執行任何必要的清除。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateModule.End&gt;</ph> event is raised only when the session state <ph id="ph2">`mode`</ph> is set to <ph id="ph3">&lt;xref:System.Web.SessionState.SessionStateMode.InProc&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateModule.End&gt;</ph>就會引發事件時，才將工作階段狀態<ph id="ph2">`mode`</ph>設<ph id="ph3">&lt;xref:System.Web.SessionState.SessionStateMode.InProc&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>To improve performance, sessions that use cookies do not allocate session storage until data is actually stored in the <ph id="ph1">&lt;xref:System.Web.UI.Page.Session%2A&gt;</ph> object.</source>
+          <target state="translated">若要改善效能，就會使用 cookie 的工作階段未配置工作階段儲存直到資料實際上儲存在<ph id="ph1">&lt;xref:System.Web.UI.Page.Session%2A&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>For more information, see the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph> property.</source>
+          <target state="translated">如需詳細資訊，請參閱 <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph> 屬性 (Property)。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>Session state does not persist across ASP.NET application boundaries.</source>
+          <target state="translated">工作階段狀態不會保存跨 ASP.NET 應用程式界限。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>If a browser navigates to another application, the session information is not available to the new application.</source>
+          <target state="translated">如果瀏覽器瀏覽至其他應用程式，工作階段資訊不適用於新的應用程式。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>Session values are stored in memory on the Web server, by default.</source>
+          <target state="translated">根據預設，工作階段值會儲存在 Web 伺服器上，記憶體中。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>You can also store session values in a SQL Server database, an ASP.NET state server, or a custom server.</source>
+          <target state="translated">您也可以儲存在 SQL Server 資料庫、 ASP.NET 狀態伺服器或自訂伺服器的工作階段值。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>This enables you to preserve session values in cases where the ASP.NET or IIS process or the ASP.NET application restarts and to make session values available across all the servers in a Web farm.</source>
+          <target state="translated">這可讓您保留工作階段值，在其中的 ASP.NET 或 IIS 程序或 ASP.NET 應用程式重新啟動的情況下，並使工作階段值可供 Web 伺服陣列中的所有伺服器。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>This behavior is configured by setting the <ph id="ph1">`mode`</ph> attribute to a valid <ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateMode&gt;</ph> value in the  element of your application configuration.</source>
+          <target state="translated">此行為設定，藉由設定<ph id="ph1">`mode`</ph>屬性設為有效<ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateMode&gt;</ph>的應用程式組態項目中的值。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>For more information, see <bpt id="p1">[</bpt>Session-State Modes<ept id="p1">](http://msdn.microsoft.com/library/0bb0a3a3-650f-4c47-a0c5-b08b9b591bb4)</ept>.</source>
+          <target state="translated">如需詳細資訊，請參閱<bpt id="p1">[</bpt>工作階段狀態模式<ept id="p1">](http://msdn.microsoft.com/library/0bb0a3a3-650f-4c47-a0c5-b08b9b591bb4)</ept>。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>Alternatives to session state include application state (see the <ph id="ph1">&lt;xref:System.Web.HttpApplication.Application%2A&gt;</ph> property) and the ASP.NET cache (see the <ph id="ph2">&lt;xref:System.Web.Caching&gt;</ph> namespace), which store variables that can be accessed by all users of an ASP.NET application; the ASP.NET profile (see the <ph id="ph3">&lt;xref:System.Web.Profile&gt;</ph> namespace), which persists user values in a data store without expiring them using a time-out; ASP.NET <ph id="ph4">&lt;xref:System.Web.UI.WebControls?displayProperty=nameWithType&gt;</ph>, which persist control values in the <ph id="ph5">&lt;xref:System.Web.UI.Control.ViewState%2A&gt;</ph>; <ph id="ph6">&lt;xref:System.Web.HttpResponse.Cookies%2A&gt;</ph>; the <ph id="ph7">&lt;xref:System.Web.HttpRequest.QueryString%2A&gt;</ph> property; and fields on an HTML form that are available from an HTTP <ph id="ph8">`POST`</ph> using the <ph id="ph9">&lt;xref:System.Web.HttpRequest.Form%2A&gt;</ph> collection.</source>
+          <target state="translated">工作階段狀態的替代方案包括應用程式狀態 (請參閱<ph id="ph1">&lt;xref:System.Web.HttpApplication.Application%2A&gt;</ph>屬性) 和 ASP.NET 快取 (請參閱<ph id="ph2">&lt;xref:System.Web.Caching&gt;</ph>命名空間)，可以存取 ASP.NET 應用程式的所有使用者的存放區變數; ASP.NET 設定檔 (請參閱<ph id="ph3">&lt;xref:System.Web.Profile&gt;</ph>命名空間)，其中保存資料存放區中的使用者值沒有到期使用逾時。ASP.NET <ph id="ph4">&lt;xref:System.Web.UI.WebControls?displayProperty=nameWithType&gt;</ph>，其中保存控制項中的值<ph id="ph5">&lt;xref:System.Web.UI.Control.ViewState%2A&gt;</ph>;<ph id="ph6">&lt;xref:System.Web.HttpResponse.Cookies%2A&gt;</ph>;<ph id="ph7">&lt;xref:System.Web.HttpRequest.QueryString%2A&gt;</ph>屬性; 和 HTML 表單上的欄位，您可以從 HTTP<ph id="ph8">`POST`</ph>使用<ph id="ph9">&lt;xref:System.Web.HttpRequest.Form%2A&gt;</ph>集合。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>For more details on the differences between session state and other state-management alternatives, see <bpt id="p1">[</bpt>ASP.NET State Management Recommendations<ept id="p1">](http://msdn.microsoft.com/library/af79fa0d-4bc8-47a6-9915-d8e355bfb732)</ept>.</source>
+          <target state="translated">如需工作階段狀態和其他狀態管理替代項目之間的差異的詳細資訊，請參閱<bpt id="p1">[</bpt>ASP.NET 狀態管理建議<ept id="p1">](http://msdn.microsoft.com/library/af79fa0d-4bc8-47a6-9915-d8e355bfb732)</ept>。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>The following code example sets and retrieves values from session state.</source>
+          <target state="translated">下列程式碼範例會設定並擷取工作階段狀態的值。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>This example has a text box that accepts user input, which is a potential security threat.</source>
+          <target state="translated">這個範例有一個可接受使用者輸入的文字方塊，這可能會造成安全性威脅。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>By default, ASP.NET Web pages validate that user input does not include script or HTML elements.</source>
+          <target state="translated">根據預設，ASP.NET Web 網頁會驗證使用者輸入未包含指令碼或 HTML 項目。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>For more information, see <bpt id="p1">[</bpt>Script Exploits Overview<ept id="p1">](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)</ept>.</source>
+          <target state="translated">如需詳細資訊，請參閱 <bpt id="p1">[</bpt>Script Exploits Overview<ept id="p1">](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)</ept> (指令碼攻擊概觀)。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.Abandon">
+          <source>Cancels the current session.</source>
+          <target state="translated">取消目前的工作階段。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Abandon">
+          <source>Once the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Abandon%2A&gt;</ph> method is called, the current session is no longer valid and a new session can be started.</source>
+          <target state="translated">一次<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Abandon%2A&gt;</ph>呼叫方法時，目前工作階段已不再有效，而且可以啟動新的工作階段。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Abandon">
+          <source><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Abandon%2A&gt;</ph> causes the <ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateModule.End&gt;</ph> event to be raised.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Abandon%2A&gt;</ph> 會導致<ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateModule.End&gt;</ph>會引發事件。</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Abandon">
+          <source>A new <ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateModule.Start&gt;</ph> event will be raised on the next request.</source>
+          <target state="translated">新<ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateModule.Start&gt;</ph>會引發事件，在下一個要求。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Abandon">
+          <source>Session identifiers for abandoned or expired sessions are recycled by default.</source>
+          <target state="translated">已放棄，或已過期的工作階段的工作階段識別項會回收預設。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Abandon">
+          <source>That is, if a request is made that includes the session identifier for an expired or abandoned session, a new session is started using the same session identifier.</source>
+          <target state="translated">也就是提出要求的已過期或已放棄的工作階段包含的工作階段識別碼，如果新的工作階段就會啟動使用相同的工作階段識別項。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Abandon">
+          <source>You can disable this by setting <ph id="ph1">`regenerateExpiredSessionId`</ph> attribute of the  configuration element to <ph id="ph2">`true`</ph>.</source>
+          <target state="translated">您可以藉由設定停用此<ph id="ph1">`regenerateExpiredSessionId`</ph>屬性的組態項目<ph id="ph2">`true`</ph>。</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Abandon">
+          <source>For more information, see <bpt id="p1">[</bpt>Session Identifiers<ept id="p1">](http://msdn.microsoft.com/library/146ca206-d151-4f2e-a548-bcca05ccf0cb)</ept>.</source>
+          <target state="translated">如需詳細資訊，請參閱<bpt id="p1">[</bpt>工作階段識別元<ept id="p1">](http://msdn.microsoft.com/library/146ca206-d151-4f2e-a548-bcca05ccf0cb)</ept>。</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Abandon">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateModule.End&gt;</ph> event is supported only when the <ph id="ph2">&lt;xref:System.Web.SessionState.HttpSessionState.Mode%2A&gt;</ph> property is set to <ph id="ph3">&lt;xref:System.Web.SessionState.SessionStateMode.InProc&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateModule.End&gt;</ph>支援事件時，才<ph id="ph2">&lt;xref:System.Web.SessionState.HttpSessionState.Mode%2A&gt;</ph>屬性設定為<ph id="ph3">&lt;xref:System.Web.SessionState.SessionStateMode.InProc&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.Add(System.String,System.Object)">
+          <source>The name of the item to add to the session-state collection.</source>
+          <target state="translated">要加入工作階段狀態集合中的項目名稱。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.Add(System.String,System.Object)">
+          <source>The value of the item to add to the session-state collection.</source>
+          <target state="translated">要加入工作階段狀態集合中的項目值。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.Add(System.String,System.Object)">
+          <source>Adds a new item to the session-state collection.</source>
+          <target state="translated">將新項目加入至工作階段狀態集合。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Add(System.String,System.Object)">
+          <source>If the <ph id="ph1">`name`</ph> parameter refers to an existing session state item, the existing item is overwritten with the specified <ph id="ph2">`value`</ph>.</source>
+          <target state="translated">如果<ph id="ph1">`name`</ph>參數參考現有的工作階段狀態項目時，現有的項目會覆寫具有指定<ph id="ph2">`value`</ph>。</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Add(System.String,System.Object)">
+          <source>The following example shows how to store values in session state by using the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Add%2A&gt;</ph> method.</source>
+          <target state="translated">下列範例示範如何使用工作階段狀態中儲存值<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Add%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Add(System.String,System.Object)">
+          <source>It also shows how to remove values in session state by using the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Remove%2A&gt;</ph> method.</source>
+          <target state="translated">它也示範如何使用工作階段狀態中移除值<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Remove%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Add(System.String,System.Object)">
+          <source>A <ph id="ph1">&lt;xref:System.Web.UI.WebControls.Repeater&gt;</ph> control is used to display the contents session state on the Web page.</source>
+          <target state="translated">A<ph id="ph1">&lt;xref:System.Web.UI.WebControls.Repeater&gt;</ph>控制項用來在網頁上顯示內容的工作階段狀態。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Add(System.String,System.Object)">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A&gt;</ph> method is used to iterate through the session-state collection and populate the <ph id="ph2">&lt;xref:System.Web.UI.WebControls.Repeater&gt;</ph> control.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A&gt;</ph>方法用來逐一查看工作階段狀態集合，並填入<ph id="ph2">&lt;xref:System.Web.UI.WebControls.Repeater&gt;</ph>控制項。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Add(System.String,System.Object)">
+          <source>This example has a text box that accepts user input, which is a potential security threat.</source>
+          <target state="translated">這個範例有一個可接受使用者輸入的文字方塊，這可能會造成安全性威脅。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Add(System.String,System.Object)">
+          <source>By default, ASP.NET Web pages validate that user input does not include script or HTML elements.</source>
+          <target state="translated">根據預設，ASP.NET Web 網頁會驗證使用者輸入未包含指令碼或 HTML 項目。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Add(System.String,System.Object)">
+          <source>For more information, see <bpt id="p1">[</bpt>Script Exploits Overview<ept id="p1">](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)</ept>.</source>
+          <target state="translated">如需詳細資訊，請參閱 <bpt id="p1">[</bpt>Script Exploits Overview<ept id="p1">](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)</ept> (指令碼攻擊概觀)。</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.Clear">
+          <source>Removes all keys and values from the session-state collection.</source>
+          <target state="translated">從工作階段狀態集合中移除所有索引鍵和值。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.CodePage">
+          <source>Gets or sets the character-set identifier for the current session.</source>
+          <target state="translated">取得或設定目前工作階段的字集識別項。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.CodePage">
+          <source>The character-set identifier for the current session.</source>
+          <target state="translated">目前工作階段的字元集識別項。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.CodePage">
+          <source>A character set (code page) is used to interpret multi-byte character data, determining character value, and therefore sort order.</source>
+          <target state="translated">字元集 （字碼頁） 用來解譯多位元組字元資料，判斷字元值，並排序次序。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.CodePage">
+          <source>Code-page settings apply only to multi-byte character data, not to Unicode character data.</source>
+          <target state="translated">字碼頁設定僅適用於多位元組字元資料，而無法 Unicode 字元資料。</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.CodePage">
+          <source>This <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.CodePage%2A&gt;</ph> property is provided for compatibility with earlier versions of ASP only.</source>
+          <target state="translated">這<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.CodePage%2A&gt;</ph>提供屬性為了與 ASP 的舊版本只有相容性。</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.CodePage">
+          <source>If you do not need to maintain backward compatibility with ASP pages, use the <ph id="ph1">&lt;xref:System.Web.HttpResponse.ContentEncoding%2A&gt;</ph> property instead.</source>
+          <target state="translated">如果您不需要維護回溯相容性的 ASP 頁面，使用<ph id="ph1">&lt;xref:System.Web.HttpResponse.ContentEncoding%2A&gt;</ph>屬性改為。</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.Contents">
+          <source>Gets a reference to the current session-state object.</source>
+          <target state="translated">取得目前工作階段物件的參考。</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Contents">
+          <source>The current <ph id="ph1">&lt;see cref="T:System.Web.SessionState.HttpSessionState" /&gt;</ph>.</source>
+          <target state="translated">目前的 <ph id="ph1">&lt;see cref="T:System.Web.SessionState.HttpSessionState" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Contents">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Contents%2A&gt;</ph> property is provided for compatibility with earlier versions of ASP.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Contents%2A&gt;</ph>提供屬性為了與 ASP 的舊版本相容性。</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Contents">
+          <source>The following code example lists the item names and values in the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Contents%2A&gt;</ph> property.</source>
+          <target state="translated">下列程式碼範例會列出項目名稱和值中<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Contents%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.CookieMode">
+          <source>Gets a value that indicates whether the application is configured for cookieless sessions.</source>
+          <target state="translated">取得值，指出是否針對無 Cookie 工作階段設定應用程式。</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.CookieMode">
+          <source>One of the <ph id="ph1">&lt;see cref="T:System.Web.HttpCookieMode" /&gt;</ph> values that indicate whether the application is configured for cookieless sessions.</source>
+          <target state="translated">其中一個 <ph id="ph1">&lt;see cref="T:System.Web.HttpCookieMode" /&gt;</ph> 值，指出應用程式是否設定使用無 Cookie 工作階段。</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.CookieMode">
+          <source>The default is <ph id="ph1">&lt;see cref="F:System.Web.HttpCookieMode.UseCookies" /&gt;</ph>.</source>
+          <target state="translated">預設值為 <ph id="ph1">&lt;see cref="F:System.Web.HttpCookieMode.UseCookies" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.CookieMode">
+          <source>When <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A&gt;</ph> is <ph id="ph2">`true`</ph>, the <ph id="ph3">&lt;xref:System.Web.SessionState.HttpSessionState.CookieMode%2A&gt;</ph> property returns <ph id="ph4">&lt;xref:System.Web.HttpCookieMode.UseUri&gt;</ph>; otherwise the <ph id="ph5">&lt;xref:System.Web.SessionState.HttpSessionState.CookieMode%2A&gt;</ph> property returns <ph id="ph6">&lt;xref:System.Web.HttpCookieMode.UseCookies&gt;</ph>.</source>
+          <target state="translated">當<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A&gt;</ph>是<ph id="ph2">`true`</ph>、<ph id="ph3">&lt;xref:System.Web.SessionState.HttpSessionState.CookieMode%2A&gt;</ph>屬性會傳回<ph id="ph4">&lt;xref:System.Web.HttpCookieMode.UseUri&gt;</ph>，否則為<ph id="ph5">&lt;xref:System.Web.SessionState.HttpSessionState.CookieMode%2A&gt;</ph>屬性會傳回<ph id="ph6">&lt;xref:System.Web.HttpCookieMode.UseCookies&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.CookieMode">
+          <source>The following code example sets the <ph id="ph1">`cookieless`</ph> session attribute to <ph id="ph2">`true`</ph> in the Web.config file.</source>
+          <target state="translated">下列程式碼範例會設定<ph id="ph1">`cookieless`</ph>工作階段屬性<ph id="ph2">`true`</ph>Web.config 檔案中。</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.CookieMode">
+          <source>For this sample application configuration, the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.CookieMode%2A&gt;</ph> property would return <ph id="ph2">&lt;xref:System.Web.HttpCookieMode.UseUri&gt;</ph>.</source>
+          <target state="translated">此範例應用程式組態，<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.CookieMode%2A&gt;</ph>屬性則會傳回<ph id="ph2">&lt;xref:System.Web.HttpCookieMode.UseUri&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.CopyTo(System.Array,System.Int32)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph> that receives the session values.</source>
+          <target state="translated">接收工作階段值的 <ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.CopyTo(System.Array,System.Int32)">
+          <source>The zero-based index in <bpt id="p1">&lt;c&gt;</bpt>array<ept id="p1">&lt;/c&gt;</ept> from which copying starts.</source>
+          <target state="translated"><bpt id="p1">&lt;c&gt;</bpt>array<ept id="p1">&lt;/c&gt;</ept> 中以零為起始的索引，即開始複製的位置。</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.CopyTo(System.Array,System.Int32)">
+          <source>Copies the collection of session-state values to a one-dimensional array, starting at the specified index in the array.</source>
+          <target state="translated">從陣列中的指定索引開始，將工作階段狀態值集合複製到一維陣列。</target>       </trans-unit>
+        <trans-unit id="171" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.Count">
+          <source>Gets the number of items in the session-state collection.</source>
+          <target state="translated">取得工作階段狀態集合的項目數目。</target>       </trans-unit>
+        <trans-unit id="172" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Count">
+          <source>The number of items in the collection.</source>
+          <target state="translated">集合中的項目數目</target>       </trans-unit>
+        <trans-unit id="173" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.GetEnumerator">
+          <source>Returns an enumerator that can be used to read all the session-state variable names in the current session.</source>
+          <target state="translated">傳回可用來讀取目前工作階段中所有工作階段狀態變數名稱的列舉值。</target>       </trans-unit>
+        <trans-unit id="174" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.GetEnumerator">
+          <source>An <ph id="ph1">&lt;see cref="T:System.Collections.IEnumerator" /&gt;</ph> that can iterate through the variable names in the session-state collection.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Collections.IEnumerator" /&gt;</ph>，可逐一查看工作階段狀態集合中的變數名稱。</target>       </trans-unit>
+        <trans-unit id="175" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.GetEnumerator">
+          <source>The following example shows how to store values in session state by using the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Add%2A&gt;</ph> method.</source>
+          <target state="translated">下列範例示範如何使用工作階段狀態中儲存值<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Add%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="176" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.GetEnumerator">
+          <source>It also shows how to remove values in session state by using the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Remove%2A&gt;</ph> method.</source>
+          <target state="translated">它也示範如何使用工作階段狀態中移除值<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Remove%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="177" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.GetEnumerator">
+          <source>A <ph id="ph1">&lt;xref:System.Web.UI.WebControls.Repeater&gt;</ph> control is used to display the contents of session state on the Web page.</source>
+          <target state="translated">A<ph id="ph1">&lt;xref:System.Web.UI.WebControls.Repeater&gt;</ph>控制項用來在網頁上顯示工作階段狀態的內容。</target>       </trans-unit>
+        <trans-unit id="178" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.GetEnumerator">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A&gt;</ph> method is used to iterate through the session-state collection and populate the <ph id="ph2">&lt;xref:System.Web.UI.WebControls.Repeater&gt;</ph> control.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A&gt;</ph>方法用來逐一查看工作階段狀態集合，並填入<ph id="ph2">&lt;xref:System.Web.UI.WebControls.Repeater&gt;</ph>控制項。</target>       </trans-unit>
+        <trans-unit id="179" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>Gets a value indicating whether the session ID is embedded in the URL or stored in an HTTP cookie.</source>
+          <target state="translated">取得值，指出工作階段 ID 是否內嵌於 URL 或儲存於 HTTP Cookie。</target>       </trans-unit>
+        <trans-unit id="180" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the session is embedded in the URL; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果工作階段內嵌於 URL，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="181" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>ASP.NET identifies sessions uniquely with each browser.</source>
+          <target state="translated">ASP.NET 專門用來識別工作階段與每個瀏覽器。</target>       </trans-unit>
+        <trans-unit id="182" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>By default, the unique identifier for a session is stored in a non-expiring session cookie in the browser.</source>
+          <target state="translated">根據預設，在瀏覽器中不會過期的工作階段 cookie 中儲存工作階段的唯一識別碼。</target>       </trans-unit>
+        <trans-unit id="183" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>You can specify that session identifiers not be stored in a cookie by setting the <ph id="ph1">`cookieless`</ph> attribute to <ph id="ph2">`true`</ph> in the  configuration element.</source>
+          <target state="translated">您可以指定，工作階段識別項不會儲存在 cookie 中設定<ph id="ph1">`cookieless`</ph>屬性<ph id="ph2">`true`</ph>中的組態項目。</target>       </trans-unit>
+        <trans-unit id="184" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>To improve the security of your application, your application should allow users to log out, at which point it should call the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Abandon%2A&gt;</ph> method.</source>
+          <target state="translated">若要改善您的應用程式的安全性，您的應用程式可讓的使用者登出，此時它應該呼叫<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Abandon%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="185" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>This reduces the potential for an unwanted source using the unique identifier in the URL to retrieve private data stored in the session for a user.</source>
+          <target state="translated">這會減少潛在的不必要的來源，在 URL 中使用的唯一識別碼，以擷取儲存在使用者工作階段中的私用資料。</target>       </trans-unit>
+        <trans-unit id="186" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>ASP.NET maintains cookieless session state by automatically inserting a unique session ID into the page's URL.</source>
+          <target state="translated">ASP.NET 會維護無 cookie 工作階段狀態，藉由自動將唯一的工作階段識別碼插入頁面的 URL。</target>       </trans-unit>
+        <trans-unit id="187" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>For example, the following URL has been modified by ASP.NET to include the unique session ID lit3py55t21z5v55vlm25s55:</source>
+          <target state="translated">例如，包含唯一的工作階段識別碼 lit3py55t21z5v55vlm25s55 ASP.NET 已經修改下列 URL:</target>       </trans-unit>
+        <trans-unit id="188" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>ASP.NET modifies the links contained in all requested pages by embedding a session-ID value in the links just before sending each page to the browser.</source>
+          <target state="translated">ASP.NET 修改內嵌連結中的工作階段識別碼值之前傳送至瀏覽器的每個頁面包含所有要求的頁面的連結。</target>       </trans-unit>
+        <trans-unit id="189" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>Session state is maintained as long as the user follows the path of links that the site provides.</source>
+          <target state="translated">維護工作階段狀態，只要使用者依照站台提供的連結路徑。</target>       </trans-unit>
+        <trans-unit id="190" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>However, if the user agent rewrites a URL, the session-state instance will be lost.</source>
+          <target state="translated">不過，如果使用者代理程式重寫 URL，工作階段狀態的執行個體將會遺失。</target>       </trans-unit>
+        <trans-unit id="191" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>The session ID is embedded in the URL after the slash that follows the application name and before any remaining file or virtual-directory identifier.</source>
+          <target state="translated">應用程式名稱會遵循的斜線之後和任何剩餘的檔案或虛擬目錄識別項之前在 URL 中內嵌工作階段識別碼。</target>       </trans-unit>
+        <trans-unit id="192" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>This allows ASP.NET to resolve the application name before involving the <ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateModule&gt;</ph> in the request.</source>
+          <target state="translated">這可讓 ASP.NET 應用程式名稱解析之前涉及<ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateModule&gt;</ph>要求中。</target>       </trans-unit>
+        <trans-unit id="193" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>By default, session identifiers used in cookieless sessions are recycled.</source>
+          <target state="translated">根據預設，在已經回收無 cookie 工作階段中所使用的工作階段識別碼。</target>       </trans-unit>
+        <trans-unit id="194" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>That is, if a request is made with a session ID that has expired, a new session is started using the session ID supplied with the request.</source>
+          <target state="translated">也就是提出要求時已過期的工作階段 id，如果新的工作階段會使用啟動要求所提供的工作階段識別碼。</target>       </trans-unit>
+        <trans-unit id="195" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>This behavior can result in the unwanted sharing of session data when a link that contains a cookieless session ID is shared with multiple browsers, perhaps through a search engine or other program.</source>
+          <target state="translated">這種行為可能會導致不必要的工作階段資料共用時包含無 cookie 工作階段識別碼的連結共用的多個瀏覽器中，可能是透過搜尋引擎或其他程式。</target>       </trans-unit>
+        <trans-unit id="196" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>You can reduce the possibility of session data being shared by multiple clients by disabling the recycling of session identifiers.</source>
+          <target state="translated">您可以降低共用多個用戶端停用工作階段識別項的循環的工作階段資料的可能性。</target>       </trans-unit>
+        <trans-unit id="197" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>To do this, set the <ph id="ph1">`regenerateExpiredSessionId`</ph> attribute of the  configuration element to <ph id="ph2">`true`</ph>.</source>
+          <target state="translated">若要這樣做，請設定<ph id="ph1">`regenerateExpiredSessionId`</ph>屬性的組態項目<ph id="ph2">`true`</ph>。</target>       </trans-unit>
+        <trans-unit id="198" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>This will result in a new session ID being generated when a cookieless session request is made with an expired session ID.</source>
+          <target state="translated">這將導致過期的工作階段 id 進行無 cookie 工作階段要求產生新的工作階段識別碼</target>       </trans-unit>
+        <trans-unit id="199" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>Note that if the request made with the expired session ID uses the HTTP <ph id="ph1">`POST`</ph> method, then any posted data will be lost when <ph id="ph2">`regenerateExpiredSessionId`</ph> is <ph id="ph3">`true`</ph>, as ASP.NET performs a redirect to ensure that the browser has the new session identifier in the URL.</source>
+          <target state="translated">請注意，如果過期的工作階段識別碼所提出之要求使用 HTTP<ph id="ph1">`POST`</ph>方法，則任何張貼的資料將會遺失時<ph id="ph2">`regenerateExpiredSessionId`</ph>是<ph id="ph3">`true`</ph>，因為 ASP.NET 執行重新導向，以確保瀏覽器 URL 中有新的工作階段識別項。</target>       </trans-unit>
+        <trans-unit id="200" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>While setting the <ph id="ph1">`regenerateExpiredSessionId`</ph> attribute to <ph id="ph2">`true`</ph> reduces the possibility of unwanted sharing of session data, it does not protect against an unwanted source gaining access to the session of another user by obtaining the <ph id="ph3">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph> value and including it in requests to the server.</source>
+          <target state="translated">同時設定<ph id="ph1">`regenerateExpiredSessionId`</ph>屬性<ph id="ph2">`true`</ph>降低的可能性不想要共用的工作階段資料，它無法防止不必要的來源存取另一位使用者的工作階段取得<ph id="ph3">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph>值和包含在伺服器的要求。</target>       </trans-unit>
+        <trans-unit id="201" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>If you are storing private or sensitive information in session state, it is recommended that you use SSL to encrypt any communication between the browser and server that includes the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph>.</source>
+          <target state="translated">如果您在工作階段狀態儲存私人或機密資訊，建議您搭配使用 SSL 來加密任何瀏覽器和包含的伺服器之間的通訊<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="202" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsCookieless">
+          <source>The following code example sets the <ph id="ph1">`cookieless`</ph> session attribute to true in the Web.config file.</source>
+          <target state="translated">下列程式碼範例會設定<ph id="ph1">`cookieless`</ph>設為 true，在 Web.config 檔案中的工作階段屬性。</target>       </trans-unit>
+        <trans-unit id="203" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.IsNewSession">
+          <source>Gets a value indicating whether the session was created with the current request.</source>
+          <target state="translated">取得值，指出工作階段是否與目前要求一起建立。</target>       </trans-unit>
+        <trans-unit id="204" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsNewSession">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the session was created with the current request; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果工作階段是以目前要求建立，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="205" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.IsReadOnly">
+          <source>Gets a value indicating whether the session is read-only.</source>
+          <target state="translated">取得值，指出工作階段是否為唯讀。</target>       </trans-unit>
+        <trans-unit id="206" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsReadOnly">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the session is read-only; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果工作階段是唯讀，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="207" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.IsSynchronized">
+          <source>Gets a value indicating whether access to the collection of session-state values is synchronized (thread safe).</source>
+          <target state="translated">取得值，指出對工作階段狀態值之集合的存取是否為同步的 (安全執行緒，Thread-Safe)。</target>       </trans-unit>
+        <trans-unit id="208" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.IsSynchronized">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if access to the collection is synchronized (thread safe); otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果對集合的存取是同步處理的 (安全執行緒)，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="209" translate="yes" xml:space="preserve" uid="T:System.Web.SessionState.HttpSessionState">
+          <source>Gets or sets individual session values.</source>
+          <target state="translated">取得或設定個別的工作階段值。</target>       </trans-unit>
+        <trans-unit id="210" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.Item(System.Int32)">
+          <source>The numerical index of the session value.</source>
+          <target state="translated">工作階段值的數值索引。</target>       </trans-unit>
+        <trans-unit id="211" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.Item(System.Int32)">
+          <source>Gets or sets a session value by numerical index.</source>
+          <target state="translated">根據數值索引取得或設定工作階段值。</target>       </trans-unit>
+        <trans-unit id="212" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Item(System.Int32)">
+          <source>The session-state value stored at the specified index, or <ph id="ph1">&lt;see langword="null" /&gt;</ph> if the item does not exist.</source>
+          <target state="translated">指定索引處儲存的工作階段狀態值，如果項目不存在則為 <ph id="ph1">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="213" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.Item(System.String)">
+          <source>The key name of the session value.</source>
+          <target state="translated">工作階段值的索引鍵名稱。</target>       </trans-unit>
+        <trans-unit id="214" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.Item(System.String)">
+          <source>Gets or sets a session value by name.</source>
+          <target state="translated">根據名稱取得或設定工作階段值。</target>       </trans-unit>
+        <trans-unit id="215" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Item(System.String)">
+          <source>The session-state value with the specified name, or <ph id="ph1">&lt;see langword="null" /&gt;</ph> if the item does not exist.</source>
+          <target state="translated">具有指定名稱的工作階段狀態值，如果項目不存在則為 <ph id="ph1">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="216" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.Keys">
+          <source>Gets a collection of the keys for all values stored in the session-state collection.</source>
+          <target state="translated">取得儲存在工作階段狀態集合中所有值的索引鍵集合。</target>       </trans-unit>
+        <trans-unit id="217" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Keys">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Collections.Specialized.NameObjectCollectionBase.KeysCollection" /&gt;</ph> that contains all the session keys.</source>
+          <target state="translated">包含所有工作階段索引鍵的 <ph id="ph1">&lt;see cref="T:System.Collections.Specialized.NameObjectCollectionBase.KeysCollection" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="218" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.LCID">
+          <source>Gets or sets the locale identifier (LCID) of the current session.</source>
+          <target state="translated">取得或設定目前工作階段的地區設定識別項 (LCID)。</target>       </trans-unit>
+        <trans-unit id="219" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.LCID">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Globalization.CultureInfo" /&gt;</ph> instance that specifies the culture of the current session.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Globalization.CultureInfo" /&gt;</ph> 執行個體，指定目前工作階段的文化特性。</target>       </trans-unit>
+        <trans-unit id="220" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.LCID">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.LCID%2A&gt;</ph> property is provided for compatibility with earlier versions of ASP only.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.LCID%2A&gt;</ph>提供屬性為了與 ASP 的舊版本只有相容性。</target>       </trans-unit>
+        <trans-unit id="221" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.LCID">
+          <source>If you do not need to maintain backward compatibility with ASP pages, use the <ph id="ph1">&lt;xref:System.Globalization.CultureInfo.LCID%2A&gt;</ph> property instead.</source>
+          <target state="translated">如果您不需要維護回溯相容性的 ASP 頁面，使用<ph id="ph1">&lt;xref:System.Globalization.CultureInfo.LCID%2A&gt;</ph>屬性改為。</target>       </trans-unit>
+        <trans-unit id="222" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.LCID">
+          <source>ASP.NET does not store the locale identifier in session state.</source>
+          <target state="translated">ASP.NET 不會在工作階段狀態儲存的地區設定識別碼。</target>       </trans-unit>
+        <trans-unit id="223" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.LCID">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.LCID%2A&gt;</ph> property accesses the <ph id="ph2">&lt;xref:System.Globalization.CultureInfo.LCID%2A&gt;</ph> property to get and set the identifier.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.LCID%2A&gt;</ph>屬性存取<ph id="ph2">&lt;xref:System.Globalization.CultureInfo.LCID%2A&gt;</ph>屬性以取得設定的識別碼。</target>       </trans-unit>
+        <trans-unit id="224" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.Mode">
+          <source>Gets the current session-state mode.</source>
+          <target state="translated">取得目前的工作階段狀態模式。</target>       </trans-unit>
+        <trans-unit id="225" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Mode">
+          <source>One of the <ph id="ph1">&lt;see cref="T:System.Web.SessionState.SessionStateMode" /&gt;</ph> values.</source>
+          <target state="translated">其中一個 <ph id="ph1">&lt;see cref="T:System.Web.SessionState.SessionStateMode" /&gt;</ph> 值。</target>       </trans-unit>
+        <trans-unit id="226" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Mode">
+          <source>For information about how to configure your server for <ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateMode.StateServer&gt;</ph> or <ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateMode.SQLServer&gt;</ph> session-state storage, see <bpt id="p1">[</bpt>ASP.NET Session State Overview<ept id="p1">](http://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc)</ept>.</source>
+          <target state="translated">如需如何設定伺服器供<ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateMode.StateServer&gt;</ph>或<ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateMode.SQLServer&gt;</ph>工作階段狀態儲存體，請參閱<bpt id="p1">[</bpt>ASP.NET 工作階段狀態概觀<ept id="p1">](http://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc)</ept>。</target>       </trans-unit>
+        <trans-unit id="227" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Mode">
+          <source>The following code example sets the <ph id="ph1">`mode`</ph> session attribute to <ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateMode.SQLServer&gt;</ph> in the Web.config file.</source>
+          <target state="translated">下列程式碼範例會設定<ph id="ph1">`mode`</ph>工作階段屬性<ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateMode.SQLServer&gt;</ph>Web.config 檔案中。</target>       </trans-unit>
+        <trans-unit id="228" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Mode">
+          <source>For SQL Server session mode, the <ph id="ph1">`sqlConnectionString`</ph> attribute is also required.</source>
+          <target state="translated">SQL Server 工作階段模式中，<ph id="ph1">`sqlConnectionString`</ph>也是必要的屬性。</target>       </trans-unit>
+        <trans-unit id="229" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.Remove(System.String)">
+          <source>The name of the item to delete from the session-state collection.</source>
+          <target state="translated">要從工作階段狀態集合中刪除的項目名稱。</target>       </trans-unit>
+        <trans-unit id="230" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.Remove(System.String)">
+          <source>Deletes an item from the session-state collection.</source>
+          <target state="translated">將項目從工作階段狀態集合刪除。</target>       </trans-unit>
+        <trans-unit id="231" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Remove(System.String)">
+          <source>If the session-state collection does not contain an element with the specified <ph id="ph1">`name`</ph>, the collection remains unchanged.</source>
+          <target state="translated">如果工作階段狀態集合中未包含具有指定的項目<ph id="ph1">`name`</ph>，維持不變的集合。</target>       </trans-unit>
+        <trans-unit id="232" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Remove(System.String)">
+          <source>No exception is thrown.</source>
+          <target state="translated">不會有例外狀況擲回。</target>       </trans-unit>
+        <trans-unit id="233" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Remove(System.String)">
+          <source>The following example shows how to store values in session state by using the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Add%2A&gt;</ph> method.</source>
+          <target state="translated">下列範例示範如何使用工作階段狀態中儲存值<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Add%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="234" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Remove(System.String)">
+          <source>It also shows how to remove values in session state by using the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Remove%2A&gt;</ph> method.</source>
+          <target state="translated">它也示範如何使用工作階段狀態中移除值<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Remove%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="235" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Remove(System.String)">
+          <source>A <ph id="ph1">&lt;xref:System.Web.UI.WebControls.Repeater&gt;</ph> control is used to display the contents of session state on the Web page.</source>
+          <target state="translated">A<ph id="ph1">&lt;xref:System.Web.UI.WebControls.Repeater&gt;</ph>控制項用來在網頁上顯示工作階段狀態的內容。</target>       </trans-unit>
+        <trans-unit id="236" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.Remove(System.String)">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A&gt;</ph> method is used to iterate through the session-state collection and populate the <ph id="ph2">&lt;xref:System.Web.UI.WebControls.Repeater&gt;</ph> control.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.GetEnumerator%2A&gt;</ph>方法用來逐一查看工作階段狀態集合，並填入<ph id="ph2">&lt;xref:System.Web.UI.WebControls.Repeater&gt;</ph>控制項。</target>       </trans-unit>
+        <trans-unit id="237" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.RemoveAll">
+          <source>Removes all keys and values from the session-state collection.</source>
+          <target state="translated">從工作階段狀態集合中移除所有索引鍵和值。</target>       </trans-unit>
+        <trans-unit id="238" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.HttpSessionState.RemoveAll">
+          <source><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.RemoveAll%2A&gt;</ph> performs the same function as <ph id="ph2">&lt;xref:System.Web.SessionState.HttpSessionState.Clear%2A&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.RemoveAll%2A&gt;</ph> 執行相同的功能<ph id="ph2">&lt;xref:System.Web.SessionState.HttpSessionState.Clear%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="239" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.RemoveAt(System.Int32)">
+          <source>The index of the item to remove from the session-state collection.</source>
+          <target state="translated">要從工作階段狀態集合移除的項目索引。</target>       </trans-unit>
+        <trans-unit id="240" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.RemoveAt(System.Int32)">
+          <source>Deletes an item at a specified index from the session-state collection.</source>
+          <target state="translated">刪除來自工作階段狀態集合的特定索引的項目。</target>       </trans-unit>
+        <trans-unit id="241" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.RemoveAt(System.Int32)">
+          <source><ph id="ph1">&lt;paramref name="index" /&gt;</ph> is less than zero.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="index" /&gt;</ph> 小於零。</target>       </trans-unit>
+        <trans-unit id="242" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.RemoveAt(System.Int32)">
+          <source><ph id="ph1">\-</ph> or -</source>
+          <target state="translated"><ph id="ph1">\-</ph>或-</target>       </trans-unit>
+        <trans-unit id="243" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.HttpSessionState.RemoveAt(System.Int32)">
+          <source><ph id="ph1">&lt;paramref name="index" /&gt;</ph> is equal to or greater than <ph id="ph2">&lt;see cref="P:System.Web.SessionState.HttpSessionState.Count" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="index" /&gt;</ph> 等於或大於 <ph id="ph2">&lt;see cref="P:System.Web.SessionState.HttpSessionState.Count" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="244" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>Gets the unique identifier for the session.</source>
+          <target state="translated">取得工作階段的唯一識別項。</target>       </trans-unit>
+        <trans-unit id="245" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>The unique session identifier.</source>
+          <target state="translated">唯一工作階段識別碼。</target>       </trans-unit>
+        <trans-unit id="246" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph> property is used to uniquely identify a browser with session data on the server.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph>屬性用來唯一識別與伺服器上的工作階段資料的瀏覽器。</target>       </trans-unit>
+        <trans-unit id="247" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph> value is randomly generated by ASP.NET and stored in a non-expiring session cookie in the browser.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph>隨機 ASP.NET 產生並儲存在瀏覽器中不會過期的工作階段 cookie 值。</target>       </trans-unit>
+        <trans-unit id="248" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph> value is then sent in a cookie with each request to the ASP.NET application.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph>值然後傳送至 ASP.NET 應用程式的每個要求的 cookie 中。</target>       </trans-unit>
+        <trans-unit id="249" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>If you want to disable the use of cookies in your ASP.NET application and still make use of session state, you can configure your application to store the session identifier in the URL instead of a cookie by setting the <ph id="ph1">`cookieless`</ph> attribute of the  configuration element to <ph id="ph2">`true`</ph>, or to <ph id="ph3">&lt;xref:System.Web.HttpCookieMode.UseUri&gt;</ph>, in the Web.config file for your application.</source>
+          <target state="translated">如果您想要停用的 cookie，ASP.NET 應用程式中使用，仍能使用的工作階段狀態，您可以設定您的應用程式的 URL，而不是 cookie 中儲存的工作階段識別項，藉由設定<ph id="ph1">`cookieless`</ph>組態的屬性項目<ph id="ph2">`true`</ph>，或<ph id="ph3">&lt;xref:System.Web.HttpCookieMode.UseUri&gt;</ph>，在您的應用程式的 Web.config 檔案中。</target>       </trans-unit>
+        <trans-unit id="250" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>You can have ASP.NET determine whether cookies are supported by the browser by specifying a value of <ph id="ph1">&lt;xref:System.Web.HttpCookieMode.UseDeviceProfile&gt;</ph> for the <ph id="ph2">`cookieless`</ph> attribute.</source>
+          <target state="translated">您可以判斷是否瀏覽器是否支援 cookie 所指定的值是 ASP.NET<ph id="ph1">&lt;xref:System.Web.HttpCookieMode.UseDeviceProfile&gt;</ph>如<ph id="ph2">`cookieless`</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="251" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>You can also have ASP.NET determine whether cookies are enabled for the browser by specifying a value of <ph id="ph1">&lt;xref:System.Web.HttpCookieMode.AutoDetect&gt;</ph> for the <ph id="ph2">`cookieless`</ph> attribute.</source>
+          <target state="translated">您也可以判斷是否啟用 cookie 的瀏覽器所指定的值是 ASP.NET<ph id="ph1">&lt;xref:System.Web.HttpCookieMode.AutoDetect&gt;</ph>如<ph id="ph2">`cookieless`</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="252" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>If cookies are supported when <ph id="ph1">&lt;xref:System.Web.HttpCookieMode.UseDeviceProfile&gt;</ph> is specified, or enabled when <ph id="ph2">&lt;xref:System.Web.HttpCookieMode.AutoDetect&gt;</ph> is specified, then the session identifier will be stored in a cookie; otherwise the session identifier will be stored in the URL.</source>
+          <target state="translated">如果支援 cookie，則當<ph id="ph1">&lt;xref:System.Web.HttpCookieMode.UseDeviceProfile&gt;</ph>已指定，或已啟用時<ph id="ph2">&lt;xref:System.Web.HttpCookieMode.AutoDetect&gt;</ph>指定，則工作階段識別碼會儲存在 cookie 中; 否則為將在 URL 中儲存的工作階段識別碼。</target>       </trans-unit>
+        <trans-unit id="253" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>For more information, see the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A&gt;</ph> property.</source>
+          <target state="translated">如需詳細資訊，請參閱 <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A&gt;</ph> 屬性 (Property)。</target>       </trans-unit>
+        <trans-unit id="254" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph> is sent between the server and the browser in clear text, either in a cookie or in the URL.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph>伺服器與瀏覽器之間傳送以純文字格式在 cookie 或 URL。</target>       </trans-unit>
+        <trans-unit id="255" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>As a result, an unwanted source could gain access to the session of another user by obtaining the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph> value and including it in requests to the server.</source>
+          <target state="translated">如此一來，不必要的來源無法存取其他使用者工作階段取得<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph>值並將其納入中伺服器的要求。</target>       </trans-unit>
+        <trans-unit id="256" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>If you are storing private or sensitive information in session state, it is recommended that you use SSL to encrypt any communication between the browser and server that includes the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph>.</source>
+          <target state="translated">如果您在工作階段狀態儲存私人或機密資訊，建議您搭配使用 SSL 來加密任何瀏覽器和包含的伺服器之間的通訊<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.SessionID%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="257" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>When using cookie-based session state, ASP.NET does not allocate storage for session data until the <ph id="ph1">&lt;xref:System.Web.UI.Page.Session%2A&gt;</ph> object is used.</source>
+          <target state="translated">使用 cookie 架構工作階段狀態，ASP.NET 不會配置儲存體的工作階段資料，直到<ph id="ph1">&lt;xref:System.Web.UI.Page.Session%2A&gt;</ph>物件使用。</target>       </trans-unit>
+        <trans-unit id="258" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>As a result, a new session ID is generated for each page request until the session object is accessed.</source>
+          <target state="translated">如此一來，新的工作階段識別碼產生的每個頁面要求，直到存取工作階段物件。</target>       </trans-unit>
+        <trans-unit id="259" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>If your application requires a static session ID for the entire session, you can either implement the <ph id="ph1">`Session_Start`</ph> method in the application's Global.asax file and store data in the <ph id="ph2">&lt;xref:System.Web.UI.Page.Session%2A&gt;</ph> object to fix the session ID, or you can use code in another part of your application to explicitly store data in the <ph id="ph3">&lt;xref:System.Web.UI.Page.Session%2A&gt;</ph> object.</source>
+          <target state="translated">如果您的應用程式需要整個工作階段的靜態的工作階段 ID，您可以實作<ph id="ph1">`Session_Start`</ph>應用程式的 Global.asax 檔案和存放區中的資料中的方法<ph id="ph2">&lt;xref:System.Web.UI.Page.Session%2A&gt;</ph>物件修正的工作階段識別碼，或您可以使用程式碼中的另一個組件您的應用程式明確地將資料儲存在<ph id="ph3">&lt;xref:System.Web.UI.Page.Session%2A&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="260" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>If your application uses cookieless session state, the session ID is generated on the first page view and is maintained for the entire session.</source>
+          <target state="translated">如果您的應用程式使用無 cookie 工作階段狀態，工作階段識別碼所產生的第一個頁面檢視和維護整個工作階段。</target>       </trans-unit>
+        <trans-unit id="261" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>The following code example shows a Web.config file that configures session state to use cookieless session identifiers.</source>
+          <target state="translated">下列程式碼範例顯示 Web.config 檔案中設定工作階段狀態使用無 cookie 工作階段識別項。</target>       </trans-unit>
+        <trans-unit id="262" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SessionID">
+          <source>For more information, see the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A&gt;</ph> property.</source>
+          <target state="translated">如需詳細資訊，請參閱 <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A&gt;</ph> 屬性 (Property)。</target>       </trans-unit>
+        <trans-unit id="263" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.StaticObjects">
+          <source>Gets a collection of objects declared by <ph id="ph1">&lt;see langword="&amp;lt;object Runat=&amp;quot;Server&amp;quot; Scope=&amp;quot;Session&amp;quot;/&amp;gt;" /&gt;</ph> tags within the ASP.NET application file Global.asax.</source>
+          <target state="translated">取得由 ASP.NET 應用程式檔 Global.asax 內 <ph id="ph1">&lt;see langword="&amp;lt;object Runat=&amp;quot;Server&amp;quot; Scope=&amp;quot;Session&amp;quot;/&amp;gt;" /&gt;</ph> 標記所宣告的物件集合。</target>       </trans-unit>
+        <trans-unit id="264" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.StaticObjects">
+          <source>An <ph id="ph1">&lt;see cref="T:System.Web.HttpStaticObjectsCollection" /&gt;</ph> containing objects declared in the Global.asax file.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Web.HttpStaticObjectsCollection" /&gt;</ph>，包含 Global.asax 檔案中所宣告的物件。</target>       </trans-unit>
+        <trans-unit id="265" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.StaticObjects">
+          <source>If an object on a page does not support serialization and <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Mode%2A&gt;</ph> is out-of-process (<ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateMode.SQLServer&gt;</ph> or <ph id="ph3">&lt;xref:System.Web.SessionState.SessionStateMode.StateServer&gt;</ph>), the object will not be created and will not be added to this collection.</source>
+          <target state="translated">如果頁面上的物件不支援序列化和<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Mode%2A&gt;</ph>是跨處理序 (<ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateMode.SQLServer&gt;</ph>或<ph id="ph3">&lt;xref:System.Web.SessionState.SessionStateMode.StateServer&gt;</ph>)，將不會建立物件，並將不會加入至這個集合。</target>       </trans-unit>
+        <trans-unit id="266" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.StaticObjects">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.StaticObjects%2A&gt;</ph> property is provided for compatibility with earlier versions of ASP.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.StaticObjects%2A&gt;</ph>提供屬性為了與 ASP 的舊版本相容性。</target>       </trans-unit>
+        <trans-unit id="267" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.StaticObjects">
+          <source>The following code example lists the <ph id="ph1">`id`</ph> and object type of the objects in the <ph id="ph2">&lt;xref:System.Web.SessionState.HttpSessionState.StaticObjects%2A&gt;</ph> collection.</source>
+          <target state="translated">下列程式碼範例列出<ph id="ph1">`id`</ph>中物件的物件類型和<ph id="ph2">&lt;xref:System.Web.SessionState.HttpSessionState.StaticObjects%2A&gt;</ph>集合。</target>       </trans-unit>
+        <trans-unit id="268" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.SyncRoot">
+          <source>Gets an object that can be used to synchronize access to the collection of session-state values.</source>
+          <target state="translated">取得物件，這個物件可以用來對工作階段狀態值集合進行同步存取。</target>       </trans-unit>
+        <trans-unit id="269" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.SyncRoot">
+          <source>An object that can be used to synchronize access to the collection.</source>
+          <target state="translated">Object，可用來對集合同步存取。</target>       </trans-unit>
+        <trans-unit id="270" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.HttpSessionState.Timeout">
+          <source>Gets and sets the amount of time, in minutes, allowed between requests before the session-state provider terminates the session.</source>
+          <target state="translated">取得並設定工作階段狀態提供者終止工作階段之前，要求之間所允許的時間長度 (以分鐘為單位)。</target>       </trans-unit>
+        <trans-unit id="271" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Timeout">
+          <source>The time-out period, in minutes.</source>
+          <target state="translated">逾時期限，以分鐘為單位。</target>       </trans-unit>
+        <trans-unit id="272" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Timeout">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Timeout%2A&gt;</ph> property can be set in the Web.config file for an application using the <ph id="ph2">`timeout`</ph> attribute of the  configuration element, or you can set the <ph id="ph3">&lt;xref:System.Web.SessionState.HttpSessionState.Timeout%2A&gt;</ph> property value directly using application code.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Timeout%2A&gt;</ph>屬性可以使用應用程式的 Web.config 檔案中設定<ph id="ph2">`timeout`</ph>屬性的組態項目，或者您可以設定<ph id="ph3">&lt;xref:System.Web.SessionState.HttpSessionState.Timeout%2A&gt;</ph>直接使用應用程式程式碼的屬性值。</target>       </trans-unit>
+        <trans-unit id="273" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Timeout">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Timeout%2A&gt;</ph> property cannot be set to a value greater than 525,600 minutes (1 year).</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState.Timeout%2A&gt;</ph>屬性無法設定的值大於 525,600 分鐘 （1 年）。</target>       </trans-unit>
+        <trans-unit id="274" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Timeout">
+          <source>The default value is 20 minutes.</source>
+          <target state="translated">預設值是 20 分鐘。</target>       </trans-unit>
+        <trans-unit id="275" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.HttpSessionState.Timeout">
+          <source>The following code example sets the <ph id="ph1">`timeout`</ph> session attribute to 30 minutes in the Web.config file.</source>
+          <target state="translated">下列程式碼範例會設定<ph id="ph1">`timeout`</ph>Web.config 檔案中的工作階段屬性為 30 分鐘。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

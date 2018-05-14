@@ -1,495 +1,240 @@
-<Type Name="AsyncOperation" FullName="System.ComponentModel.AsyncOperation">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="27b3f4ff3ed46bf8dc07465aaecd985e0ada7d95" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public sealed class AsyncOperation" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit AsyncOperation extends System.Object" />
-  <TypeSignature Language="DocId" Value="T:System.ComponentModel.AsyncOperation" />
-  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class AsyncOperation" />
-  <TypeSignature Language="C++ CLI" Value="public ref class AsyncOperation sealed" />
-  <AssemblyInfo>
-    <AssemblyName>System.ComponentModel.EventBasedAsync</AssemblyName>
-    <AssemblyVersion>4.0.10.0</AssemblyVersion>
-    <AssemblyVersion>4.1.0.0</AssemblyVersion>
-    <AssemblyVersion>4.1.1.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>System</AssemblyName>
-    <AssemblyVersion>2.0.5.0</AssemblyVersion>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>netstandard</AssemblyName>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces />
-  <Docs>
-    <summary>
-      <span data-ttu-id="435cf-101">追蹤非同步作業的存留期。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="435cf-101">Tracks the lifetime of an asynchronous operation.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="435cf-102">當您實作的類別，根據[事件架構非同步模式概觀](~/docs/standard/asynchronous-programming-patterns/event-based-asynchronous-pattern-overview.md)，您可能需要追蹤每個類別的執行個體上叫用的非同步作業的存留期。</span><span class="sxs-lookup"><span data-stu-id="435cf-102">When you implement a class according to the [Event-based Asynchronous Pattern Overview](~/docs/standard/asynchronous-programming-patterns/event-based-asynchronous-pattern-overview.md), you may need to track the lifetime of each asynchronous operation invoked on an instance of your class.</span></span> <span data-ttu-id="435cf-103"><xref:System.ComponentModel.AsyncOperation>類別會提供方法來追蹤和報告的非同步工作的進度。</span><span class="sxs-lookup"><span data-stu-id="435cf-103">The <xref:System.ComponentModel.AsyncOperation> class provides ways to track and report the progress of an asynchronous task.</span></span>  
-  
- <span data-ttu-id="435cf-104">下列清單識別的方式使用<xref:System.ComponentModel.AsyncOperation>物件：</span><span class="sxs-lookup"><span data-stu-id="435cf-104">The following list identifies ways to use an <xref:System.ComponentModel.AsyncOperation> object:</span></span>  
-  
--   <span data-ttu-id="435cf-105">若要給用戶端報告進度和過渡期的結果，請呼叫<xref:System.ComponentModel.AsyncOperation.Post%2A>從非同步的背景工作程式碼。</span><span class="sxs-lookup"><span data-stu-id="435cf-105">To report progress and interim results to the client, call <xref:System.ComponentModel.AsyncOperation.Post%2A> from your asynchronous worker code.</span></span>  
-  
--   <span data-ttu-id="435cf-106">若要表示的非同步工作已完成，或取消暫止的非同步工作，呼叫<xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A>。</span><span class="sxs-lookup"><span data-stu-id="435cf-106">To indicate that an asynchronous task has completed, or to cancel a pending asynchronous task, call <xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A>.</span></span>  
-  
- <span data-ttu-id="435cf-107">您的類別，應該會收到<xref:System.ComponentModel.AsyncOperation>藉由呼叫每項非同步工作物件<xref:System.ComponentModel.AsyncOperationManager.CreateOperation%2A?displayProperty=nameWithType>每項工作啟動時。</span><span class="sxs-lookup"><span data-stu-id="435cf-107">Your class should get an <xref:System.ComponentModel.AsyncOperation> object for each asynchronous task by calling <xref:System.ComponentModel.AsyncOperationManager.CreateOperation%2A?displayProperty=nameWithType> when each task starts.</span></span> <span data-ttu-id="435cf-108">若要允許用戶端來區別不同的非同步工作，<xref:System.ComponentModel.AsyncOperationManager.CreateOperation%2A?displayProperty=nameWithType>採用參數的唯一用戶端提供的語彙基元，其成為<xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="435cf-108">To allow the client to distinguish separate asynchronous tasks, <xref:System.ComponentModel.AsyncOperationManager.CreateOperation%2A?displayProperty=nameWithType> takes a parameter for a unique client-provided token, which becomes the <xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A> property.</span></span> <span data-ttu-id="435cf-109">它然後可用用戶端程式碼來識別特定的非同步工作進度或完成事件引發。</span><span class="sxs-lookup"><span data-stu-id="435cf-109">It can then be used by client code to identify the particular asynchronous task that is raising progress or completion events.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="435cf-110">下列程式碼範例示範如何使用<xref:System.ComponentModel.AsyncOperation>物件來追蹤非同步作業的存留期。</span><span class="sxs-lookup"><span data-stu-id="435cf-110">The following code example demonstrates using an <xref:System.ComponentModel.AsyncOperation> object to track the lifetime of asynchronous operations.</span></span> <span data-ttu-id="435cf-111">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType>類別。</span><span class="sxs-lookup"><span data-stu-id="435cf-111">This code example is part of a larger example provided for the <xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType> class.</span></span>  
-  
- <span data-ttu-id="435cf-112">如需完整的程式碼清單，請參閱[How to： 實作支援事件架構非同步模式的元件](http://msdn.microsoft.com/library/3c1aa4d4-da87-4a03-b812-3d167b8c57cf)。</span><span class="sxs-lookup"><span data-stu-id="435cf-112">For a full code listing, see [How to: Implement a Component That Supports the Event-based Asynchronous Pattern](http://msdn.microsoft.com/library/3c1aa4d4-da87-4a03-b812-3d167b8c57cf).</span></span> <span data-ttu-id="435cf-113">如需用戶端的完整程式碼清單，請參閱[How to： 實作事件架構非同步模式的用戶端](~/docs/standard/asynchronous-programming-patterns/how-to-implement-a-client-of-the-event-based-asynchronous-pattern.md)。</span><span class="sxs-lookup"><span data-stu-id="435cf-113">For a full code listing of a client form, see [How to: Implement a Client of the Event-based Asynchronous Pattern](~/docs/standard/asynchronous-programming-patterns/how-to-implement-a-client-of-the-event-based-asynchronous-pattern.md).</span></span>  
-  
- [!code-csharp[System.ComponentModel.AsyncOperationManager#3](~/samples/snippets/csharp/VS_Snippets_Winforms/System.ComponentModel.AsyncOperationManager/CS/primenumbercalculatormain.cs#3)]
- [!code-vb[System.ComponentModel.AsyncOperationManager#3](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.ComponentModel.AsyncOperationManager/VB/primenumbercalculatormain.vb#3)]  
-  
- ]]></format>
-    </remarks>
-    <block subset="none" type="overrides">
-      <para>
-        <span data-ttu-id="435cf-114">實作者必須確定<see cref="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)" />和<see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" />非同步引動過程，以便類別程式庫提供者不需要顧慮與潛在的堆疊溢位當它們假設特定應用程式中的非同步行為剛好是同步的模型。</span>
-        <span class="sxs-lookup">
-          <span data-stu-id="435cf-114">Implementers must ensure the <see cref="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)" /> and <see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" /> invocations are asynchronous, so that class library providers do not need to concern themselves with potential stack overflows if they assume asynchronous behavior in a particular application model that happens to be synchronous.</span>
-        </span>
-        <span data-ttu-id="435cf-115">如需實作非同步類別的詳細資訊，請參閱[實作事件架構非同步模式](~/docs/standard/asynchronous-programming-patterns/implementing-the-event-based-asynchronous-pattern.md)。</span>
-        <span class="sxs-lookup">
-          <span data-stu-id="435cf-115">For more information about implementing asynchronous classes, see [Implementing the Event-based Asynchronous Pattern](~/docs/standard/asynchronous-programming-patterns/implementing-the-event-based-asynchronous-pattern.md).</span>
-        </span>
-      </para>
-    </block>
-    <altmember cref="T:System.ComponentModel.AsyncOperationManager" />
-  </Docs>
-  <Members>
-    <Member MemberName="Finalize">
-      <MemberSignature Language="C#" Value="~AsyncOperation ();" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.AsyncOperation.Finalize" />
-      <MemberSignature Language="VB.NET" Value="Finalize ()" />
-      <MemberSignature Language="C++ CLI" Value="!AsyncOperation ()" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.EventBasedAsync</AssemblyName>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="435cf-116">結束非同步作業。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-116">Finalizes the asynchronous operation.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="OperationCompleted">
-      <MemberSignature Language="C#" Value="public void OperationCompleted ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void OperationCompleted() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.AsyncOperation.OperationCompleted" />
-      <MemberSignature Language="VB.NET" Value="Public Sub OperationCompleted ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void OperationCompleted();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.EventBasedAsync</AssemblyName>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="435cf-117">結束非同步作業的存留期。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-117">Ends the lifetime of an asynchronous operation.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="435cf-118">呼叫<xref:System.ComponentModel.AsyncOperation.OperationCompleted%2A>方法結束非同步作業的存留期。</span><span class="sxs-lookup"><span data-stu-id="435cf-118">Call the <xref:System.ComponentModel.AsyncOperation.OperationCompleted%2A> method to end the lifetime of an asynchronous operation.</span></span> <span data-ttu-id="435cf-119">這個方法針對特定工作呼叫後，會呼叫至其相對應<xref:System.ComponentModel.AsyncOperation>會引發例外狀況。</span><span class="sxs-lookup"><span data-stu-id="435cf-119">After this method is called for a particular task, calls to its corresponding <xref:System.ComponentModel.AsyncOperation> will raise an exception.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.InvalidOperationException">
-          <span data-ttu-id="435cf-120">先前已針對此工作呼叫 <see cref="M:System.ComponentModel.AsyncOperation.OperationCompleted" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-120">
-              <see cref="M:System.ComponentModel.AsyncOperation.OperationCompleted" /> has been called previously for this task.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="Post">
-      <MemberSignature Language="C#" Value="public void Post (System.Threading.SendOrPostCallback d, object arg);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Post(class System.Threading.SendOrPostCallback d, object arg) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Post (d As SendOrPostCallback, arg As Object)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Post(System::Threading::SendOrPostCallback ^ d, System::Object ^ arg);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.EventBasedAsync</AssemblyName>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="d" Type="System.Threading.SendOrPostCallback" />
-        <Parameter Name="arg" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="d">
-          <span data-ttu-id="435cf-121">
-            <see cref="T:System.Threading.SendOrPostCallback" /> 物件，包裝作業結束時要呼叫的委派。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-121">A <see cref="T:System.Threading.SendOrPostCallback" /> object that wraps the delegate to be called when the operation ends.</span>
-          </span>
-        </param>
-        <param name="arg">
-          <span data-ttu-id="435cf-122">包含在 <c>d</c> 參數中的委派引數。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-122">An argument for the delegate contained in the <c>d</c> parameter.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="435cf-123">在適合應用程式模型的執行緒或內容上叫用委派。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-123">Invokes a delegate on the thread or context appropriate for the application model.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="435cf-124"><xref:System.ComponentModel.AsyncOperation.Post%2A>方法會叫用指定的委派`arg`參數，而不需要結束非同步作業的存留期。</span><span class="sxs-lookup"><span data-stu-id="435cf-124">The <xref:System.ComponentModel.AsyncOperation.Post%2A> method invokes the delegate specified by the `arg` parameter without ending the lifetime of the asynchronous operation.</span></span>  
-  
- <span data-ttu-id="435cf-125">您可以呼叫<xref:System.ComponentModel.AsyncOperation.Post%2A>方法視您要非同步作業的存留期還沒有呼叫結束時<xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A>。</span><span class="sxs-lookup"><span data-stu-id="435cf-125">You can call the <xref:System.ComponentModel.AsyncOperation.Post%2A> method as often as you like while the lifetime of the asynchronous operation has not been ended by a call to <xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A>.</span></span> <span data-ttu-id="435cf-126">您可以使用此方法進度或暫時結果回報給用戶端。</span><span class="sxs-lookup"><span data-stu-id="435cf-126">You can use the method to report progress or interim results back to clients.</span></span>  
-  
- <span data-ttu-id="435cf-127">`d`參數會包裝您要張貼有關非同步工作的狀態更新時，所要呼叫的委派。</span><span class="sxs-lookup"><span data-stu-id="435cf-127">The `d` parameter wraps the delegate you want called when you want to post an update about the status of the asynchronous task.</span></span> <span data-ttu-id="435cf-128"><xref:System.ComponentModel.AsyncOperation>物件可確保您的委派叫用執行緒上或適用於應用程式模型的內容。</span><span class="sxs-lookup"><span data-stu-id="435cf-128">The <xref:System.ComponentModel.AsyncOperation> object will ensure that your delegate is invoked on the thread or context appropriate for the application model.</span></span> <span data-ttu-id="435cf-129">您的方法可以選擇性地引發事件，以便通知用戶端的狀態變更、 進度更新或新的、 可用的累加結果。</span><span class="sxs-lookup"><span data-stu-id="435cf-129">Your method can optionally raise an event that notifies clients of a status change, progress update, or newly available incremental results.</span></span>  
-  
- <span data-ttu-id="435cf-130">`arg`參數應該用來將狀態傳遞給委派所包裝`d`參數。</span><span class="sxs-lookup"><span data-stu-id="435cf-130">The `arg` parameter should be used to pass state to the delegate wrapped by the `d` parameter.</span></span> <span data-ttu-id="435cf-131">可能的參考<xref:System.ComponentModel.AsyncOperation>，或者它可能<xref:System.ComponentModel.ProgressChangedEventArgs?displayProperty=nameWithType>物件。</span><span class="sxs-lookup"><span data-stu-id="435cf-131">It might be a reference to an <xref:System.ComponentModel.AsyncOperation>, or it might be a <xref:System.ComponentModel.ProgressChangedEventArgs?displayProperty=nameWithType> object.</span></span> <span data-ttu-id="435cf-132">它可能會想要衍生您自己從<xref:System.ComponentModel.ProgressChangedEventArgs?displayProperty=nameWithType>提供額外的狀態儲存體。</span><span class="sxs-lookup"><span data-stu-id="435cf-132">It may be desirable to derive your own class from <xref:System.ComponentModel.ProgressChangedEventArgs?displayProperty=nameWithType> to provide additional state storage.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="435cf-133">下列程式碼範例示範如何使用<xref:System.ComponentModel.AsyncOperation.Post%2A>報告進度和累加結果的非同步作業的方法。</span><span class="sxs-lookup"><span data-stu-id="435cf-133">The following code example demonstrates using the <xref:System.ComponentModel.AsyncOperation.Post%2A> method for reporting progress and incremental results of an asynchronous operation.</span></span> <span data-ttu-id="435cf-134">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType>類別。</span><span class="sxs-lookup"><span data-stu-id="435cf-134">This code example is part of a larger example provided for the <xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType> class.</span></span>  
-  
-  
-[!code-csharp[System.ComponentModel.AsyncOperationManager#5](~/samples/snippets/csharp/VS_Snippets_Winforms/System.ComponentModel.AsyncOperationManager/CS/primenumbercalculatormain.cs#5)]
-[!code-vb[System.ComponentModel.AsyncOperationManager#5](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.ComponentModel.AsyncOperationManager/VB/primenumbercalculatormain.vb#5)]  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.InvalidOperationException">
-          <span data-ttu-id="435cf-135">先前已針對此工作呼叫 <see cref="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)" /> 方法。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-135">The <see cref="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)" /> method has been called previously for this task.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="435cf-136">
-            <paramref name="d" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-136">
-              <paramref name="d" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-        <block subset="none" type="overrides">
-          <para>
-            <span data-ttu-id="435cf-137">繼承者必須進行<see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" />叫用非同步，使類別程式庫提供者不需要顧慮潛在的堆疊溢位，如果它們假設會標但剛好是同步的特定應用程式模型。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="435cf-137">Inheritors must make the <see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" /> invocation asynchronous, so that class library providers do not need to concern themselves with potential stack overflows if they assume asynchrony but a particular application model happens to be synchronous.</span>
-            </span>
-            <block subset="none" type="note">
-              <para>
-                <span data-ttu-id="435cf-138">主控台應用程式不會同步執行 <see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" /> 呼叫。</span>
-                <span class="sxs-lookup">
-                  <span data-stu-id="435cf-138">Console applications do not synchronize the execution of <see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" /> calls.</span>
-                </span>
-                <span data-ttu-id="435cf-139">這可能會造成 <see langword="ProgressChanged" /> 事件不按順序引發。</span>
-                <span class="sxs-lookup">
-                  <span data-stu-id="435cf-139">This can cause <see langword="ProgressChanged" /> events to be raised out of order.</span>
-                </span>
-                <span data-ttu-id="435cf-140">如果您想要以序列化方式執行 <see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" /> 呼叫，請實作及安裝 <see cref="T:System.Threading.SynchronizationContext" /> 類別。</span>
-                <span class="sxs-lookup">
-                  <span data-stu-id="435cf-140">If you wish to have serialized execution of <see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" /> calls, implement and install a <see cref="T:System.Threading.SynchronizationContext" /> class.</span>
-                </span>
-              </para>
-            </block>
-            <span data-ttu-id="435cf-141">如需實作非同步類別的詳細資訊，請參閱[實作事件架構非同步模式](~/docs/standard/asynchronous-programming-patterns/implementing-the-event-based-asynchronous-pattern.md)。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="435cf-141">For more information about implementing asynchronous classes, see [Implementing the Event-based Asynchronous Pattern](~/docs/standard/asynchronous-programming-patterns/implementing-the-event-based-asynchronous-pattern.md).</span>
-            </span>
-          </para>
-        </block>
-        <altmember cref="T:System.ComponentModel.AsyncOperationManager" />
-      </Docs>
-    </Member>
-    <Member MemberName="PostOperationCompleted">
-      <MemberSignature Language="C#" Value="public void PostOperationCompleted (System.Threading.SendOrPostCallback d, object arg);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void PostOperationCompleted(class System.Threading.SendOrPostCallback d, object arg) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub PostOperationCompleted (d As SendOrPostCallback, arg As Object)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void PostOperationCompleted(System::Threading::SendOrPostCallback ^ d, System::Object ^ arg);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.EventBasedAsync</AssemblyName>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="d" Type="System.Threading.SendOrPostCallback" />
-        <Parameter Name="arg" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="d">
-          <span data-ttu-id="435cf-142">
-            <see cref="T:System.Threading.SendOrPostCallback" /> 物件，包裝作業結束時要呼叫的委派。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-142">A <see cref="T:System.Threading.SendOrPostCallback" /> object that wraps the delegate to be called when the operation ends.</span>
-          </span>
-        </param>
-        <param name="arg">
-          <span data-ttu-id="435cf-143">包含在 <c>d</c> 參數中的委派引數。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-143">An argument for the delegate contained in the <c>d</c> parameter.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="435cf-144">結束非同步作業的存留期。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-144">Ends the lifetime of an asynchronous operation.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="435cf-145">呼叫<xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A>方法結束非同步作業的存留期。</span><span class="sxs-lookup"><span data-stu-id="435cf-145">Call the <xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A> method to end the lifetime of an asynchronous operation.</span></span> <span data-ttu-id="435cf-146">這個方法針對特定工作呼叫後，會呼叫至其相對應<xref:System.ComponentModel.AsyncOperation>物件將會引發例外狀況。</span><span class="sxs-lookup"><span data-stu-id="435cf-146">After this method is called for a particular task, calls to its corresponding <xref:System.ComponentModel.AsyncOperation> object will raise an exception.</span></span>  
-  
- <span data-ttu-id="435cf-147">`d`參數會包裝您想要工作的存留期結束，因為完成、 取消或失敗的工作時要呼叫您類別的委派。</span><span class="sxs-lookup"><span data-stu-id="435cf-147">The `d` parameter wraps the delegate you want your class to call when the task's lifetime ends due to completion, cancellation, or failure of the task.</span></span> <span data-ttu-id="435cf-148"><xref:System.ComponentModel.AsyncOperation>物件可確保您的委派叫用執行緒上或適用於應用程式模型的內容。</span><span class="sxs-lookup"><span data-stu-id="435cf-148">The <xref:System.ComponentModel.AsyncOperation> object will ensure that your delegate is invoked on the thread or context appropriate for the application model.</span></span> <span data-ttu-id="435cf-149">您的委派可以選擇性引發的事件，告知用戶端，非同步工作的存留期已結束。</span><span class="sxs-lookup"><span data-stu-id="435cf-149">Your delegate can optionally raise an event that notifies clients that the asynchronous task's lifetime has ended.</span></span>  
-  
- <span data-ttu-id="435cf-150">`arg`參數用來將狀態資訊傳遞給完成委派`d`。</span><span class="sxs-lookup"><span data-stu-id="435cf-150">The `arg` parameter is used to pass state information to the completion delegate `d`.</span></span> <span data-ttu-id="435cf-151">您可以使用<xref:System.ComponentModel.AsyncOperation>物件，或<xref:System.ComponentModel.AsyncCompletedEventArgs?displayProperty=nameWithType>物件當做參數值。</span><span class="sxs-lookup"><span data-stu-id="435cf-151">You can use an <xref:System.ComponentModel.AsyncOperation> object, or an <xref:System.ComponentModel.AsyncCompletedEventArgs?displayProperty=nameWithType> object as the parameter value.</span></span> <span data-ttu-id="435cf-152">或者，如果您想要提供其他的狀態存放區，您可以使用衍生自類別的執行個體<xref:System.ComponentModel.AsyncCompletedEventArgs?displayProperty=nameWithType>類別。</span><span class="sxs-lookup"><span data-stu-id="435cf-152">Alternatively, if you want to provide additional state storage, you can use an instance of a class you derive from the <xref:System.ComponentModel.AsyncCompletedEventArgs?displayProperty=nameWithType> class.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="435cf-153">下列程式碼範例示範如何使用<xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A>方法結束非同步作業的存留期。</span><span class="sxs-lookup"><span data-stu-id="435cf-153">The following code example demonstrates using the <xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A> method to end the lifetime of an asynchronous operation.</span></span> <span data-ttu-id="435cf-154">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType>類別。</span><span class="sxs-lookup"><span data-stu-id="435cf-154">This code example is part of a larger example provided for the <xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType> class.</span></span>  
-  
-  
-[!code-csharp[System.ComponentModel.AsyncOperationManager#4](~/samples/snippets/csharp/VS_Snippets_Winforms/System.ComponentModel.AsyncOperationManager/CS/primenumbercalculatormain.cs#4)]
-[!code-vb[System.ComponentModel.AsyncOperationManager#4](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.ComponentModel.AsyncOperationManager/VB/primenumbercalculatormain.vb#4)]  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.InvalidOperationException">
-          <span data-ttu-id="435cf-155">先前已針對此工作呼叫 <see cref="M:System.ComponentModel.AsyncOperation.OperationCompleted" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-155">
-              <see cref="M:System.ComponentModel.AsyncOperation.OperationCompleted" /> has been called previously for this task.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="435cf-156">
-            <paramref name="d" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-156">
-              <paramref name="d" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-        <block subset="none" type="overrides">
-          <para>
-            <span data-ttu-id="435cf-157">繼承者必須進行<see cref="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)" />叫用非同步，使類別程式庫提供者不需要顧慮潛在的堆疊溢位，如果它們假設會標但剛好是同步的特定應用程式模型。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="435cf-157">Inheritors must make the <see cref="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)" /> invocation asynchronous, so that class library providers do not need to concern themselves with potential stack overflows if they assume asynchrony but a particular application model happens to be synchronous.</span>
-            </span>
-            <span data-ttu-id="435cf-158">這個方法應該解譯為 「 結束存留期 」 呼叫，表示實作需要做什麼是適用於應用程式模型。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="435cf-158">The method should be interpreted as an "ending the lifetime" call, meaning the implementation needs to do what is appropriate for the application model.</span>
-            </span>
-            <span data-ttu-id="435cf-159">比方說，ASP.NET 會遞減未處理的非同步作業的計數。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="435cf-159">For instance, ASP.NET will decrement its count of outstanding asynchronous operations.</span>
-            </span>
-            <span data-ttu-id="435cf-160">這也應該將作業的狀態，任何後續呼叫都會失敗，因為它已經完成。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="435cf-160">This also should put the operation into a state such that any subsequent calls into it will fail, since it has now completed.</span>
-            </span>
-            <span data-ttu-id="435cf-161">如需實作非同步類別的詳細資訊，請參閱[實作事件架構非同步模式](~/docs/standard/asynchronous-programming-patterns/implementing-the-event-based-asynchronous-pattern.md)。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="435cf-161">For more information about implementing asynchronous classes, see [Implementing the Event-based Asynchronous Pattern](~/docs/standard/asynchronous-programming-patterns/implementing-the-event-based-asynchronous-pattern.md).</span>
-            </span>
-          </para>
-        </block>
-        <altmember cref="T:System.ComponentModel.AsyncOperationManager" />
-      </Docs>
-    </Member>
-    <Member MemberName="SynchronizationContext">
-      <MemberSignature Language="C#" Value="public System.Threading.SynchronizationContext SynchronizationContext { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Threading.SynchronizationContext SynchronizationContext" />
-      <MemberSignature Language="DocId" Value="P:System.ComponentModel.AsyncOperation.SynchronizationContext" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SynchronizationContext As SynchronizationContext" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Threading::SynchronizationContext ^ SynchronizationContext { System::Threading::SynchronizationContext ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.EventBasedAsync</AssemblyName>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Threading.SynchronizationContext</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="435cf-162">取得傳遞給建構函式的 <see cref="T:System.Threading.SynchronizationContext" /> 物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-162">Gets the <see cref="T:System.Threading.SynchronizationContext" /> object that was passed to the constructor.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="435cf-163">傳遞給建構函式的 <see cref="T:System.Threading.SynchronizationContext" /> 物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-163">The <see cref="T:System.Threading.SynchronizationContext" /> object that was passed to the constructor.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="UserSuppliedState">
-      <MemberSignature Language="C#" Value="public object UserSuppliedState { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance object UserSuppliedState" />
-      <MemberSignature Language="DocId" Value="P:System.ComponentModel.AsyncOperation.UserSuppliedState" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property UserSuppliedState As Object" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Object ^ UserSuppliedState { System::Object ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.EventBasedAsync</AssemblyName>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="435cf-164">取得或設定用來唯一識別非同步作業的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-164">Gets or sets an object used to uniquely identify an asynchronous operation.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="435cf-165">傳遞至非同步方法引動過程的狀態物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="435cf-165">The state object passed to the asynchronous method invocation.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="435cf-166">如果您的類別支援多個非同步方法或多個引動過程，單一的非同步方法，用戶端需要判斷哪一項非同步工作會引發事件的方式。</span><span class="sxs-lookup"><span data-stu-id="435cf-166">If your class supports multiple asynchronous methods or multiple invocations of a single asynchronous method, clients will need a way to determine which asynchronous task is raising events.</span></span> <span data-ttu-id="435cf-167">您`MethodNameAsync`方法應該採用一個參數類型<xref:System.Object>，做為工作識別碼。</span><span class="sxs-lookup"><span data-stu-id="435cf-167">Your `MethodNameAsync` method should take a parameter of type <xref:System.Object> that will act as a task ID.</span></span> <span data-ttu-id="435cf-168">當您呼叫時，您將使用此工作 ID <xref:System.ComponentModel.AsyncOperationManager.CreateOperation%2A?displayProperty=nameWithType>，方法，而這將會以非同步作業的特定引動過程關聯用戶端的工作識別碼。</span><span class="sxs-lookup"><span data-stu-id="435cf-168">You will use this task ID when you call the <xref:System.ComponentModel.AsyncOperationManager.CreateOperation%2A?displayProperty=nameWithType>, method and this will associate the client's task ID with a particular invocation of your asynchronous operation.</span></span> <span data-ttu-id="435cf-169">這項工作識別碼才可以提供給您的實作，透過<xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="435cf-169">This task ID is made available to your implementation through the <xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A> property.</span></span>  
-  
-> [!CAUTION]
->  <span data-ttu-id="435cf-170">用戶端程式碼必須非常小心提供的唯一值<xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="435cf-170">Client code must be careful to provide a unique value for the <xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A> property.</span></span> <span data-ttu-id="435cf-171">非唯一工作識別碼可能會導致您的實作不正確地報告進度和其他事件。</span><span class="sxs-lookup"><span data-stu-id="435cf-171">Non-unique task IDs may cause your implementation to report progress and other events incorrectly.</span></span> <span data-ttu-id="435cf-172">您的程式碼應該檢查是否有非唯一工作識別碼，並引發<xref:System.ArgumentException>偵測到。</span><span class="sxs-lookup"><span data-stu-id="435cf-172">Your code should check for a non-unique task ID and raise an <xref:System.ArgumentException> if one is detected.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="435cf-173">下列程式碼範例示範如何使用<xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A>來追蹤非同步作業的存留期。</span><span class="sxs-lookup"><span data-stu-id="435cf-173">The following code example demonstrates using <xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A> to track the lifetime of asynchronous operations.</span></span> <span data-ttu-id="435cf-174">這個程式碼範例是針對所提供之較大範例的一部分<xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType>類別。</span><span class="sxs-lookup"><span data-stu-id="435cf-174">This code example is part of a larger example provided for the <xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType> class.</span></span>  
-  
-  
-[!code-csharp[System.ComponentModel.AsyncOperationManager#4](~/samples/snippets/csharp/VS_Snippets_Winforms/System.ComponentModel.AsyncOperationManager/CS/primenumbercalculatormain.cs#4)]
-[!code-vb[System.ComponentModel.AsyncOperationManager#4](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.ComponentModel.AsyncOperationManager/VB/primenumbercalculatormain.vb#4)]  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.ComponentModel.AsyncOperationManager" />
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="AsyncOperation.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac527b3f4ff3ed46bf8dc07465aaecd985e0ada7d95.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">27b3f4ff3ed46bf8dc07465aaecd985e0ada7d95</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netcore-1.0,netcore-1.1,netcore-2.0,netcore-2.1,netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7,netstandard-2.0,xamarinandroid-7.1,xamarinios-10.8,xamarinmac-3.0</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.ComponentModel.AsyncOperation">
+          <source>Tracks the lifetime of an asynchronous operation.</source>
+          <target state="translated">追蹤非同步作業的存留期。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.AsyncOperation">
+          <source>When you implement a class according to the <bpt id="p1">[</bpt>Event-based Asynchronous Pattern Overview<ept id="p1">](~/docs/standard/asynchronous-programming-patterns/event-based-asynchronous-pattern-overview.md)</ept>, you may need to track the lifetime of each asynchronous operation invoked on an instance of your class.</source>
+          <target state="translated">當您實作的類別，根據<bpt id="p1">[</bpt>事件架構非同步模式概觀<ept id="p1">](~/docs/standard/asynchronous-programming-patterns/event-based-asynchronous-pattern-overview.md)</ept>，您可能需要追蹤每個類別的執行個體上叫用的非同步作業的存留期。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.AsyncOperation">
+          <source>The <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph> class provides ways to track and report the progress of an asynchronous task.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph>類別會提供方法來追蹤和報告的非同步工作的進度。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.AsyncOperation">
+          <source>The following list identifies ways to use an <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph> object:</source>
+          <target state="translated">下列清單識別的方式使用<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph>物件：</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.AsyncOperation">
+          <source>To report progress and interim results to the client, call <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.Post%2A&gt;</ph> from your asynchronous worker code.</source>
+          <target state="translated">若要給用戶端報告進度和過渡期的結果，請呼叫<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.Post%2A&gt;</ph>從非同步的背景工作程式碼。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.AsyncOperation">
+          <source>To indicate that an asynchronous task has completed, or to cancel a pending asynchronous task, call <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A&gt;</ph>.</source>
+          <target state="translated">若要表示的非同步工作已完成，或取消暫止的非同步工作，呼叫<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.AsyncOperation">
+          <source>Your class should get an <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph> object for each asynchronous task by calling <ph id="ph2">&lt;xref:System.ComponentModel.AsyncOperationManager.CreateOperation%2A?displayProperty=nameWithType&gt;</ph> when each task starts.</source>
+          <target state="translated">您的類別，應該會收到<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph>藉由呼叫每項非同步工作物件<ph id="ph2">&lt;xref:System.ComponentModel.AsyncOperationManager.CreateOperation%2A?displayProperty=nameWithType&gt;</ph>每項工作啟動時。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.AsyncOperation">
+          <source>To allow the client to distinguish separate asynchronous tasks, <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperationManager.CreateOperation%2A?displayProperty=nameWithType&gt;</ph> takes a parameter for a unique client-provided token, which becomes the <ph id="ph2">&lt;xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A&gt;</ph> property.</source>
+          <target state="translated">若要允許用戶端來區別不同的非同步工作，<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperationManager.CreateOperation%2A?displayProperty=nameWithType&gt;</ph>採用參數的唯一用戶端提供的語彙基元，其成為<ph id="ph2">&lt;xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.AsyncOperation">
+          <source>It can then be used by client code to identify the particular asynchronous task that is raising progress or completion events.</source>
+          <target state="translated">它然後可用用戶端程式碼來識別特定的非同步工作進度或完成事件引發。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.AsyncOperation">
+          <source>The following code example demonstrates using an <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph> object to track the lifetime of asynchronous operations.</source>
+          <target state="translated">下列程式碼範例示範如何使用<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph>物件來追蹤非同步作業的存留期。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.AsyncOperation">
+          <source>This code example is part of a larger example provided for the <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType&gt;</ph> class.</source>
+          <target state="translated">這個程式碼範例是針對所提供之較大範例的一部分<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType&gt;</ph>類別。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.AsyncOperation">
+          <source>For a full code listing, see <bpt id="p1">[</bpt>How to: Implement a Component That Supports the Event-based Asynchronous Pattern<ept id="p1">](http://msdn.microsoft.com/library/3c1aa4d4-da87-4a03-b812-3d167b8c57cf)</ept>.</source>
+          <target state="translated">如需完整的程式碼清單，請參閱<bpt id="p1">[</bpt>How to： 實作支援事件架構非同步模式的元件<ept id="p1">](http://msdn.microsoft.com/library/3c1aa4d4-da87-4a03-b812-3d167b8c57cf)</ept>。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.AsyncOperation">
+          <source>For a full code listing of a client form, see <bpt id="p1">[</bpt>How to: Implement a Client of the Event-based Asynchronous Pattern<ept id="p1">](~/docs/standard/asynchronous-programming-patterns/how-to-implement-a-client-of-the-event-based-asynchronous-pattern.md)</ept>.</source>
+          <target state="translated">如需用戶端的完整程式碼清單，請參閱<bpt id="p1">[</bpt>How to： 實作事件架構非同步模式的用戶端<ept id="p1">](~/docs/standard/asynchronous-programming-patterns/how-to-implement-a-client-of-the-event-based-asynchronous-pattern.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.AsyncOperation">
+          <source>Implementers must ensure the <ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)" /&gt;</ph> and <ph id="ph2">&lt;see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" /&gt;</ph> invocations are asynchronous, so that class library providers do not need to concern themselves with potential stack overflows if they assume asynchronous behavior in a particular application model that happens to be synchronous.</source>
+          <target state="translated">實作者必須確定<ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)" /&gt;</ph>和<ph id="ph2">&lt;see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" /&gt;</ph>非同步引動過程，以便類別程式庫提供者不需要顧慮與潛在的堆疊溢位當它們假設特定應用程式中的非同步行為剛好是同步的模型。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.AsyncOperation">
+          <source>For more information about implementing asynchronous classes, see <bpt id="p1">[</bpt>Implementing the Event-based Asynchronous Pattern<ept id="p1">](~/docs/standard/asynchronous-programming-patterns/implementing-the-event-based-asynchronous-pattern.md)</ept>.</source>
+          <target state="translated">如需實作非同步類別的詳細資訊，請參閱<bpt id="p1">[</bpt>實作事件架構非同步模式<ept id="p1">](~/docs/standard/asynchronous-programming-patterns/implementing-the-event-based-asynchronous-pattern.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.AsyncOperation.Finalize">
+          <source>Finalizes the asynchronous operation.</source>
+          <target state="translated">結束非同步作業。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.AsyncOperation.OperationCompleted">
+          <source>Ends the lifetime of an asynchronous operation.</source>
+          <target state="translated">結束非同步作業的存留期。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.OperationCompleted">
+          <source>Call the <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.OperationCompleted%2A&gt;</ph> method to end the lifetime of an asynchronous operation.</source>
+          <target state="translated">呼叫<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.OperationCompleted%2A&gt;</ph>方法結束非同步作業的存留期。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.OperationCompleted">
+          <source>After this method is called for a particular task, calls to its corresponding <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph> will raise an exception.</source>
+          <target state="translated">這個方法針對特定工作呼叫後，會呼叫至其相對應<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph>會引發例外狀況。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.AsyncOperation.OperationCompleted">
+          <source><ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.OperationCompleted" /&gt;</ph> has been called previously for this task.</source>
+          <target state="translated">先前已針對此工作呼叫 <ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.OperationCompleted" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Threading.SendOrPostCallback" /&gt;</ph> object that wraps the delegate to be called when the operation ends.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Threading.SendOrPostCallback" /&gt;</ph> 物件，包裝作業結束時要呼叫的委派。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>An argument for the delegate contained in the <bpt id="p1">&lt;c&gt;</bpt>d<ept id="p1">&lt;/c&gt;</ept> parameter.</source>
+          <target state="translated">包含在 <bpt id="p1">&lt;c&gt;</bpt>d<ept id="p1">&lt;/c&gt;</ept> 參數中的委派引數。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>Invokes a delegate on the thread or context appropriate for the application model.</source>
+          <target state="translated">在適合應用程式模型的執行緒或內容上叫用委派。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>The <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.Post%2A&gt;</ph> method invokes the delegate specified by the <ph id="ph2">`arg`</ph> parameter without ending the lifetime of the asynchronous operation.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.Post%2A&gt;</ph>方法會叫用指定的委派<ph id="ph2">`arg`</ph>參數，而不需要結束非同步作業的存留期。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>You can call the <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.Post%2A&gt;</ph> method as often as you like while the lifetime of the asynchronous operation has not been ended by a call to <ph id="ph2">&lt;xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A&gt;</ph>.</source>
+          <target state="translated">您可以呼叫<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.Post%2A&gt;</ph>方法視您要非同步作業的存留期還沒有呼叫結束時<ph id="ph2">&lt;xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>You can use the method to report progress or interim results back to clients.</source>
+          <target state="translated">您可以使用此方法進度或暫時結果回報給用戶端。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>The <ph id="ph1">`d`</ph> parameter wraps the delegate you want called when you want to post an update about the status of the asynchronous task.</source>
+          <target state="translated"><ph id="ph1">`d`</ph>參數會包裝您要張貼有關非同步工作的狀態更新時，所要呼叫的委派。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>The <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph> object will ensure that your delegate is invoked on the thread or context appropriate for the application model.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph>物件可確保您的委派叫用執行緒上或適用於應用程式模型的內容。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>Your method can optionally raise an event that notifies clients of a status change, progress update, or newly available incremental results.</source>
+          <target state="translated">您的方法可以選擇性地引發事件，以便通知用戶端的狀態變更、 進度更新或新的、 可用的累加結果。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>The <ph id="ph1">`arg`</ph> parameter should be used to pass state to the delegate wrapped by the <ph id="ph2">`d`</ph> parameter.</source>
+          <target state="translated"><ph id="ph1">`arg`</ph>參數應該用來將狀態傳遞給委派所包裝<ph id="ph2">`d`</ph>參數。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>It might be a reference to an <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph>, or it might be a <ph id="ph2">&lt;xref:System.ComponentModel.ProgressChangedEventArgs?displayProperty=nameWithType&gt;</ph> object.</source>
+          <target state="translated">可能的參考<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph>，或者它可能<ph id="ph2">&lt;xref:System.ComponentModel.ProgressChangedEventArgs?displayProperty=nameWithType&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>It may be desirable to derive your own class from <ph id="ph1">&lt;xref:System.ComponentModel.ProgressChangedEventArgs?displayProperty=nameWithType&gt;</ph> to provide additional state storage.</source>
+          <target state="translated">它可能會想要衍生您自己從<ph id="ph1">&lt;xref:System.ComponentModel.ProgressChangedEventArgs?displayProperty=nameWithType&gt;</ph>提供額外的狀態儲存體。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>The following code example demonstrates using the <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.Post%2A&gt;</ph> method for reporting progress and incremental results of an asynchronous operation.</source>
+          <target state="translated">下列程式碼範例示範如何使用<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.Post%2A&gt;</ph>報告進度和累加結果的非同步作業的方法。</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>This code example is part of a larger example provided for the <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType&gt;</ph> class.</source>
+          <target state="translated">這個程式碼範例是針對所提供之較大範例的一部分<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType&gt;</ph>類別。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>The <ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)" /&gt;</ph> method has been called previously for this task.</source>
+          <target state="translated">先前已針對此工作呼叫 <ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)" /&gt;</ph> 方法。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source><ph id="ph1">&lt;paramref name="d" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="d" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>Inheritors must make the <ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" /&gt;</ph> invocation asynchronous, so that class library providers do not need to concern themselves with potential stack overflows if they assume asynchrony but a particular application model happens to be synchronous.</source>
+          <target state="translated">繼承者必須進行<ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" /&gt;</ph>叫用非同步，使類別程式庫提供者不需要顧慮潛在的堆疊溢位，如果它們假設會標但剛好是同步的特定應用程式模型。</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>Console applications do not synchronize the execution of <ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" /&gt;</ph> calls.</source>
+          <target state="translated">主控台應用程式不會同步執行 <ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" /&gt;</ph> 呼叫。</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>This can cause <ph id="ph1">&lt;see langword="ProgressChanged" /&gt;</ph> events to be raised out of order.</source>
+          <target state="translated">這可能會造成 <ph id="ph1">&lt;see langword="ProgressChanged" /&gt;</ph> 事件不按順序引發。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>If you wish to have serialized execution of <ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" /&gt;</ph> calls, implement and install a <ph id="ph2">&lt;see cref="T:System.Threading.SynchronizationContext" /&gt;</ph> class.</source>
+          <target state="translated">如果您想要以序列化方式執行 <ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)" /&gt;</ph> 呼叫，請實作及安裝 <ph id="ph2">&lt;see cref="T:System.Threading.SynchronizationContext" /&gt;</ph> 類別。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.Post(System.Threading.SendOrPostCallback,System.Object)">
+          <source>For more information about implementing asynchronous classes, see <bpt id="p1">[</bpt>Implementing the Event-based Asynchronous Pattern<ept id="p1">](~/docs/standard/asynchronous-programming-patterns/implementing-the-event-based-asynchronous-pattern.md)</ept>.</source>
+          <target state="translated">如需實作非同步類別的詳細資訊，請參閱<bpt id="p1">[</bpt>實作事件架構非同步模式<ept id="p1">](~/docs/standard/asynchronous-programming-patterns/implementing-the-event-based-asynchronous-pattern.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Threading.SendOrPostCallback" /&gt;</ph> object that wraps the delegate to be called when the operation ends.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Threading.SendOrPostCallback" /&gt;</ph> 物件，包裝作業結束時要呼叫的委派。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>An argument for the delegate contained in the <bpt id="p1">&lt;c&gt;</bpt>d<ept id="p1">&lt;/c&gt;</ept> parameter.</source>
+          <target state="translated">包含在 <bpt id="p1">&lt;c&gt;</bpt>d<ept id="p1">&lt;/c&gt;</ept> 參數中的委派引數。</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>Ends the lifetime of an asynchronous operation.</source>
+          <target state="translated">結束非同步作業的存留期。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>Call the <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A&gt;</ph> method to end the lifetime of an asynchronous operation.</source>
+          <target state="translated">呼叫<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A&gt;</ph>方法結束非同步作業的存留期。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>After this method is called for a particular task, calls to its corresponding <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph> object will raise an exception.</source>
+          <target state="translated">這個方法針對特定工作呼叫後，會呼叫至其相對應<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph>物件將會引發例外狀況。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>The <ph id="ph1">`d`</ph> parameter wraps the delegate you want your class to call when the task's lifetime ends due to completion, cancellation, or failure of the task.</source>
+          <target state="translated"><ph id="ph1">`d`</ph>參數會包裝您想要工作的存留期結束，因為完成、 取消或失敗的工作時要呼叫您類別的委派。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>The <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph> object will ensure that your delegate is invoked on the thread or context appropriate for the application model.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph>物件可確保您的委派叫用執行緒上或適用於應用程式模型的內容。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>Your delegate can optionally raise an event that notifies clients that the asynchronous task's lifetime has ended.</source>
+          <target state="translated">您的委派可以選擇性引發的事件，告知用戶端，非同步工作的存留期已結束。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>The <ph id="ph1">`arg`</ph> parameter is used to pass state information to the completion delegate <ph id="ph2">`d`</ph>.</source>
+          <target state="translated"><ph id="ph1">`arg`</ph>參數用來將狀態資訊傳遞給完成委派<ph id="ph2">`d`</ph>。</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>You can use an <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph> object, or an <ph id="ph2">&lt;xref:System.ComponentModel.AsyncCompletedEventArgs?displayProperty=nameWithType&gt;</ph> object as the parameter value.</source>
+          <target state="translated">您可以使用<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation&gt;</ph>物件，或<ph id="ph2">&lt;xref:System.ComponentModel.AsyncCompletedEventArgs?displayProperty=nameWithType&gt;</ph>物件當做參數值。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>Alternatively, if you want to provide additional state storage, you can use an instance of a class you derive from the <ph id="ph1">&lt;xref:System.ComponentModel.AsyncCompletedEventArgs?displayProperty=nameWithType&gt;</ph> class.</source>
+          <target state="translated">或者，如果您想要提供其他的狀態存放區，您可以使用衍生自類別的執行個體<ph id="ph1">&lt;xref:System.ComponentModel.AsyncCompletedEventArgs?displayProperty=nameWithType&gt;</ph>類別。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>The following code example demonstrates using the <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A&gt;</ph> method to end the lifetime of an asynchronous operation.</source>
+          <target state="translated">下列程式碼範例示範如何使用<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.PostOperationCompleted%2A&gt;</ph>方法結束非同步作業的存留期。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>This code example is part of a larger example provided for the <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType&gt;</ph> class.</source>
+          <target state="translated">這個程式碼範例是針對所提供之較大範例的一部分<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType&gt;</ph>類別。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source><ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.OperationCompleted" /&gt;</ph> has been called previously for this task.</source>
+          <target state="translated">先前已針對此工作呼叫 <ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.OperationCompleted" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source><ph id="ph1">&lt;paramref name="d" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="d" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>Inheritors must make the <ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)" /&gt;</ph> invocation asynchronous, so that class library providers do not need to concern themselves with potential stack overflows if they assume asynchrony but a particular application model happens to be synchronous.</source>
+          <target state="translated">繼承者必須進行<ph id="ph1">&lt;see cref="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)" /&gt;</ph>叫用非同步，使類別程式庫提供者不需要顧慮潛在的堆疊溢位，如果它們假設會標但剛好是同步的特定應用程式模型。</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>The method should be interpreted as an "ending the lifetime" call, meaning the implementation needs to do what is appropriate for the application model.</source>
+          <target state="translated">這個方法應該解譯為 「 結束存留期 」 呼叫，表示實作需要做什麼是適用於應用程式模型。</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>For instance, ASP.NET will decrement its count of outstanding asynchronous operations.</source>
+          <target state="translated">比方說，ASP.NET 會遞減未處理的非同步作業的計數。</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>This also should put the operation into a state such that any subsequent calls into it will fail, since it has now completed.</source>
+          <target state="translated">這也應該將作業的狀態，任何後續呼叫都會失敗，因為它已經完成。</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.AsyncOperation.PostOperationCompleted(System.Threading.SendOrPostCallback,System.Object)">
+          <source>For more information about implementing asynchronous classes, see <bpt id="p1">[</bpt>Implementing the Event-based Asynchronous Pattern<ept id="p1">](~/docs/standard/asynchronous-programming-patterns/implementing-the-event-based-asynchronous-pattern.md)</ept>.</source>
+          <target state="translated">如需實作非同步類別的詳細資訊，請參閱<bpt id="p1">[</bpt>實作事件架構非同步模式<ept id="p1">](~/docs/standard/asynchronous-programming-patterns/implementing-the-event-based-asynchronous-pattern.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" uid="P:System.ComponentModel.AsyncOperation.SynchronizationContext">
+          <source>Gets the <ph id="ph1">&lt;see cref="T:System.Threading.SynchronizationContext" /&gt;</ph> object that was passed to the constructor.</source>
+          <target state="translated">取得傳遞給建構函式的 <ph id="ph1">&lt;see cref="T:System.Threading.SynchronizationContext" /&gt;</ph> 物件。</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.ComponentModel.AsyncOperation.SynchronizationContext">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Threading.SynchronizationContext" /&gt;</ph> object that was passed to the constructor.</source>
+          <target state="translated">傳遞給建構函式的 <ph id="ph1">&lt;see cref="T:System.Threading.SynchronizationContext" /&gt;</ph> 物件。</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" uid="P:System.ComponentModel.AsyncOperation.UserSuppliedState">
+          <source>Gets or sets an object used to uniquely identify an asynchronous operation.</source>
+          <target state="translated">取得或設定用來唯一識別非同步作業的物件。</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.ComponentModel.AsyncOperation.UserSuppliedState">
+          <source>The state object passed to the asynchronous method invocation.</source>
+          <target state="translated">傳遞至非同步方法引動過程的狀態物件。</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.ComponentModel.AsyncOperation.UserSuppliedState">
+          <source>If your class supports multiple asynchronous methods or multiple invocations of a single asynchronous method, clients will need a way to determine which asynchronous task is raising events.</source>
+          <target state="translated">如果您的類別支援多個非同步方法或多個引動過程，單一的非同步方法，用戶端需要判斷哪一項非同步工作會引發事件的方式。</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.ComponentModel.AsyncOperation.UserSuppliedState">
+          <source>Your <ph id="ph1">`MethodNameAsync`</ph> method should take a parameter of type <ph id="ph2">&lt;xref:System.Object&gt;</ph> that will act as a task ID.</source>
+          <target state="translated">您<ph id="ph1">`MethodNameAsync`</ph>方法應該採用一個參數類型<ph id="ph2">&lt;xref:System.Object&gt;</ph>，做為工作識別碼。</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.ComponentModel.AsyncOperation.UserSuppliedState">
+          <source>You will use this task ID when you call the <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperationManager.CreateOperation%2A?displayProperty=nameWithType&gt;</ph>, method and this will associate the client's task ID with a particular invocation of your asynchronous operation.</source>
+          <target state="translated">當您呼叫時，您將使用此工作 ID <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperationManager.CreateOperation%2A?displayProperty=nameWithType&gt;</ph>，方法，而這將會以非同步作業的特定引動過程關聯用戶端的工作識別碼。</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.ComponentModel.AsyncOperation.UserSuppliedState">
+          <source>This task ID is made available to your implementation through the <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A&gt;</ph> property.</source>
+          <target state="translated">這項工作識別碼才可以提供給您的實作，透過<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.ComponentModel.AsyncOperation.UserSuppliedState">
+          <source>Client code must be careful to provide a unique value for the <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A&gt;</ph> property.</source>
+          <target state="translated">用戶端程式碼必須非常小心提供的唯一值<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="171" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.ComponentModel.AsyncOperation.UserSuppliedState">
+          <source>Non-unique task IDs may cause your implementation to report progress and other events incorrectly.</source>
+          <target state="translated">非唯一工作識別碼可能會導致您的實作不正確地報告進度和其他事件。</target>       </trans-unit>
+        <trans-unit id="172" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.ComponentModel.AsyncOperation.UserSuppliedState">
+          <source>Your code should check for a non-unique task ID and raise an <ph id="ph1">&lt;xref:System.ArgumentException&gt;</ph> if one is detected.</source>
+          <target state="translated">您的程式碼應該檢查是否有非唯一工作識別碼，並引發<ph id="ph1">&lt;xref:System.ArgumentException&gt;</ph>偵測到。</target>       </trans-unit>
+        <trans-unit id="173" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.ComponentModel.AsyncOperation.UserSuppliedState">
+          <source>The following code example demonstrates using <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A&gt;</ph> to track the lifetime of asynchronous operations.</source>
+          <target state="translated">下列程式碼範例示範如何使用<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperation.UserSuppliedState%2A&gt;</ph>來追蹤非同步作業的存留期。</target>       </trans-unit>
+        <trans-unit id="174" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.ComponentModel.AsyncOperation.UserSuppliedState">
+          <source>This code example is part of a larger example provided for the <ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType&gt;</ph> class.</source>
+          <target state="translated">這個程式碼範例是針對所提供之較大範例的一部分<ph id="ph1">&lt;xref:System.ComponentModel.AsyncOperationManager?displayProperty=nameWithType&gt;</ph>類別。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

@@ -1,1762 +1,543 @@
-<Type Name="ClaimsPrincipal" FullName="System.Security.Claims.ClaimsPrincipal">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="9a2c844b538e9744cf3dbebf25a6ab8e73142aa5" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public class ClaimsPrincipal : System.Security.Principal.IPrincipal" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit ClaimsPrincipal extends System.Object implements class System.Security.Principal.IPrincipal" />
-  <TypeSignature Language="DocId" Value="T:System.Security.Claims.ClaimsPrincipal" />
-  <TypeSignature Language="VB.NET" Value="Public Class ClaimsPrincipal&#xA;Implements IPrincipal" />
-  <TypeSignature Language="C++ CLI" Value="public ref class ClaimsPrincipal : System::Security::Principal::IPrincipal" />
-  <AssemblyInfo>
-    <AssemblyName>System.Security.Claims</AssemblyName>
-    <AssemblyVersion>4.0.1.0</AssemblyVersion>
-    <AssemblyVersion>4.1.0.0</AssemblyVersion>
-    <AssemblyVersion>4.1.1.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>mscorlib</AssemblyName>
-    <AssemblyVersion>2.0.5.0</AssemblyVersion>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>netstandard</AssemblyName>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>System.Security.Principal.IPrincipal</InterfaceName>
-    </Interface>
-  </Interfaces>
-  <Attributes>
-    <Attribute>
-      <AttributeName>System.Runtime.InteropServices.ComVisible(true)</AttributeName>
-    </Attribute>
-  </Attributes>
-  <Docs>
-    <summary>
-      <span data-ttu-id="9db57-101">
-        <see cref="T:System.Security.Principal.IPrincipal" /> 實作，其支援多個宣告式身分識別。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="9db57-101">An <see cref="T:System.Security.Principal.IPrincipal" /> implementation that supports multiple claims-based identities.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-102">從.NET Framework 4.5 開始，Windows Identity Foundation (WIF) 和宣告式身分識別已完全整合到.NET Framework。</span><span class="sxs-lookup"><span data-stu-id="9db57-102">Beginning with .NET Framework 4.5, Windows Identity Foundation (WIF) and claims-based identity have been fully integrated into the .NET Framework.</span></span> <span data-ttu-id="9db57-103">這表示現在代表.NET Framework 中的主體的許多類別衍生自<xref:System.Security.Claims.ClaimsPrincipal>而不只實作<xref:System.Security.Principal.IPrincipal>介面。</span><span class="sxs-lookup"><span data-stu-id="9db57-103">This means that many classes that represent a principal in the .NET Framework now derive from <xref:System.Security.Claims.ClaimsPrincipal> rather than simply implementing the <xref:System.Security.Principal.IPrincipal> interface.</span></span> <span data-ttu-id="9db57-104">除了實作<xref:System.Security.Principal.IPrincipal>介面，<xref:System.Security.Claims.ClaimsPrincipal>公開適用於使用具有宣告的屬性和方法。</span><span class="sxs-lookup"><span data-stu-id="9db57-104">In addition to implementing the <xref:System.Security.Principal.IPrincipal> interface, <xref:System.Security.Claims.ClaimsPrincipal> exposes properties and methods that are useful for working with claims.</span></span>  
-  
- <span data-ttu-id="9db57-105"><xref:System.Security.Claims.ClaimsPrincipal> 會公開的身分識別，其中每個的集合<xref:System.Security.Claims.ClaimsIdentity>。</span><span class="sxs-lookup"><span data-stu-id="9db57-105"><xref:System.Security.Claims.ClaimsPrincipal> exposes a collection of identities, each of which is a <xref:System.Security.Claims.ClaimsIdentity>.</span></span> <span data-ttu-id="9db57-106">在一般情況下，這個集合，透過存取<xref:System.Security.Claims.ClaimsPrincipal.Identities%2A>屬性，將只有單一項目。</span><span class="sxs-lookup"><span data-stu-id="9db57-106">In the common case, this collection, which is accessed through the <xref:System.Security.Claims.ClaimsPrincipal.Identities%2A> property, will only have a single element.</span></span>  
-  
- <span data-ttu-id="9db57-107">導入<xref:System.Security.Claims.ClaimsPrincipal>做為主體最主要的類別衍生自.NET 4.5 中不會強制您變更任何項目在處理與身分識別的方式。</span><span class="sxs-lookup"><span data-stu-id="9db57-107">The introduction of <xref:System.Security.Claims.ClaimsPrincipal> in .NET 4.5 as the principal from which most principal classes derive does not force you to change anything in the way in which you deal with identity.</span></span> <span data-ttu-id="9db57-108">不過它會開啟更多可能性並提供更多的機會，以進行更細微的存取控制。</span><span class="sxs-lookup"><span data-stu-id="9db57-108">It does, however open up more possibilities and offer more chances to exercise finer access control.</span></span> <span data-ttu-id="9db57-109">例如: </span><span class="sxs-lookup"><span data-stu-id="9db57-109">For example:</span></span>  
-  
--   <span data-ttu-id="9db57-110">應用程式程式碼本身可直接與目前的主體中包含的宣告，磁碟機額外的驗證、 授權及個人化的工作。</span><span class="sxs-lookup"><span data-stu-id="9db57-110">The application code itself can work directly with the claims contained in the current principal to drive extra authentication, authorization, and personalization tasks.</span></span>  
-  
--   <span data-ttu-id="9db57-111">您可以利用處理管線，可處理驗證要求及授權原則執行到您的程式碼之前宣告前端您的資源。</span><span class="sxs-lookup"><span data-stu-id="9db57-111">You can front your resources with a claims processing pipeline, which can deal with authentication requests and authorization policy even before execution reaches your code.</span></span> <span data-ttu-id="9db57-112">例如，您可以設定 web 應用程式或服務與自訂宣告驗證管理員 」 是衍生自類別的執行個體<xref:System.Security.Claims.ClaimsAuthenticationManager>類別。</span><span class="sxs-lookup"><span data-stu-id="9db57-112">For example, you can configure a web-based application or service with a custom claims authentication manager, an instance of a class that derives from the <xref:System.Security.Claims.ClaimsAuthenticationManager> class.</span></span> <span data-ttu-id="9db57-113">如此設定，會叫用要求處理管線<xref:System.Security.Claims.ClaimsAuthenticationManager.Authenticate%2A>方法在您將傳遞給它的宣告驗證管理員<xref:System.Security.Claims.ClaimsPrincipal>表示內送要求的內容。</span><span class="sxs-lookup"><span data-stu-id="9db57-113">When so configured, the request processing pipeline invokes the <xref:System.Security.Claims.ClaimsAuthenticationManager.Authenticate%2A> method on your claims authentication manager passing it a <xref:System.Security.Claims.ClaimsPrincipal> that represents the context of the incoming request.</span></span> <span data-ttu-id="9db57-114">您宣告的驗證管理員接著可以執行驗證，根據連入宣告的值。</span><span class="sxs-lookup"><span data-stu-id="9db57-114">Your claims authentication manager can then perform authentication based on the values of the incoming claims.</span></span> <span data-ttu-id="9db57-115">它也可以篩選、 轉換或將宣告新增至連入宣告集。</span><span class="sxs-lookup"><span data-stu-id="9db57-115">It can also filter, transform, or add claims to the incoming claim set.</span></span> <span data-ttu-id="9db57-116">例如，它可用於擴充具有本機資料來源，例如本機使用者設定檔建立新的宣告集的連入宣告</span><span class="sxs-lookup"><span data-stu-id="9db57-116">For example, it could be used to enrich the incoming claim set with new claims created from a local data source such as a local user profile</span></span>  
-  
--   <span data-ttu-id="9db57-117">您可以使用自訂宣告授權管理員中，衍生自類別的執行個體設定的 web 型應用程式<xref:System.Security.Claims.ClaimsAuthorizationManager>類別。</span><span class="sxs-lookup"><span data-stu-id="9db57-117">You can configure a web-based application with a custom claims authorization manager, an instance of a class that derives from the <xref:System.Security.Claims.ClaimsAuthorizationManager> class.</span></span> <span data-ttu-id="9db57-118">如此設定，當要求處理管線會封裝傳入<xref:System.Security.Claims.ClaimsPrincipal>中<xref:System.Security.Claims.AuthorizationContext>並叫用<xref:System.Security.Claims.ClaimsAuthorizationManager.CheckAccess%2A>上 claims authorization manager 授權您的方法。</span><span class="sxs-lookup"><span data-stu-id="9db57-118">When so configured, the request processing pipeline packages the incoming <xref:System.Security.Claims.ClaimsPrincipal> in an <xref:System.Security.Claims.AuthorizationContext> and invokes the <xref:System.Security.Claims.ClaimsAuthorizationManager.CheckAccess%2A> method on your claims authorization manager.</span></span> <span data-ttu-id="9db57-119">Claims authorization manager 授權您接著可以強制執行內送宣告架構的授權。</span><span class="sxs-lookup"><span data-stu-id="9db57-119">Your claims authorization manager can then enforce authorization based on the incoming claims.</span></span>  
-  
--   <span data-ttu-id="9db57-120">可以由使用自訂宣告授權管理員來設定您的應用程式，而且使用的內嵌宣告式程式碼存取檢查<xref:System.IdentityModel.Services.ClaimsPrincipalPermission>執行命令式存取檢查的類別或<xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute>執行宣告式存取檢查。</span><span class="sxs-lookup"><span data-stu-id="9db57-120">Inline claims-based code access checks can be performed by configuring your application with a custom claims authorization manager and using either the <xref:System.IdentityModel.Services.ClaimsPrincipalPermission> class to perform imperative access checks or the <xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute> to perform declarative access checks.</span></span> <span data-ttu-id="9db57-121">宣告式程式碼存取檢查會執行的內嵌，外部處理管線中，並因此可用於所有應用程式，只要設定 claims authorization manager 授權。</span><span class="sxs-lookup"><span data-stu-id="9db57-121">Claims-based code access checks are performed inline, outside of the processing pipeline, and so are available to all applications as long as a claims authorization manager is configured.</span></span>  
-  
- <span data-ttu-id="9db57-122">您可以取得<xref:System.Security.Claims.ClaimsPrincipal>轉換相關聯的 RP 應用程式 （或執行執行緒的主體） 中的要求主體的執行個體<xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType>屬性<xref:System.Security.Claims.ClaimsPrincipal>。</span><span class="sxs-lookup"><span data-stu-id="9db57-122">You can obtain a <xref:System.Security.Claims.ClaimsPrincipal> instance for the principal associated with a request in an RP application (or the principal under which a thread is executing) by casting the <xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType> property to <xref:System.Security.Claims.ClaimsPrincipal>.</span></span> <span data-ttu-id="9db57-123">與相關聯的宣告<xref:System.Security.Claims.ClaimsPrincipal>物件都是透過其<xref:System.Security.Claims.ClaimsPrincipal.Claims%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="9db57-123">The claims associated with an <xref:System.Security.Claims.ClaimsPrincipal> object are available through its <xref:System.Security.Claims.ClaimsPrincipal.Claims%2A> property.</span></span> <span data-ttu-id="9db57-124"><xref:System.Security.Claims.ClaimsPrincipal.Claims%2A>屬性會傳回所有與主體關聯的身分識別所包含的宣告。</span><span class="sxs-lookup"><span data-stu-id="9db57-124">The <xref:System.Security.Claims.ClaimsPrincipal.Claims%2A> property returns all of the claims contained by the identities associated with the principal.</span></span> <span data-ttu-id="9db57-125">在罕見的情況中<xref:System.Security.Claims.ClaimsPrincipal>包含多個<xref:System.Security.Claims.ClaimsIdentity>執行個體，您可以使用<xref:System.Security.Claims.ClaimsPrincipal.Identities%2A>屬性，或者您可以使用存取的主要識別<xref:System.Security.Claims.ClaimsPrincipal.Identity%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="9db57-125">In the uncommon case in which the <xref:System.Security.Claims.ClaimsPrincipal> contains multiple <xref:System.Security.Claims.ClaimsIdentity> instances, you can use the <xref:System.Security.Claims.ClaimsPrincipal.Identities%2A> property or you can access the primary identity by using the <xref:System.Security.Claims.ClaimsPrincipal.Identity%2A> property.</span></span> <span data-ttu-id="9db57-126"><xref:System.Security.Claims.ClaimsPrincipal> 提供數種方法可能會搜尋這些宣告並完全支援 Language Integrated Query (LINQ)。</span><span class="sxs-lookup"><span data-stu-id="9db57-126"><xref:System.Security.Claims.ClaimsPrincipal> provides several methods through which these claims may be searched and fully supports Language Integrated Query (LINQ).</span></span> <span data-ttu-id="9db57-127">身分識別可以使用新增到主體<xref:System.Security.Claims.ClaimsPrincipal.AddIdentities%2A>或<xref:System.Security.Claims.ClaimsPrincipal.AddIdentity%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="9db57-127">Identities can be added to the principal by using the <xref:System.Security.Claims.ClaimsPrincipal.AddIdentities%2A> or <xref:System.Security.Claims.ClaimsPrincipal.AddIdentity%2A> methods.</span></span>  
-  
-> [!NOTE]
->  <span data-ttu-id="9db57-128">若要加入身分識別來<xref:System.Security.Claims.ClaimsPrincipal>，呼叫端必須具有完全信任。</span><span class="sxs-lookup"><span data-stu-id="9db57-128">To add identities to the <xref:System.Security.Claims.ClaimsPrincipal>, a caller must have full trust.</span></span>  
-  
- <span data-ttu-id="9db57-129">根據預設，WIF 會排列優先順序<xref:System.Security.Principal.WindowsIdentity>物件選取要透過傳回的主要身分識別時<xref:System.Security.Claims.ClaimsPrincipal.Identity%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="9db57-129">By default, WIF prioritizes <xref:System.Security.Principal.WindowsIdentity> objects when selecting the primary identity to return through the <xref:System.Security.Claims.ClaimsPrincipal.Identity%2A> property.</span></span> <span data-ttu-id="9db57-130">您可以修改此行為，藉由提供委派，以透過<xref:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector%2A>執行選取的屬性。</span><span class="sxs-lookup"><span data-stu-id="9db57-130">You can modify this behavior by supplying a delegate through the <xref:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector%2A> property to perform the selection.</span></span> <span data-ttu-id="9db57-131"><xref:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector%2A>屬性會提供類似的功能，如<xref:System.Security.Claims.ClaimsPrincipal.Current%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="9db57-131">The <xref:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector%2A> property provides similar functionality for the <xref:System.Security.Claims.ClaimsPrincipal.Current%2A> property.</span></span>  
-  
- <span data-ttu-id="9db57-132">在宣告架構模型中，在指定的角色中的主體是否取決於提供其基礎的身分識別的宣告。</span><span class="sxs-lookup"><span data-stu-id="9db57-132">In the claim-based model, whether a principal is in a specified role is determined by the claims presented by its underlying identities.</span></span> <span data-ttu-id="9db57-133"><xref:System.Security.Claims.ClaimsPrincipal.IsInRole%2A>方法基本上會檢查以判斷它是否擁有指定的角色值的宣告主體相關聯的每個身分識別。</span><span class="sxs-lookup"><span data-stu-id="9db57-133">The <xref:System.Security.Claims.ClaimsPrincipal.IsInRole%2A> method essentially examines each identity associated with the principal to determine whether it possesses a claim with the specified role value.</span></span> <span data-ttu-id="9db57-134">宣告的類型 (由其<xref:System.Security.Claims.Claim.Type%2A?displayProperty=nameWithType>屬性) 用來判斷哪些宣告都應該經過檢查角色期間檢查在透過身分識別指定其<xref:System.Security.Claims.ClaimsIdentity.RoleClaimType%2A?displayProperty=nameWithType>屬性。</span><span class="sxs-lookup"><span data-stu-id="9db57-134">The type of the claim (represented by its <xref:System.Security.Claims.Claim.Type%2A?displayProperty=nameWithType> property) used to determine which claims should be examined during role checks is specified on an identity through its <xref:System.Security.Claims.ClaimsIdentity.RoleClaimType%2A?displayProperty=nameWithType> property.</span></span> <span data-ttu-id="9db57-135">因此，角色檢查期間檢查的宣告可以是不同的身分識別與主體關聯的不同型別。</span><span class="sxs-lookup"><span data-stu-id="9db57-135">Thus, the claims examined during role checks can be of a different type for different identities associated with the principal.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="9db57-136">下列範例會擷取 HTTP 要求中的使用者提供的宣告，並將它們寫入 HTTP 回應。</span><span class="sxs-lookup"><span data-stu-id="9db57-136">The following example extracts the claims presented by a user in an HTTP request and writes them to the HTTP response.</span></span> <span data-ttu-id="9db57-137">目前的使用者讀取<xref:System.Web.HttpContext>為<xref:System.Security.Claims.ClaimsPrincipal>。</span><span class="sxs-lookup"><span data-stu-id="9db57-137">The current user is read from the <xref:System.Web.HttpContext> as a <xref:System.Security.Claims.ClaimsPrincipal>.</span></span> <span data-ttu-id="9db57-138">宣告會再讀取和便會寫入至回應。</span><span class="sxs-lookup"><span data-stu-id="9db57-138">The claims are then read from it and then are written to the response.</span></span>  
-  
-```  
-  
-ClaimsPrincipal principal = HttpContext.Current.User as ClaimsPrincipal;  
-if (null != principal)  
-{  
-   foreach (Claim claim in principal.Claims)  
-   {  
-      Response.Write("CLAIM TYPE: " + claim.Type + "; CLAIM VALUE: " + claim.Value + "</br>");  
-   }  
-}  
-```  
-  
- ]]></format>
-    </remarks>
-    <altmember cref="T:System.Security.Claims.Claim" />
-    <altmember cref="T:System.Security.Claims.ClaimsIdentity" />
-    <altmember cref="T:System.Security.Claims.ClaimsAuthenticationManager" />
-    <altmember cref="T:System.Security.Claims.ClaimsAuthorizationManager" />
-  </Docs>
-  <Members>
-    <MemberGroup MemberName=".ctor">
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary>
-          <span data-ttu-id="9db57-139">初始化 <see cref="T:System.Security.Claims.ClaimsPrincipal" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-139">Initializes a new instance of the <see cref="T:System.Security.Claims.ClaimsPrincipal" /> class.</span>
-          </span>
-        </summary>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ClaimsPrincipal ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.#ctor" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; ClaimsPrincipal();" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="9db57-140">初始化 <see cref="T:System.Security.Claims.ClaimsPrincipal" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-140">Initializes a new instance of the <see cref="T:System.Security.Claims.ClaimsPrincipal" /> class.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-141">沒有識別與相關聯的新執行個體。</span><span class="sxs-lookup"><span data-stu-id="9db57-141">No identities are associated with the new instance.</span></span> <span data-ttu-id="9db57-142">(<xref:System.Security.Claims.ClaimsPrincipal.Identities%2A>集合是空的)。</span><span class="sxs-lookup"><span data-stu-id="9db57-142">(The <xref:System.Security.Claims.ClaimsPrincipal.Identities%2A> collection is empty).</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ClaimsPrincipal (System.Collections.Generic.IEnumerable&lt;System.Security.Claims.ClaimsIdentity&gt; identities);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Collections.Generic.IEnumerable`1&lt;class System.Security.Claims.ClaimsIdentity&gt; identities) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Collections.Generic.IEnumerable{System.Security.Claims.ClaimsIdentity})" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (identities As IEnumerable(Of ClaimsIdentity))" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; ClaimsPrincipal(System::Collections::Generic::IEnumerable&lt;System::Security::Claims::ClaimsIdentity ^&gt; ^ identities);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="identities" Type="System.Collections.Generic.IEnumerable&lt;System.Security.Claims.ClaimsIdentity&gt;" />
-      </Parameters>
-      <Docs>
-        <param name="identities">
-          <span data-ttu-id="9db57-143">用來初始化新宣告主體的身份識別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-143">The identities from which to initialize the new claims principal.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-144">使用指定的宣告身份識別，初始化 <see cref="T:System.Security.Claims.ClaimsPrincipal" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-144">Initializes a new instance of the <see cref="T:System.Security.Claims.ClaimsPrincipal" /> class using the specified claims identities.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-145"><xref:System.Security.Claims.ClaimsPrincipal.Identities%2A>集合已初始化使用指定的身分識別。</span><span class="sxs-lookup"><span data-stu-id="9db57-145">The <xref:System.Security.Claims.ClaimsPrincipal.Identities%2A> collection is initialized with the specified identities.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-146">
-            <paramref name="identities" /> 為 **null**。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-146">
-              <paramref name="identities" /> is **null**.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ClaimsPrincipal (System.IO.BinaryReader reader);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.IO.BinaryReader reader) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.IO.BinaryReader)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (reader As BinaryReader)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; ClaimsPrincipal(System::IO::BinaryReader ^ reader);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="reader" Type="System.IO.BinaryReader" />
-      </Parameters>
-      <Docs>
-        <param name="reader">
-          <span data-ttu-id="9db57-147">指向 <see cref="T:System.Security.Claims.ClaimsPrincipal" /> 的 <see cref="T:System.IO.BinaryReader" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-147">A <see cref="T:System.IO.BinaryReader" /> pointing to a <see cref="T:System.Security.Claims.ClaimsPrincipal" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-148">使用指定的 <see cref="T:System.IO.BinaryReader" />，初始化 <see cref="T:System.Security.Claims.ClaimsPrincipal" /> 的執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-148">Initializes an instance of <see cref="T:System.Security.Claims.ClaimsPrincipal" /> with the specified <see cref="T:System.IO.BinaryReader" />.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-149">一般來說，<xref:System.IO.BinaryReader>建構使用位元組從<xref:System.Security.Claims.ClaimsIdentity.WriteTo%2A>和相同的方式初始化<xref:System.IO.BinaryWriter>。</span><span class="sxs-lookup"><span data-stu-id="9db57-149">Normally, the <xref:System.IO.BinaryReader> is constructed using the bytes from <xref:System.Security.Claims.ClaimsIdentity.WriteTo%2A> and initialized in the same way as the <xref:System.IO.BinaryWriter>.</span></span>
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-150">
-            <paramref name="reader" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-150">
-              <paramref name="reader" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ClaimsPrincipal (System.Security.Principal.IIdentity identity);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Security.Principal.IIdentity identity) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Security.Principal.IIdentity)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (identity As IIdentity)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; ClaimsPrincipal(System::Security::Principal::IIdentity ^ identity);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="identity" Type="System.Security.Principal.IIdentity" />
-      </Parameters>
-      <Docs>
-        <param name="identity">
-          <span data-ttu-id="9db57-151">初始化新宣告主體的來源識別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-151">The identity from which to initialize the new claims principal.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-152">從指定的識別初始化 <see cref="T:System.Security.Claims.ClaimsPrincipal" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-152">Initializes a new instance of the <see cref="T:System.Security.Claims.ClaimsPrincipal" /> class from the specified identity.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-153">如果指定的識別是可從<xref:System.Security.Claims.ClaimsIdentity>，用來初始化<xref:System.Security.Claims.ClaimsPrincipal.Identities%2A>集合。</span><span class="sxs-lookup"><span data-stu-id="9db57-153">If the specified identity is assignable from <xref:System.Security.Claims.ClaimsIdentity>, it is used to initialize the <xref:System.Security.Claims.ClaimsPrincipal.Identities%2A> collection.</span></span> <span data-ttu-id="9db57-154">否則，<xref:System.Security.Claims.ClaimsIdentity>使用指定的身分識別建立，用來初始化集合。</span><span class="sxs-lookup"><span data-stu-id="9db57-154">Otherwise, a <xref:System.Security.Claims.ClaimsIdentity> is created using the specified identity and is used to initialize the collection.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-155">
-            <paramref name="identity" /> 為 **null**。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-155">
-              <paramref name="identity" /> is **null**.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public ClaimsPrincipal (System.Security.Principal.IPrincipal principal);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Security.Principal.IPrincipal principal) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Security.Principal.IPrincipal)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (principal As IPrincipal)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; ClaimsPrincipal(System::Security::Principal::IPrincipal ^ principal);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="principal" Type="System.Security.Principal.IPrincipal" />
-      </Parameters>
-      <Docs>
-        <param name="principal">
-          <span data-ttu-id="9db57-156">初始化新宣告主體的來源主體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-156">The principal from which to initialize the new claims principal.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-157">從指定的主體，初始化 <see cref="T:System.Security.Claims.ClaimsPrincipal" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-157">Initializes a new instance of the <see cref="T:System.Security.Claims.ClaimsPrincipal" /> class from the specified principal.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-158">如果指定的主體是可從<xref:System.Security.Claims.ClaimsPrincipal>，所有其身分識別會新增至<xref:System.Security.Claims.ClaimsPrincipal.Identities%2A>集合。</span><span class="sxs-lookup"><span data-stu-id="9db57-158">If the specified principal is assignable from <xref:System.Security.Claims.ClaimsPrincipal>, all of its identities are added to the <xref:System.Security.Claims.ClaimsPrincipal.Identities%2A> collection.</span></span> <span data-ttu-id="9db57-159">如果指定的主體不是可從<xref:System.Security.Claims.ClaimsPrincipal>，新<xref:System.Security.Claims.ClaimsIdentity>建立從<xref:System.Security.Principal.IIdentity>中其<xref:System.Security.Principal.IPrincipal.Identity%2A?displayProperty=nameWithType>屬性並新增至<xref:System.Security.Claims.ClaimsPrincipal.Identities%2A>集合。</span><span class="sxs-lookup"><span data-stu-id="9db57-159">If the specified principal is not assignable from <xref:System.Security.Claims.ClaimsPrincipal>, a new <xref:System.Security.Claims.ClaimsIdentity> is created from the <xref:System.Security.Principal.IIdentity> in its <xref:System.Security.Principal.IPrincipal.Identity%2A?displayProperty=nameWithType> property and added to the <xref:System.Security.Claims.ClaimsPrincipal.Identities%2A> collection.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-160">
-            <paramref name="principal" /> 為 **null**。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-160">
-              <paramref name="principal" /> is **null**.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected ClaimsPrincipal (System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class System.Runtime.Serialization.SerializationInfo info, valuetype System.Runtime.Serialization.StreamingContext context) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)" />
-      <MemberSignature Language="VB.NET" Value="Protected Sub New (info As SerializationInfo, context As StreamingContext)" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; ClaimsPrincipal(System::Runtime::Serialization::SerializationInfo ^ info, System::Runtime::Serialization::StreamingContext context);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Security.SecurityCritical</AttributeName>
-        </Attribute>
-      </Attributes>
-      <Parameters>
-        <Parameter Name="info" Type="System.Runtime.Serialization.SerializationInfo" />
-        <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
-      </Parameters>
-      <Docs>
-        <param name="info">
-          <span data-ttu-id="9db57-161">序列化的資料。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-161">The serialized data.</span>
-          </span>
-        </param>
-        <param name="context">
-          <span data-ttu-id="9db57-162">序列化的內容。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-162">The context for serialization.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-163">從使用 <see cref="T:System.Runtime.Serialization.ISerializable" /> 建立的序列化資料流，初始化 <see cref="T:System.Security.Claims.ClaimsPrincipal" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-163">Initializes a new instance of the <see cref="T:System.Security.Claims.ClaimsPrincipal" /> class from a serialized stream created by using <see cref="T:System.Runtime.Serialization.ISerializable" />.</span>
-          </span>
-        </summary>
-        <remarks></remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-164">
-            <paramref name="info" /> 為 **null**。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-164">
-              <paramref name="info" /> is **null**.</span>
-          </span>
-        </exception>
-        <permission cref="T:System.Security.SecurityCriticalAttribute">
-          <span data-ttu-id="9db57-165">需要完全信任立即呼叫者。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-165">requires full trust for the immediate caller.</span>
-          </span>
-          <span data-ttu-id="9db57-166">這個成員無法供部分信任或安全性透明程式碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-166">This member cannot be used by partially trusted or transparent code.</span>
-          </span>
-        </permission>
-      </Docs>
-    </Member>
-    <Member MemberName="AddIdentities">
-      <MemberSignature Language="C#" Value="public virtual void AddIdentities (System.Collections.Generic.IEnumerable&lt;System.Security.Claims.ClaimsIdentity&gt; identities);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AddIdentities(class System.Collections.Generic.IEnumerable`1&lt;class System.Security.Claims.ClaimsIdentity&gt; identities) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.AddIdentities(System.Collections.Generic.IEnumerable{System.Security.Claims.ClaimsIdentity})" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable Sub AddIdentities (identities As IEnumerable(Of ClaimsIdentity))" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void AddIdentities(System::Collections::Generic::IEnumerable&lt;System::Security::Claims::ClaimsIdentity ^&gt; ^ identities);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Security.SecurityCritical</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="identities" Type="System.Collections.Generic.IEnumerable&lt;System.Security.Claims.ClaimsIdentity&gt;" />
-      </Parameters>
-      <Docs>
-        <param name="identities">
-          <span data-ttu-id="9db57-167">要加入的宣告識別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-167">The claims identities to add.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-168">將指定的宣告識別加入這個宣告主體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-168">Adds the specified claims identities to this claims principal.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-169">識別加入至<xref:System.Security.Claims.ClaimsPrincipal.Identities%2A>集合。</span><span class="sxs-lookup"><span data-stu-id="9db57-169">The identities are added to the <xref:System.Security.Claims.ClaimsPrincipal.Identities%2A> collection.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-170">
-            <paramref name="identities" /> 為 **null**。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-170">
-              <paramref name="identities" /> is **null**.</span>
-          </span>
-        </exception>
-        <permission cref="T:System.Security.SecurityCriticalAttribute">
-          <span data-ttu-id="9db57-171">需要完全信任立即呼叫者。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-171">requires full trust for the immediate caller.</span>
-          </span>
-          <span data-ttu-id="9db57-172">這個成員無法供部分信任或安全性透明程式碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-172">This member cannot be used by partially trusted or transparent code.</span>
-          </span>
-        </permission>
-      </Docs>
-    </Member>
-    <Member MemberName="AddIdentity">
-      <MemberSignature Language="C#" Value="public virtual void AddIdentity (System.Security.Claims.ClaimsIdentity identity);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AddIdentity(class System.Security.Claims.ClaimsIdentity identity) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.AddIdentity(System.Security.Claims.ClaimsIdentity)" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable Sub AddIdentity (identity As ClaimsIdentity)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void AddIdentity(System::Security::Claims::ClaimsIdentity ^ identity);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Security.SecurityCritical</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="identity" Type="System.Security.Claims.ClaimsIdentity" />
-      </Parameters>
-      <Docs>
-        <param name="identity">
-          <span data-ttu-id="9db57-173">要加入的宣告識別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-173">The claims identity to add.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-174">將指定的宣告識別加入這個宣告主體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-174">Adds the specified claims identity to this claims principal.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-175">識別加入至<xref:System.Security.Claims.ClaimsPrincipal.Identities%2A>集合。</span><span class="sxs-lookup"><span data-stu-id="9db57-175">The identity is added to the <xref:System.Security.Claims.ClaimsPrincipal.Identities%2A> collection.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-176">
-            <paramref name="identity" /> 為 **null**。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-176">
-              <paramref name="identity" /> is **null**.</span>
-          </span>
-        </exception>
-        <permission cref="T:System.Security.SecurityCriticalAttribute">
-          <span data-ttu-id="9db57-177">需要完全信任立即呼叫者。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-177">requires full trust for the immediate caller.</span>
-          </span>
-          <span data-ttu-id="9db57-178">這個成員無法供部分信任或安全性透明程式碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-178">This member cannot be used by partially trusted or transparent code.</span>
-          </span>
-        </permission>
-      </Docs>
-    </Member>
-    <Member MemberName="Claims">
-      <MemberSignature Language="C#" Value="public virtual System.Collections.Generic.IEnumerable&lt;System.Security.Claims.Claim&gt; Claims { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Generic.IEnumerable`1&lt;class System.Security.Claims.Claim&gt; Claims" />
-      <MemberSignature Language="DocId" Value="P:System.Security.Claims.ClaimsPrincipal.Claims" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property Claims As IEnumerable(Of Claim)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Collections::Generic::IEnumerable&lt;System::Security::Claims::Claim ^&gt; ^ Claims { System::Collections::Generic::IEnumerable&lt;System::Security::Claims::Claim ^&gt; ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.Generic.IEnumerable&lt;System.Security.Claims.Claim&gt;</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="9db57-179">取得集合，其中包含來自與這個宣告主體相關聯的所有宣告身分識別之所有宣告。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-179">Gets a collection that contains all of the claims from all of the claims identities associated with this claims principal.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="9db57-180">與這個主體相關聯的宣告。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-180">The claims associated with this principal.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-181">宣告主體擁有集合<xref:System.Security.Claims.ClaimsIdentity>存取透過身分識別屬性的物件。</span><span class="sxs-lookup"><span data-stu-id="9db57-181">A claims principal has a collection of <xref:System.Security.Claims.ClaimsIdentity> objects that is accessible through the Identities property.</span></span> <span data-ttu-id="9db57-182">每個<xref:System.Security.Claims.ClaimsIdentity>集合中包含一個或多個宣告。</span><span class="sxs-lookup"><span data-stu-id="9db57-182">Each <xref:System.Security.Claims.ClaimsIdentity> in the collection contains one or more claims.</span></span> <span data-ttu-id="9db57-183"><xref:System.Security.Claims.ClaimsPrincipal.Claims%2A>屬性會傳回所有的宣告從所有在此集合中的宣告身分識別。</span><span class="sxs-lookup"><span data-stu-id="9db57-183">The <xref:System.Security.Claims.ClaimsPrincipal.Claims%2A> property returns all of the claims from all of the claims identities in this collection.</span></span>  
-  
- <span data-ttu-id="9db57-184"><xref:System.Security.Claims.ClaimsPrincipal.Claims%2A>屬性可以檢驗的自訂實作<xref:System.Security.Claims.ClaimsAuthenticationManager>來進行驗證決策，或是篩選、 轉換或充實連入宣告集; 類別的自訂實作<xref:System.Security.Claims.ClaimsAuthorizationManager>類別來強制執行授權原則。或由應用程式程式碼來製作授權決策，或自訂使用者經驗會根據集合中的宣告。</span><span class="sxs-lookup"><span data-stu-id="9db57-184">The <xref:System.Security.Claims.ClaimsPrincipal.Claims%2A> property can be examined by custom implementations of the <xref:System.Security.Claims.ClaimsAuthenticationManager> class to make authentication decisions or to filter, transform, or enrich an incoming claim set; by custom implementations of the <xref:System.Security.Claims.ClaimsAuthorizationManager> class to enforce authorization policy; or by application code to make authorization decisions or to customize user experience based on the claims present in the collection.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ClaimsPrincipalSelector">
-      <MemberSignature Language="C#" Value="public static Func&lt;System.Security.Claims.ClaimsPrincipal&gt; ClaimsPrincipalSelector { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property class System.Func`1&lt;class System.Security.Claims.ClaimsPrincipal&gt; ClaimsPrincipalSelector" />
-      <MemberSignature Language="DocId" Value="P:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector" />
-      <MemberSignature Language="VB.NET" Value="Public Shared Property ClaimsPrincipalSelector As Func(Of ClaimsPrincipal)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; static property Func&lt;System::Security::Claims::ClaimsPrincipal ^&gt; ^ ClaimsPrincipalSelector { Func&lt;System::Security::Claims::ClaimsPrincipal ^&gt; ^ get(); void set(Func&lt;System::Security::Claims::ClaimsPrincipal ^&gt; ^ value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>set: System.Security.SecurityCritical</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.Func&lt;System.Security.Claims.ClaimsPrincipal&gt;</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="9db57-185">取得及設定用來選取 <see cref="P:System.Security.Claims.ClaimsPrincipal.Current" /> 屬性所傳回宣告主體的委派。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-185">Gets and sets the delegate used to select the claims principal returned by the <see cref="P:System.Security.Claims.ClaimsPrincipal.Current" /> property.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="9db57-186">委派。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-186">The delegate.</span>
-          </span>
-          <span data-ttu-id="9db57-187">預設值為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-187">The default is <see langword="null" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-188">您可以設定這個屬性來覆寫預設行為<xref:System.Security.Claims.ClaimsPrincipal.Current%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="9db57-188">You can set this property to override the default behavior of the <xref:System.Security.Claims.ClaimsPrincipal.Current%2A> property.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <permission cref="T:System.Security.SecurityCriticalAttribute">
-          <span data-ttu-id="9db57-189">設定作業需要完全信任立即呼叫者。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-189">Set operation requires full trust for the immediate caller.</span>
-          </span>
-          <span data-ttu-id="9db57-190">無法由部分信任或安全性透明程式碼中設定這個成員。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-190">This member cannot be set by partially trusted or transparent code.</span>
-          </span>
-        </permission>
-        <altmember cref="P:System.Security.Claims.ClaimsPrincipal.Current" />
-      </Docs>
-    </Member>
-    <Member MemberName="Clone">
-      <MemberSignature Language="C#" Value="public virtual System.Security.Claims.ClaimsPrincipal Clone ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Security.Claims.ClaimsPrincipal Clone() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.Clone" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable Function Clone () As ClaimsPrincipal" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Security::Claims::ClaimsPrincipal ^ Clone();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Security.Claims.ClaimsPrincipal</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="9db57-191">傳回這個執行個體的複本。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-191">Returns a copy of this instance.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="9db57-192">
-            <see cref="T:System.Security.Claims.ClaimsPrincipal" /> 物件的新複本。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-192">A new copy of the <see cref="T:System.Security.Claims.ClaimsPrincipal" /> object.</span>
-          </span>
-        </returns>
-        <remarks></remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CreateClaimsIdentity">
-      <MemberSignature Language="C#" Value="protected virtual System.Security.Claims.ClaimsIdentity CreateClaimsIdentity (System.IO.BinaryReader reader);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Security.Claims.ClaimsIdentity CreateClaimsIdentity(class System.IO.BinaryReader reader) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.CreateClaimsIdentity(System.IO.BinaryReader)" />
-      <MemberSignature Language="VB.NET" Value="Protected Overridable Function CreateClaimsIdentity (reader As BinaryReader) As ClaimsIdentity" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Security::Claims::ClaimsIdentity ^ CreateClaimsIdentity(System::IO::BinaryReader ^ reader);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Security.Claims.ClaimsIdentity</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="reader" Type="System.IO.BinaryReader" />
-      </Parameters>
-      <Docs>
-        <param name="reader">
-          <span data-ttu-id="9db57-193">二進位檔讀取器。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-193">The binary reader.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-194">建立新的宣告身分識別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-194">Creates a new claims identity.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="9db57-195">建立的宣告身分識別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-195">The created claims identity.</span>
-          </span>
-        </returns>
-        <remarks></remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Current">
-      <MemberSignature Language="C#" Value="public static System.Security.Claims.ClaimsPrincipal Current { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property class System.Security.Claims.ClaimsPrincipal Current" />
-      <MemberSignature Language="DocId" Value="P:System.Security.Claims.ClaimsPrincipal.Current" />
-      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly Property Current As ClaimsPrincipal" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; static property System::Security::Claims::ClaimsPrincipal ^ Current { System::Security::Claims::ClaimsPrincipal ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Security.Claims.ClaimsPrincipal</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="9db57-196">取得目前的宣告主體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-196">Gets the current claims principal.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="9db57-197">目前的宣告主體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-197">The current claims principal.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-198">根據預設，<xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType>傳回。</span><span class="sxs-lookup"><span data-stu-id="9db57-198">By default, <xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType> is returned.</span></span> <span data-ttu-id="9db57-199">您可以變更此行為，藉由設定<xref:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector%2A>屬性，以指定的委派，呼叫以判斷目前的主體。</span><span class="sxs-lookup"><span data-stu-id="9db57-199">You can change this behavior by setting the <xref:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector%2A> property to specify a delegate to be called to determine the current principal.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="P:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector" />
-      </Docs>
-    </Member>
-    <Member MemberName="CustomSerializationData">
-      <MemberSignature Language="C#" Value="protected virtual byte[] CustomSerializationData { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance unsigned int8[] CustomSerializationData" />
-      <MemberSignature Language="DocId" Value="P:System.Security.Claims.ClaimsPrincipal.CustomSerializationData" />
-      <MemberSignature Language="VB.NET" Value="Protected Overridable ReadOnly Property CustomSerializationData As Byte()" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual property cli::array &lt;System::Byte&gt; ^ CustomSerializationData { cli::array &lt;System::Byte&gt; ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Byte[]</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="9db57-200">包含衍生類型所提供的任何其他資料。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-200">Contains any additional data provided by a derived type.</span>
-          </span>
-          <span data-ttu-id="9db57-201">通常會在呼叫 <see cref="M:System.Security.Claims.ClaimsIdentity.WriteTo(System.IO.BinaryWriter,System.Byte[])" /> 時設定。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-201">Typically set when calling <see cref="M:System.Security.Claims.ClaimsIdentity.WriteTo(System.IO.BinaryWriter,System.Byte[])" />.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="9db57-202">A<see cref="T:System.Byte" />陣列，表示的其他序列化資料。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-202">A <see cref="T:System.Byte" /> array representing the additional serialized data.</span>
-          </span>
-        </value>
-        <remarks></remarks>
-      </Docs>
-    </Member>
-    <MemberGroup MemberName="FindAll">
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary>
-          <span data-ttu-id="9db57-203">擷取所有符合指定條件的宣告。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-203">Retrieves all of the claims that match a specified condition.</span>
-          </span>
-        </summary>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName="FindAll">
-      <MemberSignature Language="C#" Value="public virtual System.Collections.Generic.IEnumerable&lt;System.Security.Claims.Claim&gt; FindAll (Predicate&lt;System.Security.Claims.Claim&gt; match);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Collections.Generic.IEnumerable`1&lt;class System.Security.Claims.Claim&gt; FindAll(class System.Predicate`1&lt;class System.Security.Claims.Claim&gt; match) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.FindAll(System.Predicate{System.Security.Claims.Claim})" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable Function FindAll (match As Predicate(Of Claim)) As IEnumerable(Of Claim)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Collections::Generic::IEnumerable&lt;System::Security::Claims::Claim ^&gt; ^ FindAll(Predicate&lt;System::Security::Claims::Claim ^&gt; ^ match);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.Generic.IEnumerable&lt;System.Security.Claims.Claim&gt;</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="match" Type="System.Predicate&lt;System.Security.Claims.Claim&gt;" />
-      </Parameters>
-      <Docs>
-        <param name="match">
-          <span data-ttu-id="9db57-204">執行比對邏輯的函式。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-204">The function that performs the matching logic.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-205">擷取所有符合指定述詞的宣告。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-205">Retrieves all of the claims that are matched by the specified predicate.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="9db57-206">符合的宣告。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-206">The matching claims.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-207">傳回宣告主體相關聯的所有身分識別宣告。</span><span class="sxs-lookup"><span data-stu-id="9db57-207">Returns claims from all identities associated with the claims principal.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-208">
-            <paramref name="match" /> 為 **null**。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-208">
-              <paramref name="match" /> is **null**.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="FindAll">
-      <MemberSignature Language="C#" Value="public virtual System.Collections.Generic.IEnumerable&lt;System.Security.Claims.Claim&gt; FindAll (string type);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Collections.Generic.IEnumerable`1&lt;class System.Security.Claims.Claim&gt; FindAll(string type) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.FindAll(System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable Function FindAll (type As String) As IEnumerable(Of Claim)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Collections::Generic::IEnumerable&lt;System::Security::Claims::Claim ^&gt; ^ FindAll(System::String ^ type);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.Generic.IEnumerable&lt;System.Security.Claims.Claim&gt;</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="type" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="type">
-          <span data-ttu-id="9db57-209">要比對宣告的宣告類型。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-209">The claim type against which to match claims.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-210">擷取所有具有指定宣告類型的宣告。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-210">Retrieves all or the claims that have the specified claim type.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="9db57-211">符合的宣告。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-211">The matching claims.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-212">傳回宣告主體相關聯的所有身分識別宣告。</span><span class="sxs-lookup"><span data-stu-id="9db57-212">Returns claims from all identities associated with the claims principal.</span></span> <span data-ttu-id="9db57-213">會使用序數的情況中區分上進行比較`type`。</span><span class="sxs-lookup"><span data-stu-id="9db57-213">The comparison is made using Ordinal case in-sensitive on `type`.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-214">
-            <paramref name="type" /> 為 **null**。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-214">
-              <paramref name="type" /> is **null**.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <MemberGroup MemberName="FindFirst">
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary>
-          <span data-ttu-id="9db57-215">擷取符合指定條件的第一個宣告。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-215">Retrieves the first claim that matches a specified condition.</span>
-          </span>
-        </summary>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName="FindFirst">
-      <MemberSignature Language="C#" Value="public virtual System.Security.Claims.Claim FindFirst (Predicate&lt;System.Security.Claims.Claim&gt; match);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Security.Claims.Claim FindFirst(class System.Predicate`1&lt;class System.Security.Claims.Claim&gt; match) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.FindFirst(System.Predicate{System.Security.Claims.Claim})" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable Function FindFirst (match As Predicate(Of Claim)) As Claim" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Security::Claims::Claim ^ FindFirst(Predicate&lt;System::Security::Claims::Claim ^&gt; ^ match);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Security.Claims.Claim</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="match" Type="System.Predicate&lt;System.Security.Claims.Claim&gt;" />
-      </Parameters>
-      <Docs>
-        <param name="match">
-          <span data-ttu-id="9db57-216">執行比對邏輯的函式。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-216">The function that performs the matching logic.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-217">擷取指定述詞所比對的第一個宣告。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-217">Retrieves the first claim that is matched by the specified predicate.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="9db57-218">第一個相符的宣告，如果找不到相符項目，則為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-218">The first matching claim or <see langword="null" /> if no match is found.</span>
-          </span>
-        </returns>
-        <remarks></remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-219">
-            <paramref name="match" /> 為 **null**。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-219">
-              <paramref name="match" /> is **null**.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="FindFirst">
-      <MemberSignature Language="C#" Value="public virtual System.Security.Claims.Claim FindFirst (string type);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Security.Claims.Claim FindFirst(string type) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.FindFirst(System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable Function FindFirst (type As String) As Claim" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Security::Claims::Claim ^ FindFirst(System::String ^ type);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Security.Claims.Claim</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="type" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="type">
-          <span data-ttu-id="9db57-220">要比對的宣告類型。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-220">The claim type to match.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-221">擷取指定宣告類型的第一個宣告。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-221">Retrieves the first claim with the specified claim type.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="9db57-222">第一個相符的宣告，如果找不到相符項目，則為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-222">The first matching claim or <see langword="null" /> if no match is found.</span>
-          </span>
-        </returns>
-        <remarks></remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-223">
-            <paramref name="type" /> 為 **null**。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-223">
-              <paramref name="type" /> is **null**.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="GetObjectData">
-      <MemberSignature Language="C#" Value="protected virtual void GetObjectData (System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void GetObjectData(class System.Runtime.Serialization.SerializationInfo info, valuetype System.Runtime.Serialization.StreamingContext context) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)" />
-      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub GetObjectData (info As SerializationInfo, context As StreamingContext)" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void GetObjectData(System::Runtime::Serialization::SerializationInfo ^ info, System::Runtime::Serialization::StreamingContext context);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Security.SecurityCritical</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="info" Type="System.Runtime.Serialization.SerializationInfo" />
-        <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
-      </Parameters>
-      <Docs>
-        <param name="info">
-          <span data-ttu-id="9db57-224">要填入資料的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-224">The object to populate with data.</span>
-          </span>
-        </param>
-        <param name="context">
-          <span data-ttu-id="9db57-225">這個序列化的目的端。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-225">The destination for this serialization.</span>
-          </span>
-          <span data-ttu-id="9db57-226">可以是 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-226">Can be <see langword="null" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-227">將序列化目前 <see cref="T:System.Runtime.Serialization.SerializationInfo" /> 物件所需的資料填入 <see cref="T:System.Security.Claims.ClaimsPrincipal" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-227">Populates the <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with data needed to serialize the current <see cref="T:System.Security.Claims.ClaimsPrincipal" /> object.</span>
-          </span>
-        </summary>
-        <remarks></remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-228">
-            <paramref name="info" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-228">
-              <paramref name="info" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-        <permission cref="T:System.Security.SecurityCriticalAttribute">
-          <span data-ttu-id="9db57-229">需要完全信任立即呼叫者。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-229">requires full trust for the immediate caller.</span>
-          </span>
-          <span data-ttu-id="9db57-230">這個成員無法供部分信任或安全性透明程式碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-230">This member cannot be used by partially trusted or transparent code.</span>
-          </span>
-        </permission>
-      </Docs>
-    </Member>
-    <MemberGroup MemberName="HasClaim">
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary>
-          <span data-ttu-id="9db57-231">判斷與此宣告主體相關聯之宣告身分識別的任何一個是否包含符合指定條件的宣告。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-231">Determines whether any of the claims identities associated with this claims principal contains a claim that matches specified conditions.</span>
-          </span>
-        </summary>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName="HasClaim">
-      <MemberSignature Language="C#" Value="public virtual bool HasClaim (Predicate&lt;System.Security.Claims.Claim&gt; match);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool HasClaim(class System.Predicate`1&lt;class System.Security.Claims.Claim&gt; match) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.HasClaim(System.Predicate{System.Security.Claims.Claim})" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable Function HasClaim (match As Predicate(Of Claim)) As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool HasClaim(Predicate&lt;System::Security::Claims::Claim ^&gt; ^ match);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="match" Type="System.Predicate&lt;System.Security.Claims.Claim&gt;" />
-      </Parameters>
-      <Docs>
-        <param name="match">
-          <span data-ttu-id="9db57-232">執行比對邏輯的函式。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-232">The function that performs the matching logic.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-233">判斷與此宣告主體相關聯之宣告身分識別的任何一個是否包含指定述詞所比對的宣告。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-233">Determines whether any of the claims identities associated with this claims principal contains a claim that is matched by the specified predicate.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="9db57-234">如果相符的宣告存在，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-234">
-              <see langword="true" /> if a matching claim exists; otherwise, <see langword="false" />.</span>
-          </span>
-        </returns>
-        <remarks></remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-235">
-            <paramref name="match" /> 為 **null**。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-235">
-              <paramref name="match" /> is **null**.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="HasClaim">
-      <MemberSignature Language="C#" Value="public virtual bool HasClaim (string type, string value);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool HasClaim(string type, string value) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.HasClaim(System.String,System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable Function HasClaim (type As String, value As String) As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool HasClaim(System::String ^ type, System::String ^ value);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="type" Type="System.String" />
-        <Parameter Name="value" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="type">
-          <span data-ttu-id="9db57-236">要比對的宣告類型。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-236">The type of the claim to match.</span>
-          </span>
-        </param>
-        <param name="value">
-          <span data-ttu-id="9db57-237">要比對的宣告值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-237">The value of the claim to match.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-238">判斷與此宣告主體相關聯之宣告身分識別的任何一個，是否包含具有指定宣告類型和值的宣告。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-238">Determines whether any of the claims identities associated with this claims principal contains a claim with the specified claim type and value.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="9db57-239">如果相符的宣告存在，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-239">
-              <see langword="true" /> if a matching claim exists; otherwise, <see langword="false" />.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-240">不會檢查<xref:System.Security.Claims.Claim.Issuer%2A>或<xref:System.Security.Claims.Claim.OriginalIssuer%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="9db57-240">Does not check the <xref:System.Security.Claims.Claim.Issuer%2A> or <xref:System.Security.Claims.Claim.OriginalIssuer%2A> properties.</span></span> <span data-ttu-id="9db57-241">會使用序數，區分大小寫; 的值進行比較案例中區分型別上。</span><span class="sxs-lookup"><span data-stu-id="9db57-241">The comparison is made using Ordinal, case sensitive on value; case in-sensitive on type.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-242">
-            <paramref name="type" /> 為 **null**。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-242">
-              <paramref name="type" /> is **null**.</span>
-          </span>
-          <span data-ttu-id="9db57-243">-或-</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-243">-or-</span>
-          </span>
-          <span data-ttu-id="9db57-244">
-            <paramref name="value" /> 為 **null**。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-244">
-              <paramref name="value" /> is **null**.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="Identities">
-      <MemberSignature Language="C#" Value="public virtual System.Collections.Generic.IEnumerable&lt;System.Security.Claims.ClaimsIdentity&gt; Identities { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Generic.IEnumerable`1&lt;class System.Security.Claims.ClaimsIdentity&gt; Identities" />
-      <MemberSignature Language="DocId" Value="P:System.Security.Claims.ClaimsPrincipal.Identities" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property Identities As IEnumerable(Of ClaimsIdentity)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Collections::Generic::IEnumerable&lt;System::Security::Claims::ClaimsIdentity ^&gt; ^ Identities { System::Collections::Generic::IEnumerable&lt;System::Security::Claims::ClaimsIdentity ^&gt; ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.Generic.IEnumerable&lt;System.Security.Claims.ClaimsIdentity&gt;</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="9db57-245">取得集合，其中包含所有與這個宣告主體相關聯的宣告身分識別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-245">Gets a collection that contains all of the claims identities associated with this claims principal.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="9db57-246">宣告身分識別的集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-246">The collection of claims identities.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-247">在常見的情況下，集合會包含單一項目。</span><span class="sxs-lookup"><span data-stu-id="9db57-247">In the common case, the collection contains only a single element.</span></span>  
-  
- <span data-ttu-id="9db57-248">集合包含一些項目，也就是可能`null`。</span><span class="sxs-lookup"><span data-stu-id="9db57-248">It is possible for the collection to contain some elements which are `null`.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Identity">
-      <MemberSignature Language="C#" Value="public virtual System.Security.Principal.IIdentity Identity { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Principal.IIdentity Identity" />
-      <MemberSignature Language="DocId" Value="P:System.Security.Claims.ClaimsPrincipal.Identity" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property Identity As IIdentity" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Security::Principal::IIdentity ^ Identity { System::Security::Principal::IIdentity ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Security.Principal.IPrincipal.Identity</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Security.Principal.IIdentity</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="9db57-249">取得與這個宣告主體關聯的主要宣告身分識別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-249">Gets the primary claims identity associated with this claims principal.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="9db57-250">與這個宣告主體關聯的主要宣告身分識別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-250">The primary claims identity associated with this claims principal.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-251">根據預設，架構會排列優先順序的型別身分<xref:System.Security.Principal.WindowsIdentity>傳回身分識別時。</span><span class="sxs-lookup"><span data-stu-id="9db57-251">By default, the framework prioritizes identities of type <xref:System.Security.Principal.WindowsIdentity> when returning the identity.</span></span> <span data-ttu-id="9db57-252">第一個<xref:System.Security.Principal.WindowsIdentity>中找到<xref:System.Security.Claims.ClaimsPrincipal.Identities%2A>會傳回的集合。</span><span class="sxs-lookup"><span data-stu-id="9db57-252">The first <xref:System.Security.Principal.WindowsIdentity> found in the <xref:System.Security.Claims.ClaimsPrincipal.Identities%2A> collection is returned.</span></span> <span data-ttu-id="9db57-253">如果沒有任何<xref:System.Security.Principal.WindowsIdentity>在集合中，第一個身分識別可從<xref:System.Security.Claims.ClaimsIdentity>傳回。</span><span class="sxs-lookup"><span data-stu-id="9db57-253">If there is no <xref:System.Security.Principal.WindowsIdentity> in the collection, the first identity assignable from <xref:System.Security.Claims.ClaimsIdentity> is returned.</span></span> <span data-ttu-id="9db57-254">如果沒有任何<xref:System.Security.Claims.ClaimsIdentity>，`null`傳回。</span><span class="sxs-lookup"><span data-stu-id="9db57-254">If there is no <xref:System.Security.Claims.ClaimsIdentity>, `null` is returned.</span></span> <span data-ttu-id="9db57-255">如果<xref:System.Security.Claims.ClaimsPrincipal.Identities%2A>集合是空的<xref:System.ArgumentNullException>就會擲回。</span><span class="sxs-lookup"><span data-stu-id="9db57-255">If the <xref:System.Security.Claims.ClaimsPrincipal.Identities%2A> collection is empty, an <xref:System.ArgumentNullException> is thrown.</span></span>  
-  
- <span data-ttu-id="9db57-256">您可以變更預設行為，藉由設定<xref:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector%2A>屬性，以指定的委派，呼叫以判斷識別。</span><span class="sxs-lookup"><span data-stu-id="9db57-256">You can change the default behavior by setting the <xref:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector%2A> property to specify a delegate to be called to determine the identity.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="P:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector" />
-      </Docs>
-    </Member>
-    <Member MemberName="IsInRole">
-      <MemberSignature Language="C#" Value="public virtual bool IsInRole (string role);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IsInRole(string role) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.IsInRole(System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable Function IsInRole (role As String) As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool IsInRole(System::String ^ role);" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Security.Principal.IPrincipal.IsInRole(System.String)</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="role" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="role">
-          <span data-ttu-id="9db57-257">要檢查的角色。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-257">The role for which to check.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-258">傳回值，表示此宣告主體所代表之實體 (使用者) 是否在指定的角色。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-258">Returns a value that indicates whether the entity (user) represented by this claims principal is in the specified role.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="9db57-259">如果宣告主體在指定的角色中，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-259">
-              <see langword="true" /> if claims principal is in the specified role; otherwise, <see langword="false" />.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-260"><xref:System.Security.Claims.ClaimsPrincipal.IsInRole%2A>方法會檢查此宣告主體所擁有的身分識別是否包含宣告類型<xref:System.Security.Claims.ClaimsIdentity.RoleClaimType%2A?displayProperty=nameWithType>宣告的值等於所指定的值`role`參數。</span><span class="sxs-lookup"><span data-stu-id="9db57-260">The <xref:System.Security.Claims.ClaimsPrincipal.IsInRole%2A> method checks whether an identity that this claims principal possesses contains a claim of type <xref:System.Security.Claims.ClaimsIdentity.RoleClaimType%2A?displayProperty=nameWithType> where the value of the claim is equal to the value specified by the `role` parameter.</span></span>  
-  
-> [!NOTE]
->  <span data-ttu-id="9db57-261">每個<xref:System.Security.Claims.ClaimsIdentity>有它自己的定義，代表角色的宣告型別。</span><span class="sxs-lookup"><span data-stu-id="9db57-261">Each <xref:System.Security.Claims.ClaimsIdentity> has its own definition of the claim type that represents a role.</span></span> <span data-ttu-id="9db57-262">這種宣告類型可以存取和設定透過<xref:System.Security.Claims.ClaimsIdentity.RoleClaimType%2A?displayProperty=nameWithType>屬性。</span><span class="sxs-lookup"><span data-stu-id="9db57-262">This claim type can be accessed and set through the <xref:System.Security.Claims.ClaimsIdentity.RoleClaimType%2A?displayProperty=nameWithType> property.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="PrimaryIdentitySelector">
-      <MemberSignature Language="C#" Value="public static Func&lt;System.Collections.Generic.IEnumerable&lt;System.Security.Claims.ClaimsIdentity&gt;,System.Security.Claims.ClaimsIdentity&gt; PrimaryIdentitySelector { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property class System.Func`2&lt;class System.Collections.Generic.IEnumerable`1&lt;class System.Security.Claims.ClaimsIdentity&gt;, class System.Security.Claims.ClaimsIdentity&gt; PrimaryIdentitySelector" />
-      <MemberSignature Language="DocId" Value="P:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector" />
-      <MemberSignature Language="VB.NET" Value="Public Shared Property PrimaryIdentitySelector As Func(Of IEnumerable(Of ClaimsIdentity), ClaimsIdentity)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; static property Func&lt;System::Collections::Generic::IEnumerable&lt;System::Security::Claims::ClaimsIdentity ^&gt; ^, System::Security::Claims::ClaimsIdentity ^&gt; ^ PrimaryIdentitySelector { Func&lt;System::Collections::Generic::IEnumerable&lt;System::Security::Claims::ClaimsIdentity ^&gt; ^, System::Security::Claims::ClaimsIdentity ^&gt; ^ get(); void set(Func&lt;System::Collections::Generic::IEnumerable&lt;System::Security::Claims::ClaimsIdentity ^&gt; ^, System::Security::Claims::ClaimsIdentity ^&gt; ^ value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>set: System.Security.SecurityCritical</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.Func&lt;System.Collections.Generic.IEnumerable&lt;System.Security.Claims.ClaimsIdentity&gt;,System.Security.Claims.ClaimsIdentity&gt;</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="9db57-263">取得及設定委派，用來選取 <see cref="P:System.Security.Claims.ClaimsPrincipal.Identity" /> 屬性所傳回的宣告識別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-263">Gets and sets the delegate used to select the claims identity returned by the <see cref="P:System.Security.Claims.ClaimsPrincipal.Identity" /> property.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="9db57-264">委派。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-264">The delegate.</span>
-          </span>
-          <span data-ttu-id="9db57-265">預設值為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-265">The default is <see langword="null" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9db57-266">您可以設定這個屬性來覆寫預設行為<xref:System.Security.Claims.ClaimsPrincipal.Identity%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="9db57-266">You can set this property to override the default behavior of the <xref:System.Security.Claims.ClaimsPrincipal.Identity%2A> property.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <permission cref="T:System.Security.SecurityCriticalAttribute">
-          <span data-ttu-id="9db57-267">設定作業需要完全信任立即呼叫者。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-267">Set operation requires full trust for the immediate caller.</span>
-          </span>
-          <span data-ttu-id="9db57-268">無法由部分信任或安全性透明程式碼中設定這個成員。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-268">This member cannot be set by partially trusted or transparent code.</span>
-          </span>
-        </permission>
-        <altmember cref="P:System.Security.Claims.ClaimsPrincipal.Identity" />
-      </Docs>
-    </Member>
-    <Member MemberName="WriteTo">
-      <MemberSignature Language="C#" Value="public virtual void WriteTo (System.IO.BinaryWriter writer);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void WriteTo(class System.IO.BinaryWriter writer) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.WriteTo(System.IO.BinaryWriter)" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable Sub WriteTo (writer As BinaryWriter)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void WriteTo(System::IO::BinaryWriter ^ writer);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="writer" Type="System.IO.BinaryWriter" />
-      </Parameters>
-      <Docs>
-        <param name="writer">
-          <span data-ttu-id="9db57-269">要用於資料儲存的寫入器。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-269">The writer to use for data storage.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-270">使用 <see cref="T:System.IO.BinaryWriter" /> 序列化。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-270">Serializes using a <see cref="T:System.IO.BinaryWriter" />.</span>
-          </span>
-        </summary>
-        <remarks></remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-271">
-            <paramref name="writer" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-271">
-              <paramref name="writer" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="WriteTo">
-      <MemberSignature Language="C#" Value="protected virtual void WriteTo (System.IO.BinaryWriter writer, byte[] userData);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void WriteTo(class System.IO.BinaryWriter writer, unsigned int8[] userData) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsPrincipal.WriteTo(System.IO.BinaryWriter,System.Byte[])" />
-      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub WriteTo (writer As BinaryWriter, userData As Byte())" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void WriteTo(System::IO::BinaryWriter ^ writer, cli::array &lt;System::Byte&gt; ^ userData);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Security.Claims</AssemblyName>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.1.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="writer" Type="System.IO.BinaryWriter" />
-        <Parameter Name="userData" Type="System.Byte[]" />
-      </Parameters>
-      <Docs>
-        <param name="writer">
-          <span data-ttu-id="9db57-272">要用於資料儲存的寫入器。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-272">The writer to use for data storage.</span>
-          </span>
-        </param>
-        <param name="userData">
-          <span data-ttu-id="9db57-273">衍生類型所提供的其他資料。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-273">Additional data provided by the derived type.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9db57-274">使用 <see cref="T:System.IO.BinaryWriter" /> 序列化。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-274">Serializes using a <see cref="T:System.IO.BinaryWriter" />.</span>
-          </span>
-        </summary>
-        <remarks></remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="9db57-275">
-            <paramref name="writer" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9db57-275">
-              <paramref name="writer" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="ClaimsPrincipal.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac59a2c844b538e9744cf3dbebf25a6ab8e73142aa5.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">9a2c844b538e9744cf3dbebf25a6ab8e73142aa5</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netcore-1.0,netcore-1.1,netcore-2.0,netcore-2.1,netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7,netstandard-2.0,xamarinandroid-7.1,xamarinios-10.8,xamarinmac-3.0</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>An <ph id="ph1">&lt;see cref="T:System.Security.Principal.IPrincipal" /&gt;</ph> implementation that supports multiple claims-based identities.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Security.Principal.IPrincipal" /&gt;</ph> 實作，其支援多個宣告式身分識別。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>Beginning with .NET Framework 4.5, Windows Identity Foundation (WIF) and claims-based identity have been fully integrated into the .NET Framework.</source>
+          <target state="translated">從.NET Framework 4.5 開始，Windows Identity Foundation (WIF) 和宣告式身分識別已完全整合到.NET Framework。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>This means that many classes that represent a principal in the .NET Framework now derive from <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph> rather than simply implementing the <ph id="ph2">&lt;xref:System.Security.Principal.IPrincipal&gt;</ph> interface.</source>
+          <target state="translated">這表示現在代表.NET Framework 中的主體的許多類別衍生自<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>而不只實作<ph id="ph2">&lt;xref:System.Security.Principal.IPrincipal&gt;</ph>介面。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>In addition to implementing the <ph id="ph1">&lt;xref:System.Security.Principal.IPrincipal&gt;</ph> interface, <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph> exposes properties and methods that are useful for working with claims.</source>
+          <target state="translated">除了實作<ph id="ph1">&lt;xref:System.Security.Principal.IPrincipal&gt;</ph>介面，<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>公開適用於使用具有宣告的屬性和方法。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source><ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph> exposes a collection of identities, each of which is a <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph> 會公開的身分識別，其中每個的集合<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>In the common case, this collection, which is accessed through the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph> property, will only have a single element.</source>
+          <target state="translated">在一般情況下，這個集合，透過存取<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph>屬性，將只有單一項目。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>The introduction of <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph> in .NET 4.5 as the principal from which most principal classes derive does not force you to change anything in the way in which you deal with identity.</source>
+          <target state="translated">導入<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>做為主體最主要的類別衍生自.NET 4.5 中不會強制您變更任何項目在處理與身分識別的方式。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>It does, however open up more possibilities and offer more chances to exercise finer access control.</source>
+          <target state="translated">不過它會開啟更多可能性並提供更多的機會，以進行更細微的存取控制。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>For example:</source>
+          <target state="translated">例如: </target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>The application code itself can work directly with the claims contained in the current principal to drive extra authentication, authorization, and personalization tasks.</source>
+          <target state="translated">應用程式程式碼本身可直接與目前的主體中包含的宣告，磁碟機額外的驗證、 授權及個人化的工作。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>You can front your resources with a claims processing pipeline, which can deal with authentication requests and authorization policy even before execution reaches your code.</source>
+          <target state="translated">您可以利用處理管線，可處理驗證要求及授權原則執行到您的程式碼之前宣告前端您的資源。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>For example, you can configure a web-based application or service with a custom claims authentication manager, an instance of a class that derives from the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsAuthenticationManager&gt;</ph> class.</source>
+          <target state="translated">例如，您可以設定 web 應用程式或服務與自訂宣告驗證管理員 」 是衍生自類別的執行個體<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsAuthenticationManager&gt;</ph>類別。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>When so configured, the request processing pipeline invokes the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsAuthenticationManager.Authenticate%2A&gt;</ph> method on your claims authentication manager passing it a <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph> that represents the context of the incoming request.</source>
+          <target state="translated">如此設定，會叫用要求處理管線<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsAuthenticationManager.Authenticate%2A&gt;</ph>方法在您將傳遞給它的宣告驗證管理員<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>表示內送要求的內容。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>Your claims authentication manager can then perform authentication based on the values of the incoming claims.</source>
+          <target state="translated">您宣告的驗證管理員接著可以執行驗證，根據連入宣告的值。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>It can also filter, transform, or add claims to the incoming claim set.</source>
+          <target state="translated">它也可以篩選、 轉換或將宣告新增至連入宣告集。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>For example, it could be used to enrich the incoming claim set with new claims created from a local data source such as a local user profile</source>
+          <target state="translated">例如，它可用於擴充具有本機資料來源，例如本機使用者設定檔建立新的宣告集的連入宣告</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>You can configure a web-based application with a custom claims authorization manager, an instance of a class that derives from the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsAuthorizationManager&gt;</ph> class.</source>
+          <target state="translated">您可以使用自訂宣告授權管理員中，衍生自類別的執行個體設定的 web 型應用程式<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsAuthorizationManager&gt;</ph>類別。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>When so configured, the request processing pipeline packages the incoming <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph> in an <ph id="ph2">&lt;xref:System.Security.Claims.AuthorizationContext&gt;</ph> and invokes the <ph id="ph3">&lt;xref:System.Security.Claims.ClaimsAuthorizationManager.CheckAccess%2A&gt;</ph> method on your claims authorization manager.</source>
+          <target state="translated">如此設定，當要求處理管線會封裝傳入<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>中<ph id="ph2">&lt;xref:System.Security.Claims.AuthorizationContext&gt;</ph>並叫用<ph id="ph3">&lt;xref:System.Security.Claims.ClaimsAuthorizationManager.CheckAccess%2A&gt;</ph>上 claims authorization manager 授權您的方法。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>Your claims authorization manager can then enforce authorization based on the incoming claims.</source>
+          <target state="translated">Claims authorization manager 授權您接著可以強制執行內送宣告架構的授權。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>Inline claims-based code access checks can be performed by configuring your application with a custom claims authorization manager and using either the <ph id="ph1">&lt;xref:System.IdentityModel.Services.ClaimsPrincipalPermission&gt;</ph> class to perform imperative access checks or the <ph id="ph2">&lt;xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute&gt;</ph> to perform declarative access checks.</source>
+          <target state="translated">可以由使用自訂宣告授權管理員來設定您的應用程式，而且使用的內嵌宣告式程式碼存取檢查<ph id="ph1">&lt;xref:System.IdentityModel.Services.ClaimsPrincipalPermission&gt;</ph>執行命令式存取檢查的類別或<ph id="ph2">&lt;xref:System.IdentityModel.Services.ClaimsPrincipalPermissionAttribute&gt;</ph>執行宣告式存取檢查。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>Claims-based code access checks are performed inline, outside of the processing pipeline, and so are available to all applications as long as a claims authorization manager is configured.</source>
+          <target state="translated">宣告式程式碼存取檢查會執行的內嵌，外部處理管線中，並因此可用於所有應用程式，只要設定 claims authorization manager 授權。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>You can obtain a <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph> instance for the principal associated with a request in an RP application (or the principal under which a thread is executing) by casting the <ph id="ph2">&lt;xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType&gt;</ph> property to <ph id="ph3">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>.</source>
+          <target state="translated">您可以取得<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>轉換相關聯的 RP 應用程式 （或執行執行緒的主體） 中的要求主體的執行個體<ph id="ph2">&lt;xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType&gt;</ph>屬性<ph id="ph3">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>The claims associated with an <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph> object are available through its <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal.Claims%2A&gt;</ph> property.</source>
+          <target state="translated">與相關聯的宣告<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>物件都是透過其<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal.Claims%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>The <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Claims%2A&gt;</ph> property returns all of the claims contained by the identities associated with the principal.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Claims%2A&gt;</ph>屬性會傳回所有與主體關聯的身分識別所包含的宣告。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>In the uncommon case in which the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph> contains multiple <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph> instances, you can use the <ph id="ph3">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph> property or you can access the primary identity by using the <ph id="ph4">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identity%2A&gt;</ph> property.</source>
+          <target state="translated">在罕見的情況中<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>包含多個<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph>執行個體，您可以使用<ph id="ph3">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph>屬性，或者您可以使用存取的主要識別<ph id="ph4">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identity%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source><ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph> provides several methods through which these claims may be searched and fully supports Language Integrated Query (LINQ).</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph> 提供數種方法可能會搜尋這些宣告並完全支援 Language Integrated Query (LINQ)。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>Identities can be added to the principal by using the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.AddIdentities%2A&gt;</ph> or <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal.AddIdentity%2A&gt;</ph> methods.</source>
+          <target state="translated">身分識別可以使用新增到主體<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.AddIdentities%2A&gt;</ph>或<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal.AddIdentity%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>To add identities to the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>, a caller must have full trust.</source>
+          <target state="translated">若要加入身分識別來<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>，呼叫端必須具有完全信任。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>By default, WIF prioritizes <ph id="ph1">&lt;xref:System.Security.Principal.WindowsIdentity&gt;</ph> objects when selecting the primary identity to return through the <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identity%2A&gt;</ph> property.</source>
+          <target state="translated">根據預設，WIF 會排列優先順序<ph id="ph1">&lt;xref:System.Security.Principal.WindowsIdentity&gt;</ph>物件選取要透過傳回的主要身分識別時<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identity%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>You can modify this behavior by supplying a delegate through the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector%2A&gt;</ph> property to perform the selection.</source>
+          <target state="translated">您可以修改此行為，藉由提供委派，以透過<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector%2A&gt;</ph>執行選取的屬性。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>The <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector%2A&gt;</ph> property provides similar functionality for the <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal.Current%2A&gt;</ph> property.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector%2A&gt;</ph>屬性會提供類似的功能，如<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal.Current%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>In the claim-based model, whether a principal is in a specified role is determined by the claims presented by its underlying identities.</source>
+          <target state="translated">在宣告架構模型中，在指定的角色中的主體是否取決於提供其基礎的身分識別的宣告。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>The <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.IsInRole%2A&gt;</ph> method essentially examines each identity associated with the principal to determine whether it possesses a claim with the specified role value.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.IsInRole%2A&gt;</ph>方法基本上會檢查以判斷它是否擁有指定的角色值的宣告主體相關聯的每個身分識別。</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>The type of the claim (represented by its <ph id="ph1">&lt;xref:System.Security.Claims.Claim.Type%2A?displayProperty=nameWithType&gt;</ph> property) used to determine which claims should be examined during role checks is specified on an identity through its <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsIdentity.RoleClaimType%2A?displayProperty=nameWithType&gt;</ph> property.</source>
+          <target state="translated">宣告的類型 (由其<ph id="ph1">&lt;xref:System.Security.Claims.Claim.Type%2A?displayProperty=nameWithType&gt;</ph>屬性) 用來判斷哪些宣告都應該經過檢查角色期間檢查在透過身分識別指定其<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsIdentity.RoleClaimType%2A?displayProperty=nameWithType&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>Thus, the claims examined during role checks can be of a different type for different identities associated with the principal.</source>
+          <target state="translated">因此，角色檢查期間檢查的宣告可以是不同的身分識別與主體關聯的不同型別。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>The following example extracts the claims presented by a user in an HTTP request and writes them to the HTTP response.</source>
+          <target state="translated">下列範例會擷取 HTTP 要求中的使用者提供的宣告，並將它們寫入 HTTP 回應。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>The current user is read from the <ph id="ph1">&lt;xref:System.Web.HttpContext&gt;</ph> as a <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>.</source>
+          <target state="translated">目前的使用者讀取<ph id="ph1">&lt;xref:System.Web.HttpContext&gt;</ph>為<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>The claims are then read from it and then are written to the response.</source>
+          <target state="translated">宣告會再讀取和便會寫入至回應。</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> class.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> class.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor">
+          <source>No identities are associated with the new instance.</source>
+          <target state="translated">沒有識別與相關聯的新執行個體。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor">
+          <source>(The <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph> collection is empty).</source>
+          <target state="translated">(<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph>集合是空的)。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Collections.Generic.IEnumerable{System.Security.Claims.ClaimsIdentity})">
+          <source>The identities from which to initialize the new claims principal.</source>
+          <target state="translated">用來初始化新宣告主體的身份識別。</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Collections.Generic.IEnumerable{System.Security.Claims.ClaimsIdentity})">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> class using the specified claims identities.</source>
+          <target state="translated">使用指定的宣告身份識別，初始化 <ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Collections.Generic.IEnumerable{System.Security.Claims.ClaimsIdentity})">
+          <source>The <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph> collection is initialized with the specified identities.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph>集合已初始化使用指定的身分識別。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Collections.Generic.IEnumerable{System.Security.Claims.ClaimsIdentity})">
+          <source><ph id="ph1">&lt;paramref name="identities" /&gt;</ph> is <bpt id="p1">**</bpt>null<ept id="p1">**</ept>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="identities" /&gt;</ph> 為 <bpt id="p1">**</bpt>null<ept id="p1">**</ept>。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.IO.BinaryReader)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.IO.BinaryReader" /&gt;</ph> pointing to a <ph id="ph2">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph>.</source>
+          <target state="translated">指向 <ph id="ph2">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> 的 <ph id="ph1">&lt;see cref="T:System.IO.BinaryReader" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.IO.BinaryReader)">
+          <source>Initializes an instance of <ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> with the specified <ph id="ph2">&lt;see cref="T:System.IO.BinaryReader" /&gt;</ph>.</source>
+          <target state="translated">使用指定的 <ph id="ph2">&lt;see cref="T:System.IO.BinaryReader" /&gt;</ph>，初始化 <ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> 的執行個體。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.IO.BinaryReader)">
+          <source>Normally, the <ph id="ph1">&lt;xref:System.IO.BinaryReader&gt;</ph> is constructed using the bytes from <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsIdentity.WriteTo%2A&gt;</ph> and initialized in the same way as the <ph id="ph3">&lt;xref:System.IO.BinaryWriter&gt;</ph>.</source>
+          <target state="translated">一般來說，<ph id="ph1">&lt;xref:System.IO.BinaryReader&gt;</ph>建構使用位元組從<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsIdentity.WriteTo%2A&gt;</ph>和相同的方式初始化<ph id="ph3">&lt;xref:System.IO.BinaryWriter&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.IO.BinaryReader)">
+          <source><ph id="ph1">&lt;paramref name="reader" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="reader" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Security.Principal.IIdentity)">
+          <source>The identity from which to initialize the new claims principal.</source>
+          <target state="translated">初始化新宣告主體的來源識別。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Security.Principal.IIdentity)">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> class from the specified identity.</source>
+          <target state="translated">從指定的識別初始化 <ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Security.Principal.IIdentity)">
+          <source>If the specified identity is assignable from <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph>, it is used to initialize the <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph> collection.</source>
+          <target state="translated">如果指定的識別是可從<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph>，用來初始化<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph>集合。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Security.Principal.IIdentity)">
+          <source>Otherwise, a <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph> is created using the specified identity and is used to initialize the collection.</source>
+          <target state="translated">否則，<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph>使用指定的身分識別建立，用來初始化集合。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Security.Principal.IIdentity)">
+          <source><ph id="ph1">&lt;paramref name="identity" /&gt;</ph> is <bpt id="p1">**</bpt>null<ept id="p1">**</ept>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="identity" /&gt;</ph> 為 <bpt id="p1">**</bpt>null<ept id="p1">**</ept>。</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Security.Principal.IPrincipal)">
+          <source>The principal from which to initialize the new claims principal.</source>
+          <target state="translated">初始化新宣告主體的來源主體。</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Security.Principal.IPrincipal)">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> class from the specified principal.</source>
+          <target state="translated">從指定的主體，初始化 <ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Security.Principal.IPrincipal)">
+          <source>If the specified principal is assignable from <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>, all of its identities are added to the <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph> collection.</source>
+          <target state="translated">如果指定的主體是可從<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>，所有其身分識別會新增至<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph>集合。</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Security.Principal.IPrincipal)">
+          <source>If the specified principal is not assignable from <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>, a new <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph> is created from the <ph id="ph3">&lt;xref:System.Security.Principal.IIdentity&gt;</ph> in its <ph id="ph4">&lt;xref:System.Security.Principal.IPrincipal.Identity%2A?displayProperty=nameWithType&gt;</ph> property and added to the <ph id="ph5">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph> collection.</source>
+          <target state="translated">如果指定的主體不是可從<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal&gt;</ph>，新<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph>建立從<ph id="ph3">&lt;xref:System.Security.Principal.IIdentity&gt;</ph>中其<ph id="ph4">&lt;xref:System.Security.Principal.IPrincipal.Identity%2A?displayProperty=nameWithType&gt;</ph>屬性並新增至<ph id="ph5">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph>集合。</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Security.Principal.IPrincipal)">
+          <source><ph id="ph1">&lt;paramref name="principal" /&gt;</ph> is <bpt id="p1">**</bpt>null<ept id="p1">**</ept>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="principal" /&gt;</ph> 為 <bpt id="p1">**</bpt>null<ept id="p1">**</ept>。</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+          <source>The serialized data.</source>
+          <target state="translated">序列化的資料。</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+          <source>The context for serialization.</source>
+          <target state="translated">序列化的內容。</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> class from a serialized stream created by using <ph id="ph2">&lt;see cref="T:System.Runtime.Serialization.ISerializable" /&gt;</ph>.</source>
+          <target state="translated">從使用 <ph id="ph2">&lt;see cref="T:System.Runtime.Serialization.ISerializable" /&gt;</ph> 建立的序列化資料流，初始化 <ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+          <source><ph id="ph1">&lt;paramref name="info" /&gt;</ph> is <bpt id="p1">**</bpt>null<ept id="p1">**</ept>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="info" /&gt;</ph> 為 <bpt id="p1">**</bpt>null<ept id="p1">**</ept>。</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+          <source>requires full trust for the immediate caller.</source>
+          <target state="translated">需要完全信任立即呼叫者。</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+          <source>This member cannot be used by partially trusted or transparent code.</source>
+          <target state="translated">這個成員無法供部分信任或安全性透明程式碼。</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.AddIdentities(System.Collections.Generic.IEnumerable{System.Security.Claims.ClaimsIdentity})">
+          <source>The claims identities to add.</source>
+          <target state="translated">要加入的宣告識別。</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.AddIdentities(System.Collections.Generic.IEnumerable{System.Security.Claims.ClaimsIdentity})">
+          <source>Adds the specified claims identities to this claims principal.</source>
+          <target state="translated">將指定的宣告識別加入這個宣告主體。</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.AddIdentities(System.Collections.Generic.IEnumerable{System.Security.Claims.ClaimsIdentity})">
+          <source>The identities are added to the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph> collection.</source>
+          <target state="translated">識別加入至<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph>集合。</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.AddIdentities(System.Collections.Generic.IEnumerable{System.Security.Claims.ClaimsIdentity})">
+          <source><ph id="ph1">&lt;paramref name="identities" /&gt;</ph> is <bpt id="p1">**</bpt>null<ept id="p1">**</ept>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="identities" /&gt;</ph> 為 <bpt id="p1">**</bpt>null<ept id="p1">**</ept>。</target>       </trans-unit>
+        <trans-unit id="171" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.AddIdentities(System.Collections.Generic.IEnumerable{System.Security.Claims.ClaimsIdentity})">
+          <source>requires full trust for the immediate caller.</source>
+          <target state="translated">需要完全信任立即呼叫者。</target>       </trans-unit>
+        <trans-unit id="172" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.AddIdentities(System.Collections.Generic.IEnumerable{System.Security.Claims.ClaimsIdentity})">
+          <source>This member cannot be used by partially trusted or transparent code.</source>
+          <target state="translated">這個成員無法供部分信任或安全性透明程式碼。</target>       </trans-unit>
+        <trans-unit id="173" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.AddIdentity(System.Security.Claims.ClaimsIdentity)">
+          <source>The claims identity to add.</source>
+          <target state="translated">要加入的宣告識別。</target>       </trans-unit>
+        <trans-unit id="174" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.AddIdentity(System.Security.Claims.ClaimsIdentity)">
+          <source>Adds the specified claims identity to this claims principal.</source>
+          <target state="translated">將指定的宣告識別加入這個宣告主體。</target>       </trans-unit>
+        <trans-unit id="175" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.AddIdentity(System.Security.Claims.ClaimsIdentity)">
+          <source>The identity is added to the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph> collection.</source>
+          <target state="translated">識別加入至<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph>集合。</target>       </trans-unit>
+        <trans-unit id="176" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.AddIdentity(System.Security.Claims.ClaimsIdentity)">
+          <source><ph id="ph1">&lt;paramref name="identity" /&gt;</ph> is <bpt id="p1">**</bpt>null<ept id="p1">**</ept>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="identity" /&gt;</ph> 為 <bpt id="p1">**</bpt>null<ept id="p1">**</ept>。</target>       </trans-unit>
+        <trans-unit id="177" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.AddIdentity(System.Security.Claims.ClaimsIdentity)">
+          <source>requires full trust for the immediate caller.</source>
+          <target state="translated">需要完全信任立即呼叫者。</target>       </trans-unit>
+        <trans-unit id="178" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.AddIdentity(System.Security.Claims.ClaimsIdentity)">
+          <source>This member cannot be used by partially trusted or transparent code.</source>
+          <target state="translated">這個成員無法供部分信任或安全性透明程式碼。</target>       </trans-unit>
+        <trans-unit id="179" translate="yes" xml:space="preserve" uid="P:System.Security.Claims.ClaimsPrincipal.Claims">
+          <source>Gets a collection that contains all of the claims from all of the claims identities associated with this claims principal.</source>
+          <target state="translated">取得集合，其中包含來自與這個宣告主體相關聯的所有宣告身分識別之所有宣告。</target>       </trans-unit>
+        <trans-unit id="180" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Claims">
+          <source>The claims associated with this principal.</source>
+          <target state="translated">與這個主體相關聯的宣告。</target>       </trans-unit>
+        <trans-unit id="181" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Claims">
+          <source>A claims principal has a collection of <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph> objects that is accessible through the Identities property.</source>
+          <target state="translated">宣告主體擁有集合<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph>存取透過身分識別屬性的物件。</target>       </trans-unit>
+        <trans-unit id="182" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Claims">
+          <source>Each <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph> in the collection contains one or more claims.</source>
+          <target state="translated">每個<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph>集合中包含一個或多個宣告。</target>       </trans-unit>
+        <trans-unit id="183" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Claims">
+          <source>The <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Claims%2A&gt;</ph> property returns all of the claims from all of the claims identities in this collection.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Claims%2A&gt;</ph>屬性會傳回所有的宣告從所有在此集合中的宣告身分識別。</target>       </trans-unit>
+        <trans-unit id="184" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Claims">
+          <source>The <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Claims%2A&gt;</ph> property can be examined by custom implementations of the <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsAuthenticationManager&gt;</ph> class to make authentication decisions or to filter, transform, or enrich an incoming claim set; by custom implementations of the <ph id="ph3">&lt;xref:System.Security.Claims.ClaimsAuthorizationManager&gt;</ph> class to enforce authorization policy; or by application code to make authorization decisions or to customize user experience based on the claims present in the collection.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Claims%2A&gt;</ph>屬性可以檢驗的自訂實作<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsAuthenticationManager&gt;</ph>來進行驗證決策，或是篩選、 轉換或充實連入宣告集; 類別的自訂實作<ph id="ph3">&lt;xref:System.Security.Claims.ClaimsAuthorizationManager&gt;</ph>類別來強制執行授權原則。或由應用程式程式碼來製作授權決策，或自訂使用者經驗會根據集合中的宣告。</target>       </trans-unit>
+        <trans-unit id="185" translate="yes" xml:space="preserve" uid="P:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector">
+          <source>Gets and sets the delegate used to select the claims principal returned by the <ph id="ph1">&lt;see cref="P:System.Security.Claims.ClaimsPrincipal.Current" /&gt;</ph> property.</source>
+          <target state="translated">取得及設定用來選取 <ph id="ph1">&lt;see cref="P:System.Security.Claims.ClaimsPrincipal.Current" /&gt;</ph> 屬性所傳回宣告主體的委派。</target>       </trans-unit>
+        <trans-unit id="186" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector">
+          <source>The delegate.</source>
+          <target state="translated">委派。</target>       </trans-unit>
+        <trans-unit id="187" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector">
+          <source>The default is <ph id="ph1">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated">預設值為 <ph id="ph1">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="188" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector">
+          <source>You can set this property to override the default behavior of the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Current%2A&gt;</ph> property.</source>
+          <target state="translated">您可以設定這個屬性來覆寫預設行為<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Current%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="189" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector">
+          <source>Set operation requires full trust for the immediate caller.</source>
+          <target state="translated">設定作業需要完全信任立即呼叫者。</target>       </trans-unit>
+        <trans-unit id="190" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector">
+          <source>This member cannot be set by partially trusted or transparent code.</source>
+          <target state="translated">無法由部分信任或安全性透明程式碼中設定這個成員。</target>       </trans-unit>
+        <trans-unit id="191" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.Clone">
+          <source>Returns a copy of this instance.</source>
+          <target state="translated">傳回這個執行個體的複本。</target>       </trans-unit>
+        <trans-unit id="192" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.Clone">
+          <source>A new copy of the <ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> object.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> 物件的新複本。</target>       </trans-unit>
+        <trans-unit id="193" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.CreateClaimsIdentity(System.IO.BinaryReader)">
+          <source>The binary reader.</source>
+          <target state="translated">二進位檔讀取器。</target>       </trans-unit>
+        <trans-unit id="194" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.CreateClaimsIdentity(System.IO.BinaryReader)">
+          <source>Creates a new claims identity.</source>
+          <target state="translated">建立新的宣告身分識別。</target>       </trans-unit>
+        <trans-unit id="195" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.CreateClaimsIdentity(System.IO.BinaryReader)">
+          <source>The created claims identity.</source>
+          <target state="translated">建立的宣告身分識別。</target>       </trans-unit>
+        <trans-unit id="196" translate="yes" xml:space="preserve" uid="P:System.Security.Claims.ClaimsPrincipal.Current">
+          <source>Gets the current claims principal.</source>
+          <target state="translated">取得目前的宣告主體。</target>       </trans-unit>
+        <trans-unit id="197" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Current">
+          <source>The current claims principal.</source>
+          <target state="translated">目前的宣告主體。</target>       </trans-unit>
+        <trans-unit id="198" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Current">
+          <source>By default, <ph id="ph1">&lt;xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType&gt;</ph> is returned.</source>
+          <target state="translated">根據預設，<ph id="ph1">&lt;xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType&gt;</ph>傳回。</target>       </trans-unit>
+        <trans-unit id="199" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Current">
+          <source>You can change this behavior by setting the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector%2A&gt;</ph> property to specify a delegate to be called to determine the current principal.</source>
+          <target state="translated">您可以變更此行為，藉由設定<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.ClaimsPrincipalSelector%2A&gt;</ph>屬性，以指定的委派，呼叫以判斷目前的主體。</target>       </trans-unit>
+        <trans-unit id="200" translate="yes" xml:space="preserve" uid="P:System.Security.Claims.ClaimsPrincipal.CustomSerializationData">
+          <source>Contains any additional data provided by a derived type.</source>
+          <target state="translated">包含衍生類型所提供的任何其他資料。</target>       </trans-unit>
+        <trans-unit id="201" translate="yes" xml:space="preserve" uid="P:System.Security.Claims.ClaimsPrincipal.CustomSerializationData">
+          <source>Typically set when calling <ph id="ph1">&lt;see cref="M:System.Security.Claims.ClaimsIdentity.WriteTo(System.IO.BinaryWriter,System.Byte[])" /&gt;</ph>.</source>
+          <target state="translated">通常會在呼叫 <ph id="ph1">&lt;see cref="M:System.Security.Claims.ClaimsIdentity.WriteTo(System.IO.BinaryWriter,System.Byte[])" /&gt;</ph> 時設定。</target>       </trans-unit>
+        <trans-unit id="202" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.CustomSerializationData">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Byte" /&gt;</ph> array representing the additional serialized data.</source>
+          <target state="translated">A<ph id="ph1">&lt;see cref="T:System.Byte" /&gt;</ph>陣列，表示的其他序列化資料。</target>       </trans-unit>
+        <trans-unit id="203" translate="yes" xml:space="preserve" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>Retrieves all of the claims that match a specified condition.</source>
+          <target state="translated">擷取所有符合指定條件的宣告。</target>       </trans-unit>
+        <trans-unit id="204" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindAll(System.Predicate{System.Security.Claims.Claim})">
+          <source>The function that performs the matching logic.</source>
+          <target state="translated">執行比對邏輯的函式。</target>       </trans-unit>
+        <trans-unit id="205" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindAll(System.Predicate{System.Security.Claims.Claim})">
+          <source>Retrieves all of the claims that are matched by the specified predicate.</source>
+          <target state="translated">擷取所有符合指定述詞的宣告。</target>       </trans-unit>
+        <trans-unit id="206" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindAll(System.Predicate{System.Security.Claims.Claim})">
+          <source>The matching claims.</source>
+          <target state="translated">符合的宣告。</target>       </trans-unit>
+        <trans-unit id="207" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.FindAll(System.Predicate{System.Security.Claims.Claim})">
+          <source>Returns claims from all identities associated with the claims principal.</source>
+          <target state="translated">傳回宣告主體相關聯的所有身分識別宣告。</target>       </trans-unit>
+        <trans-unit id="208" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindAll(System.Predicate{System.Security.Claims.Claim})">
+          <source><ph id="ph1">&lt;paramref name="match" /&gt;</ph> is <bpt id="p1">**</bpt>null<ept id="p1">**</ept>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="match" /&gt;</ph> 為 <bpt id="p1">**</bpt>null<ept id="p1">**</ept>。</target>       </trans-unit>
+        <trans-unit id="209" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindAll(System.String)">
+          <source>The claim type against which to match claims.</source>
+          <target state="translated">要比對宣告的宣告類型。</target>       </trans-unit>
+        <trans-unit id="210" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindAll(System.String)">
+          <source>Retrieves all or the claims that have the specified claim type.</source>
+          <target state="translated">擷取所有具有指定宣告類型的宣告。</target>       </trans-unit>
+        <trans-unit id="211" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindAll(System.String)">
+          <source>The matching claims.</source>
+          <target state="translated">符合的宣告。</target>       </trans-unit>
+        <trans-unit id="212" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.FindAll(System.String)">
+          <source>Returns claims from all identities associated with the claims principal.</source>
+          <target state="translated">傳回宣告主體相關聯的所有身分識別宣告。</target>       </trans-unit>
+        <trans-unit id="213" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.FindAll(System.String)">
+          <source>The comparison is made using Ordinal case in-sensitive on <ph id="ph1">`type`</ph>.</source>
+          <target state="translated">會使用序數的情況中區分上進行比較<ph id="ph1">`type`</ph>。</target>       </trans-unit>
+        <trans-unit id="214" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindAll(System.String)">
+          <source><ph id="ph1">&lt;paramref name="type" /&gt;</ph> is <bpt id="p1">**</bpt>null<ept id="p1">**</ept>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="type" /&gt;</ph> 為 <bpt id="p1">**</bpt>null<ept id="p1">**</ept>。</target>       </trans-unit>
+        <trans-unit id="215" translate="yes" xml:space="preserve" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>Retrieves the first claim that matches a specified condition.</source>
+          <target state="translated">擷取符合指定條件的第一個宣告。</target>       </trans-unit>
+        <trans-unit id="216" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindFirst(System.Predicate{System.Security.Claims.Claim})">
+          <source>The function that performs the matching logic.</source>
+          <target state="translated">執行比對邏輯的函式。</target>       </trans-unit>
+        <trans-unit id="217" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindFirst(System.Predicate{System.Security.Claims.Claim})">
+          <source>Retrieves the first claim that is matched by the specified predicate.</source>
+          <target state="translated">擷取指定述詞所比對的第一個宣告。</target>       </trans-unit>
+        <trans-unit id="218" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindFirst(System.Predicate{System.Security.Claims.Claim})">
+          <source>The first matching claim or <ph id="ph1">&lt;see langword="null" /&gt;</ph> if no match is found.</source>
+          <target state="translated">第一個相符的宣告，如果找不到相符項目，則為 <ph id="ph1">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="219" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindFirst(System.Predicate{System.Security.Claims.Claim})">
+          <source><ph id="ph1">&lt;paramref name="match" /&gt;</ph> is <bpt id="p1">**</bpt>null<ept id="p1">**</ept>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="match" /&gt;</ph> 為 <bpt id="p1">**</bpt>null<ept id="p1">**</ept>。</target>       </trans-unit>
+        <trans-unit id="220" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindFirst(System.String)">
+          <source>The claim type to match.</source>
+          <target state="translated">要比對的宣告類型。</target>       </trans-unit>
+        <trans-unit id="221" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindFirst(System.String)">
+          <source>Retrieves the first claim with the specified claim type.</source>
+          <target state="translated">擷取指定宣告類型的第一個宣告。</target>       </trans-unit>
+        <trans-unit id="222" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindFirst(System.String)">
+          <source>The first matching claim or <ph id="ph1">&lt;see langword="null" /&gt;</ph> if no match is found.</source>
+          <target state="translated">第一個相符的宣告，如果找不到相符項目，則為 <ph id="ph1">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="223" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.FindFirst(System.String)">
+          <source><ph id="ph1">&lt;paramref name="type" /&gt;</ph> is <bpt id="p1">**</bpt>null<ept id="p1">**</ept>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="type" /&gt;</ph> 為 <bpt id="p1">**</bpt>null<ept id="p1">**</ept>。</target>       </trans-unit>
+        <trans-unit id="224" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+          <source>The object to populate with data.</source>
+          <target state="translated">要填入資料的物件。</target>       </trans-unit>
+        <trans-unit id="225" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+          <source>The destination for this serialization.</source>
+          <target state="translated">這個序列化的目的端。</target>       </trans-unit>
+        <trans-unit id="226" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+          <source>Can be <ph id="ph1">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated">可以是 <ph id="ph1">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="227" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+          <source>Populates the <ph id="ph1">&lt;see cref="T:System.Runtime.Serialization.SerializationInfo" /&gt;</ph> with data needed to serialize the current <ph id="ph2">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph> object.</source>
+          <target state="translated">將序列化目前 <ph id="ph1">&lt;see cref="T:System.Runtime.Serialization.SerializationInfo" /&gt;</ph> 物件所需的資料填入 <ph id="ph2">&lt;see cref="T:System.Security.Claims.ClaimsPrincipal" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="228" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+          <source><ph id="ph1">&lt;paramref name="info" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="info" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="229" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+          <source>requires full trust for the immediate caller.</source>
+          <target state="translated">需要完全信任立即呼叫者。</target>       </trans-unit>
+        <trans-unit id="230" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+          <source>This member cannot be used by partially trusted or transparent code.</source>
+          <target state="translated">這個成員無法供部分信任或安全性透明程式碼。</target>       </trans-unit>
+        <trans-unit id="231" translate="yes" xml:space="preserve" uid="T:System.Security.Claims.ClaimsPrincipal">
+          <source>Determines whether any of the claims identities associated with this claims principal contains a claim that matches specified conditions.</source>
+          <target state="translated">判斷與此宣告主體相關聯之宣告身分識別的任何一個是否包含符合指定條件的宣告。</target>       </trans-unit>
+        <trans-unit id="232" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.HasClaim(System.Predicate{System.Security.Claims.Claim})">
+          <source>The function that performs the matching logic.</source>
+          <target state="translated">執行比對邏輯的函式。</target>       </trans-unit>
+        <trans-unit id="233" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.HasClaim(System.Predicate{System.Security.Claims.Claim})">
+          <source>Determines whether any of the claims identities associated with this claims principal contains a claim that is matched by the specified predicate.</source>
+          <target state="translated">判斷與此宣告主體相關聯之宣告身分識別的任何一個是否包含指定述詞所比對的宣告。</target>       </trans-unit>
+        <trans-unit id="234" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.HasClaim(System.Predicate{System.Security.Claims.Claim})">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if a matching claim exists; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果相符的宣告存在，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="235" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.HasClaim(System.Predicate{System.Security.Claims.Claim})">
+          <source><ph id="ph1">&lt;paramref name="match" /&gt;</ph> is <bpt id="p1">**</bpt>null<ept id="p1">**</ept>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="match" /&gt;</ph> 為 <bpt id="p1">**</bpt>null<ept id="p1">**</ept>。</target>       </trans-unit>
+        <trans-unit id="236" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.HasClaim(System.String,System.String)">
+          <source>The type of the claim to match.</source>
+          <target state="translated">要比對的宣告類型。</target>       </trans-unit>
+        <trans-unit id="237" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.HasClaim(System.String,System.String)">
+          <source>The value of the claim to match.</source>
+          <target state="translated">要比對的宣告值。</target>       </trans-unit>
+        <trans-unit id="238" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.HasClaim(System.String,System.String)">
+          <source>Determines whether any of the claims identities associated with this claims principal contains a claim with the specified claim type and value.</source>
+          <target state="translated">判斷與此宣告主體相關聯之宣告身分識別的任何一個，是否包含具有指定宣告類型和值的宣告。</target>       </trans-unit>
+        <trans-unit id="239" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.HasClaim(System.String,System.String)">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if a matching claim exists; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果相符的宣告存在，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="240" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.HasClaim(System.String,System.String)">
+          <source>Does not check the <ph id="ph1">&lt;xref:System.Security.Claims.Claim.Issuer%2A&gt;</ph> or <ph id="ph2">&lt;xref:System.Security.Claims.Claim.OriginalIssuer%2A&gt;</ph> properties.</source>
+          <target state="translated">不會檢查<ph id="ph1">&lt;xref:System.Security.Claims.Claim.Issuer%2A&gt;</ph>或<ph id="ph2">&lt;xref:System.Security.Claims.Claim.OriginalIssuer%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="241" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.HasClaim(System.String,System.String)">
+          <source>The comparison is made using Ordinal, case sensitive on value; case in-sensitive on type.</source>
+          <target state="translated">會使用序數，區分大小寫; 的值進行比較案例中區分型別上。</target>       </trans-unit>
+        <trans-unit id="242" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.HasClaim(System.String,System.String)">
+          <source><ph id="ph1">&lt;paramref name="type" /&gt;</ph> is <bpt id="p1">**</bpt>null<ept id="p1">**</ept>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="type" /&gt;</ph> 為 <bpt id="p1">**</bpt>null<ept id="p1">**</ept>。</target>       </trans-unit>
+        <trans-unit id="243" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.HasClaim(System.String,System.String)">
+          <source>-or-</source>
+          <target state="translated">-或-</target>       </trans-unit>
+        <trans-unit id="244" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.HasClaim(System.String,System.String)">
+          <source><ph id="ph1">&lt;paramref name="value" /&gt;</ph> is <bpt id="p1">**</bpt>null<ept id="p1">**</ept>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="value" /&gt;</ph> 為 <bpt id="p1">**</bpt>null<ept id="p1">**</ept>。</target>       </trans-unit>
+        <trans-unit id="245" translate="yes" xml:space="preserve" uid="P:System.Security.Claims.ClaimsPrincipal.Identities">
+          <source>Gets a collection that contains all of the claims identities associated with this claims principal.</source>
+          <target state="translated">取得集合，其中包含所有與這個宣告主體相關聯的宣告身分識別。</target>       </trans-unit>
+        <trans-unit id="246" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Identities">
+          <source>The collection of claims identities.</source>
+          <target state="translated">宣告身分識別的集合。</target>       </trans-unit>
+        <trans-unit id="247" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Identities">
+          <source>In the common case, the collection contains only a single element.</source>
+          <target state="translated">在常見的情況下，集合會包含單一項目。</target>       </trans-unit>
+        <trans-unit id="248" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Identities">
+          <source>It is possible for the collection to contain some elements which are <ph id="ph1">`null`</ph>.</source>
+          <target state="translated">集合包含一些項目，也就是可能<ph id="ph1">`null`</ph>。</target>       </trans-unit>
+        <trans-unit id="249" translate="yes" xml:space="preserve" uid="P:System.Security.Claims.ClaimsPrincipal.Identity">
+          <source>Gets the primary claims identity associated with this claims principal.</source>
+          <target state="translated">取得與這個宣告主體關聯的主要宣告身分識別。</target>       </trans-unit>
+        <trans-unit id="250" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Identity">
+          <source>The primary claims identity associated with this claims principal.</source>
+          <target state="translated">與這個宣告主體關聯的主要宣告身分識別。</target>       </trans-unit>
+        <trans-unit id="251" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Identity">
+          <source>By default, the framework prioritizes identities of type <ph id="ph1">&lt;xref:System.Security.Principal.WindowsIdentity&gt;</ph> when returning the identity.</source>
+          <target state="translated">根據預設，架構會排列優先順序的型別身分<ph id="ph1">&lt;xref:System.Security.Principal.WindowsIdentity&gt;</ph>傳回身分識別時。</target>       </trans-unit>
+        <trans-unit id="252" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Identity">
+          <source>The first <ph id="ph1">&lt;xref:System.Security.Principal.WindowsIdentity&gt;</ph> found in the <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph> collection is returned.</source>
+          <target state="translated">第一個<ph id="ph1">&lt;xref:System.Security.Principal.WindowsIdentity&gt;</ph>中找到<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph>會傳回的集合。</target>       </trans-unit>
+        <trans-unit id="253" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Identity">
+          <source>If there is no <ph id="ph1">&lt;xref:System.Security.Principal.WindowsIdentity&gt;</ph> in the collection, the first identity assignable from <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph> is returned.</source>
+          <target state="translated">如果沒有任何<ph id="ph1">&lt;xref:System.Security.Principal.WindowsIdentity&gt;</ph>在集合中，第一個身分識別可從<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph>傳回。</target>       </trans-unit>
+        <trans-unit id="254" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Identity">
+          <source>If there is no <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph>, <ph id="ph2">`null`</ph> is returned.</source>
+          <target state="translated">如果沒有任何<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph>，<ph id="ph2">`null`</ph>傳回。</target>       </trans-unit>
+        <trans-unit id="255" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Identity">
+          <source>If the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph> collection is empty, an <ph id="ph2">&lt;xref:System.ArgumentNullException&gt;</ph> is thrown.</source>
+          <target state="translated">如果<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identities%2A&gt;</ph>集合是空的<ph id="ph2">&lt;xref:System.ArgumentNullException&gt;</ph>就會擲回。</target>       </trans-unit>
+        <trans-unit id="256" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.Identity">
+          <source>You can change the default behavior by setting the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector%2A&gt;</ph> property to specify a delegate to be called to determine the identity.</source>
+          <target state="translated">您可以變更預設行為，藉由設定<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector%2A&gt;</ph>屬性，以指定的委派，呼叫以判斷識別。</target>       </trans-unit>
+        <trans-unit id="257" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.IsInRole(System.String)">
+          <source>The role for which to check.</source>
+          <target state="translated">要檢查的角色。</target>       </trans-unit>
+        <trans-unit id="258" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.IsInRole(System.String)">
+          <source>Returns a value that indicates whether the entity (user) represented by this claims principal is in the specified role.</source>
+          <target state="translated">傳回值，表示此宣告主體所代表之實體 (使用者) 是否在指定的角色。</target>       </trans-unit>
+        <trans-unit id="259" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.IsInRole(System.String)">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if claims principal is in the specified role; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果宣告主體在指定的角色中，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="260" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.IsInRole(System.String)">
+          <source>The <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.IsInRole%2A&gt;</ph> method checks whether an identity that this claims principal possesses contains a claim of type <ph id="ph2">&lt;xref:System.Security.Claims.ClaimsIdentity.RoleClaimType%2A?displayProperty=nameWithType&gt;</ph> where the value of the claim is equal to the value specified by the <ph id="ph3">`role`</ph> parameter.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.IsInRole%2A&gt;</ph>方法會檢查此宣告主體所擁有的身分識別是否包含宣告類型<ph id="ph2">&lt;xref:System.Security.Claims.ClaimsIdentity.RoleClaimType%2A?displayProperty=nameWithType&gt;</ph>宣告的值等於所指定的值<ph id="ph3">`role`</ph>參數。</target>       </trans-unit>
+        <trans-unit id="261" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.IsInRole(System.String)">
+          <source>Each <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph> has its own definition of the claim type that represents a role.</source>
+          <target state="translated">每個<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsIdentity&gt;</ph>有它自己的定義，代表角色的宣告型別。</target>       </trans-unit>
+        <trans-unit id="262" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Security.Claims.ClaimsPrincipal.IsInRole(System.String)">
+          <source>This claim type can be accessed and set through the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsIdentity.RoleClaimType%2A?displayProperty=nameWithType&gt;</ph> property.</source>
+          <target state="translated">這種宣告類型可以存取和設定透過<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsIdentity.RoleClaimType%2A?displayProperty=nameWithType&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="263" translate="yes" xml:space="preserve" uid="P:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector">
+          <source>Gets and sets the delegate used to select the claims identity returned by the <ph id="ph1">&lt;see cref="P:System.Security.Claims.ClaimsPrincipal.Identity" /&gt;</ph> property.</source>
+          <target state="translated">取得及設定委派，用來選取 <ph id="ph1">&lt;see cref="P:System.Security.Claims.ClaimsPrincipal.Identity" /&gt;</ph> 屬性所傳回的宣告識別。</target>       </trans-unit>
+        <trans-unit id="264" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector">
+          <source>The delegate.</source>
+          <target state="translated">委派。</target>       </trans-unit>
+        <trans-unit id="265" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector">
+          <source>The default is <ph id="ph1">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated">預設值為 <ph id="ph1">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="266" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector">
+          <source>You can set this property to override the default behavior of the <ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identity%2A&gt;</ph> property.</source>
+          <target state="translated">您可以設定這個屬性來覆寫預設行為<ph id="ph1">&lt;xref:System.Security.Claims.ClaimsPrincipal.Identity%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="267" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector">
+          <source>Set operation requires full trust for the immediate caller.</source>
+          <target state="translated">設定作業需要完全信任立即呼叫者。</target>       </trans-unit>
+        <trans-unit id="268" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Security.Claims.ClaimsPrincipal.PrimaryIdentitySelector">
+          <source>This member cannot be set by partially trusted or transparent code.</source>
+          <target state="translated">無法由部分信任或安全性透明程式碼中設定這個成員。</target>       </trans-unit>
+        <trans-unit id="269" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.WriteTo(System.IO.BinaryWriter)">
+          <source>The writer to use for data storage.</source>
+          <target state="translated">要用於資料儲存的寫入器。</target>       </trans-unit>
+        <trans-unit id="270" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.WriteTo(System.IO.BinaryWriter)">
+          <source>Serializes using a <ph id="ph1">&lt;see cref="T:System.IO.BinaryWriter" /&gt;</ph>.</source>
+          <target state="translated">使用 <ph id="ph1">&lt;see cref="T:System.IO.BinaryWriter" /&gt;</ph> 序列化。</target>       </trans-unit>
+        <trans-unit id="271" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.WriteTo(System.IO.BinaryWriter)">
+          <source><ph id="ph1">&lt;paramref name="writer" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="writer" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="272" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.WriteTo(System.IO.BinaryWriter,System.Byte[])">
+          <source>The writer to use for data storage.</source>
+          <target state="translated">要用於資料儲存的寫入器。</target>       </trans-unit>
+        <trans-unit id="273" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.WriteTo(System.IO.BinaryWriter,System.Byte[])">
+          <source>Additional data provided by the derived type.</source>
+          <target state="translated">衍生類型所提供的其他資料。</target>       </trans-unit>
+        <trans-unit id="274" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.WriteTo(System.IO.BinaryWriter,System.Byte[])">
+          <source>Serializes using a <ph id="ph1">&lt;see cref="T:System.IO.BinaryWriter" /&gt;</ph>.</source>
+          <target state="translated">使用 <ph id="ph1">&lt;see cref="T:System.IO.BinaryWriter" /&gt;</ph> 序列化。</target>       </trans-unit>
+        <trans-unit id="275" translate="yes" xml:space="preserve" uid="M:System.Security.Claims.ClaimsPrincipal.WriteTo(System.IO.BinaryWriter,System.Byte[])">
+          <source><ph id="ph1">&lt;paramref name="writer" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="writer" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

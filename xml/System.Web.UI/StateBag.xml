@@ -1,1342 +1,423 @@
-<Type Name="StateBag" FullName="System.Web.UI.StateBag">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="7d6a0f98c324b308d58a123d8b41a2496d30e2fa" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public sealed class StateBag : System.Collections.IDictionary, System.Web.UI.IStateManager" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit StateBag extends System.Object implements class System.Collections.ICollection, class System.Collections.IDictionary, class System.Collections.IEnumerable, class System.Web.UI.IStateManager" />
-  <TypeSignature Language="DocId" Value="T:System.Web.UI.StateBag" />
-  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class StateBag&#xA;Implements IDictionary, IStateManager" />
-  <TypeSignature Language="C++ CLI" Value="public ref class StateBag sealed : System::Collections::IDictionary, System::Web::UI::IStateManager" />
-  <AssemblyInfo>
-    <AssemblyName>System.Web</AssemblyName>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>System.Collections.IDictionary</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.Web.UI.IStateManager</InterfaceName>
-    </Interface>
-  </Interfaces>
-  <Docs>
-    <summary>
-      <span data-ttu-id="0ac34-101">管理 ASP.NET 伺服器控制項的檢視狀態 (包括網頁)。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="0ac34-101">Manages the view state of ASP.NET server controls, including pages.</span>
-      </span>
-      <span data-ttu-id="0ac34-102">這個類別無法被繼承。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="0ac34-102">This class cannot be inherited.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-103">累計的屬性值或檢視中的，該網頁或控制項的網頁或控制項檢視狀態。</span><span class="sxs-lookup"><span data-stu-id="0ac34-103">View state for a page or control is the cumulative property values, or view, of that page or control.</span></span> <span data-ttu-id="0ac34-104">您可以存取此類別透過<xref:System.Web.UI.Control.ViewState%2A?displayProperty=nameWithType>屬性。</span><span class="sxs-lookup"><span data-stu-id="0ac34-104">You can access this class through the <xref:System.Web.UI.Control.ViewState%2A?displayProperty=nameWithType> property.</span></span> <span data-ttu-id="0ac34-105">控制項也可以儲存在控制項狀態的基本狀態資訊但資訊不會儲存為<xref:System.Web.UI.StateBag>物件。</span><span class="sxs-lookup"><span data-stu-id="0ac34-105">Controls can also store essential state information in control state, but that information is not stored as a <xref:System.Web.UI.StateBag> object.</span></span>  
-  
- <span data-ttu-id="0ac34-106">這個類別是所有的 HTML 和 Web 伺服器控制項的主要儲存機制。</span><span class="sxs-lookup"><span data-stu-id="0ac34-106">This class is the primary storage mechanism for all HTML and Web server controls.</span></span> <span data-ttu-id="0ac34-107">它會儲存屬性/值配對為與控制項關聯的字串。</span><span class="sxs-lookup"><span data-stu-id="0ac34-107">It stores attribute/value pairs as strings associated with the control.</span></span> <span data-ttu-id="0ac34-108">它會追蹤這些屬性變更之後才<xref:System.Web.UI.Control.OnInit%2A>方法頁面要求執行，並將變更儲存到網頁或控制項的檢視狀態。</span><span class="sxs-lookup"><span data-stu-id="0ac34-108">It tracks changes to these attributes only after the <xref:System.Web.UI.Control.OnInit%2A> method is executed for a page request, and saves the changes to the page's or control's view state.</span></span>  
-  
- <span data-ttu-id="0ac34-109">這個類別所實作的字典，而且您可以加入項目，或從其中移除項目，如同任何字典物件。</span><span class="sxs-lookup"><span data-stu-id="0ac34-109">This class implements a dictionary, and you can add items to it or remove items from it as you would any dictionary object.</span></span> <span data-ttu-id="0ac34-110">如需有關資料的集合，例如字典，請參閱[集合和資料結構](http://msdn.microsoft.com/library/60cc581f-1db5-445b-ba04-a173396bf872)。</span><span class="sxs-lookup"><span data-stu-id="0ac34-110">For more information about data collections, such as dictionaries, see [Collections and Data Structures](http://msdn.microsoft.com/library/60cc581f-1db5-445b-ba04-a173396bf872).</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="0ac34-111">下列程式碼範例將示範複合`Label`控制項具有`Text`和`FontSize`屬性。</span><span class="sxs-lookup"><span data-stu-id="0ac34-111">The following code example demonstrates a composite `Label` control that has `Text` and `FontSize` properties.</span></span> <span data-ttu-id="0ac34-112">這些屬性會儲存並擷取從檢視狀態<xref:System.Web.UI.Control.Render%2A?displayProperty=nameWithType>控制項上呼叫方法。</span><span class="sxs-lookup"><span data-stu-id="0ac34-112">These properties are saved to and retrieved from view state when the <xref:System.Web.UI.Control.Render%2A?displayProperty=nameWithType> method is called on the control.</span></span>  
-  
- [!code-csharp[SysWebUIControlViewState#1](~/samples/snippets/csharp/VS_Snippets_WebNet/SysWebUIControlViewState/CS/controlviewstate.cs#1)]
- [!code-vb[SysWebUIControlViewState#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/SysWebUIControlViewState/VB/controlviewstate.vb#1)]  
-  
- ]]></format>
-    </remarks>
-    <altmember cref="T:System.Web.UI.IStateManager" />
-    <altmember cref="T:System.Collections.IDictionary" />
-    <altmember cref="P:System.Web.UI.Control.ViewState" />
-    <altmember cref="T:System.Web.UI.AttributeCollection" />
-  </Docs>
-  <Members>
-    <MemberGroup MemberName=".ctor">
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0ac34-113">初始化 <see cref="T:System.Web.UI.StateBag" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-113">Initializes a new instance of the <see cref="T:System.Web.UI.StateBag" /> class.</span>
-          </span>
-        </summary>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public StateBag ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.#ctor" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; StateBag();" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="0ac34-114">初始化 <see cref="T:System.Web.UI.StateBag" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-114">Initializes a new instance of the <see cref="T:System.Web.UI.StateBag" /> class.</span>
-          </span>
-          <span data-ttu-id="0ac34-115">這是這個類別的預設建構函式。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-115">This is the default constructor for this class.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <altmember cref="P:System.Web.UI.Control.ViewState" />
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public StateBag (bool ignoreCase);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(bool ignoreCase) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.#ctor(System.Boolean)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (ignoreCase As Boolean)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; StateBag(bool ignoreCase);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="ignoreCase" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="ignoreCase">
-          <span data-ttu-id="0ac34-116">
-            <see langword="true" /> 則忽略大小寫，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-116">
-              <see langword="true" /> to ignore case; otherwise, <see langword="false" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0ac34-117">初始化 <see cref="T:System.Web.UI.StateBag" /> 類別的新執行個體，允許儲存的狀態值不區分大小寫。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-117">Initializes a new instance of the <see cref="T:System.Web.UI.StateBag" /> class that allows stored state values to be case-insensitive.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <altmember cref="P:System.Web.UI.Control.ViewState" />
-      </Docs>
-    </Member>
-    <Member MemberName="Add">
-      <MemberSignature Language="C#" Value="public System.Web.UI.StateItem Add (string key, object value);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Web.UI.StateItem Add(string key, object value) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.Add(System.String,System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Public Function Add (key As String, value As Object) As StateItem" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Web::UI::StateItem ^ Add(System::String ^ key, System::Object ^ value);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.UI.StateItem</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="key" Type="System.String" />
-        <Parameter Name="value" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="key">
-          <span data-ttu-id="0ac34-118">
-            <see cref="T:System.Web.UI.StateItem" /> 的屬性名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-118">The attribute name for the <see cref="T:System.Web.UI.StateItem" />.</span>
-          </span>
-        </param>
-        <param name="value">
-          <span data-ttu-id="0ac34-119">要加入至 <see cref="T:System.Web.UI.StateBag" /> 的項目值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-119">The value of the item to add to the <see cref="T:System.Web.UI.StateBag" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0ac34-120">將新 <see cref="T:System.Web.UI.StateItem" /> 物件加入至 <see cref="T:System.Web.UI.StateBag" /> 物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-120">Adds a new <see cref="T:System.Web.UI.StateItem" /> object to the <see cref="T:System.Web.UI.StateBag" /> object.</span>
-          </span>
-          <span data-ttu-id="0ac34-121">如果項目已經存在於 <see cref="T:System.Web.UI.StateBag" /> 物件中，則此方法會更新項目的值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-121">If the item already exists in the <see cref="T:System.Web.UI.StateBag" /> object, this method updates the value of the item.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="0ac34-122">傳回 <see cref="T:System.Web.UI.StateItem" />，表示加入至檢視狀態的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-122">Returns a <see cref="T:System.Web.UI.StateItem" /> that represents the object added to view state.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="0ac34-123">下列程式碼範例示範如何使用<xref:System.Web.UI.StateBag.Add%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="0ac34-123">The following code example demonstrates using the <xref:System.Web.UI.StateBag.Add%2A> method.</span></span>  
-  
- [!code-csharp[Web.UI.StateBag#3](~/samples/snippets/csharp/VS_Snippets_WebNet/Web.UI.StateBag/CS/removecs.aspx#3)]
- [!code-vb[Web.UI.StateBag#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Web.UI.StateBag/VB/removevb.aspx#3)]  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentException">
-          <span data-ttu-id="0ac34-124">
-            <paramref name="key" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-124">
-              <paramref name="key" /> is <see langword="null" />.</span>
-          </span>
-          <span data-ttu-id="0ac34-125">\-或-</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-125">\- or -</span>
-          </span>
-          <span data-ttu-id="0ac34-126">
-            <paramref name="key" /> 中的字元數目為 0。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-126">The number of characters in <paramref name="key" /> is 0.</span>
-          </span>
-        </exception>
-        <altmember cref="P:System.Web.UI.StateBag.Item(System.String)" />
-        <altmember cref="M:System.Web.UI.StateBag.Clear" />
-        <altmember cref="M:System.Web.UI.StateBag.Remove(System.String)" />
-      </Docs>
-    </Member>
-    <Member MemberName="Clear">
-      <MemberSignature Language="C#" Value="public void Clear ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Clear() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.Clear" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Clear ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Clear();" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.IDictionary.Clear</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="0ac34-127">從目前 <see cref="T:System.Web.UI.StateBag" /> 物件移除所有項目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-127">Removes all items from the current <see cref="T:System.Web.UI.StateBag" /> object.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="0ac34-128">下列程式碼範例示範如何使用<xref:System.Web.UI.StateBag.Clear%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="0ac34-128">The following code example demonstrates using the <xref:System.Web.UI.StateBag.Clear%2A> method.</span></span>  
-  
- [!code-csharp[StateBag_IStateManager_Sample1#4](~/samples/snippets/csharp/VS_Snippets_WebNet/StateBag_IStateManager_Sample1/CS/ism_statebag_samples.cs#4)]
- [!code-vb[StateBag_IStateManager_Sample1#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/StateBag_IStateManager_Sample1/VB/ism_statebag_samples.vb#4)]  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="M:System.Web.UI.StateBag.Remove(System.String)" />
-        <altmember cref="M:System.Web.UI.StateBag.Add(System.String,System.Object)" />
-      </Docs>
-    </Member>
-    <Member MemberName="Count">
-      <MemberSignature Language="C#" Value="public int Count { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 Count" />
-      <MemberSignature Language="DocId" Value="P:System.Web.UI.StateBag.Count" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Count As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int Count { int get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Collections.ICollection.Count</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0ac34-129">取得 <see cref="T:System.Web.UI.StateItem" /> 物件中的 <see cref="T:System.Web.UI.StateBag" /> 物件數目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-129">Gets the number of <see cref="T:System.Web.UI.StateItem" /> objects in the <see cref="T:System.Web.UI.StateBag" /> object.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0ac34-130">
-            <see cref="T:System.Web.UI.StateBag" /> 中的項目數。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-130">The number of items in the <see cref="T:System.Web.UI.StateBag" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="0ac34-131">下列程式碼範例示範如何使用<xref:System.Web.UI.StateBag.Count%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="0ac34-131">The following code example demonstrates using the <xref:System.Web.UI.StateBag.Count%2A> property.</span></span>  
-  
- [!code-csharp[Web.UI.StateBag#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Web.UI.StateBag/CS/gotocs.aspx#2)]
- [!code-vb[Web.UI.StateBag#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Web.UI.StateBag/VB/gotovb.aspx#2)]  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="P:System.Web.UI.Control.ViewState" />
-      </Docs>
-    </Member>
-    <Member MemberName="GetEnumerator">
-      <MemberSignature Language="C#" Value="public System.Collections.IDictionaryEnumerator GetEnumerator ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Collections.IDictionaryEnumerator GetEnumerator() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.GetEnumerator" />
-      <MemberSignature Language="VB.NET" Value="Public Function GetEnumerator () As IDictionaryEnumerator" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Collections::IDictionaryEnumerator ^ GetEnumerator();" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.IDictionary.GetEnumerator</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.IDictionaryEnumerator</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="0ac34-132">傳回列舉值，它可以逐一查看儲存在 <see cref="T:System.Web.UI.StateItem" /> 物件中之 <see cref="T:System.Web.UI.StateBag" /> 物件的所有索引鍵/值組。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-132">Returns an enumerator that iterates over all the key/value pairs of the <see cref="T:System.Web.UI.StateItem" /> objects stored in the <see cref="T:System.Web.UI.StateBag" /> object.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="0ac34-133">可以逐一查看狀態包的列舉值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-133">The enumerator to iterate through the state bag.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="0ac34-134">下列範例示範如何使用 <xref:System.Web.UI.StateBag.GetEnumerator%2A> 方法。</span><span class="sxs-lookup"><span data-stu-id="0ac34-134">The following example demonstrates how to use the <xref:System.Web.UI.StateBag.GetEnumerator%2A> method.</span></span>  
-  
- [!code-csharp[StateItem_Samples1#3](~/samples/snippets/csharp/VS_Snippets_WebNet/StateItem_Samples1/CS/stateitem_samples.cs.aspx#3)]
- [!code-vb[StateItem_Samples1#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/StateItem_Samples1/VB/stateitem_samples.vb.aspx#3)]  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Collections.IDictionaryEnumerator" />
-      </Docs>
-    </Member>
-    <Member MemberName="IsItemDirty">
-      <MemberSignature Language="C#" Value="public bool IsItemDirty (string key);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool IsItemDirty(string key) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.IsItemDirty(System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Function IsItemDirty (key As String) As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool IsItemDirty(System::String ^ key);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="key" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="key">
-          <span data-ttu-id="0ac34-135">要檢查的項目索引鍵。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-135">The key of the item to check.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0ac34-136">檢查儲存於 <see cref="T:System.Web.UI.StateItem" /> 物件的 <see cref="T:System.Web.UI.StateBag" /> 物件，以評估自從呼叫 <see cref="M:System.Web.UI.Control.TrackViewState" /> 以來，它是否已經被修改。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-136">Checks a <see cref="T:System.Web.UI.StateItem" /> object stored in the <see cref="T:System.Web.UI.StateBag" /> object to evaluate whether it has been modified since the call to <see cref="M:System.Web.UI.Control.TrackViewState" />.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="0ac34-137">如果項目已經被修改則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-137">
-              <see langword="true" /> if the item has been modified; otherwise, <see langword="false" />.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-138">這個方法也會傳回`false`如果`key`參數不存在於<xref:System.Web.UI.StateBag>物件。</span><span class="sxs-lookup"><span data-stu-id="0ac34-138">This method also returns `false` if the `key` parameter does not exist in the <xref:System.Web.UI.StateBag> object.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="0ac34-139">下列程式碼範例示範如何使用<xref:System.Web.UI.StateBag.IsItemDirty%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="0ac34-139">The following code example demonstrates using the <xref:System.Web.UI.StateBag.IsItemDirty%2A> method.</span></span>  
-  
- [!code-csharp[StateBag_IStateManager_Sample1#4](~/samples/snippets/csharp/VS_Snippets_WebNet/StateBag_IStateManager_Sample1/CS/ism_statebag_samples.cs#4)]
- [!code-vb[StateBag_IStateManager_Sample1#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/StateBag_IStateManager_Sample1/VB/ism_statebag_samples.vb#4)]  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="P:System.Web.UI.Control.ViewState" />
-      </Docs>
-    </Member>
-    <Member MemberName="Item">
-      <MemberSignature Language="C#" Value="public object this[string key] { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance object Item(string)" />
-      <MemberSignature Language="DocId" Value="P:System.Web.UI.StateBag.Item(System.String)" />
-      <MemberSignature Language="VB.NET" Value="Default Public Property Item(key As String) As Object" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Object ^ default[System::String ^] { System::Object ^ get(System::String ^ key); void set(System::String ^ key, System::Object ^ value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="key" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="key">
-          <span data-ttu-id="0ac34-140">項目的索引鍵。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-140">The key for the item.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0ac34-141">取得或設定儲存於 <see cref="T:System.Web.UI.StateBag" /> 物件中的項目值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-141">Gets or sets the value of an item stored in the <see cref="T:System.Web.UI.StateBag" /> object.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0ac34-142">
-            <see cref="T:System.Web.UI.StateBag" /> 物件中的指定項目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-142">The specified item in the <see cref="T:System.Web.UI.StateBag" /> object.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-143">使用這個成員是最簡單的方式儲存和擷取對檢視狀態值控制項或頁面。</span><span class="sxs-lookup"><span data-stu-id="0ac34-143">Using this member is the simplest way to save and retrieve view-state values for a control or a page.</span></span>  
-  
- <span data-ttu-id="0ac34-144">如果項目尚未儲存在<xref:System.Web.UI.StateBag>物件時設定這個屬性時，其索引鍵/值組加入至集合。</span><span class="sxs-lookup"><span data-stu-id="0ac34-144">If an item is not already stored in the <xref:System.Web.UI.StateBag> object when you set this property, its key/value pair is added to the collection.</span></span> <span data-ttu-id="0ac34-145">如果您將此屬性設定為`null`之前<xref:System.Web.UI.Control.TrackViewState%2A>項目上呼叫方法，就會移除從<xref:System.Web.UI.StateBag>物件。</span><span class="sxs-lookup"><span data-stu-id="0ac34-145">If you set this property to `null` before the <xref:System.Web.UI.Control.TrackViewState%2A> method is called on an item, it is removed from the <xref:System.Web.UI.StateBag> object.</span></span> <span data-ttu-id="0ac34-146">否則，當您將此屬性設定為`null`金鑰會儲存到允許的項目檢視狀態的追蹤。</span><span class="sxs-lookup"><span data-stu-id="0ac34-146">Otherwise, when you set this property to `null` the key is saved to allow tracking of the item's view state.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="0ac34-147">下列程式碼範例示範如何將其名稱和值儲存為索引鍵/值組的屬性<xref:System.Web.UI.Control.ViewState%2A?displayProperty=nameWithType>屬性。</span><span class="sxs-lookup"><span data-stu-id="0ac34-147">The following code example demonstrates a property that saves its name and value as a key/value pair to the <xref:System.Web.UI.Control.ViewState%2A?displayProperty=nameWithType> property.</span></span> <span data-ttu-id="0ac34-148"><xref:System.Web.UI.Control.ViewState%2A>屬性是的執行個體<xref:System.Web.UI.StateBag>類別。</span><span class="sxs-lookup"><span data-stu-id="0ac34-148">The <xref:System.Web.UI.Control.ViewState%2A> property is an instance of the <xref:System.Web.UI.StateBag> class.</span></span>  
-  
- [!code-csharp[SysWebUIControlViewState#2](~/samples/snippets/csharp/VS_Snippets_WebNet/SysWebUIControlViewState/CS/controlviewstate.cs#2)]
- [!code-vb[SysWebUIControlViewState#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/SysWebUIControlViewState/VB/controlviewstate.vb#2)]  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="M:System.Web.UI.StateBag.Add(System.String,System.Object)" />
-        <altmember cref="M:System.Web.UI.StateBag.Remove(System.String)" />
-        <altmember cref="P:System.Web.UI.Control.ViewState" />
-      </Docs>
-    </Member>
-    <Member MemberName="Keys">
-      <MemberSignature Language="C#" Value="public System.Collections.ICollection Keys { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.ICollection Keys" />
-      <MemberSignature Language="DocId" Value="P:System.Web.UI.StateBag.Keys" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Keys As ICollection" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::ICollection ^ Keys { System::Collections::ICollection ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Collections.IDictionary.Keys</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.ICollection</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0ac34-149">取得表示 <see cref="T:System.Web.UI.StateBag" /> 物件中項目的索引鍵集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-149">Gets a collection of keys representing the items in the <see cref="T:System.Web.UI.StateBag" /> object.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0ac34-150">索引鍵的集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-150">The collection of keys.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-151">這些金鑰為控制項屬性的名稱。</span><span class="sxs-lookup"><span data-stu-id="0ac34-151">These keys are the names of the control properties.</span></span> <span data-ttu-id="0ac34-152">比方說，如果您建立`BGColor`屬性`Table`控制項，您自訂，`BGColor`代表該屬性在這個集合中建立項目是您`Table`控制項。</span><span class="sxs-lookup"><span data-stu-id="0ac34-152">For example, if you created a `BGColor` property on a `Table` control that you customized, a `BGColor` entry is created in this collection representing that property on your `Table` control.</span></span>  
-  
- <span data-ttu-id="0ac34-153">這些索引鍵對應至名稱<xref:System.Web.UI.StateItem>物件儲存在<xref:System.Web.UI.StateBag>目前頁面或伺服器控制項的集合。</span><span class="sxs-lookup"><span data-stu-id="0ac34-153">These keys correspond to the names of the <xref:System.Web.UI.StateItem> objects stored in the <xref:System.Web.UI.StateBag> collection for the current page or server control.</span></span>  
-  
- <span data-ttu-id="0ac34-154">您可以逐一查看這個集合使用<xref:System.Web.UI.StateBag.GetEnumerator%2A?displayProperty=nameWithType>方法。</span><span class="sxs-lookup"><span data-stu-id="0ac34-154">You can iterate over this collection using the <xref:System.Web.UI.StateBag.GetEnumerator%2A?displayProperty=nameWithType> method.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="0ac34-155">下列程式碼範例示範如何使用<xref:System.Web.UI.StateBag.Keys%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="0ac34-155">The following code example demonstrates using the <xref:System.Web.UI.StateBag.Keys%2A> property.</span></span>  
-  
- [!code-csharp[Web.UI.StateBag#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Web.UI.StateBag/CS/gotocs.aspx#2)]
- [!code-vb[Web.UI.StateBag#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Web.UI.StateBag/VB/gotovb.aspx#2)]  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Collections.ICollection" />
-        <altmember cref="P:System.Web.UI.Control.ViewState" />
-      </Docs>
-    </Member>
-    <Member MemberName="Remove">
-      <MemberSignature Language="C#" Value="public void Remove (string key);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Remove(string key) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.Remove(System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Remove (key As String)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Remove(System::String ^ key);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="key" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="key">
-          <span data-ttu-id="0ac34-156">要移除的項目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-156">The item to remove.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0ac34-157">從 <see cref="T:System.Web.UI.StateBag" /> 物件移除指定的索引鍵/數值配對。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-157">Removes the specified key/value pair from the <see cref="T:System.Web.UI.StateBag" /> object.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="0ac34-158">下列程式碼範例示範如何使用<xref:System.Web.UI.StateBag.Remove%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="0ac34-158">The following code example demonstrates using the <xref:System.Web.UI.StateBag.Remove%2A> method.</span></span>  
-  
- [!code-csharp[Web.UI.StateBag#3](~/samples/snippets/csharp/VS_Snippets_WebNet/Web.UI.StateBag/CS/removecs.aspx#3)]
- [!code-vb[Web.UI.StateBag#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Web.UI.StateBag/VB/removevb.aspx#3)]  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="P:System.Web.UI.Control.ViewState" />
-        <altmember cref="M:System.Web.UI.StateBag.Clear" />
-        <altmember cref="P:System.Web.UI.StateBag.Item(System.String)" />
-        <altmember cref="M:System.Web.UI.StateBag.Add(System.String,System.Object)" />
-      </Docs>
-    </Member>
-    <Member MemberName="SetDirty">
-      <MemberSignature Language="C#" Value="public void SetDirty (bool dirty);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetDirty(bool dirty) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.SetDirty(System.Boolean)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub SetDirty (dirty As Boolean)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SetDirty(bool dirty);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="dirty" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="dirty">
-          <span data-ttu-id="0ac34-159">
-            <see langword="true" /> 可將集合和其項目的狀態標示為已修改；否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-159">
-              <see langword="true" /> to mark the state of the collection and its items as modified; otherwise, <see langword="false" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0ac34-160">設定 <see cref="T:System.Web.UI.StateBag" /> 物件的狀態，以及它所包含的每個 <see cref="T:System.Web.UI.StateItem" /> 物件的 <see cref="P:System.Web.SessionState.ISessionStateItemCollection.Dirty" /> 屬性。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-160">Sets the state of the <see cref="T:System.Web.UI.StateBag" /> object as well as the <see cref="P:System.Web.SessionState.ISessionStateItemCollection.Dirty" /> property of each of the <see cref="T:System.Web.UI.StateItem" /> objects contained by it.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-161"><xref:System.Web.UI.StateBag.SetDirty%2A>方法用來強制集合和其內容至序列化期間呼叫<xref:System.Web.UI.StateBag.System%23Web%23UI%23IStateManager%23SaveViewState%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="0ac34-161">The <xref:System.Web.UI.StateBag.SetDirty%2A> method is used to force the collection and its contents to be serialized during a call to the <xref:System.Web.UI.StateBag.System%23Web%23UI%23IStateManager%23SaveViewState%2A> method.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="M:System.Web.UI.StateBag.SetItemDirty(System.String,System.Boolean)" />
-      </Docs>
-    </Member>
-    <Member MemberName="SetItemDirty">
-      <MemberSignature Language="C#" Value="public void SetItemDirty (string key, bool dirty);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetItemDirty(string key, bool dirty) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.SetItemDirty(System.String,System.Boolean)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub SetItemDirty (key As String, dirty As Boolean)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SetItemDirty(System::String ^ key, bool dirty);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="key" Type="System.String" />
-        <Parameter Name="dirty" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="key">
-          <span data-ttu-id="0ac34-162">索引鍵，識別 <see cref="T:System.Web.UI.StateItem" /> 中要設定的 <see cref="T:System.Web.UI.StateBag" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-162">The key that identifies which <see cref="T:System.Web.UI.StateItem" /> in the <see cref="T:System.Web.UI.StateBag" /> to set.</span>
-          </span>
-        </param>
-        <param name="dirty">
-          <span data-ttu-id="0ac34-163">
-            <see langword="true" /> 表示標記項目狀態為已修改，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-163">
-              <see langword="true" /> to mark the state of the item as modified; otherwise, <see langword="false" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0ac34-164">設定 <see cref="P:System.Web.SessionState.ISessionStateItemCollection.Dirty" /> 物件中指定 <see cref="T:System.Web.UI.StateItem" /> 物件的 <see cref="T:System.Web.UI.StateBag" /> 屬性。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-164">Sets the <see cref="P:System.Web.SessionState.ISessionStateItemCollection.Dirty" /> property for the specified <see cref="T:System.Web.UI.StateItem" /> object in the <see cref="T:System.Web.UI.StateBag" /> object.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-165"><xref:System.Web.UI.StateBag.SetItemDirty%2A>方法用來防止或強制所表示的特定屬性的狀態管理<xref:System.Web.UI.StateItem>中的物件<xref:System.Web.UI.StateBag>集合。</span><span class="sxs-lookup"><span data-stu-id="0ac34-165">The <xref:System.Web.UI.StateBag.SetItemDirty%2A> method is used to prevent or force state management of specific properties, represented by <xref:System.Web.UI.StateItem> objects in the <xref:System.Web.UI.StateBag> collection.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="M:System.Web.UI.StateBag.SetDirty(System.Boolean)" />
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.ICollection.CopyTo">
-      <MemberSignature Language="C#" Value="void ICollection.CopyTo (Array array, int index);" />
-      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.Collections.ICollection.CopyTo(class System.Array array, int32 index) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.System#Collections#ICollection#CopyTo(System.Array,System.Int32)" />
-      <MemberSignature Language="C++ CLI" Value=" virtual void System.Collections.ICollection.CopyTo(Array ^ array, int index) = System::Collections::ICollection::CopyTo;" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.ICollection.CopyTo(System.Array,System.Int32)</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="array" Type="System.Array" />
-        <Parameter Name="index" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="array">
-          <span data-ttu-id="0ac34-166">一維 <see cref="T:System.Array" />，是從 <see cref="T:System.Collections.ICollection" /> 複製過來之項目的目的端。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-166">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.ICollection" />.</span>
-          </span>
-          <span data-ttu-id="0ac34-167">
-            <see cref="T:System.Array" /> 必須有以零為起始的索引。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-167">The <see cref="T:System.Array" /> must have zero-based indexing.</span>
-          </span>
-        </param>
-        <param name="index">
-          <span data-ttu-id="0ac34-168">
-            <c>array</c> 中以零起始的索引，複製作業從此處開始。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-168">The zero-based index in <c>array</c> at which copying begins.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0ac34-169">如需這個成員的說明，請參閱 <see cref="M:System.Collections.ICollection.CopyTo(System.Array,System.Int32)" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-169">For a description of this member, see <see cref="M:System.Collections.ICollection.CopyTo(System.Array,System.Int32)" />.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-170">這個成員是明確介面成員實作，</span><span class="sxs-lookup"><span data-stu-id="0ac34-170">This member is an explicit interface member implementation.</span></span> <span data-ttu-id="0ac34-171">只有在 <xref:System.Web.UI.StateBag> 執行個體轉換成 <xref:System.Collections.ICollection> 介面時，才能使用這個成員。</span><span class="sxs-lookup"><span data-stu-id="0ac34-171">It can be used only when the <xref:System.Web.UI.StateBag> instance is cast to an <xref:System.Collections.ICollection> interface.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Collections.ICollection" />
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.ICollection.IsSynchronized">
-      <MemberSignature Language="C#" Value="bool System.Collections.ICollection.IsSynchronized { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool System.Collections.ICollection.IsSynchronized" />
-      <MemberSignature Language="DocId" Value="P:System.Web.UI.StateBag.System#Collections#ICollection#IsSynchronized" />
-      <MemberSignature Language="VB.NET" Value=" ReadOnly Property IsSynchronized As Boolean Implements ICollection.IsSynchronized" />
-      <MemberSignature Language="C++ CLI" Value="property bool System.Collections.ICollection.IsSynchronized { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Collections.ICollection.IsSynchronized</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0ac34-172">如需這個成員的說明，請參閱 <see cref="P:System.Collections.ICollection.IsSynchronized" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-172">For a description of this member, see <see cref="P:System.Collections.ICollection.IsSynchronized" />.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0ac34-173">如果 <see langword="true" /> 的存取為同步 (安全執行緒)，則為 <see cref="T:System.Collections.ICollection" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-173">
-              <see langword="true" /> if access to the <see cref="T:System.Collections.ICollection" /> is synchronized (thread safe); otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-174">這個成員是明確介面成員實作，</span><span class="sxs-lookup"><span data-stu-id="0ac34-174">This member is an explicit interface member implementation.</span></span> <span data-ttu-id="0ac34-175">只有在 <xref:System.Web.UI.StateBag> 執行個體轉換成 <xref:System.Collections.ICollection> 介面時，才能使用這個成員。</span><span class="sxs-lookup"><span data-stu-id="0ac34-175">It can be used only when the <xref:System.Web.UI.StateBag> instance is cast to an <xref:System.Collections.ICollection> interface.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Collections.ICollection" />
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.ICollection.SyncRoot">
-      <MemberSignature Language="C#" Value="object System.Collections.ICollection.SyncRoot { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance object System.Collections.ICollection.SyncRoot" />
-      <MemberSignature Language="DocId" Value="P:System.Web.UI.StateBag.System#Collections#ICollection#SyncRoot" />
-      <MemberSignature Language="VB.NET" Value=" ReadOnly Property SyncRoot As Object Implements ICollection.SyncRoot" />
-      <MemberSignature Language="C++ CLI" Value="property System::Object ^ System.Collections.ICollection.SyncRoot { System::Object ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Collections.ICollection.SyncRoot</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0ac34-176">如需這個成員的說明，請參閱 <see cref="P:System.Collections.ICollection.SyncRoot" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-176">For a description of this member, see <see cref="P:System.Collections.ICollection.SyncRoot" />.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0ac34-177">可用以同步存取 <see cref="T:System.Collections.ICollection" /> 的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-177">An object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-178">這個成員是明確介面成員實作，</span><span class="sxs-lookup"><span data-stu-id="0ac34-178">This member is an explicit interface member implementation.</span></span> <span data-ttu-id="0ac34-179">只有在 <xref:System.Web.UI.StateBag> 執行個體轉換成 <xref:System.Collections.ICollection> 介面時，才能使用這個成員。</span><span class="sxs-lookup"><span data-stu-id="0ac34-179">It can be used only when the <xref:System.Web.UI.StateBag> instance is cast to an <xref:System.Collections.ICollection> interface.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Collections.ICollection" />
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.IDictionary.Add">
-      <MemberSignature Language="C#" Value="void IDictionary.Add (object key, object value);" />
-      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.Collections.IDictionary.Add(object key, object value) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.System#Collections#IDictionary#Add(System.Object,System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Sub Add (key As Object, value As Object) Implements IDictionary.Add" />
-      <MemberSignature Language="C++ CLI" Value=" virtual void System.Collections.IDictionary.Add(System::Object ^ key, System::Object ^ value) = System::Collections::IDictionary::Add;" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.IDictionary.Add(System.Object,System.Object)</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="key" Type="System.Object" />
-        <Parameter Name="value" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="key">
-          <span data-ttu-id="0ac34-180">
-            <see cref="T:System.Object" />，用做要加入之項目的索引鍵。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-180">The <see cref="T:System.Object" /> to use as the key of the element to add.</span>
-          </span>
-        </param>
-        <param name="value">
-          <span data-ttu-id="0ac34-181">
-            <see cref="T:System.Object" />，用做要加入之項目的值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-181">The <see cref="T:System.Object" /> to use as the value of the element to add.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0ac34-182">如需這個成員的說明，請參閱 <see cref="M:System.Collections.IDictionary.Add(System.Object,System.Object)" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-182">For a description of this member, see <see cref="M:System.Collections.IDictionary.Add(System.Object,System.Object)" />.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-183">這個成員是明確介面成員實作，</span><span class="sxs-lookup"><span data-stu-id="0ac34-183">This member is an explicit interface member implementation.</span></span> <span data-ttu-id="0ac34-184">只有在 <xref:System.Web.UI.StateBag> 執行個體轉換成 <xref:System.Collections.IDictionary> 介面時，才能使用這個成員。</span><span class="sxs-lookup"><span data-stu-id="0ac34-184">It can be used only when the <xref:System.Web.UI.StateBag> instance is cast to an <xref:System.Collections.IDictionary> interface.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Collections.IDictionary" />
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.IDictionary.Contains">
-      <MemberSignature Language="C#" Value="bool IDictionary.Contains (object key);" />
-      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance bool System.Collections.IDictionary.Contains(object key) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.System#Collections#IDictionary#Contains(System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Function Contains (key As Object) As Boolean Implements IDictionary.Contains" />
-      <MemberSignature Language="C++ CLI" Value=" virtual bool System.Collections.IDictionary.Contains(System::Object ^ key) = System::Collections::IDictionary::Contains;" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.IDictionary.Contains(System.Object)</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="key" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="key">
-          <span data-ttu-id="0ac34-185">要在 <see cref="T:System.Collections.IDictionary" /> 物件中尋找的索引鍵。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-185">The key to locate in the <see cref="T:System.Collections.IDictionary" /> object.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0ac34-186">如需這個成員的說明，請參閱 <see cref="M:System.Collections.IDictionary.Contains(System.Object)" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-186">For a description of this member, see <see cref="M:System.Collections.IDictionary.Contains(System.Object)" />.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="0ac34-187">如果 <see langword="true" /> 包含具有該索引鍵的項目，則為 <see cref="T:System.Collections.IDictionary" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-187">
-              <see langword="true" /> if the <see cref="T:System.Collections.IDictionary" /> contains an element with the key; otherwise, <see langword="false" />.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-188">這個成員是明確介面成員實作，</span><span class="sxs-lookup"><span data-stu-id="0ac34-188">This member is an explicit interface member implementation.</span></span> <span data-ttu-id="0ac34-189">只有在 <xref:System.Web.UI.StateBag> 執行個體轉換成 <xref:System.Collections.IDictionary> 介面時，才能使用這個成員。</span><span class="sxs-lookup"><span data-stu-id="0ac34-189">It can be used only when the <xref:System.Web.UI.StateBag> instance is cast to an <xref:System.Collections.IDictionary> interface.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Collections.IDictionary" />
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.IDictionary.IsFixedSize">
-      <MemberSignature Language="C#" Value="bool System.Collections.IDictionary.IsFixedSize { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool System.Collections.IDictionary.IsFixedSize" />
-      <MemberSignature Language="DocId" Value="P:System.Web.UI.StateBag.System#Collections#IDictionary#IsFixedSize" />
-      <MemberSignature Language="VB.NET" Value=" ReadOnly Property IsFixedSize As Boolean Implements IDictionary.IsFixedSize" />
-      <MemberSignature Language="C++ CLI" Value="property bool System.Collections.IDictionary.IsFixedSize { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Collections.IDictionary.IsFixedSize</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0ac34-190">如需這個成員的說明，請參閱 <see cref="P:System.Collections.IDictionary.IsFixedSize" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-190">For a description of this member, see <see cref="P:System.Collections.IDictionary.IsFixedSize" />.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0ac34-191">如果 <see cref="T:System.Collections.IDictionary" /> 物件有固定大小，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-191">
-              <see langword="true" /> if the <see cref="T:System.Collections.IDictionary" /> object has a fixed size; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-192">這個成員是明確介面成員實作，</span><span class="sxs-lookup"><span data-stu-id="0ac34-192">This member is an explicit interface member implementation.</span></span> <span data-ttu-id="0ac34-193">只有在 <xref:System.Web.UI.StateBag> 執行個體轉換成 <xref:System.Collections.IDictionary> 介面時，才能使用這個成員。</span><span class="sxs-lookup"><span data-stu-id="0ac34-193">It can be used only when the <xref:System.Web.UI.StateBag> instance is cast to an <xref:System.Collections.IDictionary> interface.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Collections.IDictionary" />
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.IDictionary.IsReadOnly">
-      <MemberSignature Language="C#" Value="bool System.Collections.IDictionary.IsReadOnly { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool System.Collections.IDictionary.IsReadOnly" />
-      <MemberSignature Language="DocId" Value="P:System.Web.UI.StateBag.System#Collections#IDictionary#IsReadOnly" />
-      <MemberSignature Language="VB.NET" Value=" ReadOnly Property IsReadOnly As Boolean Implements IDictionary.IsReadOnly" />
-      <MemberSignature Language="C++ CLI" Value="property bool System.Collections.IDictionary.IsReadOnly { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Collections.IDictionary.IsReadOnly</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0ac34-194">如需這個成員的說明，請參閱 <see cref="P:System.Collections.IDictionary.IsReadOnly" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-194">For a description of this member, see <see cref="P:System.Collections.IDictionary.IsReadOnly" />.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0ac34-195">如果 <see cref="T:System.Collections.IDictionary" /> 物件是唯讀，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-195">
-              <see langword="true" /> if the <see cref="T:System.Collections.IDictionary" /> object is read-only; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-196">這個成員是明確介面成員實作，</span><span class="sxs-lookup"><span data-stu-id="0ac34-196">This member is an explicit interface member implementation.</span></span> <span data-ttu-id="0ac34-197">只有在 <xref:System.Web.UI.StateBag> 執行個體轉換成 <xref:System.Collections.IDictionary> 介面時，才能使用這個成員。</span><span class="sxs-lookup"><span data-stu-id="0ac34-197">It can be used only when the <xref:System.Web.UI.StateBag> instance is cast to an <xref:System.Collections.IDictionary> interface.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Collections.IDictionary" />
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.IDictionary.Item">
-      <MemberSignature Language="C#" Value="object System.Collections.IDictionary.Item[object key] { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance object System.Collections.IDictionary.Item(object)" />
-      <MemberSignature Language="DocId" Value="P:System.Web.UI.StateBag.System#Collections#IDictionary#Item(System.Object)" />
-      <MemberSignature Language="VB.NET" Value=" Property Item(key As Object) As Object Implements IDictionary.Item" />
-      <MemberSignature Language="C++ CLI" Value="property System::Object ^ System.Collections.IDictionary.Item[System::Object ^] { System::Object ^ get(System::Object ^ key); void set(System::Object ^ key, System::Object ^ value); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Collections.IDictionary.Item(System.Object)</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="key" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="key">
-          <span data-ttu-id="0ac34-198">要取得的項目索引鍵。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-198">The key of the element to get.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0ac34-199">如需這個成員的說明，請參閱 <see cref="P:System.Collections.IDictionary.Item(System.Object)" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-199">For a description of this member, see <see cref="P:System.Collections.IDictionary.Item(System.Object)" />.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0ac34-200">具有指定之 <paramref name="key" /> 的項目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-200">The element with the specified <paramref name="key" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-201">這個成員是明確介面成員實作，</span><span class="sxs-lookup"><span data-stu-id="0ac34-201">This member is an explicit interface member implementation.</span></span> <span data-ttu-id="0ac34-202">只有在 <xref:System.Web.UI.StateBag> 執行個體轉換成 <xref:System.Collections.IDictionary> 介面時，才能使用這個成員。</span><span class="sxs-lookup"><span data-stu-id="0ac34-202">It can be used only when the <xref:System.Web.UI.StateBag> instance is cast to an <xref:System.Collections.IDictionary> interface.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Collections.IDictionary" />
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.IDictionary.Remove">
-      <MemberSignature Language="C#" Value="void IDictionary.Remove (object key);" />
-      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.Collections.IDictionary.Remove(object key) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.System#Collections#IDictionary#Remove(System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Sub Remove (key As Object) Implements IDictionary.Remove" />
-      <MemberSignature Language="C++ CLI" Value=" virtual void System.Collections.IDictionary.Remove(System::Object ^ key) = System::Collections::IDictionary::Remove;" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.IDictionary.Remove(System.Object)</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="key" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="key">
-          <span data-ttu-id="0ac34-203">要移除的項目索引鍵。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-203">The key of the element to remove.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0ac34-204">如需這個成員的說明，請參閱 <see cref="M:System.Collections.IDictionary.Remove(System.Object)" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-204">For a description of this member, see <see cref="M:System.Collections.IDictionary.Remove(System.Object)" />.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-205">這個成員是明確介面成員實作，</span><span class="sxs-lookup"><span data-stu-id="0ac34-205">This member is an explicit interface member implementation.</span></span> <span data-ttu-id="0ac34-206">只有在 <xref:System.Web.UI.StateBag> 執行個體轉換成 <xref:System.Collections.IDictionary> 介面時，才能使用這個成員。</span><span class="sxs-lookup"><span data-stu-id="0ac34-206">It can be used only when the <xref:System.Web.UI.StateBag> instance is cast to an <xref:System.Collections.IDictionary> interface.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Collections.IDictionary" />
-      </Docs>
-    </Member>
-    <Member MemberName="System.Collections.IEnumerable.GetEnumerator">
-      <MemberSignature Language="C#" Value="System.Collections.IEnumerator IEnumerable.GetEnumerator ();" />
-      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance class System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.System#Collections#IEnumerable#GetEnumerator" />
-      <MemberSignature Language="VB.NET" Value="Function GetEnumerator () As IEnumerator Implements IEnumerable.GetEnumerator" />
-      <MemberSignature Language="C++ CLI" Value=" virtual System::Collections::IEnumerator ^ System.Collections.IEnumerable.GetEnumerator() = System::Collections::IEnumerable::GetEnumerator;" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Collections.IEnumerable.GetEnumerator</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.IEnumerator</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="0ac34-207">如需這個成員的說明，請參閱 <see cref="M:System.Collections.IEnumerable.GetEnumerator" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-207">For a description of this member, see <see cref="M:System.Collections.IEnumerable.GetEnumerator" />.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="0ac34-208">
-            <see cref="T:System.Collections.IEnumerator" />，可用於逐一查看集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-208">An <see cref="T:System.Collections.IEnumerator" /> that can be used to iterate through the collection.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-209">這個成員是明確介面成員實作，</span><span class="sxs-lookup"><span data-stu-id="0ac34-209">This member is an explicit interface member implementation.</span></span> <span data-ttu-id="0ac34-210">只有在 <xref:System.Web.UI.StateBag> 執行個體轉換成 <xref:System.Collections.IEnumerable> 介面時，才能使用這個成員。</span><span class="sxs-lookup"><span data-stu-id="0ac34-210">It can be used only when the <xref:System.Web.UI.StateBag> instance is cast to an <xref:System.Collections.IEnumerable> interface.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Collections.IEnumerable" />
-      </Docs>
-    </Member>
-    <Member MemberName="System.Web.UI.IStateManager.IsTrackingViewState">
-      <MemberSignature Language="C#" Value="bool System.Web.UI.IStateManager.IsTrackingViewState { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool System.Web.UI.IStateManager.IsTrackingViewState" />
-      <MemberSignature Language="DocId" Value="P:System.Web.UI.StateBag.System#Web#UI#IStateManager#IsTrackingViewState" />
-      <MemberSignature Language="VB.NET" Value=" ReadOnly Property IsTrackingViewState As Boolean Implements IStateManager.IsTrackingViewState" />
-      <MemberSignature Language="C++ CLI" Value="property bool System.Web.UI.IStateManager.IsTrackingViewState { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Web.UI.IStateManager.IsTrackingViewState</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0ac34-211">取得指出是否已追蹤狀態變更的值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-211">Gets a value indicating whether state changes are being tracked.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0ac34-212">如果 <see cref="T:System.Web.UI.StateBag" /> 標記成將變更儲存到其狀態則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-212">
-              <see langword="true" /> if the <see cref="T:System.Web.UI.StateBag" /> is marked to save changes to its state; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-        <altmember cref="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#LoadViewState(System.Object)" />
-        <altmember cref="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#SaveViewState" />
-        <altmember cref="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#TrackViewState" />
-      </Docs>
-    </Member>
-    <Member MemberName="System.Web.UI.IStateManager.LoadViewState">
-      <MemberSignature Language="C#" Value="void IStateManager.LoadViewState (object state);" />
-      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.Web.UI.IStateManager.LoadViewState(object state) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#LoadViewState(System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Sub LoadViewState (state As Object) Implements IStateManager.LoadViewState" />
-      <MemberSignature Language="C++ CLI" Value=" virtual void System.Web.UI.IStateManager.LoadViewState(System::Object ^ state) = System::Web::UI::IStateManager::LoadViewState;" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Web.UI.IStateManager.LoadViewState(System.Object)</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="state" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="state">
-          <span data-ttu-id="0ac34-213">代表要還原之 <see cref="T:System.Web.UI.StateBag" /> 狀態的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-213">An object that represents the <see cref="T:System.Web.UI.StateBag" /> state to restore.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="0ac34-214">還原先前已儲存的 <see cref="T:System.Web.UI.StateBag" /> 物件檢視狀態。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-214">Restores the previously saved view state of the <see cref="T:System.Web.UI.StateBag" /> object.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-215">這個方法會還原檢視狀態資訊<xref:System.Web.UI.StateBag>物件所儲存的先前頁面要求從<xref:System.Web.UI.StateBag.System%23Web%23UI%23IStateManager%23SaveViewState%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="0ac34-215">This method restores view-state information for the <xref:System.Web.UI.StateBag> object from a previous page request that was saved by the <xref:System.Web.UI.StateBag.System%23Web%23UI%23IStateManager%23SaveViewState%2A> method.</span></span>  
-  
- <span data-ttu-id="0ac34-216">這個方法主要由控制項開發人員使用。</span><span class="sxs-lookup"><span data-stu-id="0ac34-216">This method is primarily used by control developers.</span></span> <span data-ttu-id="0ac34-217">您可以覆寫這個方法來控制如何將自訂的伺服器控制項還原其檢視狀態。</span><span class="sxs-lookup"><span data-stu-id="0ac34-217">You can override this method to control how a custom server control restores its view state.</span></span> <span data-ttu-id="0ac34-218">如需詳細資訊，請參閱[ASP.NET 狀態管理概觀](http://msdn.microsoft.com/library/0218d965-5d30-445b-b6a6-8870e70e63ce)。</span><span class="sxs-lookup"><span data-stu-id="0ac34-218">For more information, see [ASP.NET State Management Overview](http://msdn.microsoft.com/library/0218d965-5d30-445b-b6a6-8870e70e63ce).</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#LoadViewState(System.Object)" />
-      </Docs>
-    </Member>
-    <Member MemberName="System.Web.UI.IStateManager.SaveViewState">
-      <MemberSignature Language="C#" Value="object IStateManager.SaveViewState ();" />
-      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance object System.Web.UI.IStateManager.SaveViewState() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#SaveViewState" />
-      <MemberSignature Language="VB.NET" Value="Function SaveViewState () As Object Implements IStateManager.SaveViewState" />
-      <MemberSignature Language="C++ CLI" Value=" virtual System::Object ^ System.Web.UI.IStateManager.SaveViewState() = System::Web::UI::IStateManager::SaveViewState;" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Web.UI.IStateManager.SaveViewState</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="0ac34-219">儲存自頁面回傳至伺服器以來 <see cref="T:System.Web.UI.StateBag" /> 物件的變更。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-219">Saves the changes to the <see cref="T:System.Web.UI.StateBag" /> object since the time the page was posted back to the server.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="0ac34-220">包含 <see cref="T:System.Web.UI.StateBag" /> 檢視狀態變更的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-220">The object that contains the changes to the view state of the <see cref="T:System.Web.UI.StateBag" />.</span>
-          </span>
-          <span data-ttu-id="0ac34-221">如果沒有任何變更，或是 <see cref="T:System.Web.UI.StateBag" />中沒有任何 <see cref="T:System.Web.UI.StateItem" /> 項目，這個方法會傳回 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-221">If there are no changes, or there are no <see cref="T:System.Web.UI.StateItem" /> elements in the <see cref="T:System.Web.UI.StateBag" />, this method returns <see langword="null" />.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-222">這個方法主要由控制項開發人員使用。</span><span class="sxs-lookup"><span data-stu-id="0ac34-222">This method is primarily used by control developers.</span></span>  
-  
- <span data-ttu-id="0ac34-223">檢視狀態是伺服器控制項的屬性值的累積。</span><span class="sxs-lookup"><span data-stu-id="0ac34-223">View state is the accumulation of the values of a server control's properties.</span></span> <span data-ttu-id="0ac34-224">這些值會自動放入伺服器控制項的<xref:System.Web.UI.Control.ViewState%2A>屬性，這是執行個體的<xref:System.Web.UI.StateBag>類別。</span><span class="sxs-lookup"><span data-stu-id="0ac34-224">These values are automatically placed in the server control's <xref:System.Web.UI.Control.ViewState%2A> property, which is an instance of the <xref:System.Web.UI.StateBag> class.</span></span> <span data-ttu-id="0ac34-225">儲存狀態的伺服器控制項的生命週期的階段之後，這個屬性的值然後會保存到字串物件。</span><span class="sxs-lookup"><span data-stu-id="0ac34-225">This property's value is then persisted to a string object after the save state stage of the server control life cycle.</span></span> <span data-ttu-id="0ac34-226">如需詳細資訊，請參閱[NIB: ASP.NET Web 伺服器控制項](http://msdn.microsoft.com/library/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1)。</span><span class="sxs-lookup"><span data-stu-id="0ac34-226">For more information, see [NIB: ASP.NET Web Server Controls](http://msdn.microsoft.com/library/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1).</span></span>  
-  
- <span data-ttu-id="0ac34-227">這個字串物件儲存檢視狀態時，會為儲存在 HTML 中的變數傳回給用戶端`Hidden`項目。</span><span class="sxs-lookup"><span data-stu-id="0ac34-227">When view state is saved, this string object is returned to the client as a variable that is stored in an HTML `Hidden` element.</span></span> <span data-ttu-id="0ac34-228">當您撰寫自訂的伺服器控制項時，您可以透過覆寫這個方法，並修改您的伺服器控制項來改善效率<xref:System.Web.UI.Control.ViewState%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="0ac34-228">When you author custom server controls, you can improve efficiency by overriding this method and modifying your server control's <xref:System.Web.UI.Control.ViewState%2A> property.</span></span> <span data-ttu-id="0ac34-229">如需詳細資訊，請參閱[NIB: ASP.NET Web 伺服器控制項](http://msdn.microsoft.com/library/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1)和[ASP.NET 狀態管理概觀](http://msdn.microsoft.com/library/0218d965-5d30-445b-b6a6-8870e70e63ce)。</span><span class="sxs-lookup"><span data-stu-id="0ac34-229">For more information, see [NIB: ASP.NET Web Server Controls](http://msdn.microsoft.com/library/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1) and [ASP.NET State Management Overview](http://msdn.microsoft.com/library/0218d965-5d30-445b-b6a6-8870e70e63ce).</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="P:System.Web.UI.StateBag.System#Web#UI#IStateManager#IsTrackingViewState" />
-        <altmember cref="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#LoadViewState(System.Object)" />
-        <altmember cref="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#TrackViewState" />
-      </Docs>
-    </Member>
-    <Member MemberName="System.Web.UI.IStateManager.TrackViewState">
-      <MemberSignature Language="C#" Value="void IStateManager.TrackViewState ();" />
-      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.Web.UI.IStateManager.TrackViewState() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#TrackViewState" />
-      <MemberSignature Language="VB.NET" Value="Sub TrackViewState () Implements IStateManager.TrackViewState" />
-      <MemberSignature Language="C++ CLI" Value=" virtual void System.Web.UI.IStateManager.TrackViewState() = System::Web::UI::IStateManager::TrackViewState;" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.Web.UI.IStateManager.TrackViewState</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="0ac34-230">導致 <see cref="T:System.Web.UI.StateBag" /> 物件追蹤其狀態的變更，以便可以跨要求持續保存。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-230">Causes the <see cref="T:System.Web.UI.StateBag" /> object to track changes to its state so that it can be persisted across requests.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <altmember cref="P:System.Web.UI.StateBag.System#Web#UI#IStateManager#IsTrackingViewState" />
-        <altmember cref="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#LoadViewState(System.Object)" />
-        <altmember cref="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#SaveViewState" />
-      </Docs>
-    </Member>
-    <Member MemberName="Values">
-      <MemberSignature Language="C#" Value="public System.Collections.ICollection Values { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.ICollection Values" />
-      <MemberSignature Language="DocId" Value="P:System.Web.UI.StateBag.Values" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Values As ICollection" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::ICollection ^ Values { System::Collections::ICollection ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <Implements>
-        <InterfaceMember>P:System.Collections.IDictionary.Values</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.ICollection</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="0ac34-231">取得儲存於 <see cref="T:System.Web.UI.StateBag" /> 物件中的檢視狀態值的集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-231">Gets a collection of the view-state values stored in the <see cref="T:System.Web.UI.StateBag" /> object.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="0ac34-232">檢視狀態值的集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="0ac34-232">The collection of view-state values.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="0ac34-233">這是包含的所有值的集合<xref:System.Web.UI.StateItem>中指定的頁面或控制項的物件。</span><span class="sxs-lookup"><span data-stu-id="0ac34-233">This is a collection that contains the values for all the <xref:System.Web.UI.StateItem> objects in the specified page or control.</span></span> <span data-ttu-id="0ac34-234">您可以逐一查看這些值使用<xref:System.Web.UI.StateBag.GetEnumerator%2A?displayProperty=nameWithType>方法。</span><span class="sxs-lookup"><span data-stu-id="0ac34-234">You can iterate through these values by using the <xref:System.Web.UI.StateBag.GetEnumerator%2A?displayProperty=nameWithType> method.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="0ac34-235">下列程式碼範例示範如何使用<xref:System.Web.UI.StateBag.Values%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="0ac34-235">The following code example demonstrates using the <xref:System.Web.UI.StateBag.Values%2A> property.</span></span>  
-  
- [!code-csharp[Web.UI.StateBag#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Web.UI.StateBag/CS/gotocs.aspx#2)]
- [!code-vb[Web.UI.StateBag#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Web.UI.StateBag/VB/gotovb.aspx#2)]  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Collections.ICollection" />
-        <altmember cref="P:System.Web.UI.Control.ViewState" />
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="StateBag.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac57d6a0f98c324b308d58a123d8b41a2496d30e2fa.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">7d6a0f98c324b308d58a123d8b41a2496d30e2fa</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Web.UI.StateBag">
+          <source>Manages the view state of ASP.NET server controls, including pages.</source>
+          <target state="translated">管理 ASP.NET 伺服器控制項的檢視狀態 (包括網頁)。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" uid="T:System.Web.UI.StateBag">
+          <source>This class cannot be inherited.</source>
+          <target state="translated">這個類別無法被繼承。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.UI.StateBag">
+          <source>View state for a page or control is the cumulative property values, or view, of that page or control.</source>
+          <target state="translated">累計的屬性值或檢視中的，該網頁或控制項的網頁或控制項檢視狀態。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.UI.StateBag">
+          <source>You can access this class through the <ph id="ph1">&lt;xref:System.Web.UI.Control.ViewState%2A?displayProperty=nameWithType&gt;</ph> property.</source>
+          <target state="translated">您可以存取此類別透過<ph id="ph1">&lt;xref:System.Web.UI.Control.ViewState%2A?displayProperty=nameWithType&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.UI.StateBag">
+          <source>Controls can also store essential state information in control state, but that information is not stored as a <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> object.</source>
+          <target state="translated">控制項也可以儲存在控制項狀態的基本狀態資訊但資訊不會儲存為<ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.UI.StateBag">
+          <source>This class is the primary storage mechanism for all HTML and Web server controls.</source>
+          <target state="translated">這個類別是所有的 HTML 和 Web 伺服器控制項的主要儲存機制。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.UI.StateBag">
+          <source>It stores attribute/value pairs as strings associated with the control.</source>
+          <target state="translated">它會儲存屬性/值配對為與控制項關聯的字串。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.UI.StateBag">
+          <source>It tracks changes to these attributes only after the <ph id="ph1">&lt;xref:System.Web.UI.Control.OnInit%2A&gt;</ph> method is executed for a page request, and saves the changes to the page's or control's view state.</source>
+          <target state="translated">它會追蹤這些屬性變更之後才<ph id="ph1">&lt;xref:System.Web.UI.Control.OnInit%2A&gt;</ph>方法頁面要求執行，並將變更儲存到網頁或控制項的檢視狀態。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.UI.StateBag">
+          <source>This class implements a dictionary, and you can add items to it or remove items from it as you would any dictionary object.</source>
+          <target state="translated">這個類別所實作的字典，而且您可以加入項目，或從其中移除項目，如同任何字典物件。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.UI.StateBag">
+          <source>For more information about data collections, such as dictionaries, see <bpt id="p1">[</bpt>Collections and Data Structures<ept id="p1">](http://msdn.microsoft.com/library/60cc581f-1db5-445b-ba04-a173396bf872)</ept>.</source>
+          <target state="translated">如需有關資料的集合，例如字典，請參閱<bpt id="p1">[</bpt>集合和資料結構<ept id="p1">](http://msdn.microsoft.com/library/60cc581f-1db5-445b-ba04-a173396bf872)</ept>。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.UI.StateBag">
+          <source>The following code example demonstrates a composite <ph id="ph1">`Label`</ph> control that has <ph id="ph2">`Text`</ph> and <ph id="ph3">`FontSize`</ph> properties.</source>
+          <target state="translated">下列程式碼範例將示範複合<ph id="ph1">`Label`</ph>控制項具有<ph id="ph2">`Text`</ph>和<ph id="ph3">`FontSize`</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.UI.StateBag">
+          <source>These properties are saved to and retrieved from view state when the <ph id="ph1">&lt;xref:System.Web.UI.Control.Render%2A?displayProperty=nameWithType&gt;</ph> method is called on the control.</source>
+          <target state="translated">這些屬性會儲存並擷取從檢視狀態<ph id="ph1">&lt;xref:System.Web.UI.Control.Render%2A?displayProperty=nameWithType&gt;</ph>控制項上呼叫方法。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" uid="T:System.Web.UI.StateBag">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> class.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.#ctor">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> class.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.#ctor">
+          <source>This is the default constructor for this class.</source>
+          <target state="translated">這是這個類別的預設建構函式。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.#ctor(System.Boolean)">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> to ignore case; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see langword="true" /&gt;</ph> 則忽略大小寫，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.#ctor(System.Boolean)">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> class that allows stored state values to be case-insensitive.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 類別的新執行個體，允許儲存的狀態值不區分大小寫。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.Add(System.String,System.Object)">
+          <source>The attribute name for the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> 的屬性名稱。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.Add(System.String,System.Object)">
+          <source>The value of the item to add to the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph>.</source>
+          <target state="translated">要加入至 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 的項目值。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.Add(System.String,System.Object)">
+          <source>Adds a new <ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> object to the <ph id="ph2">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object.</source>
+          <target state="translated">將新 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> 物件加入至 <ph id="ph2">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 物件。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.Add(System.String,System.Object)">
+          <source>If the item already exists in the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object, this method updates the value of the item.</source>
+          <target state="translated">如果項目已經存在於 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 物件中，則此方法會更新項目的值。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.Add(System.String,System.Object)">
+          <source>Returns a <ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> that represents the object added to view state.</source>
+          <target state="translated">傳回 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph>，表示加入至檢視狀態的物件。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.Add(System.String,System.Object)">
+          <source>The following code example demonstrates using the <ph id="ph1">&lt;xref:System.Web.UI.StateBag.Add%2A&gt;</ph> method.</source>
+          <target state="translated">下列程式碼範例示範如何使用<ph id="ph1">&lt;xref:System.Web.UI.StateBag.Add%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.Add(System.String,System.Object)">
+          <source><ph id="ph1">&lt;paramref name="key" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="key" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.Add(System.String,System.Object)">
+          <source><ph id="ph1">\-</ph> or -</source>
+          <target state="translated"><ph id="ph1">\-</ph>或-</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.Add(System.String,System.Object)">
+          <source>The number of characters in <ph id="ph1">&lt;paramref name="key" /&gt;</ph> is 0.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="key" /&gt;</ph> 中的字元數目為 0。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.Clear">
+          <source>Removes all items from the current <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object.</source>
+          <target state="translated">從目前 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 物件移除所有項目。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.Clear">
+          <source>The following code example demonstrates using the <ph id="ph1">&lt;xref:System.Web.UI.StateBag.Clear%2A&gt;</ph> method.</source>
+          <target state="translated">下列程式碼範例示範如何使用<ph id="ph1">&lt;xref:System.Web.UI.StateBag.Clear%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" uid="P:System.Web.UI.StateBag.Count">
+          <source>Gets the number of <ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> objects in the <ph id="ph2">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object.</source>
+          <target state="translated">取得 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> 物件中的 <ph id="ph2">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 物件數目。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Count">
+          <source>The number of items in the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 中的項目數。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Count">
+          <source>The following code example demonstrates using the <ph id="ph1">&lt;xref:System.Web.UI.StateBag.Count%2A&gt;</ph> property.</source>
+          <target state="translated">下列程式碼範例示範如何使用<ph id="ph1">&lt;xref:System.Web.UI.StateBag.Count%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.GetEnumerator">
+          <source>Returns an enumerator that iterates over all the key/value pairs of the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> objects stored in the <ph id="ph2">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object.</source>
+          <target state="translated">傳回列舉值，它可以逐一查看儲存在 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> 物件中之 <ph id="ph2">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 物件的所有索引鍵/值組。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.GetEnumerator">
+          <source>The enumerator to iterate through the state bag.</source>
+          <target state="translated">可以逐一查看狀態包的列舉值。</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.GetEnumerator">
+          <source>The following example demonstrates how to use the <ph id="ph1">&lt;xref:System.Web.UI.StateBag.GetEnumerator%2A&gt;</ph> method.</source>
+          <target state="translated">下列範例示範如何使用 <ph id="ph1">&lt;xref:System.Web.UI.StateBag.GetEnumerator%2A&gt;</ph> 方法。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.IsItemDirty(System.String)">
+          <source>The key of the item to check.</source>
+          <target state="translated">要檢查的項目索引鍵。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.IsItemDirty(System.String)">
+          <source>Checks a <ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> object stored in the <ph id="ph2">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object to evaluate whether it has been modified since the call to <ph id="ph3">&lt;see cref="M:System.Web.UI.Control.TrackViewState" /&gt;</ph>.</source>
+          <target state="translated">檢查儲存於 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> 物件的 <ph id="ph2">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 物件，以評估自從呼叫 <ph id="ph3">&lt;see cref="M:System.Web.UI.Control.TrackViewState" /&gt;</ph> 以來，它是否已經被修改。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.IsItemDirty(System.String)">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the item has been modified; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果項目已經被修改則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.IsItemDirty(System.String)">
+          <source>This method also returns <ph id="ph1">`false`</ph> if the <ph id="ph2">`key`</ph> parameter does not exist in the <ph id="ph3">&lt;xref:System.Web.UI.StateBag&gt;</ph> object.</source>
+          <target state="translated">這個方法也會傳回<ph id="ph1">`false`</ph>如果<ph id="ph2">`key`</ph>參數不存在於<ph id="ph3">&lt;xref:System.Web.UI.StateBag&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.IsItemDirty(System.String)">
+          <source>The following code example demonstrates using the <ph id="ph1">&lt;xref:System.Web.UI.StateBag.IsItemDirty%2A&gt;</ph> method.</source>
+          <target state="translated">下列程式碼範例示範如何使用<ph id="ph1">&lt;xref:System.Web.UI.StateBag.IsItemDirty%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" uid="P:System.Web.UI.StateBag.Item(System.String)">
+          <source>The key for the item.</source>
+          <target state="translated">項目的索引鍵。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" uid="P:System.Web.UI.StateBag.Item(System.String)">
+          <source>Gets or sets the value of an item stored in the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object.</source>
+          <target state="translated">取得或設定儲存於 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 物件中的項目值。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Item(System.String)">
+          <source>The specified item in the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 物件中的指定項目。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Item(System.String)">
+          <source>Using this member is the simplest way to save and retrieve view-state values for a control or a page.</source>
+          <target state="translated">使用這個成員是最簡單的方式儲存和擷取對檢視狀態值控制項或頁面。</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Item(System.String)">
+          <source>If an item is not already stored in the <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> object when you set this property, its key/value pair is added to the collection.</source>
+          <target state="translated">如果項目尚未儲存在<ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph>物件時設定這個屬性時，其索引鍵/值組加入至集合。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Item(System.String)">
+          <source>If you set this property to <ph id="ph1">`null`</ph> before the <ph id="ph2">&lt;xref:System.Web.UI.Control.TrackViewState%2A&gt;</ph> method is called on an item, it is removed from the <ph id="ph3">&lt;xref:System.Web.UI.StateBag&gt;</ph> object.</source>
+          <target state="translated">如果您將此屬性設定為<ph id="ph1">`null`</ph>之前<ph id="ph2">&lt;xref:System.Web.UI.Control.TrackViewState%2A&gt;</ph>項目上呼叫方法，就會移除從<ph id="ph3">&lt;xref:System.Web.UI.StateBag&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Item(System.String)">
+          <source>Otherwise, when you set this property to <ph id="ph1">`null`</ph> the key is saved to allow tracking of the item's view state.</source>
+          <target state="translated">否則，當您將此屬性設定為<ph id="ph1">`null`</ph>金鑰會儲存到允許的項目檢視狀態的追蹤。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Item(System.String)">
+          <source>The following code example demonstrates a property that saves its name and value as a key/value pair to the <ph id="ph1">&lt;xref:System.Web.UI.Control.ViewState%2A?displayProperty=nameWithType&gt;</ph> property.</source>
+          <target state="translated">下列程式碼範例示範如何將其名稱和值儲存為索引鍵/值組的屬性<ph id="ph1">&lt;xref:System.Web.UI.Control.ViewState%2A?displayProperty=nameWithType&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Item(System.String)">
+          <source>The <ph id="ph1">&lt;xref:System.Web.UI.Control.ViewState%2A&gt;</ph> property is an instance of the <ph id="ph2">&lt;xref:System.Web.UI.StateBag&gt;</ph> class.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.UI.Control.ViewState%2A&gt;</ph>屬性是的執行個體<ph id="ph2">&lt;xref:System.Web.UI.StateBag&gt;</ph>類別。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" uid="P:System.Web.UI.StateBag.Keys">
+          <source>Gets a collection of keys representing the items in the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object.</source>
+          <target state="translated">取得表示 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 物件中項目的索引鍵集合。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Keys">
+          <source>The collection of keys.</source>
+          <target state="translated">索引鍵的集合。</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Keys">
+          <source>These keys are the names of the control properties.</source>
+          <target state="translated">這些金鑰為控制項屬性的名稱。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Keys">
+          <source>For example, if you created a <ph id="ph1">`BGColor`</ph> property on a <ph id="ph2">`Table`</ph> control that you customized, a <ph id="ph3">`BGColor`</ph> entry is created in this collection representing that property on your <ph id="ph4">`Table`</ph> control.</source>
+          <target state="translated">比方說，如果您建立<ph id="ph1">`BGColor`</ph>屬性<ph id="ph2">`Table`</ph>控制項，您自訂，<ph id="ph3">`BGColor`</ph>代表該屬性在這個集合中建立項目是您<ph id="ph4">`Table`</ph>控制項。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Keys">
+          <source>These keys correspond to the names of the <ph id="ph1">&lt;xref:System.Web.UI.StateItem&gt;</ph> objects stored in the <ph id="ph2">&lt;xref:System.Web.UI.StateBag&gt;</ph> collection for the current page or server control.</source>
+          <target state="translated">這些索引鍵對應至名稱<ph id="ph1">&lt;xref:System.Web.UI.StateItem&gt;</ph>物件儲存在<ph id="ph2">&lt;xref:System.Web.UI.StateBag&gt;</ph>目前頁面或伺服器控制項的集合。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Keys">
+          <source>You can iterate over this collection using the <ph id="ph1">&lt;xref:System.Web.UI.StateBag.GetEnumerator%2A?displayProperty=nameWithType&gt;</ph> method.</source>
+          <target state="translated">您可以逐一查看這個集合使用<ph id="ph1">&lt;xref:System.Web.UI.StateBag.GetEnumerator%2A?displayProperty=nameWithType&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Keys">
+          <source>The following code example demonstrates using the <ph id="ph1">&lt;xref:System.Web.UI.StateBag.Keys%2A&gt;</ph> property.</source>
+          <target state="translated">下列程式碼範例示範如何使用<ph id="ph1">&lt;xref:System.Web.UI.StateBag.Keys%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.Remove(System.String)">
+          <source>The item to remove.</source>
+          <target state="translated">要移除的項目。</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.Remove(System.String)">
+          <source>Removes the specified key/value pair from the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object.</source>
+          <target state="translated">從 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 物件移除指定的索引鍵/數值配對。</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.Remove(System.String)">
+          <source>The following code example demonstrates using the <ph id="ph1">&lt;xref:System.Web.UI.StateBag.Remove%2A&gt;</ph> method.</source>
+          <target state="translated">下列程式碼範例示範如何使用<ph id="ph1">&lt;xref:System.Web.UI.StateBag.Remove%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.SetDirty(System.Boolean)">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> to mark the state of the collection and its items as modified; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see langword="true" /&gt;</ph> 可將集合和其項目的狀態標示為已修改；否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.SetDirty(System.Boolean)">
+          <source>Sets the state of the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object as well as the <ph id="ph2">&lt;see cref="P:System.Web.SessionState.ISessionStateItemCollection.Dirty" /&gt;</ph> property of each of the <ph id="ph3">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> objects contained by it.</source>
+          <target state="translated">設定 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 物件的狀態，以及它所包含的每個 <ph id="ph3">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> 物件的 <ph id="ph2">&lt;see cref="P:System.Web.SessionState.ISessionStateItemCollection.Dirty" /&gt;</ph> 屬性。</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.SetDirty(System.Boolean)">
+          <source>The <ph id="ph1">&lt;xref:System.Web.UI.StateBag.SetDirty%2A&gt;</ph> method is used to force the collection and its contents to be serialized during a call to the <ph id="ph2">&lt;xref:System.Web.UI.StateBag.System%23Web%23UI%23IStateManager%23SaveViewState%2A&gt;</ph> method.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.UI.StateBag.SetDirty%2A&gt;</ph>方法用來強制集合和其內容至序列化期間呼叫<ph id="ph2">&lt;xref:System.Web.UI.StateBag.System%23Web%23UI%23IStateManager%23SaveViewState%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.SetItemDirty(System.String,System.Boolean)">
+          <source>The key that identifies which <ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> in the <ph id="ph2">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> to set.</source>
+          <target state="translated">索引鍵，識別 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> 中要設定的 <ph id="ph2">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.SetItemDirty(System.String,System.Boolean)">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> to mark the state of the item as modified; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see langword="true" /&gt;</ph> 表示標記項目狀態為已修改，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.SetItemDirty(System.String,System.Boolean)">
+          <source>Sets the <ph id="ph1">&lt;see cref="P:System.Web.SessionState.ISessionStateItemCollection.Dirty" /&gt;</ph> property for the specified <ph id="ph2">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> object in the <ph id="ph3">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object.</source>
+          <target state="translated">設定 <ph id="ph1">&lt;see cref="P:System.Web.SessionState.ISessionStateItemCollection.Dirty" /&gt;</ph> 物件中指定 <ph id="ph2">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> 物件的 <ph id="ph3">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 屬性。</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.SetItemDirty(System.String,System.Boolean)">
+          <source>The <ph id="ph1">&lt;xref:System.Web.UI.StateBag.SetItemDirty%2A&gt;</ph> method is used to prevent or force state management of specific properties, represented by <ph id="ph2">&lt;xref:System.Web.UI.StateItem&gt;</ph> objects in the <ph id="ph3">&lt;xref:System.Web.UI.StateBag&gt;</ph> collection.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.UI.StateBag.SetItemDirty%2A&gt;</ph>方法用來防止或強制所表示的特定屬性的狀態管理<ph id="ph2">&lt;xref:System.Web.UI.StateItem&gt;</ph>中的物件<ph id="ph3">&lt;xref:System.Web.UI.StateBag&gt;</ph>集合。</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source>The one-dimensional <ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph> that is the destination of the elements copied from <ph id="ph2">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph>.</source>
+          <target state="translated">一維 <ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph>，是從 <ph id="ph2">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph> 複製過來之項目的目的端。</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph> must have zero-based indexing.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph> 必須有以零為起始的索引。</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source>The zero-based index in <bpt id="p1">&lt;c&gt;</bpt>array<ept id="p1">&lt;/c&gt;</ept> at which copying begins.</source>
+          <target state="translated"><bpt id="p1">&lt;c&gt;</bpt>array<ept id="p1">&lt;/c&gt;</ept> 中以零起始的索引，複製作業從此處開始。</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source>For a description of this member, see <ph id="ph1">&lt;see cref="M:System.Collections.ICollection.CopyTo(System.Array,System.Int32)" /&gt;</ph>.</source>
+          <target state="translated">如需這個成員的說明，請參閱 <ph id="ph1">&lt;see cref="M:System.Collections.ICollection.CopyTo(System.Array,System.Int32)" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source>This member is an explicit interface member implementation.</source>
+          <target state="translated">這個成員是明確介面成員實作，</target>       </trans-unit>
+        <trans-unit id="171" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+          <source>It can be used only when the <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> instance is cast to an <ph id="ph2">&lt;xref:System.Collections.ICollection&gt;</ph> interface.</source>
+          <target state="translated">只有在 <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> 執行個體轉換成 <ph id="ph2">&lt;xref:System.Collections.ICollection&gt;</ph> 介面時，才能使用這個成員。</target>       </trans-unit>
+        <trans-unit id="172" translate="yes" xml:space="preserve" uid="P:System.Web.UI.StateBag.System#Collections#ICollection#IsSynchronized">
+          <source>For a description of this member, see <ph id="ph1">&lt;see cref="P:System.Collections.ICollection.IsSynchronized" /&gt;</ph>.</source>
+          <target state="translated">如需這個成員的說明，請參閱 <ph id="ph1">&lt;see cref="P:System.Collections.ICollection.IsSynchronized" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="173" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Collections#ICollection#IsSynchronized">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if access to the <ph id="ph2">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph> is synchronized (thread safe); otherwise, <ph id="ph3">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果 <ph id="ph1">&lt;see langword="true" /&gt;</ph> 的存取為同步 (安全執行緒)，則為 <ph id="ph2">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph>，否則為 <ph id="ph3">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="174" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Collections#ICollection#IsSynchronized">
+          <source>This member is an explicit interface member implementation.</source>
+          <target state="translated">這個成員是明確介面成員實作，</target>       </trans-unit>
+        <trans-unit id="175" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Collections#ICollection#IsSynchronized">
+          <source>It can be used only when the <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> instance is cast to an <ph id="ph2">&lt;xref:System.Collections.ICollection&gt;</ph> interface.</source>
+          <target state="translated">只有在 <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> 執行個體轉換成 <ph id="ph2">&lt;xref:System.Collections.ICollection&gt;</ph> 介面時，才能使用這個成員。</target>       </trans-unit>
+        <trans-unit id="176" translate="yes" xml:space="preserve" uid="P:System.Web.UI.StateBag.System#Collections#ICollection#SyncRoot">
+          <source>For a description of this member, see <ph id="ph1">&lt;see cref="P:System.Collections.ICollection.SyncRoot" /&gt;</ph>.</source>
+          <target state="translated">如需這個成員的說明，請參閱 <ph id="ph1">&lt;see cref="P:System.Collections.ICollection.SyncRoot" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="177" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Collections#ICollection#SyncRoot">
+          <source>An object that can be used to synchronize access to the <ph id="ph1">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph>.</source>
+          <target state="translated">可用以同步存取 <ph id="ph1">&lt;see cref="T:System.Collections.ICollection" /&gt;</ph> 的物件。</target>       </trans-unit>
+        <trans-unit id="178" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Collections#ICollection#SyncRoot">
+          <source>This member is an explicit interface member implementation.</source>
+          <target state="translated">這個成員是明確介面成員實作，</target>       </trans-unit>
+        <trans-unit id="179" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Collections#ICollection#SyncRoot">
+          <source>It can be used only when the <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> instance is cast to an <ph id="ph2">&lt;xref:System.Collections.ICollection&gt;</ph> interface.</source>
+          <target state="translated">只有在 <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> 執行個體轉換成 <ph id="ph2">&lt;xref:System.Collections.ICollection&gt;</ph> 介面時，才能使用這個成員。</target>       </trans-unit>
+        <trans-unit id="180" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Collections#IDictionary#Add(System.Object,System.Object)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Object" /&gt;</ph> to use as the key of the element to add.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Object" /&gt;</ph>，用做要加入之項目的索引鍵。</target>       </trans-unit>
+        <trans-unit id="181" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Collections#IDictionary#Add(System.Object,System.Object)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Object" /&gt;</ph> to use as the value of the element to add.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Object" /&gt;</ph>，用做要加入之項目的值。</target>       </trans-unit>
+        <trans-unit id="182" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Collections#IDictionary#Add(System.Object,System.Object)">
+          <source>For a description of this member, see <ph id="ph1">&lt;see cref="M:System.Collections.IDictionary.Add(System.Object,System.Object)" /&gt;</ph>.</source>
+          <target state="translated">如需這個成員的說明，請參閱 <ph id="ph1">&lt;see cref="M:System.Collections.IDictionary.Add(System.Object,System.Object)" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="183" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Collections#IDictionary#Add(System.Object,System.Object)">
+          <source>This member is an explicit interface member implementation.</source>
+          <target state="translated">這個成員是明確介面成員實作，</target>       </trans-unit>
+        <trans-unit id="184" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Collections#IDictionary#Add(System.Object,System.Object)">
+          <source>It can be used only when the <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> instance is cast to an <ph id="ph2">&lt;xref:System.Collections.IDictionary&gt;</ph> interface.</source>
+          <target state="translated">只有在 <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> 執行個體轉換成 <ph id="ph2">&lt;xref:System.Collections.IDictionary&gt;</ph> 介面時，才能使用這個成員。</target>       </trans-unit>
+        <trans-unit id="185" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Collections#IDictionary#Contains(System.Object)">
+          <source>The key to locate in the <ph id="ph1">&lt;see cref="T:System.Collections.IDictionary" /&gt;</ph> object.</source>
+          <target state="translated">要在 <ph id="ph1">&lt;see cref="T:System.Collections.IDictionary" /&gt;</ph> 物件中尋找的索引鍵。</target>       </trans-unit>
+        <trans-unit id="186" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Collections#IDictionary#Contains(System.Object)">
+          <source>For a description of this member, see <ph id="ph1">&lt;see cref="M:System.Collections.IDictionary.Contains(System.Object)" /&gt;</ph>.</source>
+          <target state="translated">如需這個成員的說明，請參閱 <ph id="ph1">&lt;see cref="M:System.Collections.IDictionary.Contains(System.Object)" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="187" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Collections#IDictionary#Contains(System.Object)">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the <ph id="ph2">&lt;see cref="T:System.Collections.IDictionary" /&gt;</ph> contains an element with the key; otherwise, <ph id="ph3">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果 <ph id="ph1">&lt;see langword="true" /&gt;</ph> 包含具有該索引鍵的項目，則為 <ph id="ph2">&lt;see cref="T:System.Collections.IDictionary" /&gt;</ph>，否則為 <ph id="ph3">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="188" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Collections#IDictionary#Contains(System.Object)">
+          <source>This member is an explicit interface member implementation.</source>
+          <target state="translated">這個成員是明確介面成員實作，</target>       </trans-unit>
+        <trans-unit id="189" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Collections#IDictionary#Contains(System.Object)">
+          <source>It can be used only when the <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> instance is cast to an <ph id="ph2">&lt;xref:System.Collections.IDictionary&gt;</ph> interface.</source>
+          <target state="translated">只有在 <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> 執行個體轉換成 <ph id="ph2">&lt;xref:System.Collections.IDictionary&gt;</ph> 介面時，才能使用這個成員。</target>       </trans-unit>
+        <trans-unit id="190" translate="yes" xml:space="preserve" uid="P:System.Web.UI.StateBag.System#Collections#IDictionary#IsFixedSize">
+          <source>For a description of this member, see <ph id="ph1">&lt;see cref="P:System.Collections.IDictionary.IsFixedSize" /&gt;</ph>.</source>
+          <target state="translated">如需這個成員的說明，請參閱 <ph id="ph1">&lt;see cref="P:System.Collections.IDictionary.IsFixedSize" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="191" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Collections#IDictionary#IsFixedSize">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the <ph id="ph2">&lt;see cref="T:System.Collections.IDictionary" /&gt;</ph> object has a fixed size; otherwise, <ph id="ph3">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果 <ph id="ph2">&lt;see cref="T:System.Collections.IDictionary" /&gt;</ph> 物件有固定大小，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph3">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="192" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Collections#IDictionary#IsFixedSize">
+          <source>This member is an explicit interface member implementation.</source>
+          <target state="translated">這個成員是明確介面成員實作，</target>       </trans-unit>
+        <trans-unit id="193" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Collections#IDictionary#IsFixedSize">
+          <source>It can be used only when the <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> instance is cast to an <ph id="ph2">&lt;xref:System.Collections.IDictionary&gt;</ph> interface.</source>
+          <target state="translated">只有在 <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> 執行個體轉換成 <ph id="ph2">&lt;xref:System.Collections.IDictionary&gt;</ph> 介面時，才能使用這個成員。</target>       </trans-unit>
+        <trans-unit id="194" translate="yes" xml:space="preserve" uid="P:System.Web.UI.StateBag.System#Collections#IDictionary#IsReadOnly">
+          <source>For a description of this member, see <ph id="ph1">&lt;see cref="P:System.Collections.IDictionary.IsReadOnly" /&gt;</ph>.</source>
+          <target state="translated">如需這個成員的說明，請參閱 <ph id="ph1">&lt;see cref="P:System.Collections.IDictionary.IsReadOnly" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="195" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Collections#IDictionary#IsReadOnly">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the <ph id="ph2">&lt;see cref="T:System.Collections.IDictionary" /&gt;</ph> object is read-only; otherwise, <ph id="ph3">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果 <ph id="ph2">&lt;see cref="T:System.Collections.IDictionary" /&gt;</ph> 物件是唯讀，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph3">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="196" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Collections#IDictionary#IsReadOnly">
+          <source>This member is an explicit interface member implementation.</source>
+          <target state="translated">這個成員是明確介面成員實作，</target>       </trans-unit>
+        <trans-unit id="197" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Collections#IDictionary#IsReadOnly">
+          <source>It can be used only when the <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> instance is cast to an <ph id="ph2">&lt;xref:System.Collections.IDictionary&gt;</ph> interface.</source>
+          <target state="translated">只有在 <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> 執行個體轉換成 <ph id="ph2">&lt;xref:System.Collections.IDictionary&gt;</ph> 介面時，才能使用這個成員。</target>       </trans-unit>
+        <trans-unit id="198" translate="yes" xml:space="preserve" uid="P:System.Web.UI.StateBag.System#Collections#IDictionary#Item(System.Object)">
+          <source>The key of the element to get.</source>
+          <target state="translated">要取得的項目索引鍵。</target>       </trans-unit>
+        <trans-unit id="199" translate="yes" xml:space="preserve" uid="P:System.Web.UI.StateBag.System#Collections#IDictionary#Item(System.Object)">
+          <source>For a description of this member, see <ph id="ph1">&lt;see cref="P:System.Collections.IDictionary.Item(System.Object)" /&gt;</ph>.</source>
+          <target state="translated">如需這個成員的說明，請參閱 <ph id="ph1">&lt;see cref="P:System.Collections.IDictionary.Item(System.Object)" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="200" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Collections#IDictionary#Item(System.Object)">
+          <source>The element with the specified <ph id="ph1">&lt;paramref name="key" /&gt;</ph>.</source>
+          <target state="translated">具有指定之 <ph id="ph1">&lt;paramref name="key" /&gt;</ph> 的項目。</target>       </trans-unit>
+        <trans-unit id="201" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Collections#IDictionary#Item(System.Object)">
+          <source>This member is an explicit interface member implementation.</source>
+          <target state="translated">這個成員是明確介面成員實作，</target>       </trans-unit>
+        <trans-unit id="202" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Collections#IDictionary#Item(System.Object)">
+          <source>It can be used only when the <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> instance is cast to an <ph id="ph2">&lt;xref:System.Collections.IDictionary&gt;</ph> interface.</source>
+          <target state="translated">只有在 <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> 執行個體轉換成 <ph id="ph2">&lt;xref:System.Collections.IDictionary&gt;</ph> 介面時，才能使用這個成員。</target>       </trans-unit>
+        <trans-unit id="203" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Collections#IDictionary#Remove(System.Object)">
+          <source>The key of the element to remove.</source>
+          <target state="translated">要移除的項目索引鍵。</target>       </trans-unit>
+        <trans-unit id="204" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Collections#IDictionary#Remove(System.Object)">
+          <source>For a description of this member, see <ph id="ph1">&lt;see cref="M:System.Collections.IDictionary.Remove(System.Object)" /&gt;</ph>.</source>
+          <target state="translated">如需這個成員的說明，請參閱 <ph id="ph1">&lt;see cref="M:System.Collections.IDictionary.Remove(System.Object)" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="205" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Collections#IDictionary#Remove(System.Object)">
+          <source>This member is an explicit interface member implementation.</source>
+          <target state="translated">這個成員是明確介面成員實作，</target>       </trans-unit>
+        <trans-unit id="206" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Collections#IDictionary#Remove(System.Object)">
+          <source>It can be used only when the <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> instance is cast to an <ph id="ph2">&lt;xref:System.Collections.IDictionary&gt;</ph> interface.</source>
+          <target state="translated">只有在 <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> 執行個體轉換成 <ph id="ph2">&lt;xref:System.Collections.IDictionary&gt;</ph> 介面時，才能使用這個成員。</target>       </trans-unit>
+        <trans-unit id="207" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Collections#IEnumerable#GetEnumerator">
+          <source>For a description of this member, see <ph id="ph1">&lt;see cref="M:System.Collections.IEnumerable.GetEnumerator" /&gt;</ph>.</source>
+          <target state="translated">如需這個成員的說明，請參閱 <ph id="ph1">&lt;see cref="M:System.Collections.IEnumerable.GetEnumerator" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="208" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Collections#IEnumerable#GetEnumerator">
+          <source>An <ph id="ph1">&lt;see cref="T:System.Collections.IEnumerator" /&gt;</ph> that can be used to iterate through the collection.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Collections.IEnumerator" /&gt;</ph>，可用於逐一查看集合。</target>       </trans-unit>
+        <trans-unit id="209" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Collections#IEnumerable#GetEnumerator">
+          <source>This member is an explicit interface member implementation.</source>
+          <target state="translated">這個成員是明確介面成員實作，</target>       </trans-unit>
+        <trans-unit id="210" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Collections#IEnumerable#GetEnumerator">
+          <source>It can be used only when the <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> instance is cast to an <ph id="ph2">&lt;xref:System.Collections.IEnumerable&gt;</ph> interface.</source>
+          <target state="translated">只有在 <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> 執行個體轉換成 <ph id="ph2">&lt;xref:System.Collections.IEnumerable&gt;</ph> 介面時，才能使用這個成員。</target>       </trans-unit>
+        <trans-unit id="211" translate="yes" xml:space="preserve" uid="P:System.Web.UI.StateBag.System#Web#UI#IStateManager#IsTrackingViewState">
+          <source>Gets a value indicating whether state changes are being tracked.</source>
+          <target state="translated">取得指出是否已追蹤狀態變更的值。</target>       </trans-unit>
+        <trans-unit id="212" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.System#Web#UI#IStateManager#IsTrackingViewState">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the <ph id="ph2">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> is marked to save changes to its state; otherwise, <ph id="ph3">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果 <ph id="ph2">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 標記成將變更儲存到其狀態則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph3">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="213" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#LoadViewState(System.Object)">
+          <source>An object that represents the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> state to restore.</source>
+          <target state="translated">代表要還原之 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 狀態的物件。</target>       </trans-unit>
+        <trans-unit id="214" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#LoadViewState(System.Object)">
+          <source>Restores the previously saved view state of the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object.</source>
+          <target state="translated">還原先前已儲存的 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 物件檢視狀態。</target>       </trans-unit>
+        <trans-unit id="215" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#LoadViewState(System.Object)">
+          <source>This method restores view-state information for the <ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph> object from a previous page request that was saved by the <ph id="ph2">&lt;xref:System.Web.UI.StateBag.System%23Web%23UI%23IStateManager%23SaveViewState%2A&gt;</ph> method.</source>
+          <target state="translated">這個方法會還原檢視狀態資訊<ph id="ph1">&lt;xref:System.Web.UI.StateBag&gt;</ph>物件所儲存的先前頁面要求從<ph id="ph2">&lt;xref:System.Web.UI.StateBag.System%23Web%23UI%23IStateManager%23SaveViewState%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="216" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#LoadViewState(System.Object)">
+          <source>This method is primarily used by control developers.</source>
+          <target state="translated">這個方法主要由控制項開發人員使用。</target>       </trans-unit>
+        <trans-unit id="217" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#LoadViewState(System.Object)">
+          <source>You can override this method to control how a custom server control restores its view state.</source>
+          <target state="translated">您可以覆寫這個方法來控制如何將自訂的伺服器控制項還原其檢視狀態。</target>       </trans-unit>
+        <trans-unit id="218" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#LoadViewState(System.Object)">
+          <source>For more information, see <bpt id="p1">[</bpt>ASP.NET State Management Overview<ept id="p1">](http://msdn.microsoft.com/library/0218d965-5d30-445b-b6a6-8870e70e63ce)</ept>.</source>
+          <target state="translated">如需詳細資訊，請參閱<bpt id="p1">[</bpt>ASP.NET 狀態管理概觀<ept id="p1">](http://msdn.microsoft.com/library/0218d965-5d30-445b-b6a6-8870e70e63ce)</ept>。</target>       </trans-unit>
+        <trans-unit id="219" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#SaveViewState">
+          <source>Saves the changes to the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object since the time the page was posted back to the server.</source>
+          <target state="translated">儲存自頁面回傳至伺服器以來 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 物件的變更。</target>       </trans-unit>
+        <trans-unit id="220" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#SaveViewState">
+          <source>The object that contains the changes to the view state of the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph>.</source>
+          <target state="translated">包含 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 檢視狀態變更的物件。</target>       </trans-unit>
+        <trans-unit id="221" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#SaveViewState">
+          <source>If there are no changes, or there are no <ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> elements in the <ph id="ph2">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph>, this method returns <ph id="ph3">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated">如果沒有任何變更，或是 <ph id="ph2">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph>中沒有任何 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateItem" /&gt;</ph> 項目，這個方法會傳回 <ph id="ph3">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="222" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#SaveViewState">
+          <source>This method is primarily used by control developers.</source>
+          <target state="translated">這個方法主要由控制項開發人員使用。</target>       </trans-unit>
+        <trans-unit id="223" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#SaveViewState">
+          <source>View state is the accumulation of the values of a server control's properties.</source>
+          <target state="translated">檢視狀態是伺服器控制項的屬性值的累積。</target>       </trans-unit>
+        <trans-unit id="224" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#SaveViewState">
+          <source>These values are automatically placed in the server control's <ph id="ph1">&lt;xref:System.Web.UI.Control.ViewState%2A&gt;</ph> property, which is an instance of the <ph id="ph2">&lt;xref:System.Web.UI.StateBag&gt;</ph> class.</source>
+          <target state="translated">這些值會自動放入伺服器控制項的<ph id="ph1">&lt;xref:System.Web.UI.Control.ViewState%2A&gt;</ph>屬性，這是執行個體的<ph id="ph2">&lt;xref:System.Web.UI.StateBag&gt;</ph>類別。</target>       </trans-unit>
+        <trans-unit id="225" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#SaveViewState">
+          <source>This property's value is then persisted to a string object after the save state stage of the server control life cycle.</source>
+          <target state="translated">儲存狀態的伺服器控制項的生命週期的階段之後，這個屬性的值然後會保存到字串物件。</target>       </trans-unit>
+        <trans-unit id="226" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#SaveViewState">
+          <source>For more information, see <bpt id="p1">[</bpt>NIB: ASP.NET Web Server Controls<ept id="p1">](http://msdn.microsoft.com/library/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1)</ept>.</source>
+          <target state="translated">如需詳細資訊，請參閱<bpt id="p1">[</bpt>NIB: ASP.NET Web 伺服器控制項<ept id="p1">](http://msdn.microsoft.com/library/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1)</ept>。</target>       </trans-unit>
+        <trans-unit id="227" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#SaveViewState">
+          <source>When view state is saved, this string object is returned to the client as a variable that is stored in an HTML <ph id="ph1">`Hidden`</ph> element.</source>
+          <target state="translated">這個字串物件儲存檢視狀態時，會為儲存在 HTML 中的變數傳回給用戶端<ph id="ph1">`Hidden`</ph>項目。</target>       </trans-unit>
+        <trans-unit id="228" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#SaveViewState">
+          <source>When you author custom server controls, you can improve efficiency by overriding this method and modifying your server control's <ph id="ph1">&lt;xref:System.Web.UI.Control.ViewState%2A&gt;</ph> property.</source>
+          <target state="translated">當您撰寫自訂的伺服器控制項時，您可以透過覆寫這個方法，並修改您的伺服器控制項來改善效率<ph id="ph1">&lt;xref:System.Web.UI.Control.ViewState%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="229" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#SaveViewState">
+          <source>For more information, see <bpt id="p1">[</bpt>NIB: ASP.NET Web Server Controls<ept id="p1">](http://msdn.microsoft.com/library/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1)</ept> and <bpt id="p2">[</bpt>ASP.NET State Management Overview<ept id="p2">](http://msdn.microsoft.com/library/0218d965-5d30-445b-b6a6-8870e70e63ce)</ept>.</source>
+          <target state="translated">如需詳細資訊，請參閱<bpt id="p1">[</bpt>NIB: ASP.NET Web 伺服器控制項<ept id="p1">](http://msdn.microsoft.com/library/e18eb2f2-cf00-47ae-b1a1-dfc188a6dea1)</ept>和<bpt id="p2">[</bpt>ASP.NET 狀態管理概觀<ept id="p2">](http://msdn.microsoft.com/library/0218d965-5d30-445b-b6a6-8870e70e63ce)</ept>。</target>       </trans-unit>
+        <trans-unit id="230" translate="yes" xml:space="preserve" uid="M:System.Web.UI.StateBag.System#Web#UI#IStateManager#TrackViewState">
+          <source>Causes the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object to track changes to its state so that it can be persisted across requests.</source>
+          <target state="translated">導致 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 物件追蹤其狀態的變更，以便可以跨要求持續保存。</target>       </trans-unit>
+        <trans-unit id="231" translate="yes" xml:space="preserve" uid="P:System.Web.UI.StateBag.Values">
+          <source>Gets a collection of the view-state values stored in the <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> object.</source>
+          <target state="translated">取得儲存於 <ph id="ph1">&lt;see cref="T:System.Web.UI.StateBag" /&gt;</ph> 物件中的檢視狀態值的集合。</target>       </trans-unit>
+        <trans-unit id="232" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Values">
+          <source>The collection of view-state values.</source>
+          <target state="translated">檢視狀態值的集合。</target>       </trans-unit>
+        <trans-unit id="233" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Values">
+          <source>This is a collection that contains the values for all the <ph id="ph1">&lt;xref:System.Web.UI.StateItem&gt;</ph> objects in the specified page or control.</source>
+          <target state="translated">這是包含的所有值的集合<ph id="ph1">&lt;xref:System.Web.UI.StateItem&gt;</ph>中指定的頁面或控制項的物件。</target>       </trans-unit>
+        <trans-unit id="234" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Values">
+          <source>You can iterate through these values by using the <ph id="ph1">&lt;xref:System.Web.UI.StateBag.GetEnumerator%2A?displayProperty=nameWithType&gt;</ph> method.</source>
+          <target state="translated">您可以逐一查看這些值使用<ph id="ph1">&lt;xref:System.Web.UI.StateBag.GetEnumerator%2A?displayProperty=nameWithType&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="235" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.UI.StateBag.Values">
+          <source>The following code example demonstrates using the <ph id="ph1">&lt;xref:System.Web.UI.StateBag.Values%2A&gt;</ph> property.</source>
+          <target state="translated">下列程式碼範例示範如何使用<ph id="ph1">&lt;xref:System.Web.UI.StateBag.Values%2A&gt;</ph>屬性。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

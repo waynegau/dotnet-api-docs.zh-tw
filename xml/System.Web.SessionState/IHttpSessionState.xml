@@ -1,1126 +1,342 @@
-<Type Name="IHttpSessionState" FullName="System.Web.SessionState.IHttpSessionState">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="5fcd8abb9eb672b289bd1d0d49a9263735df0d39" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public interface IHttpSessionState" />
-  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IHttpSessionState" />
-  <TypeSignature Language="DocId" Value="T:System.Web.SessionState.IHttpSessionState" />
-  <TypeSignature Language="VB.NET" Value="Public Interface IHttpSessionState" />
-  <TypeSignature Language="C++ CLI" Value="public interface class IHttpSessionState" />
-  <AssemblyInfo>
-    <AssemblyName>System.Web</AssemblyName>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Interfaces />
-  <Docs>
-    <summary>
-      <span data-ttu-id="3248e-101">定義合約以實作自訂工作階段狀態容器。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="3248e-101">Defines the contract to implement a custom session-state container.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="3248e-102">工作階段狀態容器會提供存取工作階段狀態值和目前工作階段的相關的資訊。</span><span class="sxs-lookup"><span data-stu-id="3248e-102">A session-state container provides access to the session-state values and related information for the current session.</span></span> <span data-ttu-id="3248e-103">包含工作階段狀態容器中的工作階段資訊公開給應用程式程式碼，透過<xref:System.Web.SessionState.HttpSessionState>類別使用<xref:System.Web.HttpContext.Session%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="3248e-103">Session information included in a session-state container is exposed to application code through the <xref:System.Web.SessionState.HttpSessionState> class using the <xref:System.Web.HttpContext.Session%2A> property.</span></span> <span data-ttu-id="3248e-104"><xref:System.Web.SessionState.HttpSessionState>類別是工作階段狀態容器的包裝函式類別。</span><span class="sxs-lookup"><span data-stu-id="3248e-104">The <xref:System.Web.SessionState.HttpSessionState> class is a wrapper class for a session-state container.</span></span>  
-  
- <span data-ttu-id="3248e-105">工作階段狀態容器的 ASP.NET 實作<xref:System.Web.SessionState.HttpSessionStateContainer>類別。</span><span class="sxs-lookup"><span data-stu-id="3248e-105">The ASP.NET implementation of a session-state container is the <xref:System.Web.SessionState.HttpSessionStateContainer> class.</span></span> <span data-ttu-id="3248e-106">在要求中，開頭期間<xref:System.Web.HttpApplication.AcquireRequestState>事件，<xref:System.Web.SessionState.SessionStateModule>建立及擴展<xref:System.Web.SessionState.HttpSessionStateContainer>物件，並將它指派給目前<xref:System.Web.HttpContext>。</span><span class="sxs-lookup"><span data-stu-id="3248e-106">At the beginning of a request, during the <xref:System.Web.HttpApplication.AcquireRequestState> event, the <xref:System.Web.SessionState.SessionStateModule> creates and populates an <xref:System.Web.SessionState.HttpSessionStateContainer> object and assigns it to the current <xref:System.Web.HttpContext>.</span></span> <span data-ttu-id="3248e-107">要求中，結尾期間<xref:System.Web.HttpApplication.ReleaseRequestState>事件，<xref:System.Web.SessionState.SessionStateModule>擷取<xref:System.Web.SessionState.HttpSessionStateContainer>物件從目前<xref:System.Web.HttpContext>並執行任何必要的工作階段工作，例如寫入工作階段存放區中的工作階段值或放棄工作階段。</span><span class="sxs-lookup"><span data-stu-id="3248e-107">At the end of a request, during the <xref:System.Web.HttpApplication.ReleaseRequestState> event, the <xref:System.Web.SessionState.SessionStateModule> retrieves the <xref:System.Web.SessionState.HttpSessionStateContainer> object from the current <xref:System.Web.HttpContext> and performs any required session work, such as writing the session values to the session store, or abandoning the session.</span></span> <span data-ttu-id="3248e-108">如果要求突然終止，例如透過重新導向，<xref:System.Web.SessionState.SessionStateModule>藉由呼叫會執行相同清除<xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="3248e-108">If the request is abruptly terminated, such as through a redirect, the <xref:System.Web.SessionState.SessionStateModule> performs the same cleanup by calling the <xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A> method.</span></span>  
-  
- <span data-ttu-id="3248e-109">若要建立自訂的工作階段狀態容器，請建立可實作<xref:System.Web.SessionState.IHttpSessionState>介面。</span><span class="sxs-lookup"><span data-stu-id="3248e-109">To create a custom session-state container, create a class that implements the <xref:System.Web.SessionState.IHttpSessionState> interface.</span></span> <span data-ttu-id="3248e-110">如果您正在建立您自己自訂的工作階段狀態容器，您也必須取代<xref:System.Web.SessionState.SessionStateModule>與您自己自訂的模組。</span><span class="sxs-lookup"><span data-stu-id="3248e-110">If you are creating your own custom session-state container, you must also replace the <xref:System.Web.SessionState.SessionStateModule> with your own custom module.</span></span> <span data-ttu-id="3248e-111">自訂模組將會建立自訂的工作階段狀態容器的執行個體，並將它加入至目前<xref:System.Web.HttpContext>使用<xref:System.Web.SessionState.SessionStateUtility.AddHttpSessionStateToContext%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="3248e-111">Your custom module will create an instance of your custom session-state container and add it to the current <xref:System.Web.HttpContext> using the <xref:System.Web.SessionState.SessionStateUtility.AddHttpSessionStateToContext%2A> method.</span></span> <span data-ttu-id="3248e-112">自訂工作階段狀態模組的範例包含在<xref:System.Web.SessionState.SessionStateUtility>類別概觀。</span><span class="sxs-lookup"><span data-stu-id="3248e-112">An example of a custom session-state module is included in the <xref:System.Web.SessionState.SessionStateUtility> class overview.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="3248e-113">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState>介面來建立新的工作階段狀態容器類別，名為`MySessionState`。</span><span class="sxs-lookup"><span data-stu-id="3248e-113">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState> interface to create a new session-state container class named `MySessionState`.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#1)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#1)]  
-  
- ]]></format>
-    </remarks>
-  </Docs>
-  <Members>
-    <Member MemberName="Abandon">
-      <MemberSignature Language="C#" Value="public void Abandon ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Abandon() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.IHttpSessionState.Abandon" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Abandon ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Abandon();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-114">結束目前的工作階段。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-114">Ends the current session.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="3248e-115"><xref:System.Web.SessionState.IHttpSessionState.Abandon%2A>方法用來清除工作階段資料，引發**Session_OnEnd** ASP.NET 應用程式的 Global.asax 檔中定義的事件。</span><span class="sxs-lookup"><span data-stu-id="3248e-115">The <xref:System.Web.SessionState.IHttpSessionState.Abandon%2A> method is used to clear out session data and raise the **Session_OnEnd** event defined in the Global.asax file for the ASP.NET application.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="3248e-116">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.Abandon%2A>方法<xref:System.Web.SessionState.IHttpSessionState>介面。</span><span class="sxs-lookup"><span data-stu-id="3248e-116">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.Abandon%2A> method of the <xref:System.Web.SessionState.IHttpSessionState> interface.</span></span> <span data-ttu-id="3248e-117">程式碼範例將複製的行為<xref:System.Web.SessionState.HttpSessionStateContainer>類別，它會新增<xref:System.Web.SessionState.HttpSessionStateContainer.IsAbandoned%2A>屬性設為`true`時<xref:System.Web.SessionState.IHttpSessionState.Abandon%2A>方法呼叫。</span><span class="sxs-lookup"><span data-stu-id="3248e-117">The code example duplicates the behavior of the <xref:System.Web.SessionState.HttpSessionStateContainer> class in that it adds an <xref:System.Web.SessionState.HttpSessionStateContainer.IsAbandoned%2A> property that is set to `true` when the <xref:System.Web.SessionState.IHttpSessionState.Abandon%2A> method is called.</span></span> <span data-ttu-id="3248e-118"><xref:System.Web.SessionState.HttpSessionStateContainer.IsAbandoned%2A>期間的工作階段狀態模組會檢查屬性<xref:System.Web.HttpApplication.ReleaseRequestState>事件，以判斷是否已放棄的工作階段，而且工作階段狀態模組清除工作階段資料，然後執行**Session_OnEnd**事件。</span><span class="sxs-lookup"><span data-stu-id="3248e-118">The <xref:System.Web.SessionState.HttpSessionStateContainer.IsAbandoned%2A> property is checked by the session-state module during the <xref:System.Web.HttpApplication.ReleaseRequestState> event to determine whether the session has been abandoned, and the session-state module clears out session data and executes the **Session_OnEnd** event.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#8](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#8)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#8](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#8)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Add">
-      <MemberSignature Language="C#" Value="public void Add (string name, object value);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Add(string name, object value) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.IHttpSessionState.Add(System.String,System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Add (name As String, value As Object)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Add(System::String ^ name, System::Object ^ value);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-        <Parameter Name="value" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="name">
-          <span data-ttu-id="3248e-119">要加入工作階段狀態集合中的項目名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-119">The name of the item to add to the session-state collection.</span>
-          </span>
-        </param>
-        <param name="value">
-          <span data-ttu-id="3248e-120">要加入工作階段狀態集合中的項目值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-120">The value of the item to add to the session-state collection.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="3248e-121">將新項目加入至工作階段狀態集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-121">Adds a new item to the session-state collection.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3248e-122">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.Add%2A>方法<xref:System.Web.SessionState.IHttpSessionState>介面，以將新的項目值加入至內部工作階段狀態項目集合。</span><span class="sxs-lookup"><span data-stu-id="3248e-122">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.Add%2A> method of the <xref:System.Web.SessionState.IHttpSessionState> interface to add a new item value to the internal session-state item collection.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#15](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#15)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#15](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#15)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Clear">
-      <MemberSignature Language="C#" Value="public void Clear ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Clear() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.IHttpSessionState.Clear" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Clear ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Clear();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-123">清除工作階段狀態項目集合中的所有值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-123">Clears all values from the session-state item collection.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="3248e-124"><xref:System.Web.SessionState.IHttpSessionState.Clear%2A> 執行相同的功能<xref:System.Web.SessionState.IHttpSessionState.RemoveAll%2A>。</span><span class="sxs-lookup"><span data-stu-id="3248e-124"><xref:System.Web.SessionState.IHttpSessionState.Clear%2A> performs the same function as <xref:System.Web.SessionState.IHttpSessionState.RemoveAll%2A>.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="3248e-125">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.Clear%2A>方法<xref:System.Web.SessionState.IHttpSessionState>介面，以從內部工作階段狀態項目集合中刪除所有項目。</span><span class="sxs-lookup"><span data-stu-id="3248e-125">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.Clear%2A> method of the <xref:System.Web.SessionState.IHttpSessionState> interface to delete all items from an internal session-state item collection.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#18](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#18)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#18](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#18)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CodePage">
-      <MemberSignature Language="C#" Value="public int CodePage { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 CodePage" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.CodePage" />
-      <MemberSignature Language="VB.NET" Value="Public Property CodePage As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int CodePage { int get(); void set(int value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-126">取得或設定目前工作階段的字碼頁識別項。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-126">Gets or sets the code-page identifier for the current session.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-127">目前工作階段的字碼頁識別項。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-127">The code-page identifier for the current session.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="3248e-128">字元集 （字碼頁） 用來解譯多位元組字元資料，判斷字元值，並排序次序。</span><span class="sxs-lookup"><span data-stu-id="3248e-128">A character set (code page) is used to interpret multi-byte character data, determining character value, and therefore sort order.</span></span> <span data-ttu-id="3248e-129">字碼頁設定僅適用於多位元組字元資料，而無法 Unicode 字元資料。</span><span class="sxs-lookup"><span data-stu-id="3248e-129">Code-page settings apply only to multi-byte character data, not to Unicode character data.</span></span>  
-  
- <span data-ttu-id="3248e-130">這<xref:System.Web.SessionState.IHttpSessionState.CodePage%2A>提供屬性為了與 ASP 的舊版本只有相容性。</span><span class="sxs-lookup"><span data-stu-id="3248e-130">This <xref:System.Web.SessionState.IHttpSessionState.CodePage%2A> property is provided for compatibility with earlier versions of ASP only.</span></span> <span data-ttu-id="3248e-131">如果您不需要維護回溯相容性的 ASP 頁面，使用<xref:System.Text.Encoding.CodePage%2A>屬性<xref:System.Web.HttpResponse.ContentEncoding%2A>屬性改為。</span><span class="sxs-lookup"><span data-stu-id="3248e-131">If you do not need to maintain backward compatibility with ASP pages, use the <xref:System.Text.Encoding.CodePage%2A> property of the <xref:System.Web.HttpResponse.ContentEncoding%2A> property instead.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="3248e-132">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.CodePage%2A>屬性<xref:System.Web.SessionState.IHttpSessionState>介面來取得及設定目前回應的編碼方式。</span><span class="sxs-lookup"><span data-stu-id="3248e-132">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.CodePage%2A> property of the <xref:System.Web.SessionState.IHttpSessionState> interface to get and set the encoding for the current response.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#10](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#10)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#10](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#10)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CookieMode">
-      <MemberSignature Language="C#" Value="public System.Web.HttpCookieMode CookieMode { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Web.HttpCookieMode CookieMode" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.CookieMode" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property CookieMode As HttpCookieMode" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::HttpCookieMode CookieMode { System::Web::HttpCookieMode get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.HttpCookieMode</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-133">取得值，指出是否針對無 Cookie 工作階段設定應用程式。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-133">Gets a value that indicates whether the application is configured for cookieless sessions.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-134">其中一個 <see cref="T:System.Web.HttpCookieMode" /> 值，指出應用程式是否設定使用無 Cookie 工作階段。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-134">One of the <see cref="T:System.Web.HttpCookieMode" /> values that indicate whether the application is configured for cookieless sessions.</span>
-          </span>
-          <span data-ttu-id="3248e-135">預設值為 <see cref="F:System.Web.HttpCookieMode.UseCookies" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-135">The default is <see cref="F:System.Web.HttpCookieMode.UseCookies" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="3248e-136"><xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A>屬性會傳回<xref:System.Web.HttpCookieMode>列舉值的值為基礎，`cookieless`屬性<xref:System.Web.Configuration.SystemWebSectionGroup.SessionState%2A>組態項目。</span><span class="sxs-lookup"><span data-stu-id="3248e-136">The <xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A> property returns a <xref:System.Web.HttpCookieMode> enumeration value that is based on the value of the `cookieless` attribute of the <xref:System.Web.Configuration.SystemWebSectionGroup.SessionState%2A> configuration element.</span></span> <span data-ttu-id="3248e-137">如果`cookieless`屬性設為`true`，然後在<xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A>屬性會傳回<xref:System.Web.HttpCookieMode.UseUri>，否則<xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A>屬性會傳回<xref:System.Web.HttpCookieMode.UseCookies>。</span><span class="sxs-lookup"><span data-stu-id="3248e-137">If the `cookieless` attribute is set to `true`, then the <xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A> property returns <xref:System.Web.HttpCookieMode.UseUri>; otherwise, the <xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A> property returns <xref:System.Web.HttpCookieMode.UseCookies>.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="3248e-138">下列程式碼範例會設定`cookieless`屬性[工作階段狀態項目 （ASP.NET 設定結構描述）](http://msdn.microsoft.com/library/bda6fb8c-0076-43e3-9ce2-8cf1f8bdaa7d)元素`true`變更 Web.config 檔案中<xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="3248e-138">The following code example sets the `cookieless` attribute of the [sessionState Element (ASP.NET Settings Schema)](http://msdn.microsoft.com/library/bda6fb8c-0076-43e3-9ce2-8cf1f8bdaa7d) element to `true` in the Web.config file to change the <xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A> property.</span></span> <span data-ttu-id="3248e-139">此範例應用程式組態，<xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A>屬性則會傳回<xref:System.Web.HttpCookieMode.UseUri>。</span><span class="sxs-lookup"><span data-stu-id="3248e-139">For this sample application configuration, the <xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A> property would return <xref:System.Web.HttpCookieMode.UseUri>.</span></span>  
-  
-```  
-<configuration>  
-  <system.web>  
-    <sessionState  
-      mode="InProc"  
-      cookieless="true"  
-      timeout="30" />  
-  </system.web>  
-</configuration>  
-```  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CopyTo">
-      <MemberSignature Language="C#" Value="public void CopyTo (Array array, int index);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void CopyTo(class System.Array array, int32 index) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.IHttpSessionState.CopyTo(System.Array,System.Int32)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void CopyTo(Array ^ array, int index);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="array" Type="System.Array" />
-        <Parameter Name="index" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="array">
-          <span data-ttu-id="3248e-140">接收工作階段值的 <see cref="T:System.Array" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-140">The <see cref="T:System.Array" /> that receives the session values.</span>
-          </span>
-        </param>
-        <param name="index">
-          <span data-ttu-id="3248e-141">
-            <c>array</c> 中的索引，複製作業從此處開始。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-141">The index in <c>array</c> where copying starts.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="3248e-142">將工作階段狀態項目值的集合複製到一維陣列，從陣列中指定的索引開始。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-142">Copies the collection of session-state item values to a one-dimensional array, starting at the specified index in the array.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3248e-143">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.CopyTo%2A>方法<xref:System.Web.SessionState.IHttpSessionState>介面，以將工作階段狀態項目值複製到陣列。</span><span class="sxs-lookup"><span data-stu-id="3248e-143">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.CopyTo%2A> method of the <xref:System.Web.SessionState.IHttpSessionState> interface to copy session-state item values to an array.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#22](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#22)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#22](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#22)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Count">
-      <MemberSignature Language="C#" Value="public int Count { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 Count" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.Count" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Count As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int Count { int get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-144">取得工作階段狀態項目集合中的項目數目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-144">Gets the number of items in the session-state item collection.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-145">工作階段狀態項目集合中的項目數目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-145">The number of items in the session-state item collection.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3248e-146">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.Count%2A>屬性<xref:System.Web.SessionState.IHttpSessionState>介面在內部工作階段狀態項目集合中傳回的項目數。</span><span class="sxs-lookup"><span data-stu-id="3248e-146">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.Count%2A> property of the <xref:System.Web.SessionState.IHttpSessionState> interface to return the number of items in the internal session-state item collection.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#19](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#19)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#19](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#19)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetEnumerator">
-      <MemberSignature Language="C#" Value="public System.Collections.IEnumerator GetEnumerator ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Collections.IEnumerator GetEnumerator() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.IHttpSessionState.GetEnumerator" />
-      <MemberSignature Language="VB.NET" Value="Public Function GetEnumerator () As IEnumerator" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Collections::IEnumerator ^ GetEnumerator();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.IEnumerator</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-147">傳回列舉值，其可用於讀取目前工作階段中所有的工作階段狀態項目值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-147">Returns an enumerator that can be used to read all the session-state item values in the current session.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="3248e-148">
-            <see cref="T:System.Collections.IEnumerator" />，可逐一查看工作階段狀態項目集合中的值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-148">An <see cref="T:System.Collections.IEnumerator" /> that can iterate through the values in the session-state item collection.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3248e-149">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.GetEnumerator%2A>方法<xref:System.Web.SessionState.IHttpSessionState>介面，以傳回內部工作階段狀態項目集合的列舉值。</span><span class="sxs-lookup"><span data-stu-id="3248e-149">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.GetEnumerator%2A> method of the <xref:System.Web.SessionState.IHttpSessionState> interface to return an enumerator for the internal session-state item collection.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#21](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#21)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#21](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#21)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IsCookieless">
-      <MemberSignature Language="C#" Value="public bool IsCookieless { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool IsCookieless" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.IsCookieless" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsCookieless As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsCookieless { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-150">取得值，指出工作階段 ID 是否內嵌於 URL 或儲存於 HTTP Cookie。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-150">Gets a value indicating whether the session ID is embedded in the URL or stored in an HTTP cookie.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-151">如果工作階段內嵌於 URL，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-151">
-              <see langword="true" /> if the session is embedded in the URL; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="3248e-152">在無 cookie 工作階段的資訊，請參閱[工作階段識別元](http://msdn.microsoft.com/library/146ca206-d151-4f2e-a548-bcca05ccf0cb)。</span><span class="sxs-lookup"><span data-stu-id="3248e-152">For information on cookieless sessions, see [Session Identifiers](http://msdn.microsoft.com/library/146ca206-d151-4f2e-a548-bcca05ccf0cb).</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="3248e-153">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.IsCookieless%2A>屬性<xref:System.Web.SessionState.IHttpSessionState>介面。</span><span class="sxs-lookup"><span data-stu-id="3248e-153">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.IsCookieless%2A> property of the <xref:System.Web.SessionState.IHttpSessionState> interface.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#6](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#6)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#6)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IsNewSession">
-      <MemberSignature Language="C#" Value="public bool IsNewSession { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool IsNewSession" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.IsNewSession" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsNewSession As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsNewSession { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-154">取得值，指出工作階段是否與目前要求一起建立。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-154">Gets a value indicating whether the session was created with the current request.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-155">如果工作階段是以目前要求建立，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-155">
-              <see langword="true" /> if the session was created with the current request; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3248e-156">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.IsNewSession%2A>屬性<xref:System.Web.SessionState.IHttpSessionState>介面。</span><span class="sxs-lookup"><span data-stu-id="3248e-156">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.IsNewSession%2A> property of the <xref:System.Web.SessionState.IHttpSessionState> interface.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#4](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#4)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#4)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IsReadOnly">
-      <MemberSignature Language="C#" Value="public bool IsReadOnly { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool IsReadOnly" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.IsReadOnly" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsReadOnly As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsReadOnly { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-157">取得值，指出工作階段是否為唯讀。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-157">Gets a value indicating whether the session is read-only.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-158">如果工作階段是唯讀，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-158">
-              <see langword="true" /> if the session is read-only; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="3248e-159">工作階段狀態會藉由設定設為唯讀<xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>頁面屬性`ReadOnly`。</span><span class="sxs-lookup"><span data-stu-id="3248e-159">Session state is set to read-only by setting the <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> page attribute to `ReadOnly`.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="3248e-160">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.IsReadOnly%2A>屬性<xref:System.Web.SessionState.IHttpSessionState>介面，以傳回已設定於建構函式內部變數的值。</span><span class="sxs-lookup"><span data-stu-id="3248e-160">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.IsReadOnly%2A> property of the <xref:System.Web.SessionState.IHttpSessionState> interface to return the value of an internal variable that was set in the constructor.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#24](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#24)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#24](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#24)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IsSynchronized">
-      <MemberSignature Language="C#" Value="public bool IsSynchronized { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool IsSynchronized" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.IsSynchronized" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsSynchronized As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsSynchronized { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-161">取得值，指出對工作階段狀態值之集合的存取是否為同步的 (安全執行緒，Thread-Safe)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-161">Gets a value indicating whether access to the collection of session-state values is synchronized (thread safe).</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-162">如果對集合的存取是同步處理的 (安全執行緒)，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-162">
-              <see langword="true" /> if access to the collection is synchronized (thread safe); otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3248e-163">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.IsSynchronized%2A>屬性<xref:System.Web.SessionState.IHttpSessionState>介面。</span><span class="sxs-lookup"><span data-stu-id="3248e-163">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.IsSynchronized%2A> property of the <xref:System.Web.SessionState.IHttpSessionState> interface.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#25](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#25)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#25](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#25)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <MemberGroup MemberName="Item">
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-164">取得或設定個別的工作階段狀態項目值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-164">Gets or sets individual session-state item values.</span>
-          </span>
-        </summary>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName="Item">
-      <MemberSignature Language="C#" Value="public object this[int index] { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance object Item(int32)" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.Item(System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Default Public Property Item(index As Integer) As Object" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Object ^ default[int] { System::Object ^ get(int index); void set(int index, System::Object ^ value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="index" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="index">
-          <span data-ttu-id="3248e-165">工作階段狀態項目值的數值索引。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-165">The numerical index of the session-state item value.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="3248e-166">按照數值索引取得或設定工作階段狀態項目值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-166">Gets or sets a session-state item value by numerical index.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-167">在 <paramref name="index" /> 參數中指定的工作階段狀態項目值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-167">The session-state item value specified in the <paramref name="index" /> parameter.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3248e-168">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.Item%2A>屬性<xref:System.Web.SessionState.IHttpSessionState>介面，以存放區並傳回內部字典工作階段狀態項目值的數值索引。</span><span class="sxs-lookup"><span data-stu-id="3248e-168">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.Item%2A> property of the <xref:System.Web.SessionState.IHttpSessionState> interface to store and return an internal dictionary session-state item value by numeric index.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#14](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#14)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#14](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#14)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Item">
-      <MemberSignature Language="C#" Value="public object this[string name] { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance object Item(string)" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.Item(System.String)" />
-      <MemberSignature Language="VB.NET" Value="Default Public Property Item(name As String) As Object" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Object ^ default[System::String ^] { System::Object ^ get(System::String ^ name); void set(System::String ^ name, System::Object ^ value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="name">
-          <span data-ttu-id="3248e-169">工作階段狀態項目值的索引鍵名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-169">The key name of the session-state item value.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="3248e-170">按照名稱取得或設定工作階段狀態項目值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-170">Gets or sets a session-state item value by name.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-171">在 <paramref name="name" /> 參數中指定的工作階段狀態項目值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-171">The session-state item value specified in the <paramref name="name" /> parameter.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3248e-172">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.Item%2A>屬性<xref:System.Web.SessionState.IHttpSessionState>介面，以存放區並傳回內部字典工作階段狀態項目值依其索引鍵的名稱。</span><span class="sxs-lookup"><span data-stu-id="3248e-172">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.Item%2A> property of the <xref:System.Web.SessionState.IHttpSessionState> interface to store and return an internal dictionary session-state item value by its key name.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#13](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#13)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#13](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#13)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Keys">
-      <MemberSignature Language="C#" Value="public System.Collections.Specialized.NameObjectCollectionBase.KeysCollection Keys { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Specialized.NameObjectCollectionBase/KeysCollection Keys" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.Keys" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Keys As NameObjectCollectionBase.KeysCollection" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::Specialized::NameObjectCollectionBase::KeysCollection ^ Keys { System::Collections::Specialized::NameObjectCollectionBase::KeysCollection ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.Specialized.NameObjectCollectionBase+KeysCollection</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-173">取得儲存在工作階段狀態項目集合中所有值的索引鍵集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-173">Gets a collection of the keys for all values stored in the session-state item collection.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-174">包含所有工作階段項目索引鍵的 <see cref="T:System.Collections.Specialized.NameObjectCollectionBase.KeysCollection" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-174">The <see cref="T:System.Collections.Specialized.NameObjectCollectionBase.KeysCollection" /> that contains all the session-item keys.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3248e-175">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.Keys%2A>屬性<xref:System.Web.SessionState.IHttpSessionState>介面，以從內部工作階段狀態項目集合傳回工作階段狀態項目索引鍵名稱的集合。</span><span class="sxs-lookup"><span data-stu-id="3248e-175">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.Keys%2A> property of the <xref:System.Web.SessionState.IHttpSessionState> interface to return a collection of session-state item key names from the internal session-state item collection.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#20](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#20)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#20](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#20)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="LCID">
-      <MemberSignature Language="C#" Value="public int LCID { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 LCID" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.LCID" />
-      <MemberSignature Language="VB.NET" Value="Public Property LCID As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int LCID { int get(); void set(int value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-176">取得或設定目前工作階段的地區設定識別項 (LCID)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-176">Gets or sets the locale identifier (LCID) of the current session.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-177">
-            <see cref="T:System.Globalization.CultureInfo" /> 執行個體，指定目前工作階段的文化特性。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-177">A <see cref="T:System.Globalization.CultureInfo" /> instance that specifies the culture of the current session.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="3248e-178">這`LCID`提供屬性為了與 ASP 的舊版本只有相容性。</span><span class="sxs-lookup"><span data-stu-id="3248e-178">This `LCID` property is provided for compatibility with earlier versions of ASP only.</span></span> <span data-ttu-id="3248e-179">如果您不需要維護回溯相容性的 ASP 頁面，使用<xref:System.Globalization.CultureInfo.LCID%2A>屬性改為。</span><span class="sxs-lookup"><span data-stu-id="3248e-179">If you do not need to maintain backward compatibility with ASP pages, use the <xref:System.Globalization.CultureInfo.LCID%2A> property instead.</span></span>  
-  
- <span data-ttu-id="3248e-180">ASP.NET 不會在工作階段狀態儲存的地區設定識別碼。</span><span class="sxs-lookup"><span data-stu-id="3248e-180">ASP.NET does not store the locale identifier in session state.</span></span> <span data-ttu-id="3248e-181"><xref:System.Web.SessionState.IHttpSessionState.LCID%2A>屬性呼叫<xref:System.Globalization.CultureInfo.LCID%2A>取得和設定識別項。</span><span class="sxs-lookup"><span data-stu-id="3248e-181">The <xref:System.Web.SessionState.IHttpSessionState.LCID%2A> property calls the <xref:System.Globalization.CultureInfo.LCID%2A> to get and set the identifier.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="3248e-182">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.LCID%2A>屬性<xref:System.Web.SessionState.IHttpSessionState>介面來取得及設定目前頁面的地區設定識別碼。</span><span class="sxs-lookup"><span data-stu-id="3248e-182">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.LCID%2A> property of the <xref:System.Web.SessionState.IHttpSessionState> interface to get and set the locale identifier for the current page.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#9](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#9)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#9](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#9)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Mode">
-      <MemberSignature Language="C#" Value="public System.Web.SessionState.SessionStateMode Mode { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Web.SessionState.SessionStateMode Mode" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.Mode" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Mode As SessionStateMode" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::SessionState::SessionStateMode Mode { System::Web::SessionState::SessionStateMode get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.SessionState.SessionStateMode</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-183">取得目前的工作階段狀態模式。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-183">Gets the current session-state mode.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-184">其中一個 <see cref="T:System.Web.SessionState.SessionStateMode" /> 值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-184">One of the <see cref="T:System.Web.SessionState.SessionStateMode" /> values.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="3248e-185">如需不同工作階段狀態模式的資訊，請參閱[工作階段狀態模式](http://msdn.microsoft.com/library/0bb0a3a3-650f-4c47-a0c5-b08b9b591bb4)。</span><span class="sxs-lookup"><span data-stu-id="3248e-185">For information on different session-state modes, see [Session-State Modes](http://msdn.microsoft.com/library/0bb0a3a3-650f-4c47-a0c5-b08b9b591bb4).</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="3248e-186">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.Mode%2A>屬性<xref:System.Web.SessionState.IHttpSessionState>介面。</span><span class="sxs-lookup"><span data-stu-id="3248e-186">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.Mode%2A> property of the <xref:System.Web.SessionState.IHttpSessionState> interface.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#5](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#5)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#5)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Remove">
-      <MemberSignature Language="C#" Value="public void Remove (string name);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Remove(string name) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.IHttpSessionState.Remove(System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Remove (name As String)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Remove(System::String ^ name);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="name" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="name">
-          <span data-ttu-id="3248e-187">要從工作階段狀態項目集合中刪除的項目名稱。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-187">The name of the item to delete from the session-state item collection.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="3248e-188">從工作階段狀態項目集合中刪除項目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-188">Deletes an item from the session-state item collection.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3248e-189">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.Remove%2A>方法<xref:System.Web.SessionState.IHttpSessionState>介面，以便刪除工作階段狀態項目集合的索引鍵名稱的工作階段狀態項目。</span><span class="sxs-lookup"><span data-stu-id="3248e-189">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.Remove%2A> method of the <xref:System.Web.SessionState.IHttpSessionState> interface to delete a session-state item from the session-state item collection by key name.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#16](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#16)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#16](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#16)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RemoveAll">
-      <MemberSignature Language="C#" Value="public void RemoveAll ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RemoveAll() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.IHttpSessionState.RemoveAll" />
-      <MemberSignature Language="VB.NET" Value="Public Sub RemoveAll ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RemoveAll();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-190">清除工作階段狀態項目集合中的所有值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-190">Clears all values from the session-state item collection.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="3248e-191"><xref:System.Web.SessionState.IHttpSessionState.RemoveAll%2A> 執行相同的功能<xref:System.Web.SessionState.IHttpSessionState.Clear%2A>。</span><span class="sxs-lookup"><span data-stu-id="3248e-191"><xref:System.Web.SessionState.IHttpSessionState.RemoveAll%2A> performs the same function as <xref:System.Web.SessionState.IHttpSessionState.Clear%2A>.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="3248e-192">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.RemoveAll%2A>方法<xref:System.Web.SessionState.IHttpSessionState>介面，以從內部工作階段狀態項目集合中刪除所有項目。</span><span class="sxs-lookup"><span data-stu-id="3248e-192">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.RemoveAll%2A> method of the <xref:System.Web.SessionState.IHttpSessionState> interface to delete all items from an internal session-state item collection.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#18](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#18)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#18](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#18)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="RemoveAt">
-      <MemberSignature Language="C#" Value="public void RemoveAt (int index);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RemoveAt(int32 index) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.IHttpSessionState.RemoveAt(System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub RemoveAt (index As Integer)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RemoveAt(int index);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="index" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="index">
-          <span data-ttu-id="3248e-193">要從工作階段狀態集合移除的項目索引。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-193">The index of the item to remove from the session-state collection.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="3248e-194">從工作階段狀態項目集合中刪除指定索引處的項目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-194">Deletes an item at a specified index from the session-state item collection.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3248e-195">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.RemoveAt%2A>方法<xref:System.Web.SessionState.IHttpSessionState>介面，以便刪除內部工作階段狀態項目集合的數字索引的工作階段狀態項目。</span><span class="sxs-lookup"><span data-stu-id="3248e-195">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.RemoveAt%2A> method of the <xref:System.Web.SessionState.IHttpSessionState> interface to delete a session-state item from the internal session-state item collection by numerical index.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#17](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#17)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#17](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#17)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SessionID">
-      <MemberSignature Language="C#" Value="public string SessionID { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance string SessionID" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.SessionID" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SessionID As String" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ SessionID { System::String ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-196">取得工作階段的唯一工作階段識別項。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-196">Gets the unique session identifier for the session.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-197">工作階段識別碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-197">The session ID.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3248e-198">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.SessionID%2A>屬性<xref:System.Web.SessionState.IHttpSessionState>介面。</span><span class="sxs-lookup"><span data-stu-id="3248e-198">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.SessionID%2A> property of the <xref:System.Web.SessionState.IHttpSessionState> interface.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#3)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#3)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="StaticObjects">
-      <MemberSignature Language="C#" Value="public System.Web.HttpStaticObjectsCollection StaticObjects { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.HttpStaticObjectsCollection StaticObjects" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.StaticObjects" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property StaticObjects As HttpStaticObjectsCollection" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::HttpStaticObjectsCollection ^ StaticObjects { System::Web::HttpStaticObjectsCollection ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.HttpStaticObjectsCollection</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-199">取得由 ASP.NET 應用程式檔 Global.asax 內 <see langword="&lt;object Runat=&quot;Server&quot; Scope=&quot;Session&quot;/&gt;" /> 標記所宣告的物件集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-199">Gets a collection of objects declared by <see langword="&lt;object Runat=&quot;Server&quot; Scope=&quot;Session&quot;/&gt;" /> tags within the ASP.NET application file Global.asax.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-200">
-            <see cref="T:System.Web.HttpStaticObjectsCollection" />，包含 Global.asax 檔案中所宣告的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-200">An <see cref="T:System.Web.HttpStaticObjectsCollection" /> containing objects declared in the Global.asax file.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="3248e-201">`StaticObjects` 是提供來與 ASP 先前版本相容。</span><span class="sxs-lookup"><span data-stu-id="3248e-201">`StaticObjects` is provided for compatibility with earlier versions of ASP.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="3248e-202">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.StaticObjects%2A>屬性<xref:System.Web.SessionState.IHttpSessionState>介面。</span><span class="sxs-lookup"><span data-stu-id="3248e-202">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.StaticObjects%2A> property of the <xref:System.Web.SessionState.IHttpSessionState> interface.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#12](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#12)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#12](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#12)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SyncRoot">
-      <MemberSignature Language="C#" Value="public object SyncRoot { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance object SyncRoot" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.SyncRoot" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SyncRoot As Object" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Object ^ SyncRoot { System::Object ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-203">取得物件，這個物件可以用來對工作階段狀態值集合進行同步存取。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-203">Gets an object that can be used to synchronize access to the collection of session-state values.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-204">Object，可用來對集合同步存取。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-204">An object that can be used to synchronize access to the collection.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3248e-205">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.SyncRoot%2A>屬性，以傳回實作的目前物件的複本<xref:System.Web.SessionState.IHttpSessionState>介面。</span><span class="sxs-lookup"><span data-stu-id="3248e-205">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.SyncRoot%2A> property to return a copy of the current object that implements the <xref:System.Web.SessionState.IHttpSessionState> interface.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#23](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#23)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#23](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#23)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Timeout">
-      <MemberSignature Language="C#" Value="public int Timeout { get; set; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 Timeout" />
-      <MemberSignature Language="DocId" Value="P:System.Web.SessionState.IHttpSessionState.Timeout" />
-      <MemberSignature Language="VB.NET" Value="Public Property Timeout As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int Timeout { int get(); void set(int value); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="3248e-206">取得和設定在工作階段狀態提供者終止工作階段之前，要求之間允許的逾時週期 (以分鐘為單位)。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-206">Gets and sets the time-out period (in minutes) allowed between requests before the session-state provider terminates the session.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="3248e-207">逾時期限，以分鐘為單位。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="3248e-207">The time-out period, in minutes.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- <span data-ttu-id="3248e-208">下列程式碼範例會實作<xref:System.Web.SessionState.IHttpSessionState.Timeout%2A>屬性<xref:System.Web.SessionState.IHttpSessionState>介面來取得及設定儲存在內部變數在類別建構函式中建立的工作階段逾時值。</span><span class="sxs-lookup"><span data-stu-id="3248e-208">The following code example implements the <xref:System.Web.SessionState.IHttpSessionState.Timeout%2A> property of the <xref:System.Web.SessionState.IHttpSessionState> interface to get and set the session timeout value that is stored in an internal variable created in the class constructor.</span></span>  
-  
- [!code-csharp[System.Web.SessionState.IHttpSessionState#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/CS/mysessionstate.cs#2)]
- [!code-vb[System.Web.SessionState.IHttpSessionState#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.SessionState.IHttpSessionState/VB/mysessionstate.vb#2)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="IHttpSessionState.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac55fcd8abb9eb672b289bd1d0d49a9263735df0d39.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">5fcd8abb9eb672b289bd1d0d49a9263735df0d39</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Web.SessionState.IHttpSessionState">
+          <source>Defines the contract to implement a custom session-state container.</source>
+          <target state="translated">定義合約以實作自訂工作階段狀態容器。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.IHttpSessionState">
+          <source>A session-state container provides access to the session-state values and related information for the current session.</source>
+          <target state="translated">工作階段狀態容器會提供存取工作階段狀態值和目前工作階段的相關的資訊。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.IHttpSessionState">
+          <source>Session information included in a session-state container is exposed to application code through the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState&gt;</ph> class using the <ph id="ph2">&lt;xref:System.Web.HttpContext.Session%2A&gt;</ph> property.</source>
+          <target state="translated">包含工作階段狀態容器中的工作階段資訊公開給應用程式程式碼，透過<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState&gt;</ph>類別使用<ph id="ph2">&lt;xref:System.Web.HttpContext.Session%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.IHttpSessionState">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState&gt;</ph> class is a wrapper class for a session-state container.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionState&gt;</ph>類別是工作階段狀態容器的包裝函式類別。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.IHttpSessionState">
+          <source>The ASP.NET implementation of a session-state container is the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionStateContainer&gt;</ph> class.</source>
+          <target state="translated">工作階段狀態容器的 ASP.NET 實作<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionStateContainer&gt;</ph>類別。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.IHttpSessionState">
+          <source>At the beginning of a request, during the <ph id="ph1">&lt;xref:System.Web.HttpApplication.AcquireRequestState&gt;</ph> event, the <ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateModule&gt;</ph> creates and populates an <ph id="ph3">&lt;xref:System.Web.SessionState.HttpSessionStateContainer&gt;</ph> object and assigns it to the current <ph id="ph4">&lt;xref:System.Web.HttpContext&gt;</ph>.</source>
+          <target state="translated">在要求中，開頭期間<ph id="ph1">&lt;xref:System.Web.HttpApplication.AcquireRequestState&gt;</ph>事件，<ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateModule&gt;</ph>建立及擴展<ph id="ph3">&lt;xref:System.Web.SessionState.HttpSessionStateContainer&gt;</ph>物件，並將它指派給目前<ph id="ph4">&lt;xref:System.Web.HttpContext&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.IHttpSessionState">
+          <source>At the end of a request, during the <ph id="ph1">&lt;xref:System.Web.HttpApplication.ReleaseRequestState&gt;</ph> event, the <ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateModule&gt;</ph> retrieves the <ph id="ph3">&lt;xref:System.Web.SessionState.HttpSessionStateContainer&gt;</ph> object from the current <ph id="ph4">&lt;xref:System.Web.HttpContext&gt;</ph> and performs any required session work, such as writing the session values to the session store, or abandoning the session.</source>
+          <target state="translated">要求中，結尾期間<ph id="ph1">&lt;xref:System.Web.HttpApplication.ReleaseRequestState&gt;</ph>事件，<ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateModule&gt;</ph>擷取<ph id="ph3">&lt;xref:System.Web.SessionState.HttpSessionStateContainer&gt;</ph>物件從目前<ph id="ph4">&lt;xref:System.Web.HttpContext&gt;</ph>並執行任何必要的工作階段工作，例如寫入工作階段存放區中的工作階段值或放棄工作階段。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.IHttpSessionState">
+          <source>If the request is abruptly terminated, such as through a redirect, the <ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateModule&gt;</ph> performs the same cleanup by calling the <ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A&gt;</ph> method.</source>
+          <target state="translated">如果要求突然終止，例如透過重新導向，<ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateModule&gt;</ph>藉由呼叫會執行相同清除<ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.IHttpSessionState">
+          <source>To create a custom session-state container, create a class that implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface.</source>
+          <target state="translated">若要建立自訂的工作階段狀態容器，請建立可實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.IHttpSessionState">
+          <source>If you are creating your own custom session-state container, you must also replace the <ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateModule&gt;</ph> with your own custom module.</source>
+          <target state="translated">如果您正在建立您自己自訂的工作階段狀態容器，您也必須取代<ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateModule&gt;</ph>與您自己自訂的模組。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.IHttpSessionState">
+          <source>Your custom module will create an instance of your custom session-state container and add it to the current <ph id="ph1">&lt;xref:System.Web.HttpContext&gt;</ph> using the <ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateUtility.AddHttpSessionStateToContext%2A&gt;</ph> method.</source>
+          <target state="translated">自訂模組將會建立自訂的工作階段狀態容器的執行個體，並將它加入至目前<ph id="ph1">&lt;xref:System.Web.HttpContext&gt;</ph>使用<ph id="ph2">&lt;xref:System.Web.SessionState.SessionStateUtility.AddHttpSessionStateToContext%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.IHttpSessionState">
+          <source>An example of a custom session-state module is included in the <ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateUtility&gt;</ph> class overview.</source>
+          <target state="translated">自訂工作階段狀態模組的範例包含在<ph id="ph1">&lt;xref:System.Web.SessionState.SessionStateUtility&gt;</ph>類別概觀。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.SessionState.IHttpSessionState">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to create a new session-state container class named <ph id="ph2">`MySessionState`</ph>.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面來建立新的工作階段狀態容器類別，名為<ph id="ph2">`MySessionState`</ph>。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.IHttpSessionState.Abandon">
+          <source>Ends the current session.</source>
+          <target state="translated">結束目前的工作階段。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.IHttpSessionState.Abandon">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Abandon%2A&gt;</ph> method is used to clear out session data and raise the <bpt id="p1">**</bpt>Session_OnEnd<ept id="p1">**</ept> event defined in the Global.asax file for the ASP.NET application.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Abandon%2A&gt;</ph>方法用來清除工作階段資料，引發<bpt id="p1">**</bpt>Session_OnEnd<ept id="p1">**</ept> ASP.NET 應用程式的 Global.asax 檔中定義的事件。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.IHttpSessionState.Abandon">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Abandon%2A&gt;</ph> method of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Abandon%2A&gt;</ph>方法<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.IHttpSessionState.Abandon">
+          <source>The code example duplicates the behavior of the <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionStateContainer&gt;</ph> class in that it adds an <ph id="ph2">&lt;xref:System.Web.SessionState.HttpSessionStateContainer.IsAbandoned%2A&gt;</ph> property that is set to <ph id="ph3">`true`</ph> when the <ph id="ph4">&lt;xref:System.Web.SessionState.IHttpSessionState.Abandon%2A&gt;</ph> method is called.</source>
+          <target state="translated">程式碼範例將複製的行為<ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionStateContainer&gt;</ph>類別，它會新增<ph id="ph2">&lt;xref:System.Web.SessionState.HttpSessionStateContainer.IsAbandoned%2A&gt;</ph>屬性設為<ph id="ph3">`true`</ph>時<ph id="ph4">&lt;xref:System.Web.SessionState.IHttpSessionState.Abandon%2A&gt;</ph>方法呼叫。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.IHttpSessionState.Abandon">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionStateContainer.IsAbandoned%2A&gt;</ph> property is checked by the session-state module during the <ph id="ph2">&lt;xref:System.Web.HttpApplication.ReleaseRequestState&gt;</ph> event to determine whether the session has been abandoned, and the session-state module clears out session data and executes the <bpt id="p1">**</bpt>Session_OnEnd<ept id="p1">**</ept> event.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.HttpSessionStateContainer.IsAbandoned%2A&gt;</ph>期間的工作階段狀態模組會檢查屬性<ph id="ph2">&lt;xref:System.Web.HttpApplication.ReleaseRequestState&gt;</ph>事件，以判斷是否已放棄的工作階段，而且工作階段狀態模組清除工作階段資料，然後執行<bpt id="p1">**</bpt>Session_OnEnd<ept id="p1">**</ept>事件。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.IHttpSessionState.Add(System.String,System.Object)">
+          <source>The name of the item to add to the session-state collection.</source>
+          <target state="translated">要加入工作階段狀態集合中的項目名稱。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.IHttpSessionState.Add(System.String,System.Object)">
+          <source>The value of the item to add to the session-state collection.</source>
+          <target state="translated">要加入工作階段狀態集合中的項目值。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.IHttpSessionState.Add(System.String,System.Object)">
+          <source>Adds a new item to the session-state collection.</source>
+          <target state="translated">將新項目加入至工作階段狀態集合。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.IHttpSessionState.Add(System.String,System.Object)">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Add%2A&gt;</ph> method of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to add a new item value to the internal session-state item collection.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Add%2A&gt;</ph>方法<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面，以將新的項目值加入至內部工作階段狀態項目集合。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.IHttpSessionState.Clear">
+          <source>Clears all values from the session-state item collection.</source>
+          <target state="translated">清除工作階段狀態項目集合中的所有值。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.IHttpSessionState.Clear">
+          <source><ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Clear%2A&gt;</ph> performs the same function as <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState.RemoveAll%2A&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Clear%2A&gt;</ph> 執行相同的功能<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState.RemoveAll%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.IHttpSessionState.Clear">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Clear%2A&gt;</ph> method of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to delete all items from an internal session-state item collection.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Clear%2A&gt;</ph>方法<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面，以從內部工作階段狀態項目集合中刪除所有項目。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.CodePage">
+          <source>Gets or sets the code-page identifier for the current session.</source>
+          <target state="translated">取得或設定目前工作階段的字碼頁識別項。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.CodePage">
+          <source>The code-page identifier for the current session.</source>
+          <target state="translated">目前工作階段的字碼頁識別項。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.CodePage">
+          <source>A character set (code page) is used to interpret multi-byte character data, determining character value, and therefore sort order.</source>
+          <target state="translated">字元集 （字碼頁） 用來解譯多位元組字元資料，判斷字元值，並排序次序。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.CodePage">
+          <source>Code-page settings apply only to multi-byte character data, not to Unicode character data.</source>
+          <target state="translated">字碼頁設定僅適用於多位元組字元資料，而無法 Unicode 字元資料。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.CodePage">
+          <source>This <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.CodePage%2A&gt;</ph> property is provided for compatibility with earlier versions of ASP only.</source>
+          <target state="translated">這<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.CodePage%2A&gt;</ph>提供屬性為了與 ASP 的舊版本只有相容性。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.CodePage">
+          <source>If you do not need to maintain backward compatibility with ASP pages, use the <ph id="ph1">&lt;xref:System.Text.Encoding.CodePage%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Web.HttpResponse.ContentEncoding%2A&gt;</ph> property instead.</source>
+          <target state="translated">如果您不需要維護回溯相容性的 ASP 頁面，使用<ph id="ph1">&lt;xref:System.Text.Encoding.CodePage%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Web.HttpResponse.ContentEncoding%2A&gt;</ph>屬性改為。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.CodePage">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.CodePage%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to get and set the encoding for the current response.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.CodePage%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面來取得及設定目前回應的編碼方式。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.CookieMode">
+          <source>Gets a value that indicates whether the application is configured for cookieless sessions.</source>
+          <target state="translated">取得值，指出是否針對無 Cookie 工作階段設定應用程式。</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.CookieMode">
+          <source>One of the <ph id="ph1">&lt;see cref="T:System.Web.HttpCookieMode" /&gt;</ph> values that indicate whether the application is configured for cookieless sessions.</source>
+          <target state="translated">其中一個 <ph id="ph1">&lt;see cref="T:System.Web.HttpCookieMode" /&gt;</ph> 值，指出應用程式是否設定使用無 Cookie 工作階段。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.CookieMode">
+          <source>The default is <ph id="ph1">&lt;see cref="F:System.Web.HttpCookieMode.UseCookies" /&gt;</ph>.</source>
+          <target state="translated">預設值為 <ph id="ph1">&lt;see cref="F:System.Web.HttpCookieMode.UseCookies" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.CookieMode">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A&gt;</ph> property returns a <ph id="ph2">&lt;xref:System.Web.HttpCookieMode&gt;</ph> enumeration value that is based on the value of the <ph id="ph3">`cookieless`</ph> attribute of the <ph id="ph4">&lt;xref:System.Web.Configuration.SystemWebSectionGroup.SessionState%2A&gt;</ph> configuration element.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A&gt;</ph>屬性會傳回<ph id="ph2">&lt;xref:System.Web.HttpCookieMode&gt;</ph>列舉值的值為基礎，<ph id="ph3">`cookieless`</ph>屬性<ph id="ph4">&lt;xref:System.Web.Configuration.SystemWebSectionGroup.SessionState%2A&gt;</ph>組態項目。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.CookieMode">
+          <source>If the <ph id="ph1">`cookieless`</ph> attribute is set to <ph id="ph2">`true`</ph>, then the <ph id="ph3">&lt;xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A&gt;</ph> property returns <ph id="ph4">&lt;xref:System.Web.HttpCookieMode.UseUri&gt;</ph>; otherwise, the <ph id="ph5">&lt;xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A&gt;</ph> property returns <ph id="ph6">&lt;xref:System.Web.HttpCookieMode.UseCookies&gt;</ph>.</source>
+          <target state="translated">如果<ph id="ph1">`cookieless`</ph>屬性設為<ph id="ph2">`true`</ph>，然後在<ph id="ph3">&lt;xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A&gt;</ph>屬性會傳回<ph id="ph4">&lt;xref:System.Web.HttpCookieMode.UseUri&gt;</ph>，否則<ph id="ph5">&lt;xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A&gt;</ph>屬性會傳回<ph id="ph6">&lt;xref:System.Web.HttpCookieMode.UseCookies&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.CookieMode">
+          <source>The following code example sets the <ph id="ph1">`cookieless`</ph> attribute of the <bpt id="p1">[</bpt>sessionState Element (ASP.NET Settings Schema)<ept id="p1">](http://msdn.microsoft.com/library/bda6fb8c-0076-43e3-9ce2-8cf1f8bdaa7d)</ept> element to <ph id="ph2">`true`</ph> in the Web.config file to change the <ph id="ph3">&lt;xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A&gt;</ph> property.</source>
+          <target state="translated">下列程式碼範例會設定<ph id="ph1">`cookieless`</ph>屬性<bpt id="p1">[</bpt>工作階段狀態項目 （ASP.NET 設定結構描述）<ept id="p1">](http://msdn.microsoft.com/library/bda6fb8c-0076-43e3-9ce2-8cf1f8bdaa7d)</ept>元素<ph id="ph2">`true`</ph>變更 Web.config 檔案中<ph id="ph3">&lt;xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.CookieMode">
+          <source>For this sample application configuration, the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A&gt;</ph> property would return <ph id="ph2">&lt;xref:System.Web.HttpCookieMode.UseUri&gt;</ph>.</source>
+          <target state="translated">此範例應用程式組態，<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.CookieMode%2A&gt;</ph>屬性則會傳回<ph id="ph2">&lt;xref:System.Web.HttpCookieMode.UseUri&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.IHttpSessionState.CopyTo(System.Array,System.Int32)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph> that receives the session values.</source>
+          <target state="translated">接收工作階段值的 <ph id="ph1">&lt;see cref="T:System.Array" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.IHttpSessionState.CopyTo(System.Array,System.Int32)">
+          <source>The index in <bpt id="p1">&lt;c&gt;</bpt>array<ept id="p1">&lt;/c&gt;</ept> where copying starts.</source>
+          <target state="translated"><bpt id="p1">&lt;c&gt;</bpt>array<ept id="p1">&lt;/c&gt;</ept> 中的索引，複製作業從此處開始。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.IHttpSessionState.CopyTo(System.Array,System.Int32)">
+          <source>Copies the collection of session-state item values to a one-dimensional array, starting at the specified index in the array.</source>
+          <target state="translated">將工作階段狀態項目值的集合複製到一維陣列，從陣列中指定的索引開始。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.IHttpSessionState.CopyTo(System.Array,System.Int32)">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.CopyTo%2A&gt;</ph> method of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to copy session-state item values to an array.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.CopyTo%2A&gt;</ph>方法<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面，以將工作階段狀態項目值複製到陣列。</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.Count">
+          <source>Gets the number of items in the session-state item collection.</source>
+          <target state="translated">取得工作階段狀態項目集合中的項目數目。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.Count">
+          <source>The number of items in the session-state item collection.</source>
+          <target state="translated">工作階段狀態項目集合中的項目數目。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.Count">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Count%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to return the number of items in the internal session-state item collection.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Count%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面在內部工作階段狀態項目集合中傳回的項目數。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.IHttpSessionState.GetEnumerator">
+          <source>Returns an enumerator that can be used to read all the session-state item values in the current session.</source>
+          <target state="translated">傳回列舉值，其可用於讀取目前工作階段中所有的工作階段狀態項目值。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.IHttpSessionState.GetEnumerator">
+          <source>An <ph id="ph1">&lt;see cref="T:System.Collections.IEnumerator" /&gt;</ph> that can iterate through the values in the session-state item collection.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Collections.IEnumerator" /&gt;</ph>，可逐一查看工作階段狀態項目集合中的值。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.IHttpSessionState.GetEnumerator">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.GetEnumerator%2A&gt;</ph> method of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to return an enumerator for the internal session-state item collection.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.GetEnumerator%2A&gt;</ph>方法<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面，以傳回內部工作階段狀態項目集合的列舉值。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.IsCookieless">
+          <source>Gets a value indicating whether the session ID is embedded in the URL or stored in an HTTP cookie.</source>
+          <target state="translated">取得值，指出工作階段 ID 是否內嵌於 URL 或儲存於 HTTP Cookie。</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.IsCookieless">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the session is embedded in the URL; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果工作階段內嵌於 URL，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.IsCookieless">
+          <source>For information on cookieless sessions, see <bpt id="p1">[</bpt>Session Identifiers<ept id="p1">](http://msdn.microsoft.com/library/146ca206-d151-4f2e-a548-bcca05ccf0cb)</ept>.</source>
+          <target state="translated">在無 cookie 工作階段的資訊，請參閱<bpt id="p1">[</bpt>工作階段識別元<ept id="p1">](http://msdn.microsoft.com/library/146ca206-d151-4f2e-a548-bcca05ccf0cb)</ept>。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.IsCookieless">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.IsCookieless%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.IsCookieless%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.IsNewSession">
+          <source>Gets a value indicating whether the session was created with the current request.</source>
+          <target state="translated">取得值，指出工作階段是否與目前要求一起建立。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.IsNewSession">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the session was created with the current request; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果工作階段是以目前要求建立，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.IsNewSession">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.IsNewSession%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.IsNewSession%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面。</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.IsReadOnly">
+          <source>Gets a value indicating whether the session is read-only.</source>
+          <target state="translated">取得值，指出工作階段是否為唯讀。</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.IsReadOnly">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the session is read-only; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果工作階段是唯讀，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.IsReadOnly">
+          <source>Session state is set to read-only by setting the <ph id="ph1">&lt;xref:System.Web.Configuration.PagesSection.EnableSessionState%2A&gt;</ph> page attribute to <ph id="ph2">`ReadOnly`</ph>.</source>
+          <target state="translated">工作階段狀態會藉由設定設為唯讀<ph id="ph1">&lt;xref:System.Web.Configuration.PagesSection.EnableSessionState%2A&gt;</ph>頁面屬性<ph id="ph2">`ReadOnly`</ph>。</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.IsReadOnly">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.IsReadOnly%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to return the value of an internal variable that was set in the constructor.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.IsReadOnly%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面，以傳回已設定於建構函式內部變數的值。</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.IsSynchronized">
+          <source>Gets a value indicating whether access to the collection of session-state values is synchronized (thread safe).</source>
+          <target state="translated">取得值，指出對工作階段狀態值之集合的存取是否為同步的 (安全執行緒，Thread-Safe)。</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.IsSynchronized">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if access to the collection is synchronized (thread safe); otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果對集合的存取是同步處理的 (安全執行緒)，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.IsSynchronized">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.IsSynchronized%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.IsSynchronized%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面。</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" uid="T:System.Web.SessionState.IHttpSessionState">
+          <source>Gets or sets individual session-state item values.</source>
+          <target state="translated">取得或設定個別的工作階段狀態項目值。</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.Item(System.Int32)">
+          <source>The numerical index of the session-state item value.</source>
+          <target state="translated">工作階段狀態項目值的數值索引。</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.Item(System.Int32)">
+          <source>Gets or sets a session-state item value by numerical index.</source>
+          <target state="translated">按照數值索引取得或設定工作階段狀態項目值。</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.Item(System.Int32)">
+          <source>The session-state item value specified in the <ph id="ph1">&lt;paramref name="index" /&gt;</ph> parameter.</source>
+          <target state="translated">在 <ph id="ph1">&lt;paramref name="index" /&gt;</ph> 參數中指定的工作階段狀態項目值。</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.Item(System.Int32)">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Item%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to store and return an internal dictionary session-state item value by numeric index.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Item%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面，以存放區並傳回內部字典工作階段狀態項目值的數值索引。</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.Item(System.String)">
+          <source>The key name of the session-state item value.</source>
+          <target state="translated">工作階段狀態項目值的索引鍵名稱。</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.Item(System.String)">
+          <source>Gets or sets a session-state item value by name.</source>
+          <target state="translated">按照名稱取得或設定工作階段狀態項目值。</target>       </trans-unit>
+        <trans-unit id="171" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.Item(System.String)">
+          <source>The session-state item value specified in the <ph id="ph1">&lt;paramref name="name" /&gt;</ph> parameter.</source>
+          <target state="translated">在 <ph id="ph1">&lt;paramref name="name" /&gt;</ph> 參數中指定的工作階段狀態項目值。</target>       </trans-unit>
+        <trans-unit id="172" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.Item(System.String)">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Item%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to store and return an internal dictionary session-state item value by its key name.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Item%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面，以存放區並傳回內部字典工作階段狀態項目值依其索引鍵的名稱。</target>       </trans-unit>
+        <trans-unit id="173" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.Keys">
+          <source>Gets a collection of the keys for all values stored in the session-state item collection.</source>
+          <target state="translated">取得儲存在工作階段狀態項目集合中所有值的索引鍵集合。</target>       </trans-unit>
+        <trans-unit id="174" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.Keys">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Collections.Specialized.NameObjectCollectionBase.KeysCollection" /&gt;</ph> that contains all the session-item keys.</source>
+          <target state="translated">包含所有工作階段項目索引鍵的 <ph id="ph1">&lt;see cref="T:System.Collections.Specialized.NameObjectCollectionBase.KeysCollection" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="175" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.Keys">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Keys%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to return a collection of session-state item key names from the internal session-state item collection.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Keys%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面，以從內部工作階段狀態項目集合傳回工作階段狀態項目索引鍵名稱的集合。</target>       </trans-unit>
+        <trans-unit id="176" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.LCID">
+          <source>Gets or sets the locale identifier (LCID) of the current session.</source>
+          <target state="translated">取得或設定目前工作階段的地區設定識別項 (LCID)。</target>       </trans-unit>
+        <trans-unit id="177" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.LCID">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Globalization.CultureInfo" /&gt;</ph> instance that specifies the culture of the current session.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Globalization.CultureInfo" /&gt;</ph> 執行個體，指定目前工作階段的文化特性。</target>       </trans-unit>
+        <trans-unit id="178" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.LCID">
+          <source>This <ph id="ph1">`LCID`</ph> property is provided for compatibility with earlier versions of ASP only.</source>
+          <target state="translated">這<ph id="ph1">`LCID`</ph>提供屬性為了與 ASP 的舊版本只有相容性。</target>       </trans-unit>
+        <trans-unit id="179" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.LCID">
+          <source>If you do not need to maintain backward compatibility with ASP pages, use the <ph id="ph1">&lt;xref:System.Globalization.CultureInfo.LCID%2A&gt;</ph> property instead.</source>
+          <target state="translated">如果您不需要維護回溯相容性的 ASP 頁面，使用<ph id="ph1">&lt;xref:System.Globalization.CultureInfo.LCID%2A&gt;</ph>屬性改為。</target>       </trans-unit>
+        <trans-unit id="180" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.LCID">
+          <source>ASP.NET does not store the locale identifier in session state.</source>
+          <target state="translated">ASP.NET 不會在工作階段狀態儲存的地區設定識別碼。</target>       </trans-unit>
+        <trans-unit id="181" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.LCID">
+          <source>The <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.LCID%2A&gt;</ph> property calls the <ph id="ph2">&lt;xref:System.Globalization.CultureInfo.LCID%2A&gt;</ph> to get and set the identifier.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.LCID%2A&gt;</ph>屬性呼叫<ph id="ph2">&lt;xref:System.Globalization.CultureInfo.LCID%2A&gt;</ph>取得和設定識別項。</target>       </trans-unit>
+        <trans-unit id="182" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.LCID">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.LCID%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to get and set the locale identifier for the current page.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.LCID%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面來取得及設定目前頁面的地區設定識別碼。</target>       </trans-unit>
+        <trans-unit id="183" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.Mode">
+          <source>Gets the current session-state mode.</source>
+          <target state="translated">取得目前的工作階段狀態模式。</target>       </trans-unit>
+        <trans-unit id="184" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.Mode">
+          <source>One of the <ph id="ph1">&lt;see cref="T:System.Web.SessionState.SessionStateMode" /&gt;</ph> values.</source>
+          <target state="translated">其中一個 <ph id="ph1">&lt;see cref="T:System.Web.SessionState.SessionStateMode" /&gt;</ph> 值。</target>       </trans-unit>
+        <trans-unit id="185" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.Mode">
+          <source>For information on different session-state modes, see <bpt id="p1">[</bpt>Session-State Modes<ept id="p1">](http://msdn.microsoft.com/library/0bb0a3a3-650f-4c47-a0c5-b08b9b591bb4)</ept>.</source>
+          <target state="translated">如需不同工作階段狀態模式的資訊，請參閱<bpt id="p1">[</bpt>工作階段狀態模式<ept id="p1">](http://msdn.microsoft.com/library/0bb0a3a3-650f-4c47-a0c5-b08b9b591bb4)</ept>。</target>       </trans-unit>
+        <trans-unit id="186" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.Mode">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Mode%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Mode%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面。</target>       </trans-unit>
+        <trans-unit id="187" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.IHttpSessionState.Remove(System.String)">
+          <source>The name of the item to delete from the session-state item collection.</source>
+          <target state="translated">要從工作階段狀態項目集合中刪除的項目名稱。</target>       </trans-unit>
+        <trans-unit id="188" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.IHttpSessionState.Remove(System.String)">
+          <source>Deletes an item from the session-state item collection.</source>
+          <target state="translated">從工作階段狀態項目集合中刪除項目。</target>       </trans-unit>
+        <trans-unit id="189" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.IHttpSessionState.Remove(System.String)">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Remove%2A&gt;</ph> method of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to delete a session-state item from the session-state item collection by key name.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Remove%2A&gt;</ph>方法<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面，以便刪除工作階段狀態項目集合的索引鍵名稱的工作階段狀態項目。</target>       </trans-unit>
+        <trans-unit id="190" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.IHttpSessionState.RemoveAll">
+          <source>Clears all values from the session-state item collection.</source>
+          <target state="translated">清除工作階段狀態項目集合中的所有值。</target>       </trans-unit>
+        <trans-unit id="191" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.IHttpSessionState.RemoveAll">
+          <source><ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.RemoveAll%2A&gt;</ph> performs the same function as <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState.Clear%2A&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.RemoveAll%2A&gt;</ph> 執行相同的功能<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState.Clear%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="192" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.IHttpSessionState.RemoveAll">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.RemoveAll%2A&gt;</ph> method of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to delete all items from an internal session-state item collection.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.RemoveAll%2A&gt;</ph>方法<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面，以從內部工作階段狀態項目集合中刪除所有項目。</target>       </trans-unit>
+        <trans-unit id="193" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.IHttpSessionState.RemoveAt(System.Int32)">
+          <source>The index of the item to remove from the session-state collection.</source>
+          <target state="translated">要從工作階段狀態集合移除的項目索引。</target>       </trans-unit>
+        <trans-unit id="194" translate="yes" xml:space="preserve" uid="M:System.Web.SessionState.IHttpSessionState.RemoveAt(System.Int32)">
+          <source>Deletes an item at a specified index from the session-state item collection.</source>
+          <target state="translated">從工作階段狀態項目集合中刪除指定索引處的項目。</target>       </trans-unit>
+        <trans-unit id="195" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.SessionState.IHttpSessionState.RemoveAt(System.Int32)">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.RemoveAt%2A&gt;</ph> method of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to delete a session-state item from the internal session-state item collection by numerical index.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.RemoveAt%2A&gt;</ph>方法<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面，以便刪除內部工作階段狀態項目集合的數字索引的工作階段狀態項目。</target>       </trans-unit>
+        <trans-unit id="196" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.SessionID">
+          <source>Gets the unique session identifier for the session.</source>
+          <target state="translated">取得工作階段的唯一工作階段識別項。</target>       </trans-unit>
+        <trans-unit id="197" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.SessionID">
+          <source>The session ID.</source>
+          <target state="translated">工作階段識別碼。</target>       </trans-unit>
+        <trans-unit id="198" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.SessionID">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.SessionID%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.SessionID%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面。</target>       </trans-unit>
+        <trans-unit id="199" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.StaticObjects">
+          <source>Gets a collection of objects declared by <ph id="ph1">&lt;see langword="&amp;lt;object Runat=&amp;quot;Server&amp;quot; Scope=&amp;quot;Session&amp;quot;/&amp;gt;" /&gt;</ph> tags within the ASP.NET application file Global.asax.</source>
+          <target state="translated">取得由 ASP.NET 應用程式檔 Global.asax 內 <ph id="ph1">&lt;see langword="&amp;lt;object Runat=&amp;quot;Server&amp;quot; Scope=&amp;quot;Session&amp;quot;/&amp;gt;" /&gt;</ph> 標記所宣告的物件集合。</target>       </trans-unit>
+        <trans-unit id="200" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.StaticObjects">
+          <source>An <ph id="ph1">&lt;see cref="T:System.Web.HttpStaticObjectsCollection" /&gt;</ph> containing objects declared in the Global.asax file.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Web.HttpStaticObjectsCollection" /&gt;</ph>，包含 Global.asax 檔案中所宣告的物件。</target>       </trans-unit>
+        <trans-unit id="201" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.StaticObjects">
+          <source><ph id="ph1">`StaticObjects`</ph> is provided for compatibility with earlier versions of ASP.</source>
+          <target state="translated"><ph id="ph1">`StaticObjects`</ph> 是提供來與 ASP 先前版本相容。</target>       </trans-unit>
+        <trans-unit id="202" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.StaticObjects">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.StaticObjects%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.StaticObjects%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面。</target>       </trans-unit>
+        <trans-unit id="203" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.SyncRoot">
+          <source>Gets an object that can be used to synchronize access to the collection of session-state values.</source>
+          <target state="translated">取得物件，這個物件可以用來對工作階段狀態值集合進行同步存取。</target>       </trans-unit>
+        <trans-unit id="204" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.SyncRoot">
+          <source>An object that can be used to synchronize access to the collection.</source>
+          <target state="translated">Object，可用來對集合同步存取。</target>       </trans-unit>
+        <trans-unit id="205" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.SyncRoot">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.SyncRoot%2A&gt;</ph> property to return a copy of the current object that implements the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.SyncRoot%2A&gt;</ph>屬性，以傳回實作的目前物件的複本<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面。</target>       </trans-unit>
+        <trans-unit id="206" translate="yes" xml:space="preserve" uid="P:System.Web.SessionState.IHttpSessionState.Timeout">
+          <source>Gets and sets the time-out period (in minutes) allowed between requests before the session-state provider terminates the session.</source>
+          <target state="translated">取得和設定在工作階段狀態提供者終止工作階段之前，要求之間允許的逾時週期 (以分鐘為單位)。</target>       </trans-unit>
+        <trans-unit id="207" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.Timeout">
+          <source>The time-out period, in minutes.</source>
+          <target state="translated">逾時期限，以分鐘為單位。</target>       </trans-unit>
+        <trans-unit id="208" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.SessionState.IHttpSessionState.Timeout">
+          <source>The following code example implements the <ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Timeout%2A&gt;</ph> property of the <ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph> interface to get and set the session timeout value that is stored in an internal variable created in the class constructor.</source>
+          <target state="translated">下列程式碼範例會實作<ph id="ph1">&lt;xref:System.Web.SessionState.IHttpSessionState.Timeout%2A&gt;</ph>屬性<ph id="ph2">&lt;xref:System.Web.SessionState.IHttpSessionState&gt;</ph>介面來取得及設定儲存在內部變數在類別建構函式中建立的工作階段逾時值。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

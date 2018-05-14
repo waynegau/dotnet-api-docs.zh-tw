@@ -1,654 +1,483 @@
-<Type Name="ChangeMonitor" FullName="System.Runtime.Caching.ChangeMonitor">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="ef439688d7b98a238cf8640eb07e63804432a3ba" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public abstract class ChangeMonitor : IDisposable" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit ChangeMonitor extends System.Object implements class System.IDisposable" />
-  <TypeSignature Language="DocId" Value="T:System.Runtime.Caching.ChangeMonitor" />
-  <TypeSignature Language="VB.NET" Value="Public MustInherit Class ChangeMonitor&#xA;Implements IDisposable" />
-  <TypeSignature Language="C++ CLI" Value="public ref class ChangeMonitor abstract : IDisposable" />
-  <AssemblyInfo>
-    <AssemblyName>System.Runtime.Caching</AssemblyName>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
-  </Interfaces>
-  <Docs>
-    <summary>
-      <span data-ttu-id="83545-101">提供衍生之自訂型別的基底類別，這個型別會監控快取項目所依存之資料的狀態變更。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="83545-101">Provides a base class for a derived custom type that monitors changes in the state of the data which a cache item depends on.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="83545-102"><xref:System.Runtime.Caching.ChangeMonitor>類別作為基底類別專門針對特定快取實作的衍生的監視類別。</span><span class="sxs-lookup"><span data-stu-id="83545-102">The <xref:System.Runtime.Caching.ChangeMonitor> class is used as the base class for derived monitor classes that are specialized for particular cache implementations.</span></span> <span data-ttu-id="83545-103">A<xref:System.Runtime.Caching.ChangeMonitor>執行個體監視的資料取決於快取項目狀態的變更。</span><span class="sxs-lookup"><span data-stu-id="83545-103">A <xref:System.Runtime.Caching.ChangeMonitor> instance monitors changes in the state of data which a cache item depends on.</span></span> <span data-ttu-id="83545-104">例如，項目可以是檔案或資料實體，其內容會快取。</span><span class="sxs-lookup"><span data-stu-id="83545-104">For example, the item can be a file or data entity whose contents are cached.</span></span> <span data-ttu-id="83545-105">如果更新的檔案或資料的實體，則必須也變更相關聯的快取項目。</span><span class="sxs-lookup"><span data-stu-id="83545-105">If the file or data entity is updated, the associated cache entry must be changed also.</span></span> <span data-ttu-id="83545-106">您可以監視的一般項目包括資料實體 （例如資料庫欄位、 值、 資料列或資料表）、 另一個快取項目，以及檔案和檔案屬性。</span><span class="sxs-lookup"><span data-stu-id="83545-106">Common items that can be monitored include data entities (such as database fields, values, rows, or tables), another cache entry, and files and file attributes.</span></span>  
-  
- <span data-ttu-id="83545-107">相依性變更為相依性的狀態變更。</span><span class="sxs-lookup"><span data-stu-id="83545-107">A dependency change is a change in the state of a dependency.</span></span> <span data-ttu-id="83545-108">在典型的快取實作之後<xref:System.Runtime.Caching.ChangeMonitor>執行個體通知相依性已變更的快取，快取的執行所需的動作，例如使插入的快取項目失效。</span><span class="sxs-lookup"><span data-stu-id="83545-108">In a typical cache implementation, after a <xref:System.Runtime.Caching.ChangeMonitor> instance notifies the cache that a dependency has changed, the cache performs the required action, such as invalidating the inserted cache entry.</span></span>  
-  
- <span data-ttu-id="83545-109">衍生<xref:System.Runtime.Caching.ChangeMonitor>可以自訂類別，以監視特定的不同資料中心的相依性變更。</span><span class="sxs-lookup"><span data-stu-id="83545-109">Derived <xref:System.Runtime.Caching.ChangeMonitor> classes can be customized to monitor dependency changes for specific different data stores.</span></span> <span data-ttu-id="83545-110">比方說，是針對檔案系統、 實體記憶體或資料庫的快取實作。</span><span class="sxs-lookup"><span data-stu-id="83545-110">For example, there are cache implementations for a file system, physical memory, or a database.</span></span> <span data-ttu-id="83545-111"><xref:System.Runtime.Caching.ChangeMonitor>類別檢查外部快取中，會發生的變更，並接著發出警示發生變更的快取。</span><span class="sxs-lookup"><span data-stu-id="83545-111">The <xref:System.Runtime.Caching.ChangeMonitor> class examines changes that occur outside the cache, and then alerts the cache that changes have occurred.</span></span>  
-  
- <span data-ttu-id="83545-112">[!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)]還包括下列類別衍生自<xref:System.Runtime.Caching.ChangeMonitor>類別：</span><span class="sxs-lookup"><span data-stu-id="83545-112">The [!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)] includes the following classes that derive from <xref:System.Runtime.Caching.ChangeMonitor> class:</span></span>  
-  
--   <xref:System.Runtime.Caching.CacheEntryChangeMonitor>  
-  
--   <xref:System.Runtime.Caching.FileChangeMonitor>  
-  
--   <xref:System.Runtime.Caching.HostFileChangeMonitor>  
-  
--   <xref:System.Runtime.Caching.SqlChangeMonitor>  
-  
- <span data-ttu-id="83545-113">每個類別會搭配不同類型的相依性。</span><span class="sxs-lookup"><span data-stu-id="83545-113">Each of these classes works with different types of dependencies.</span></span> <span data-ttu-id="83545-114">例如，衍生<xref:System.Runtime.Caching.FileChangeMonitor>類別監視檔案系統資料 （檔案和資料夾） 的快取項目取決於快取的變更。</span><span class="sxs-lookup"><span data-stu-id="83545-114">For example, the derived <xref:System.Runtime.Caching.FileChangeMonitor> class monitors changes to a cache for file system data (files and folders) that the cache item depends on.</span></span>  
-  
- ]]></format>
-    </remarks>
-    <threadsafe>
-      <span data-ttu-id="83545-115">此型別具備執行緒安全。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="83545-115">This type is thread safe.</span>
-      </span>
-    </threadsafe>
-    <block subset="none" type="overrides">
-      <para>
-        <span data-ttu-id="83545-116">如果您建立自訂快取實作或衍生的變更監視類型，您必須遵循特定的指導方針。</span>
-        <span class="sxs-lookup">
-          <span data-stu-id="83545-116">If you create a custom cache implementation or a derived change monitor type, you must follow certain guidelines.</span>
-        </span>
-        <span data-ttu-id="83545-117">下列清單摘要說明這些指導方針。</span>
-        <span class="sxs-lookup">
-          <span data-stu-id="83545-117">The following list summarizes these guidelines.</span>
-        </span>
-        <span data-ttu-id="83545-118">如需詳細資訊，請參閱個別方法或屬性的文件。</span>
-        <span class="sxs-lookup">
-          <span data-stu-id="83545-118">For more information, see the documentation for individual methods or properties.</span>
-        </span>  
-  
--   <span data-ttu-id="83545-119">在衍生類別的建構函式必須設定<see cref="P:System.Runtime.Caching.ChangeMonitor.UniqueId" />屬性，開始監視，並呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法傳回之前的方法。</span><span class="sxs-lookup"><span data-stu-id="83545-119">The constructor of a derived class must set the <see cref="P:System.Runtime.Caching.ChangeMonitor.UniqueId" /> property, begin monitoring, and call <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> method before the method returns.</span></span><span data-ttu-id="83545-120">如果建構函式在建構期間發生錯誤，而且必須具有要處置的資源，只能呼叫建構函式<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />多載之後<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法稱為因為<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />多載會擲回<see cref="T:System.InvalidOperationException" />如果初始化未完成的例外狀況。</span><span class="sxs-lookup"><span data-stu-id="83545-120">If a constructor encounters an error during constructions and must have to dispose of resources, the constructor can only call the <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> overload after the <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> method is called because the <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> overload will throw an <see cref="T:System.InvalidOperationException" /> exception if initialization is not completed.</span></span>  
-  
--   <span data-ttu-id="83545-121">如果發生在變更完成初始化之前正在監視的資料，建構函式必須呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法之前先呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法。</span><span class="sxs-lookup"><span data-stu-id="83545-121">If changes occur in the data that is being monitored before initialization is complete, the constructor must call the <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> method before calling the <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> method.</span></span>  
-  
--   <span data-ttu-id="83545-122">在衍生之後<see cref="T:System.Runtime.Caching.ChangeMonitor" />型別會具現化，您必須插入自訂監視<see cref="T:System.Runtime.Caching.ObjectCache" />實作。</span><span class="sxs-lookup"><span data-stu-id="83545-122">After a derived <see cref="T:System.Runtime.Caching.ChangeMonitor" /> type is instantiated, you must insert the monitor into a custom <see cref="T:System.Runtime.Caching.ObjectCache" /> implementation.</span></span><span data-ttu-id="83545-123">如果您不再使用變更監視器，請呼叫或<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />方法。</span><span class="sxs-lookup"><span data-stu-id="83545-123">Or if you are finished using the change monitor, call the <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> method.</span></span>  
-  
--   <span data-ttu-id="83545-124">之後<see cref="T:System.Runtime.Caching.ChangeMonitor" />執行個體插入至<see cref="T:System.Runtime.Caching.ObjectCache" />實作，<see cref="T:System.Runtime.Caching.ObjectCache" />執行個體所需變更監視器已處置。</span><span class="sxs-lookup"><span data-stu-id="83545-124">After a <see cref="T:System.Runtime.Caching.ChangeMonitor" /> instance is inserted into a <see cref="T:System.Runtime.Caching.ObjectCache" /> implementation, the <see cref="T:System.Runtime.Caching.ObjectCache" /> instance require that the change monitor is disposed.</span></span><span data-ttu-id="83545-125">即使插入無效，而且會導致例外狀況，<see cref="T:System.Runtime.Caching.ObjectCache" />實作必須呼叫<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />多載。</span><span class="sxs-lookup"><span data-stu-id="83545-125">Even if the insertion is invalid and causes an exception, the <see cref="T:System.Runtime.Caching.ObjectCache" /> implementation must call the <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> overload.</span></span>  
-  
--   <span data-ttu-id="83545-126">衍生的變更監視器已插入快取之後,<see cref="T:System.Runtime.Caching.ObjectCache" />實作必須呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />，藉由傳遞<see cref="T:System.Runtime.Caching.OnChangedCallback" />物件。</span><span class="sxs-lookup"><span data-stu-id="83545-126">After a derived change monitor is inserted into a cache, the <see cref="T:System.Runtime.Caching.ObjectCache" /> implementation must call <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />, by passing a <see cref="T:System.Runtime.Caching.OnChangedCallback" /> object.</span></span><span data-ttu-id="83545-127"><see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />方法可以呼叫一次。</span><span class="sxs-lookup"><span data-stu-id="83545-127">The <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> method can be called only one time.</span></span><span data-ttu-id="83545-128">如果已經發生相依性變更，<see cref="T:System.Runtime.Caching.OnChangedCallback" />會立即呼叫執行個體時<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />呼叫。</span><span class="sxs-lookup"><span data-stu-id="83545-128">If a dependency change has already occurred, the <see cref="T:System.Runtime.Caching.OnChangedCallback" /> instance will be called immediately when <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> is called.</span></span><span data-ttu-id="83545-129">否則，<see cref="T:System.Runtime.Caching.OnChangedCallback" />執行個體將會呼叫一次。</span><span class="sxs-lookup"><span data-stu-id="83545-129">Otherwise, the <see cref="T:System.Runtime.Caching.OnChangedCallback" /> instance will be called only one time.</span></span><span data-ttu-id="83545-130">此一次呼叫都會發生時<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法稱為因為<see cref="T:System.Runtime.Caching.ChangeMonitor" />執行個體偵測到變更，或當<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />上呼叫方法<see cref="T:System.Runtime.Caching.ChangeMonitor" />，何者先發生。</span><span class="sxs-lookup"><span data-stu-id="83545-130">This one time call occurs either when the <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> method is called because the <see cref="T:System.Runtime.Caching.ChangeMonitor" /> instance detected a change, or when the <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> method is called on the <see cref="T:System.Runtime.Caching.ChangeMonitor" />, whichever occurs first.</span></span>  
-  
--   <span data-ttu-id="83545-131"><see cref="T:System.Runtime.Caching.OnChangedCallback" />所提供的執行個體<see cref="T:System.Runtime.Caching.ObjectCache" />實作應該移除相關聯的快取項目，並使用指定的原因<see cref="F:System.Web.Caching.CacheItemRemovedReason.DependencyChanged" />列舉型別。</span><span class="sxs-lookup"><span data-stu-id="83545-131">The <see cref="T:System.Runtime.Caching.OnChangedCallback" /> instance that is provided by an <see cref="T:System.Runtime.Caching.ObjectCache" /> implementation should remove the associated cache entry and specify a reason by using the <see cref="F:System.Web.Caching.CacheItemRemovedReason.DependencyChanged" /> enumeration.</span></span>  
-  
--   <span data-ttu-id="83545-132">A<see cref="T:System.Runtime.Caching.ChangeMonitor" />可以呼叫執行個體<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法可能之前已呼叫快取實作<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />方法或之後。</span><span class="sxs-lookup"><span data-stu-id="83545-132">A <see cref="T:System.Runtime.Caching.ChangeMonitor" /> instance can call the <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> method either before a cache implementation has called <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> method or after.</span></span><span data-ttu-id="83545-133">如果<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法之前呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />會呼叫基底<see cref="T:System.Runtime.Caching.ChangeMonitor" />實作將會通知發生這種情況的快取，而且將會觸發要傳遞給回呼<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />時立即<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />叫用。</span><span class="sxs-lookup"><span data-stu-id="83545-133">If the <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> method is called before <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> is called, the base <see cref="T:System.Runtime.Caching.ChangeMonitor" /> implementation will notify the cache that this has occurred and will trigger the callback to be passed to <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> immediately when <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> is invoked.</span></span><span data-ttu-id="83545-134">傳遞給任何狀態資料<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法是變更監視所儲存，且後續傳遞給<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />方法時<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />叫用方法。</span><span class="sxs-lookup"><span data-stu-id="83545-134">Any state data that is passed to the <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> method is saved by the change monitor and subsequently passed to the <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> method when the <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> method is invoked.</span></span>  
-  
--   <span data-ttu-id="83545-135">必須實作變更監視器<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />方法。</span><span class="sxs-lookup"><span data-stu-id="83545-135">A change monitor must implement the <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> method.</span></span><span data-ttu-id="83545-136">如需詳細資訊，請參閱 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> 方法的文件。</span><span class="sxs-lookup"><span data-stu-id="83545-136">For more information, see the <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> method documentation.</span></span>  
-  
--   <span data-ttu-id="83545-137"><see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法多載必須呼叫來處置<see cref="T:System.Runtime.Caching.ChangeMonitor" />執行個體。</span><span class="sxs-lookup"><span data-stu-id="83545-137">The <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> method overload must be called to dispose of the <see cref="T:System.Runtime.Caching.ChangeMonitor" /> instance.</span></span><span data-ttu-id="83545-138">呼叫 Dispose 的規則如下所示：</span><span class="sxs-lookup"><span data-stu-id="83545-138">The rules for calling Dispose are as follows:</span></span>  
-  
-    -   <span data-ttu-id="83545-139">項目插入快取之前，必須負責處置的呼叫端的<see cref="T:System.Runtime.Caching.ChangeMonitor" />執行個體。</span><span class="sxs-lookup"><span data-stu-id="83545-139">Before an item is inserted into the cache, it is the responsibility of caller to dispose of a <see cref="T:System.Runtime.Caching.ChangeMonitor" /> instance.</span></span>  
-  
-    -   <span data-ttu-id="83545-140">一次快取項目和<see cref="T:System.Runtime.Caching.ChangeMonitor" />與其相關聯的執行個體傳遞至快取，快取實作者必須確定，<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />呼叫方法時，即使插入會失敗。</span><span class="sxs-lookup"><span data-stu-id="83545-140">Once cache item and the <see cref="T:System.Runtime.Caching.ChangeMonitor" /> instances that are associated with it are passed to a cache, the cache implementer must make sure that that the <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> method is called, even if the insert fails.</span></span>  
-  
-    -   <span data-ttu-id="83545-141">項目和其相關聯之後<see cref="T:System.Runtime.Caching.ChangeMonitor" />執行個體傳遞至快取中，呼叫端必須未處置的相依性，因為當<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />方法呼叫，呼叫都會被視為相依性已變更。</span><span class="sxs-lookup"><span data-stu-id="83545-141">After an item and its associated <see cref="T:System.Runtime.Caching.ChangeMonitor" /> instances are passed to a cache, the caller must not dispose the dependency because when the <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> method is called, the call is treated as if the dependency has changed.</span></span><span data-ttu-id="83545-142">如此一來，<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />自動叫用方法。</span><span class="sxs-lookup"><span data-stu-id="83545-142">As a result, the <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> method is automatically invoked.</span></span>  
-  
--   <span data-ttu-id="83545-143">這些規則納入考量，<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />方法必須為下列方式之一：</span><span class="sxs-lookup"><span data-stu-id="83545-143">Taking these rules into consideration, the <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> method must be called in one of the following ways:</span></span>  
-  
-    -   <span data-ttu-id="83545-144">使用者必須先呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法多載，如果使用者覺得不將衍生的變更監視執行個體插入快取。</span><span class="sxs-lookup"><span data-stu-id="83545-144">Users must call the <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> method overload if they decide not to insert the derived change-monitor instance into a cache.</span></span>  
-  
-    -   <span data-ttu-id="83545-145">如果實作會嘗試將變更監視執行個體物件快取插入，但插入失敗時，快取實作會負責呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />多載。</span><span class="sxs-lookup"><span data-stu-id="83545-145">If the implementation tries to insert the change-monitor instance into an object cache but the insertion fails, the cache implementation is responsible for calling the <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> overload.</span></span><span data-ttu-id="83545-146">當插入嘗試造成例外狀況時，快取實作必須處置任何相關聯的相依性。</span><span class="sxs-lookup"><span data-stu-id="83545-146">When the insertion attempt causes an exception, the cache implementation must dispose of any associated dependencies.</span></span>  
-  
-    -   <span data-ttu-id="83545-147">如果移除快取項目，快取實作也必須處置相依性。</span><span class="sxs-lookup"><span data-stu-id="83545-147">If the cache entry is removed, the cache implementation must also dispose of the dependency.</span></span>  
-  
-    -   <span data-ttu-id="83545-148">內部實作<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法會自動呼叫<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />方法之後其所呼叫的回呼，註冊透過<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />。</span><span class="sxs-lookup"><span data-stu-id="83545-148">The internal implementation of the <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> method automatically calls the <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> method after it calls a callback that is registered through <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />.</span></span><block subset="none" type="note"><para><span data-ttu-id="83545-149">這個自動呼叫 dispose 方法，在事件引發時，才會發生的初始化<see cref="T:System.Runtime.Caching.ChangeMonitor" />先前已完成執行個體。</span><span class="sxs-lookup"><span data-stu-id="83545-149">This automatic call to the dispose method during the event firing only occurs if the initialization of the <see cref="T:System.Runtime.Caching.ChangeMonitor" /> instance was previously completed.</span></span></para></block><span data-ttu-id="83545-150">當在衍生的變更監視器的建構函式呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法，如果變更監視的狀態已變更 （亦即，當建構函式是仍在作用中時才會監視已變更的狀態） 則<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法將自動處置變更監視器。</span><span class="sxs-lookup"><span data-stu-id="83545-150">When a derived change monitor's constructor calls the <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> method, if the state of the change monitor has already changed (that is, the state that is monitored already changed when the constructor was still active) then the <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> method will automatically dispose of the change monitor.</span></span>  
-  
--   <span data-ttu-id="83545-151"><see cref="P:System.Runtime.Caching.ChangeMonitor.HasChanged" />屬性設定為<see langword="true" />之後<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法會呼叫衍生的變更監視執行個體，而不論是否<see cref="T:System.Runtime.Caching.OnChangedCallback" />物件已經設定了呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />方法與否。</span><span class="sxs-lookup"><span data-stu-id="83545-151">The <see cref="P:System.Runtime.Caching.ChangeMonitor.HasChanged" /> property is set to <see langword="true" /> after the <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> method is called by the derived change-monitor instance, regardless of whether a <see cref="T:System.Runtime.Caching.OnChangedCallback" /> object has been set by a call to the <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> method or not.</span></span></para>
-    </block>
-    <altmember cref="N:System.Web.Caching" />
-    <altmember cref="T:System.Runtime.Caching.ObjectCache" />
-  </Docs>
-  <Members>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected ChangeMonitor ();" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.#ctor" />
-      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; ChangeMonitor();" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime.Caching</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="83545-152">初始化 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-152">Initializes a new instance of the <see cref="T:System.Runtime.Caching.ChangeMonitor" /> class.</span>
-          </span>
-          <span data-ttu-id="83545-153">這個建構函式由衍生類別中的建構函式呼叫，來初始化基底類別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-153">This constructor is called from constructors in derived classes to initialize the base class.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="83545-154"><xref:System.Runtime.Caching.ChangeMonitor>類別有預設建構函式。</span><span class="sxs-lookup"><span data-stu-id="83545-154">The <xref:System.Runtime.Caching.ChangeMonitor> class has a default constructor.</span></span> <span data-ttu-id="83545-155">不過，類別，繼承自基底<xref:System.Runtime.Caching.ChangeMonitor>類別，並定義自訂的變更監視行為必須於建構函式執行初始化。</span><span class="sxs-lookup"><span data-stu-id="83545-155">However, classes that inherit from the base <xref:System.Runtime.Caching.ChangeMonitor> class and define custom change-monitoring behavior must perform initialization in the constructor.</span></span> <span data-ttu-id="83545-156">如需詳細資訊，請參閱繼承者注意事項 > 一節的資訊。</span><span class="sxs-lookup"><span data-stu-id="83545-156">For more information, see the Notes for Inheritors section.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <block subset="none" type="overrides">
-          <para>
-            <span data-ttu-id="83545-157">在衍生類別的建構函式必須設定<see cref="P:System.Runtime.Caching.ChangeMonitor.UniqueId" />屬性，開始監視，並呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />類別再傳回。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-157">The constructor of a derived class must set the <see cref="P:System.Runtime.Caching.ChangeMonitor.UniqueId" /> property, begin monitoring, and call the <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> class before it returns.</span>
-            </span>
-            <span data-ttu-id="83545-158">如果在初始化之前的相依性變更已完成 （例如，如果快取中找不到相依的快取索引鍵），建構函式必須呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法之前呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-158">If a dependency changes before initialization is complete (for example, if a dependent cache key is not found in the cache), the constructor must call the <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> method before it calls the <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> method.</span>
-            </span>
-            <span data-ttu-id="83545-159">在此情況下，建構函式可以呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法之後才<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />呼叫方法，因為<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法擲回例外狀況，初始化未完成。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-159">In this case, constructor can call the <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> method only after the <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> method is called, because the <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> method throws an exception if initialization is not completed.</span>
-            </span>
-          </para>
-        </block>
-      </Docs>
-    </Member>
-    <MemberGroup MemberName="Dispose">
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime.Caching</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary>
-          <span data-ttu-id="83545-160">將 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 類別目前的執行個體所使用的資源全部釋出。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-160">Releases all resources used by the current instance of the <see cref="T:System.Runtime.Caching.ChangeMonitor" /> class.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="83545-161"><xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>方法用來釋放<xref:System.Runtime.Caching.ChangeMonitor>執行個體和相關的資源。</span><span class="sxs-lookup"><span data-stu-id="83545-161">The <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method is used to release the <xref:System.Runtime.Caching.ChangeMonitor> instance and related resources.</span></span> <span data-ttu-id="83545-162">公用<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>方法會叫用協調金鑰生命週期事件 （例如初始化） 衍生的變更監視器類別的處置處理程序，並釋放<xref:System.Runtime.Caching.ChangeMonitor>執行個體，讓執行個體進行記憶體回收。</span><span class="sxs-lookup"><span data-stu-id="83545-162">The public <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method is invoked to coordinate the disposal process with key life-cycle events of derived change-monitor classes (such as initialization), and to release the <xref:System.Runtime.Caching.ChangeMonitor> instance so that the instance can be garbage collected.</span></span> <span data-ttu-id="83545-163"><xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>方法藉由衍生的變更監視器類別來處置 managed 和 unmanaged 資源。</span><span class="sxs-lookup"><span data-stu-id="83545-163">The <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method is implemented by derived change-monitor classes to dispose of their managed and unmanaged resources.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName="Dispose">
-      <MemberSignature Language="C#" Value="public void Dispose ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dispose() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.Dispose" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Dispose ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Dispose();" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime.Caching</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="83545-164">將 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 類別的目前執行個體所使用的資源全部釋出。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-164">Releases all resources that are used by the current instance of the <see cref="T:System.Runtime.Caching.ChangeMonitor" /> class.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="83545-165"><xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>方法會叫用<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>衍生類別只一次，第一次呼叫的方法。</span><span class="sxs-lookup"><span data-stu-id="83545-165">The <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method invokes the <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method of derived classes only one time, the first time it is called.</span></span> <span data-ttu-id="83545-166">後續呼叫<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>方法沒有任何作用。</span><span class="sxs-lookup"><span data-stu-id="83545-166">Subsequent calls to the <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method have no effect.</span></span> <span data-ttu-id="83545-167">在呼叫方法之後，<xref:System.Runtime.Caching.ChangeMonitor.IsDisposed%2A>屬性設定為`true`。</span><span class="sxs-lookup"><span data-stu-id="83545-167">After the method has been called, the <xref:System.Runtime.Caching.ChangeMonitor.IsDisposed%2A> property is set to `true`.</span></span>  
-  
- <span data-ttu-id="83545-168"><xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>必須叫用多載來處置<xref:System.Runtime.Caching.ChangeMonitor>執行個體。</span><span class="sxs-lookup"><span data-stu-id="83545-168">The <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> overload must be called to dispose of a <xref:System.Runtime.Caching.ChangeMonitor> instance.</span></span> <span data-ttu-id="83545-169">呼叫 dispose 方法的規則如下：</span><span class="sxs-lookup"><span data-stu-id="83545-169">The following are the rules for calling the dispose method:</span></span>  
-  
--   <span data-ttu-id="83545-170">項目插入快取之前，是呼叫者的責任處置<xref:System.Runtime.Caching.ChangeMonitor>執行個體。</span><span class="sxs-lookup"><span data-stu-id="83545-170">Before an item is inserted into the cache, it is the caller's responsibility to dispose of a <xref:System.Runtime.Caching.ChangeMonitor> instance.</span></span>  
-  
--   <span data-ttu-id="83545-171">一次快取項目和<xref:System.Runtime.Caching.ChangeMonitor>與其相關聯的執行個體傳遞至快取中，必須確定快取實作者<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>呼叫時，即使插入會失敗。</span><span class="sxs-lookup"><span data-stu-id="83545-171">Once cache item and the <xref:System.Runtime.Caching.ChangeMonitor> instances that are associated with it are passed to a cache, the cache implementer that must make sure that <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> is called, even if the insert fails.</span></span>  
-  
--   <span data-ttu-id="83545-172">項目和其相關聯之後<xref:System.Runtime.Caching.ChangeMonitor>執行個體傳遞至快取中，呼叫端必須未處置的相依性，因為當<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>方法呼叫，呼叫都會被視為相依性已變更。</span><span class="sxs-lookup"><span data-stu-id="83545-172">After an item and its associated <xref:System.Runtime.Caching.ChangeMonitor> instances are passed to a cache, the caller must not dispose the dependency because when the <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method is called, the call is treated as if the dependency has changed.</span></span> <span data-ttu-id="83545-173">如此一來，<xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A>自動叫用方法。</span><span class="sxs-lookup"><span data-stu-id="83545-173">As a result, the <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> method is automatically invoked.</span></span>  
-  
--   <span data-ttu-id="83545-174">這些規則納入考量，<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>方法必須為下列方式之一：</span><span class="sxs-lookup"><span data-stu-id="83545-174">Taking these rules into consideration, the <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method must be called in one of the following ways:</span></span>  
-  
-    -   <span data-ttu-id="83545-175">使用者必須先呼叫<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>方法多載，如果使用者覺得不將衍生的變更監視執行個體插入快取。</span><span class="sxs-lookup"><span data-stu-id="83545-175">Users must call the <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method overload if they decide not to insert the derived change-monitor instance into a cache.</span></span>  
-  
-    -   <span data-ttu-id="83545-176">快取實作會負責呼叫<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>多載，如果實作會嘗試將變更監視執行個體物件快取插入，但插入失敗。</span><span class="sxs-lookup"><span data-stu-id="83545-176">The cache implementation is responsible for calling the <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> overload if the implementation tries to insert the change-monitor instance into an object cache but the insertion fails.</span></span> <span data-ttu-id="83545-177">當插入嘗試造成例外狀況時，快取實作必須處置任何相關聯的相依性。</span><span class="sxs-lookup"><span data-stu-id="83545-177">When the insertion attempt causes an exception, the cache implementation must dispose any associated dependencies.</span></span>  
-  
-    -   <span data-ttu-id="83545-178">如果移除快取項目，快取實作也必須處置相依性。</span><span class="sxs-lookup"><span data-stu-id="83545-178">If the cache entry is removed, the cache implementation must also dispose the dependency.</span></span>  
-  
- <span data-ttu-id="83545-179">內部實作<xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A>方法會自動呼叫<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>方法之後其所呼叫的回呼，註冊透過<xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="83545-179">The internal implementation of the <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> method automatically calls the <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method after it calls a callback that is registered through the <xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A> method.</span></span>  
-  
-> [!NOTE]
->  <span data-ttu-id="83545-180">此自動處置事件引發時，才會發生的初始化<xref:System.Runtime.Caching.ChangeMonitor>先前完成的執行個體。</span><span class="sxs-lookup"><span data-stu-id="83545-180">This automatic dispose during the event firing only occurs if the initialization of the <xref:System.Runtime.Caching.ChangeMonitor> instance previously completed.</span></span>  
-  
- <span data-ttu-id="83545-181">當在衍生的變更監視器的建構函式呼叫<xref:System.Runtime.Caching.ChangeMonitor.InitializationComplete%2A>方法，如果變更監視的狀態已變更 （也就是受到監視的狀態已變更時仍在作用中的建構函式） 然後<xref:System.Runtime.Caching.ChangeMonitor.InitializationComplete%2A>方法將自動處置變更監視器。</span><span class="sxs-lookup"><span data-stu-id="83545-181">When a derived change monitor's constructor calls the <xref:System.Runtime.Caching.ChangeMonitor.InitializationComplete%2A> method, if the state of the change monitor has already changed (that is, the state that is monitored has already changed when the constructor was still active) then <xref:System.Runtime.Caching.ChangeMonitor.InitializationComplete%2A> method will automatically dispose the change monitor.</span></span>  
-  
-> [!NOTE]
->  <span data-ttu-id="83545-182">使用者不應該呼叫<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="83545-182">Users should not call the <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method.</span></span> <span data-ttu-id="83545-183">不過，您無法阻止使用者呼叫方法。</span><span class="sxs-lookup"><span data-stu-id="83545-183">However, you cannot prevent users from calling the method.</span></span> <span data-ttu-id="83545-184">因此，如果沒有的話，<xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A>叫用方法。</span><span class="sxs-lookup"><span data-stu-id="83545-184">Therefore, if they do, the <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> method is invoked.</span></span> <span data-ttu-id="83545-185">在此情況下，如同相依性已變更，會收到通知的快取項目。</span><span class="sxs-lookup"><span data-stu-id="83545-185">In that case, the cache entry is notified as if the dependency has changed.</span></span>  
-  
- <span data-ttu-id="83545-186">若要防止衍生的類別覆寫<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>方法，此方法不是明確介面實作。</span><span class="sxs-lookup"><span data-stu-id="83545-186">To prevent derived classes from overriding <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method, the method is not an explicit interface implementation.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.InvalidOperationException">
-          <span data-ttu-id="83545-187">初始化沒有在呼叫基底 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> 方法的衍生變更監視器類別中完成。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-187">Initialization is not complete in the derived change-monitor class that called the base <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> method.</span>
-          </span>
-        </exception>
-        <altmember cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />
-      </Docs>
-    </Member>
-    <Member MemberName="Dispose">
-      <MemberSignature Language="C#" Value="protected abstract void Dispose (bool disposing);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void Dispose(bool disposing) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />
-      <MemberSignature Language="VB.NET" Value="Protected MustOverride Sub Dispose (disposing As Boolean)" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract void Dispose(bool disposing);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime.Caching</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="disposing" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="disposing">
-          <span data-ttu-id="83545-188">
-            <see langword="true" /> 表示釋放所有的 Managed 資源、Unmanaged 資源以及對 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 執行個體的所有參考，<see langword="false" /> 表示只釋放 Unmanaged 資源。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-188">
-              <see langword="true" /> to release managed and unmanaged resources and any references to a <see cref="T:System.Runtime.Caching.ChangeMonitor" /> instance; <see langword="false" /> to release only unmanaged resources.</span>
-          </span>
-          <span data-ttu-id="83545-189">傳遞 <see langword="false" /> 時，<see langword="finalizer" /> 執行緒會呼叫 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> 方法，任何外部 Managed 參考都可能不再有效，因為記憶體回收已經將這些參考收回。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-189">When <see langword="false" /> is passed, the <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> method is called by a <see langword="finalizer" /> thread and any external managed references are likely no longer valid because they have already been garbage collected.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="83545-190">釋放所有的 Managed 資源和 Unmanaged 資源，以及對 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 執行個體的所有參考。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-190">Releases all managed and unmanaged resources and any references to the <see cref="T:System.Runtime.Caching.ChangeMonitor" /> instance.</span>
-          </span>
-          <span data-ttu-id="83545-191">這項多載必須由衍生自變更監控的類別實作。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-191">This overload must be implemented by derived change-monitor classes.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="83545-192">當值`disposing`值是`true`處置所有的 managed 和 unmanaged 資源，以便衍生的變更監視執行個體進行記憶體回收，會釋放此物件的任何參考。</span><span class="sxs-lookup"><span data-stu-id="83545-192">When the value of `disposing` value is `true`, all managed and unmanaged resources are disposed and any references to this object are released so that the derived change-monitor instance can be garbage collected.</span></span> <span data-ttu-id="83545-193">這樣會保證的基底<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>方法會叫用實作<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>方法一次。</span><span class="sxs-lookup"><span data-stu-id="83545-193">It is guaranteed that the base <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method will invoke the implemented <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method only one time.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <block subset="none" type="overrides">
-          <para>
-            <span data-ttu-id="83545-194">必須實作變更監視器<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />釋放所有的多載 managed 和 unmanaged 資源時的值<paramref name="disposing" />是<see langword="true" />。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-194">A change monitor must implement the <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> overload to release all managed and unmanaged resources when the value of <paramref name="disposing" /> is <see langword="true" />.</span>
-            </span>
-            <span data-ttu-id="83545-195">
-              <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />具有方法多載<paramref name="disposing" />值<see langword="true" />時，會呼叫一次，也就是第一次會處置的執行個體。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-195">The <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> method overload that has a <paramref name="disposing" /> value of <see langword="true" /> is called only one time, namely, when the instance is disposed for the first time.</span>
-            </span>
-            <span data-ttu-id="83545-196">變更監視器不能呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />直接多載。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-196">A change monitor must not call the <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> overload directly.</span>
-            </span>
-            <span data-ttu-id="83545-197">衍生的變更監視器可以呼叫公用無參數<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法在基底<see cref="T:System.Runtime.Caching.ChangeMonitor" />類別。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-197">A derived change monitor can call the public parameter-less <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> method on the base <see cref="T:System.Runtime.Caching.ChangeMonitor" /> class.</span>
-            </span>
-            <span data-ttu-id="83545-198">或者，變更監視器可以實作完成項方法。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-198">Alternatively, a change monitor can implement a finalizer method.</span>
-            </span>
-            <span data-ttu-id="83545-199">在此情況下，可以叫用完成項<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />方法並將它傳遞<paramref name="disposing" />值<see langword="false" />。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-199">In that case, the finalizer can invoke the <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> method and pass it a <paramref name="disposing" /> value of <see langword="false" />.</span>
-            </span>
-            <span data-ttu-id="83545-200">不過，這是通常不需要。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-200">However, this is usually unnecessary.</span>
-            </span>
-            <span data-ttu-id="83545-201">維護變更監視執行個體參考的服務通常會執行監視的相依性變更。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-201">Monitoring for dependency changes is typically performed by a service that maintains a reference to the change-monitor instance.</span>
-            </span>
-            <span data-ttu-id="83545-202">參考由記憶體回收，避免執行個體，因此不需要的完成項方法。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-202">The reference prevents the instance from being garbage collected, and therefore makes a finalizer method unnecessary.</span>
-            </span>
-            <span data-ttu-id="83545-203">若要避免記憶體流失的相依性變更時， <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> （除非初始設定尚未完成），方法會處置變更監視執行個體。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-203">To avoid memory leaks, when a dependency changes, the <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> method disposes the change-monitor instance (unless initialization has not finished).</span>
-            </span>
-          </para>
-        </block>
-      </Docs>
-    </Member>
-    <Member MemberName="HasChanged">
-      <MemberSignature Language="C#" Value="public bool HasChanged { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool HasChanged" />
-      <MemberSignature Language="DocId" Value="P:System.Runtime.Caching.ChangeMonitor.HasChanged" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property HasChanged As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool HasChanged { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime.Caching</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="83545-204">取得值，這個值表示 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 類別所監控的狀態已變更。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-204">Gets a value that indicates that the state that is monitored by the <see cref="T:System.Runtime.Caching.ChangeMonitor" /> class has changed.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="83545-205">如果 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 執行個體所監控的狀態已變更則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-205">
-              <see langword="true" /> if the state that is monitored by the <see cref="T:System.Runtime.Caching.ChangeMonitor" /> instance has changed; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="83545-206">您可以檢查這個屬性中衍生的值<xref:System.Runtime.Caching.ChangeMonitor>類別，以查看是否已變更相依性。</span><span class="sxs-lookup"><span data-stu-id="83545-206">You can check the value of this property in a derived <xref:System.Runtime.Caching.ChangeMonitor> class to see whether a dependency has changed.</span></span>  
-  
- <span data-ttu-id="83545-207">值設定為`true`相依性變更發生時 (也就是當<xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A>方法呼叫)。</span><span class="sxs-lookup"><span data-stu-id="83545-207">The value is set to `true` when a dependency change occurs (that is, when the <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> method is called).</span></span> <span data-ttu-id="83545-208">之後<xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A>方法由衍生類別中的值呼叫<xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A>屬性會是`true`，無論是否<xref:System.Runtime.Caching.OnChangedCallback>已通知執行個體的呼叫所<xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="83545-208">After the <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> method is called by the derived class, the value of the <xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A> property will be `true`, regardless of whether a <xref:System.Runtime.Caching.OnChangedCallback> instance has been notified by a call to the <xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A> method.</span></span>  
-  
-> [!NOTE]
->  <span data-ttu-id="83545-209">呼叫端可以檢查<xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A>以查看是否已變更相依性屬性。</span><span class="sxs-lookup"><span data-stu-id="83545-209">Callers can check the <xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A> property to see whether a dependency has changed.</span></span> <span data-ttu-id="83545-210">不過，在多執行緒環境中，以更簡單且更容易維護的方法是將資料插入快取實作，而不會檢查<xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="83545-210">However, in a multi-threaded environment, a simpler and more maintainable approach is to insert data into a cache implementation without checking the <xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A> property.</span></span> <span data-ttu-id="83545-211">快取實作必須檢查<xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A>屬性，且必須不執行插入或設定作業，如果已經變更一個或多個相關聯的相依性。</span><span class="sxs-lookup"><span data-stu-id="83545-211">Cache implementations must check the <xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A> property for you and must not perform an insert or set operation if one or more associated dependencies have already changed.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />
-        <altmember cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />
-      </Docs>
-    </Member>
-    <Member MemberName="InitializationComplete">
-      <MemberSignature Language="C#" Value="protected void InitializationComplete ();" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void InitializationComplete() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />
-      <MemberSignature Language="VB.NET" Value="Protected Sub InitializationComplete ()" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void InitializationComplete();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime.Caching</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="83545-212">從衍生類別的建構函式進行呼叫，以指出初始化已經完成。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-212">Called from the constructor of derived classes to indicate that initialization is finished.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="83545-213">在衍生類別的建構函式如果相依性變更衍生類別中完成初始化之前，必須叫用<xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="83545-213">If a dependency changes before initialization is complete in a derived class, the constructor of the derived class must invoke the <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> method.</span></span>  
-  
- <span data-ttu-id="83545-214">當<xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A>叫用方法時，<xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A>屬性會自動設定為`true`變更監視器。</span><span class="sxs-lookup"><span data-stu-id="83545-214">When the <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> method is invoked, the <xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A> property is automatically set to `true` by the change monitor.</span></span> <span data-ttu-id="83545-215">如此一來，當變更監視器的建構函式呼叫<xref:System.Runtime.Caching.ChangeMonitor.InitializationComplete%2A>自動呼叫方法時，基底類別將<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="83545-215">As a result, when the change monitor's constructor calls the <xref:System.Runtime.Caching.ChangeMonitor.InitializationComplete%2A> method, the base class will automatically call the <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method.</span></span> <span data-ttu-id="83545-216">如果已完成，初始設定<xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A>方法自動處置衍生的變更監視執行個體。</span><span class="sxs-lookup"><span data-stu-id="83545-216">If initialization is complete, the <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> method automatically disposes the derived change-monitor instance.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <block subset="none" type="overrides">
-          <para>
-            <span data-ttu-id="83545-217">在衍生類別的建構函式必須呼叫基底<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />建構函式傳回之前的方法。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-217">The constructor of a derived class must call the base <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> method before the constructor returns.</span>
-            </span>
-            <span data-ttu-id="83545-218">在衍生類別的建構函式可以呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法之後才<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />呼叫，因為<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法擲回例外狀況，初始化未完成。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-218">The constructor of a derived class can call the <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> method only after <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> is called, because the <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> method throws an exception if initialization is not completed.</span>
-            </span>
-          </para>
-        </block>
-      </Docs>
-    </Member>
-    <Member MemberName="IsDisposed">
-      <MemberSignature Language="C#" Value="public bool IsDisposed { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool IsDisposed" />
-      <MemberSignature Language="DocId" Value="P:System.Runtime.Caching.ChangeMonitor.IsDisposed" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsDisposed As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsDisposed { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime.Caching</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="83545-219">取得值，這個值表示是否已經處置 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 類別的衍生執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-219">Gets a value that indicates that the derived instance of a <see cref="T:System.Runtime.Caching.ChangeMonitor" /> class is disposed.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="83545-220">如果已經處置了執行個體，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-220">
-              <see langword="true" /> if the instance is disposed; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="83545-221">屬性設定為`true`基底之後<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>方法呼叫<xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A>處置執行個體的衍生類別中的方法。</span><span class="sxs-lookup"><span data-stu-id="83545-221">The property is set to `true` after the base <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method calls the <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> method in a derived class to dispose of the instance.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="NotifyOnChanged">
-      <MemberSignature Language="C#" Value="public void NotifyOnChanged (System.Runtime.Caching.OnChangedCallback onChangedCallback);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void NotifyOnChanged(class System.Runtime.Caching.OnChangedCallback onChangedCallback) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void NotifyOnChanged(System::Runtime::Caching::OnChangedCallback ^ onChangedCallback);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime.Caching</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="onChangedCallback" Type="System.Runtime.Caching.OnChangedCallback" />
-      </Parameters>
-      <Docs>
-        <param name="onChangedCallback">
-          <span data-ttu-id="83545-222">在相依性變更時叫用之方法的參考。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-222">A reference to a method that is invoked when a dependency has changed.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="83545-223">在相依性變更時，由快取實作呼叫來註冊回呼，並透過 <see cref="T:System.Runtime.Caching.ObjectCache" /> 委派通知 <see cref="T:System.Runtime.Caching.OnChangedCallback" /> 執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-223">Called by Cache implementers to register a callback and notify an <see cref="T:System.Runtime.Caching.ObjectCache" /> instance through the <see cref="T:System.Runtime.Caching.OnChangedCallback" /> delegate when a dependency has changed.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="83545-224">快取實作者會使用這個方法，最多變更監視器的網路本身。</span><span class="sxs-lookup"><span data-stu-id="83545-224">Cache implementers use this method to wire themselves up to a change monitor.</span></span> <span data-ttu-id="83545-225">如果您建立關聯的其中一個或多個變更監視器快取項目，您傳遞<xref:System.Runtime.Caching.CacheItemPolicy>與快取項目來填入的變更監視器屬性的執行個體。</span><span class="sxs-lookup"><span data-stu-id="83545-225">If you associate one or more change monitors with the cache item, you pass a <xref:System.Runtime.Caching.CacheItemPolicy> instance with a populated change monitors property to the cache item.</span></span> <span data-ttu-id="83545-226">支援變更監視器快取實作者負責反覆<xref:System.Runtime.Caching.CacheItemPolicy.ChangeMonitors%2A>屬性和註冊<xref:System.Runtime.Caching.OnChangedCallback>委派與每個變更它找到的監視器。</span><span class="sxs-lookup"><span data-stu-id="83545-226">A cache implementer that supports change monitors is responsible for iterating over the <xref:System.Runtime.Caching.CacheItemPolicy.ChangeMonitors%2A> property and register the <xref:System.Runtime.Caching.OnChangedCallback> delegates with each change monitor that it finds.</span></span>  
-  
- <span data-ttu-id="83545-227">因為<xref:System.Runtime.Caching.OnChangedCallback>委派會包含選擇性狀態參數、 具象變更監視器實作可以傳遞選擇性狀態資訊。</span><span class="sxs-lookup"><span data-stu-id="83545-227">Because the <xref:System.Runtime.Caching.OnChangedCallback> delegate includes an optional state parameter, a concrete change monitor implementation can pass optional state information.</span></span> <span data-ttu-id="83545-228">快取實作者會判斷是否可以採用明確的相依性，做為回呼的一部分傳送的自訂變更監視器狀態的類型。</span><span class="sxs-lookup"><span data-stu-id="83545-228">The cache implementer determines whether an explicit dependency on the type of state that a custom change monitor passes as part of the callback can be taken.</span></span>  
-  
-> [!NOTE]
->  <span data-ttu-id="83545-229">基底的快取擴充性 API 有不需要明確的相依性的狀態類型。</span><span class="sxs-lookup"><span data-stu-id="83545-229">The base cache extensibility API has no requirement for explicit dependency on the type of state.</span></span>  
-  
- <span data-ttu-id="83545-230">實作<xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A>方法會自動決定是否將監視狀態已變更時<xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A>方法呼叫。</span><span class="sxs-lookup"><span data-stu-id="83545-230">The implementation of the <xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A> method automatically determines whether the state of the monitor has already changed at the time <xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A> method is called.</span></span> <span data-ttu-id="83545-231">如果<xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A>屬性是`true`，則方法會自動呼叫<xref:System.Runtime.Caching.OnChangedCallback>事件註冊處理常式，，透過<xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="83545-231">If the <xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A> property is `true`, then the method automatically calls the <xref:System.Runtime.Caching.OnChangedCallback> event handler, that was registered, through the <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> method.</span></span> <span data-ttu-id="83545-232">會發生這種情況是因為您可以從快取實作會建立用來取得監視快取實作，並繫結在一起本身，最多時間的變更監視的時間已變更基礎受監視的狀態。</span><span class="sxs-lookup"><span data-stu-id="83545-232">This occurs because it is possible that from the time a cache implementation creates a change monitor, to the time a cache implementation gets the monitor and wires itself up to it, the underlying monitored state has changed.</span></span> <span data-ttu-id="83545-233">如果狀態已變更再傳遞給物件<xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A>方法`null`。</span><span class="sxs-lookup"><span data-stu-id="83545-233">If the state has already changed then the object that is passed to the <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> method is `null`.</span></span>  
-  
- <span data-ttu-id="83545-234"><xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A>方法可以叫用一次，並在後續呼叫會擲回例外狀況。</span><span class="sxs-lookup"><span data-stu-id="83545-234">The <xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A> method can be invoked only one time, and will throw an exception on subsequent calls.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.InvalidOperationException">
-          <span data-ttu-id="83545-235">已經叫用此回呼方法。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-235">The callback method has already been invoked.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="83545-236">
-            <paramref name="onChangedCallback" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-236">
-              <paramref name="onChangedCallback" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-        <block subset="none" type="overrides">
-          <para>1.  <span data-ttu-id="83545-237">您必須呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />任何相依性變更的通知方法。</span><span class="sxs-lookup"><span data-stu-id="83545-237">You must call the <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> method to be notified of any dependency changes.</span></span><span data-ttu-id="83545-238">如果已經發生相依性變更，<see cref="T:System.Runtime.Caching.OnChangedCallback" />執行個體時將會呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />呼叫。</span><span class="sxs-lookup"><span data-stu-id="83545-238">If a dependency change has already occurred, the <see cref="T:System.Runtime.Caching.OnChangedCallback" /> instance will be called when <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> is called.</span></span><span data-ttu-id="83545-239">否則，<see cref="T:System.Runtime.Caching.OnChangedCallback" />執行個體將會呼叫一次，其中一個時<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法呼叫或當<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />呼叫方法時，何者先發生。</span><span class="sxs-lookup"><span data-stu-id="83545-239">Otherwise, the <see cref="T:System.Runtime.Caching.OnChangedCallback" /> instance will be called one time, either when the <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> method is called or when the <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> method is called, whichever occurs first.</span></span><span data-ttu-id="83545-240"><see cref="T:System.Runtime.Caching.OnChangedCallback" />快取實作所提供的執行個體應該移除快取項目並快取呼叫端要求時引發的必要的變更或更新事件，回到原始的快取呼叫端。</span><span class="sxs-lookup"><span data-stu-id="83545-240">The <see cref="T:System.Runtime.Caching.OnChangedCallback" /> instance provided by the cache implementation should remove the cache entry and if it is requested by the cache caller, raise the necessary change or update event back to the original cache caller.</span></span>  
-  
-2.  <span data-ttu-id="83545-241">物件快取實作必須移除相依性變更與相關聯的快取項目。</span><span class="sxs-lookup"><span data-stu-id="83545-241">The object cache implementation must remove the cache entry that is associated with a dependency change.</span></span></para>
-        </block>
-        <altmember cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />
-      </Docs>
-    </Member>
-    <Member MemberName="OnChanged">
-      <MemberSignature Language="C#" Value="protected void OnChanged (object state);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void OnChanged(object state) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Protected Sub OnChanged (state As Object)" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void OnChanged(System::Object ^ state);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime.Caching</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="state" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="state">
-          <span data-ttu-id="83545-242">變更事件的資料，</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-242">The data for the change event.</span>
-          </span>
-          <span data-ttu-id="83545-243">這個值可以是 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-243">This value can be <see langword="null" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="83545-244">在相依性變更時由衍生類別呼叫，以引發事件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-244">Called by derived classes to raise the event when a dependency changes.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="83545-245">一般而言，<xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A>發生相依性變更時，呼叫方法。</span><span class="sxs-lookup"><span data-stu-id="83545-245">Typically, the <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> method is called when dependency changes occur.</span></span> <span data-ttu-id="83545-246"><xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A>方法也會叫用時變更監視執行個體已處置，但處置時才會發生在回呼尚未叫用。</span><span class="sxs-lookup"><span data-stu-id="83545-246">The <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> method is also invoked when a change-monitor instance is disposed but the disposal occurs only if the callback has not already been invoked.</span></span>  
-  
- <span data-ttu-id="83545-247">如果<xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A>方法之前呼叫<xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A>呼叫方法時，從呼叫的狀態資料<xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A>方法儲存的快取實作。</span><span class="sxs-lookup"><span data-stu-id="83545-247">If the <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> method is called before the <xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A> method is called, the state data from the call to the <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> method is saved by the cache implementation.</span></span> <span data-ttu-id="83545-248">此外，若要回撥<xref:System.Runtime.Caching.OnChangedCallback>立即叫用方法時<xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A>叫用方法。</span><span class="sxs-lookup"><span data-stu-id="83545-248">Also, the callback to the <xref:System.Runtime.Caching.OnChangedCallback> method is invoked immediately when the <xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A> method is invoked.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />
-        <altmember cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />
-        <altmember cref="P:System.Runtime.Caching.ChangeMonitor.HasChanged" />
-      </Docs>
-    </Member>
-    <Member MemberName="UniqueId">
-      <MemberSignature Language="C#" Value="public abstract string UniqueId { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance string UniqueId" />
-      <MemberSignature Language="DocId" Value="P:System.Runtime.Caching.ChangeMonitor.UniqueId" />
-      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property UniqueId As String" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::String ^ UniqueId { System::String ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime.Caching</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.String</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="83545-249">取得值，這個值表示 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 類別執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-249">Gets a value that represents the <see cref="T:System.Runtime.Caching.ChangeMonitor" /> class instance.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="83545-250">變更監控執行個體的識別項。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="83545-250">The identifier for a change-monitor instance.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="83545-251"><xref:System.Runtime.Caching.ChangeMonitor.UniqueId%2A>屬性值通常相依名稱結合字串資料組成可唯一識別項的受監視的資料<xref:System.Runtime.Caching.ChangeMonitor>執行個體。</span><span class="sxs-lookup"><span data-stu-id="83545-251">The <xref:System.Runtime.Caching.ChangeMonitor.UniqueId%2A> property value typically consists of dependency names combined string data that uniquely identifiers the data that is being monitored by a <xref:System.Runtime.Caching.ChangeMonitor> instance.</span></span> <span data-ttu-id="83545-252">值<xref:System.Runtime.Caching.ChangeMonitor.UniqueId%2A>屬性是字串。</span><span class="sxs-lookup"><span data-stu-id="83545-252">The value of the <xref:System.Runtime.Caching.ChangeMonitor.UniqueId%2A> property is a string.</span></span> <span data-ttu-id="83545-253">字串的值用來指派的唯一識別碼<xref:System.Runtime.Caching.ChangeMonitor>執行個體。</span><span class="sxs-lookup"><span data-stu-id="83545-253">The value of the string is used to assign the unique ID of the <xref:System.Runtime.Caching.ChangeMonitor> instance.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <block subset="none" type="overrides">
-          <para>
-            <span data-ttu-id="83545-254">您可以藉由覆寫屬性，定義屬性的字串值的自訂實作以便將它指派唯一識別碼。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-254">By overriding the property, you can define a custom implementation for the string value of the property in order to assign it a unique ID.</span>
-            </span>
-          </para>
-        </block>
-        <block subset="none" type="overrides">
-          <para>
-            <span data-ttu-id="83545-255">在衍生類別中，您必須在建構函式中設定屬性的值。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="83545-255">In derived classes, you must set the value of the property in the constructor.</span>
-            </span>
-          </para>
-        </block>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="ChangeMonitor.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac5ef439688d7b98a238cf8640eb07e63804432a3ba.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">ef439688d7b98a238cf8640eb07e63804432a3ba</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>Provides a base class for a derived custom type that monitors changes in the state of the data which a cache item depends on.</source>
+          <target state="translated">提供衍生之自訂型別的基底類別，這個型別會監控快取項目所依存之資料的狀態變更。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>The <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> class is used as the base class for derived monitor classes that are specialized for particular cache implementations.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>類別作為基底類別專門針對特定快取實作的衍生的監視類別。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>A <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> instance monitors changes in the state of data which a cache item depends on.</source>
+          <target state="translated">A<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>執行個體監視的資料取決於快取項目狀態的變更。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>For example, the item can be a file or data entity whose contents are cached.</source>
+          <target state="translated">例如，項目可以是檔案或資料實體，其內容會快取。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>If the file or data entity is updated, the associated cache entry must be changed also.</source>
+          <target state="translated">如果更新的檔案或資料的實體，則必須也變更相關聯的快取項目。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>Common items that can be monitored include data entities (such as database fields, values, rows, or tables), another cache entry, and files and file attributes.</source>
+          <target state="translated">您可以監視的一般項目包括資料實體 （例如資料庫欄位、 值、 資料列或資料表）、 另一個快取項目，以及檔案和檔案屬性。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>A dependency change is a change in the state of a dependency.</source>
+          <target state="translated">相依性變更為相依性的狀態變更。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>In a typical cache implementation, after a <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> instance notifies the cache that a dependency has changed, the cache performs the required action, such as invalidating the inserted cache entry.</source>
+          <target state="translated">在典型的快取實作之後<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>執行個體通知相依性已變更的快取，快取的執行所需的動作，例如使插入的快取項目失效。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>Derived <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> classes can be customized to monitor dependency changes for specific different data stores.</source>
+          <target state="translated">衍生<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>可以自訂類別，以監視特定的不同資料中心的相依性變更。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>For example, there are cache implementations for a file system, physical memory, or a database.</source>
+          <target state="translated">比方說，是針對檔案系統、 實體記憶體或資料庫的快取實作。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>The <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> class examines changes that occur outside the cache, and then alerts the cache that changes have occurred.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>類別檢查外部快取中，會發生的變更，並接著發出警示發生變更的快取。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>The <ph id="ph1">[!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)]</ph> includes the following classes that derive from <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> class:</source>
+          <target state="translated"><ph id="ph1">[!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)]</ph>還包括下列類別衍生自<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>類別：</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>Each of these classes works with different types of dependencies.</source>
+          <target state="translated">每個類別會搭配不同類型的相依性。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>For example, the derived <ph id="ph1">&lt;xref:System.Runtime.Caching.FileChangeMonitor&gt;</ph> class monitors changes to a cache for file system data (files and folders) that the cache item depends on.</source>
+          <target state="translated">例如，衍生<ph id="ph1">&lt;xref:System.Runtime.Caching.FileChangeMonitor&gt;</ph>類別監視檔案系統資料 （檔案和資料夾） 的快取項目取決於快取的變更。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>This type is thread safe.</source>
+          <target state="translated">此型別具備執行緒安全。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>If you create a custom cache implementation or a derived change monitor type, you must follow certain guidelines.</source>
+          <target state="translated">如果您建立自訂快取實作或衍生的變更監視類型，您必須遵循特定的指導方針。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>The following list summarizes these guidelines.</source>
+          <target state="translated">下列清單摘要說明這些指導方針。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>For more information, see the documentation for individual methods or properties.</source>
+          <target state="translated">如需詳細資訊，請參閱個別方法或屬性的文件。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>The constructor of a derived class must set the <ph id="ph1">&lt;see cref="P:System.Runtime.Caching.ChangeMonitor.UniqueId" /&gt;</ph> property, begin monitoring, and call <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph> method before the method returns.</source>
+          <target state="translated">在衍生類別的建構函式必須設定<ph id="ph1">&lt;see cref="P:System.Runtime.Caching.ChangeMonitor.UniqueId" /&gt;</ph>屬性，開始監視，並呼叫<ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph>方法傳回之前的方法。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>If a constructor encounters an error during constructions and must have to dispose of resources, the constructor can only call the <ph id="ph1">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> overload after the <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph> method is called because the <ph id="ph3">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> overload will throw an <ph id="ph4">&lt;see cref="T:System.InvalidOperationException" /&gt;</ph> exception if initialization is not completed.</source>
+          <target state="translated">如果建構函式在建構期間發生錯誤，而且必須具有要處置的資源，只能呼叫建構函式<ph id="ph1">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>多載之後<ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph>方法稱為因為<ph id="ph3">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>多載會擲回<ph id="ph4">&lt;see cref="T:System.InvalidOperationException" /&gt;</ph>如果初始化未完成的例外狀況。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>If changes occur in the data that is being monitored before initialization is complete, the constructor must call the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph> method before calling the <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph> method.</source>
+          <target state="translated">如果發生在變更完成初始化之前正在監視的資料，建構函式必須呼叫<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph>方法之前先呼叫<ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>After a derived <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> type is instantiated, you must insert the monitor into a custom <ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ObjectCache" /&gt;</ph> implementation.</source>
+          <target state="translated">在衍生之後<ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph>型別會具現化，您必須插入自訂監視<ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ObjectCache" /&gt;</ph>實作。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>Or if you are finished using the change monitor, call the <ph id="ph1">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> method.</source>
+          <target state="translated">如果您不再使用變更監視器，請呼叫或<ph id="ph1">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>After a <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> instance is inserted into a <ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ObjectCache" /&gt;</ph> implementation, the <ph id="ph3">&lt;see cref="T:System.Runtime.Caching.ObjectCache" /&gt;</ph> instance require that the change monitor is disposed.</source>
+          <target state="translated">之後<ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph>執行個體插入至<ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ObjectCache" /&gt;</ph>實作，<ph id="ph3">&lt;see cref="T:System.Runtime.Caching.ObjectCache" /&gt;</ph>執行個體所需變更監視器已處置。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>Even if the insertion is invalid and causes an exception, the <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ObjectCache" /&gt;</ph> implementation must call the <ph id="ph2">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> overload.</source>
+          <target state="translated">即使插入無效，而且會導致例外狀況，<ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ObjectCache" /&gt;</ph>實作必須呼叫<ph id="ph2">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>多載。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>After a derived change monitor is inserted into a cache, the <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ObjectCache" /&gt;</ph> implementation must call <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph>, by passing a <ph id="ph3">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph> object.</source>
+          <target state="translated">衍生的變更監視器已插入快取之後,<ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ObjectCache" /&gt;</ph>實作必須呼叫<ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph>，藉由傳遞<ph id="ph3">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>The <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph> method can be called only one time.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph>方法可以呼叫一次。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>If a dependency change has already occurred, the <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph> instance will be called immediately when <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph> is called.</source>
+          <target state="translated">如果已經發生相依性變更，<ph id="ph1">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph>會立即呼叫執行個體時<ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph>呼叫。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>Otherwise, the <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph> instance will be called only one time.</source>
+          <target state="translated">否則，<ph id="ph1">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph>執行個體將會呼叫一次。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>This one time call occurs either when the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph> method is called because the <ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> instance detected a change, or when the <ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> method is called on the <ph id="ph4">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph>, whichever occurs first.</source>
+          <target state="translated">此一次呼叫都會發生時<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph>方法稱為因為<ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph>執行個體偵測到變更，或當<ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>上呼叫方法<ph id="ph4">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph>，何者先發生。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph> instance that is provided by an <ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ObjectCache" /&gt;</ph> implementation should remove the associated cache entry and specify a reason by using the <ph id="ph3">&lt;see cref="F:System.Web.Caching.CacheItemRemovedReason.DependencyChanged" /&gt;</ph> enumeration.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph>所提供的執行個體<ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ObjectCache" /&gt;</ph>實作應該移除相關聯的快取項目，並使用指定的原因<ph id="ph3">&lt;see cref="F:System.Web.Caching.CacheItemRemovedReason.DependencyChanged" /&gt;</ph>列舉型別。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> instance can call the <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph> method either before a cache implementation has called <ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph> method or after.</source>
+          <target state="translated">A<ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph>可以呼叫執行個體<ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph>方法可能之前已呼叫快取實作<ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph>方法或之後。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>If the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph> method is called before <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph> is called, the base <ph id="ph3">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> implementation will notify the cache that this has occurred and will trigger the callback to be passed to <ph id="ph4">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph> immediately when <ph id="ph5">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph> is invoked.</source>
+          <target state="translated">如果<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph>方法之前呼叫<ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph>會呼叫基底<ph id="ph3">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph>實作將會通知發生這種情況的快取，而且將會觸發要傳遞給回呼<ph id="ph4">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph>時立即<ph id="ph5">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph>叫用。</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>Any state data that is passed to the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph> method is saved by the change monitor and subsequently passed to the <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph> method when the <ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph> method is invoked.</source>
+          <target state="translated">傳遞給任何狀態資料<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph>方法是變更監視所儲存，且後續傳遞給<ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph>方法時<ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph>叫用方法。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>A change monitor must implement the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /&gt;</ph> method.</source>
+          <target state="translated">必須實作變更監視器<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>For more information, see the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /&gt;</ph> method documentation.</source>
+          <target state="translated">如需詳細資訊，請參閱 <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /&gt;</ph> 方法的文件。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>The <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> method overload must be called to dispose of the <ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> instance.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>方法多載必須呼叫來處置<ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph>執行個體。</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>The rules for calling Dispose are as follows:</source>
+          <target state="translated">呼叫 Dispose 的規則如下所示：</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>Before an item is inserted into the cache, it is the responsibility of caller to dispose of a <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> instance.</source>
+          <target state="translated">項目插入快取之前，必須負責處置的呼叫端的<ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph>執行個體。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>Once cache item and the <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> instances that are associated with it are passed to a cache, the cache implementer must make sure that that the <ph id="ph2">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> method is called, even if the insert fails.</source>
+          <target state="translated">一次快取項目和<ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph>與其相關聯的執行個體傳遞至快取，快取實作者必須確定，<ph id="ph2">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>呼叫方法時，即使插入會失敗。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>After an item and its associated <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> instances are passed to a cache, the caller must not dispose the dependency because when the <ph id="ph2">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> method is called, the call is treated as if the dependency has changed.</source>
+          <target state="translated">項目和其相關聯之後<ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph>執行個體傳遞至快取中，呼叫端必須未處置的相依性，因為當<ph id="ph2">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>方法呼叫，呼叫都會被視為相依性已變更。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>As a result, the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph> method is automatically invoked.</source>
+          <target state="translated">如此一來，<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph>自動叫用方法。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>Taking these rules into consideration, the <ph id="ph1">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> method must be called in one of the following ways:</source>
+          <target state="translated">這些規則納入考量，<ph id="ph1">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>方法必須為下列方式之一：</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>Users must call the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> method overload if they decide not to insert the derived change-monitor instance into a cache.</source>
+          <target state="translated">使用者必須先呼叫<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>方法多載，如果使用者覺得不將衍生的變更監視執行個體插入快取。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>If the implementation tries to insert the change-monitor instance into an object cache but the insertion fails, the cache implementation is responsible for calling the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> overload.</source>
+          <target state="translated">如果實作會嘗試將變更監視執行個體物件快取插入，但插入失敗時，快取實作會負責呼叫<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>多載。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>When the insertion attempt causes an exception, the cache implementation must dispose of any associated dependencies.</source>
+          <target state="translated">當插入嘗試造成例外狀況時，快取實作必須處置任何相關聯的相依性。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>If the cache entry is removed, the cache implementation must also dispose of the dependency.</source>
+          <target state="translated">如果移除快取項目，快取實作也必須處置相依性。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>The internal implementation of the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph> method automatically calls the <ph id="ph2">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> method after it calls a callback that is registered through <ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph>.</source>
+          <target state="translated">內部實作<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph>方法會自動呼叫<ph id="ph2">&lt;see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>方法之後其所呼叫的回呼，註冊透過<ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>This automatic call to the dispose method during the event firing only occurs if the initialization of the <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> instance was previously completed.</source>
+          <target state="translated">這個自動呼叫 dispose 方法，在事件引發時，才會發生的初始化<ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph>先前已完成執行個體。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>When a derived change monitor's constructor calls the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph> method, if the state of the change monitor has already changed (that is, the state that is monitored already changed when the constructor was still active) then the <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph> method will automatically dispose of the change monitor.</source>
+          <target state="translated">當在衍生的變更監視器的建構函式呼叫<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph>方法，如果變更監視的狀態已變更 （亦即，當建構函式是仍在作用中時才會監視已變更的狀態） 則<ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph>方法將自動處置變更監視器。</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>The <ph id="ph1">&lt;see cref="P:System.Runtime.Caching.ChangeMonitor.HasChanged" /&gt;</ph> property is set to <ph id="ph2">&lt;see langword="true" /&gt;</ph> after the <ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph> method is called by the derived change-monitor instance, regardless of whether a <ph id="ph4">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph> object has been set by a call to the <ph id="ph5">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph> method or not.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="P:System.Runtime.Caching.ChangeMonitor.HasChanged" /&gt;</ph>屬性設定為<ph id="ph2">&lt;see langword="true" /&gt;</ph>之後<ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph>方法會呼叫衍生的變更監視執行個體，而不論是否<ph id="ph4">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph>物件已經設定了呼叫<ph id="ph5">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph>方法與否。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.#ctor">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> class.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.#ctor">
+          <source>This constructor is called from constructors in derived classes to initialize the base class.</source>
+          <target state="translated">這個建構函式由衍生類別中的建構函式呼叫，來初始化基底類別。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.#ctor">
+          <source>The <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> class has a default constructor.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>類別有預設建構函式。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.#ctor">
+          <source>However, classes that inherit from the base <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> class and define custom change-monitoring behavior must perform initialization in the constructor.</source>
+          <target state="translated">不過，類別，繼承自基底<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>類別，並定義自訂的變更監視行為必須於建構函式執行初始化。</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.#ctor">
+          <source>For more information, see the Notes for Inheritors section.</source>
+          <target state="translated">如需詳細資訊，請參閱繼承者注意事項 &gt; 一節的資訊。</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.#ctor">
+          <source>The constructor of a derived class must set the <ph id="ph1">&lt;see cref="P:System.Runtime.Caching.ChangeMonitor.UniqueId" /&gt;</ph> property, begin monitoring, and call the <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph> class before it returns.</source>
+          <target state="translated">在衍生類別的建構函式必須設定<ph id="ph1">&lt;see cref="P:System.Runtime.Caching.ChangeMonitor.UniqueId" /&gt;</ph>屬性，開始監視，並呼叫<ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph>類別再傳回。</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.#ctor">
+          <source>If a dependency changes before initialization is complete (for example, if a dependent cache key is not found in the cache), the constructor must call the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph> method before it calls the <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph> method.</source>
+          <target state="translated">如果在初始化之前的相依性變更已完成 （例如，如果快取中找不到相依的快取索引鍵），建構函式必須呼叫<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph>方法之前呼叫<ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.#ctor">
+          <source>In this case, constructor can call the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> method only after the <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph> method is called, because the <ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> method throws an exception if initialization is not completed.</source>
+          <target state="translated">在此情況下，建構函式可以呼叫<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>方法之後才<ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph>呼叫方法，因為<ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>方法擲回例外狀況，初始化未完成。</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>Releases all resources used by the current instance of the <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> class.</source>
+          <target state="translated">將 <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> 類別目前的執行個體所使用的資源全部釋出。</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>The <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method is used to release the <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> instance and related resources.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>方法用來釋放<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>執行個體和相關的資源。</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>The public <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method is invoked to coordinate the disposal process with key life-cycle events of derived change-monitor classes (such as initialization), and to release the <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> instance so that the instance can be garbage collected.</source>
+          <target state="translated">公用<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>方法會叫用協調金鑰生命週期事件 （例如初始化） 衍生的變更監視器類別的處置處理程序，並釋放<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>執行個體，讓執行個體進行記憶體回收。</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Runtime.Caching.ChangeMonitor">
+          <source>The <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method is implemented by derived change-monitor classes to dispose of their managed and unmanaged resources.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>方法藉由衍生的變更監視器類別來處置 managed 和 unmanaged 資源。</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>Releases all resources that are used by the current instance of the <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> class.</source>
+          <target state="translated">將 <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> 類別的目前執行個體所使用的資源全部釋出。</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>The <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method invokes the <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method of derived classes only one time, the first time it is called.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>方法會叫用<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>衍生類別只一次，第一次呼叫的方法。</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>Subsequent calls to the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method have no effect.</source>
+          <target state="translated">後續呼叫<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>方法沒有任何作用。</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>After the method has been called, the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.IsDisposed%2A&gt;</ph> property is set to <ph id="ph2">`true`</ph>.</source>
+          <target state="translated">在呼叫方法之後，<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.IsDisposed%2A&gt;</ph>屬性設定為<ph id="ph2">`true`</ph>。</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>The <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> overload must be called to dispose of a <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> instance.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>必須叫用多載來處置<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>執行個體。</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>The following are the rules for calling the dispose method:</source>
+          <target state="translated">呼叫 dispose 方法的規則如下：</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>Before an item is inserted into the cache, it is the caller's responsibility to dispose of a <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> instance.</source>
+          <target state="translated">項目插入快取之前，是呼叫者的責任處置<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>執行個體。</target>       </trans-unit>
+        <trans-unit id="171" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>Once cache item and the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> instances that are associated with it are passed to a cache, the cache implementer that must make sure that <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> is called, even if the insert fails.</source>
+          <target state="translated">一次快取項目和<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>與其相關聯的執行個體傳遞至快取中，必須確定快取實作者<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>呼叫時，即使插入會失敗。</target>       </trans-unit>
+        <trans-unit id="172" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>After an item and its associated <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> instances are passed to a cache, the caller must not dispose the dependency because when the <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method is called, the call is treated as if the dependency has changed.</source>
+          <target state="translated">項目和其相關聯之後<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>執行個體傳遞至快取中，呼叫端必須未處置的相依性，因為當<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>方法呼叫，呼叫都會被視為相依性已變更。</target>       </trans-unit>
+        <trans-unit id="173" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>As a result, the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph> method is automatically invoked.</source>
+          <target state="translated">如此一來，<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph>自動叫用方法。</target>       </trans-unit>
+        <trans-unit id="174" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>Taking these rules into consideration, the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method must be called in one of the following ways:</source>
+          <target state="translated">這些規則納入考量，<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>方法必須為下列方式之一：</target>       </trans-unit>
+        <trans-unit id="175" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>Users must call the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method overload if they decide not to insert the derived change-monitor instance into a cache.</source>
+          <target state="translated">使用者必須先呼叫<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>方法多載，如果使用者覺得不將衍生的變更監視執行個體插入快取。</target>       </trans-unit>
+        <trans-unit id="176" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>The cache implementation is responsible for calling the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> overload if the implementation tries to insert the change-monitor instance into an object cache but the insertion fails.</source>
+          <target state="translated">快取實作會負責呼叫<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>多載，如果實作會嘗試將變更監視執行個體物件快取插入，但插入失敗。</target>       </trans-unit>
+        <trans-unit id="177" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>When the insertion attempt causes an exception, the cache implementation must dispose any associated dependencies.</source>
+          <target state="translated">當插入嘗試造成例外狀況時，快取實作必須處置任何相關聯的相依性。</target>       </trans-unit>
+        <trans-unit id="178" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>If the cache entry is removed, the cache implementation must also dispose the dependency.</source>
+          <target state="translated">如果移除快取項目，快取實作也必須處置相依性。</target>       </trans-unit>
+        <trans-unit id="179" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>The internal implementation of the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph> method automatically calls the <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method after it calls a callback that is registered through the <ph id="ph3">&lt;xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A&gt;</ph> method.</source>
+          <target state="translated">內部實作<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph>方法會自動呼叫<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>方法之後其所呼叫的回呼，註冊透過<ph id="ph3">&lt;xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="180" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>This automatic dispose during the event firing only occurs if the initialization of the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> instance previously completed.</source>
+          <target state="translated">此自動處置事件引發時，才會發生的初始化<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>先前完成的執行個體。</target>       </trans-unit>
+        <trans-unit id="181" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>When a derived change monitor's constructor calls the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.InitializationComplete%2A&gt;</ph> method, if the state of the change monitor has already changed (that is, the state that is monitored has already changed when the constructor was still active) then <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.InitializationComplete%2A&gt;</ph> method will automatically dispose the change monitor.</source>
+          <target state="translated">當在衍生的變更監視器的建構函式呼叫<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.InitializationComplete%2A&gt;</ph>方法，如果變更監視的狀態已變更 （也就是受到監視的狀態已變更時仍在作用中的建構函式） 然後<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.InitializationComplete%2A&gt;</ph>方法將自動處置變更監視器。</target>       </trans-unit>
+        <trans-unit id="182" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>Users should not call the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method.</source>
+          <target state="translated">使用者不應該呼叫<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="183" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>However, you cannot prevent users from calling the method.</source>
+          <target state="translated">不過，您無法阻止使用者呼叫方法。</target>       </trans-unit>
+        <trans-unit id="184" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>Therefore, if they do, the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph> method is invoked.</source>
+          <target state="translated">因此，如果沒有的話，<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph>叫用方法。</target>       </trans-unit>
+        <trans-unit id="185" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>In that case, the cache entry is notified as if the dependency has changed.</source>
+          <target state="translated">在此情況下，如同相依性已變更，會收到通知的快取項目。</target>       </trans-unit>
+        <trans-unit id="186" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>To prevent derived classes from overriding <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method, the method is not an explicit interface implementation.</source>
+          <target state="translated">若要防止衍生的類別覆寫<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>方法，此方法不是明確介面實作。</target>       </trans-unit>
+        <trans-unit id="187" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose">
+          <source>Initialization is not complete in the derived change-monitor class that called the base <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> method.</source>
+          <target state="translated">初始化沒有在呼叫基底 <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> 方法的衍生變更監視器類別中完成。</target>       </trans-unit>
+        <trans-unit id="188" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> to release managed and unmanaged resources and any references to a <ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> instance; <ph id="ph3">&lt;see langword="false" /&gt;</ph> to release only unmanaged resources.</source>
+          <target state="translated"><ph id="ph1">&lt;see langword="true" /&gt;</ph> 表示釋放所有的 Managed 資源、Unmanaged 資源以及對 <ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> 執行個體的所有參考，<ph id="ph3">&lt;see langword="false" /&gt;</ph> 表示只釋放 Unmanaged 資源。</target>       </trans-unit>
+        <trans-unit id="189" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source>When <ph id="ph1">&lt;see langword="false" /&gt;</ph> is passed, the <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /&gt;</ph> method is called by a <ph id="ph3">&lt;see langword="finalizer" /&gt;</ph> thread and any external managed references are likely no longer valid because they have already been garbage collected.</source>
+          <target state="translated">傳遞 <ph id="ph1">&lt;see langword="false" /&gt;</ph> 時，<ph id="ph3">&lt;see langword="finalizer" /&gt;</ph> 執行緒會呼叫 <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /&gt;</ph> 方法，任何外部 Managed 參考都可能不再有效，因為記憶體回收已經將這些參考收回。</target>       </trans-unit>
+        <trans-unit id="190" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source>Releases all managed and unmanaged resources and any references to the <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> instance.</source>
+          <target state="translated">釋放所有的 Managed 資源和 Unmanaged 資源，以及對 <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> 執行個體的所有參考。</target>       </trans-unit>
+        <trans-unit id="191" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source>This overload must be implemented by derived change-monitor classes.</source>
+          <target state="translated">這項多載必須由衍生自變更監控的類別實作。</target>       </trans-unit>
+        <trans-unit id="192" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source>When the value of <ph id="ph1">`disposing`</ph> value is <ph id="ph2">`true`</ph>, all managed and unmanaged resources are disposed and any references to this object are released so that the derived change-monitor instance can be garbage collected.</source>
+          <target state="translated">當值<ph id="ph1">`disposing`</ph>值是<ph id="ph2">`true`</ph>處置所有的 managed 和 unmanaged 資源，以便衍生的變更監視執行個體進行記憶體回收，會釋放此物件的任何參考。</target>       </trans-unit>
+        <trans-unit id="193" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source>It is guaranteed that the base <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method will invoke the implemented <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method only one time.</source>
+          <target state="translated">這樣會保證的基底<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>方法會叫用實作<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>方法一次。</target>       </trans-unit>
+        <trans-unit id="194" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source>A change monitor must implement the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /&gt;</ph> overload to release all managed and unmanaged resources when the value of <ph id="ph2">&lt;paramref name="disposing" /&gt;</ph> is <ph id="ph3">&lt;see langword="true" /&gt;</ph>.</source>
+          <target state="translated">必須實作變更監視器<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /&gt;</ph>釋放所有的多載 managed 和 unmanaged 資源時的值<ph id="ph2">&lt;paramref name="disposing" /&gt;</ph>是<ph id="ph3">&lt;see langword="true" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="195" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source>The <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /&gt;</ph> method overload that has a <ph id="ph2">&lt;paramref name="disposing" /&gt;</ph> value of <ph id="ph3">&lt;see langword="true" /&gt;</ph> is called only one time, namely, when the instance is disposed for the first time.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /&gt;</ph>具有方法多載<ph id="ph2">&lt;paramref name="disposing" /&gt;</ph>值<ph id="ph3">&lt;see langword="true" /&gt;</ph>時，會呼叫一次，也就是第一次會處置的執行個體。</target>       </trans-unit>
+        <trans-unit id="196" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source>A change monitor must not call the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /&gt;</ph> overload directly.</source>
+          <target state="translated">變更監視器不能呼叫<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /&gt;</ph>直接多載。</target>       </trans-unit>
+        <trans-unit id="197" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source>A derived change monitor can call the public parameter-less <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> method on the base <ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> class.</source>
+          <target state="translated">衍生的變更監視器可以呼叫公用無參數<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>方法在基底<ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph>類別。</target>       </trans-unit>
+        <trans-unit id="198" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source>Alternatively, a change monitor can implement a finalizer method.</source>
+          <target state="translated">或者，變更監視器可以實作完成項方法。</target>       </trans-unit>
+        <trans-unit id="199" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source>In that case, the finalizer can invoke the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /&gt;</ph> method and pass it a <ph id="ph2">&lt;paramref name="disposing" /&gt;</ph> value of <ph id="ph3">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">在此情況下，可以叫用完成項<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /&gt;</ph>方法並將它傳遞<ph id="ph2">&lt;paramref name="disposing" /&gt;</ph>值<ph id="ph3">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="200" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source>However, this is usually unnecessary.</source>
+          <target state="translated">不過，這是通常不需要。</target>       </trans-unit>
+        <trans-unit id="201" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source>Monitoring for dependency changes is typically performed by a service that maintains a reference to the change-monitor instance.</source>
+          <target state="translated">維護變更監視執行個體參考的服務通常會執行監視的相依性變更。</target>       </trans-unit>
+        <trans-unit id="202" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source>The reference prevents the instance from being garbage collected, and therefore makes a finalizer method unnecessary.</source>
+          <target state="translated">參考由記憶體回收，避免執行個體，因此不需要的完成項方法。</target>       </trans-unit>
+        <trans-unit id="203" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)">
+          <source>To avoid memory leaks, when a dependency changes, the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph> method disposes the change-monitor instance (unless initialization has not finished).</source>
+          <target state="translated">若要避免記憶體流失的相依性變更時， <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph> （除非初始設定尚未完成），方法會處置變更監視執行個體。</target>       </trans-unit>
+        <trans-unit id="204" translate="yes" xml:space="preserve" uid="P:System.Runtime.Caching.ChangeMonitor.HasChanged">
+          <source>Gets a value that indicates that the state that is monitored by the <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> class has changed.</source>
+          <target state="translated">取得值，這個值表示 <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> 類別所監控的狀態已變更。</target>       </trans-unit>
+        <trans-unit id="205" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Caching.ChangeMonitor.HasChanged">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the state that is monitored by the <ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> instance has changed; otherwise, <ph id="ph3">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果 <ph id="ph2">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> 執行個體所監控的狀態已變更則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph3">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="206" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Caching.ChangeMonitor.HasChanged">
+          <source>You can check the value of this property in a derived <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> class to see whether a dependency has changed.</source>
+          <target state="translated">您可以檢查這個屬性中衍生的值<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>類別，以查看是否已變更相依性。</target>       </trans-unit>
+        <trans-unit id="207" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Caching.ChangeMonitor.HasChanged">
+          <source>The value is set to <ph id="ph1">`true`</ph> when a dependency change occurs (that is, when the <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph> method is called).</source>
+          <target state="translated">值設定為<ph id="ph1">`true`</ph>相依性變更發生時 (也就是當<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph>方法呼叫)。</target>       </trans-unit>
+        <trans-unit id="208" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Caching.ChangeMonitor.HasChanged">
+          <source>After the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph> method is called by the derived class, the value of the <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A&gt;</ph> property will be <ph id="ph3">`true`</ph>, regardless of whether a <ph id="ph4">&lt;xref:System.Runtime.Caching.OnChangedCallback&gt;</ph> instance has been notified by a call to the <ph id="ph5">&lt;xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A&gt;</ph> method.</source>
+          <target state="translated">之後<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph>方法由衍生類別中的值呼叫<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A&gt;</ph>屬性會是<ph id="ph3">`true`</ph>，無論是否<ph id="ph4">&lt;xref:System.Runtime.Caching.OnChangedCallback&gt;</ph>已通知執行個體的呼叫所<ph id="ph5">&lt;xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="209" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Caching.ChangeMonitor.HasChanged">
+          <source>Callers can check the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A&gt;</ph> property to see whether a dependency has changed.</source>
+          <target state="translated">呼叫端可以檢查<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A&gt;</ph>以查看是否已變更相依性屬性。</target>       </trans-unit>
+        <trans-unit id="210" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Caching.ChangeMonitor.HasChanged">
+          <source>However, in a multi-threaded environment, a simpler and more maintainable approach is to insert data into a cache implementation without checking the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A&gt;</ph> property.</source>
+          <target state="translated">不過，在多執行緒環境中，以更簡單且更容易維護的方法是將資料插入快取實作，而不會檢查<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="211" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Caching.ChangeMonitor.HasChanged">
+          <source>Cache implementations must check the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A&gt;</ph> property for you and must not perform an insert or set operation if one or more associated dependencies have already changed.</source>
+          <target state="translated">快取實作必須檢查<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A&gt;</ph>屬性，且必須不執行插入或設定作業，如果已經變更一個或多個相關聯的相依性。</target>       </trans-unit>
+        <trans-unit id="212" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete">
+          <source>Called from the constructor of derived classes to indicate that initialization is finished.</source>
+          <target state="translated">從衍生類別的建構函式進行呼叫，以指出初始化已經完成。</target>       </trans-unit>
+        <trans-unit id="213" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete">
+          <source>If a dependency changes before initialization is complete in a derived class, the constructor of the derived class must invoke the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph> method.</source>
+          <target state="translated">在衍生類別的建構函式如果相依性變更衍生類別中完成初始化之前，必須叫用<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="214" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete">
+          <source>When the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph> method is invoked, the <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A&gt;</ph> property is automatically set to <ph id="ph3">`true`</ph> by the change monitor.</source>
+          <target state="translated">當<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph>叫用方法時，<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A&gt;</ph>屬性會自動設定為<ph id="ph3">`true`</ph>變更監視器。</target>       </trans-unit>
+        <trans-unit id="215" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete">
+          <source>As a result, when the change monitor's constructor calls the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.InitializationComplete%2A&gt;</ph> method, the base class will automatically call the <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method.</source>
+          <target state="translated">如此一來，當變更監視器的建構函式呼叫<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.InitializationComplete%2A&gt;</ph>自動呼叫方法時，基底類別將<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="216" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete">
+          <source>If initialization is complete, the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph> method automatically disposes the derived change-monitor instance.</source>
+          <target state="translated">如果已完成，初始設定<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph>方法自動處置衍生的變更監視執行個體。</target>       </trans-unit>
+        <trans-unit id="217" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete">
+          <source>The constructor of a derived class must call the base <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph> method before the constructor returns.</source>
+          <target state="translated">在衍生類別的建構函式必須呼叫基底<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph>建構函式傳回之前的方法。</target>       </trans-unit>
+        <trans-unit id="218" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete">
+          <source>The constructor of a derived class can call the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> method only after <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph> is called, because the <ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> method throws an exception if initialization is not completed.</source>
+          <target state="translated">在衍生類別的建構函式可以呼叫<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>方法之後才<ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /&gt;</ph>呼叫，因為<ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>方法擲回例外狀況，初始化未完成。</target>       </trans-unit>
+        <trans-unit id="219" translate="yes" xml:space="preserve" uid="P:System.Runtime.Caching.ChangeMonitor.IsDisposed">
+          <source>Gets a value that indicates that the derived instance of a <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> class is disposed.</source>
+          <target state="translated">取得值，這個值表示是否已經處置 <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> 類別的衍生執行個體。</target>       </trans-unit>
+        <trans-unit id="220" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Caching.ChangeMonitor.IsDisposed">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the instance is disposed; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果已經處置了執行個體，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph2">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="221" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Caching.ChangeMonitor.IsDisposed">
+          <source>The property is set to <ph id="ph1">`true`</ph> after the base <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method calls the <ph id="ph3">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph> method in a derived class to dispose of the instance.</source>
+          <target state="translated">屬性設定為<ph id="ph1">`true`</ph>基底之後<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>方法呼叫<ph id="ph3">&lt;xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A&gt;</ph>處置執行個體的衍生類別中的方法。</target>       </trans-unit>
+        <trans-unit id="222" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>A reference to a method that is invoked when a dependency has changed.</source>
+          <target state="translated">在相依性變更時叫用之方法的參考。</target>       </trans-unit>
+        <trans-unit id="223" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>Called by Cache implementers to register a callback and notify an <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ObjectCache" /&gt;</ph> instance through the <ph id="ph2">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph> delegate when a dependency has changed.</source>
+          <target state="translated">在相依性變更時，由快取實作呼叫來註冊回呼，並透過 <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ObjectCache" /&gt;</ph> 委派通知 <ph id="ph2">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph> 執行個體。</target>       </trans-unit>
+        <trans-unit id="224" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>Cache implementers use this method to wire themselves up to a change monitor.</source>
+          <target state="translated">快取實作者會使用這個方法，最多變更監視器的網路本身。</target>       </trans-unit>
+        <trans-unit id="225" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>If you associate one or more change monitors with the cache item, you pass a <ph id="ph1">&lt;xref:System.Runtime.Caching.CacheItemPolicy&gt;</ph> instance with a populated change monitors property to the cache item.</source>
+          <target state="translated">如果您建立關聯的其中一個或多個變更監視器快取項目，您傳遞<ph id="ph1">&lt;xref:System.Runtime.Caching.CacheItemPolicy&gt;</ph>與快取項目來填入的變更監視器屬性的執行個體。</target>       </trans-unit>
+        <trans-unit id="226" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>A cache implementer that supports change monitors is responsible for iterating over the <ph id="ph1">&lt;xref:System.Runtime.Caching.CacheItemPolicy.ChangeMonitors%2A&gt;</ph> property and register the <ph id="ph2">&lt;xref:System.Runtime.Caching.OnChangedCallback&gt;</ph> delegates with each change monitor that it finds.</source>
+          <target state="translated">支援變更監視器快取實作者負責反覆<ph id="ph1">&lt;xref:System.Runtime.Caching.CacheItemPolicy.ChangeMonitors%2A&gt;</ph>屬性和註冊<ph id="ph2">&lt;xref:System.Runtime.Caching.OnChangedCallback&gt;</ph>委派與每個變更它找到的監視器。</target>       </trans-unit>
+        <trans-unit id="227" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>Because the <ph id="ph1">&lt;xref:System.Runtime.Caching.OnChangedCallback&gt;</ph> delegate includes an optional state parameter, a concrete change monitor implementation can pass optional state information.</source>
+          <target state="translated">因為<ph id="ph1">&lt;xref:System.Runtime.Caching.OnChangedCallback&gt;</ph>委派會包含選擇性狀態參數、 具象變更監視器實作可以傳遞選擇性狀態資訊。</target>       </trans-unit>
+        <trans-unit id="228" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>The cache implementer determines whether an explicit dependency on the type of state that a custom change monitor passes as part of the callback can be taken.</source>
+          <target state="translated">快取實作者會判斷是否可以採用明確的相依性，做為回呼的一部分傳送的自訂變更監視器狀態的類型。</target>       </trans-unit>
+        <trans-unit id="229" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>The base cache extensibility API has no requirement for explicit dependency on the type of state.</source>
+          <target state="translated">基底的快取擴充性 API 有不需要明確的相依性的狀態類型。</target>       </trans-unit>
+        <trans-unit id="230" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>The implementation of the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A&gt;</ph> method automatically determines whether the state of the monitor has already changed at the time <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A&gt;</ph> method is called.</source>
+          <target state="translated">實作<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A&gt;</ph>方法會自動決定是否將監視狀態已變更時<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A&gt;</ph>方法呼叫。</target>       </trans-unit>
+        <trans-unit id="231" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>If the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A&gt;</ph> property is <ph id="ph2">`true`</ph>, then the method automatically calls the <ph id="ph3">&lt;xref:System.Runtime.Caching.OnChangedCallback&gt;</ph> event handler, that was registered, through the <ph id="ph4">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph> method.</source>
+          <target state="translated">如果<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A&gt;</ph>屬性是<ph id="ph2">`true`</ph>，則方法會自動呼叫<ph id="ph3">&lt;xref:System.Runtime.Caching.OnChangedCallback&gt;</ph>事件註冊處理常式，，透過<ph id="ph4">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="232" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>This occurs because it is possible that from the time a cache implementation creates a change monitor, to the time a cache implementation gets the monitor and wires itself up to it, the underlying monitored state has changed.</source>
+          <target state="translated">會發生這種情況是因為您可以從快取實作會建立用來取得監視快取實作，並繫結在一起本身，最多時間的變更監視的時間已變更基礎受監視的狀態。</target>       </trans-unit>
+        <trans-unit id="233" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>If the state has already changed then the object that is passed to the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph> method is <ph id="ph2">`null`</ph>.</source>
+          <target state="translated">如果狀態已變更再傳遞給物件<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph>方法<ph id="ph2">`null`</ph>。</target>       </trans-unit>
+        <trans-unit id="234" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>The <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A&gt;</ph> method can be invoked only one time, and will throw an exception on subsequent calls.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A&gt;</ph>方法可以叫用一次，並在後續呼叫會擲回例外狀況。</target>       </trans-unit>
+        <trans-unit id="235" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>The callback method has already been invoked.</source>
+          <target state="translated">已經叫用此回呼方法。</target>       </trans-unit>
+        <trans-unit id="236" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source><ph id="ph1">&lt;paramref name="onChangedCallback" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="onChangedCallback" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="237" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>You must call the <ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph> method to be notified of any dependency changes.</source>
+          <target state="translated">您必須呼叫<ph id="ph1">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph>任何相依性變更的通知方法。</target>       </trans-unit>
+        <trans-unit id="238" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>If a dependency change has already occurred, the <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph> instance will be called when <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph> is called.</source>
+          <target state="translated">如果已經發生相依性變更，<ph id="ph1">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph>執行個體時將會呼叫<ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /&gt;</ph>呼叫。</target>       </trans-unit>
+        <trans-unit id="239" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>Otherwise, the <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph> instance will be called one time, either when the <ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph> method is called or when the <ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph> method is called, whichever occurs first.</source>
+          <target state="translated">否則，<ph id="ph1">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph>執行個體將會呼叫一次，其中一個時<ph id="ph2">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /&gt;</ph>方法呼叫或當<ph id="ph3">&lt;see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /&gt;</ph>呼叫方法時，何者先發生。</target>       </trans-unit>
+        <trans-unit id="240" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph> instance provided by the cache implementation should remove the cache entry and if it is requested by the cache caller, raise the necessary change or update event back to the original cache caller.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Runtime.Caching.OnChangedCallback" /&gt;</ph>快取實作所提供的執行個體應該移除快取項目並快取呼叫端要求時引發的必要的變更或更新事件，回到原始的快取呼叫端。</target>       </trans-unit>
+        <trans-unit id="241" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)">
+          <source>The object cache implementation must remove the cache entry that is associated with a dependency change.</source>
+          <target state="translated">物件快取實作必須移除相依性變更與相關聯的快取項目。</target>       </trans-unit>
+        <trans-unit id="242" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)">
+          <source>The data for the change event.</source>
+          <target state="translated">變更事件的資料，</target>       </trans-unit>
+        <trans-unit id="243" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)">
+          <source>This value can be <ph id="ph1">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated">這個值可以是 <ph id="ph1">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="244" translate="yes" xml:space="preserve" uid="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)">
+          <source>Called by derived classes to raise the event when a dependency changes.</source>
+          <target state="translated">在相依性變更時由衍生類別呼叫，以引發事件。</target>       </trans-unit>
+        <trans-unit id="245" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)">
+          <source>Typically, the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph> method is called when dependency changes occur.</source>
+          <target state="translated">一般而言，<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph>發生相依性變更時，呼叫方法。</target>       </trans-unit>
+        <trans-unit id="246" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)">
+          <source>The <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph> method is also invoked when a change-monitor instance is disposed but the disposal occurs only if the callback has not already been invoked.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph>方法也會叫用時變更監視執行個體已處置，但處置時才會發生在回呼尚未叫用。</target>       </trans-unit>
+        <trans-unit id="247" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)">
+          <source>If the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph> method is called before the <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A&gt;</ph> method is called, the state data from the call to the <ph id="ph3">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph> method is saved by the cache implementation.</source>
+          <target state="translated">如果<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph>方法之前呼叫<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A&gt;</ph>呼叫方法時，從呼叫的狀態資料<ph id="ph3">&lt;xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A&gt;</ph>方法儲存的快取實作。</target>       </trans-unit>
+        <trans-unit id="248" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)">
+          <source>Also, the callback to the <ph id="ph1">&lt;xref:System.Runtime.Caching.OnChangedCallback&gt;</ph> method is invoked immediately when the <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A&gt;</ph> method is invoked.</source>
+          <target state="translated">此外，若要回撥<ph id="ph1">&lt;xref:System.Runtime.Caching.OnChangedCallback&gt;</ph>立即叫用方法時<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A&gt;</ph>叫用方法。</target>       </trans-unit>
+        <trans-unit id="249" translate="yes" xml:space="preserve" uid="P:System.Runtime.Caching.ChangeMonitor.UniqueId">
+          <source>Gets a value that represents the <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> class instance.</source>
+          <target state="translated">取得值，這個值表示 <ph id="ph1">&lt;see cref="T:System.Runtime.Caching.ChangeMonitor" /&gt;</ph> 類別執行個體。</target>       </trans-unit>
+        <trans-unit id="250" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Caching.ChangeMonitor.UniqueId">
+          <source>The identifier for a change-monitor instance.</source>
+          <target state="translated">變更監控執行個體的識別項。</target>       </trans-unit>
+        <trans-unit id="251" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Caching.ChangeMonitor.UniqueId">
+          <source>The <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.UniqueId%2A&gt;</ph> property value typically consists of dependency names combined string data that uniquely identifiers the data that is being monitored by a <ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> instance.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.UniqueId%2A&gt;</ph>屬性值通常相依名稱結合字串資料組成可唯一識別項的受監視的資料<ph id="ph2">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>執行個體。</target>       </trans-unit>
+        <trans-unit id="252" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Caching.ChangeMonitor.UniqueId">
+          <source>The value of the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.UniqueId%2A&gt;</ph> property is a string.</source>
+          <target state="translated">值<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor.UniqueId%2A&gt;</ph>屬性是字串。</target>       </trans-unit>
+        <trans-unit id="253" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Caching.ChangeMonitor.UniqueId">
+          <source>The value of the string is used to assign the unique ID of the <ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph> instance.</source>
+          <target state="translated">字串的值用來指派的唯一識別碼<ph id="ph1">&lt;xref:System.Runtime.Caching.ChangeMonitor&gt;</ph>執行個體。</target>       </trans-unit>
+        <trans-unit id="254" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Caching.ChangeMonitor.UniqueId">
+          <source>By overriding the property, you can define a custom implementation for the string value of the property in order to assign it a unique ID.</source>
+          <target state="translated">您可以藉由覆寫屬性，定義屬性的字串值的自訂實作以便將它指派唯一識別碼。</target>       </trans-unit>
+        <trans-unit id="255" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Runtime.Caching.ChangeMonitor.UniqueId">
+          <source>In derived classes, you must set the value of the property in the constructor.</source>
+          <target state="translated">在衍生類別中，您必須在建構函式中設定屬性的值。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

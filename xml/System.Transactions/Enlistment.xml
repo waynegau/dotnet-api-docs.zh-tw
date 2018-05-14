@@ -1,118 +1,87 @@
-<Type Name="Enlistment" FullName="System.Transactions.Enlistment">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="5dacb6e0d9a3eb1837291d29c765d3aadae3c06c" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public class Enlistment" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Enlistment extends System.Object" />
-  <TypeSignature Language="DocId" Value="T:System.Transactions.Enlistment" />
-  <TypeSignature Language="VB.NET" Value="Public Class Enlistment" />
-  <TypeSignature Language="C++ CLI" Value="public ref class Enlistment" />
-  <AssemblyInfo>
-    <AssemblyName>System.Transactions</AssemblyName>
-    <AssemblyVersion>2.0.5.0</AssemblyVersion>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>netstandard</AssemblyName>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>System.Transactions.Local</AssemblyName>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-    <AssemblyVersion>4.0.1.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces />
-  <Docs>
-    <summary>
-      <span data-ttu-id="d8d73-101">在交易的最後階段，協助登記的交易參與者與交易管理員之間的通訊。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="d8d73-101">Facilitates communication between an enlisted transaction participant and the transaction manager during the final phase of the transaction.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="d8d73-102">當<xref:System.Transactions.Transaction.EnlistVolatile%2A>和<xref:System.Transactions.Transaction.EnlistDurable%2A>方法<xref:System.Transactions.Transaction>物件會叫用登記在交易中的參與者，它們會傳回此物件，描述登記。</span><span class="sxs-lookup"><span data-stu-id="d8d73-102">When the <xref:System.Transactions.Transaction.EnlistVolatile%2A> and <xref:System.Transactions.Transaction.EnlistDurable%2A> methods of the <xref:System.Transactions.Transaction> object are invoked to enlist a participant in a transaction, they return this object describing the enlistment.</span></span>  
-  
- <span data-ttu-id="d8d73-103">在交易認可的最後一個階段中，交易管理員將此物件傳遞給實作資源管理員<xref:System.Transactions.IEnlistmentNotification>登記在交易中的介面。</span><span class="sxs-lookup"><span data-stu-id="d8d73-103">During the final phase of the transaction commit, the transaction manager passes this object to a resource manager implementing the <xref:System.Transactions.IEnlistmentNotification> interface that has enlisted in a transaction.</span></span> <span data-ttu-id="d8d73-104">具體來說，交易管理員便會呼叫 <xref:System.Transactions.IEnlistmentNotification.Commit%2A>或<xref:System.Transactions.IEnlistmentNotification.Rollback%2A>參與者，根據是否後者已決定要認可或回復交易的方法。</span><span class="sxs-lookup"><span data-stu-id="d8d73-104">Specifically, the transaction manager calls either the <xref:System.Transactions.IEnlistmentNotification.Commit%2A> or the <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> method of the participant, depending on whether the latter has decided to commit or roll back the transaction.</span></span> <span data-ttu-id="d8d73-105">參與者應該呼叫<xref:System.Transactions.Enlistment.Done%2A>方法，這個物件可讓交易管理員知道它已完成其工作。</span><span class="sxs-lookup"><span data-stu-id="d8d73-105">The participant should call the <xref:System.Transactions.Enlistment.Done%2A> method of this object to let the transaction manager know that it has completed its work.</span></span>  
-  
- <span data-ttu-id="d8d73-106">可以呼叫登記<xref:System.Transactions.Enlistment.Done%2A>方法在任何時間之前已呼叫它<xref:System.Transactions.PreparingEnlistment.Prepared%2A>準備階段。</span><span class="sxs-lookup"><span data-stu-id="d8d73-106">An enlistment can call the <xref:System.Transactions.Enlistment.Done%2A> method at anytime before it has called <xref:System.Transactions.PreparingEnlistment.Prepared%2A> in the prepare phase.</span></span>  <span data-ttu-id="d8d73-107">如此一來，登記計算唯讀的票數，這表示它投票認可交易，但是不需要接收最終的結果。</span><span class="sxs-lookup"><span data-stu-id="d8d73-107">By doing so, the enlistment is casting a read only vote, meaning that it votes commit on the transaction but does not need to receive the final outcome.</span></span> <span data-ttu-id="d8d73-108">請注意之後,<xref:System.Transactions.Enlistment.Done%2A>呼叫方法時，已登錄的參與者接收來自交易管理員的任何進一步的通知。</span><span class="sxs-lookup"><span data-stu-id="d8d73-108">Note that, after the <xref:System.Transactions.Enlistment.Done%2A> method is called, the enlisted participant receives no further notifications from the transaction manager.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="d8d73-109">下列範例示範實作<xref:System.Transactions.IEnlistmentNotification>介面，以及當<xref:System.Transactions.Enlistment.Done%2A>應該呼叫方法。</span><span class="sxs-lookup"><span data-stu-id="d8d73-109">The following example shows an implementation of the <xref:System.Transactions.IEnlistmentNotification> interface, and when the <xref:System.Transactions.Enlistment.Done%2A> method should be called.</span></span>  
-  
- [!code-csharp[Tx_Enlist#2](~/samples/snippets/csharp/VS_Snippets_CFX/tx_enlist/cs/enlist.cs#2)]
- [!code-vb[Tx_Enlist#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/tx_enlist/vb/enlist.vb#2)]  
-  
- ]]></format>
-    </remarks>
-    <threadsafe>
-      <span data-ttu-id="d8d73-110">此型別具備執行緒安全。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="d8d73-110">This type is thread safe.</span>
-      </span>
-    </threadsafe>
-    <altmember cref="T:System.Transactions.PreparingEnlistment" />
-    <altmember cref="T:System.Transactions.IEnlistmentNotification" />
-  </Docs>
-  <Members>
-    <Member MemberName="Done">
-      <MemberSignature Language="C#" Value="public void Done ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Done() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Transactions.Enlistment.Done" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Done ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Done();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Transactions</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Transactions.Local</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="d8d73-111">指出交易參與者已完成其工作。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="d8d73-111">Indicates that the transaction participant has completed its work.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="d8d73-112">在交易認可的最後一個階段中，交易管理員呼叫  <xref:System.Transactions.IEnlistmentNotification.Commit%2A>，<xref:System.Transactions.IEnlistmentNotification.Rollback%2A>或<xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>參與者，根據是否要認可或回復交易的方法。</span><span class="sxs-lookup"><span data-stu-id="d8d73-112">During the final phase of the transaction commit, the transaction manager calls either the <xref:System.Transactions.IEnlistmentNotification.Commit%2A>, <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> or <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> method of the participant, depending on whether the transaction is to be committed or rolled back.</span></span> <span data-ttu-id="d8d73-113">資源管理員應該執行任何所需完成交易，然後告知交易管理員它藉由呼叫已完成的工作<xref:System.Transactions.Enlistment.Done%2A>方法`enlistment`參數。</span><span class="sxs-lookup"><span data-stu-id="d8d73-113">The resource manager should perform any work necessary to finish the transaction and then inform the transaction manager that it has finished by calling the <xref:System.Transactions.Enlistment.Done%2A> method on the `enlistment` parameter.</span></span>  
-  
- <span data-ttu-id="d8d73-114">如果資源管理員已登錄永久，但不會回應呼叫<xref:System.Transactions.Enlistment.Done%2A>方法時，交易管理員不確定資源管理員已收到對應通知呼叫。</span><span class="sxs-lookup"><span data-stu-id="d8d73-114">If the resource manager has enlisted durably, but does not respond by calling <xref:System.Transactions.Enlistment.Done%2A> method, the transaction manager is unsure that the resource manager has received the respective notification call.</span></span> <span data-ttu-id="d8d73-115">因此，交易管理員會持續等候回應，以及維護與此交易相關資訊。</span><span class="sxs-lookup"><span data-stu-id="d8d73-115">As such, the transaction manager keeps waiting for a response, and maintains information relevant to this transaction.</span></span>  <span data-ttu-id="d8d73-116">如果<xref:System.Transactions.Enlistment.Done%2A>是永遠不會呼叫，此項資訊是周圍無限期地保留在記憶體中或在整個系統資源。</span><span class="sxs-lookup"><span data-stu-id="d8d73-116">If <xref:System.Transactions.Enlistment.Done%2A> is never called, this piece of information is kept around indefinitely in memory or in a system-wide resource.</span></span> <span data-ttu-id="d8d73-117">這會導致無法回收資源。</span><span class="sxs-lookup"><span data-stu-id="d8d73-117">This results in resources not being able to be reclaimed.</span></span> <span data-ttu-id="d8d73-118">如果是分散式交易，這可能最後會填滿中止 MSDTC 程序的 MSDTC 記錄檔。</span><span class="sxs-lookup"><span data-stu-id="d8d73-118">In the case of a distributed transaction, this could eventually fill the MSDTC log which halts the MSDTC process.</span></span> <span data-ttu-id="d8d73-119">如果是交易受<xref:System.Transactions>，這會導致記憶體耗用量，資源管理員的程序的漸進式且持續增加。</span><span class="sxs-lookup"><span data-stu-id="d8d73-119">In the case of a transaction managed by <xref:System.Transactions>, this results in a gradual and continual increase in the memory consumption of the resource manager's process.</span></span> <span data-ttu-id="d8d73-120">因此，很重要，您呼叫<xref:System.Transactions.Enlistment.Done%2A>方法，一旦您的資源管理員透過您準備工作。</span><span class="sxs-lookup"><span data-stu-id="d8d73-120">Therefore, it is crucial that you call the <xref:System.Transactions.Enlistment.Done%2A> method once your resource manager is done with your prepare work.</span></span>  
-  
- <span data-ttu-id="d8d73-121">可以呼叫登記<xref:System.Transactions.Enlistment.Done%2A>方法在任何時間之前已呼叫它<xref:System.Transactions.PreparingEnlistment.Prepared%2A>準備階段。</span><span class="sxs-lookup"><span data-stu-id="d8d73-121">An enlistment can call the <xref:System.Transactions.Enlistment.Done%2A> method at anytime before it has called <xref:System.Transactions.PreparingEnlistment.Prepared%2A> in the prepare phase.</span></span> <span data-ttu-id="d8d73-122">如此一來，登記計算唯讀的票數，這表示它投票認可交易，但是不需要接收最終的結果。</span><span class="sxs-lookup"><span data-stu-id="d8d73-122">By doing so, the enlistment is casting a read only vote, meaning that it votes commit on the transaction but does not need to receive the final outcome.</span></span> <span data-ttu-id="d8d73-123">請注意，會呼叫這個方法之後，已登錄的參與者沒有進一步從接收通知之交易管理員。</span><span class="sxs-lookup"><span data-stu-id="d8d73-123">Note that, after this method is called, the enlisted participant receives no further notifications from the transaction manager.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Transactions.PreparingEnlistment" />
-        <altmember cref="T:System.Transactions.IEnlistmentNotification" />
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="Enlistment.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac55dacb6e0d9a3eb1837291d29c765d3aadae3c06c.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">5dacb6e0d9a3eb1837291d29c765d3aadae3c06c</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netcore-2.0,netcore-2.1,netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7,netstandard-2.0,xamarinandroid-7.1,xamarinios-10.8,xamarinmac-3.0</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Transactions.Enlistment">
+          <source>Facilitates communication between an enlisted transaction participant and the transaction manager during the final phase of the transaction.</source>
+          <target state="translated">在交易的最後階段，協助登記的交易參與者與交易管理員之間的通訊。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Transactions.Enlistment">
+          <source>When the <ph id="ph1">&lt;xref:System.Transactions.Transaction.EnlistVolatile%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Transactions.Transaction.EnlistDurable%2A&gt;</ph> methods of the <ph id="ph3">&lt;xref:System.Transactions.Transaction&gt;</ph> object are invoked to enlist a participant in a transaction, they return this object describing the enlistment.</source>
+          <target state="translated">當<ph id="ph1">&lt;xref:System.Transactions.Transaction.EnlistVolatile%2A&gt;</ph>和<ph id="ph2">&lt;xref:System.Transactions.Transaction.EnlistDurable%2A&gt;</ph>方法<ph id="ph3">&lt;xref:System.Transactions.Transaction&gt;</ph>物件會叫用登記在交易中的參與者，它們會傳回此物件，描述登記。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Transactions.Enlistment">
+          <source>During the final phase of the transaction commit, the transaction manager passes this object to a resource manager implementing the <ph id="ph1">&lt;xref:System.Transactions.IEnlistmentNotification&gt;</ph> interface that has enlisted in a transaction.</source>
+          <target state="translated">在交易認可的最後一個階段中，交易管理員將此物件傳遞給實作資源管理員<ph id="ph1">&lt;xref:System.Transactions.IEnlistmentNotification&gt;</ph>登記在交易中的介面。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Transactions.Enlistment">
+          <source>Specifically, the transaction manager calls either the <ph id="ph1">&lt;xref:System.Transactions.IEnlistmentNotification.Commit%2A&gt;</ph> or the <ph id="ph2">&lt;xref:System.Transactions.IEnlistmentNotification.Rollback%2A&gt;</ph> method of the participant, depending on whether the latter has decided to commit or roll back the transaction.</source>
+          <target state="translated">具體來說，交易管理員便會呼叫 <ph id="ph1">&lt;xref:System.Transactions.IEnlistmentNotification.Commit%2A&gt;</ph>或<ph id="ph2">&lt;xref:System.Transactions.IEnlistmentNotification.Rollback%2A&gt;</ph>參與者，根據是否後者已決定要認可或回復交易的方法。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Transactions.Enlistment">
+          <source>The participant should call the <ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph> method of this object to let the transaction manager know that it has completed its work.</source>
+          <target state="translated">參與者應該呼叫<ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph>方法，這個物件可讓交易管理員知道它已完成其工作。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Transactions.Enlistment">
+          <source>An enlistment can call the <ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph> method at anytime before it has called <ph id="ph2">&lt;xref:System.Transactions.PreparingEnlistment.Prepared%2A&gt;</ph> in the prepare phase.</source>
+          <target state="translated">可以呼叫登記<ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph>方法在任何時間之前已呼叫它<ph id="ph2">&lt;xref:System.Transactions.PreparingEnlistment.Prepared%2A&gt;</ph>準備階段。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Transactions.Enlistment">
+          <source>By doing so, the enlistment is casting a read only vote, meaning that it votes commit on the transaction but does not need to receive the final outcome.</source>
+          <target state="translated">如此一來，登記計算唯讀的票數，這表示它投票認可交易，但是不需要接收最終的結果。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Transactions.Enlistment">
+          <source>Note that, after the <ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph> method is called, the enlisted participant receives no further notifications from the transaction manager.</source>
+          <target state="translated">請注意之後,<ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph>呼叫方法時，已登錄的參與者接收來自交易管理員的任何進一步的通知。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Transactions.Enlistment">
+          <source>The following example shows an implementation of the <ph id="ph1">&lt;xref:System.Transactions.IEnlistmentNotification&gt;</ph> interface, and when the <ph id="ph2">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph> method should be called.</source>
+          <target state="translated">下列範例示範實作<ph id="ph1">&lt;xref:System.Transactions.IEnlistmentNotification&gt;</ph>介面，以及當<ph id="ph2">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph>應該呼叫方法。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Transactions.Enlistment">
+          <source>This type is thread safe.</source>
+          <target state="translated">此型別具備執行緒安全。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" uid="M:System.Transactions.Enlistment.Done">
+          <source>Indicates that the transaction participant has completed its work.</source>
+          <target state="translated">指出交易參與者已完成其工作。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Transactions.Enlistment.Done">
+          <source>During the final phase of the transaction commit, the transaction manager calls either the <ph id="ph1">&lt;xref:System.Transactions.IEnlistmentNotification.Commit%2A&gt;</ph>, <ph id="ph2">&lt;xref:System.Transactions.IEnlistmentNotification.Rollback%2A&gt;</ph> or <ph id="ph3">&lt;xref:System.Transactions.IEnlistmentNotification.InDoubt%2A&gt;</ph> method of the participant, depending on whether the transaction is to be committed or rolled back.</source>
+          <target state="translated">在交易認可的最後一個階段中，交易管理員呼叫  <ph id="ph1">&lt;xref:System.Transactions.IEnlistmentNotification.Commit%2A&gt;</ph>，<ph id="ph2">&lt;xref:System.Transactions.IEnlistmentNotification.Rollback%2A&gt;</ph>或<ph id="ph3">&lt;xref:System.Transactions.IEnlistmentNotification.InDoubt%2A&gt;</ph>參與者，根據是否要認可或回復交易的方法。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Transactions.Enlistment.Done">
+          <source>The resource manager should perform any work necessary to finish the transaction and then inform the transaction manager that it has finished by calling the <ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph> method on the <ph id="ph2">`enlistment`</ph> parameter.</source>
+          <target state="translated">資源管理員應該執行任何所需完成交易，然後告知交易管理員它藉由呼叫已完成的工作<ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph>方法<ph id="ph2">`enlistment`</ph>參數。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Transactions.Enlistment.Done">
+          <source>If the resource manager has enlisted durably, but does not respond by calling <ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph> method, the transaction manager is unsure that the resource manager has received the respective notification call.</source>
+          <target state="translated">如果資源管理員已登錄永久，但不會回應呼叫<ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph>方法時，交易管理員不確定資源管理員已收到對應通知呼叫。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Transactions.Enlistment.Done">
+          <source>As such, the transaction manager keeps waiting for a response, and maintains information relevant to this transaction.</source>
+          <target state="translated">因此，交易管理員會持續等候回應，以及維護與此交易相關資訊。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Transactions.Enlistment.Done">
+          <source>If <ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph> is never called, this piece of information is kept around indefinitely in memory or in a system-wide resource.</source>
+          <target state="translated">如果<ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph>是永遠不會呼叫，此項資訊是周圍無限期地保留在記憶體中或在整個系統資源。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Transactions.Enlistment.Done">
+          <source>This results in resources not being able to be reclaimed.</source>
+          <target state="translated">這會導致無法回收資源。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Transactions.Enlistment.Done">
+          <source>In the case of a distributed transaction, this could eventually fill the MSDTC log which halts the MSDTC process.</source>
+          <target state="translated">如果是分散式交易，這可能最後會填滿中止 MSDTC 程序的 MSDTC 記錄檔。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Transactions.Enlistment.Done">
+          <source>In the case of a transaction managed by <ph id="ph1">&lt;xref:System.Transactions&gt;</ph>, this results in a gradual and continual increase in the memory consumption of the resource manager's process.</source>
+          <target state="translated">如果是交易受<ph id="ph1">&lt;xref:System.Transactions&gt;</ph>，這會導致記憶體耗用量，資源管理員的程序的漸進式且持續增加。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Transactions.Enlistment.Done">
+          <source>Therefore, it is crucial that you call the <ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph> method once your resource manager is done with your prepare work.</source>
+          <target state="translated">因此，很重要，您呼叫<ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph>方法，一旦您的資源管理員透過您準備工作。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Transactions.Enlistment.Done">
+          <source>An enlistment can call the <ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph> method at anytime before it has called <ph id="ph2">&lt;xref:System.Transactions.PreparingEnlistment.Prepared%2A&gt;</ph> in the prepare phase.</source>
+          <target state="translated">可以呼叫登記<ph id="ph1">&lt;xref:System.Transactions.Enlistment.Done%2A&gt;</ph>方法在任何時間之前已呼叫它<ph id="ph2">&lt;xref:System.Transactions.PreparingEnlistment.Prepared%2A&gt;</ph>準備階段。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Transactions.Enlistment.Done">
+          <source>By doing so, the enlistment is casting a read only vote, meaning that it votes commit on the transaction but does not need to receive the final outcome.</source>
+          <target state="translated">如此一來，登記計算唯讀的票數，這表示它投票認可交易，但是不需要接收最終的結果。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Transactions.Enlistment.Done">
+          <source>Note that, after this method is called, the enlisted participant receives no further notifications from the transaction manager.</source>
+          <target state="translated">請注意，會呼叫這個方法之後，已登錄的參與者沒有進一步從接收通知之交易管理員。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

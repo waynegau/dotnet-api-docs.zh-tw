@@ -1,806 +1,393 @@
-<Type Name="DiscoveryClientProtocol" FullName="System.Web.Services.Discovery.DiscoveryClientProtocol">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="62e05c406c3cc6db931ae05dce5a38237510a700" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public class DiscoveryClientProtocol : System.Web.Services.Protocols.HttpWebClientProtocol" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit DiscoveryClientProtocol extends System.Web.Services.Protocols.HttpWebClientProtocol" />
-  <TypeSignature Language="DocId" Value="T:System.Web.Services.Discovery.DiscoveryClientProtocol" />
-  <TypeSignature Language="VB.NET" Value="Public Class DiscoveryClientProtocol&#xA;Inherits HttpWebClientProtocol" />
-  <TypeSignature Language="C++ CLI" Value="public ref class DiscoveryClientProtocol : System::Web::Services::Protocols::HttpWebClientProtocol" />
-  <AssemblyInfo>
-    <AssemblyName>System.Web.Services</AssemblyName>
-    <AssemblyVersion>2.0.5.0</AssemblyVersion>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Web.Services.Protocols.HttpWebClientProtocol</BaseTypeName>
-  </Base>
-  <Interfaces />
-  <Docs>
-    <summary>
-      <span data-ttu-id="683a2-101">提供支援，以程式設計方式叫用 (Invoke) XML Web Service 探索 (Discovery)。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="683a2-101">Provides support for programmatically invoking XML Web services discovery.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="683a2-102">XML Web 服務探索處理程序尋找，或探索、 一個或更多相關文件，描述可用的 XML Web 服務。</span><span class="sxs-lookup"><span data-stu-id="683a2-102">XML Web service discovery is the process of locating, or discovering, one or more related documents that describe available XML Web services.</span></span> <span data-ttu-id="683a2-103">它是透過 XML Web 服務用戶端了解有關使用 XML Web 服務在指定的 URL 和使用方式的 XML Web 服務探索。</span><span class="sxs-lookup"><span data-stu-id="683a2-103">It is through XML Web services discovery that XML Web service clients learn about the available XML Web services at a given URL and how to use them.</span></span> <span data-ttu-id="683a2-104">XML Web 服務探索的運作方式，從您已取得 URL 探索文件，可能是透過目錄服務，例如內部部署http://uddi.microsoft.com，不過，您並沒有提供的 XML Web 服務的相關詳細資料。</span><span class="sxs-lookup"><span data-stu-id="683a2-104">XML Web services discovery works from the premise that you have already obtained the URL to a discovery document, possibly through a directory service, such as http://uddi.microsoft.com, however, you do not have the details about the XML Web services offered.</span></span> <span data-ttu-id="683a2-105">透過 XML Web 服務探索，您可以探索中所列的 XML Web 服務的詳細<xref:System.Web.Services.Discovery.DiscoveryDocument>在特定的 URL。</span><span class="sxs-lookup"><span data-stu-id="683a2-105">Through XML Web services discovery, you can discover the details about the XML Web services listed in a <xref:System.Web.Services.Discovery.DiscoveryDocument> at a specific URL.</span></span>  
-  
- <span data-ttu-id="683a2-106">XML Web 服務用戶端會從 XML Web 服務探索提供的 URL 設為 <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>或<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="683a2-106">An XML Web service client starts XML Web services discovery by supplying a URL to either the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A> or <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A> methods.</span></span> <span data-ttu-id="683a2-107">通常，此 URL 是指探索文件，依次指向描述一或多個 XML Web 服務加入至文件<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="683a2-107">Typically, this URL refers to a discovery document, which in turn refers to documents that describe one or more XML Web services, which are added to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> property.</span></span> <span data-ttu-id="683a2-108">此時，只有該文件會下載並驗證以指向有效 XML Web 服務的相關資訊。</span><span class="sxs-lookup"><span data-stu-id="683a2-108">At that point, only that document is downloaded and verified to point to valid information about XML Web services.</span></span> <span data-ttu-id="683a2-109">不過，在這個階段未驗證該文件中包含的參考。</span><span class="sxs-lookup"><span data-stu-id="683a2-109">However, the references contained in that document are not verified at this stage.</span></span> <span data-ttu-id="683a2-110">改為加入至<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="683a2-110">Instead they are added to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> property.</span></span> <span data-ttu-id="683a2-111">若要確認的參考都是有效，叫用<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>或<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>方法新增至有效的參考文件<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="683a2-111">To verify that the references are valid, invoke the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> or <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> methods, which add valid referenced documents to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A> property.</span></span> <span data-ttu-id="683a2-112">最後，如果用戶端想要儲存到磁碟，請叫用的探索結果<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="683a2-112">Last, if a client wants to save the discovery results to disk, invoke the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A> method.</span></span>  
-  
- <span data-ttu-id="683a2-113">如果不需要以程式設計方式存取 XML Web 服務探索，[!INCLUDE[winsdklong](~/includes/winsdklong-md.md)]隨附探索命令提示字元中的 XML Web service 的 Web 服務探索工具 (Disco.exe)。</span><span class="sxs-lookup"><span data-stu-id="683a2-113">If programmatic access to XML Web services discovery is not needed, the [!INCLUDE[winsdklong](~/includes/winsdklong-md.md)] ships the Web Services Discovery tool (Disco.exe) for discovering XML Web services within a command prompt.</span></span> <span data-ttu-id="683a2-114">如需詳細資訊，請參閱[Web 服務探索工具 (Disco.exe)](http://msdn.microsoft.com/library/acd88078-c581-42bc-94ca-6633e2851979)。</span><span class="sxs-lookup"><span data-stu-id="683a2-114">For more details, see [Web Services Discovery Tool (Disco.exe)](http://msdn.microsoft.com/library/acd88078-c581-42bc-94ca-6633e2851979).</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="683a2-115">下列程式碼範例會示範如何使用 Web Form<xref:System.Web.Services.Discovery.DiscoveryClientProtocol>類別中的其他類別以及<xref:System.Web.Services.Discovery>命名空間，以程式設計方式叫用 XML Web 服務探索。</span><span class="sxs-lookup"><span data-stu-id="683a2-115">The following code example is a Web Form demonstrating how to use the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol> class together with the other classes in the <xref:System.Web.Services.Discovery> namespace to programmatically invoke XML Web services discovery.</span></span> <span data-ttu-id="683a2-116">程式碼範例示範如何使用<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>， <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>， <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>， <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>， <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>，<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll%2A>和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="683a2-116">The code example demonstrates using the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>, <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>, <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>, <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>, <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>, <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll%2A> and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A> methods.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="683a2-117">這個範例有一個可接受使用者輸入的文字方塊，這可能會造成安全性威脅。</span><span class="sxs-lookup"><span data-stu-id="683a2-117">This example has a text box that accepts user input, which is a potential security threat.</span></span> <span data-ttu-id="683a2-118">根據預設，ASP.NET Web 網頁會驗證使用者輸入未包含指令碼或 HTML 項目。</span><span class="sxs-lookup"><span data-stu-id="683a2-118">By default, ASP.NET Web pages validate that user input does not include script or HTML elements.</span></span> <span data-ttu-id="683a2-119">如需詳細資訊，請參閱 [Script Exploits Overview](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07) (指令碼攻擊概觀)。</span><span class="sxs-lookup"><span data-stu-id="683a2-119">For more information, see [Script Exploits Overview](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07).</span></span>  
-  
- [!code-aspx-csharp[DiscoveryClientProtocol#1](~/samples/snippets/csharp/VS_Snippets_Remoting/DiscoveryClientProtocol/CS/discocs.aspx#1)]
- [!code-aspx-vb[DiscoveryClientProtocol#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/DiscoveryClientProtocol/VB/discovb.aspx#1)]  
-  
- ]]></format>
-    </remarks>
-    <altmember cref="T:System.Web.Services.Discovery.DiscoveryDocument" />
-    <altmember cref="T:System.Web.Services.Description.ServiceDescription" />
-    <altmember cref="T:System.Web.Services.Protocols.HttpWebClientProtocol" />
-  </Docs>
-  <Members>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public DiscoveryClientProtocol ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Discovery.DiscoveryClientProtocol.#ctor" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; DiscoveryClientProtocol();" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="683a2-120">初始化 <see cref="T:System.Web.Services.Discovery.DiscoveryClientProtocol" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-120">Initializes a new instance of the <see cref="T:System.Web.Services.Discovery.DiscoveryClientProtocol" /> class.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="AdditionalInformation">
-      <MemberSignature Language="C#" Value="public System.Collections.IList AdditionalInformation { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.IList AdditionalInformation" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Discovery.DiscoveryClientProtocol.AdditionalInformation" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property AdditionalInformation As IList" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::IList ^ AdditionalInformation { System::Collections::IList ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.IList</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="683a2-121">取得在探索文件中找到的參考以外的資訊。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-121">Gets information in addition to references found in the discovery document.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="683a2-122">
-            <see cref="T:System.Collections.IList" />，包含在探索文件中找到的額外資訊。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-122">An <see cref="T:System.Collections.IList" /> containing additional information found in the discovery document.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="683a2-123"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.AdditionalInformation%2A>屬性主要是包含 SOAP 繫結，由<xref:System.Web.Services.Discovery.SoapBinding>探索文件中定義的類別。</span><span class="sxs-lookup"><span data-stu-id="683a2-123">The <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.AdditionalInformation%2A> property primarily contains SOAP bindings, represented by the <xref:System.Web.Services.Discovery.SoapBinding> class, defined in the discovery document.</span></span>  
-  
-   
-  
-## Examples  
- [!code-cpp[DiscoveryClientProtocol_AdditionalInformation#1](~/samples/snippets/cpp/VS_Snippets_Remoting/DiscoveryClientProtocol_AdditionalInformation/CPP/discoveryclientprotocol_additionalinformation.cpp#1)]
- [!code-csharp[DiscoveryClientProtocol_AdditionalInformation#1](~/samples/snippets/csharp/VS_Snippets_Remoting/DiscoveryClientProtocol_AdditionalInformation/CS/discoveryclientprotocol_additionalinformation.cs#1)]
- [!code-vb[DiscoveryClientProtocol_AdditionalInformation#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/DiscoveryClientProtocol_AdditionalInformation/VB/discoveryclientprotocol_additionalinformation.vb#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Discover">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Discovery.DiscoveryDocument Discover (string url);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Web.Services.Discovery.DiscoveryDocument Discover(string url) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover(System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Function Discover (url As String) As DiscoveryDocument" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Web::Services::Discovery::DiscoveryDocument ^ Discover(System::String ^ url);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Discovery.DiscoveryDocument</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="url" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="url">
-          <span data-ttu-id="683a2-124">URL，XML Web Service 探索在此處開始。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-124">The URL where XML Web services discovery begins.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="683a2-125">探索提供的 URL 以判斷它是否是探索文件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-125">Discovers the supplied URL to determine if it is a discovery document.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="683a2-126">
-            <see cref="T:System.Web.Services.Discovery.DiscoveryDocument" />，包含在所提供的 URL 處的 XML Web Service 探索結果。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-126">A <see cref="T:System.Web.Services.Discovery.DiscoveryDocument" /> containing the results of XML Web services discovery at the supplied URL.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="683a2-127"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>方法預期所提供的 URL 是探索文件。</span><span class="sxs-lookup"><span data-stu-id="683a2-127">The <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A> method expects that the supplied URL is a discovery document.</span></span> <span data-ttu-id="683a2-128">如果 URL 是指服務說明或 XML 結構描述會擲回例外狀況。</span><span class="sxs-lookup"><span data-stu-id="683a2-128">If the URL refers to a service description or an XML schema an exception is thrown.</span></span> <span data-ttu-id="683a2-129">若要探索的 XML 結構描述或服務描述叫用<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="683a2-129">To discover an XML schema or a service description invoke the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A> method.</span></span>  
-  
- <span data-ttu-id="683a2-130">如果提供的 URL 指向有效的探索文件，加入探索文件所提供的 URL 在<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A>和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>集合。</span><span class="sxs-lookup"><span data-stu-id="683a2-130">If the supplied URL points to a valid discovery document, the discovery document at the supplied URL is added to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A> and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> collection.</span></span> <span data-ttu-id="683a2-131">此外，探索文件中的參考會加入<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>集合，但不是驗證以指向有效的探索文件。</span><span class="sxs-lookup"><span data-stu-id="683a2-131">Additionally, references within the discovery document are added to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> collection, but not verified to point to valid discovery documents.</span></span> <span data-ttu-id="683a2-132">若要確認的參考，指向有效的探索文件叫用<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>或<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="683a2-132">To verify the references, point to valid discovery documents to invoke the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> or <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> methods.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="683a2-133">下列程式碼範例是 Web 表單，會填入<xref:System.Web.UI.WebControls.DataGrid>中的文件的相關詳細資料<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A>屬性參考搭配 XML Web 服務探索期間找到每份文件。</span><span class="sxs-lookup"><span data-stu-id="683a2-133">The following code example is a Web Form that populates a <xref:System.Web.UI.WebControls.DataGrid> with the details about the documents in the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A> property together with the references found in each document during XML Web services discovery.</span></span> <span data-ttu-id="683a2-134">`PopulateGrid`方法填滿<xref:System.Web.UI.WebControls.DataGrid>的結果與<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>引動過程後面呼叫<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>。</span><span class="sxs-lookup"><span data-stu-id="683a2-134">The `PopulateGrid` method fills the <xref:System.Web.UI.WebControls.DataGrid> with the results from a <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A> invocation followed by a call to <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>.</span></span>  
-  
- [!code-csharp[DiscoveryClientProtocol.Discover#1](~/samples/snippets/csharp/VS_Snippets_Remoting/DiscoveryClientProtocol.Discover/CS/discocs.aspx#1)]
- [!code-vb[DiscoveryClientProtocol.Discover#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/DiscoveryClientProtocol.Discover/VB/discovb.aspx#1)]  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.Net.WebException">
-          <span data-ttu-id="683a2-135">存取提供的 URL 已經傳回 HTTP 狀態碼，而不是傳回 <see cref="F:System.Net.HttpStatusCode.OK" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-135">Accessing the supplied URL returned an HTTP status code other than <see cref="F:System.Net.HttpStatusCode.OK" />.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.InvalidOperationException">
-          <span data-ttu-id="683a2-136">
-            <paramref name="url" /> 參數是有效的 URL，但是沒有指向有效的探索文件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-136">The <paramref name="url" /> parameteris a valid URL, but does not point to a valid discovery document.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="DiscoverAny">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Discovery.DiscoveryDocument DiscoverAny (string url);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Web.Services.Discovery.DiscoveryDocument DiscoverAny(string url) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Function DiscoverAny (url As String) As DiscoveryDocument" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Web::Services::Discovery::DiscoveryDocument ^ DiscoverAny(System::String ^ url);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Discovery.DiscoveryDocument</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="url" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="url">
-          <span data-ttu-id="683a2-137">URL，XML Web Service 探索在此處開始。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-137">The URL where XML Web services discovery begins.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="683a2-138">探索提供的 URL 以判斷它是否為探索文件、服務描述或 XML 結構描述定義 (XSD) 結構描述。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-138">Discovers the supplied URL to determine if it is a discovery document, service description or an XML Schema Definition (XSD) schema.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="683a2-139">
-            <see cref="T:System.Web.Services.Discovery.DiscoveryDocument" />，包含在所提供的 URL 處的 XML Web Service 探索結果。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-139">A <see cref="T:System.Web.Services.Discovery.DiscoveryDocument" /> containing the results of XML Web services discovery at the supplied URL.</span>
-          </span>
-          <span data-ttu-id="683a2-140">如果 <paramref name="url" /> 參數參考服務描述或 XSD 結構描述，則會為該參數在記憶體中建立 <see cref="T:System.Web.Services.Discovery.DiscoveryDocument" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-140">If the <paramref name="url" /> parameter refers to a service description or an XSD Schema, a <see cref="T:System.Web.Services.Discovery.DiscoveryDocument" /> is created in memory for it.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="683a2-141"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>方法會探索所提供的 URL 是探索文件中，服務說明或 XSD 結構描述。</span><span class="sxs-lookup"><span data-stu-id="683a2-141">The <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A> method discovers whether the supplied URL is a discovery document, service description or XSD schema.</span></span> <span data-ttu-id="683a2-142">如果已知 URL 只會參考探索文件<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>可能叫用方法。</span><span class="sxs-lookup"><span data-stu-id="683a2-142">If it is known that the URL only refers to a discovery document, the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A> method might be invoked.</span></span>  
-  
- <span data-ttu-id="683a2-143">如果提供的 URL 會指向有效的探索文件、 XSD 結構描述或服務描述，加入探索文件所提供的 URL 在<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A>和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>集合。</span><span class="sxs-lookup"><span data-stu-id="683a2-143">If the supplied URL points to a valid discovery document, XSD schema, or service description, the discovery document at the supplied URL is added to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A> and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> collections.</span></span> <span data-ttu-id="683a2-144">當提供的 URL 參考到 XSD 結構描述或服務描述<xref:System.Web.Services.Discovery.DiscoveryDocument>會在記憶體中建立並新增至<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A>和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>集合。</span><span class="sxs-lookup"><span data-stu-id="683a2-144">When the supplied URL refers to an XSD schema or Service Description a <xref:System.Web.Services.Discovery.DiscoveryDocument> is created in memory and added to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A> and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> collections.</span></span> <span data-ttu-id="683a2-145">此外，探索文件中的參考會加入<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>集合，但不是驗證以指向有效的探索文件。</span><span class="sxs-lookup"><span data-stu-id="683a2-145">Additionally, references within the discovery document are added to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> collection, but not verified to point to valid discovery documents.</span></span> <span data-ttu-id="683a2-146">若要確認參考都指向有效的探索文件，叫用<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>或<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="683a2-146">To verify that references point to valid discovery documents, invoke the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> or <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> methods.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="683a2-147">下列程式碼範例是 Web 表單，會填入<xref:System.Web.UI.WebControls.DataGrid>中的文件的相關詳細資料<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A>屬性參考搭配 XML Web 服務探索期間找到每份文件。</span><span class="sxs-lookup"><span data-stu-id="683a2-147">The following code example is a Web Form that populates a <xref:System.Web.UI.WebControls.DataGrid> with the details about the documents in the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A> property together with the references found in each document during an XML Web services discovery.</span></span> <span data-ttu-id="683a2-148">`PopulateGrid`方法填滿<xref:System.Web.UI.WebControls.DataGrid>的結果與<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>引動過程後面呼叫<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>。</span><span class="sxs-lookup"><span data-stu-id="683a2-148">The `PopulateGrid` method fills the <xref:System.Web.UI.WebControls.DataGrid> with the results from a <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A> invocation followed by a call to <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>.</span></span>  
-  
- [!code-csharp[DiscoveryClientProtocol.DiscoverAny#1](~/samples/snippets/csharp/VS_Snippets_Remoting/DiscoveryClientProtocol.DiscoverAny/CS/discocs.aspx#1)]
- [!code-vb[DiscoveryClientProtocol.DiscoverAny#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/DiscoveryClientProtocol.DiscoverAny/VB/discovb.aspx#1)]  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.Net.WebException">
-          <span data-ttu-id="683a2-149">存取提供的 URL 已經傳回 HTTP 狀態碼，而不是傳回 <see cref="F:System.Net.HttpStatusCode.OK" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-149">Accessing the supplied URL returned an HTTP status code other than <see cref="F:System.Net.HttpStatusCode.OK" />.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.InvalidOperationException">
-          <span data-ttu-id="683a2-150">
-            <paramref name="url" /> 參數是有效的 URL，但是沒有指向有效的探索文件、服務描述或 XSD 結構描述。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-150">The <paramref name="url" /> parameteris a valid URL, but does not point to a valid discovery document, service description, or XSD schema.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="Documents">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Discovery.DiscoveryClientDocumentCollection Documents { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Discovery.DiscoveryClientDocumentCollection Documents" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Documents As DiscoveryClientDocumentCollection" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::Discovery::DiscoveryClientDocumentCollection ^ Documents { System::Web::Services::Discovery::DiscoveryClientDocumentCollection ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Discovery.DiscoveryClientDocumentCollection</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="683a2-151">取得探索文件的集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-151">Gets a collection of discovery documents.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="683a2-152">
-            <see cref="T:System.Web.Services.Discovery.DiscoveryClientDocumentCollection" />，表示找到的探索文件集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-152">A <see cref="T:System.Web.Services.Discovery.DiscoveryClientDocumentCollection" /> representing the collection of discovery documents found.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="683a2-153"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A>期間叫用會填入集合<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>， <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>，<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="683a2-153">The <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A> collection is populated during invocations to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>, <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>, <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> methods.</span></span> <span data-ttu-id="683a2-154">在叫用期間<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>方法，如果所提供的 URL 是有效的探索文件，該文件會加入至<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A>集合。</span><span class="sxs-lookup"><span data-stu-id="683a2-154">During invocations to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A> and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A> methods, if the supplied URL is a valid discovery document, that document is added to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A> collection.</span></span> <span data-ttu-id="683a2-155">在叫用期間<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>方法中參考有效的探索文件<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>集合會加入至<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A>集合。</span><span class="sxs-lookup"><span data-stu-id="683a2-155">During invocations to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> methods, valid discovery document references in the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> collection are added to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A> collection.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="683a2-156">下列程式碼範例是 Web 表單，會填入<xref:System.Web.UI.WebControls.DataGrid>中的文件的相關詳細資料<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A>XML Web 服務探索期間探索到的屬性。</span><span class="sxs-lookup"><span data-stu-id="683a2-156">The following code example is a Web Form that populates a <xref:System.Web.UI.WebControls.DataGrid> with the details about the documents in the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A> property discovered during XML Web services discovery.</span></span> <span data-ttu-id="683a2-157">`PopulateGrid`方法填滿<xref:System.Web.UI.WebControls.DataGrid>的結果與<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>引動過程後面呼叫<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>。</span><span class="sxs-lookup"><span data-stu-id="683a2-157">The `PopulateGrid` method fills the <xref:System.Web.UI.WebControls.DataGrid> with the results from a <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A> invocation followed by a call to <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="683a2-158">這個範例有一個可接受使用者輸入的文字方塊，這可能會造成安全性威脅。</span><span class="sxs-lookup"><span data-stu-id="683a2-158">This example has a text box that accepts user input, which is a potential security threat.</span></span> <span data-ttu-id="683a2-159">根據預設，ASP.NET Web 網頁會驗證使用者輸入未包含指令碼或 HTML 項目。</span><span class="sxs-lookup"><span data-stu-id="683a2-159">By default, ASP.NET Web pages validate that user input does not include script or HTML elements.</span></span> <span data-ttu-id="683a2-160">如需詳細資訊，請參閱 [Script Exploits Overview](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07) (指令碼攻擊概觀)。</span><span class="sxs-lookup"><span data-stu-id="683a2-160">For more information, see [Script Exploits Overview](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07).</span></span>  
-  
- [!code-aspx-csharp[DiscoveryClientProtocol.Documents#1](~/samples/snippets/csharp/VS_Snippets_Remoting/DiscoveryClientProtocol.Documents/CS/discocs.aspx#1)]
- [!code-aspx-vb[DiscoveryClientProtocol.Documents#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/DiscoveryClientProtocol.Documents/VB/discovb.aspx#1)]  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="T:System.Web.Services.Discovery.DiscoveryClientDocumentCollection" />
-        <altmember cref="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)" />
-        <altmember cref="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover(System.String)" />
-        <altmember cref="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel" />
-        <altmember cref="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll" />
-      </Docs>
-    </Member>
-    <MemberGroup MemberName="Download">
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary>
-          <span data-ttu-id="683a2-161">下載位於提供的 URL 之探索文件至 <see cref="T:System.IO.Stream" /> 物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-161">Downloads the discovery document at the supplied URL into a <see cref="T:System.IO.Stream" /> object.</span>
-          </span>
-        </summary>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName="Download">
-      <MemberSignature Language="C#" Value="public System.IO.Stream Download (ref string url);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.IO.Stream Download(string&amp; url) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Download(System.String@)" />
-      <MemberSignature Language="VB.NET" Value="Public Function Download (ByRef url As String) As Stream" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::IO::Stream ^ Download(System::String ^ % url);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.IO.Stream</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="url" Type="System.String&amp;" RefType="ref" />
-      </Parameters>
-      <Docs>
-        <param name="url">
-          <span data-ttu-id="683a2-162">要下載探索文件的 URL。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-162">The URL of the discovery document to download.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="683a2-163">下載位於提供的 URL 之探索文件至 <see cref="T:System.IO.Stream" /> 物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-163">Downloads the discovery document at the supplied URL into a <see cref="T:System.IO.Stream" /> object.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="683a2-164">
-            <see cref="T:System.IO.Stream" />，包含位於提供的 URL 之文件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-164">A <see cref="T:System.IO.Stream" /> containing the document at the supplied URL.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- [!code-cpp[DiscoveryClientProtocol_Download#2](~/samples/snippets/cpp/VS_Snippets_Remoting/DiscoveryClientProtocol_Download/CPP/discoveryclientprotocol_download.cpp#2)]
- [!code-csharp[DiscoveryClientProtocol_Download#2](~/samples/snippets/csharp/VS_Snippets_Remoting/DiscoveryClientProtocol_Download/CS/discoveryclientprotocol_download.cs#2)]
- [!code-vb[DiscoveryClientProtocol_Download#2](~/samples/snippets/visualbasic/VS_Snippets_Remoting/DiscoveryClientProtocol_Download/VB/discoveryclientprotocol_download.vb#2)]  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.Net.WebException">
-          <span data-ttu-id="683a2-165">從提供的 URL 的下載已經傳回 HTTP 狀態碼，而不是傳回 <see cref="F:System.Net.HttpStatusCode.OK" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-165">The download from the supplied URL returned an HTTP status code other than <see cref="F:System.Net.HttpStatusCode.OK" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="Download">
-      <MemberSignature Language="C#" Value="public System.IO.Stream Download (ref string url, ref string contentType);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.IO.Stream Download(string&amp; url, string&amp; contentType) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Download(System.String@,System.String@)" />
-      <MemberSignature Language="VB.NET" Value="Public Function Download (ByRef url As String, ByRef contentType As String) As Stream" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::IO::Stream ^ Download(System::String ^ % url, System::String ^ % contentType);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.IO.Stream</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="url" Type="System.String&amp;" RefType="ref" />
-        <Parameter Name="contentType" Type="System.String&amp;" RefType="ref" />
-      </Parameters>
-      <Docs>
-        <param name="url">
-          <span data-ttu-id="683a2-166">要下載探索文件的 URL。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-166">The URL of the discovery document to download.</span>
-          </span>
-        </param>
-        <param name="contentType">
-          <span data-ttu-id="683a2-167">已下載的探索文件的 MIME 編碼方式。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-167">The MIME encoding of the downloaded discovery document.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="683a2-168">下載位於提供的 URL 之探索文件至 <see cref="T:System.IO.Stream" /> 物件，設定 <paramref name="contentType" /> 參數為探索文件的 MIME 編碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-168">Downloads the discovery document at the supplied URL into a <see cref="T:System.IO.Stream" /> object, setting the <paramref name="contentType" /> parameter to the MIME encoding of the discovery document.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="683a2-169">
-            <see cref="T:System.IO.Stream" />，包含位於提供的 URL 之文件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-169">A <see cref="T:System.IO.Stream" /> containing the document at the supplied URL.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Examples  
- [!code-cpp[DiscoveryClientProtocol_Download2#1](~/samples/snippets/cpp/VS_Snippets_Remoting/DiscoveryClientProtocol_Download2/CPP/discoveryclientprotocol_download.cpp#1)]
- [!code-csharp[DiscoveryClientProtocol_Download2#1](~/samples/snippets/csharp/VS_Snippets_Remoting/DiscoveryClientProtocol_Download2/CS/discoveryclientprotocol_download.cs#1)]
- [!code-vb[DiscoveryClientProtocol_Download2#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/DiscoveryClientProtocol_Download2/VB/discoveryclientprotocol_download.vb#1)]  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.Net.WebException">
-          <span data-ttu-id="683a2-170">從提供的 URL 的下載已經傳回 HTTP 狀態碼，而不是傳回 <see cref="F:System.Net.HttpStatusCode.OK" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-170">The download from the supplied URL returned an HTTP status code other than <see cref="F:System.Net.HttpStatusCode.OK" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="Errors">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Discovery.DiscoveryExceptionDictionary Errors { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Discovery.DiscoveryExceptionDictionary Errors" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Errors As DiscoveryExceptionDictionary" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::Discovery::DiscoveryExceptionDictionary ^ Errors { System::Web::Services::Discovery::DiscoveryExceptionDictionary ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Discovery.DiscoveryExceptionDictionary</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="683a2-171">取得來自這個類別的方法引動過程期間所發生的例外狀況 (Exception) 集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-171">Gets a collection of exceptions that occurred during invocation of method from this class.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="683a2-172">例外狀況的 <see cref="T:System.Web.Services.Discovery.DiscoveryExceptionDictionary" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-172">A <see cref="T:System.Web.Services.Discovery.DiscoveryExceptionDictionary" /> of exceptions.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="683a2-173"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors%2A>集合會填入叫用期間發生的例外狀況<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>， <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>， <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>，和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="683a2-173">The <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors%2A> collection is populated with exceptions that occurred during invocations to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>, <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>, <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>, and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> methods.</span></span> <span data-ttu-id="683a2-174"><xref:System.Web.Services.Discovery.DiscoveryExceptionDictionary>這些方法的引動過程上被清除。</span><span class="sxs-lookup"><span data-stu-id="683a2-174">The <xref:System.Web.Services.Discovery.DiscoveryExceptionDictionary> is cleared on invocation of these methods.</span></span>  
-  
-   
-  
-## Examples  
- [!code-cpp[DiscoveryClientProtocol_Errors#1](~/samples/snippets/cpp/VS_Snippets_Remoting/DiscoveryClientProtocol_Errors/CPP/discoveryclientprotocol_errors.cpp#1)]
- [!code-csharp[DiscoveryClientProtocol_Errors#1](~/samples/snippets/csharp/VS_Snippets_Remoting/DiscoveryClientProtocol_Errors/CS/discoveryclientprotocol_errors.cs#1)]
- [!code-vb[DiscoveryClientProtocol_Errors#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/DiscoveryClientProtocol_Errors/VB/discoveryclientprotocol_errors.vb#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="LoadExternals">
-      <MemberSignature Language="C#" Value="public void LoadExternals ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void LoadExternals() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Discovery.DiscoveryClientProtocol.LoadExternals" />
-      <MemberSignature Language="VB.NET" Value="Public Sub LoadExternals ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void LoadExternals();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Attributes>
-        <Attribute>
-          <AttributeName>System.Obsolete("This method will be removed from a future version. The method call is no longer required for resource discovery", false)</AttributeName>
-        </Attribute>
-        <Attribute>
-          <AttributeName>System.Runtime.InteropServices.ComVisible(false)</AttributeName>
-        </Attribute>
-      </Attributes>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="683a2-175">指示 <see cref="T:System.Web.Services.Discovery.DiscoveryClientProtocol" /> 物件載入任何外部參考。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-175">Instructs the <see cref="T:System.Web.Services.Discovery.DiscoveryClientProtocol" /> object to load any external references.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ReadAll">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Discovery.DiscoveryClientResultCollection ReadAll (string topLevelFilename);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Web.Services.Discovery.DiscoveryClientResultCollection ReadAll(string topLevelFilename) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll(System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Function ReadAll (topLevelFilename As String) As DiscoveryClientResultCollection" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Web::Services::Discovery::DiscoveryClientResultCollection ^ ReadAll(System::String ^ topLevelFilename);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Discovery.DiscoveryClientResultCollection</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="topLevelFilename" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="topLevelFilename">
-          <span data-ttu-id="683a2-176">要讀取的檔案名稱，包含已儲存探索文件的對應。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-176">Name of file to read in, containing the map of saved discovery documents.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="683a2-177">讀取包含已儲存探索文件對應的檔案，此文件填入 <see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents" /> 和 <see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References" /> 屬性，並且在檔案中具有所參考的探索文件、XML 結構描述定義 (XSD) 結構描述和服務描述。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-177">Reads in a file containing a map of saved discovery documents populating the <see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents" /> and <see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References" /> properties, with discovery documents, XML Schema Definition (XSD) schemas, and service descriptions referenced in the file.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="683a2-178">
-            <see cref="T:System.Web.Services.Discovery.DiscoveryClientResultCollection" />，包含在已儲存的探索文件對應檔案中找到的結果。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-178">A <see cref="T:System.Web.Services.Discovery.DiscoveryClientResultCollection" /> containing the results found in the file with the map of saved discovery documents.</span>
-          </span>
-          <span data-ttu-id="683a2-179">檔案格式為序列化成 XML 的 <see cref="T:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoveryClientResultsFile" /> 類別；然而，您通常只會使用 <see cref="M:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll(System.String,System.String)" /> 方法或 Disco.exe 建立檔案。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-179">The file format is a <see cref="T:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoveryClientResultsFile" /> class serialized into XML; however, one would typically create the file using only the <see cref="M:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll(System.String,System.String)" /> method or Disco.exe.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="683a2-180">可以建立含有儲存的探索文件的對應檔案<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A>方法或 Disco.exe。</span><span class="sxs-lookup"><span data-stu-id="683a2-180">A file containing a map of saved discovery documents can be created by the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A> method or Disco.exe.</span></span>  
-  
- <span data-ttu-id="683a2-181">`topLevelFilename`參數必須包含完整的路徑，如果檔案不存在目前目錄中。</span><span class="sxs-lookup"><span data-stu-id="683a2-181">The `topLevelFilename` parameter must include the fully qualified path if the file does not exist in the current directory.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="683a2-182">下列程式碼範例是 Web 表單，會填入<xref:System.Web.UI.WebControls.DataGrid>之詳細文件和參考位於現有探索對應文件使用<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="683a2-182">The following code example is a Web Form that populates a <xref:System.Web.UI.WebControls.DataGrid> with the details about the documents and references found in an existing discovery map document using the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll%2A> method.</span></span>  
-  
- [!code-csharp[DiscoveryClientProtocol.ReadAll#1](~/samples/snippets/csharp/VS_Snippets_Remoting/DiscoveryClientProtocol.ReadAll/CS/discocs.aspx#1)]
- [!code-vb[DiscoveryClientProtocol.ReadAll#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/DiscoveryClientProtocol.ReadAll/VB/discovb.aspx#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="References">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Discovery.DiscoveryClientReferenceCollection References { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Services.Discovery.DiscoveryClientReferenceCollection References" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property References As DiscoveryClientReferenceCollection" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Services::Discovery::DiscoveryClientReferenceCollection ^ References { System::Web::Services::Discovery::DiscoveryClientReferenceCollection ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Discovery.DiscoveryClientReferenceCollection</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="683a2-183">參考的集合會在已解析的探索文件中找到。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-183">A collection of references founds in resolved discovery documents.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="683a2-184">探索到的參考之 <see cref="T:System.Web.Services.Discovery.DiscoveryClientReferenceCollection" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-184">A <see cref="T:System.Web.Services.Discovery.DiscoveryClientReferenceCollection" /> of references discovered.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="683a2-185"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>期間叫用會填入集合<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>， <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>，<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="683a2-185">The <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> collection is populated during invocations to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>, <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>, <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> methods.</span></span> <span data-ttu-id="683a2-186">在叫用期間<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>方法，如果所提供的 URL 是有效的探索文件，該文件會加入至<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>探索文件中找到與參考的集合。</span><span class="sxs-lookup"><span data-stu-id="683a2-186">During invocations to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A> and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A> methods, if the supplied URL is a valid discovery document, that document is added to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> collection together with references found in the discovery document.</span></span> <span data-ttu-id="683a2-187">叫用期間加入的參考<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A>和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>方法不一定是有效的探索文件。</span><span class="sxs-lookup"><span data-stu-id="683a2-187">References added during invocations to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A> and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A> methods are not necessarily valid discovery documents.</span></span> <span data-ttu-id="683a2-188">在叫用期間<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>內參考<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>集合會驗證為有效的探索文件。</span><span class="sxs-lookup"><span data-stu-id="683a2-188">During invocations to <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> references within the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> collection are verified as being valid discovery documents.</span></span> <span data-ttu-id="683a2-189">如果它們有效，而且包含參考，它們也會新增至<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>集合。</span><span class="sxs-lookup"><span data-stu-id="683a2-189">If they are valid and contain references, they are also added to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> collection.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="683a2-190">下列程式碼範例是 Web 表單，會填入<xref:System.Web.UI.WebControls.DataGrid>中參考的相關詳細資料<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>XML Web 服務探索期間探索到的屬性。</span><span class="sxs-lookup"><span data-stu-id="683a2-190">The following code example is a Web Form that populates a <xref:System.Web.UI.WebControls.DataGrid> with the details about the references in the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> property discovered during an XML Web services discovery.</span></span> <span data-ttu-id="683a2-191">`PopulateGrid`方法填滿<xref:System.Web.UI.WebControls.DataGrid>與在引動過程中找到參考<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>。</span><span class="sxs-lookup"><span data-stu-id="683a2-191">The `PopulateGrid` method fills the <xref:System.Web.UI.WebControls.DataGrid> with the references found in an invocation to <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="683a2-192">這個範例有一個可接受使用者輸入的文字方塊，這可能會造成安全性威脅。</span><span class="sxs-lookup"><span data-stu-id="683a2-192">This example has a text box that accepts user input, which is a potential security threat.</span></span> <span data-ttu-id="683a2-193">根據預設，ASP.NET Web 網頁會驗證使用者輸入未包含指令碼或 HTML 項目。</span><span class="sxs-lookup"><span data-stu-id="683a2-193">By default, ASP.NET Web pages validate that user input does not include script or HTML elements.</span></span> <span data-ttu-id="683a2-194">如需詳細資訊，請參閱 [Script Exploits Overview](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07) (指令碼攻擊概觀)。</span><span class="sxs-lookup"><span data-stu-id="683a2-194">For more information, see [Script Exploits Overview](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07).</span></span>  
-  
- [!code-aspx-csharp[DiscoveryClientProtocol.References#1](~/samples/snippets/csharp/VS_Snippets_Remoting/DiscoveryClientProtocol.References/CS/discocs.aspx#1)]
- [!code-aspx-vb[DiscoveryClientProtocol.References#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/DiscoveryClientProtocol.References/VB/discovb.aspx#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ResolveAll">
-      <MemberSignature Language="C#" Value="public void ResolveAll ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ResolveAll() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll" />
-      <MemberSignature Language="VB.NET" Value="Public Sub ResolveAll ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ResolveAll();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="683a2-195">解析 <see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References" /> 屬性中對探索文件、XML 結構描述定義 (XSD) 結構描述和服務描述的所有參考，以及在參考的探索文件中找到的參考。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-195">Resolves all references to discovery documents, XML Schema Definition (XSD) schemas, and service descriptions in the <see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References" /> property, as well as references found in referenced discovery documents.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="683a2-196"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> 所有有效的解析參考它，會發現，並將它們中放置<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="683a2-196"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> resolves all valid references it finds and places them in the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A> property.</span></span> <span data-ttu-id="683a2-197">同時<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>下載並驗證 XSD 結構描述和服務中的描述<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="683a2-197">Both <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> download and verify XSD schemas and service descriptions in the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> property.</span></span> <span data-ttu-id="683a2-198">不過，兩個方法是相同的探索文件的處理方式。</span><span class="sxs-lookup"><span data-stu-id="683a2-198">However, the two methods differ in how they handle discovery documents.</span></span> <span data-ttu-id="683a2-199"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> 會在探索文件中的所有參考都解析<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>屬性; 如果探索文件包含參考其他探索文件、<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>都解析只探索文件。</span><span class="sxs-lookup"><span data-stu-id="683a2-199"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> resolves all references in discovery documents within the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> property; if a discovery document contains references to other discovery documents, <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> resolves just those discovery documents.</span></span> <span data-ttu-id="683a2-200">這些探索文件中找到的探索文件的巢狀層級的深度不會解決一個<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>; 但是<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>全部加以解析。</span><span class="sxs-lookup"><span data-stu-id="683a2-200">Discovery documents found in those discovery documents nested one level deep are not resolved by <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>; whereas <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> resolves them all.</span></span> <span data-ttu-id="683a2-201"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> 解析巢狀的探索文件中的參考，直到有沒有更多的參考會繼續。</span><span class="sxs-lookup"><span data-stu-id="683a2-201"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> continues to resolve references in nested discovery documents until there are no more references.</span></span>  
-  
- <span data-ttu-id="683a2-202">在完成驗證程序期間發生的錯誤<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>不擲回次出現項目，但而收集，並加入至<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="683a2-202">Errors occurring during the verification process done by <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> are not thrown at the time of occurrence, but rather collected and added to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors%2A> property.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="683a2-203">下列程式碼範例是 Web 表單，會填入<xref:System.Web.UI.WebControls.DataGrid>中的文件的相關詳細資料<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A>屬性參考搭配 XML Web 服務探索期間找到每份文件。</span><span class="sxs-lookup"><span data-stu-id="683a2-203">The following code example is a Web Form that populates a <xref:System.Web.UI.WebControls.DataGrid> with the details about the documents in the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A> property together with the references found in each document during an XML Web services discovery.</span></span> <span data-ttu-id="683a2-204">`PopulateGrid`方法填滿<xref:System.Web.UI.WebControls.DataGrid>的結果與<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>引動過程後面呼叫<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>。</span><span class="sxs-lookup"><span data-stu-id="683a2-204">The `PopulateGrid` method fills the <xref:System.Web.UI.WebControls.DataGrid> with the results from a <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A> invocation followed by a call to <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>.</span></span>  
-  
- [!code-csharp[DiscoveryClientProtocol.ResolveAll#1](~/samples/snippets/csharp/VS_Snippets_Remoting/DiscoveryClientProtocol.ResolveAll/CS/discocs.aspx#1)]
- [!code-vb[DiscoveryClientProtocol.ResolveAll#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/DiscoveryClientProtocol.ResolveAll/VB/discovb.aspx#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ResolveOneLevel">
-      <MemberSignature Language="C#" Value="public void ResolveOneLevel ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ResolveOneLevel() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel" />
-      <MemberSignature Language="VB.NET" Value="Public Sub ResolveOneLevel ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ResolveOneLevel();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="683a2-205">解析 <see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References" /> 中對探索文件、XML 結構描述定義 (XSD) 結構描述和服務描述的所有參考，以及在那些探索文件中找到的參考。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-205">Resolves all references to discovery documents, XML Schema Definition (XSD) schemas and service descriptions in <see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References" />, as well as references found in those discovery documents.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="683a2-206"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> 所有有效的解析參考它，會發現，並將它們中放置<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="683a2-206"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> resolves all valid references it finds and places them in the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A> property.</span></span> <span data-ttu-id="683a2-207">同時<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>下載並驗證 XSD 結構描述和服務中的描述<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="683a2-207">Both <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> download and verify XSD schemas and service descriptions in the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> property.</span></span> <span data-ttu-id="683a2-208">不過，兩個方法是相同的探索文件的處理方式。</span><span class="sxs-lookup"><span data-stu-id="683a2-208">However, the two methods differ in how they handle discovery documents.</span></span> <span data-ttu-id="683a2-209"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> 會在探索文件中的所有參考都解析<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="683a2-209"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> resolves all references in discovery documents within the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> property.</span></span> <span data-ttu-id="683a2-210">如果探索文件包含參考其他探索文件、<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>解析只探索文件。</span><span class="sxs-lookup"><span data-stu-id="683a2-210">If a discovery document contains references to other discovery documents, <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> resolves just those discovery documents.</span></span> <span data-ttu-id="683a2-211">這些探索文件中找到的探索文件的巢狀層級的深度不會解決一個<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>; 但是<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>解決所有問題。</span><span class="sxs-lookup"><span data-stu-id="683a2-211">Discovery documents found in those discovery documents nested one level deep are not resolved by <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>; whereas <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> resolve them all.</span></span> <span data-ttu-id="683a2-212"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> 解析巢狀的探索文件中的參考，直到有沒有更多的參考會繼續。</span><span class="sxs-lookup"><span data-stu-id="683a2-212"><xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A> continues to resolve references in nested discovery documents until there are no more references.</span></span>  
-  
- <span data-ttu-id="683a2-213">在完成驗證程序期間發生的錯誤<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>不擲回次出現項目，但而收集，並加入至<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="683a2-213">Errors occurring during the verification process done by <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A> are not thrown at the time of occurrence, but rather collected and added to the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors%2A> property.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="683a2-214">下列程式碼範例是 Web 表單，會填入<xref:System.Web.UI.WebControls.DataGrid>中的文件的相關詳細資料<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A>屬性參考搭配 XML Web 服務探索期間找到每份文件。</span><span class="sxs-lookup"><span data-stu-id="683a2-214">The following code example is a Web Form that populates a <xref:System.Web.UI.WebControls.DataGrid> with the details about the documents in the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A> property together with the references found in each document during an XML Web services discovery.</span></span> <span data-ttu-id="683a2-215">`PopulateGrid`方法填滿<xref:System.Web.UI.WebControls.DataGrid>的結果與<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>引動過程後面呼叫<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>。</span><span class="sxs-lookup"><span data-stu-id="683a2-215">The `PopulateGrid` method fills the <xref:System.Web.UI.WebControls.DataGrid> with the results from a <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A> invocation followed by a call to <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A>.</span></span>  
-  
- [!code-csharp[DiscoveryClientProtocol.ResolveOneLevel#1](~/samples/snippets/csharp/VS_Snippets_Remoting/DiscoveryClientProtocol.ResolveOneLevel/CS/discocs.aspx#1)]
- [!code-vb[DiscoveryClientProtocol.ResolveOneLevel#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/DiscoveryClientProtocol.ResolveOneLevel/VB/discovb.aspx#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="WriteAll">
-      <MemberSignature Language="C#" Value="public System.Web.Services.Discovery.DiscoveryClientResultCollection WriteAll (string directory, string topLevelFilename);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Web.Services.Discovery.DiscoveryClientResultCollection WriteAll(string directory, string topLevelFilename) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll(System.String,System.String)" />
-      <MemberSignature Language="VB.NET" Value="Public Function WriteAll (directory As String, topLevelFilename As String) As DiscoveryClientResultCollection" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Web::Services::Discovery::DiscoveryClientResultCollection ^ WriteAll(System::String ^ directory, System::String ^ topLevelFilename);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web.Services</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Web.Services.Discovery.DiscoveryClientResultCollection</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="directory" Type="System.String" />
-        <Parameter Name="topLevelFilename" Type="System.String" />
-      </Parameters>
-      <Docs>
-        <param name="directory">
-          <span data-ttu-id="683a2-216">目錄，其中儲存所有目前在 <see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents" /> 屬性中的文件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-216">The directory in which to save all documents currently in the <see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents" /> property.</span>
-          </span>
-        </param>
-        <param name="topLevelFilename">
-          <span data-ttu-id="683a2-217">要建立或覆寫的檔案名稱，包含所有已儲存文件的對應。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-217">The name of the file to create or overwrite containing a map of all documents saved.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="683a2-218">將所有在 <see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents" /> 屬性中的探索文件、XML 結構描述定義 (XSD) 結構描述和服務描述寫入提供的目錄，並在該目錄中建立檔案。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-218">Writes all discovery documents, XML Schema Definition (XSD) schemas, and Service Descriptions in the <see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents" /> property to the supplied directory and creates a file in that directory.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="683a2-219">
-            <see cref="T:System.Web.Services.Discovery.DiscoveryClientResultCollection" />，包含所有已儲存檔案的結果。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="683a2-219">A <see cref="T:System.Web.Services.Discovery.DiscoveryClientResultCollection" /> containing the results of all files saved.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="683a2-220">使用的名稱建立檔案`topLevelFilename`目錄參數所指定的目錄中的參數包含儲存的探索文件、 XML 結構描述定義 (XSD) 結構描述和服務描述的對應。</span><span class="sxs-lookup"><span data-stu-id="683a2-220">The file created with the name of the `topLevelFilename` parameter in the directory specified by the directory parameter contains a map of saved discovery documents, XML Schema Definition (XSD) schemas and service descriptions.</span></span> <span data-ttu-id="683a2-221">可以讀取此檔案中使用<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll%2A>方法來填入<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A>和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="683a2-221">This file can be read in using the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll%2A> method to populate the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A> and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A> properties.</span></span> <span data-ttu-id="683a2-222">檔案的格式為 XML 包含的序列化的版本<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoveryClientResultsFile>類別。</span><span class="sxs-lookup"><span data-stu-id="683a2-222">The format of the file is XML containing an serialized version of the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoveryClientResultsFile> class.</span></span>  
-  
- <span data-ttu-id="683a2-223">如果存在具有相同名稱的檔案`topLevelFilename`中的參數`directory`參數，該檔案覆寫<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="683a2-223">If a file exists with the same name as the `topLevelFilename` parameter in the `directory` parameter, that file is overwritten by the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A> method.</span></span> <span data-ttu-id="683a2-224">`topLevelFilename`參數必須包含完整的路徑，如果檔案不存在目前目錄中。</span><span class="sxs-lookup"><span data-stu-id="683a2-224">The `topLevelFilename` parameter must include the fully qualified path if the file does not exist in the current directory.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="683a2-225">下列程式碼範例會將 Web 服務探索的結果寫入至磁碟，藉由叫用 Web Form<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A>方法之後呼叫<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A>和<xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>。</span><span class="sxs-lookup"><span data-stu-id="683a2-225">The following code example is a Web Form that writes the results of a Web Services discovery to disk by invoking the <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A> method after calls to <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A> and <xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A>.</span></span>  
-  
- [!code-csharp[DiscoveryClientProtocol.WriteAll#1](~/samples/snippets/csharp/VS_Snippets_Remoting/DiscoveryClientProtocol.WriteAll/CS/discocs.aspx#1)]
- [!code-vb[DiscoveryClientProtocol.WriteAll#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/DiscoveryClientProtocol.WriteAll/VB/discovb.aspx#1)]  
-  
- ]]></format>
-        </remarks>
-        <altmember cref="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll(System.String)" />
-        <altmember cref="T:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoveryClientResultsFile" />
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="DiscoveryClientProtocol.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac562e05c406c3cc6db931ae05dce5a38237510a700.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">62e05c406c3cc6db931ae05dce5a38237510a700</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7,xamarinandroid-7.1,xamarinios-10.8,xamarinmac-3.0</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>Provides support for programmatically invoking XML Web services discovery.</source>
+          <target state="translated">提供支援，以程式設計方式叫用 (Invoke) XML Web Service 探索 (Discovery)。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>XML Web service discovery is the process of locating, or discovering, one or more related documents that describe available XML Web services.</source>
+          <target state="translated">XML Web 服務探索處理程序尋找，或探索、 一個或更多相關文件，描述可用的 XML Web 服務。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>It is through XML Web services discovery that XML Web service clients learn about the available XML Web services at a given URL and how to use them.</source>
+          <target state="translated">它是透過 XML Web 服務用戶端了解有關使用 XML Web 服務在指定的 URL 和使用方式的 XML Web 服務探索。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>XML Web services discovery works from the premise that you have already obtained the URL to a discovery document, possibly through a directory service, such as <ph id="ph1">http://uddi.microsoft.com</ph>, however, you do not have the details about the XML Web services offered.</source>
+          <target state="translated">XML Web 服務探索的運作方式，從您已取得 URL 探索文件，可能是透過目錄服務，例如內部部署<ph id="ph1">http://uddi.microsoft.com</ph>，不過，您並沒有提供的 XML Web 服務的相關詳細資料。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>Through XML Web services discovery, you can discover the details about the XML Web services listed in a <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryDocument&gt;</ph> at a specific URL.</source>
+          <target state="translated">透過 XML Web 服務探索，您可以探索中所列的 XML Web 服務的詳細<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryDocument&gt;</ph>在特定的 URL。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>An XML Web service client starts XML Web services discovery by supplying a URL to either the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph> or <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph> methods.</source>
+          <target state="translated">XML Web 服務用戶端會從 XML Web 服務探索提供的 URL 設為 <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>或<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>Typically, this URL refers to a discovery document, which in turn refers to documents that describe one or more XML Web services, which are added to the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> property.</source>
+          <target state="translated">通常，此 URL 是指探索文件，依次指向描述一或多個 XML Web 服務加入至文件<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>At that point, only that document is downloaded and verified to point to valid information about XML Web services.</source>
+          <target state="translated">此時，只有該文件會下載並驗證以指向有效 XML Web 服務的相關資訊。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>However, the references contained in that document are not verified at this stage.</source>
+          <target state="translated">不過，在這個階段未驗證該文件中包含的參考。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>Instead they are added to the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> property.</source>
+          <target state="translated">改為加入至<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>To verify that the references are valid, invoke the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> or <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> methods, which add valid referenced documents to the <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph> property.</source>
+          <target state="translated">若要確認的參考都是有效，叫用<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>或<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>方法新增至有效的參考文件<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>Last, if a client wants to save the discovery results to disk, invoke the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A&gt;</ph> method.</source>
+          <target state="translated">最後，如果用戶端想要儲存到磁碟，請叫用的探索結果<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>If programmatic access to XML Web services discovery is not needed, the <ph id="ph1">[!INCLUDE[winsdklong](~/includes/winsdklong-md.md)]</ph> ships the Web Services Discovery tool (Disco.exe) for discovering XML Web services within a command prompt.</source>
+          <target state="translated">如果不需要以程式設計方式存取 XML Web 服務探索，<ph id="ph1">[!INCLUDE[winsdklong](~/includes/winsdklong-md.md)]</ph>隨附探索命令提示字元中的 XML Web service 的 Web 服務探索工具 (Disco.exe)。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>For more details, see <bpt id="p1">[</bpt>Web Services Discovery Tool (Disco.exe)<ept id="p1">](http://msdn.microsoft.com/library/acd88078-c581-42bc-94ca-6633e2851979)</ept>.</source>
+          <target state="translated">如需詳細資訊，請參閱<bpt id="p1">[</bpt>Web 服務探索工具 (Disco.exe)<ept id="p1">](http://msdn.microsoft.com/library/acd88078-c581-42bc-94ca-6633e2851979)</ept>。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>The following code example is a Web Form demonstrating how to use the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol&gt;</ph> class together with the other classes in the <ph id="ph2">&lt;xref:System.Web.Services.Discovery&gt;</ph> namespace to programmatically invoke XML Web services discovery.</source>
+          <target state="translated">下列程式碼範例會示範如何使用 Web Form<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol&gt;</ph>類別中的其他類別以及<ph id="ph2">&lt;xref:System.Web.Services.Discovery&gt;</ph>命名空間，以程式設計方式叫用 XML Web 服務探索。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>The code example demonstrates using the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>, <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>, <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>, <ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>, <ph id="ph5">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>, <ph id="ph6">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll%2A&gt;</ph> and <ph id="ph7">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A&gt;</ph> methods.</source>
+          <target state="translated">程式碼範例示範如何使用<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>， <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>， <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>， <ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>， <ph id="ph5">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>，<ph id="ph6">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll%2A&gt;</ph>和<ph id="ph7">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>This example has a text box that accepts user input, which is a potential security threat.</source>
+          <target state="translated">這個範例有一個可接受使用者輸入的文字方塊，這可能會造成安全性威脅。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>By default, ASP.NET Web pages validate that user input does not include script or HTML elements.</source>
+          <target state="translated">根據預設，ASP.NET Web 網頁會驗證使用者輸入未包含指令碼或 HTML 項目。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>For more information, see <bpt id="p1">[</bpt>Script Exploits Overview<ept id="p1">](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)</ept>.</source>
+          <target state="translated">如需詳細資訊，請參閱 <bpt id="p1">[</bpt>Script Exploits Overview<ept id="p1">](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)</ept> (指令碼攻擊概觀)。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.#ctor">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryClientProtocol" /&gt;</ph> class.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryClientProtocol" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.AdditionalInformation">
+          <source>Gets information in addition to references found in the discovery document.</source>
+          <target state="translated">取得在探索文件中找到的參考以外的資訊。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.AdditionalInformation">
+          <source>An <ph id="ph1">&lt;see cref="T:System.Collections.IList" /&gt;</ph> containing additional information found in the discovery document.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Collections.IList" /&gt;</ph>，包含在探索文件中找到的額外資訊。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.AdditionalInformation">
+          <source>The <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.AdditionalInformation%2A&gt;</ph> property primarily contains SOAP bindings, represented by the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.SoapBinding&gt;</ph> class, defined in the discovery document.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.AdditionalInformation%2A&gt;</ph>屬性主要是包含 SOAP 繫結，由<ph id="ph2">&lt;xref:System.Web.Services.Discovery.SoapBinding&gt;</ph>探索文件中定義的類別。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover(System.String)">
+          <source>The URL where XML Web services discovery begins.</source>
+          <target state="translated">URL，XML Web Service 探索在此處開始。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover(System.String)">
+          <source>Discovers the supplied URL to determine if it is a discovery document.</source>
+          <target state="translated">探索提供的 URL 以判斷它是否是探索文件。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover(System.String)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryDocument" /&gt;</ph> containing the results of XML Web services discovery at the supplied URL.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryDocument" /&gt;</ph>，包含在所提供的 URL 處的 XML Web Service 探索結果。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover(System.String)">
+          <source>The <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph> method expects that the supplied URL is a discovery document.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>方法預期所提供的 URL 是探索文件。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover(System.String)">
+          <source>If the URL refers to a service description or an XML schema an exception is thrown.</source>
+          <target state="translated">如果 URL 是指服務說明或 XML 結構描述會擲回例外狀況。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover(System.String)">
+          <source>To discover an XML schema or a service description invoke the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph> method.</source>
+          <target state="translated">若要探索的 XML 結構描述或服務描述叫用<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover(System.String)">
+          <source>If the supplied URL points to a valid discovery document, the discovery document at the supplied URL is added to the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> collection.</source>
+          <target state="translated">如果提供的 URL 指向有效的探索文件，加入探索文件所提供的 URL 在<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph>和<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>集合。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover(System.String)">
+          <source>Additionally, references within the discovery document are added to the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> collection, but not verified to point to valid discovery documents.</source>
+          <target state="translated">此外，探索文件中的參考會加入<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>集合，但不是驗證以指向有效的探索文件。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover(System.String)">
+          <source>To verify the references, point to valid discovery documents to invoke the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> or <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> methods.</source>
+          <target state="translated">若要確認的參考，指向有效的探索文件叫用<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>或<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover(System.String)">
+          <source>The following code example is a Web Form that populates a <ph id="ph1">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph> with the details about the documents in the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph> property together with the references found in each document during XML Web services discovery.</source>
+          <target state="translated">下列程式碼範例是 Web 表單，會填入<ph id="ph1">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph>中的文件的相關詳細資料<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph>屬性參考搭配 XML Web 服務探索期間找到每份文件。</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover(System.String)">
+          <source>The <ph id="ph1">`PopulateGrid`</ph> method fills the <ph id="ph2">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph> with the results from a <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph> invocation followed by a call to <ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">`PopulateGrid`</ph>方法填滿<ph id="ph2">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph>的結果與<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>引動過程後面呼叫<ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover(System.String)">
+          <source>Accessing the supplied URL returned an HTTP status code other than <ph id="ph1">&lt;see cref="F:System.Net.HttpStatusCode.OK" /&gt;</ph>.</source>
+          <target state="translated">存取提供的 URL 已經傳回 HTTP 狀態碼，而不是傳回 <ph id="ph1">&lt;see cref="F:System.Net.HttpStatusCode.OK" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover(System.String)">
+          <source>The <ph id="ph1">&lt;paramref name="url" /&gt;</ph> parameteris a valid URL, but does not point to a valid discovery document.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="url" /&gt;</ph> 參數是有效的 URL，但是沒有指向有效的探索文件。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)">
+          <source>The URL where XML Web services discovery begins.</source>
+          <target state="translated">URL，XML Web Service 探索在此處開始。</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)">
+          <source>Discovers the supplied URL to determine if it is a discovery document, service description or an XML Schema Definition (XSD) schema.</source>
+          <target state="translated">探索提供的 URL 以判斷它是否為探索文件、服務描述或 XML 結構描述定義 (XSD) 結構描述。</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryDocument" /&gt;</ph> containing the results of XML Web services discovery at the supplied URL.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryDocument" /&gt;</ph>，包含在所提供的 URL 處的 XML Web Service 探索結果。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)">
+          <source>If the <ph id="ph1">&lt;paramref name="url" /&gt;</ph> parameter refers to a service description or an XSD Schema, a <ph id="ph2">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryDocument" /&gt;</ph> is created in memory for it.</source>
+          <target state="translated">如果 <ph id="ph1">&lt;paramref name="url" /&gt;</ph> 參數參考服務描述或 XSD 結構描述，則會為該參數在記憶體中建立 <ph id="ph2">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryDocument" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)">
+          <source>The <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph> method discovers whether the supplied URL is a discovery document, service description or XSD schema.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>方法會探索所提供的 URL 是探索文件中，服務說明或 XSD 結構描述。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)">
+          <source>If it is known that the URL only refers to a discovery document, the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph> method might be invoked.</source>
+          <target state="translated">如果已知 URL 只會參考探索文件<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>可能叫用方法。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)">
+          <source>If the supplied URL points to a valid discovery document, XSD schema, or service description, the discovery document at the supplied URL is added to the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> collections.</source>
+          <target state="translated">如果提供的 URL 會指向有效的探索文件、 XSD 結構描述或服務描述，加入探索文件所提供的 URL 在<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph>和<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>集合。</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)">
+          <source>When the supplied URL refers to an XSD schema or Service Description a <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryDocument&gt;</ph> is created in memory and added to the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph> and <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> collections.</source>
+          <target state="translated">當提供的 URL 參考到 XSD 結構描述或服務描述<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryDocument&gt;</ph>會在記憶體中建立並新增至<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph>和<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>集合。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)">
+          <source>Additionally, references within the discovery document are added to the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> collection, but not verified to point to valid discovery documents.</source>
+          <target state="translated">此外，探索文件中的參考會加入<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>集合，但不是驗證以指向有效的探索文件。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)">
+          <source>To verify that references point to valid discovery documents, invoke the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> or <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> methods.</source>
+          <target state="translated">若要確認參考都指向有效的探索文件，叫用<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>或<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)">
+          <source>The following code example is a Web Form that populates a <ph id="ph1">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph> with the details about the documents in the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph> property together with the references found in each document during an XML Web services discovery.</source>
+          <target state="translated">下列程式碼範例是 Web 表單，會填入<ph id="ph1">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph>中的文件的相關詳細資料<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph>屬性參考搭配 XML Web 服務探索期間找到每份文件。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)">
+          <source>The <ph id="ph1">`PopulateGrid`</ph> method fills the <ph id="ph2">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph> with the results from a <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph> invocation followed by a call to <ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">`PopulateGrid`</ph>方法填滿<ph id="ph2">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph>的結果與<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>引動過程後面呼叫<ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)">
+          <source>Accessing the supplied URL returned an HTTP status code other than <ph id="ph1">&lt;see cref="F:System.Net.HttpStatusCode.OK" /&gt;</ph>.</source>
+          <target state="translated">存取提供的 URL 已經傳回 HTTP 狀態碼，而不是傳回 <ph id="ph1">&lt;see cref="F:System.Net.HttpStatusCode.OK" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny(System.String)">
+          <source>The <ph id="ph1">&lt;paramref name="url" /&gt;</ph> parameteris a valid URL, but does not point to a valid discovery document, service description, or XSD schema.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="url" /&gt;</ph> 參數是有效的 URL，但是沒有指向有效的探索文件、服務描述或 XSD 結構描述。</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents">
+          <source>Gets a collection of discovery documents.</source>
+          <target state="translated">取得探索文件的集合。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryClientDocumentCollection" /&gt;</ph> representing the collection of discovery documents found.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryClientDocumentCollection" /&gt;</ph>，表示找到的探索文件集合。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents">
+          <source>The <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph> collection is populated during invocations to the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>, <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>, <ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> and <ph id="ph5">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> methods.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph>期間叫用會填入集合<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>， <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>，<ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>和<ph id="ph5">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents">
+          <source>During invocations to the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph> methods, if the supplied URL is a valid discovery document, that document is added to the <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph> collection.</source>
+          <target state="translated">在叫用期間<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>和<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>方法，如果所提供的 URL 是有效的探索文件，該文件會加入至<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph>集合。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents">
+          <source>During invocations to the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> methods, valid discovery document references in the <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> collection are added to the <ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph> collection.</source>
+          <target state="translated">在叫用期間<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>和<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>方法中參考有效的探索文件<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>集合會加入至<ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph>集合。</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents">
+          <source>The following code example is a Web Form that populates a <ph id="ph1">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph> with the details about the documents in the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph> property discovered during XML Web services discovery.</source>
+          <target state="translated">下列程式碼範例是 Web 表單，會填入<ph id="ph1">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph>中的文件的相關詳細資料<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph>XML Web 服務探索期間探索到的屬性。</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents">
+          <source>The <ph id="ph1">`PopulateGrid`</ph> method fills the <ph id="ph2">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph> with the results from a <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph> invocation followed by a call to <ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">`PopulateGrid`</ph>方法填滿<ph id="ph2">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph>的結果與<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>引動過程後面呼叫<ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents">
+          <source>This example has a text box that accepts user input, which is a potential security threat.</source>
+          <target state="translated">這個範例有一個可接受使用者輸入的文字方塊，這可能會造成安全性威脅。</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents">
+          <source>By default, ASP.NET Web pages validate that user input does not include script or HTML elements.</source>
+          <target state="translated">根據預設，ASP.NET Web 網頁會驗證使用者輸入未包含指令碼或 HTML 項目。</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents">
+          <source>For more information, see <bpt id="p1">[</bpt>Script Exploits Overview<ept id="p1">](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)</ept>.</source>
+          <target state="translated">如需詳細資訊，請參閱 <bpt id="p1">[</bpt>Script Exploits Overview<ept id="p1">](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)</ept> (指令碼攻擊概觀)。</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" uid="T:System.Web.Services.Discovery.DiscoveryClientProtocol">
+          <source>Downloads the discovery document at the supplied URL into a <ph id="ph1">&lt;see cref="T:System.IO.Stream" /&gt;</ph> object.</source>
+          <target state="translated">下載位於提供的 URL 之探索文件至 <ph id="ph1">&lt;see cref="T:System.IO.Stream" /&gt;</ph> 物件。</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Download(System.String@)">
+          <source>The URL of the discovery document to download.</source>
+          <target state="translated">要下載探索文件的 URL。</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Download(System.String@)">
+          <source>Downloads the discovery document at the supplied URL into a <ph id="ph1">&lt;see cref="T:System.IO.Stream" /&gt;</ph> object.</source>
+          <target state="translated">下載位於提供的 URL 之探索文件至 <ph id="ph1">&lt;see cref="T:System.IO.Stream" /&gt;</ph> 物件。</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Download(System.String@)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.IO.Stream" /&gt;</ph> containing the document at the supplied URL.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.IO.Stream" /&gt;</ph>，包含位於提供的 URL 之文件。</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Download(System.String@)">
+          <source>The download from the supplied URL returned an HTTP status code other than <ph id="ph1">&lt;see cref="F:System.Net.HttpStatusCode.OK" /&gt;</ph>.</source>
+          <target state="translated">從提供的 URL 的下載已經傳回 HTTP 狀態碼，而不是傳回 <ph id="ph1">&lt;see cref="F:System.Net.HttpStatusCode.OK" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Download(System.String@,System.String@)">
+          <source>The URL of the discovery document to download.</source>
+          <target state="translated">要下載探索文件的 URL。</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Download(System.String@,System.String@)">
+          <source>The MIME encoding of the downloaded discovery document.</source>
+          <target state="translated">已下載的探索文件的 MIME 編碼方式。</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Download(System.String@,System.String@)">
+          <source>Downloads the discovery document at the supplied URL into a <ph id="ph1">&lt;see cref="T:System.IO.Stream" /&gt;</ph> object, setting the <ph id="ph2">&lt;paramref name="contentType" /&gt;</ph> parameter to the MIME encoding of the discovery document.</source>
+          <target state="translated">下載位於提供的 URL 之探索文件至 <ph id="ph1">&lt;see cref="T:System.IO.Stream" /&gt;</ph> 物件，設定 <ph id="ph2">&lt;paramref name="contentType" /&gt;</ph> 參數為探索文件的 MIME 編碼。</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Download(System.String@,System.String@)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.IO.Stream" /&gt;</ph> containing the document at the supplied URL.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.IO.Stream" /&gt;</ph>，包含位於提供的 URL 之文件。</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.Download(System.String@,System.String@)">
+          <source>The download from the supplied URL returned an HTTP status code other than <ph id="ph1">&lt;see cref="F:System.Net.HttpStatusCode.OK" /&gt;</ph>.</source>
+          <target state="translated">從提供的 URL 的下載已經傳回 HTTP 狀態碼，而不是傳回 <ph id="ph1">&lt;see cref="F:System.Net.HttpStatusCode.OK" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="171" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors">
+          <source>Gets a collection of exceptions that occurred during invocation of method from this class.</source>
+          <target state="translated">取得來自這個類別的方法引動過程期間所發生的例外狀況 (Exception) 集合。</target>       </trans-unit>
+        <trans-unit id="172" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryExceptionDictionary" /&gt;</ph> of exceptions.</source>
+          <target state="translated">例外狀況的 <ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryExceptionDictionary" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="173" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors">
+          <source>The <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors%2A&gt;</ph> collection is populated with exceptions that occurred during invocations to the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>, <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>, <ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>, and <ph id="ph5">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> methods.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors%2A&gt;</ph>集合會填入叫用期間發生的例外狀況<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>， <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>， <ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>，和<ph id="ph5">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="174" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors">
+          <source>The <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryExceptionDictionary&gt;</ph> is cleared on invocation of these methods.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryExceptionDictionary&gt;</ph>這些方法的引動過程上被清除。</target>       </trans-unit>
+        <trans-unit id="175" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.LoadExternals">
+          <source>Instructs the <ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryClientProtocol" /&gt;</ph> object to load any external references.</source>
+          <target state="translated">指示 <ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryClientProtocol" /&gt;</ph> 物件載入任何外部參考。</target>       </trans-unit>
+        <trans-unit id="176" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll(System.String)">
+          <source>Name of file to read in, containing the map of saved discovery documents.</source>
+          <target state="translated">要讀取的檔案名稱，包含已儲存探索文件的對應。</target>       </trans-unit>
+        <trans-unit id="177" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll(System.String)">
+          <source>Reads in a file containing a map of saved discovery documents populating the <ph id="ph1">&lt;see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents" /&gt;</ph> and <ph id="ph2">&lt;see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References" /&gt;</ph> properties, with discovery documents, XML Schema Definition (XSD) schemas, and service descriptions referenced in the file.</source>
+          <target state="translated">讀取包含已儲存探索文件對應的檔案，此文件填入 <ph id="ph1">&lt;see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents" /&gt;</ph> 和 <ph id="ph2">&lt;see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References" /&gt;</ph> 屬性，並且在檔案中具有所參考的探索文件、XML 結構描述定義 (XSD) 結構描述和服務描述。</target>       </trans-unit>
+        <trans-unit id="178" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll(System.String)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryClientResultCollection" /&gt;</ph> containing the results found in the file with the map of saved discovery documents.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryClientResultCollection" /&gt;</ph>，包含在已儲存的探索文件對應檔案中找到的結果。</target>       </trans-unit>
+        <trans-unit id="179" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll(System.String)">
+          <source>The file format is a <ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoveryClientResultsFile" /&gt;</ph> class serialized into XML; however, one would typically create the file using only the <ph id="ph2">&lt;see cref="M:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll(System.String,System.String)" /&gt;</ph> method or Disco.exe.</source>
+          <target state="translated">檔案格式為序列化成 XML 的 <ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoveryClientResultsFile" /&gt;</ph> 類別；然而，您通常只會使用 <ph id="ph2">&lt;see cref="M:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll(System.String,System.String)" /&gt;</ph> 方法或 Disco.exe 建立檔案。</target>       </trans-unit>
+        <trans-unit id="180" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll(System.String)">
+          <source>A file containing a map of saved discovery documents can be created by the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A&gt;</ph> method or Disco.exe.</source>
+          <target state="translated">可以建立含有儲存的探索文件的對應檔案<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A&gt;</ph>方法或 Disco.exe。</target>       </trans-unit>
+        <trans-unit id="181" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll(System.String)">
+          <source>The <ph id="ph1">`topLevelFilename`</ph> parameter must include the fully qualified path if the file does not exist in the current directory.</source>
+          <target state="translated"><ph id="ph1">`topLevelFilename`</ph>參數必須包含完整的路徑，如果檔案不存在目前目錄中。</target>       </trans-unit>
+        <trans-unit id="182" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll(System.String)">
+          <source>The following code example is a Web Form that populates a <ph id="ph1">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph> with the details about the documents and references found in an existing discovery map document using the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll%2A&gt;</ph> method.</source>
+          <target state="translated">下列程式碼範例是 Web 表單，會填入<ph id="ph1">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph>之詳細文件和參考位於現有探索對應文件使用<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="183" translate="yes" xml:space="preserve" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References">
+          <source>A collection of references founds in resolved discovery documents.</source>
+          <target state="translated">參考的集合會在已解析的探索文件中找到。</target>       </trans-unit>
+        <trans-unit id="184" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryClientReferenceCollection" /&gt;</ph> of references discovered.</source>
+          <target state="translated">探索到的參考之 <ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryClientReferenceCollection" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="185" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References">
+          <source>The <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> collection is populated during invocations to the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>, <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>, <ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> and <ph id="ph5">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> methods.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>期間叫用會填入集合<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>， <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>，<ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>和<ph id="ph5">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="186" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References">
+          <source>During invocations to the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph> methods, if the supplied URL is a valid discovery document, that document is added to the <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> collection together with references found in the discovery document.</source>
+          <target state="translated">在叫用期間<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>和<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>方法，如果所提供的 URL 是有效的探索文件，該文件會加入至<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>探索文件中找到與參考的集合。</target>       </trans-unit>
+        <trans-unit id="187" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References">
+          <source>References added during invocations to the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph> methods are not necessarily valid discovery documents.</source>
+          <target state="translated">叫用期間加入的參考<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Discover%2A&gt;</ph>和<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>方法不一定是有效的探索文件。</target>       </trans-unit>
+        <trans-unit id="188" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References">
+          <source>During invocations to <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> references within the <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> collection are verified as being valid discovery documents.</source>
+          <target state="translated">在叫用期間<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>和<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>內參考<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>集合會驗證為有效的探索文件。</target>       </trans-unit>
+        <trans-unit id="189" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References">
+          <source>If they are valid and contain references, they are also added to the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> collection.</source>
+          <target state="translated">如果它們有效，而且包含參考，它們也會新增至<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>集合。</target>       </trans-unit>
+        <trans-unit id="190" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References">
+          <source>The following code example is a Web Form that populates a <ph id="ph1">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph> with the details about the references in the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> property discovered during an XML Web services discovery.</source>
+          <target state="translated">下列程式碼範例是 Web 表單，會填入<ph id="ph1">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph>中參考的相關詳細資料<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>XML Web 服務探索期間探索到的屬性。</target>       </trans-unit>
+        <trans-unit id="191" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References">
+          <source>The <ph id="ph1">`PopulateGrid`</ph> method fills the <ph id="ph2">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph> with the references found in an invocation to <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">`PopulateGrid`</ph>方法填滿<ph id="ph2">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph>與在引動過程中找到參考<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="192" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References">
+          <source>This example has a text box that accepts user input, which is a potential security threat.</source>
+          <target state="translated">這個範例有一個可接受使用者輸入的文字方塊，這可能會造成安全性威脅。</target>       </trans-unit>
+        <trans-unit id="193" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References">
+          <source>By default, ASP.NET Web pages validate that user input does not include script or HTML elements.</source>
+          <target state="translated">根據預設，ASP.NET Web 網頁會驗證使用者輸入未包含指令碼或 HTML 項目。</target>       </trans-unit>
+        <trans-unit id="194" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References">
+          <source>For more information, see <bpt id="p1">[</bpt>Script Exploits Overview<ept id="p1">](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)</ept>.</source>
+          <target state="translated">如需詳細資訊，請參閱 <bpt id="p1">[</bpt>Script Exploits Overview<ept id="p1">](http://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)</ept> (指令碼攻擊概觀)。</target>       </trans-unit>
+        <trans-unit id="195" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll">
+          <source>Resolves all references to discovery documents, XML Schema Definition (XSD) schemas, and service descriptions in the <ph id="ph1">&lt;see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References" /&gt;</ph> property, as well as references found in referenced discovery documents.</source>
+          <target state="translated">解析 <ph id="ph1">&lt;see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References" /&gt;</ph> 屬性中對探索文件、XML 結構描述定義 (XSD) 結構描述和服務描述的所有參考，以及在參考的探索文件中找到的參考。</target>       </trans-unit>
+        <trans-unit id="196" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll">
+          <source><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> resolves all valid references it finds and places them in the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph> property.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> 所有有效的解析參考它，會發現，並將它們中放置<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="197" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll">
+          <source>Both <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> download and verify XSD schemas and service descriptions in the <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> property.</source>
+          <target state="translated">同時<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>和<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>下載並驗證 XSD 結構描述和服務中的描述<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="198" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll">
+          <source>However, the two methods differ in how they handle discovery documents.</source>
+          <target state="translated">不過，兩個方法是相同的探索文件的處理方式。</target>       </trans-unit>
+        <trans-unit id="199" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll">
+          <source><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> resolves all references in discovery documents within the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> property; if a discovery document contains references to other discovery documents, <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> resolves just those discovery documents.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> 會在探索文件中的所有參考都解析<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>屬性; 如果探索文件包含參考其他探索文件、<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>都解析只探索文件。</target>       </trans-unit>
+        <trans-unit id="200" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll">
+          <source>Discovery documents found in those discovery documents nested one level deep are not resolved by <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>; whereas <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> resolves them all.</source>
+          <target state="translated">這些探索文件中找到的探索文件的巢狀層級的深度不會解決一個<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>; 但是<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>全部加以解析。</target>       </trans-unit>
+        <trans-unit id="201" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll">
+          <source><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> continues to resolve references in nested discovery documents until there are no more references.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> 解析巢狀的探索文件中的參考，直到有沒有更多的參考會繼續。</target>       </trans-unit>
+        <trans-unit id="202" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll">
+          <source>Errors occurring during the verification process done by <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> are not thrown at the time of occurrence, but rather collected and added to the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors%2A&gt;</ph> property.</source>
+          <target state="translated">在完成驗證程序期間發生的錯誤<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>不擲回次出現項目，但而收集，並加入至<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="203" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll">
+          <source>The following code example is a Web Form that populates a <ph id="ph1">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph> with the details about the documents in the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph> property together with the references found in each document during an XML Web services discovery.</source>
+          <target state="translated">下列程式碼範例是 Web 表單，會填入<ph id="ph1">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph>中的文件的相關詳細資料<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph>屬性參考搭配 XML Web 服務探索期間找到每份文件。</target>       </trans-unit>
+        <trans-unit id="204" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll">
+          <source>The <ph id="ph1">`PopulateGrid`</ph> method fills the <ph id="ph2">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph> with the results from a <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph> invocation followed by a call to <ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">`PopulateGrid`</ph>方法填滿<ph id="ph2">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph>的結果與<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>引動過程後面呼叫<ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="205" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel">
+          <source>Resolves all references to discovery documents, XML Schema Definition (XSD) schemas and service descriptions in <ph id="ph1">&lt;see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References" /&gt;</ph>, as well as references found in those discovery documents.</source>
+          <target state="translated">解析 <ph id="ph1">&lt;see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.References" /&gt;</ph> 中對探索文件、XML 結構描述定義 (XSD) 結構描述和服務描述的所有參考，以及在那些探索文件中找到的參考。</target>       </trans-unit>
+        <trans-unit id="206" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel">
+          <source><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> resolves all valid references it finds and places them in the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph> property.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> 所有有效的解析參考它，會發現，並將它們中放置<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="207" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel">
+          <source>Both <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> and <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> download and verify XSD schemas and service descriptions in the <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> property.</source>
+          <target state="translated">同時<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>和<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>下載並驗證 XSD 結構描述和服務中的描述<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="208" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel">
+          <source>However, the two methods differ in how they handle discovery documents.</source>
+          <target state="translated">不過，兩個方法是相同的探索文件的處理方式。</target>       </trans-unit>
+        <trans-unit id="209" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel">
+          <source><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> resolves all references in discovery documents within the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> property.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> 會在探索文件中的所有參考都解析<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="210" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel">
+          <source>If a discovery document contains references to other discovery documents, <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> resolves just those discovery documents.</source>
+          <target state="translated">如果探索文件包含參考其他探索文件、<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>解析只探索文件。</target>       </trans-unit>
+        <trans-unit id="211" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel">
+          <source>Discovery documents found in those discovery documents nested one level deep are not resolved by <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>; whereas <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> resolve them all.</source>
+          <target state="translated">這些探索文件中找到的探索文件的巢狀層級的深度不會解決一個<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>; 但是<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>解決所有問題。</target>       </trans-unit>
+        <trans-unit id="212" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel">
+          <source><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> continues to resolve references in nested discovery documents until there are no more references.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph> 解析巢狀的探索文件中的參考，直到有沒有更多的參考會繼續。</target>       </trans-unit>
+        <trans-unit id="213" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel">
+          <source>Errors occurring during the verification process done by <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph> are not thrown at the time of occurrence, but rather collected and added to the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors%2A&gt;</ph> property.</source>
+          <target state="translated">在完成驗證程序期間發生的錯誤<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>不擲回次出現項目，但而收集，並加入至<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Errors%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="214" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel">
+          <source>The following code example is a Web Form that populates a <ph id="ph1">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph> with the details about the documents in the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph> property together with the references found in each document during an XML Web services discovery.</source>
+          <target state="translated">下列程式碼範例是 Web 表單，會填入<ph id="ph1">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph>中的文件的相關詳細資料<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph>屬性參考搭配 XML Web 服務探索期間找到每份文件。</target>       </trans-unit>
+        <trans-unit id="215" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel">
+          <source>The <ph id="ph1">`PopulateGrid`</ph> method fills the <ph id="ph2">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph> with the results from a <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph> invocation followed by a call to <ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">`PopulateGrid`</ph>方法填滿<ph id="ph2">&lt;xref:System.Web.UI.WebControls.DataGrid&gt;</ph>的結果與<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>引動過程後面呼叫<ph id="ph4">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveOneLevel%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="216" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll(System.String,System.String)">
+          <source>The directory in which to save all documents currently in the <ph id="ph1">&lt;see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents" /&gt;</ph> property.</source>
+          <target state="translated">目錄，其中儲存所有目前在 <ph id="ph1">&lt;see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents" /&gt;</ph> 屬性中的文件。</target>       </trans-unit>
+        <trans-unit id="217" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll(System.String,System.String)">
+          <source>The name of the file to create or overwrite containing a map of all documents saved.</source>
+          <target state="translated">要建立或覆寫的檔案名稱，包含所有已儲存文件的對應。</target>       </trans-unit>
+        <trans-unit id="218" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll(System.String,System.String)">
+          <source>Writes all discovery documents, XML Schema Definition (XSD) schemas, and Service Descriptions in the <ph id="ph1">&lt;see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents" /&gt;</ph> property to the supplied directory and creates a file in that directory.</source>
+          <target state="translated">將所有在 <ph id="ph1">&lt;see cref="P:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents" /&gt;</ph> 屬性中的探索文件、XML 結構描述定義 (XSD) 結構描述和服務描述寫入提供的目錄，並在該目錄中建立檔案。</target>       </trans-unit>
+        <trans-unit id="219" translate="yes" xml:space="preserve" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll(System.String,System.String)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryClientResultCollection" /&gt;</ph> containing the results of all files saved.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Web.Services.Discovery.DiscoveryClientResultCollection" /&gt;</ph>，包含所有已儲存檔案的結果。</target>       </trans-unit>
+        <trans-unit id="220" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll(System.String,System.String)">
+          <source>The file created with the name of the <ph id="ph1">`topLevelFilename`</ph> parameter in the directory specified by the directory parameter contains a map of saved discovery documents, XML Schema Definition (XSD) schemas and service descriptions.</source>
+          <target state="translated">使用的名稱建立檔案<ph id="ph1">`topLevelFilename`</ph>目錄參數所指定的目錄中的參數包含儲存的探索文件、 XML 結構描述定義 (XSD) 結構描述和服務描述的對應。</target>       </trans-unit>
+        <trans-unit id="221" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll(System.String,System.String)">
+          <source>This file can be read in using the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll%2A&gt;</ph> method to populate the <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph> and <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph> properties.</source>
+          <target state="translated">可以讀取此檔案中使用<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ReadAll%2A&gt;</ph>方法來填入<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.References%2A&gt;</ph>和<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.Documents%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="222" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll(System.String,System.String)">
+          <source>The format of the file is XML containing an serialized version of the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoveryClientResultsFile&gt;</ph> class.</source>
+          <target state="translated">檔案的格式為 XML 包含的序列化的版本<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoveryClientResultsFile&gt;</ph>類別。</target>       </trans-unit>
+        <trans-unit id="223" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll(System.String,System.String)">
+          <source>If a file exists with the same name as the <ph id="ph1">`topLevelFilename`</ph> parameter in the <ph id="ph2">`directory`</ph> parameter, that file is overwritten by the <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A&gt;</ph> method.</source>
+          <target state="translated">如果存在具有相同名稱的檔案<ph id="ph1">`topLevelFilename`</ph>中的參數<ph id="ph2">`directory`</ph>參數，該檔案覆寫<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="224" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll(System.String,System.String)">
+          <source>The <ph id="ph1">`topLevelFilename`</ph> parameter must include the fully qualified path if the file does not exist in the current directory.</source>
+          <target state="translated"><ph id="ph1">`topLevelFilename`</ph>參數必須包含完整的路徑，如果檔案不存在目前目錄中。</target>       </trans-unit>
+        <trans-unit id="225" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll(System.String,System.String)">
+          <source>The following code example is a Web Form that writes the results of a Web Services discovery to disk by invoking the <ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A&gt;</ph> method after calls to <ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph> and <ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>.</source>
+          <target state="translated">下列程式碼範例會將 Web 服務探索的結果寫入至磁碟，藉由叫用 Web Form<ph id="ph1">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.WriteAll%2A&gt;</ph>方法之後呼叫<ph id="ph2">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.DiscoverAny%2A&gt;</ph>和<ph id="ph3">&lt;xref:System.Web.Services.Discovery.DiscoveryClientProtocol.ResolveAll%2A&gt;</ph>。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

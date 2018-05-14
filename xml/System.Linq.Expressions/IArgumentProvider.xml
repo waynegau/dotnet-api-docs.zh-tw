@@ -1,239 +1,114 @@
-<Type Name="IArgumentProvider" FullName="System.Linq.Expressions.IArgumentProvider">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="bb1b0a12225c49cd06302a4822210d08cda2957f" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public interface IArgumentProvider" />
-  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IArgumentProvider" />
-  <TypeSignature Language="DocId" Value="T:System.Linq.Expressions.IArgumentProvider" />
-  <TypeSignature Language="VB.NET" Value="Public Interface IArgumentProvider" />
-  <TypeSignature Language="C++ CLI" Value="public interface class IArgumentProvider" />
-  <AssemblyInfo>
-    <AssemblyName>System.Linq.Expressions</AssemblyName>
-    <AssemblyVersion>4.0.10.0</AssemblyVersion>
-    <AssemblyVersion>4.1.0.0</AssemblyVersion>
-    <AssemblyVersion>4.2.0.0</AssemblyVersion>
-    <AssemblyVersion>4.2.1.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>System.Core</AssemblyName>
-    <AssemblyVersion>2.0.5.0</AssemblyVersion>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>netstandard</AssemblyName>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Interfaces />
-  <Docs>
-    <summary>
-      <span data-ttu-id="75645-101">提供內部介面以存取多個樹狀節點 (DynamicExpression、ElementInit、MethodCallExpression、InvocationExpression、NewExpression 和 InexExpression) 的引數。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-101">Provides an internal interface for accessing the arguments of multiple tree nodes (DynamicExpression, ElementInit, MethodCallExpression, InvocationExpression, NewExpression, and InexExpression).</span>
-      </span>
-      <span data-ttu-id="75645-102">您不應該使用這個 API。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-102">You should not use this API.</span>
-      </span>
-      <span data-ttu-id="75645-103">它只有在 DLL 重構時為公用，且存在的唯一目的是將內部效能最佳化。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-103">It is only public due to DLL refactoring and exists only for internal performance optimizations.</span>
-      </span>
-      <span data-ttu-id="75645-104">此工具可執行兩種最佳化，減少運算式樹狀架構的大小。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-104">This enables two optimizations which reduce the size of expression trees.</span>
-      </span>
-      <span data-ttu-id="75645-105">第一種會使樹狀節點保留 IList&lt;T&gt;，而不是 ReadOnlyCollection。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-105">The first enables the tree nodes to hold onto an IList&lt;T&gt; instead of a ReadOnlyCollection.</span>
-      </span>
-      <span data-ttu-id="75645-106">IList&lt;T&gt; 可為各節點節省 ReadOnlyCollection 的配置成本。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-106">IList&lt;T&gt; saves the cost of allocating the ReadOnlyCollection for each node.</span>
-      </span>
-      <span data-ttu-id="75645-107">第二種可建立特定的子類別，以便保留特定數目的引數 (例如 Block2、Block3、Block4)。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-107">The second enables creating specialized subclasses that hold onto a specific number of arguments (for example, Block2, Block3, Block4).</span>
-      </span>
-      <span data-ttu-id="75645-108">如此一來，這些節點會避免同時配置 ReadOnlyCollection 和陣列來儲存其項目，每個節點可省下 32 位元組。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-108">Therefore, these nodes avoid allocating both a ReadOnlyCollection and an array for storing their elements, saving 32 bytes per node.</span>
-      </span>
-      <span data-ttu-id="75645-109">運算式樹狀架構節點會繼續公開 ReadOnlyCollections 的原始 LINQ 屬性。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-109">The expression tree nodes continue to expose the original LINQ properties of ReadOnlyCollections.</span>
-      </span>
-      <span data-ttu-id="75645-110">為了執行這個動作，節點會重複使用欄位來同時儲存陣列或通常儲存在陣列中的項目。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-110">The nodes do this by re-using a field for storing both the array or an element that would normally be stored in the array.</span>
-      </span>
-      <span data-ttu-id="75645-111">如為陣列，集合為 IList&lt;T&gt; 類型而不是 ReadOnlyCollection&lt;T&gt; 類型。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-111">For the array case, the collection is typed to IList&lt;T&gt; instead of ReadOnlyCollection&lt;T&gt;.</span>
-      </span>
-      <span data-ttu-id="75645-112">節點一經初步建構即為陣列。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-112">When the node is initially constructed it is an array.</span>
-      </span>
-      <span data-ttu-id="75645-113">當編譯器存取成員時，它會使用此介面。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-113">When the compiler accesses the members it uses this interface.</span>
-      </span>
-      <span data-ttu-id="75645-114">存取陣列項目時會將陣列升階至 ReadOnlyCollection。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-114">Accessing array elements promotes the array to a ReadOnlyCollection.</span>
-      </span>
-      <span data-ttu-id="75645-115">如為物件，我們會將第一個引數儲存在物件的類型欄位中。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-115">For the object case we store the first argument in a field typed to object.</span>
-      </span>
-      <span data-ttu-id="75645-116">一開始建構節點時，欄位就會保留運算式。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-116">When the node is initially constructed, the field holds the Expression.</span>
-      </span>
-      <span data-ttu-id="75645-117">編譯器會透過此介面來存取引數，而第一個引數的存取子會使用 Expression.ReturnObject 傳回處理 Expression 或 ReadOnlyCollection 狀況的物件。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-117">The compiler accesses arguments through this interface, and the accessor for the first argument uses Expression.ReturnObject to return the object that handles the Expression or ReadOnlyCollection case.</span>
-      </span>
-      <span data-ttu-id="75645-118">當使用者存取 ReadOnlyCollection 時，會更新物件欄位以便直接保留 ReadOnlyCollection。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-118">When the user accesses the ReadOnlyCollection, then the object field is updated to hold directly onto the ReadOnlyCollection.</span>
-      </span>
-      <span data-ttu-id="75645-119">運算式務必始終傳回相同的 ReadOnlyCollection。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-119">It is important that the Expressions consistently return the same ReadOnlyCollection.</span>
-      </span>
-      <span data-ttu-id="75645-120">否則，重新寫入器的樹狀查核器會中斷。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-120">Otherwise, the re-writer tree walker will break.</span>
-      </span>
-      <span data-ttu-id="75645-121">這會中斷 LINQ v1 的變更，使得同一個運算式節點傳回不同的 ReadOnlyCollections。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-121">It is a breaking change from LINQ v1 to return different ReadOnlyCollections form the same Expression node.</span>
-      </span>
-      <span data-ttu-id="75645-122">目前的使用者可以依據物件識別，得知節點是否已變更。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-122">Currently users can rely on object identity to tell if the node has changed.</span>
-      </span>
-      <span data-ttu-id="75645-123">將 ReadOnlyCollection 儲存在多載的欄位中可同時降低記憶體使用量並維持公用 API 的相容性。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="75645-123">Storing the ReadOnlyCollection in an overloaded field both reduces memory usage and maintains compatibility for the public API.</span>
-      </span>
-    </summary>
-    <remarks>To be added.</remarks>
-  </Docs>
-  <Members>
-    <Member MemberName="ArgumentCount">
-      <MemberSignature Language="C#" Value="public int ArgumentCount { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int32 ArgumentCount" />
-      <MemberSignature Language="DocId" Value="P:System.Linq.Expressions.IArgumentProvider.ArgumentCount" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ArgumentCount As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int ArgumentCount { int get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Linq.Expressions</AssemblyName>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Core</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="75645-124">傳回運算式樹狀節點的引數數目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="75645-124">Returns the number of arguments to the expression tree node.</span>
-          </span>
-          <span data-ttu-id="75645-125">您不應該使用這個類型。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="75645-125">You should not use this type.</span>
-          </span>
-          <span data-ttu-id="75645-126">它只有在組件重構時為公用，且使用於內部以取得效能最佳化。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="75645-126">It is only public due to assembly refactoring, and it is used internally for performance optimizations.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="75645-127">運算式樹狀結構節點，做為引數數目<see cref="T:System.Int32" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="75645-127">The number of arguments to the expression tree node as <see cref="T:System.Int32" />.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetArgument">
-      <MemberSignature Language="C#" Value="public System.Linq.Expressions.Expression GetArgument (int index);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Linq.Expressions.Expression GetArgument(int32 index) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Linq.Expressions.IArgumentProvider.GetArgument(System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Public Function GetArgument (index As Integer) As Expression" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Linq::Expressions::Expression ^ GetArgument(int index);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Linq.Expressions</AssemblyName>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Core</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Linq.Expressions.Expression</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="index" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="index">
-          <span data-ttu-id="75645-128">引數的索引。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="75645-128">The index of the argument.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="75645-129">傳回位於索引的引數，如果索引超出範圍則擲回引數。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="75645-129">Returns the argument at index, throwing if index is out of bounds.</span>
-          </span>
-          <span data-ttu-id="75645-130">您不應該使用這個類型。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="75645-130">You should not use this type.</span>
-          </span>
-          <span data-ttu-id="75645-131">它只有在組件重構時為公用，且使用於內部以取得效能最佳化。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="75645-131">It is only public due to assembly refactoring, and it is used internally for performance optimizations.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="75645-132">位於索引的引數，如果索引超出範圍則擲回引數，如同 <see cref="T:System.Linq.Expressions.Expression" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="75645-132">The argument at index, throwing if index is out of bounds as <see cref="T:System.Linq.Expressions.Expression" />.</span>
-          </span>
-        </returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="IArgumentProvider.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac5bb1b0a12225c49cd06302a4822210d08cda2957f.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">bb1b0a12225c49cd06302a4822210d08cda2957f</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netcore-1.0,netcore-1.1,netcore-2.0,netcore-2.1,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7,netstandard-1.3,netstandard-1.4,netstandard-1.6,netstandard-2.0,xamarinandroid-7.1,xamarinios-10.8,xamarinmac-3.0</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>Provides an internal interface for accessing the arguments of multiple tree nodes (DynamicExpression, ElementInit, MethodCallExpression, InvocationExpression, NewExpression, and InexExpression).</source>
+          <target state="translated">提供內部介面以存取多個樹狀節點 (DynamicExpression、ElementInit、MethodCallExpression、InvocationExpression、NewExpression 和 InexExpression) 的引數。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>You should not use this API.</source>
+          <target state="translated">您不應該使用這個 API。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>It is only public due to DLL refactoring and exists only for internal performance optimizations.</source>
+          <target state="translated">它只有在 DLL 重構時為公用，且存在的唯一目的是將內部效能最佳化。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>This enables two optimizations which reduce the size of expression trees.</source>
+          <target state="translated">此工具可執行兩種最佳化，減少運算式樹狀架構的大小。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>The first enables the tree nodes to hold onto an IList<ph id="ph1">&amp;lt;</ph>T<ph id="ph2">&amp;gt;</ph> instead of a ReadOnlyCollection.</source>
+          <target state="translated">第一種會使樹狀節點保留 IList<ph id="ph1">&amp;lt;</ph>T<ph id="ph2">&amp;gt;</ph>，而不是 ReadOnlyCollection。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>IList<ph id="ph1">&amp;lt;</ph>T<ph id="ph2">&amp;gt;</ph> saves the cost of allocating the ReadOnlyCollection for each node.</source>
+          <target state="translated">IList<ph id="ph1">&amp;lt;</ph>T<ph id="ph2">&amp;gt;</ph> 可為各節點節省 ReadOnlyCollection 的配置成本。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>The second enables creating specialized subclasses that hold onto a specific number of arguments (for example, Block2, Block3, Block4).</source>
+          <target state="translated">第二種可建立特定的子類別，以便保留特定數目的引數 (例如 Block2、Block3、Block4)。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>Therefore, these nodes avoid allocating both a ReadOnlyCollection and an array for storing their elements, saving 32 bytes per node.</source>
+          <target state="translated">如此一來，這些節點會避免同時配置 ReadOnlyCollection 和陣列來儲存其項目，每個節點可省下 32 位元組。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>The expression tree nodes continue to expose the original LINQ properties of ReadOnlyCollections.</source>
+          <target state="translated">運算式樹狀架構節點會繼續公開 ReadOnlyCollections 的原始 LINQ 屬性。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>The nodes do this by re-using a field for storing both the array or an element that would normally be stored in the array.</source>
+          <target state="translated">為了執行這個動作，節點會重複使用欄位來同時儲存陣列或通常儲存在陣列中的項目。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>For the array case, the collection is typed to IList<ph id="ph1">&amp;lt;</ph>T<ph id="ph2">&amp;gt;</ph> instead of ReadOnlyCollection<ph id="ph3">&amp;lt;</ph>T<ph id="ph4">&amp;gt;</ph>.</source>
+          <target state="translated">如為陣列，集合為 IList<ph id="ph1">&amp;lt;</ph>T<ph id="ph2">&amp;gt;</ph> 類型而不是 ReadOnlyCollection<ph id="ph3">&amp;lt;</ph>T<ph id="ph4">&amp;gt;</ph> 類型。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>When the node is initially constructed it is an array.</source>
+          <target state="translated">節點一經初步建構即為陣列。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>When the compiler accesses the members it uses this interface.</source>
+          <target state="translated">當編譯器存取成員時，它會使用此介面。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>Accessing array elements promotes the array to a ReadOnlyCollection.</source>
+          <target state="translated">存取陣列項目時會將陣列升階至 ReadOnlyCollection。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>For the object case we store the first argument in a field typed to object.</source>
+          <target state="translated">如為物件，我們會將第一個引數儲存在物件的類型欄位中。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>When the node is initially constructed, the field holds the Expression.</source>
+          <target state="translated">一開始建構節點時，欄位就會保留運算式。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>The compiler accesses arguments through this interface, and the accessor for the first argument uses Expression.ReturnObject to return the object that handles the Expression or ReadOnlyCollection case.</source>
+          <target state="translated">編譯器會透過此介面來存取引數，而第一個引數的存取子會使用 Expression.ReturnObject 傳回處理 Expression 或 ReadOnlyCollection 狀況的物件。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>When the user accesses the ReadOnlyCollection, then the object field is updated to hold directly onto the ReadOnlyCollection.</source>
+          <target state="translated">當使用者存取 ReadOnlyCollection 時，會更新物件欄位以便直接保留 ReadOnlyCollection。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>It is important that the Expressions consistently return the same ReadOnlyCollection.</source>
+          <target state="translated">運算式務必始終傳回相同的 ReadOnlyCollection。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>Otherwise, the re-writer tree walker will break.</source>
+          <target state="translated">否則，重新寫入器的樹狀查核器會中斷。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>It is a breaking change from LINQ v1 to return different ReadOnlyCollections form the same Expression node.</source>
+          <target state="translated">這會中斷 LINQ v1 的變更，使得同一個運算式節點傳回不同的 ReadOnlyCollections。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>Currently users can rely on object identity to tell if the node has changed.</source>
+          <target state="translated">目前的使用者可以依據物件識別，得知節點是否已變更。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" uid="T:System.Linq.Expressions.IArgumentProvider">
+          <source>Storing the ReadOnlyCollection in an overloaded field both reduces memory usage and maintains compatibility for the public API.</source>
+          <target state="translated">將 ReadOnlyCollection 儲存在多載的欄位中可同時降低記憶體使用量並維持公用 API 的相容性。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" uid="P:System.Linq.Expressions.IArgumentProvider.ArgumentCount">
+          <source>Returns the number of arguments to the expression tree node.</source>
+          <target state="translated">傳回運算式樹狀節點的引數數目。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" uid="P:System.Linq.Expressions.IArgumentProvider.ArgumentCount">
+          <source>You should not use this type.</source>
+          <target state="translated">您不應該使用這個類型。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" uid="P:System.Linq.Expressions.IArgumentProvider.ArgumentCount">
+          <source>It is only public due to assembly refactoring, and it is used internally for performance optimizations.</source>
+          <target state="translated">它只有在組件重構時為公用，且使用於內部以取得效能最佳化。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Linq.Expressions.IArgumentProvider.ArgumentCount">
+          <source>The number of arguments to the expression tree node as <ph id="ph1">&lt;see cref="T:System.Int32" /&gt;</ph>.</source>
+          <target state="translated">運算式樹狀結構節點，做為引數數目<ph id="ph1">&lt;see cref="T:System.Int32" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" uid="M:System.Linq.Expressions.IArgumentProvider.GetArgument(System.Int32)">
+          <source>The index of the argument.</source>
+          <target state="translated">引數的索引。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" uid="M:System.Linq.Expressions.IArgumentProvider.GetArgument(System.Int32)">
+          <source>Returns the argument at index, throwing if index is out of bounds.</source>
+          <target state="translated">傳回位於索引的引數，如果索引超出範圍則擲回引數。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" uid="M:System.Linq.Expressions.IArgumentProvider.GetArgument(System.Int32)">
+          <source>You should not use this type.</source>
+          <target state="translated">您不應該使用這個類型。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" uid="M:System.Linq.Expressions.IArgumentProvider.GetArgument(System.Int32)">
+          <source>It is only public due to assembly refactoring, and it is used internally for performance optimizations.</source>
+          <target state="translated">它只有在組件重構時為公用，且使用於內部以取得效能最佳化。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" uid="M:System.Linq.Expressions.IArgumentProvider.GetArgument(System.Int32)">
+          <source>The argument at index, throwing if index is out of bounds as <ph id="ph1">&lt;see cref="T:System.Linq.Expressions.Expression" /&gt;</ph>.</source>
+          <target state="translated">位於索引的引數，如果索引超出範圍則擲回引數，如同 <ph id="ph1">&lt;see cref="T:System.Linq.Expressions.Expression" /&gt;</ph>。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

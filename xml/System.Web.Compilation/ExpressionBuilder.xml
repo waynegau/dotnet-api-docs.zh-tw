@@ -1,402 +1,183 @@
-<Type Name="ExpressionBuilder" FullName="System.Web.Compilation.ExpressionBuilder">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="2fdfaba358c803078ed8f887cd2d70b7a32d185d" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public abstract class ExpressionBuilder" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit ExpressionBuilder extends System.Object" />
-  <TypeSignature Language="DocId" Value="T:System.Web.Compilation.ExpressionBuilder" />
-  <TypeSignature Language="VB.NET" Value="Public MustInherit Class ExpressionBuilder" />
-  <TypeSignature Language="C++ CLI" Value="public ref class ExpressionBuilder abstract" />
-  <AssemblyInfo>
-    <AssemblyName>System.Web</AssemblyName>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Object</BaseTypeName>
-  </Base>
-  <Interfaces />
-  <Docs>
-    <summary>
-      <span data-ttu-id="9d25a-101">在頁面剖析期間評估運算式。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="9d25a-101">Evaluates expressions during page parsing.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9d25a-102"><xref:System.Web.Compilation.ExpressionBuilder>類別是基底類別的運算式產生器，例如<xref:System.Web.Compilation.AppSettingsExpressionBuilder>類別頁面剖析期間所建立程式碼運算式。</span><span class="sxs-lookup"><span data-stu-id="9d25a-102">The <xref:System.Web.Compilation.ExpressionBuilder> class is the base class for expression builders, such as the <xref:System.Web.Compilation.AppSettingsExpressionBuilder> class, that create code expressions during page parsing.</span></span>  
-  
- <span data-ttu-id="9d25a-103">運算式產生器會剖析宣告式的運算式，並建立程式碼來擷取繫結至控制項屬性的值。</span><span class="sxs-lookup"><span data-stu-id="9d25a-103">Expression builders parse declarative expressions and create code to retrieve values bound to a control property.</span></span> <span data-ttu-id="9d25a-104">在無編譯案例中，運算式產生器可支援無編譯功能會計算在執行階段期間的運算式。</span><span class="sxs-lookup"><span data-stu-id="9d25a-104">In no-compile scenarios, an expression builder that supports a no-compile feature evaluates the expression during run time.</span></span>  
-  
- <span data-ttu-id="9d25a-105">當頁面剖析器遇到分隔字串的運算式`<%$ %>`，它會建立為運算式中字串的前置詞為基礎的運算式產生器。</span><span class="sxs-lookup"><span data-stu-id="9d25a-105">When the page parser encounters an expression that is delimited with the string `<%$ %>`, it creates an expression builder for the expression based on the prefix in the string.</span></span> <span data-ttu-id="9d25a-106">首碼是冒號的字串 （:） 的一部分。</span><span class="sxs-lookup"><span data-stu-id="9d25a-106">The prefix is the portion of the string that is to the left of the colon (:).</span></span> <span data-ttu-id="9d25a-107">例如，當剖析器遇到字串`<%$ ConnectionStrings:MessageDB %>`，它會建立<xref:System.Web.Compilation.ConnectionStringsExpressionBuilder>物件。</span><span class="sxs-lookup"><span data-stu-id="9d25a-107">For example, when the parser encounters the string `<%$ ConnectionStrings:MessageDB %>`, it creates a <xref:System.Web.Compilation.ConnectionStringsExpressionBuilder> object.</span></span> <span data-ttu-id="9d25a-108">前置詞相關聯的 Web.config 檔案中的運算式產生器<xref:System.Web.Configuration.CompilationSection.ExpressionBuilders%2A>> 一節。</span><span class="sxs-lookup"><span data-stu-id="9d25a-108">Prefixes are associated with expression builders in the Web.config file in the <xref:System.Web.Configuration.CompilationSection.ExpressionBuilders%2A> section.</span></span>  
-  
- <span data-ttu-id="9d25a-109">宣告式的運算式右邊會傳遞給運算式產生器中，進行評估。</span><span class="sxs-lookup"><span data-stu-id="9d25a-109">The right side of the declarative expression is passed to the expression builder for evaluation.</span></span> <span data-ttu-id="9d25a-110">覆寫<xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A>方法來產生程式碼會編譯至頁面。</span><span class="sxs-lookup"><span data-stu-id="9d25a-110">Override the <xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A> method to generate code that will be compiled with the page.</span></span>  
-  
- <span data-ttu-id="9d25a-111">如果您想自訂運算式產生器設為作用中，不會編譯的頁面上，您也必須覆寫<xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A>方法以傳回物件，表示運算式的結果。</span><span class="sxs-lookup"><span data-stu-id="9d25a-111">If you want the custom expression builder to be active on pages that are not compiled, you must also override the <xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A> method to return an object that represents the results of the expression.</span></span> <span data-ttu-id="9d25a-112">您也必須覆寫<xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A>屬性，指出自訂運算式產生器並支援編譯網頁。</span><span class="sxs-lookup"><span data-stu-id="9d25a-112">You also must override the <xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A> property to indicate that the custom expression builder does support no-compile pages.</span></span>  
-  
- <span data-ttu-id="9d25a-113">您可以定義一組屬性和方法，選取及評估運算式所關聯的控制項屬性在設計階段藉由實作一個運算式編輯器。</span><span class="sxs-lookup"><span data-stu-id="9d25a-113">You can define a set of properties and methods for selecting and evaluating an expression that is associated with a control property at design time by implementing an expression editor.</span></span> <span data-ttu-id="9d25a-114">編輯器] 中，在 [運算式產生器，透過類別層級的中繼資料上標示。</span><span class="sxs-lookup"><span data-stu-id="9d25a-114">The editor is marked on the expression builder through class-level metadata.</span></span> <span data-ttu-id="9d25a-115">如需詳細資訊，請參閱<xref:System.Web.UI.Design.ExpressionEditor>。</span><span class="sxs-lookup"><span data-stu-id="9d25a-115">For more information, see <xref:System.Web.UI.Design.ExpressionEditor>.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="9d25a-116">下列程式碼範例示範如何建置自訂運算式產生器藉由實作<xref:System.Web.Compilation.ExpressionBuilder>抽象類別。</span><span class="sxs-lookup"><span data-stu-id="9d25a-116">The following code examples demonstrate how to build a custom expression builder by implementing the <xref:System.Web.Compilation.ExpressionBuilder> abstract class.</span></span> <span data-ttu-id="9d25a-117">這項實作<xref:System.Web.Compilation.ExpressionBuilder>傳回傳遞給運算式的評估陳述式。</span><span class="sxs-lookup"><span data-stu-id="9d25a-117">This implementation of <xref:System.Web.Compilation.ExpressionBuilder> returns an evaluated statement that is passed to the expression.</span></span> <span data-ttu-id="9d25a-118">若要執行此範例中，您必須先在 Web.config 檔案中註冊自訂運算式產生器。</span><span class="sxs-lookup"><span data-stu-id="9d25a-118">To run this example, you must first register the custom expression builder in the Web.config file.</span></span> <span data-ttu-id="9d25a-119">第一個程式碼範例示範如何在 Web.config 檔案中註冊自訂運算式產生器。</span><span class="sxs-lookup"><span data-stu-id="9d25a-119">The first code example demonstrates how to register the custom expression builder in the Web.config file.</span></span>  
-  
-```  
-<configuration>  
-    <system.web>  
-       <compilation>  
-          <expressionBuilders>  
-              <add expressionPrefix="MyCustomExpression"  
-               type="MyCustomExpressionBuilder"/>  
-          </expressionBuilders>  
-       </compilation>  
-    </system.web>  
-</configuration>  
-```  
-  
- <span data-ttu-id="9d25a-120">第二個程式碼範例示範如何參考.aspx 檔案中的運算式。</span><span class="sxs-lookup"><span data-stu-id="9d25a-120">The second code example demonstrates how to reference the expression in an .aspx file.</span></span>  
-  
-```  
-<asp:Label ID="Label1" runat="server"   
-Text="<%$ MyCustomExpression:Hello, world! %>" />  
-```  
-  
- <span data-ttu-id="9d25a-121">第三個程式碼範例示範如何開發自訂的運算式產生器，由衍生自<xref:System.Web.Compilation.ExpressionBuilder>。</span><span class="sxs-lookup"><span data-stu-id="9d25a-121">The third code example demonstrates how to develop a customized expression builder by deriving from <xref:System.Web.Compilation.ExpressionBuilder>.</span></span> <span data-ttu-id="9d25a-122">若要執行這個程式碼範例，您必須將此類別放在 App_Code 資料夾中。</span><span class="sxs-lookup"><span data-stu-id="9d25a-122">To run this code example, you must place the class in the App_Code folder.</span></span>  
-  
- [!code-csharp[System.Web.Compilation.ExpressionBuilder#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Compilation.ExpressionBuilder/CS/MyExpressionBuilder.cs#1)] 
- [!code-vb[System.Web.Compilation.ExpressionBuilder#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Compilation.ExpressionBuilder/VB/MyExpressionBuilder.vb#1)]   
-  
- ]]></format>
-    </remarks>
-    <block subset="none" type="overrides">
-      <para>
-        <span data-ttu-id="9d25a-123">當您繼承自<see cref="T:System.Web.Compilation.ExpressionBuilder" />類別，您必須覆寫<see cref="M:System.Web.Compilation.ExpressionBuilder.GetCodeExpression(System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)" />方法。</span>
-        <span class="sxs-lookup">
-          <span data-stu-id="9d25a-123">When you inherit from the <see cref="T:System.Web.Compilation.ExpressionBuilder" /> class, you must override the <see cref="M:System.Web.Compilation.ExpressionBuilder.GetCodeExpression(System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)" /> method.</span>
-        </span>
-      </para>
-    </block>
-    <altmember cref="T:System.Web.Compilation.ExpressionBuilderContext" />
-    <altmember cref="T:System.Web.Configuration.ExpressionBuilder" />
-    <altmember cref="T:System.Web.Configuration.ExpressionBuilderCollection" />
-    <altmember cref="T:System.Web.Compilation.AppSettingsExpressionBuilder" />
-    <altmember cref="T:System.Web.Compilation.ConnectionStringsExpressionBuilder" />
-  </Docs>
-  <Members>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="protected ExpressionBuilder ();" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Compilation.ExpressionBuilder.#ctor" />
-      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; ExpressionBuilder();" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="9d25a-124">初始化 <see cref="T:System.Web.Compilation.ExpressionBuilder" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-124">Initializes a new instance of the <see cref="T:System.Web.Compilation.ExpressionBuilder" /> class.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9d25a-125">因為<xref:System.Web.Compilation.ExpressionBuilder>類別是抽象的您無法建立的執行個體<xref:System.Web.Compilation.ExpressionBuilder>直接透過使用<xref:System.Web.Compilation.ExpressionBuilder.%23ctor%2A>建構函式。</span><span class="sxs-lookup"><span data-stu-id="9d25a-125">Because the <xref:System.Web.Compilation.ExpressionBuilder> class is abstract, you cannot create an instance of <xref:System.Web.Compilation.ExpressionBuilder> directly by using the <xref:System.Web.Compilation.ExpressionBuilder.%23ctor%2A> constructor.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <block subset="none" type="overrides">
-          <para>
-            <span data-ttu-id="9d25a-126">衍生自<see cref="T:System.Web.Compilation.ExpressionBuilder" />類別，覆寫<see cref="M:System.Web.Compilation.ExpressionBuilder.#ctor" />建構函式來實作您的運算式產生器實作的自訂初始化動作。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="9d25a-126">When deriving from the <see cref="T:System.Web.Compilation.ExpressionBuilder" /> class, override the <see cref="M:System.Web.Compilation.ExpressionBuilder.#ctor" /> constructor to implement custom initialization actions for your expression builder implementation.</span>
-            </span>
-          </para>
-        </block>
-        <altmember cref="T:System.Web.Compilation.ExpressionBuilderContext" />
-        <altmember cref="T:System.Web.Configuration.ExpressionBuilder" />
-        <altmember cref="T:System.Web.Configuration.ExpressionBuilderCollection" />
-        <altmember cref="T:System.Web.Compilation.AppSettingsExpressionBuilder" />
-        <altmember cref="T:System.Web.Compilation.ConnectionStringsExpressionBuilder" />
-      </Docs>
-    </Member>
-    <Member MemberName="EvaluateExpression">
-      <MemberSignature Language="C#" Value="public virtual object EvaluateExpression (object target, System.Web.UI.BoundPropertyEntry entry, object parsedData, System.Web.Compilation.ExpressionBuilderContext context);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance object EvaluateExpression(object target, class System.Web.UI.BoundPropertyEntry entry, object parsedData, class System.Web.Compilation.ExpressionBuilderContext context) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable Function EvaluateExpression (target As Object, entry As BoundPropertyEntry, parsedData As Object, context As ExpressionBuilderContext) As Object" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Object ^ EvaluateExpression(System::Object ^ target, System::Web::UI::BoundPropertyEntry ^ entry, System::Object ^ parsedData, System::Web::Compilation::ExpressionBuilderContext ^ context);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="target" Type="System.Object" />
-        <Parameter Name="entry" Type="System.Web.UI.BoundPropertyEntry" />
-        <Parameter Name="parsedData" Type="System.Object" />
-        <Parameter Name="context" Type="System.Web.Compilation.ExpressionBuilderContext" />
-      </Parameters>
-      <Docs>
-        <param name="target">
-          <span data-ttu-id="9d25a-127">包含運算式的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-127">The object containing the expression.</span>
-          </span>
-        </param>
-        <param name="entry">
-          <span data-ttu-id="9d25a-128">表示由運算式繫結的屬性相關資訊之物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-128">The object that represents information about the property bound to by the expression.</span>
-          </span>
-        </param>
-        <param name="parsedData">
-          <span data-ttu-id="9d25a-129">包含由 <see cref="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)" /> 傳回之剖析資料的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-129">The object containing parsed data as returned by <see cref="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)" />.</span>
-          </span>
-        </param>
-        <param name="context">
-          <span data-ttu-id="9d25a-130">用於評估運算式的內容資訊。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-130">Contextual information for the evaluation of the expression.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9d25a-131">在衍生類別中覆寫時，傳回表示評估的運算式之物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-131">When overridden in a derived class, returns an object that represents an evaluated expression.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="9d25a-132">表示評估的運算式之物件，如果繼承者沒有實作 <see cref="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)" /> 則為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-132">An object that represents the evaluated expression; otherwise, <see langword="null" /> if the inheritor does not implement <see cref="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)" />.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9d25a-133">如果您想要您<xref:System.Web.Compilation.ExpressionBuilder>物件設為作用中，在頁面上可支援無編譯 功能，您可以覆寫<xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A>方法和<xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="9d25a-133">If you want your <xref:System.Web.Compilation.ExpressionBuilder> object to be active on a page that supports the no-compile feature, you can override the <xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A> method and the <xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A> property.</span></span> <span data-ttu-id="9d25a-134"><xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A>方法應傳回目前運算式的評估。</span><span class="sxs-lookup"><span data-stu-id="9d25a-134">The <xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A> method should return the evaluation of the current expression.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="9d25a-135">下列程式碼範例示範如何使用覆寫<xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A>方法以傳回評估的運算式。</span><span class="sxs-lookup"><span data-stu-id="9d25a-135">The following code example demonstrates how to use the overridden <xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A> method to return an evaluated expression.</span></span>  
-  
- [!code-csharp[System.Web.Compilation.ExpressionBuilder#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Compilation.ExpressionBuilder/CS/MyExpressionBuilder.cs#3)]    
- [!code-vb[System.Web.Compilation.ExpressionBuilder#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Compilation.ExpressionBuilder/VB/MyExpressionBuilder.vb#3)]   
-  
- ]]></format>
-        </remarks>
-        <block subset="none" type="overrides">
-          <para>
-            <span data-ttu-id="9d25a-136">如果您覆寫<see cref="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)" />方法，您也必須覆寫<see cref="P:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate" />屬性。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="9d25a-136">If you override the <see cref="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)" /> method, you must also override the <see cref="P:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate" /> property.</span>
-            </span>
-          </para>
-        </block>
-      </Docs>
-    </Member>
-    <Member MemberName="GetCodeExpression">
-      <MemberSignature Language="C#" Value="public abstract System.CodeDom.CodeExpression GetCodeExpression (System.Web.UI.BoundPropertyEntry entry, object parsedData, System.Web.Compilation.ExpressionBuilderContext context);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.CodeDom.CodeExpression GetCodeExpression(class System.Web.UI.BoundPropertyEntry entry, object parsedData, class System.Web.Compilation.ExpressionBuilderContext context) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Compilation.ExpressionBuilder.GetCodeExpression(System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)" />
-      <MemberSignature Language="VB.NET" Value="Public MustOverride Function GetCodeExpression (entry As BoundPropertyEntry, parsedData As Object, context As ExpressionBuilderContext) As CodeExpression" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract System::CodeDom::CodeExpression ^ GetCodeExpression(System::Web::UI::BoundPropertyEntry ^ entry, System::Object ^ parsedData, System::Web::Compilation::ExpressionBuilderContext ^ context);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.CodeDom.CodeExpression</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="entry" Type="System.Web.UI.BoundPropertyEntry" />
-        <Parameter Name="parsedData" Type="System.Object" />
-        <Parameter Name="context" Type="System.Web.Compilation.ExpressionBuilderContext" />
-      </Parameters>
-      <Docs>
-        <param name="entry">
-          <span data-ttu-id="9d25a-137">表示由運算式繫結的屬性相關資訊之物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-137">The object that represents information about the property bound to by the expression.</span>
-          </span>
-        </param>
-        <param name="parsedData">
-          <span data-ttu-id="9d25a-138">包含由 <see cref="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)" /> 傳回之剖析資料的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-138">The object containing parsed data as returned by <see cref="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)" />.</span>
-          </span>
-        </param>
-        <param name="context">
-          <span data-ttu-id="9d25a-139">用於評估運算式的內容資訊。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-139">Contextual information for the evaluation of the expression.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9d25a-140">在衍生類別中覆寫時，傳回用來在頁面執行期間取得評估的運算式之程式碼。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-140">When overridden in a derived class, returns code that is used during page execution to obtain the evaluated expression.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="9d25a-141">
-            <see cref="T:System.CodeDom.CodeExpression" />，用於屬性指定。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-141">A <see cref="T:System.CodeDom.CodeExpression" /> that is used for property assignment.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9d25a-142">類別繼承自<xref:System.Web.Compilation.ExpressionBuilder>類別必須實作<xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A>抽象方法。</span><span class="sxs-lookup"><span data-stu-id="9d25a-142">Classes that inherit from the <xref:System.Web.Compilation.ExpressionBuilder> class must implement the <xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A> abstract method.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="9d25a-143">下列程式碼範例示範如何傳回<xref:System.CodeDom.CodeExpression>藉由覆寫物件<xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="9d25a-143">The following code example demonstrates how to return a <xref:System.CodeDom.CodeExpression> object by overriding the <xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A> method.</span></span>  
-  
- [!code-csharp[System.Web.Compilation.ExpressionBuilder#4](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Compilation.ExpressionBuilder/CS/MyExpressionBuilder.cs#4)] 
- [!code-vb[System.Web.Compilation.ExpressionBuilder#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Compilation.ExpressionBuilder/VB/MyExpressionBuilder.vb#4)]   
-  
- ]]></format>
-        </remarks>
-        <block subset="none" type="overrides">
-          <para>
-            <span data-ttu-id="9d25a-144">如果您實作自訂運算式產生器，您必須執行適當的型別轉型的控制項屬性，並傳回在對轉換運算<see cref="T:System.CodeDom.CodeExpression" />物件。</span>
-            <span class="sxs-lookup">
-              <span data-stu-id="9d25a-144">If you implement a custom expression builder, you must perform the proper type casting for the control property and return the cast operation in the <see cref="T:System.CodeDom.CodeExpression" /> object.</span>
-            </span>
-          </para>
-        </block>
-      </Docs>
-    </Member>
-    <Member MemberName="ParseExpression">
-      <MemberSignature Language="C#" Value="public virtual object ParseExpression (string expression, Type propertyType, System.Web.Compilation.ExpressionBuilderContext context);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance object ParseExpression(string expression, class System.Type propertyType, class System.Web.Compilation.ExpressionBuilderContext context) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable Function ParseExpression (expression As String, propertyType As Type, context As ExpressionBuilderContext) As Object" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Object ^ ParseExpression(System::String ^ expression, Type ^ propertyType, System::Web::Compilation::ExpressionBuilderContext ^ context);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Object</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="expression" Type="System.String" />
-        <Parameter Name="propertyType" Type="System.Type" />
-        <Parameter Name="context" Type="System.Web.Compilation.ExpressionBuilderContext" />
-      </Parameters>
-      <Docs>
-        <param name="expression">
-          <span data-ttu-id="9d25a-145">宣告式運算式的值。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-145">The value of the declarative expression.</span>
-          </span>
-        </param>
-        <param name="propertyType">
-          <span data-ttu-id="9d25a-146">由運算式繫結的屬性之型別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-146">The type of the property bound to by the expression.</span>
-          </span>
-        </param>
-        <param name="context">
-          <span data-ttu-id="9d25a-147">用於評估運算式的內容資訊。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-147">Contextual information for the evaluation of the expression.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="9d25a-148">在衍生類別中覆寫時，傳回表示剖析的運算式之物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-148">When overridden in a derived class, returns an object that represents the parsed expression.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="9d25a-149">
-            <see cref="T:System.Object" />，包含運算式的剖析表示，如果沒有實作 <see cref="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)" /> 則為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-149">An <see cref="T:System.Object" /> containing the parsed representation of the expression; otherwise, <see langword="null" /> if <see cref="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)" /> is not implemented.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9d25a-150">當在衍生類別中覆寫時，這個方法會剖析運算式，並傳回物件，可用來做為`parsedData`中的參數<xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A>或<xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A>方法。</span><span class="sxs-lookup"><span data-stu-id="9d25a-150">When overridden in a derived class, this method parses the expression and returns it as an object that can be used as the `parsedData` parameter in a <xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A> or <xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A> method.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SupportsEvaluate">
-      <MemberSignature Language="C#" Value="public virtual bool SupportsEvaluate { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool SupportsEvaluate" />
-      <MemberSignature Language="DocId" Value="P:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property SupportsEvaluate As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool SupportsEvaluate { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Web</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="9d25a-151">在衍生類別中覆寫時傳回值，指出目前的 <see cref="T:System.Web.Compilation.ExpressionBuilder" /> 物件是否支援無編譯頁面。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-151">When overridden in a derived class, returns a value indicating whether the current <see cref="T:System.Web.Compilation.ExpressionBuilder" /> object supports no-compile pages.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="9d25a-152">如果 <see cref="T:System.Web.Compilation.ExpressionBuilder" /> 支援運算式評估則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="9d25a-152">
-              <see langword="true" /> if the <see cref="T:System.Web.Compilation.ExpressionBuilder" /> supports expression evaluation; otherwise, <see langword="false" />.</span>
-          </span>
-        </value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="9d25a-153">預設值為<xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A>屬性是`false`。</span><span class="sxs-lookup"><span data-stu-id="9d25a-153">The default value for the <xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A> property is `false`.</span></span> <span data-ttu-id="9d25a-154">若要支援編譯網頁，您必須同時覆寫<xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A>方法和<xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="9d25a-154">To support no-compile pages, you must override both the <xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A> method and the <xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A> property.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="9d25a-155">下列程式碼範例示範如何使用<xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="9d25a-155">The following code example demonstrates how to use the <xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A> property.</span></span>  
-  
- [!code-csharp[System.Web.Compilation.ExpressionBuilder#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Compilation.ExpressionBuilder/CS/MyExpressionBuilder.cs#2)] 
- [!code-vb[System.Web.Compilation.ExpressionBuilder#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Compilation.ExpressionBuilder/VB/MyExpressionBuilder.vb#2)]   
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="ExpressionBuilder.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac52fdfaba358c803078ed8f887cd2d70b7a32d185d.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">2fdfaba358c803078ed8f887cd2d70b7a32d185d</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>Evaluates expressions during page parsing.</source>
+          <target state="translated">在頁面剖析期間評估運算式。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>The <ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph> class is the base class for expression builders, such as the <ph id="ph2">&lt;xref:System.Web.Compilation.AppSettingsExpressionBuilder&gt;</ph> class, that create code expressions during page parsing.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph>類別是基底類別的運算式產生器，例如<ph id="ph2">&lt;xref:System.Web.Compilation.AppSettingsExpressionBuilder&gt;</ph>類別頁面剖析期間所建立程式碼運算式。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>Expression builders parse declarative expressions and create code to retrieve values bound to a control property.</source>
+          <target state="translated">運算式產生器會剖析宣告式的運算式，並建立程式碼來擷取繫結至控制項屬性的值。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>In no-compile scenarios, an expression builder that supports a no-compile feature evaluates the expression during run time.</source>
+          <target state="translated">在無編譯案例中，運算式產生器可支援無編譯功能會計算在執行階段期間的運算式。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>When the page parser encounters an expression that is delimited with the string <ph id="ph1">`&lt;%$ %&gt;`</ph>, it creates an expression builder for the expression based on the prefix in the string.</source>
+          <target state="translated">當頁面剖析器遇到分隔字串的運算式<ph id="ph1">`&lt;%$ %&gt;`</ph>，它會建立為運算式中字串的前置詞為基礎的運算式產生器。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>The prefix is the portion of the string that is to the left of the colon (:).</source>
+          <target state="translated">首碼是冒號的字串 （:） 的一部分。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>For example, when the parser encounters the string <ph id="ph1">`&lt;%$ ConnectionStrings:MessageDB %&gt;`</ph>, it creates a <ph id="ph2">&lt;xref:System.Web.Compilation.ConnectionStringsExpressionBuilder&gt;</ph> object.</source>
+          <target state="translated">例如，當剖析器遇到字串<ph id="ph1">`&lt;%$ ConnectionStrings:MessageDB %&gt;`</ph>，它會建立<ph id="ph2">&lt;xref:System.Web.Compilation.ConnectionStringsExpressionBuilder&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>Prefixes are associated with expression builders in the Web.config file in the <ph id="ph1">&lt;xref:System.Web.Configuration.CompilationSection.ExpressionBuilders%2A&gt;</ph> section.</source>
+          <target state="translated">前置詞相關聯的 Web.config 檔案中的運算式產生器<ph id="ph1">&lt;xref:System.Web.Configuration.CompilationSection.ExpressionBuilders%2A&gt;</ph>&gt; 一節。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>The right side of the declarative expression is passed to the expression builder for evaluation.</source>
+          <target state="translated">宣告式的運算式右邊會傳遞給運算式產生器中，進行評估。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>Override the <ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A&gt;</ph> method to generate code that will be compiled with the page.</source>
+          <target state="translated">覆寫<ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A&gt;</ph>方法來產生程式碼會編譯至頁面。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>If you want the custom expression builder to be active on pages that are not compiled, you must also override the <ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A&gt;</ph> method to return an object that represents the results of the expression.</source>
+          <target state="translated">如果您想自訂運算式產生器設為作用中，不會編譯的頁面上，您也必須覆寫<ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A&gt;</ph>方法以傳回物件，表示運算式的結果。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>You also must override the <ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A&gt;</ph> property to indicate that the custom expression builder does support no-compile pages.</source>
+          <target state="translated">您也必須覆寫<ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A&gt;</ph>屬性，指出自訂運算式產生器並支援編譯網頁。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>You can define a set of properties and methods for selecting and evaluating an expression that is associated with a control property at design time by implementing an expression editor.</source>
+          <target state="translated">您可以定義一組屬性和方法，選取及評估運算式所關聯的控制項屬性在設計階段藉由實作一個運算式編輯器。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>The editor is marked on the expression builder through class-level metadata.</source>
+          <target state="translated">編輯器] 中，在 [運算式產生器，透過類別層級的中繼資料上標示。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>For more information, see <ph id="ph1">&lt;xref:System.Web.UI.Design.ExpressionEditor&gt;</ph>.</source>
+          <target state="translated">如需詳細資訊，請參閱<ph id="ph1">&lt;xref:System.Web.UI.Design.ExpressionEditor&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>The following code examples demonstrate how to build a custom expression builder by implementing the <ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph> abstract class.</source>
+          <target state="translated">下列程式碼範例示範如何建置自訂運算式產生器藉由實作<ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph>抽象類別。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>This implementation of <ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph> returns an evaluated statement that is passed to the expression.</source>
+          <target state="translated">這項實作<ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph>傳回傳遞給運算式的評估陳述式。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>To run this example, you must first register the custom expression builder in the Web.config file.</source>
+          <target state="translated">若要執行此範例中，您必須先在 Web.config 檔案中註冊自訂運算式產生器。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>The first code example demonstrates how to register the custom expression builder in the Web.config file.</source>
+          <target state="translated">第一個程式碼範例示範如何在 Web.config 檔案中註冊自訂運算式產生器。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>The second code example demonstrates how to reference the expression in an .aspx file.</source>
+          <target state="translated">第二個程式碼範例示範如何參考.aspx 檔案中的運算式。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>The third code example demonstrates how to develop a customized expression builder by deriving from <ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph>.</source>
+          <target state="translated">第三個程式碼範例示範如何開發自訂的運算式產生器，由衍生自<ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>To run this code example, you must place the class in the App_Code folder.</source>
+          <target state="translated">若要執行這個程式碼範例，您必須將此類別放在 App_Code 資料夾中。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Web.Compilation.ExpressionBuilder">
+          <source>When you inherit from the <ph id="ph1">&lt;see cref="T:System.Web.Compilation.ExpressionBuilder" /&gt;</ph> class, you must override the <ph id="ph2">&lt;see cref="M:System.Web.Compilation.ExpressionBuilder.GetCodeExpression(System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)" /&gt;</ph> method.</source>
+          <target state="translated">當您繼承自<ph id="ph1">&lt;see cref="T:System.Web.Compilation.ExpressionBuilder" /&gt;</ph>類別，您必須覆寫<ph id="ph2">&lt;see cref="M:System.Web.Compilation.ExpressionBuilder.GetCodeExpression(System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)" /&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.#ctor">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.Web.Compilation.ExpressionBuilder" /&gt;</ph> class.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.Web.Compilation.ExpressionBuilder" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Compilation.ExpressionBuilder.#ctor">
+          <source>Because the <ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph> class is abstract, you cannot create an instance of <ph id="ph2">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph> directly by using the <ph id="ph3">&lt;xref:System.Web.Compilation.ExpressionBuilder.%23ctor%2A&gt;</ph> constructor.</source>
+          <target state="translated">因為<ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph>類別是抽象的您無法建立的執行個體<ph id="ph2">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph>直接透過使用<ph id="ph3">&lt;xref:System.Web.Compilation.ExpressionBuilder.%23ctor%2A&gt;</ph>建構函式。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Compilation.ExpressionBuilder.#ctor">
+          <source>When deriving from the <ph id="ph1">&lt;see cref="T:System.Web.Compilation.ExpressionBuilder" /&gt;</ph> class, override the <ph id="ph2">&lt;see cref="M:System.Web.Compilation.ExpressionBuilder.#ctor" /&gt;</ph> constructor to implement custom initialization actions for your expression builder implementation.</source>
+          <target state="translated">衍生自<ph id="ph1">&lt;see cref="T:System.Web.Compilation.ExpressionBuilder" /&gt;</ph>類別，覆寫<ph id="ph2">&lt;see cref="M:System.Web.Compilation.ExpressionBuilder.#ctor" /&gt;</ph>建構函式來實作您的運算式產生器實作的自訂初始化動作。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>The object containing the expression.</source>
+          <target state="translated">包含運算式的物件。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>The object that represents information about the property bound to by the expression.</source>
+          <target state="translated">表示由運算式繫結的屬性相關資訊之物件。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>The object containing parsed data as returned by <ph id="ph1">&lt;see cref="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)" /&gt;</ph>.</source>
+          <target state="translated">包含由 <ph id="ph1">&lt;see cref="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)" /&gt;</ph> 傳回之剖析資料的物件。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>Contextual information for the evaluation of the expression.</source>
+          <target state="translated">用於評估運算式的內容資訊。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>When overridden in a derived class, returns an object that represents an evaluated expression.</source>
+          <target state="translated">在衍生類別中覆寫時，傳回表示評估的運算式之物件。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>An object that represents the evaluated expression; otherwise, <ph id="ph1">&lt;see langword="null" /&gt;</ph> if the inheritor does not implement <ph id="ph2">&lt;see cref="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)" /&gt;</ph>.</source>
+          <target state="translated">表示評估的運算式之物件，如果繼承者沒有實作 <ph id="ph2">&lt;see cref="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)" /&gt;</ph> 則為 <ph id="ph1">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>If you want your <ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph> object to be active on a page that supports the no-compile feature, you can override the <ph id="ph2">&lt;xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A&gt;</ph> method and the <ph id="ph3">&lt;xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A&gt;</ph> property.</source>
+          <target state="translated">如果您想要您<ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph>物件設為作用中，在頁面上可支援無編譯 功能，您可以覆寫<ph id="ph2">&lt;xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A&gt;</ph>方法和<ph id="ph3">&lt;xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>The <ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A&gt;</ph> method should return the evaluation of the current expression.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A&gt;</ph>方法應傳回目前運算式的評估。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>The following code example demonstrates how to use the overridden <ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A&gt;</ph> method to return an evaluated expression.</source>
+          <target state="translated">下列程式碼範例示範如何使用覆寫<ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A&gt;</ph>方法以傳回評估的運算式。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>If you override the <ph id="ph1">&lt;see cref="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)" /&gt;</ph> method, you must also override the <ph id="ph2">&lt;see cref="P:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate" /&gt;</ph> property.</source>
+          <target state="translated">如果您覆寫<ph id="ph1">&lt;see cref="M:System.Web.Compilation.ExpressionBuilder.EvaluateExpression(System.Object,System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)" /&gt;</ph>方法，您也必須覆寫<ph id="ph2">&lt;see cref="P:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate" /&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.GetCodeExpression(System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>The object that represents information about the property bound to by the expression.</source>
+          <target state="translated">表示由運算式繫結的屬性相關資訊之物件。</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.GetCodeExpression(System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>The object containing parsed data as returned by <ph id="ph1">&lt;see cref="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)" /&gt;</ph>.</source>
+          <target state="translated">包含由 <ph id="ph1">&lt;see cref="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)" /&gt;</ph> 傳回之剖析資料的物件。</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.GetCodeExpression(System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>Contextual information for the evaluation of the expression.</source>
+          <target state="translated">用於評估運算式的內容資訊。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.GetCodeExpression(System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>When overridden in a derived class, returns code that is used during page execution to obtain the evaluated expression.</source>
+          <target state="translated">在衍生類別中覆寫時，傳回用來在頁面執行期間取得評估的運算式之程式碼。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.GetCodeExpression(System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>A <ph id="ph1">&lt;see cref="T:System.CodeDom.CodeExpression" /&gt;</ph> that is used for property assignment.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.CodeDom.CodeExpression" /&gt;</ph>，用於屬性指定。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Compilation.ExpressionBuilder.GetCodeExpression(System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>Classes that inherit from the <ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph> class must implement the <ph id="ph2">&lt;xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A&gt;</ph> abstract method.</source>
+          <target state="translated">類別繼承自<ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder&gt;</ph>類別必須實作<ph id="ph2">&lt;xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A&gt;</ph>抽象方法。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Compilation.ExpressionBuilder.GetCodeExpression(System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>The following code example demonstrates how to return a <ph id="ph1">&lt;xref:System.CodeDom.CodeExpression&gt;</ph> object by overriding the <ph id="ph2">&lt;xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A&gt;</ph> method.</source>
+          <target state="translated">下列程式碼範例示範如何傳回<ph id="ph1">&lt;xref:System.CodeDom.CodeExpression&gt;</ph>藉由覆寫物件<ph id="ph2">&lt;xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Compilation.ExpressionBuilder.GetCodeExpression(System.Web.UI.BoundPropertyEntry,System.Object,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>If you implement a custom expression builder, you must perform the proper type casting for the control property and return the cast operation in the <ph id="ph1">&lt;see cref="T:System.CodeDom.CodeExpression" /&gt;</ph> object.</source>
+          <target state="translated">如果您實作自訂運算式產生器，您必須執行適當的型別轉型的控制項屬性，並傳回在對轉換運算<ph id="ph1">&lt;see cref="T:System.CodeDom.CodeExpression" /&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>The value of the declarative expression.</source>
+          <target state="translated">宣告式運算式的值。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>The type of the property bound to by the expression.</source>
+          <target state="translated">由運算式繫結的屬性之型別。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>Contextual information for the evaluation of the expression.</source>
+          <target state="translated">用於評估運算式的內容資訊。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>When overridden in a derived class, returns an object that represents the parsed expression.</source>
+          <target state="translated">在衍生類別中覆寫時，傳回表示剖析的運算式之物件。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" uid="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>An <ph id="ph1">&lt;see cref="T:System.Object" /&gt;</ph> containing the parsed representation of the expression; otherwise, <ph id="ph2">&lt;see langword="null" /&gt;</ph> if <ph id="ph3">&lt;see cref="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)" /&gt;</ph> is not implemented.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Object" /&gt;</ph>，包含運算式的剖析表示，如果沒有實作 <ph id="ph3">&lt;see cref="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)" /&gt;</ph> 則為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Web.Compilation.ExpressionBuilder.ParseExpression(System.String,System.Type,System.Web.Compilation.ExpressionBuilderContext)">
+          <source>When overridden in a derived class, this method parses the expression and returns it as an object that can be used as the <ph id="ph1">`parsedData`</ph> parameter in a <ph id="ph2">&lt;xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A&gt;</ph> or <ph id="ph3">&lt;xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A&gt;</ph> method.</source>
+          <target state="translated">當在衍生類別中覆寫時，這個方法會剖析運算式，並傳回物件，可用來做為<ph id="ph1">`parsedData`</ph>中的參數<ph id="ph2">&lt;xref:System.Web.Compilation.ExpressionBuilder.GetCodeExpression%2A&gt;</ph>或<ph id="ph3">&lt;xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A&gt;</ph>方法。</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" uid="P:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate">
+          <source>When overridden in a derived class, returns a value indicating whether the current <ph id="ph1">&lt;see cref="T:System.Web.Compilation.ExpressionBuilder" /&gt;</ph> object supports no-compile pages.</source>
+          <target state="translated">在衍生類別中覆寫時傳回值，指出目前的 <ph id="ph1">&lt;see cref="T:System.Web.Compilation.ExpressionBuilder" /&gt;</ph> 物件是否支援無編譯頁面。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the <ph id="ph2">&lt;see cref="T:System.Web.Compilation.ExpressionBuilder" /&gt;</ph> supports expression evaluation; otherwise, <ph id="ph3">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果 <ph id="ph2">&lt;see cref="T:System.Web.Compilation.ExpressionBuilder" /&gt;</ph> 支援運算式評估則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph3">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate">
+          <source>The default value for the <ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A&gt;</ph> property is <ph id="ph2">`false`</ph>.</source>
+          <target state="translated">預設值為<ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A&gt;</ph>屬性是<ph id="ph2">`false`</ph>。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate">
+          <source>To support no-compile pages, you must override both the <ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A&gt;</ph> method and the <ph id="ph2">&lt;xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A&gt;</ph> property.</source>
+          <target state="translated">若要支援編譯網頁，您必須同時覆寫<ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.EvaluateExpression%2A&gt;</ph>方法和<ph id="ph2">&lt;xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate">
+          <source>The following code example demonstrates how to use the <ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A&gt;</ph> property.</source>
+          <target state="translated">下列程式碼範例示範如何使用<ph id="ph1">&lt;xref:System.Web.Compilation.ExpressionBuilder.SupportsEvaluate%2A&gt;</ph>屬性。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

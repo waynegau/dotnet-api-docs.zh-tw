@@ -1,975 +1,366 @@
-<Type Name="CompositionContainer" FullName="System.ComponentModel.Composition.Hosting.CompositionContainer">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="531be8b9445e82ab2acefc549474a24be1a166d3" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public class CompositionContainer : System.ComponentModel.Composition.Hosting.ExportProvider, IDisposable, System.ComponentModel.Composition.ICompositionService" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit CompositionContainer extends System.ComponentModel.Composition.Hosting.ExportProvider implements class System.ComponentModel.Composition.ICompositionService, class System.IDisposable" />
-  <TypeSignature Language="DocId" Value="T:System.ComponentModel.Composition.Hosting.CompositionContainer" />
-  <TypeSignature Language="VB.NET" Value="Public Class CompositionContainer&#xA;Inherits ExportProvider&#xA;Implements ICompositionService, IDisposable" />
-  <TypeSignature Language="C++ CLI" Value="public ref class CompositionContainer : System::ComponentModel::Composition::Hosting::ExportProvider, IDisposable, System::ComponentModel::Composition::ICompositionService" />
-  <AssemblyInfo>
-    <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-    <AssemblyVersion>2.0.5.0</AssemblyVersion>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.ComponentModel.Composition.Hosting.ExportProvider</BaseTypeName>
-  </Base>
-  <Interfaces>
-    <Interface>
-      <InterfaceName>System.ComponentModel.Composition.ICompositionService</InterfaceName>
-    </Interface>
-    <Interface>
-      <InterfaceName>System.IDisposable</InterfaceName>
-    </Interface>
-  </Interfaces>
-  <Docs>
-    <summary>
-      <span data-ttu-id="c6550-101">管理組件的撰寫。</span>
-      <span class="sxs-lookup">
-        <span data-stu-id="c6550-101">Manages the composition of parts.</span>
-      </span>
-    </summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="c6550-102">A<xref:System.ComponentModel.Composition.Hosting.CompositionContainer>物件會有兩種主要的目的應用程式中。</span><span class="sxs-lookup"><span data-stu-id="c6550-102">A <xref:System.ComponentModel.Composition.Hosting.CompositionContainer> object serves two major purposes in an application.</span></span> <span data-ttu-id="c6550-103">首先，它會追蹤的哪些部分可供組合，而且它們的相依性是什麼，並執行組合時的可用設定組件的變更。</span><span class="sxs-lookup"><span data-stu-id="c6550-103">First, it keeps track of which parts are available for composition and what their dependencies are, and performs composition whenever the set of available parts changes.</span></span> <span data-ttu-id="c6550-104">第二，它會提供應用程式取得組成組件的執行個體或填滿可組合的組件的相依性的方法。</span><span class="sxs-lookup"><span data-stu-id="c6550-104">Second, it provides the methods by which the application gets instances of composed parts or fills the dependencies of a composable part.</span></span>  
-  
-> [!IMPORTANT]
->  <span data-ttu-id="c6550-105">此類型會實作<xref:System.IDisposable>介面。</span><span class="sxs-lookup"><span data-stu-id="c6550-105">This type implements the <xref:System.IDisposable> interface.</span></span> <span data-ttu-id="c6550-106">當您完成使用類型時，您應該會處置它直接或間接。</span><span class="sxs-lookup"><span data-stu-id="c6550-106">When you have finished using the type, you should dispose of it either directly or indirectly.</span></span> <span data-ttu-id="c6550-107">若要直接處置的類型，呼叫其<xref:System.IDisposable.Dispose%2A>方法中的`try` / `catch`區塊。</span><span class="sxs-lookup"><span data-stu-id="c6550-107">To dispose of the type directly, call its <xref:System.IDisposable.Dispose%2A> method in a `try`/`catch` block.</span></span> <span data-ttu-id="c6550-108">若要為其配置間接，使用語言建構例如`using`（C# 中） 或`Using`（在 Visual Basic)。</span><span class="sxs-lookup"><span data-stu-id="c6550-108">To dispose of it indirectly, use a language construct such as `using` (in C#) or `Using` (in Visual Basic).</span></span> <span data-ttu-id="c6550-109">如需詳細資訊，請參閱中的 「 使用物件的實作 IDisposable 」 一節<xref:System.IDisposable>介面 > 主題。</span><span class="sxs-lookup"><span data-stu-id="c6550-109">For more information, see the "Using an Object that Implements IDisposable" section in the <xref:System.IDisposable> interface topic.</span></span>  
-  
- <span data-ttu-id="c6550-110">組件可供容器可以是直接或透過<xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Catalog%2A>屬性。</span><span class="sxs-lookup"><span data-stu-id="c6550-110">Parts can be made available to the container either directly or through the <xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Catalog%2A> property.</span></span> <span data-ttu-id="c6550-111">在此可以找到的所有部分<xref:System.ComponentModel.Composition.Primitives.ComposablePartCatalog>可用來完成匯入，以及直接新增任何組件的容器。</span><span class="sxs-lookup"><span data-stu-id="c6550-111">All the parts discoverable in this <xref:System.ComponentModel.Composition.Primitives.ComposablePartCatalog> are available to the container to fulfill imports, along with any parts added directly.</span></span>  
-  
- <span data-ttu-id="c6550-112"><xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A>方法可讓具現化組件加入至現有的容器。</span><span class="sxs-lookup"><span data-stu-id="c6550-112">The <xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A> method allows instantiated parts to be added to an existing container.</span></span> <span data-ttu-id="c6550-113">假設的組合成功，這些組件會有其填滿容器，從擷取的組件的匯入和匯出其可供其他組件。</span><span class="sxs-lookup"><span data-stu-id="c6550-113">Assuming composition is successful, these parts will have their imports filled with parts retrieved from the container, and their exports will be available to other parts.</span></span> <span data-ttu-id="c6550-114">標示為 「 阻礙匯入將會重新編輯畫的登錄。</span><span class="sxs-lookup"><span data-stu-id="c6550-114">Imports marked as recomposable will be registered for recomposition.</span></span>  
-  
- <span data-ttu-id="c6550-115"><xref:System.ComponentModel.Composition.Hosting.CompositionContainer.SatisfyImportsOnce%2A>方法允許將其匯入，而不被新增至容器填滿的一部分。</span><span class="sxs-lookup"><span data-stu-id="c6550-115">The <xref:System.ComponentModel.Composition.Hosting.CompositionContainer.SatisfyImportsOnce%2A> method allows a part to have its imports filled without being added to the container.</span></span> <span data-ttu-id="c6550-116">如果組合是成功，組件的匯入將會填滿，但將無法使用其他部分組件的匯出和沒有匯入將會註冊重新編輯畫。</span><span class="sxs-lookup"><span data-stu-id="c6550-116">If the composition is successful, the part's imports will be filled, but the part's exports will not be available to other parts and no imports will be registered for recomposition.</span></span>  
-  
- <span data-ttu-id="c6550-117"><xref:System.ComponentModel.Composition.Hosting.CompositionContainer> 應一律處置物件。</span><span class="sxs-lookup"><span data-stu-id="c6550-117"><xref:System.ComponentModel.Composition.Hosting.CompositionContainer> objects should always be disposed.</span></span> <span data-ttu-id="c6550-118">當<xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Dispose%2A>呼叫方法時，<xref:System.ComponentModel.Composition.Hosting.CompositionContainer>物件也會處置它已建立的所有組件。</span><span class="sxs-lookup"><span data-stu-id="c6550-118">When the <xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Dispose%2A> method is called, the <xref:System.ComponentModel.Composition.Hosting.CompositionContainer> object also disposes all the parts that it has created.</span></span>  
-  
- <span data-ttu-id="c6550-119">A<xref:System.ComponentModel.Composition.Hosting.CompositionContainer>可從多個執行緒存取的物件必須以建構`isThreadSafe`參數設定為`true`，並使用<xref:System.ComponentModel.Composition.Hosting.CompositionContainer.%23ctor%28System.ComponentModel.Composition.Primitives.ComposablePartCatalog%2CSystem.Boolean%2CSystem.ComponentModel.Composition.Hosting.ExportProvider%5B%5D%29>建構函式。</span><span class="sxs-lookup"><span data-stu-id="c6550-119">A <xref:System.ComponentModel.Composition.Hosting.CompositionContainer> object that can be accessed from multiple threads must be constructed with the `isThreadSafe` parameter set to `true`, using the <xref:System.ComponentModel.Composition.Hosting.CompositionContainer.%23ctor%28System.ComponentModel.Composition.Primitives.ComposablePartCatalog%2CSystem.Boolean%2CSystem.ComponentModel.Composition.Hosting.ExportProvider%5B%5D%29> constructor.</span></span> <span data-ttu-id="c6550-120">效能將會稍微變慢時`isThreadSafe`是`true`，因此我們建議您將此參數設定為`false`在單一執行緒案例中。</span><span class="sxs-lookup"><span data-stu-id="c6550-120">Performance will be slightly slower when `isThreadSafe` is `true`, so we recommend that you set this parameter to `false` in single-threaded scenarios.</span></span> <span data-ttu-id="c6550-121">預設值為 `false`。</span><span class="sxs-lookup"><span data-stu-id="c6550-121">The default is `false`.</span></span>  
-  
-> [!WARNING]
->  <span data-ttu-id="c6550-122">A<xref:System.ComponentModel.Composition.Hosting.CompositionContainer>本身，或具有它的參考組件，應該永遠不會匯入。</span><span class="sxs-lookup"><span data-stu-id="c6550-122">A <xref:System.ComponentModel.Composition.Hosting.CompositionContainer> should never import itself, or a part that has a reference to it.</span></span> <span data-ttu-id="c6550-123">這類的參考可能會允許不受信任的組件，才能存取容器中的所有組件。</span><span class="sxs-lookup"><span data-stu-id="c6550-123">Such a reference could allow an untrusted part to gain access all the parts in the container.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="c6550-124">在下列範例中，<xref:System.ComponentModel.Composition.Hosting.CompositionContainer>物件初始化的類別目錄，用來填入匯入的組件。</span><span class="sxs-lookup"><span data-stu-id="c6550-124">In the following example, a <xref:System.ComponentModel.Composition.Hosting.CompositionContainer> object is initialized with a catalog and is used to fill the imports of a part.</span></span> <span data-ttu-id="c6550-125">這個範例會使用屬性化程式設計模型。</span><span class="sxs-lookup"><span data-stu-id="c6550-125">This example uses the Attributed Programming Model.</span></span>  
-  
- [!code-csharp[Composition.CompositionContainer#1](~/samples/snippets/csharp/VS_Snippets_Misc/composition.compositioncontainer/cs/program.cs#1)]
- [!code-vb[Composition.CompositionContainer#1](~/samples/snippets/visualbasic/VS_Snippets_Misc/composition.compositioncontainer/vb/module1.vb#1)]  
-  
- ]]></format>
-    </remarks>
-  </Docs>
-  <Members>
-    <MemberGroup MemberName=".ctor">
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary>
-          <span data-ttu-id="c6550-126">初始化 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-126">Initializes a new instance of the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> class.</span>
-          </span>
-        </summary>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public CompositionContainer ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; CompositionContainer();" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="c6550-127">初始化 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-127">Initializes a new instance of the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> class.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public CompositionContainer (params System.ComponentModel.Composition.Hosting.ExportProvider[] providers);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.ComponentModel.Composition.Hosting.ExportProvider[] providers) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Hosting.ExportProvider[])" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (ParamArray providers As ExportProvider())" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; CompositionContainer(... cli::array &lt;System::ComponentModel::Composition::Hosting::ExportProvider ^&gt; ^ providers);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="providers" Type="System.ComponentModel.Composition.Hosting.ExportProvider[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <param name="providers">
-          <span data-ttu-id="c6550-128">
-            <see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /> 物件的陣列，這些物件可提供 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 對 <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> 物件的存取，或 <see langword="null" /> 以將 <see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /> 設為空白的 <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-128">An array of <see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /> objects that provide the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> access to <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> objects, or <see langword="null" /> to set <see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /> to an empty <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="c6550-129">使用指定的匯出提供者，初始化 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-129">Initializes a new instance of the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> class with the specified export providers.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentException">
-          <span data-ttu-id="c6550-130">
-            <paramref name="providers" /> 包含是 <see langword="null" /> 的項目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-130">
-              <paramref name="providers" /> contains an element that is <see langword="null" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public CompositionContainer (System.ComponentModel.Composition.Hosting.CompositionOptions compositionOptions, params System.ComponentModel.Composition.Hosting.ExportProvider[] providers);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.ComponentModel.Composition.Hosting.CompositionOptions compositionOptions, class System.ComponentModel.Composition.Hosting.ExportProvider[] providers) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Hosting.CompositionOptions,System.ComponentModel.Composition.Hosting.ExportProvider[])" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; CompositionContainer(System::ComponentModel::Composition::Hosting::CompositionOptions compositionOptions, ... cli::array &lt;System::ComponentModel::Composition::Hosting::ExportProvider ^&gt; ^ providers);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="compositionOptions" Type="System.ComponentModel.Composition.Hosting.CompositionOptions" />
-        <Parameter Name="providers" Type="System.ComponentModel.Composition.Hosting.ExportProvider[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <param name="compositionOptions">
-          <span data-ttu-id="c6550-131">指定這個容器行為的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-131">An object that specifies the behavior of this container.</span>
-          </span>
-        </param>
-        <param name="providers">
-          <span data-ttu-id="c6550-132">
-            <see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /> 物件的陣列，這些物件可提供 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 對 <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> 物件的存取，或 <see langword="null" /> 以將 <see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /> 設為空白的 <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-132">An array of <see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /> objects that provide the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> access to <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> objects, or <see langword="null" /> to set <see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /> to an empty <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="c6550-133">使用指定的匯出提供者和選項，初始化 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-133">Initializes a new instance of the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> class with the specified export providers and options.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentException">
-          <span data-ttu-id="c6550-134">
-            <paramref name="providers" /> 包含是 <see langword="null" /> 的項目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-134">
-              <paramref name="providers" /> contains an element that is <see langword="null" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public CompositionContainer (System.ComponentModel.Composition.Primitives.ComposablePartCatalog catalog, params System.ComponentModel.Composition.Hosting.ExportProvider[] providers);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.ComponentModel.Composition.Primitives.ComposablePartCatalog catalog, class System.ComponentModel.Composition.Hosting.ExportProvider[] providers) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.ComponentModel.Composition.Hosting.ExportProvider[])" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (catalog As ComposablePartCatalog, ParamArray providers As ExportProvider())" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; CompositionContainer(System::ComponentModel::Composition::Primitives::ComposablePartCatalog ^ catalog, ... cli::array &lt;System::ComponentModel::Composition::Hosting::ExportProvider ^&gt; ^ providers);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="catalog" Type="System.ComponentModel.Composition.Primitives.ComposablePartCatalog" />
-        <Parameter Name="providers" Type="System.ComponentModel.Composition.Hosting.ExportProvider[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <param name="catalog">
-          <span data-ttu-id="c6550-135">一個目錄，提供 <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> 物件給 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-135">A catalog that provides <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> objects to the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" />.</span>
-          </span>
-        </param>
-        <param name="providers">
-          <span data-ttu-id="c6550-136">
-            <see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /> 物件的陣列，這些物件可提供 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 對 <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> 物件的存取，或 <see langword="null" /> 以將 <see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /> 設為空白的 <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-136">An array of <see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /> objects that provide the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> access to <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> objects, or <see langword="null" /> to set <see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /> to an empty <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="c6550-137">使用指定的目錄和匯出提供者，初始化 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-137">Initializes a new instance of the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> class with the specified catalog and export providers.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentException">
-          <span data-ttu-id="c6550-138">
-            <paramref name="providers" /> 包含是 <see langword="null" /> 的項目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-138">
-              <paramref name="providers" /> contains an element that is <see langword="null" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public CompositionContainer (System.ComponentModel.Composition.Primitives.ComposablePartCatalog catalog, bool isThreadSafe, params System.ComponentModel.Composition.Hosting.ExportProvider[] providers);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.ComponentModel.Composition.Primitives.ComposablePartCatalog catalog, bool isThreadSafe, class System.ComponentModel.Composition.Hosting.ExportProvider[] providers) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.Boolean,System.ComponentModel.Composition.Hosting.ExportProvider[])" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (catalog As ComposablePartCatalog, isThreadSafe As Boolean, ParamArray providers As ExportProvider())" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; CompositionContainer(System::ComponentModel::Composition::Primitives::ComposablePartCatalog ^ catalog, bool isThreadSafe, ... cli::array &lt;System::ComponentModel::Composition::Hosting::ExportProvider ^&gt; ^ providers);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="catalog" Type="System.ComponentModel.Composition.Primitives.ComposablePartCatalog" />
-        <Parameter Name="isThreadSafe" Type="System.Boolean" />
-        <Parameter Name="providers" Type="System.ComponentModel.Composition.Hosting.ExportProvider[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <param name="catalog">
-          <span data-ttu-id="c6550-139">一個目錄，提供 <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> 物件給 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-139">A catalog that provides <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> objects to the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" />.</span>
-          </span>
-        </param>
-        <param name="isThreadSafe">
-          <span data-ttu-id="c6550-140">如果這個 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 物件必須是安全執行緒，則為 <see langword="true" />，否則為 <see langword="false" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-140">
-              <see langword="true" /> if this <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> object must be thread-safe; otherwise, <see langword="false" />.</span>
-          </span>
-        </param>
-        <param name="providers">
-          <span data-ttu-id="c6550-141">
-            <see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /> 物件的陣列，這些物件可提供 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 對 <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> 物件的存取，或 <see langword="null" /> 以將 <see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /> 屬性設為空白的 <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-141">An array of <see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /> objects that provide the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> access to <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> objects, or <see langword="null" /> to set the <see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /> property to an empty <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="c6550-142">使用指定的目錄、安全執行緒模式和匯出提供者，初始化 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-142">Initializes a new instance of the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> class with the specified catalog, thread-safe mode, and export providers.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="c6550-143">A<xref:System.ComponentModel.Composition.Hosting.CompositionContainer>可以從多個執行緒存取的物件必須設定`isThreadSafe`參數`true`。</span><span class="sxs-lookup"><span data-stu-id="c6550-143">A <xref:System.ComponentModel.Composition.Hosting.CompositionContainer> object that can be accessed from multiple threads must set the `isThreadSafe` parameter to `true`.</span></span> <span data-ttu-id="c6550-144">效能將會稍微變慢時`isThreadSafe`是`true`，因此我們建議您將此參數設定為`false`在單一執行緒案例中。</span><span class="sxs-lookup"><span data-stu-id="c6550-144">Performance will be slightly slower when `isThreadSafe` is `true`, so we recommend that you set this parameter to `false` in single-threaded scenarios.</span></span> <span data-ttu-id="c6550-145">預設值為 `false`。</span><span class="sxs-lookup"><span data-stu-id="c6550-145">The default is `false`.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentException">
-          <span data-ttu-id="c6550-146">
-            <paramref name="providers" /> 的一個或多個項目為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-146">One or more elements of <paramref name="providers" /> are <see langword="null" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public CompositionContainer (System.ComponentModel.Composition.Primitives.ComposablePartCatalog catalog, System.ComponentModel.Composition.Hosting.CompositionOptions compositionOptions, params System.ComponentModel.Composition.Hosting.ExportProvider[] providers);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.ComponentModel.Composition.Primitives.ComposablePartCatalog catalog, valuetype System.ComponentModel.Composition.Hosting.CompositionOptions compositionOptions, class System.ComponentModel.Composition.Hosting.ExportProvider[] providers) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.ComponentModel.Composition.Hosting.CompositionOptions,System.ComponentModel.Composition.Hosting.ExportProvider[])" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; CompositionContainer(System::ComponentModel::Composition::Primitives::ComposablePartCatalog ^ catalog, System::ComponentModel::Composition::Hosting::CompositionOptions compositionOptions, ... cli::array &lt;System::ComponentModel::Composition::Hosting::ExportProvider ^&gt; ^ providers);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="catalog" Type="System.ComponentModel.Composition.Primitives.ComposablePartCatalog" />
-        <Parameter Name="compositionOptions" Type="System.ComponentModel.Composition.Hosting.CompositionOptions" />
-        <Parameter Name="providers" Type="System.ComponentModel.Composition.Hosting.ExportProvider[]">
-          <Attributes>
-            <Attribute>
-              <AttributeName>System.ParamArray</AttributeName>
-            </Attribute>
-          </Attributes>
-        </Parameter>
-      </Parameters>
-      <Docs>
-        <param name="catalog">
-          <span data-ttu-id="c6550-147">一個目錄，提供 <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> 物件給 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-147">A catalog that provides <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> objects to the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" />.</span>
-          </span>
-        </param>
-        <param name="compositionOptions">
-          <span data-ttu-id="c6550-148">指定影響容器行為之選項的物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-148">An object that specifies options that affect the behavior of the container.</span>
-          </span>
-        </param>
-        <param name="providers">
-          <span data-ttu-id="c6550-149">
-            <see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /> 物件的陣列，這些物件可提供 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 對 <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> 物件的存取，或 <see langword="null" /> 以將 <see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /> 設為空白的 <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-149">An array of <see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /> objects that provide the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> access to <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> objects, or <see langword="null" /> to set <see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /> to an empty <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" />.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="c6550-150">使用指定的目錄、選項和匯出提供者，初始化 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 類別的新執行個體。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-150">Initializes a new instance of the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> class with the specified catalog, options, and export providers.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentException">
-          <span data-ttu-id="c6550-151">
-            <paramref name="providers" /> 包含是 <see langword="null" /> 的項目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-151">
-              <paramref name="providers" /> contains an element that is <see langword="null" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="Catalog">
-      <MemberSignature Language="C#" Value="public System.ComponentModel.Composition.Primitives.ComposablePartCatalog Catalog { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.ComponentModel.Composition.Primitives.ComposablePartCatalog Catalog" />
-      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Catalog" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Catalog As ComposablePartCatalog" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ComponentModel::Composition::Primitives::ComposablePartCatalog ^ Catalog { System::ComponentModel::Composition::Primitives::ComposablePartCatalog ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.ComponentModel.Composition.Primitives.ComposablePartCatalog</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="c6550-152">取得 <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog" />，其可提供容器對 <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> 物件的存取。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-152">Gets the <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog" /> that provides the container access to <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> objects.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="c6550-153">目錄，可提供 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 對從 <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePart" /> 物件產生之匯出的存取。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-153">The catalog that provides the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> access to exports produced from <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePart" /> objects.</span>
-          </span>
-          <span data-ttu-id="c6550-154">預設值為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-154">The default is <see langword="null" />.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ObjectDisposedException">
-          <span data-ttu-id="c6550-155">
-            <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 物件已經處置。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-155">The <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> object has been disposed of.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="Compose">
-      <MemberSignature Language="C#" Value="public void Compose (System.ComponentModel.Composition.Hosting.CompositionBatch batch);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Compose(class System.ComponentModel.Composition.Hosting.CompositionBatch batch) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose(System.ComponentModel.Composition.Hosting.CompositionBatch)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Compose (batch As CompositionBatch)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Compose(System::ComponentModel::Composition::Hosting::CompositionBatch ^ batch);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="batch" Type="System.ComponentModel.Composition.Hosting.CompositionBatch" />
-      </Parameters>
-      <Docs>
-        <param name="batch">
-          <span data-ttu-id="c6550-156">變更 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 以在撰寫期間納入。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-156">Changes to the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> to include during the composition.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="c6550-157">在容器中加入或移除指定之 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionBatch" /> 的組件，然後執行撰寫。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-157">Adds or removes the parts in the specified <see cref="T:System.ComponentModel.Composition.Hosting.CompositionBatch" /> from the container and executes composition.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="c6550-158">這個方法是直接加入或移除從容器組件的主要方法。</span><span class="sxs-lookup"><span data-stu-id="c6550-158">This method is the primary way of directly adding or removing parts from the container.</span></span> <span data-ttu-id="c6550-159"><xref:System.ComponentModel.Composition.Hosting.CompositionContainer>一定會維持穩定、 組成的狀態。</span><span class="sxs-lookup"><span data-stu-id="c6550-159">The <xref:System.ComponentModel.Composition.Hosting.CompositionContainer> will always maintain a stable, composed state.</span></span> <span data-ttu-id="c6550-160">因此，呼叫<xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A>為空白<xref:System.ComponentModel.Composition.Hosting.CompositionBatch>不一定要開始撰寫。</span><span class="sxs-lookup"><span data-stu-id="c6550-160">Therefore, calling <xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A> with an empty <xref:System.ComponentModel.Composition.Hosting.CompositionBatch> is never necessary to start composition.</span></span> <span data-ttu-id="c6550-161">請改為呼叫<xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A>方法，每當您需要將變更的部分，來提供給<xref:System.ComponentModel.Composition.Hosting.CompositionContainer>。</span><span class="sxs-lookup"><span data-stu-id="c6550-161">Instead, call the <xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A> method whenever you need to make changes to the parts available to the <xref:System.ComponentModel.Composition.Hosting.CompositionContainer>.</span></span>  
-  
- <span data-ttu-id="c6550-162"><xref:System.ComponentModel.Composition.Hosting.CompositionBatch>只能包含組件可加入和移除的組件。</span><span class="sxs-lookup"><span data-stu-id="c6550-162">The <xref:System.ComponentModel.Composition.Hosting.CompositionBatch> can contain both parts to be added and parts to be removed.</span></span>  <span data-ttu-id="c6550-163">重新編輯畫就會進行一次只能每次呼叫<xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A>。</span><span class="sxs-lookup"><span data-stu-id="c6550-163">Recomposition will take place only once for each call to <xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A>.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="c6550-164">在這個簡單的範例中，三個部分會建立並新增到<xref:System.ComponentModel.Composition.Hosting.CompositionContainer>，並擷取要顯示的所有匯入已填入一個組件。</span><span class="sxs-lookup"><span data-stu-id="c6550-164">In this simple example, three parts are created and added to the <xref:System.ComponentModel.Composition.Hosting.CompositionContainer>, and one part is retrieved to show that all imports have been filled.</span></span> <span data-ttu-id="c6550-165">這個範例會使用屬性化程式設計模型。</span><span class="sxs-lookup"><span data-stu-id="c6550-165">This example uses the Attributed Programming Model.</span></span>  
-  
- [!code-csharp[Composition.CompositionContainer.Compose#1](~/samples/snippets/csharp/VS_Snippets_Misc/composition.compositioncontainer.compose/cs/program.cs#1)]
- [!code-vb[Composition.CompositionContainer.Compose#1](~/samples/snippets/visualbasic/VS_Snippets_Misc/composition.compositioncontainer.compose/vb/module1.vb#1)]  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <MemberGroup MemberName="Dispose">
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary>
-          <span data-ttu-id="c6550-166">釋放 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 使用的資源。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-166">Releases the resources used by the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" />.</span>
-          </span>
-        </summary>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName="Dispose">
-      <MemberSignature Language="C#" Value="public void Dispose ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dispose() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Dispose" />
-      <MemberSignature Language="VB.NET" Value="Public Sub Dispose ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Dispose();" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>
-          <span data-ttu-id="c6550-167">將 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 類別目前的執行個體所使用的資源全部釋出。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-167">Releases all resources used by the current instance of the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> class.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="c6550-168">`Dispose` 使用完畢時，請呼叫 <xref:System.ComponentModel.Composition.Hosting.CompositionContainer>。</span><span class="sxs-lookup"><span data-stu-id="c6550-168">Call `Dispose` when you are finished using the <xref:System.ComponentModel.Composition.Hosting.CompositionContainer>.</span></span> <span data-ttu-id="c6550-169">`Dispose` 方法會將 <xref:System.ComponentModel.Composition.Hosting.CompositionContainer> 保留在無法使用的狀態。</span><span class="sxs-lookup"><span data-stu-id="c6550-169">The `Dispose` method leaves the <xref:System.ComponentModel.Composition.Hosting.CompositionContainer> in an unusable state.</span></span> <span data-ttu-id="c6550-170">在呼叫`Dispose`，您必須釋放所有參考<xref:System.ComponentModel.Composition.Hosting.CompositionContainer>讓記憶體回收行程可以回收記憶體的<xref:System.ComponentModel.Composition.Hosting.CompositionContainer>所佔用。</span><span class="sxs-lookup"><span data-stu-id="c6550-170">After calling `Dispose`, you must release all references to the <xref:System.ComponentModel.Composition.Hosting.CompositionContainer> so the garbage collector can reclaim the memory that the <xref:System.ComponentModel.Composition.Hosting.CompositionContainer> was occupying.</span></span>  
-  
- <span data-ttu-id="c6550-171">如需詳細資訊，請參閱[清除 Unmanaged 資源上](~/docs/standard/garbage-collection/unmanaged.md)和[實作 Dispose 方法](~/docs/standard/garbage-collection/implementing-dispose.md)。</span><span class="sxs-lookup"><span data-stu-id="c6550-171">For more information, see [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md) and [Implementing a Dispose Method](~/docs/standard/garbage-collection/implementing-dispose.md).</span></span>  
-  
-> [!NOTE]
->  <span data-ttu-id="c6550-172">在您釋放最後一個 `Dispose` 參考之前，請務必呼叫 <xref:System.ComponentModel.Composition.Hosting.CompositionContainer>。</span><span class="sxs-lookup"><span data-stu-id="c6550-172">Always call `Dispose` before you release your last reference to the <xref:System.ComponentModel.Composition.Hosting.CompositionContainer>.</span></span> <span data-ttu-id="c6550-173">否則工作窗格所使用的資源不會釋放，直到記憶體回收行程呼叫 <xref:System.ComponentModel.Composition.Hosting.CompositionContainer> 物件的 `Finalize` 方法。</span><span class="sxs-lookup"><span data-stu-id="c6550-173">Otherwise, the resources it is using will not be freed until the garbage collector calls the <xref:System.ComponentModel.Composition.Hosting.CompositionContainer> object's `Finalize` method.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Dispose">
-      <MemberSignature Language="C#" Value="protected virtual void Dispose (bool disposing);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void Dispose(bool disposing) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Dispose(System.Boolean)" />
-      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub Dispose (disposing As Boolean)" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void Dispose(bool disposing);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="disposing" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="disposing">
-          <span data-ttu-id="c6550-174">
-            <see langword="true" /> 表示釋放 Managed 和 Unmanaged 資源，<see langword="false" /> 則表示只釋放 Unmanaged 資源。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-174">
-              <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="c6550-175">釋放 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 所使用的 Unmanaged 資源，並選擇性地釋放 Managed 資源。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-175">Releases the unmanaged resources used by the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> and optionally releases the managed resources.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetExportsCore">
-      <MemberSignature Language="C#" Value="protected override System.Collections.Generic.IEnumerable&lt;System.ComponentModel.Composition.Primitives.Export&gt; GetExportsCore (System.ComponentModel.Composition.Primitives.ImportDefinition definition, System.ComponentModel.Composition.Hosting.AtomicComposition atomicComposition);" />
-      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance class System.Collections.Generic.IEnumerable`1&lt;class System.ComponentModel.Composition.Primitives.Export&gt; GetExportsCore(class System.ComponentModel.Composition.Primitives.ImportDefinition definition, class System.ComponentModel.Composition.Hosting.AtomicComposition atomicComposition) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.GetExportsCore(System.ComponentModel.Composition.Primitives.ImportDefinition,System.ComponentModel.Composition.Hosting.AtomicComposition)" />
-      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override System::Collections::Generic::IEnumerable&lt;System::ComponentModel::Composition::Primitives::Export ^&gt; ^ GetExportsCore(System::ComponentModel::Composition::Primitives::ImportDefinition ^ definition, System::ComponentModel::Composition::Hosting::AtomicComposition ^ atomicComposition);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.Generic.IEnumerable&lt;System.ComponentModel.Composition.Primitives.Export&gt;</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="definition" Type="System.ComponentModel.Composition.Primitives.ImportDefinition" />
-        <Parameter Name="atomicComposition" Type="System.ComponentModel.Composition.Hosting.AtomicComposition" />
-      </Parameters>
-      <Docs>
-        <param name="definition">
-          <span data-ttu-id="c6550-176">物件，此物件會定義要取得之 <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> 物件的條件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-176">The object that defines the conditions of the <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> objects to get.</span>
-          </span>
-        </param>
-        <param name="atomicComposition">
-          <span data-ttu-id="c6550-177">要使用的撰寫異動，<see langword="null" /> 則表示停用撰寫異動。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-177">The composition transaction to use, or <see langword="null" /> to disable transactional composition.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="c6550-178">傳回符合指定 <see cref="T:System.ComponentModel.Composition.Primitives.ImportDefinition" /> 物件之條件的所有匯出集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-178">Returns a collection of all exports that match the conditions in the specified <see cref="T:System.ComponentModel.Composition.Primitives.ImportDefinition" /> object.</span>
-          </span>
-        </summary>
-        <returns>
-          <span data-ttu-id="c6550-179">此 <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> 物件中符合 <paramref name="definition" /> 指定之條件的所有 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 物件的集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-179">A collection of all the <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> objects in this <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> object that match the conditions specified by <paramref name="definition" />.</span>
-          </span>
-        </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="c6550-180">實作不應該將基數相關不符視為錯誤，且不應該擲回例外狀況的基數相關不符。</span><span class="sxs-lookup"><span data-stu-id="c6550-180">Implementations should not treat cardinality-related mismatches as errors and should not throw exceptions for cardinality-related mismatches.</span></span> <span data-ttu-id="c6550-181">例如，如果匯入要求一個匯出，而且提供者沒有相符的匯出或多個<xref:System.ComponentModel.Composition.Hosting.CompositionContainer.GetExportsCore%2A>方法應傳回空<xref:System.Collections.Generic.IEnumerable%601>集合<xref:System.ComponentModel.Composition.Primitives.Export>物件。</span><span class="sxs-lookup"><span data-stu-id="c6550-181">For example, if the import requests exactly one export and the provider has either no matching exports or more than one, the <xref:System.ComponentModel.Composition.Hosting.CompositionContainer.GetExportsCore%2A> method should return an empty <xref:System.Collections.Generic.IEnumerable%601> collection of <xref:System.ComponentModel.Composition.Primitives.Export> objects.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Providers">
-      <MemberSignature Language="C#" Value="public System.Collections.ObjectModel.ReadOnlyCollection&lt;System.ComponentModel.Composition.Hosting.ExportProvider&gt; Providers { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.ObjectModel.ReadOnlyCollection`1&lt;class System.ComponentModel.Composition.Hosting.ExportProvider&gt; Providers" />
-      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Providers As ReadOnlyCollection(Of ExportProvider)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::ObjectModel::ReadOnlyCollection&lt;System::ComponentModel::Composition::Hosting::ExportProvider ^&gt; ^ Providers { System::Collections::ObjectModel::ReadOnlyCollection&lt;System::ComponentModel::Composition::Hosting::ExportProvider ^&gt; ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Collections.ObjectModel.ReadOnlyCollection&lt;System.ComponentModel.Composition.Hosting.ExportProvider&gt;</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>
-          <span data-ttu-id="c6550-182">取得匯出提供者，這些提供者可提供容器對額外 <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog" /> 物件的存取。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-182">Gets the export providers that provide the container access to additional <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog" /> objects.</span>
-          </span>
-        </summary>
-        <value>
-          <span data-ttu-id="c6550-183">
-            <see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /> 物件的集合，這些物件可提供 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 對額外 <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> 物件的存取。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-183">A collection of <see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /> objects that provide the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> access to additional <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> objects.</span>
-          </span>
-          <span data-ttu-id="c6550-184">預設為空的 <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-184">The default is an empty <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" />.</span>
-          </span>
-        </value>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ObjectDisposedException">
-          <span data-ttu-id="c6550-185">
-            <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 已經過處置。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-185">The <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> has been disposed of.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="ReleaseExport">
-      <MemberSignature Language="C#" Value="public void ReleaseExport (System.ComponentModel.Composition.Primitives.Export export);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ReleaseExport(class System.ComponentModel.Composition.Primitives.Export export) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport(System.ComponentModel.Composition.Primitives.Export)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ReleaseExport(System::ComponentModel::Composition::Primitives::Export ^ export);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="export" Type="System.ComponentModel.Composition.Primitives.Export" />
-      </Parameters>
-      <Docs>
-        <param name="export">
-          <span data-ttu-id="c6550-186">需要釋放的 <see cref="T:System.ComponentModel.Composition.Primitives.Export" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-186">The <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> that needs to be released.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="c6550-187">從 <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> 釋放指定的 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-187">Releases the specified <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> object from the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" />.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="c6550-188">這個方法的行為會視實作而不同<xref:System.ComponentModel.Composition.Hosting.ExportProvider>產生<xref:System.ComponentModel.Composition.Primitives.Export>執行個體。</span><span class="sxs-lookup"><span data-stu-id="c6550-188">The behavior of this method may vary depending on the implementation of the <xref:System.ComponentModel.Composition.Hosting.ExportProvider> that produced the <xref:System.ComponentModel.Composition.Primitives.Export> instance.</span></span> <span data-ttu-id="c6550-189">一般而言，應該從容器卸離非共用的匯出。</span><span class="sxs-lookup"><span data-stu-id="c6550-189">As a rule, non-shared exports should be detached from the container.</span></span>  
-  
- <span data-ttu-id="c6550-190">例如，<xref:System.ComponentModel.Composition.Hosting.CatalogExportProvider>將只發行<xref:System.ComponentModel.Composition.Primitives.Export>如果它來自<xref:System.ComponentModel.Composition.Primitives.ComposablePart>，在建構<xref:System.ComponentModel.Composition.CreationPolicy.NonShared>內容。</span><span class="sxs-lookup"><span data-stu-id="c6550-190">For example, the <xref:System.ComponentModel.Composition.Hosting.CatalogExportProvider> will only release an <xref:System.ComponentModel.Composition.Primitives.Export> if it comes from a <xref:System.ComponentModel.Composition.Primitives.ComposablePart> that was constructed under a <xref:System.ComponentModel.Composition.CreationPolicy.NonShared> context.</span></span> <span data-ttu-id="c6550-191">在此內容中的發行是指的相依性鏈結的<xref:System.ComponentModel.Composition.Primitives.Export>卸離為容器，並呼叫從參考的物件`Dispose`上<xref:System.ComponentModel.Composition.Primitives.ComposablePart>物件所需。</span><span class="sxs-lookup"><span data-stu-id="c6550-191">Release in this context means walking the dependency chain of the <xref:System.ComponentModel.Composition.Primitives.Export> objects, detaching references from the container and calling `Dispose` on the <xref:System.ComponentModel.Composition.Primitives.ComposablePart> objects as needed.</span></span> <span data-ttu-id="c6550-192">如果<xref:System.ComponentModel.Composition.Primitives.Export>下建構<xref:System.ComponentModel.Composition.CreationPolicy.Shared>內容<xref:System.ComponentModel.Composition.Hosting.CatalogExportProvider>會執行任何動作，以指定<xref:System.ComponentModel.Composition.Primitives.Export>可能正由其他要求者。</span><span class="sxs-lookup"><span data-stu-id="c6550-192">If the <xref:System.ComponentModel.Composition.Primitives.Export> was constructed under a <xref:System.ComponentModel.Composition.CreationPolicy.Shared> context the <xref:System.ComponentModel.Composition.Hosting.CatalogExportProvider> will do nothing, as the specified <xref:System.ComponentModel.Composition.Primitives.Export> may being used by other requestors.</span></span> <span data-ttu-id="c6550-193">這些將只能卸離容器本身處置時。</span><span class="sxs-lookup"><span data-stu-id="c6550-193">Those will only be detached when the container is itself disposed.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="c6550-194">
-            <paramref name="export" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-194">
-              <paramref name="export" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="ReleaseExport&lt;T&gt;">
-      <MemberSignature Language="C#" Value="public void ReleaseExport&lt;T&gt; (Lazy&lt;T&gt; export);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ReleaseExport&lt;T&gt;(class System.Lazy`1&lt;!!T&gt; export) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport``1(System.Lazy{``0})" />
-      <MemberSignature Language="VB.NET" Value="Public Sub ReleaseExport(Of T) (export As Lazy(Of T))" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename T&gt;&#xA; void ReleaseExport(Lazy&lt;T&gt; ^ export);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T" />
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="export" Type="System.Lazy&lt;T&gt;" />
-      </Parameters>
-      <Docs>
-        <typeparam name="T">
-          <span data-ttu-id="c6550-195">匯出的類型。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-195">The type of the export.</span>
-          </span>
-        </typeparam>
-        <param name="export">
-          <span data-ttu-id="c6550-196">要移除之匯出的間接參考。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-196">An indirect reference to the export to remove.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="c6550-197">從複合移除指定的匯出結果，可能的話，亦釋放其資源。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-197">Removes the specified export from composition and releases its resources if possible.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ReleaseExports">
-      <MemberSignature Language="C#" Value="public void ReleaseExports (System.Collections.Generic.IEnumerable&lt;System.ComponentModel.Composition.Primitives.Export&gt; exports);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ReleaseExports(class System.Collections.Generic.IEnumerable`1&lt;class System.ComponentModel.Composition.Primitives.Export&gt; exports) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports(System.Collections.Generic.IEnumerable{System.ComponentModel.Composition.Primitives.Export})" />
-      <MemberSignature Language="VB.NET" Value="Public Sub ReleaseExports (exports As IEnumerable(Of Export))" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ReleaseExports(System::Collections::Generic::IEnumerable&lt;System::ComponentModel::Composition::Primitives::Export ^&gt; ^ exports);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="exports" Type="System.Collections.Generic.IEnumerable&lt;System.ComponentModel.Composition.Primitives.Export&gt;" />
-      </Parameters>
-      <Docs>
-        <param name="exports">
-          <span data-ttu-id="c6550-198">要釋放的 <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> 物件集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-198">A collection of <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> objects to be released.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="c6550-199">從 <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> 釋放一組 <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 物件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-199">Releases a set of <see cref="T:System.ComponentModel.Composition.Primitives.Export" /> objects from the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" />.</span>
-          </span>
-        </summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="c6550-200">這個方法的行為會在其中的內容視<xref:System.ComponentModel.Composition.Primitives.Export>建構。</span><span class="sxs-lookup"><span data-stu-id="c6550-200">The behavior of this method may vary depending on the context in which the <xref:System.ComponentModel.Composition.Primitives.Export> was constructed.</span></span> <span data-ttu-id="c6550-201">如需詳細資訊，請參閱 <xref:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport%2A> 方法。</span><span class="sxs-lookup"><span data-stu-id="c6550-201">For more information, see the <xref:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport%2A> method.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="c6550-202">
-            <paramref name="exports" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-202">
-              <paramref name="exports" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentException">
-          <span data-ttu-id="c6550-203">
-            <paramref name="exports" /> 包含是 <see langword="null" /> 的項目。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-203">
-              <paramref name="exports" /> contains an element that is <see langword="null" />.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-    <Member MemberName="ReleaseExports&lt;T&gt;">
-      <MemberSignature Language="C#" Value="public void ReleaseExports&lt;T&gt; (System.Collections.Generic.IEnumerable&lt;Lazy&lt;T&gt;&gt; exports);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ReleaseExports&lt;T&gt;(class System.Collections.Generic.IEnumerable`1&lt;class System.Lazy`1&lt;!!T&gt;&gt; exports) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports``1(System.Collections.Generic.IEnumerable{System.Lazy{``0}})" />
-      <MemberSignature Language="VB.NET" Value="Public Sub ReleaseExports(Of T) (exports As IEnumerable(Of Lazy(Of T)))" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename T&gt;&#xA; void ReleaseExports(System::Collections::Generic::IEnumerable&lt;Lazy&lt;T&gt; ^&gt; ^ exports);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T" />
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="exports" Type="System.Collections.Generic.IEnumerable&lt;System.Lazy&lt;T&gt;&gt;" />
-      </Parameters>
-      <Docs>
-        <typeparam name="T">
-          <span data-ttu-id="c6550-204">匯出的型別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-204">The type of the exports.</span>
-          </span>
-        </typeparam>
-        <param name="exports">
-          <span data-ttu-id="c6550-205">要移除之匯出的間接參考集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-205">A collection of indirect references to the exports to be removed.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="c6550-206">從複合移除匯出結果的集合，可能的話，亦釋放其資源。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-206">Removes a collection of exports from composition and releases their resources if possible.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="ReleaseExports&lt;T,TMetadataView&gt;">
-      <MemberSignature Language="C#" Value="public void ReleaseExports&lt;T,TMetadataView&gt; (System.Collections.Generic.IEnumerable&lt;Lazy&lt;T,TMetadataView&gt;&gt; exports);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ReleaseExports&lt;T, TMetadataView&gt;(class System.Collections.Generic.IEnumerable`1&lt;class System.Lazy`2&lt;!!T, !!TMetadataView&gt;&gt; exports) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports``2(System.Collections.Generic.IEnumerable{System.Lazy{``0,``1}})" />
-      <MemberSignature Language="VB.NET" Value="Public Sub ReleaseExports(Of T, TMetadataView) (exports As IEnumerable(Of Lazy(Of T, TMetadataView)))" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename T, typename TMetadataView&gt;&#xA; void ReleaseExports(System::Collections::Generic::IEnumerable&lt;Lazy&lt;T, TMetadataView&gt; ^&gt; ^ exports);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <TypeParameters>
-        <TypeParameter Name="T" />
-        <TypeParameter Name="TMetadataView" />
-      </TypeParameters>
-      <Parameters>
-        <Parameter Name="exports" Type="System.Collections.Generic.IEnumerable&lt;System.Lazy&lt;T,TMetadataView&gt;&gt;" />
-      </Parameters>
-      <Docs>
-        <typeparam name="T">
-          <span data-ttu-id="c6550-207">匯出的型別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-207">The type of the exports.</span>
-          </span>
-        </typeparam>
-        <typeparam name="TMetadataView">
-          <span data-ttu-id="c6550-208">匯出之中繼資料檢視的型別。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-208">The type of the exports' metadata view.</span>
-          </span>
-        </typeparam>
-        <param name="exports">
-          <span data-ttu-id="c6550-209">要移除之匯出的間接參考集合和其中繼資料。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-209">A collection of indirect references to the exports to be removed and their metadata.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="c6550-210">從複合移除匯出結果的集合，可能的話，亦釋放其資源。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-210">Removes a collection of exports from composition and releases their resources if possible.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="SatisfyImportsOnce">
-      <MemberSignature Language="C#" Value="public void SatisfyImportsOnce (System.ComponentModel.Composition.Primitives.ComposablePart part);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SatisfyImportsOnce(class System.ComponentModel.Composition.Primitives.ComposablePart part) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Composition.Hosting.CompositionContainer.SatisfyImportsOnce(System.ComponentModel.Composition.Primitives.ComposablePart)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub SatisfyImportsOnce (part As ComposablePart)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void SatisfyImportsOnce(System::ComponentModel::Composition::Primitives::ComposablePart ^ part);" />
-      <MemberType>Method</MemberType>
-      <Implements>
-        <InterfaceMember>M:System.ComponentModel.Composition.ICompositionService.SatisfyImportsOnce(System.ComponentModel.Composition.Primitives.ComposablePart)</InterfaceMember>
-      </Implements>
-      <AssemblyInfo>
-        <AssemblyName>System.ComponentModel.Composition</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="part" Type="System.ComponentModel.Composition.Primitives.ComposablePart" />
-      </Parameters>
-      <Docs>
-        <param name="part">
-          <span data-ttu-id="c6550-211">要滿足其匯入的組件。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-211">The part to satisfy the imports of.</span>
-          </span>
-        </param>
-        <summary>
-          <span data-ttu-id="c6550-212">滿足指定之 <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePart" /> 物件的匯入，而不需註冊重新撰寫。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-212">Satisfies the imports of the specified <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePart" /> object without registering it for recomposition.</span>
-          </span>
-        </summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ObjectDisposedException">
-          <span data-ttu-id="c6550-213">
-            <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> 物件已經處置。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-213">The <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /> object has been disposed of.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="c6550-214">
-            <paramref name="part" /> 為 <see langword="null" />。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-214">
-              <paramref name="part" /> is <see langword="null" />.</span>
-          </span>
-        </exception>
-        <exception cref="T:System.ComponentModel.Composition.CompositionException">
-          <span data-ttu-id="c6550-215">在撰寫期間發生錯誤。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-215">An error occurred during composition.</span>
-          </span>
-          <span data-ttu-id="c6550-216">
-            <see cref="P:System.ComponentModel.Composition.CompositionException.Errors" /> 將包含發生之錯誤的集合。</span>
-          <span class="sxs-lookup">
-            <span data-stu-id="c6550-216">
-              <see cref="P:System.ComponentModel.Composition.CompositionException.Errors" /> will contain a collection of the errors that occurred.</span>
-          </span>
-        </exception>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="CompositionContainer.xml" source-language="en-US" target-language="zh-TW">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-15c36f0" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">02cd5861-7ce2-4a82-b358-31f8435a0ac5531be8b9445e82ab2acefc549474a24be1a166d3.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">531be8b9445e82ab2acefc549474a24be1a166d3</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">04/03/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7,xamarinandroid-7.1,xamarinios-10.8,xamarinmac-3.0</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>Manages the composition of parts.</source>
+          <target state="translated">管理組件的撰寫。</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>A <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph> object serves two major purposes in an application.</source>
+          <target state="translated">A<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>物件會有兩種主要的目的應用程式中。</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>First, it keeps track of which parts are available for composition and what their dependencies are, and performs composition whenever the set of available parts changes.</source>
+          <target state="translated">首先，它會追蹤的哪些部分可供組合，而且它們的相依性是什麼，並執行組合時的可用設定組件的變更。</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>Second, it provides the methods by which the application gets instances of composed parts or fills the dependencies of a composable part.</source>
+          <target state="translated">第二，它會提供應用程式取得組成組件的執行個體或填滿可組合的組件的相依性的方法。</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>This type implements the <ph id="ph1">&lt;xref:System.IDisposable&gt;</ph> interface.</source>
+          <target state="translated">此類型會實作<ph id="ph1">&lt;xref:System.IDisposable&gt;</ph>介面。</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>When you have finished using the type, you should dispose of it either directly or indirectly.</source>
+          <target state="translated">當您完成使用類型時，您應該會處置它直接或間接。</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>To dispose of the type directly, call its <ph id="ph1">&lt;xref:System.IDisposable.Dispose%2A&gt;</ph> method in a <ph id="ph2">`try`</ph><ph id="ph3">/</ph><ph id="ph4">`catch`</ph> block.</source>
+          <target state="translated">若要直接處置的類型，呼叫其<ph id="ph1">&lt;xref:System.IDisposable.Dispose%2A&gt;</ph>方法中的<ph id="ph2">`try`</ph> <ph id="ph3">/</ph> <ph id="ph4">`catch`</ph>區塊。</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>To dispose of it indirectly, use a language construct such as <ph id="ph1">`using`</ph> (in C#) or <ph id="ph2">`Using`</ph> (in Visual Basic).</source>
+          <target state="translated">若要為其配置間接，使用語言建構例如<ph id="ph1">`using`</ph>（C# 中） 或<ph id="ph2">`Using`</ph>（在 Visual Basic)。</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>For more information, see the "Using an Object that Implements IDisposable" section in the <ph id="ph1">&lt;xref:System.IDisposable&gt;</ph> interface topic.</source>
+          <target state="translated">如需詳細資訊，請參閱中的 「 使用物件的實作 IDisposable 」 一節<ph id="ph1">&lt;xref:System.IDisposable&gt;</ph>介面 &gt; 主題。</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>Parts can be made available to the container either directly or through the <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Catalog%2A&gt;</ph> property.</source>
+          <target state="translated">組件可供容器可以是直接或透過<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Catalog%2A&gt;</ph>屬性。</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>All the parts discoverable in this <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Primitives.ComposablePartCatalog&gt;</ph> are available to the container to fulfill imports, along with any parts added directly.</source>
+          <target state="translated">在此可以找到的所有部分<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Primitives.ComposablePartCatalog&gt;</ph>可用來完成匯入，以及直接新增任何組件的容器。</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>The <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A&gt;</ph> method allows instantiated parts to be added to an existing container.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A&gt;</ph>方法可讓具現化組件加入至現有的容器。</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>Assuming composition is successful, these parts will have their imports filled with parts retrieved from the container, and their exports will be available to other parts.</source>
+          <target state="translated">假設的組合成功，這些組件會有其填滿容器，從擷取的組件的匯入和匯出其可供其他組件。</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>Imports marked as recomposable will be registered for recomposition.</source>
+          <target state="translated">標示為 「 阻礙匯入將會重新編輯畫的登錄。</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>The <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.SatisfyImportsOnce%2A&gt;</ph> method allows a part to have its imports filled without being added to the container.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.SatisfyImportsOnce%2A&gt;</ph>方法允許將其匯入，而不被新增至容器填滿的一部分。</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>If the composition is successful, the part's imports will be filled, but the part's exports will not be available to other parts and no imports will be registered for recomposition.</source>
+          <target state="translated">如果組合是成功，組件的匯入將會填滿，但將無法使用其他部分組件的匯出和沒有匯入將會註冊重新編輯畫。</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source><ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph> objects should always be disposed.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph> 應一律處置物件。</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>When the <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Dispose%2A&gt;</ph> method is called, the <ph id="ph2">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph> object also disposes all the parts that it has created.</source>
+          <target state="translated">當<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Dispose%2A&gt;</ph>呼叫方法時，<ph id="ph2">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>物件也會處置它已建立的所有組件。</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>A <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph> object that can be accessed from multiple threads must be constructed with the <ph id="ph2">`isThreadSafe`</ph> parameter set to <ph id="ph3">`true`</ph>, using the <ph id="ph4">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.%23ctor%28System.ComponentModel.Composition.Primitives.ComposablePartCatalog%2CSystem.Boolean%2CSystem.ComponentModel.Composition.Hosting.ExportProvider%5B%5D%29&gt;</ph> constructor.</source>
+          <target state="translated">A<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>可從多個執行緒存取的物件必須以建構<ph id="ph2">`isThreadSafe`</ph>參數設定為<ph id="ph3">`true`</ph>，並使用<ph id="ph4">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.%23ctor%28System.ComponentModel.Composition.Primitives.ComposablePartCatalog%2CSystem.Boolean%2CSystem.ComponentModel.Composition.Hosting.ExportProvider%5B%5D%29&gt;</ph>建構函式。</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>Performance will be slightly slower when <ph id="ph1">`isThreadSafe`</ph> is <ph id="ph2">`true`</ph>, so we recommend that you set this parameter to <ph id="ph3">`false`</ph> in single-threaded scenarios.</source>
+          <target state="translated">效能將會稍微變慢時<ph id="ph1">`isThreadSafe`</ph>是<ph id="ph2">`true`</ph>，因此我們建議您將此參數設定為<ph id="ph3">`false`</ph>在單一執行緒案例中。</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>The default is <ph id="ph1">`false`</ph>.</source>
+          <target state="translated">預設值為 <ph id="ph1">`false`</ph>。</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>A <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph> should never import itself, or a part that has a reference to it.</source>
+          <target state="translated">A<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>本身，或具有它的參考組件，應該永遠不會匯入。</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>Such a reference could allow an untrusted part to gain access all the parts in the container.</source>
+          <target state="translated">這類的參考可能會允許不受信任的組件，才能存取容器中的所有組件。</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>In the following example, a <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph> object is initialized with a catalog and is used to fill the imports of a part.</source>
+          <target state="translated">在下列範例中，<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>物件初始化的類別目錄，用來填入匯入的組件。</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>This example uses the Attributed Programming Model.</source>
+          <target state="translated">這個範例會使用屬性化程式設計模型。</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> class.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> class.</source>
+          <target state="translated">初始化 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>An array of <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /&gt;</ph> objects that provide the <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> access to <ph id="ph3">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> objects, or <ph id="ph4">&lt;see langword="null" /&gt;</ph> to set <ph id="ph5">&lt;see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /&gt;</ph> to an empty <ph id="ph6">&lt;see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /&gt;</ph> 物件的陣列，這些物件可提供 <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 對 <ph id="ph3">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> 物件的存取，或 <ph id="ph4">&lt;see langword="null" /&gt;</ph> 以將 <ph id="ph5">&lt;see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /&gt;</ph> 設為空白的 <ph id="ph6">&lt;see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> class with the specified export providers.</source>
+          <target state="translated">使用指定的匯出提供者，初始化 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source><ph id="ph1">&lt;paramref name="providers" /&gt;</ph> contains an element that is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="providers" /&gt;</ph> 包含是 <ph id="ph2">&lt;see langword="null" /&gt;</ph> 的項目。</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Hosting.CompositionOptions,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>An object that specifies the behavior of this container.</source>
+          <target state="translated">指定這個容器行為的物件。</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Hosting.CompositionOptions,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>An array of <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /&gt;</ph> objects that provide the <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> access to <ph id="ph3">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> objects, or <ph id="ph4">&lt;see langword="null" /&gt;</ph> to set <ph id="ph5">&lt;see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /&gt;</ph> to an empty <ph id="ph6">&lt;see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /&gt;</ph> 物件的陣列，這些物件可提供 <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 對 <ph id="ph3">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> 物件的存取，或 <ph id="ph4">&lt;see langword="null" /&gt;</ph> 以將 <ph id="ph5">&lt;see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /&gt;</ph> 設為空白的 <ph id="ph6">&lt;see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Hosting.CompositionOptions,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> class with the specified export providers and options.</source>
+          <target state="translated">使用指定的匯出提供者和選項，初始化 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Hosting.CompositionOptions,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source><ph id="ph1">&lt;paramref name="providers" /&gt;</ph> contains an element that is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="providers" /&gt;</ph> 包含是 <ph id="ph2">&lt;see langword="null" /&gt;</ph> 的項目。</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>A catalog that provides <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> objects to the <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph>.</source>
+          <target state="translated">一個目錄，提供 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> 物件給 <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>An array of <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /&gt;</ph> objects that provide the <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> access to <ph id="ph3">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> objects, or <ph id="ph4">&lt;see langword="null" /&gt;</ph> to set <ph id="ph5">&lt;see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /&gt;</ph> to an empty <ph id="ph6">&lt;see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /&gt;</ph> 物件的陣列，這些物件可提供 <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 對 <ph id="ph3">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> 物件的存取，或 <ph id="ph4">&lt;see langword="null" /&gt;</ph> 以將 <ph id="ph5">&lt;see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /&gt;</ph> 設為空白的 <ph id="ph6">&lt;see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> class with the specified catalog and export providers.</source>
+          <target state="translated">使用指定的目錄和匯出提供者，初始化 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source><ph id="ph1">&lt;paramref name="providers" /&gt;</ph> contains an element that is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="providers" /&gt;</ph> 包含是 <ph id="ph2">&lt;see langword="null" /&gt;</ph> 的項目。</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.Boolean,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>A catalog that provides <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> objects to the <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph>.</source>
+          <target state="translated">一個目錄，提供 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> 物件給 <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.Boolean,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if this <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> object must be thread-safe; otherwise, <ph id="ph3">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated">如果這個 <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 物件必須是安全執行緒，則為 <ph id="ph1">&lt;see langword="true" /&gt;</ph>，否則為 <ph id="ph3">&lt;see langword="false" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.Boolean,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>An array of <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /&gt;</ph> objects that provide the <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> access to <ph id="ph3">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> objects, or <ph id="ph4">&lt;see langword="null" /&gt;</ph> to set the <ph id="ph5">&lt;see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /&gt;</ph> property to an empty <ph id="ph6">&lt;see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /&gt;</ph> 物件的陣列，這些物件可提供 <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 對 <ph id="ph3">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> 物件的存取，或 <ph id="ph4">&lt;see langword="null" /&gt;</ph> 以將 <ph id="ph5">&lt;see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /&gt;</ph> 屬性設為空白的 <ph id="ph6">&lt;see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.Boolean,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> class with the specified catalog, thread-safe mode, and export providers.</source>
+          <target state="translated">使用指定的目錄、安全執行緒模式和匯出提供者，初始化 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.Boolean,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>A <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph> object that can be accessed from multiple threads must set the <ph id="ph2">`isThreadSafe`</ph> parameter to <ph id="ph3">`true`</ph>.</source>
+          <target state="translated">A<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>可以從多個執行緒存取的物件必須設定<ph id="ph2">`isThreadSafe`</ph>參數<ph id="ph3">`true`</ph>。</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.Boolean,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>Performance will be slightly slower when <ph id="ph1">`isThreadSafe`</ph> is <ph id="ph2">`true`</ph>, so we recommend that you set this parameter to <ph id="ph3">`false`</ph> in single-threaded scenarios.</source>
+          <target state="translated">效能將會稍微變慢時<ph id="ph1">`isThreadSafe`</ph>是<ph id="ph2">`true`</ph>，因此我們建議您將此參數設定為<ph id="ph3">`false`</ph>在單一執行緒案例中。</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.Boolean,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>The default is <ph id="ph1">`false`</ph>.</source>
+          <target state="translated">預設值為 <ph id="ph1">`false`</ph>。</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.Boolean,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>One or more elements of <ph id="ph1">&lt;paramref name="providers" /&gt;</ph> are <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="providers" /&gt;</ph> 的一個或多個項目為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.ComponentModel.Composition.Hosting.CompositionOptions,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>A catalog that provides <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> objects to the <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph>.</source>
+          <target state="translated">一個目錄，提供 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> 物件給 <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.ComponentModel.Composition.Hosting.CompositionOptions,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>An object that specifies options that affect the behavior of the container.</source>
+          <target state="translated">指定影響容器行為之選項的物件。</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.ComponentModel.Composition.Hosting.CompositionOptions,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>An array of <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /&gt;</ph> objects that provide the <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> access to <ph id="ph3">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> objects, or <ph id="ph4">&lt;see langword="null" /&gt;</ph> to set <ph id="ph5">&lt;see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /&gt;</ph> to an empty <ph id="ph6">&lt;see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /&gt;</ph> 物件的陣列，這些物件可提供 <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 對 <ph id="ph3">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> 物件的存取，或 <ph id="ph4">&lt;see langword="null" /&gt;</ph> 以將 <ph id="ph5">&lt;see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers" /&gt;</ph> 設為空白的 <ph id="ph6">&lt;see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.ComponentModel.Composition.Hosting.CompositionOptions,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source>Initializes a new instance of the <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> class with the specified catalog, options, and export providers.</source>
+          <target state="translated">使用指定的目錄、選項和匯出提供者，初始化 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 類別的新執行個體。</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.#ctor(System.ComponentModel.Composition.Primitives.ComposablePartCatalog,System.ComponentModel.Composition.Hosting.CompositionOptions,System.ComponentModel.Composition.Hosting.ExportProvider[])">
+          <source><ph id="ph1">&lt;paramref name="providers" /&gt;</ph> contains an element that is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="providers" /&gt;</ph> 包含是 <ph id="ph2">&lt;see langword="null" /&gt;</ph> 的項目。</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" uid="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Catalog">
+          <source>Gets the <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog" /&gt;</ph> that provides the container access to <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> objects.</source>
+          <target state="translated">取得 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog" /&gt;</ph>，其可提供容器對 <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> 物件的存取。</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Catalog">
+          <source>The catalog that provides the <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> access to exports produced from <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Primitives.ComposablePart" /&gt;</ph> objects.</source>
+          <target state="translated">目錄，可提供 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 對從 <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Primitives.ComposablePart" /&gt;</ph> 物件產生之匯出的存取。</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Catalog">
+          <source>The default is <ph id="ph1">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated">預設值為 <ph id="ph1">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" uid="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Catalog">
+          <source>The <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> object has been disposed of.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 物件已經處置。</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose(System.ComponentModel.Composition.Hosting.CompositionBatch)">
+          <source>Changes to the <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> to include during the composition.</source>
+          <target state="translated">變更 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 以在撰寫期間納入。</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose(System.ComponentModel.Composition.Hosting.CompositionBatch)">
+          <source>Adds or removes the parts in the specified <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionBatch" /&gt;</ph> from the container and executes composition.</source>
+          <target state="translated">在容器中加入或移除指定之 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionBatch" /&gt;</ph> 的組件，然後執行撰寫。</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose(System.ComponentModel.Composition.Hosting.CompositionBatch)">
+          <source>This method is the primary way of directly adding or removing parts from the container.</source>
+          <target state="translated">這個方法是直接加入或移除從容器組件的主要方法。</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose(System.ComponentModel.Composition.Hosting.CompositionBatch)">
+          <source>The <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph> will always maintain a stable, composed state.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>一定會維持穩定、 組成的狀態。</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose(System.ComponentModel.Composition.Hosting.CompositionBatch)">
+          <source>Therefore, calling <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A&gt;</ph> with an empty <ph id="ph2">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionBatch&gt;</ph> is never necessary to start composition.</source>
+          <target state="translated">因此，呼叫<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A&gt;</ph>為空白<ph id="ph2">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionBatch&gt;</ph>不一定要開始撰寫。</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose(System.ComponentModel.Composition.Hosting.CompositionBatch)">
+          <source>Instead, call the <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A&gt;</ph> method whenever you need to make changes to the parts available to the <ph id="ph2">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>.</source>
+          <target state="translated">請改為呼叫<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A&gt;</ph>方法，每當您需要將變更的部分，來提供給<ph id="ph2">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose(System.ComponentModel.Composition.Hosting.CompositionBatch)">
+          <source>The <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionBatch&gt;</ph> can contain both parts to be added and parts to be removed.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionBatch&gt;</ph>只能包含組件可加入和移除的組件。</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose(System.ComponentModel.Composition.Hosting.CompositionBatch)">
+          <source>Recomposition will take place only once for each call to <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A&gt;</ph>.</source>
+          <target state="translated">重新編輯畫就會進行一次只能每次呼叫<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose%2A&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose(System.ComponentModel.Composition.Hosting.CompositionBatch)">
+          <source>In this simple example, three parts are created and added to the <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>, and one part is retrieved to show that all imports have been filled.</source>
+          <target state="translated">在這個簡單的範例中，三個部分會建立並新增到<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>，並擷取要顯示的所有匯入已填入一個組件。</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Compose(System.ComponentModel.Composition.Hosting.CompositionBatch)">
+          <source>This example uses the Attributed Programming Model.</source>
+          <target state="translated">這個範例會使用屬性化程式設計模型。</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" uid="T:System.ComponentModel.Composition.Hosting.CompositionContainer">
+          <source>Releases the resources used by the <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph>.</source>
+          <target state="translated">釋放 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 使用的資源。</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Dispose">
+          <source>Releases all resources used by the current instance of the <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> class.</source>
+          <target state="translated">將 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 類別目前的執行個體所使用的資源全部釋出。</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Dispose">
+          <source>Call <ph id="ph1">`Dispose`</ph> when you are finished using the <ph id="ph2">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">`Dispose`</ph> 使用完畢時，請呼叫 <ph id="ph2">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Dispose">
+          <source>The <ph id="ph1">`Dispose`</ph> method leaves the <ph id="ph2">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph> in an unusable state.</source>
+          <target state="translated"><ph id="ph1">`Dispose`</ph> 方法會將 <ph id="ph2">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph> 保留在無法使用的狀態。</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Dispose">
+          <source>After calling <ph id="ph1">`Dispose`</ph>, you must release all references to the <ph id="ph2">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph> so the garbage collector can reclaim the memory that the <ph id="ph3">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph> was occupying.</source>
+          <target state="translated">在呼叫<ph id="ph1">`Dispose`</ph>，您必須釋放所有參考<ph id="ph2">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>讓記憶體回收行程可以回收記憶體的<ph id="ph3">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>所佔用。</target>       </trans-unit>
+        <trans-unit id="171" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Dispose">
+          <source>For more information, see <bpt id="p1">[</bpt>Cleaning Up Unmanaged Resources<ept id="p1">](~/docs/standard/garbage-collection/unmanaged.md)</ept> and <bpt id="p2">[</bpt>Implementing a Dispose Method<ept id="p2">](~/docs/standard/garbage-collection/implementing-dispose.md)</ept>.</source>
+          <target state="translated">如需詳細資訊，請參閱<bpt id="p1">[</bpt>清除 Unmanaged 資源上<ept id="p1">](~/docs/standard/garbage-collection/unmanaged.md)</ept>和<bpt id="p2">[</bpt>實作 Dispose 方法<ept id="p2">](~/docs/standard/garbage-collection/implementing-dispose.md)</ept>。</target>       </trans-unit>
+        <trans-unit id="172" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Dispose">
+          <source>Always call <ph id="ph1">`Dispose`</ph> before you release your last reference to the <ph id="ph2">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>.</source>
+          <target state="translated">在您釋放最後一個 <ph id="ph1">`Dispose`</ph> 參考之前，請務必呼叫 <ph id="ph2">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="173" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Dispose">
+          <source>Otherwise, the resources it is using will not be freed until the garbage collector calls the <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph> object's <ph id="ph2">`Finalize`</ph> method.</source>
+          <target state="translated">否則工作窗格所使用的資源不會釋放，直到記憶體回收行程呼叫 <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer&gt;</ph> 物件的 <ph id="ph2">`Finalize`</ph> 方法。</target>       </trans-unit>
+        <trans-unit id="174" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Dispose(System.Boolean)">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> to release both managed and unmanaged resources; <ph id="ph2">&lt;see langword="false" /&gt;</ph> to release only unmanaged resources.</source>
+          <target state="translated"><ph id="ph1">&lt;see langword="true" /&gt;</ph> 表示釋放 Managed 和 Unmanaged 資源，<ph id="ph2">&lt;see langword="false" /&gt;</ph> 則表示只釋放 Unmanaged 資源。</target>       </trans-unit>
+        <trans-unit id="175" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.Dispose(System.Boolean)">
+          <source>Releases the unmanaged resources used by the <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> and optionally releases the managed resources.</source>
+          <target state="translated">釋放 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 所使用的 Unmanaged 資源，並選擇性地釋放 Managed 資源。</target>       </trans-unit>
+        <trans-unit id="176" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.GetExportsCore(System.ComponentModel.Composition.Primitives.ImportDefinition,System.ComponentModel.Composition.Hosting.AtomicComposition)">
+          <source>The object that defines the conditions of the <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> objects to get.</source>
+          <target state="translated">物件，此物件會定義要取得之 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> 物件的條件。</target>       </trans-unit>
+        <trans-unit id="177" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.GetExportsCore(System.ComponentModel.Composition.Primitives.ImportDefinition,System.ComponentModel.Composition.Hosting.AtomicComposition)">
+          <source>The composition transaction to use, or <ph id="ph1">&lt;see langword="null" /&gt;</ph> to disable transactional composition.</source>
+          <target state="translated">要使用的撰寫異動，<ph id="ph1">&lt;see langword="null" /&gt;</ph> 則表示停用撰寫異動。</target>       </trans-unit>
+        <trans-unit id="178" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.GetExportsCore(System.ComponentModel.Composition.Primitives.ImportDefinition,System.ComponentModel.Composition.Hosting.AtomicComposition)">
+          <source>Returns a collection of all exports that match the conditions in the specified <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.ImportDefinition" /&gt;</ph> object.</source>
+          <target state="translated">傳回符合指定 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.ImportDefinition" /&gt;</ph> 物件之條件的所有匯出集合。</target>       </trans-unit>
+        <trans-unit id="179" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.GetExportsCore(System.ComponentModel.Composition.Primitives.ImportDefinition,System.ComponentModel.Composition.Hosting.AtomicComposition)">
+          <source>A collection of all the <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> objects in this <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> object that match the conditions specified by <ph id="ph3">&lt;paramref name="definition" /&gt;</ph>.</source>
+          <target state="translated">此 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> 物件中符合 <ph id="ph3">&lt;paramref name="definition" /&gt;</ph> 指定之條件的所有 <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 物件的集合。</target>       </trans-unit>
+        <trans-unit id="180" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.GetExportsCore(System.ComponentModel.Composition.Primitives.ImportDefinition,System.ComponentModel.Composition.Hosting.AtomicComposition)">
+          <source>Implementations should not treat cardinality-related mismatches as errors and should not throw exceptions for cardinality-related mismatches.</source>
+          <target state="translated">實作不應該將基數相關不符視為錯誤，且不應該擲回例外狀況的基數相關不符。</target>       </trans-unit>
+        <trans-unit id="181" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.GetExportsCore(System.ComponentModel.Composition.Primitives.ImportDefinition,System.ComponentModel.Composition.Hosting.AtomicComposition)">
+          <source>For example, if the import requests exactly one export and the provider has either no matching exports or more than one, the <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.GetExportsCore%2A&gt;</ph> method should return an empty <ph id="ph2">&lt;xref:System.Collections.Generic.IEnumerable%601&gt;</ph> collection of <ph id="ph3">&lt;xref:System.ComponentModel.Composition.Primitives.Export&gt;</ph> objects.</source>
+          <target state="translated">例如，如果匯入要求一個匯出，而且提供者沒有相符的匯出或多個<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.GetExportsCore%2A&gt;</ph>方法應傳回空<ph id="ph2">&lt;xref:System.Collections.Generic.IEnumerable%601&gt;</ph>集合<ph id="ph3">&lt;xref:System.ComponentModel.Composition.Primitives.Export&gt;</ph>物件。</target>       </trans-unit>
+        <trans-unit id="182" translate="yes" xml:space="preserve" uid="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers">
+          <source>Gets the export providers that provide the container access to additional <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog" /&gt;</ph> objects.</source>
+          <target state="translated">取得匯出提供者，這些提供者可提供容器對額外 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog" /&gt;</ph> 物件的存取。</target>       </trans-unit>
+        <trans-unit id="183" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers">
+          <source>A collection of <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /&gt;</ph> objects that provide the <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> access to additional <ph id="ph3">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> objects.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.ExportProvider" /&gt;</ph> 物件的集合，這些物件可提供 <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 對額外 <ph id="ph3">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> 物件的存取。</target>       </trans-unit>
+        <trans-unit id="184" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers">
+          <source>The default is an empty <ph id="ph1">&lt;see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /&gt;</ph>.</source>
+          <target state="translated">預設為空的 <ph id="ph1">&lt;see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="185" translate="yes" xml:space="preserve" uid="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Providers">
+          <source>The <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> has been disposed of.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 已經過處置。</target>       </trans-unit>
+        <trans-unit id="186" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport(System.ComponentModel.Composition.Primitives.Export)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> that needs to be released.</source>
+          <target state="translated">需要釋放的 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="187" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport(System.ComponentModel.Composition.Primitives.Export)">
+          <source>Releases the specified <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> object from the <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph>.</source>
+          <target state="translated">從 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> 釋放指定的 <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 物件。</target>       </trans-unit>
+        <trans-unit id="188" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport(System.ComponentModel.Composition.Primitives.Export)">
+          <source>The behavior of this method may vary depending on the implementation of the <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.ExportProvider&gt;</ph> that produced the <ph id="ph2">&lt;xref:System.ComponentModel.Composition.Primitives.Export&gt;</ph> instance.</source>
+          <target state="translated">這個方法的行為會視實作而不同<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.ExportProvider&gt;</ph>產生<ph id="ph2">&lt;xref:System.ComponentModel.Composition.Primitives.Export&gt;</ph>執行個體。</target>       </trans-unit>
+        <trans-unit id="189" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport(System.ComponentModel.Composition.Primitives.Export)">
+          <source>As a rule, non-shared exports should be detached from the container.</source>
+          <target state="translated">一般而言，應該從容器卸離非共用的匯出。</target>       </trans-unit>
+        <trans-unit id="190" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport(System.ComponentModel.Composition.Primitives.Export)">
+          <source>For example, the <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CatalogExportProvider&gt;</ph> will only release an <ph id="ph2">&lt;xref:System.ComponentModel.Composition.Primitives.Export&gt;</ph> if it comes from a <ph id="ph3">&lt;xref:System.ComponentModel.Composition.Primitives.ComposablePart&gt;</ph> that was constructed under a <ph id="ph4">&lt;xref:System.ComponentModel.Composition.CreationPolicy.NonShared&gt;</ph> context.</source>
+          <target state="translated">例如，<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CatalogExportProvider&gt;</ph>將只發行<ph id="ph2">&lt;xref:System.ComponentModel.Composition.Primitives.Export&gt;</ph>如果它來自<ph id="ph3">&lt;xref:System.ComponentModel.Composition.Primitives.ComposablePart&gt;</ph>，在建構<ph id="ph4">&lt;xref:System.ComponentModel.Composition.CreationPolicy.NonShared&gt;</ph>內容。</target>       </trans-unit>
+        <trans-unit id="191" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport(System.ComponentModel.Composition.Primitives.Export)">
+          <source>Release in this context means walking the dependency chain of the <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Primitives.Export&gt;</ph> objects, detaching references from the container and calling <ph id="ph2">`Dispose`</ph> on the <ph id="ph3">&lt;xref:System.ComponentModel.Composition.Primitives.ComposablePart&gt;</ph> objects as needed.</source>
+          <target state="translated">在此內容中的發行是指的相依性鏈結的<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Primitives.Export&gt;</ph>卸離為容器，並呼叫從參考的物件<ph id="ph2">`Dispose`</ph>上<ph id="ph3">&lt;xref:System.ComponentModel.Composition.Primitives.ComposablePart&gt;</ph>物件所需。</target>       </trans-unit>
+        <trans-unit id="192" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport(System.ComponentModel.Composition.Primitives.Export)">
+          <source>If the <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Primitives.Export&gt;</ph> was constructed under a <ph id="ph2">&lt;xref:System.ComponentModel.Composition.CreationPolicy.Shared&gt;</ph> context the <ph id="ph3">&lt;xref:System.ComponentModel.Composition.Hosting.CatalogExportProvider&gt;</ph> will do nothing, as the specified <ph id="ph4">&lt;xref:System.ComponentModel.Composition.Primitives.Export&gt;</ph> may being used by other requestors.</source>
+          <target state="translated">如果<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Primitives.Export&gt;</ph>下建構<ph id="ph2">&lt;xref:System.ComponentModel.Composition.CreationPolicy.Shared&gt;</ph>內容<ph id="ph3">&lt;xref:System.ComponentModel.Composition.Hosting.CatalogExportProvider&gt;</ph>會執行任何動作，以指定<ph id="ph4">&lt;xref:System.ComponentModel.Composition.Primitives.Export&gt;</ph>可能正由其他要求者。</target>       </trans-unit>
+        <trans-unit id="193" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport(System.ComponentModel.Composition.Primitives.Export)">
+          <source>Those will only be detached when the container is itself disposed.</source>
+          <target state="translated">這些將只能卸離容器本身處置時。</target>       </trans-unit>
+        <trans-unit id="194" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport(System.ComponentModel.Composition.Primitives.Export)">
+          <source><ph id="ph1">&lt;paramref name="export" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="export" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="195" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport``1(System.Lazy{``0})">
+          <source>The type of the export.</source>
+          <target state="translated">匯出的類型。</target>       </trans-unit>
+        <trans-unit id="196" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport``1(System.Lazy{``0})">
+          <source>An indirect reference to the export to remove.</source>
+          <target state="translated">要移除之匯出的間接參考。</target>       </trans-unit>
+        <trans-unit id="197" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport``1(System.Lazy{``0})">
+          <source>Removes the specified export from composition and releases its resources if possible.</source>
+          <target state="translated">從複合移除指定的匯出結果，可能的話，亦釋放其資源。</target>       </trans-unit>
+        <trans-unit id="198" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports(System.Collections.Generic.IEnumerable{System.ComponentModel.Composition.Primitives.Export})">
+          <source>A collection of <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> objects to be released.</source>
+          <target state="translated">要釋放的 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> 物件集合。</target>       </trans-unit>
+        <trans-unit id="199" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports(System.Collections.Generic.IEnumerable{System.ComponentModel.Composition.Primitives.Export})">
+          <source>Releases a set of <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> objects from the <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph>.</source>
+          <target state="translated">從 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.Export" /&gt;</ph> 釋放一組 <ph id="ph2">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 物件。</target>       </trans-unit>
+        <trans-unit id="200" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports(System.Collections.Generic.IEnumerable{System.ComponentModel.Composition.Primitives.Export})">
+          <source>The behavior of this method may vary depending on the context in which the <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Primitives.Export&gt;</ph> was constructed.</source>
+          <target state="translated">這個方法的行為會在其中的內容視<ph id="ph1">&lt;xref:System.ComponentModel.Composition.Primitives.Export&gt;</ph>建構。</target>       </trans-unit>
+        <trans-unit id="201" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports(System.Collections.Generic.IEnumerable{System.ComponentModel.Composition.Primitives.Export})">
+          <source>For more information, see the <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport%2A&gt;</ph> method.</source>
+          <target state="translated">如需詳細資訊，請參閱 <ph id="ph1">&lt;xref:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExport%2A&gt;</ph> 方法。</target>       </trans-unit>
+        <trans-unit id="202" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports(System.Collections.Generic.IEnumerable{System.ComponentModel.Composition.Primitives.Export})">
+          <source><ph id="ph1">&lt;paramref name="exports" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="exports" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="203" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports(System.Collections.Generic.IEnumerable{System.ComponentModel.Composition.Primitives.Export})">
+          <source><ph id="ph1">&lt;paramref name="exports" /&gt;</ph> contains an element that is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="exports" /&gt;</ph> 包含是 <ph id="ph2">&lt;see langword="null" /&gt;</ph> 的項目。</target>       </trans-unit>
+        <trans-unit id="204" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports``1(System.Collections.Generic.IEnumerable{System.Lazy{``0}})">
+          <source>The type of the exports.</source>
+          <target state="translated">匯出的型別。</target>       </trans-unit>
+        <trans-unit id="205" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports``1(System.Collections.Generic.IEnumerable{System.Lazy{``0}})">
+          <source>A collection of indirect references to the exports to be removed.</source>
+          <target state="translated">要移除之匯出的間接參考集合。</target>       </trans-unit>
+        <trans-unit id="206" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports``1(System.Collections.Generic.IEnumerable{System.Lazy{``0}})">
+          <source>Removes a collection of exports from composition and releases their resources if possible.</source>
+          <target state="translated">從複合移除匯出結果的集合，可能的話，亦釋放其資源。</target>       </trans-unit>
+        <trans-unit id="207" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports``2(System.Collections.Generic.IEnumerable{System.Lazy{``0,``1}})">
+          <source>The type of the exports.</source>
+          <target state="translated">匯出的型別。</target>       </trans-unit>
+        <trans-unit id="208" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports``2(System.Collections.Generic.IEnumerable{System.Lazy{``0,``1}})">
+          <source>The type of the exports' metadata view.</source>
+          <target state="translated">匯出之中繼資料檢視的型別。</target>       </trans-unit>
+        <trans-unit id="209" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports``2(System.Collections.Generic.IEnumerable{System.Lazy{``0,``1}})">
+          <source>A collection of indirect references to the exports to be removed and their metadata.</source>
+          <target state="translated">要移除之匯出的間接參考集合和其中繼資料。</target>       </trans-unit>
+        <trans-unit id="210" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.ReleaseExports``2(System.Collections.Generic.IEnumerable{System.Lazy{``0,``1}})">
+          <source>Removes a collection of exports from composition and releases their resources if possible.</source>
+          <target state="translated">從複合移除匯出結果的集合，可能的話，亦釋放其資源。</target>       </trans-unit>
+        <trans-unit id="211" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.SatisfyImportsOnce(System.ComponentModel.Composition.Primitives.ComposablePart)">
+          <source>The part to satisfy the imports of.</source>
+          <target state="translated">要滿足其匯入的組件。</target>       </trans-unit>
+        <trans-unit id="212" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.SatisfyImportsOnce(System.ComponentModel.Composition.Primitives.ComposablePart)">
+          <source>Satisfies the imports of the specified <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.ComposablePart" /&gt;</ph> object without registering it for recomposition.</source>
+          <target state="translated">滿足指定之 <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Primitives.ComposablePart" /&gt;</ph> 物件的匯入，而不需註冊重新撰寫。</target>       </trans-unit>
+        <trans-unit id="213" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.SatisfyImportsOnce(System.ComponentModel.Composition.Primitives.ComposablePart)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> object has been disposed of.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer" /&gt;</ph> 物件已經處置。</target>       </trans-unit>
+        <trans-unit id="214" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.SatisfyImportsOnce(System.ComponentModel.Composition.Primitives.ComposablePart)">
+          <source><ph id="ph1">&lt;paramref name="part" /&gt;</ph> is <ph id="ph2">&lt;see langword="null" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="part" /&gt;</ph> 為 <ph id="ph2">&lt;see langword="null" /&gt;</ph>。</target>       </trans-unit>
+        <trans-unit id="215" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.SatisfyImportsOnce(System.ComponentModel.Composition.Primitives.ComposablePart)">
+          <source>An error occurred during composition.</source>
+          <target state="translated">在撰寫期間發生錯誤。</target>       </trans-unit>
+        <trans-unit id="216" translate="yes" xml:space="preserve" uid="M:System.ComponentModel.Composition.Hosting.CompositionContainer.SatisfyImportsOnce(System.ComponentModel.Composition.Primitives.ComposablePart)">
+          <source><ph id="ph1">&lt;see cref="P:System.ComponentModel.Composition.CompositionException.Errors" /&gt;</ph> will contain a collection of the errors that occurred.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="P:System.ComponentModel.Composition.CompositionException.Errors" /&gt;</ph> 將包含發生之錯誤的集合。</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>
