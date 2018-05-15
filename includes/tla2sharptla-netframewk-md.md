@@ -1,1 +1,0 @@
-<span data-ttu-id="55f0a-101">架構</span><span class="sxs-lookup"><span data-stu-id="55f0a-101">Framework</span></span>

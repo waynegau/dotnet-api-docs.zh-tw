@@ -1,1 +1,0 @@
-<span data-ttu-id="ceb36-101">自 4.5 起可用</span><span class="sxs-lookup"><span data-stu-id="ceb36-101">Available since 4.5</span></span>

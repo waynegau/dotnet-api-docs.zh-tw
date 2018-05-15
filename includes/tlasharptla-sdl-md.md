@@ -1,1 +1,0 @@
-<span data-ttu-id="e884c-101">Microsoft 安全性開發週期 (SDL)</span><span class="sxs-lookup"><span data-stu-id="e884c-101">Microsoft Security Development Lifecycle (SDL)</span></span>

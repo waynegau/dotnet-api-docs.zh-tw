@@ -1,1 +1,0 @@
-<span data-ttu-id="f7229-101">Windows Server AppFabric 的裝載功能</span><span class="sxs-lookup"><span data-stu-id="f7229-101">hosting features of Windows Server AppFabric</span></span>

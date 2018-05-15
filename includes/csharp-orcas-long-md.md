@@ -1,1 +1,0 @@
-<span data-ttu-id="5e2eb-101">Visual C# 2008</span><span class="sxs-lookup"><span data-stu-id="5e2eb-101">Visual C# 2008</span></span>
