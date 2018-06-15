@@ -1,11 +1,11 @@
 <Type Name="List&lt;T&gt;+Enumerator" FullName="System.Collections.Generic.List&lt;T&gt;+Enumerator">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="6238be31faea3e1ea695a39d1455efce2f8d1223" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.openlocfilehash" Value="329cf0e6fd8349fd996a2a07ddab3d47fabed2a6" />
+    <Meta Name="ms.sourcegitcommit" Value="3907f9a5780957d9c85af2e54c0a5bc2a5bf19ab" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-    <Meta Name="ms.locfileid" Value="30367632" />
+    <Meta Name="ms.lasthandoff" Value="06/13/2018" />
+    <Meta Name="ms.locfileid" Value="35417143" />
   </Metadata>
   <TypeSignature Language="C#" Value="public struct List&lt;T&gt;.Enumerator : System.Collections.Generic.IEnumerator&lt;T&gt;" />
   <TypeSignature Language="ILAsm" Value=".class nested public sequential ansi serializable sealed beforefieldinit List`1/Enumerator&lt;T&gt; extends System.ValueType implements class System.Collections.Generic.IEnumerator`1&lt;!T&gt;, class System.Collections.IEnumerator, class System.IDisposable" />
@@ -106,14 +106,13 @@
 ## Remarks  
  <xref:System.Collections.Generic.List%601.Enumerator.Current%2A> 未定義任何下列情況：  
   
--   列舉值位於集合中的第一個項目之前，在建立列舉值之後。   <xref:System.Collections.Generic.List%601.Enumerator.MoveNext%2A> 將列舉值前進至再讀取的值集合的第一個項目必須先呼叫<xref:System.Collections.Generic.List%601.Enumerator.Current%2A>。  
+- 列舉程式位在集合中第一個項目之前。 發生這種情況建立列舉值之後或在之後<xref:System.Collections.Generic.List%601.Enumerator.System%23Collections%23IEnumerator%23Reset%2A>方法呼叫。 <xref:System.Collections.Generic.List%601.Enumerator.MoveNext%2A>必須呼叫方法，將列舉值前進到第一個項目，再讀取的值集合的<xref:System.Collections.Generic.List%601.Enumerator.Current%2A>屬性。  
   
--   在上次呼叫<xref:System.Collections.Generic.List%601.Enumerator.MoveNext%2A>傳回`false`，表示集合的結尾。  
-  
- <xref:System.Collections.Generic.List%601.Enumerator.Current%2A> 會傳回相同的物件直到呼叫 <xref:System.Collections.Generic.List%601.Enumerator.MoveNext%2A>。 <xref:System.Collections.Generic.List%601.Enumerator.MoveNext%2A> 會將 <xref:System.Collections.Generic.List%601.Enumerator.Current%2A> 設定為下一個項目。 如果清單之間修改<xref:System.Collections.IEnumerator.MoveNext%2A>和<xref:System.Collections.IEnumerator.Current%2A>，<xref:System.Collections.IEnumerator.Current%2A>傳回的項目設定為時，即使列舉值無效。  
-  
-> [!NOTE]
->  為提升效能，這個屬性不會擲回例外狀況如果列舉值位於第一個項目之前或之後的最後一個元素。 未定義屬性的值。 若要改為取得例外狀況，請轉換<xref:System.Collections.Generic.List%601.Enumerator>至<xref:System.Collections.IEnumerator?displayProperty=nameWithType>後才能使用它的介面。  
+- 在上次呼叫<xref:System.Collections.Generic.List%601.Enumerator.MoveNext%2A>傳回`false`，表示集合的結尾，列舉程式位在集合中的最後一個元素之後。
+
+- 列舉值會因為在集合中，例如加入、 修改或刪除的項目所做的變更而失效。
+
+ <xref:System.Collections.Generic.List%601.Enumerator.Current%2A> 不會移動的列舉程式及連續呼叫位置<xref:System.Collections.Generic.List%601.Enumerator.Current%2A>傳回相同的物件直到<xref:System.Collections.Generic.List%601.Enumerator.MoveNext%2A>或<xref:System.Collections.Generic.List%601.Enumerator.System%23Collections%23IEnumerator%23Reset%2A>呼叫。  
   
  ]]></format>
         </remarks>
@@ -188,8 +187,7 @@
       <Parameters />
       <Docs>
         <summary>將列舉值前移至 <see cref="T:System.Collections.Generic.List`1" /> 的下一個項目。</summary>
-        <returns>
-          如果列舉值成功前移至下一個項目，則為 <see langword="true" />；如果列舉值超過集合的結尾，則為 <see langword="false" />。</returns>
+        <returns>如果列舉值成功前移至下一個項目，則為 <see langword="true" />；如果列舉值超過集合的結尾，則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -243,17 +241,18 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Collections.IEnumerator.Current%2A> 未定義任何下列情況：  
+ <xref:System.Collections.Generic.List%601.Enumerator.System%23Collections%23IEnumerator%23Current%2A> 未定義任何下列情況：  
   
--   列舉程式位在集合中的第一個項目之前立即建立列舉值之後，或完成後立即<xref:System.Collections.IEnumerator.Reset%2A>呼叫。 <xref:System.Collections.IEnumerator.MoveNext%2A> 將列舉值前進至再讀取的值集合的第一個項目必須先呼叫<xref:System.Collections.IEnumerator.Current%2A>。  
+- 列舉程式位在集合中第一個項目之前。 發生這種情況建立列舉值之後或在之後<xref:System.Collections.Generic.List%601.Enumerator.System%23Collections%23IEnumerator%23Reset%2A>方法呼叫。 <xref:System.Collections.Generic.List%601.Enumerator.MoveNext%2A>必須呼叫方法，將列舉值前進到第一個項目，再讀取的值集合的<xref:System.Collections.Generic.List%601.Enumerator.System%23Collections%23IEnumerator%23Current%2A>屬性。  
   
--   在上次呼叫<xref:System.Collections.IEnumerator.MoveNext%2A>傳回`false`，表示集合的結尾。  
-  
- <xref:System.Collections.IEnumerator.Current%2A> 會傳回相同的物件直到<xref:System.Collections.IEnumerator.MoveNext%2A>或<xref:System.Collections.IEnumerator.Reset%2A>呼叫。 <xref:System.Collections.IEnumerator.MoveNext%2A> 會將 <xref:System.Collections.IEnumerator.Current%2A> 設定為下一個項目。 如果清單之間修改<xref:System.Collections.IEnumerator.MoveNext%2A>和<xref:System.Collections.IEnumerator.Current%2A>，<xref:System.Collections.IEnumerator.Current%2A>傳回的項目設定為時，即使列舉值無效。  
+- 在上次呼叫<xref:System.Collections.Generic.List%601.Enumerator.MoveNext%2A>傳回`false`，表示集合的結尾，列舉程式位在集合中的最後一個元素之後。
+
+- 列舉值會因為在集合中，例如加入、 修改或刪除的項目所做的變更而失效。
+
+ <xref:System.Collections.Generic.List%601.Enumerator.System%23Collections%23IEnumerator%23Current%2A> 不會移動的列舉程式及連續呼叫位置<xref:System.Collections.Generic.List%601.Enumerator.System%23Collections%23IEnumerator%23Current%2A>傳回相同的物件直到<xref:System.Collections.Generic.List%601.Enumerator.MoveNext%2A>或<xref:System.Collections.Generic.List%601.Enumerator.System%23Collections%23IEnumerator%23Reset%2A>呼叫。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">列舉值是放在集合的第一個項目之前，或最後一個項目之後。</exception>
         <altmember cref="M:System.Collections.IEnumerator.MoveNext" />
         <altmember cref="M:System.Collections.IEnumerator.Reset" />
         <altmember cref="T:System.Collections.IEnumerator" />
