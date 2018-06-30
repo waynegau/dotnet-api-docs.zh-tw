@@ -1,17 +1,18 @@
 <Type Name="ChangeMonitor" FullName="System.Runtime.Caching.ChangeMonitor">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="ef439688d7b98a238cf8640eb07e63804432a3ba" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.openlocfilehash" Value="d7f673552db74d3ed1ff4f6fe8dcc10612167e5c" />
+    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-    <Meta Name="ms.locfileid" Value="30480492" />
+    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.locfileid" Value="36542096" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class ChangeMonitor : IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit ChangeMonitor extends System.Object implements class System.IDisposable" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.Caching.ChangeMonitor" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class ChangeMonitor&#xA;Implements IDisposable" />
   <TypeSignature Language="C++ CLI" Value="public ref class ChangeMonitor abstract : IDisposable" />
+  <TypeSignature Language="F#" Value="type ChangeMonitor = class&#xA;    interface IDisposable" />
   <AssemblyInfo>
     <AssemblyName>System.Runtime.Caching</AssemblyName>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
@@ -52,50 +53,7 @@
     </remarks>
     <threadsafe>此型別具備執行緒安全。</threadsafe>
     <block subset="none" type="overrides">
-      <para>如果您建立自訂快取實作或衍生的變更監視類型，您必須遵循特定的指導方針。 下列清單摘要說明這些指導方針。 如需詳細資訊，請參閱個別方法或屬性的文件。  
-  
--   在衍生類別的建構函式必須設定<see cref="P:System.Runtime.Caching.ChangeMonitor.UniqueId" />屬性，開始監視，並呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法傳回之前的方法。 如果建構函式在建構期間發生錯誤，而且必須具有要處置的資源，只能呼叫建構函式<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />多載之後<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法稱為因為<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />多載會擲回<see cref="T:System.InvalidOperationException" />如果初始化未完成的例外狀況。  
-  
--   如果發生在變更完成初始化之前正在監視的資料，建構函式必須呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法之前先呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法。  
-  
--   在衍生之後<see cref="T:System.Runtime.Caching.ChangeMonitor" />型別會具現化，您必須插入自訂監視<see cref="T:System.Runtime.Caching.ObjectCache" />實作。 如果您不再使用變更監視器，請呼叫或<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />方法。  
-  
--   之後<see cref="T:System.Runtime.Caching.ChangeMonitor" />執行個體插入至<see cref="T:System.Runtime.Caching.ObjectCache" />實作，<see cref="T:System.Runtime.Caching.ObjectCache" />執行個體所需變更監視器已處置。 即使插入無效，而且會導致例外狀況，<see cref="T:System.Runtime.Caching.ObjectCache" />實作必須呼叫<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />多載。  
-  
--   衍生的變更監視器已插入快取之後,<see cref="T:System.Runtime.Caching.ObjectCache" />實作必須呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />，藉由傳遞<see cref="T:System.Runtime.Caching.OnChangedCallback" />物件。 <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />方法可以呼叫一次。 如果已經發生相依性變更，<see cref="T:System.Runtime.Caching.OnChangedCallback" />會立即呼叫執行個體時<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />呼叫。 否則，<see cref="T:System.Runtime.Caching.OnChangedCallback" />執行個體將會呼叫一次。 此一次呼叫都會發生時<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法稱為因為<see cref="T:System.Runtime.Caching.ChangeMonitor" />執行個體偵測到變更，或當<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />上呼叫方法<see cref="T:System.Runtime.Caching.ChangeMonitor" />，何者先發生。  
-  
--   <see cref="T:System.Runtime.Caching.OnChangedCallback" />所提供的執行個體<see cref="T:System.Runtime.Caching.ObjectCache" />實作應該移除相關聯的快取項目，並使用指定的原因<see cref="F:System.Web.Caching.CacheItemRemovedReason.DependencyChanged" />列舉型別。  
-  
--   A<see cref="T:System.Runtime.Caching.ChangeMonitor" />可以呼叫執行個體<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法可能之前已呼叫快取實作<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />方法或之後。 如果<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法之前呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />會呼叫基底<see cref="T:System.Runtime.Caching.ChangeMonitor" />實作將會通知發生這種情況的快取，而且將會觸發要傳遞給回呼<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />時立即<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />叫用。 傳遞給任何狀態資料<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法是變更監視所儲存，且後續傳遞給<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />方法時<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />叫用方法。  
-  
--   必須實作變更監視器<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />方法。 如需詳細資訊，請參閱 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> 方法的文件。  
-  
--   <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法多載必須呼叫來處置<see cref="T:System.Runtime.Caching.ChangeMonitor" />執行個體。 呼叫 Dispose 的規則如下所示：  
-  
-    -   項目插入快取之前，必須負責處置的呼叫端的<see cref="T:System.Runtime.Caching.ChangeMonitor" />執行個體。  
-  
-    -   一次快取項目和<see cref="T:System.Runtime.Caching.ChangeMonitor" />與其相關聯的執行個體傳遞至快取，快取實作者必須確定，<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />呼叫方法時，即使插入會失敗。  
-  
-    -   項目和其相關聯之後<see cref="T:System.Runtime.Caching.ChangeMonitor" />執行個體傳遞至快取中，呼叫端必須未處置的相依性，因為當<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />方法呼叫，呼叫都會被視為相依性已變更。 如此一來，<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />自動叫用方法。  
-  
--   這些規則納入考量，<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />方法必須為下列方式之一：  
-  
-    -   使用者必須先呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法多載，如果使用者覺得不將衍生的變更監視執行個體插入快取。  
-  
-    -   如果實作會嘗試將變更監視執行個體物件快取插入，但插入失敗時，快取實作會負責呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />多載。 當插入嘗試造成例外狀況時，快取實作必須處置任何相關聯的相依性。  
-  
-    -   如果移除快取項目，快取實作也必須處置相依性。  
-  
-    -   內部實作<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法會自動呼叫<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />方法之後其所呼叫的回呼，註冊透過<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />。  
-  
- <block subset="none" type="note"><para>  
- 這個自動呼叫 dispose 方法，在事件引發時，才會發生的初始化<see cref="T:System.Runtime.Caching.ChangeMonitor" />先前已完成執行個體。  
-  
-</para></block>  
-  
- 當在衍生的變更監視器的建構函式呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法，如果變更監視的狀態已變更 （亦即，當建構函式是仍在作用中時才會監視已變更的狀態） 則<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法將自動處置變更監視器。  
-  
--   <see cref="P:System.Runtime.Caching.ChangeMonitor.HasChanged" />屬性設定為<see langword="true" />之後<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法會呼叫衍生的變更監視執行個體，而不論是否<see cref="T:System.Runtime.Caching.OnChangedCallback" />物件已經設定了呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />方法與否。</para>
+      <para>如果您建立自訂快取實作或衍生的變更監視類型，您必須遵循特定的指導方針。下列清單摘要說明這些指導方針。如需詳細資訊，請參閱個別方法或屬性的文件。 -衍生的類別建構函式必須設定<see cref="P:System.Runtime.Caching.ChangeMonitor.UniqueId" />屬性，開始監視，並呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法傳回之前的方法。如果建構函式在建構期間發生錯誤，而且必須具有要處置的資源，只能呼叫建構函式<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />多載之後<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法稱為因為<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />多載會擲回<see cref="T:System.InvalidOperationException" />如果初始化未完成的例外狀況。 -如果發生在變更完成初始化之前正在監視的資料、 建構函式必須呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法之前先呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法。 -之後衍生<see cref="T:System.Runtime.Caching.ChangeMonitor" />型別會具現化，您必須插入自訂監視<see cref="T:System.Runtime.Caching.ObjectCache" />實作。如果您不再使用變更監視器，請呼叫或<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />方法。 -之後<see cref="T:System.Runtime.Caching.ChangeMonitor" />執行個體插入至<see cref="T:System.Runtime.Caching.ObjectCache" />實作，<see cref="T:System.Runtime.Caching.ObjectCache" />執行個體所需變更監視器已處置。即使插入無效，而且會導致例外狀況，<see cref="T:System.Runtime.Caching.ObjectCache" />實作必須呼叫<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />多載。 之後衍生的變更監視器已插入快取，<see cref="T:System.Runtime.Caching.ObjectCache" />實作必須呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />，藉由傳遞<see cref="T:System.Runtime.Caching.OnChangedCallback" />物件。<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />方法可以呼叫一次。如果已經發生相依性變更，<see cref="T:System.Runtime.Caching.OnChangedCallback" />會立即呼叫執行個體時<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />呼叫。否則，<see cref="T:System.Runtime.Caching.OnChangedCallback" />執行個體將會呼叫一次。此一次呼叫都會發生時<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法稱為因為<see cref="T:System.Runtime.Caching.ChangeMonitor" />執行個體偵測到變更，或當<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />上呼叫方法<see cref="T:System.Runtime.Caching.ChangeMonitor" />，何者先發生。 -<see cref="T:System.Runtime.Caching.OnChangedCallback" />所提供的執行個體<see cref="T:System.Runtime.Caching.ObjectCache" />實作應該移除相關聯的快取項目，並使用指定的原因<see cref="F:System.Web.Caching.CacheItemRemovedReason.DependencyChanged" />列舉型別。 -A<see cref="T:System.Runtime.Caching.ChangeMonitor" />可以呼叫執行個體<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法可能之前已呼叫快取實作<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />方法或之後。如果<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法之前呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />會呼叫基底<see cref="T:System.Runtime.Caching.ChangeMonitor" />實作將會通知發生這種情況的快取，而且將會觸發要傳遞給回呼<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />時立即<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />叫用。傳遞給任何狀態資料<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法是變更監視所儲存，且後續傳遞給<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />方法時<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />叫用方法。 -變更監視器必須實作<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />方法。如需詳細資訊，請參閱<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />方法的文件。 -<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法多載必須呼叫來處置<see cref="T:System.Runtime.Caching.ChangeMonitor" />執行個體。呼叫 Dispose 的規則如下:-項目插入快取之前，必須負責處置的呼叫端的<see cref="T:System.Runtime.Caching.ChangeMonitor" />執行個體。 -一次快取項目和<see cref="T:System.Runtime.Caching.ChangeMonitor" />與其相關聯的執行個體傳遞至快取，快取實作者必須確定，<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />呼叫方法時，即使插入會失敗。 -項目和其相關聯之後<see cref="T:System.Runtime.Caching.ChangeMonitor" />執行個體傳遞至快取中，呼叫端必須未處置的相依性，因為當<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />方法呼叫，呼叫都會被視為相依性已變更。如此一來，<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />自動叫用方法。 -納入考量，這些規則<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />方法必須為下列方式之一:-使用者必須先呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法多載，如果使用者覺得不將衍生的變更監視執行個體插入快取。 -如果實作會嘗試將變更監視執行個體物件快取插入，但插入失敗時，快取實作會負責呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />多載。當插入嘗試造成例外狀況時，快取實作必須處置任何相關聯的相依性。 -如果移除快取項目時，快取實作也必須處置相依性。 -內部實作<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法會自動呼叫<see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />方法之後其所呼叫的回呼，註冊透過<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />。<block subset="none" type="note"><para> 這個自動呼叫 dispose 方法，在事件引發時，才會發生的初始化<see cref="T:System.Runtime.Caching.ChangeMonitor" />先前已完成執行個體。</para></block>  當在衍生的變更監視器的建構函式呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法，如果變更監視的狀態已變更 （亦即，當建構函式是仍在作用中時才會監視已變更的狀態） 則<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法將自動處置變更監視器。 -<see cref="P:System.Runtime.Caching.ChangeMonitor.HasChanged" />屬性設定為<see langword="true" />之後<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法會呼叫衍生的變更監視執行個體，而不論是否<see cref="T:System.Runtime.Caching.OnChangedCallback" />物件已經設定了呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />方法與否。</para>
     </block>
     <altmember cref="N:System.Web.Caching" />
     <altmember cref="T:System.Runtime.Caching.ObjectCache" />
@@ -124,7 +82,7 @@
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>在衍生類別的建構函式必須設定<see cref="P:System.Runtime.Caching.ChangeMonitor.UniqueId" />屬性，開始監視，並呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />類別再傳回。 如果在初始化之前的相依性變更已完成 （例如，如果快取中找不到相依的快取索引鍵），建構函式必須呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法之前呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法。 在此情況下，建構函式可以呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法之後才<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />呼叫方法，因為<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法擲回例外狀況，初始化未完成。</para>
+          <para>在衍生類別的建構函式必須設定<see cref="P:System.Runtime.Caching.ChangeMonitor.UniqueId" />屬性，開始監視，並呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />類別再傳回。如果在初始化之前的相依性變更已完成 （例如，如果快取中找不到相依的快取索引鍵），建構函式必須呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法之前呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />方法。在此情況下，建構函式可以呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法之後才<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />呼叫方法，因為<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法擲回例外狀況，初始化未完成。</para>
         </block>
       </Docs>
     </Member>
@@ -151,6 +109,7 @@
       <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.Dispose" />
       <MemberSignature Language="VB.NET" Value="Public Sub Dispose ()" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Dispose();" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : unit -&gt; unit&#xA;override this.Dispose : unit -&gt; unit" Usage="changeMonitor.Dispose " />
       <MemberType>Method</MemberType>
       <Implements>
         <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
@@ -211,6 +170,7 @@
       <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />
       <MemberSignature Language="VB.NET" Value="Protected MustOverride Sub Dispose (disposing As Boolean)" />
       <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract void Dispose(bool disposing);" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : bool -&gt; unit" Usage="changeMonitor.Dispose disposing" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Runtime.Caching</AssemblyName>
@@ -235,9 +195,7 @@
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>必須實作變更監視器<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />釋放所有的多載 managed 和 unmanaged 資源時的值<paramref name="disposing" />是<see langword="true" />。 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />具有方法多載<paramref name="disposing" />值<see langword="true" />時，會呼叫一次，也就是第一次會處置的執行個體。 變更監視器不能呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />直接多載。 衍生的變更監視器可以呼叫公用無參數<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法在基底<see cref="T:System.Runtime.Caching.ChangeMonitor" />類別。  
-  
- 或者，變更監視器可以實作完成項方法。 在此情況下，可以叫用完成項<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />方法並將它傳遞<paramref name="disposing" />值<see langword="false" />。 不過，這是通常不需要。 維護變更監視執行個體參考的服務通常會執行監視的相依性變更。 參考由記憶體回收，避免執行個體，因此不需要的完成項方法。 若要避免記憶體流失的相依性變更時， <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> （除非初始設定尚未完成），方法會處置變更監視執行個體。</para>
+          <para>必須實作變更監視器<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />釋放所有的多載 managed 和 unmanaged 資源時的值<paramref name="disposing" />是<see langword="true" />。<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />具有方法多載<paramref name="disposing" />值<see langword="true" />時，會呼叫一次，也就是第一次會處置的執行個體。變更監視器不能呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />直接多載。衍生的變更監視器可以呼叫公用無參數<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法在基底<see cref="T:System.Runtime.Caching.ChangeMonitor" />類別。或者，變更監視器可以實作完成項方法。在此情況下，可以叫用完成項<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />方法並將它傳遞<paramref name="disposing" />值<see langword="false" />。不過，這是通常不需要。維護變更監視執行個體參考的服務通常會執行監視的相依性變更。參考由記憶體回收，避免執行個體，因此不需要的完成項方法。若要避免記憶體流失的相依性變更時， <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> （除非初始設定尚未完成），方法會處置變更監視執行個體。</para>
         </block>
       </Docs>
     </Member>
@@ -247,6 +205,7 @@
       <MemberSignature Language="DocId" Value="P:System.Runtime.Caching.ChangeMonitor.HasChanged" />
       <MemberSignature Language="VB.NET" Value="Public ReadOnly Property HasChanged As Boolean" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool HasChanged { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.HasChanged : bool" Usage="System.Runtime.Caching.ChangeMonitor.HasChanged" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Runtime.Caching</AssemblyName>
@@ -257,8 +216,7 @@
       </ReturnValue>
       <Docs>
         <summary>取得值，這個值表示 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 類別所監控的狀態已變更。</summary>
-        <value>
-          如果 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 執行個體所監控的狀態已變更則為 <see langword="true" />，否則為 <see langword="false" />。</value>
+        <value>如果 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 執行個體所監控的狀態已變更則為 <see langword="true" />，否則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -282,6 +240,7 @@
       <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />
       <MemberSignature Language="VB.NET" Value="Protected Sub InitializationComplete ()" />
       <MemberSignature Language="C++ CLI" Value="protected:&#xA; void InitializationComplete();" />
+      <MemberSignature Language="F#" Value="member this.InitializationComplete : unit -&gt; unit" Usage="changeMonitor.InitializationComplete " />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Runtime.Caching</AssemblyName>
@@ -304,7 +263,7 @@
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>在衍生類別的建構函式必須呼叫基底<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />建構函式傳回之前的方法。 在衍生類別的建構函式可以呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法之後才<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />呼叫，因為<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法擲回例外狀況，初始化未完成。</para>
+          <para>在衍生類別的建構函式必須呼叫基底<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />建構函式傳回之前的方法。在衍生類別的建構函式可以呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法之後才<see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />呼叫，因為<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />方法擲回例外狀況，初始化未完成。</para>
         </block>
       </Docs>
     </Member>
@@ -314,6 +273,7 @@
       <MemberSignature Language="DocId" Value="P:System.Runtime.Caching.ChangeMonitor.IsDisposed" />
       <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsDisposed As Boolean" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsDisposed { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsDisposed : bool" Usage="System.Runtime.Caching.ChangeMonitor.IsDisposed" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Runtime.Caching</AssemblyName>
@@ -324,8 +284,7 @@
       </ReturnValue>
       <Docs>
         <summary>取得值，這個值表示是否已經處置 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 類別的衍生執行個體。</summary>
-        <value>
-          如果已經處置了執行個體，則為 <see langword="true" />，否則為 <see langword="false" />。</value>
+        <value>如果已經處置了執行個體，則為 <see langword="true" />，否則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -341,6 +300,7 @@
       <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void NotifyOnChanged(class System.Runtime.Caching.OnChangedCallback onChangedCallback) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; void NotifyOnChanged(System::Runtime::Caching::OnChangedCallback ^ onChangedCallback);" />
+      <MemberSignature Language="F#" Value="member this.NotifyOnChanged : System.Runtime.Caching.OnChangedCallback -&gt; unit" Usage="changeMonitor.NotifyOnChanged onChangedCallback" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Runtime.Caching</AssemblyName>
@@ -376,9 +336,7 @@
         <exception cref="T:System.ArgumentNullException">
           <paramref name="onChangedCallback" /> 為 <see langword="null" />。</exception>
         <block subset="none" type="overrides">
-          <para>1.  您必須呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />任何相依性變更的通知方法。 如果已經發生相依性變更，<see cref="T:System.Runtime.Caching.OnChangedCallback" />執行個體時將會呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />呼叫。 否則，<see cref="T:System.Runtime.Caching.OnChangedCallback" />執行個體將會呼叫一次，其中一個時<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法呼叫或當<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />呼叫方法時，何者先發生。 <see cref="T:System.Runtime.Caching.OnChangedCallback" />快取實作所提供的執行個體應該移除快取項目並快取呼叫端要求時引發的必要的變更或更新事件，回到原始的快取呼叫端。  
-  
-2.  物件快取實作必須移除相依性變更與相關聯的快取項目。</para>
+          <para>1.您必須呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />任何相依性變更的通知方法。如果已經發生相依性變更，<see cref="T:System.Runtime.Caching.OnChangedCallback" />執行個體時將會呼叫<see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />呼叫。否則，<see cref="T:System.Runtime.Caching.OnChangedCallback" />執行個體將會呼叫一次，其中一個時<see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />方法呼叫或當<see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" />呼叫方法時，何者先發生。<see cref="T:System.Runtime.Caching.OnChangedCallback" />快取實作所提供的執行個體應該移除快取項目並快取呼叫端要求時引發的必要的變更或更新事件，回到原始的快取呼叫端。2.物件快取實作必須移除相依性變更與相關聯的快取項目。</para>
         </block>
         <altmember cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />
       </Docs>
@@ -389,6 +347,7 @@
       <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />
       <MemberSignature Language="VB.NET" Value="Protected Sub OnChanged (state As Object)" />
       <MemberSignature Language="C++ CLI" Value="protected:&#xA; void OnChanged(System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="member this.OnChanged : obj -&gt; unit" Usage="changeMonitor.OnChanged state" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Runtime.Caching</AssemblyName>
@@ -424,6 +383,7 @@
       <MemberSignature Language="DocId" Value="P:System.Runtime.Caching.ChangeMonitor.UniqueId" />
       <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property UniqueId As String" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::String ^ UniqueId { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.UniqueId : string" Usage="System.Runtime.Caching.ChangeMonitor.UniqueId" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Runtime.Caching</AssemblyName>
