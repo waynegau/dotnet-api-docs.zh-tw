@@ -1,11 +1,11 @@
 <Type Name="IsolationLevel" FullName="System.Data.IsolationLevel">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="44b4b9a8652445499c5d7d32988d517f99975d92" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="c338d1a30e31915ae70914694b2d70ff4b6d1fe0" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36677467" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37668473" />
   </Metadata>
   <TypeSignature Language="C#" Value="public enum IsolationLevel" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed IsolationLevel extends System.Enum" />
@@ -21,6 +21,8 @@
   </AssemblyInfo>
   <AssemblyInfo>
     <AssemblyName>System.Data</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -37,14 +39,14 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.IsolationLevel>時執行交易的.NET Framework 資料提供者使用的值。  
+ <xref:System.Data.IsolationLevel>執行交易時，將會使用.NET Framework 資料提供者的值。  
   
- <xref:System.Data.IsolationLevel>保留，直到明確變更，但它可以隨時變更。 無法剖析時間時，會在執行時，使用新的值。 如果變更在交易期間，伺服器的預期的行為是新的鎖定層級套用至所有剩餘的陳述式。  
+ <xref:System.Data.IsolationLevel>保持作用中之前明確變更，但它可以隨時變更。 無法剖析階段時，會在執行時，使用新的值。 如果在交易期間變更，伺服器的預期的行為是將新的鎖定層級套用所有剩餘的陳述式。  
   
    
   
 ## Examples  
- 此應用程式示範如何使用<xref:System.Data.IsolationLevel>中<xref:System.Data.Common.DbTransaction>。 此範例將示範不同的隔離等級中允許的下列行為：  
+ 此應用程式示範如何使用<xref:System.Data.IsolationLevel>在<xref:System.Data.Common.DbTransaction>。 此範例將示範其中一個下列行為允許在不同的隔離等級：  
   
 -   中途讀取。  
   
@@ -52,7 +54,7 @@
   
 -   虛設項目。  
   
- 此應用程式會在下列隔離等級執行：  
+ 此應用程式會在下列隔離等級中執行：  
   
 -   ReadUncommitted  
   
@@ -64,79 +66,79 @@
   
 -   快照  
   
- PhantomReadThreads 類別說明特定交易是否讓虛設項目讀取行為。 如果交易允許行為，執行緒會以下列順序：  
+ PhantomReadThreads 類別會示範是否特定交易可讓由虛設項目讀取行為。 如果交易允許行為，執行緒會以下列順序：  
   
--   在第一個執行緒，選取 products(All)。  
+-   在第一個執行緒中，選取 [products(All)]。  
   
 -   在第二個執行緒中，插入新的產品。  
   
--   認可交易中第二個執行緒。  
-  
--   再次選擇的產品。  
-  
--   認可交易中第一個執行緒。  
-  
- 如果異動可讓此行為，兩個選取作業就會收到不同的結果。  
-  
- NonrepeatableReadThreads 類別示範是否特定交易可讓非可重複讀取行為。 如果交易允許行為，執行緒會以下列順序：  
-  
--   在第一個執行緒，選取 product(ProductId=1)。  
-  
--   在第二個執行緒，更新數量 value(ProductId=1)。  
-  
--   認可交易中第二個執行緒。  
+-   認可之交易中第二個執行緒。  
   
 -   一次選取的產品。  
   
--   認可交易中第一個執行緒。  
+-   認可之交易中第一個執行緒。  
   
- 如果異動可讓此行為，兩個選取作業就會收到不同的結果。  
+ 如果交易允許行為，兩個選取的作業會取得不同的結果。  
   
- ExchangeValuesThreads 類別示範序列化和快照集交易之間的差異。 針對可序列化交易中，執行緒會以下列順序：  
+ NonrepeatableReadThreads 類別會示範是否特定交易可讓不可重複讀取行為。 如果交易允許行為，執行緒會以下列順序：  
   
--   在第一個執行緒中取得的價格 product(ProductId=2) 和存放區變數中。  
+-   在第一個執行緒中，選取 [product(ProductId=1)]。  
   
--   在第一個執行緒，更新的價格 product(ProductId=1) product(ProductId=2) 價格。  
+-   在第二個執行緒中，更新數量 value(ProductId=1)。  
   
--   認可交易中第一個執行緒。  
+-   認可之交易中第二個執行緒。  
   
--   在第二個執行緒中取得的價格 product(ProductId=1) 和存放區變數中。  
+-   一次選取的產品。  
   
--   在第二個執行緒，更新的價格 product(ProductId=2) product(ProductId=1) 價格。  
+-   認可之交易中第一個執行緒。  
   
--   認可交易中第二個執行緒。  
+ 如果交易允許行為，兩個選取的作業會取得不同的結果。  
   
- 現在的價格值 (ProductId = 1 且 ProductId = 2) 與原始價格的 Product(ProductId=2) 為相同。  
+ ExchangeValuesThreads 類別示範 Serializable 和 Snapshot 交易之間的差異。 對於可序列化交易中，執行緒會以下列順序：  
+  
+-   在第一個執行緒，取得 product(ProductId=2) 和存放區的價格在變數中。  
+  
+-   在第一個執行緒，更新的 product(ProductId=2) 價格 product(ProductId=1) 的價格。  
+  
+-   認可之交易中第一個執行緒。  
+  
+-   在第二個執行緒中，請在變數中取得 product(ProductId=1) 和存放區的價格。  
+  
+-   在第二個執行緒中，更新的 product(ProductId=1) 價格 product(ProductId=2) 的價格。  
+  
+-   認可之交易中第二個執行緒。  
+  
+ 現在的價格值 (ProductId = 1 且 ProductId = 2) 會與原始價格的 Product(ProductId=2) 為相同。  
   
  快照集交易，執行緒會以下列順序：  
   
--   在第一個執行緒，變數; 中，取得 product(ProductId=2) 及存放區的價格  
+-   在第一個執行緒中，取得 product(ProductId=2) 和存放區的價格在變數中;  
   
--   在第一個執行緒，更新的價格 product(ProductId=1) product(ProductId=2) 價格。  
+-   在第一個執行緒，更新的 product(ProductId=2) 價格 product(ProductId=1) 的價格。  
   
--   在第二個執行緒，從快照集取得 product(ProductId=1) 價格並儲存在變數中。  
+-   在第二個執行緒中，取得 product(ProductId=1) 的價格從快照集並將儲存在變數中。  
   
--   在第二個執行緒，更新的價格 product(ProductId=2) product(ProductId=1) 價格。  
+-   在第二個執行緒中，更新的 product(ProductId=1) 價格 product(ProductId=2) 的價格。  
   
--   認可交易中第二個執行緒。  
+-   認可之交易中第二個執行緒。  
   
--   認可交易中第一個執行緒。  
+-   認可之交易中第一個執行緒。  
   
- 現在交換的產品價格 (ProductId = 1 且 ProductId = 2)。  
+ 現在 exchange 產品的價格 (ProductId = 1 且 ProductId = 2)。  
   
- DirtyReadThreads 類別示範特定的交易是否允許中途讀取行為。 如果交易允許行為，執行緒會以下列順序：  
+ DirtyReadThreads 類別示範特定交易是否允許中途讀取行為。 如果交易允許行為，執行緒會以下列順序：  
   
 -   在第一個執行緒，開始交易並加入數量 value(ProductId=1)。  
   
--   在第二個執行緒，讀取的數量值並加入值一次。  
+-   在第二個執行緒中，讀取數量值，並再次新增的值。  
   
--   認可交易中第二個執行緒。  
+-   認可之交易中第二個執行緒。  
   
 -   在第一個執行緒上回復交易。  
   
- 如果交易允許行為，量值將會加入兩次。  
+ 如果交易允許行為，將兩次新增數量值。  
   
- 此程式碼範例使用 C# 和 Visual Basic 專案可以找到上[開發人員程式碼範例](https://code.msdn.microsoft.com/site/search?query=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&f%5B0%5D.Value=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&f%5B0%5D.Type=SearchText&ac=4)。  
+ 這個程式碼範例的 C# 和 Visual Basic 專案都位於[開發人員程式碼範例](https://code.msdn.microsoft.com/site/search?query=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&f%5B0%5D.Value=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&f%5B0%5D.Type=SearchText&ac=4)。  
   
  [!code-csharp[system_data_IsolationLevel#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/system_data_isolationlevel/cs/source.cs#1)]
  [!code-vb[system_data_IsolationLevel#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/system_data_isolationlevel/vb/source.vb#1)]  
@@ -161,6 +163,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -192,6 +196,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -223,6 +229,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -254,6 +262,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -285,6 +295,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -316,6 +328,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -347,6 +360,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -364,7 +379,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當使用<xref:System.Data.Odbc.OdbcTransaction>，如果您未設定<xref:System.Data.IsolationLevel>或您設定<xref:System.Data.IsolationLevel>至`Unspecified`，根據取決於驅動程式所使用的隔離等級執行交易。  
+ 使用時<xref:System.Data.Odbc.OdbcTransaction>，如果您未設定<xref:System.Data.IsolationLevel>或您設定<xref:System.Data.IsolationLevel>到`Unspecified`，根據取決於驅動程式所使用的隔離等級執行的交易。  
   
  ]]></format>
         </remarks>
