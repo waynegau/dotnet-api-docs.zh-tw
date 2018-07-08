@@ -1,11 +1,11 @@
 <Type Name="InvalidOperationException" FullName="System.InvalidOperationException">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="310a76379e88bee1dcef1420b7010efdaf2c8a3d" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="2ae40b84e46667617b6aaac9cd9e2cc0d420fdb1" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36429905" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37480680" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class InvalidOperationException : SystemException" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit InvalidOperationException extends System.SystemException" />
@@ -24,6 +24,8 @@
   </AssemblyInfo>
   <AssemblyInfo>
     <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -47,72 +49,72 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.InvalidOperationException> 用於情況下，當叫用方法的錯誤無效的引數以外的原因所造成。 通常，它會擲回時，物件的狀態無法支援方法呼叫。 例如，<xref:System.InvalidOperationException>例外狀況的方法擲回類似：  
+ <xref:System.InvalidOperationException> 用於情況下，當叫用方法失敗起因於無效的引數以外的原因。 通常，它會擲回時物件的狀態無法支援方法呼叫。 比方說，<xref:System.InvalidOperationException>例外狀況由方法擲回這類：  
   
--   <xref:System.Collections.IEnumerator.MoveNext%2A?displayProperty=nameWithType> 如果建立列舉值之後，會修改物件的集合。 如需詳細資訊，請參閱[變更反覆運算它時收集](#Iterating)。  
+-   <xref:System.Collections.IEnumerator.MoveNext%2A?displayProperty=nameWithType> 如果建立列舉值之後，會修改物件的集合。 如需詳細資訊，請參閱 <<c0> [ 變更時逐一查看它收集](#Iterating)。  
   
--   <xref:System.Resources.ResourceSet.GetString%2A?displayProperty=nameWithType> 如果前已關閉的資源集合則會在方法呼叫。  
+-   <xref:System.Resources.ResourceSet.GetString%2A?displayProperty=nameWithType> 如果資源集已關閉之前，進行方法呼叫。  
   
 -   <xref:System.Xml.Linq.XContainer.Add%2A?displayProperty=nameWithType>或多個要加入的物件會不正確的結構化的 XML 文件中產生。  
   
 -   這種方法來操作從非主執行緒或 UI 執行緒 UI 嘗試。  
   
 > [!IMPORTANT]
->  因為<xref:System.InvalidOperationException>擲回例外狀況在各種不同的情況下，務必閱讀所傳回的例外狀況訊息<xref:System.Exception.Message%2A>屬性。  
+>  因為<xref:System.InvalidOperationException>擲回例外狀況中各種不同的情況下，務必要讀取所傳回的例外狀況訊息<xref:System.Exception.Message%2A>屬性。  
   
  本節內容：  
   
  [InvalidOperationException 例外狀況的一些常見原因](#Causes)   
  [更新 UI 執行緒，從非 UI 執行緒](#UI)  
- [當它逐一查看集合的變更](#Iterating)  
+ [變更時逐一查看它收集](#Iterating)  
  [排序無法比較的物件陣列或集合](#Sorting)  
- [轉型將&lt;T&gt;可為 null，為其基礎類型](#Nullable)   
+ [將可為 Null 的轉型&lt;T&gt;是 null，為其基礎類型](#Nullable)   
  [在空集合上呼叫的 System.Linq.Enumerable 方法](#Empty)  
- [上不含一個元素的順序呼叫 Enumerable.Single 或 Enumerable.SingleOrDefault](#Single)  
- [動態跨應用程式網域欄位存取權](#Emit)  
+ [在沒有一個項目序列呼叫 Enumerable.Single 或 Enumerable.SingleOrDefault](#Single)  
+ [動態跨應用程式網域欄位存取](#Emit)  
 [擲回 InvalidOperationException 例外狀況](#Throwing)  
 [其他資訊](#Misc)  
   
 <a name="Causes"></a>   
 ## <a name="some-common-causes-of-invalidoperationexception-exceptions"></a>InvalidOperationException 例外狀況的一些常見原因  
- 下列章節將示範一些常見中所在的情況下<xref:System.InvalidOperationException>應用程式中擲回例外狀況。 處理問題的方式需視特定情況而定。 大多數情況下，然而，例外狀況會導致從開發人員錯誤和<xref:System.InvalidOperationException>可以預測並避免例外狀況。  
+ 下列各節將示範一些常見中所在的情況下<xref:System.InvalidOperationException>應用程式中擲回例外狀況。 處理此問題的方式取決於特定的情況。 大多數情況下，不過，例外狀況會造成從開發人員錯誤，而<xref:System.InvalidOperationException>可以預測並避免例外狀況。  
   
 <a name="UI"></a>   
 ### <a name="updating-a-ui-thread-from-a-non-ui-thread"></a>更新 UI 執行緒，從非 UI 執行緒  
- 通常，背景工作執行緒可用來執行某些背景工作，包含收集要在應用程式的使用者介面中顯示的資料。 不過。 大部分的 GUI （圖形化使用者介面） 應用程式架構，適用於.NET Framework，例如 Windows Form 和 Windows Presentation Foundation (WPF) 可讓您只會從執行緒建立及管理 UI （主要或 UI 執行緒） 存取 GUI 物件。 <xref:System.InvalidOperationException>您嘗試從 UI 執行緒以外的執行緒存取 UI 項目時，會擲回。  下表中顯示的例外狀況訊息文字。  
+ 通常，背景工作執行緒用以執行涉及在應用程式的使用者介面中顯示的資料收集一些背景工作。 不過。 大部分的 GUI （圖形化使用者介面） 應用程式架構，適用於.NET Framework，例如 Windows Form 和 Windows Presentation Foundation (WPF) 可讓您只能從建立及管理 UI （主要或 UI 執行緒） 的執行緒存取 GUI 物件。 <xref:System.InvalidOperationException>當您嘗試從非 UI 執行緒的執行緒存取 UI 元素時擲回。  下表中，會顯示例外狀況訊息的文字。  
   
 |應用程式類型|訊息|  
 |----------------------|-------------|  
-|WPF 應用程式|**呼叫執行緒無法存取此物件，因為另一個執行緒。**|  
-|UWP 應用程式|**應用程式給不同執行緒中呼叫了封送處理的介面。**|  
-|Windows Form 應用程式|**跨執行緒作業無效： 控制項 'TextBox1' 從其所建立的執行緒以外的執行緒存取。**|  
+|WPF 應用程式|**呼叫執行緒無法存取此物件，因為不同的執行緒所擁有。**|  
+|UWP 應用程式|**應用程式會針對不同的執行緒呼叫已封送處理的介面。**|  
+|Windows Forms 應用程式|**跨執行緒作業無效： 控制項 'TextBox1' 從其所建立的執行緒以外的執行緒存取。**|  
   
- 適用於.NET Framework 的 UI 架構實作*發送器*模式，其中包含檢查是否正在 UI 執行緒上執行的 UI 元素成員呼叫的方法和 UI 執行緒上排定呼叫的其他方法：  
+ 適用於.NET Framework 的 UI 架構實作*發送器*模式，其中包含檢查是否正在 UI 執行緒上執行的 UI 元素成員呼叫的方法和其他 UI 執行緒上排定呼叫的方法：  
   
--   在 WPF 應用程式中，呼叫<xref:System.Windows.Threading.Dispatcher.CheckAccess%2A?displayProperty=nameWithType>方法，以判斷方法是否執行於非 UI 執行緒。 它會傳回`true`如果 UI 執行緒上執行的方法和`false`否則。 呼叫其中一個多載的<xref:System.Windows.Threading.Dispatcher.Invoke%2A?displayProperty=nameWithType>UI 執行緒上排定呼叫的方法。  
+-   在 WPF 應用程式呼叫<xref:System.Windows.Threading.Dispatcher.CheckAccess%2A?displayProperty=nameWithType>方法，以判斷某個方法在非 UI 執行緒上執行。 它會傳回`true`如果 UI 執行緒上執行的方法和`false`否則。 呼叫其中一個多載<xref:System.Windows.Threading.Dispatcher.Invoke%2A?displayProperty=nameWithType>UI 執行緒上排定呼叫的方法。  
   
--   在 UWP 應用程式中，呼叫[CoreDispatcher.HasThreadAccess](https://msdn.microsoft.com/library/windows/apps/windows.ui.core.coredispatcher.hasthreadaccess.aspx)方法，以判斷方法是否執行於非 UI 執行緒。 呼叫[CoreDispatcher.RunAsync](https://msdn.microsoft.com/library/windows/apps/windows.ui.core.coredispatcher.runasync.aspx)方法才能執行更新 UI 執行緒的委派。 使用  
+-   在 UWP 應用程式，呼叫[CoreDispatcher.HasThreadAccess](https://msdn.microsoft.com/library/windows/apps/windows.ui.core.coredispatcher.hasthreadaccess.aspx)方法，以判斷某個方法在非 UI 執行緒上執行。 呼叫[CoreDispatcher.RunAsync](https://msdn.microsoft.com/library/windows/apps/windows.ui.core.coredispatcher.runasync.aspx)方法來執行更新 UI 執行緒的委派。 使用  
   
--   在 Windows Form 應用程式，使用<xref:System.Windows.Forms.Control.InvokeRequired%2A?displayProperty=nameWithType>屬性來判斷方法是否執行於非 UI 執行緒。 呼叫其中一個多載的<xref:System.Windows.Forms.Control.Invoke%2A?displayProperty=nameWithType>方法才能執行更新 UI 執行緒的委派。  
+-   在 Windows Forms 應用程式，使用<xref:System.Windows.Forms.Control.InvokeRequired%2A?displayProperty=nameWithType>屬性來判斷是否某個方法是否執行於非 UI 執行緒。 呼叫其中一個多載<xref:System.Windows.Forms.Control.Invoke%2A?displayProperty=nameWithType>方法來執行更新 UI 執行緒的委派。  
   
- 下列範例說明<xref:System.InvalidOperationException>您嘗試更新 UI 項目從建立它的執行緒以外的執行緒時，會擲回的例外狀況。  每個範例，您必須建立兩個控制項：  
+ 下列範例說明<xref:System.InvalidOperationException>，當您嘗試更新 UI 項目，從建立它的執行緒以外的執行緒時，會擲回的例外狀況。  每個範例，您必須建立兩個控制項：  
   
--   命名文字方塊控制項`textBox1`。  在 Windows Form 應用程式中，您必須設定其<xref:System.Windows.Forms.TextBox.Multiline%2A>屬性`true`。  
+-   命名文字方塊控制項`textBox1`。  在 Windows Forms 應用程式中，您應該設定其<xref:System.Windows.Forms.TextBox.Multiline%2A>屬性設`true`。  
   
--   按鈕控制項，名為`threadExampleBtn`。 這個範例將提供處理常式， `ThreadsExampleBtn_Click`，按鈕`Click`事件。  
+-   按鈕控制項，名為`threadExampleBtn`。 這個範例將提供的處理常式`ThreadsExampleBtn_Click`，針對按鈕的`Click`事件。  
   
- 在每個案例中，`threadExampleBtn_Click`事件處理常式呼叫`DoSomeWork`方法兩次。 第一次呼叫會以同步方式執行，而且會成功。 但第二次呼叫，因為它以非同步方式執行在執行緒集區執行緒，嘗試從非 UI 執行緒更新 UI。 這會導致<xref:System.InvalidOperationException>例外狀況。  
+ 在每個案例中，`threadExampleBtn_Click`事件處理常式呼叫`DoSomeWork`方法兩次。 第一次呼叫會以同步方式執行，並成功。 但是，第二個呼叫，因為它在執行緒集區執行緒，以非同步方式執行，所以會嘗試從非 UI 執行緒更新 UI。 這會導致<xref:System.InvalidOperationException>例外狀況。  
   
  WPF 和 UWP 應用程式  
  [!code-csharp[System.InvalidOperationException.Threading.WPF1#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Invalidoperationexception.threading.wpf1/cs/MainWindow.xaml.cs#1)]
  [!code-vb[System.InvalidOperationException.Threading.WPF1#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Invalidoperationexception.threading.wpf1/vb/MainWindow.xaml.vb#1)]  
   
- 下列版本`DoSomeWork`方法消除 WPF 應用程式中的例外狀況。  
+ 下列版本的`DoSomeWork`方法消除在 WPF 應用程式中例外狀況。  
   
  [!code-csharp[System.InvalidOperationException.Threading.WPF2#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Invalidoperationexception.threading.wpf2/cs/MainWindowDispatcher.xaml.cs#3)]
  [!code-vb[System.InvalidOperationException.Threading.WPF2#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Invalidoperationexception.threading.wpf2/vb/MainWindowDispatcher.xaml.vb#3)]  
   
- 下列版本`DoSomeWork`方法消除例外狀況的 UWP 應用程式。  
+ 下列版本的`DoSomeWork`方法消除在 UWP 應用程式中例外狀況。  
   
  [!code-csharp[System.InvalidOperationException.Threading.UWP#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception.threading.uwp/cs/MainPage.xaml.cs#4)]
  [!code-vb[System.InvalidOperationException.Threading.UWP#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception.threading.uwp/vb/MainPage.xaml.vb#4)]  
@@ -121,58 +123,58 @@
  [!code-csharp[System.InvalidOperationException.Threading.WF#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Invalidoperationexception.threading.wf/cs/Form1.cs#2)]
  [!code-vb[System.InvalidOperationException.Threading.WF#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Invalidoperationexception.threading.wf/vb/Form1.vb#2)]  
   
- 下列版本`DoSomeWork`方法會排除在 Windows Form 應用程式中的例外狀況。  
+ 下列版本的`DoSomeWork`方法消除例外狀況中的 Windows Forms 應用程式。  
   
  [!code-csharp[System.InvalidOperationException.Threading.WF2#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Invalidoperationexception.threading.wf2/cs/Form1.cs#5)]
  [!code-vb[System.InvalidOperationException.Threading.WF2#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Invalidoperationexception.threading.wf2/vb/Form1.vb#5)]  
   
 <a name="Iterating"></a>   
-### <a name="changing-a-collection-while-iterating-it"></a>當它逐一查看集合的變更  
- `foreach` C# 中的陳述式或`For Each`陳述式在 Visual Basic 中的用來逐一查看集合的成員和讀取或修改其個別項目。 不過，無法用來新增或移除集合中的項目。 如此一來，這會擲回<xref:System.InvalidOperationException>以訊息相似，例外狀況 」**集合已修改;列舉操作可能無法執行。**"  
+### <a name="changing-a-collection-while-iterating-it"></a>變更時逐一查看它收集  
+ `foreach` C# 中的陳述式或`For Each`Visual Basic 中的陳述式用來逐一查看集合的成員以及讀取或修改其個別項目。 不過，它不能用來新增或移除集合中的項目。 如此一來，這會擲回<xref:System.InvalidOperationException>例外狀況的訊息，類似，「**集合已修改;列舉作業可能無法執行。**"  
   
- 下列範例會反覆查看加入至集合的每個整數平方嘗試整數的集合。 此範例會擲回<xref:System.InvalidOperationException>與第一次呼叫<xref:System.Collections.Generic.List%601.Add%2A?displayProperty=nameWithType>方法。  
+ 下列範例會逐一查看集合的整數會嘗試加入至集合的每個整數的平方。 此範例會擲回<xref:System.InvalidOperationException>與第一次呼叫<xref:System.Collections.Generic.List%601.Add%2A?displayProperty=nameWithType>方法。  
   
  [!code-csharp[System.InvalidOperationException#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception/cs/Iterating1.cs#1)]
  [!code-vb[System.InvalidOperationException#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception/vb/Iterating1.vb#1)]  
   
- 您可以根據應用程式邏輯排除中的兩種方式，其中一個例外狀況：  
+ 根據您的應用程式邏輯而定，您就可以排除在下列其中一種，例外狀況：  
   
--   如果項目必須新增至集合中反覆運算它時，可以重複使用索引`for`陳述式來取代`foreach`或`For Each`。 下列範例會使用的陳述式來加入至集合的集合中的數字的平方。  
+-   如果項目必須新增至集合反覆運算它時，可以重複使用索引`for`陳述式來取代`foreach`或`For Each`。 下列範例會使用陳述式才會加入至集合的集合中的數字的平方。  
   
      [!code-csharp[System.InvalidOperationException#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception/cs/Iterating2.cs#2)]
      [!code-vb[System.InvalidOperationException#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception/vb/Iterating2.vb#2)]  
   
-     請注意，您必須逐一查看集合藉由使用會逐一查看向後，結束迴圈 appropraitely 中，在迴圈內部計數器之前建立反覆項目數目從`Count`-1 至 0，或為此範例會執行，藉由指派數目中的項目數的陣列變數，並使用它來建立迴圈的上限。 否則，如果項目加入至每個反覆項目上的集合，會無止盡的迴圈。  
+     請注意，您必須逐一查看集合藉由使用會結束迴圈 appropraitely 中，向後，重複迴圈內的計數器之前建立反覆項目數目從`Count`-1 到 0，或像範例一樣，藉由指派數目陣列中的元素至變數，並使用它來建立迴圈的上限。 否則，如果項目加入至集合中每個反覆項目上，結果永無止盡的迴圈。  
   
--   如果您不需要將項目加入集合中反覆運算它時，您可以儲存的項目會加入一個暫存集合中您將完成逐一查看集合時。  下列範例會使用此方式來新增暫時的集合，集合中的數字的平方然後再將合併到單一陣列物件的集合。  
+-   如果您不需要將項目新增至集合反覆運算它時，您可以儲存要加入一個暫存集合中，新增當完成時逐一查看集合的項目。  下列範例會使用此方式來新增暫時的集合，集合中的數字的平方然後再將合併成單一陣列物件的集合。  
   
      [!code-csharp[System.InvalidOperationException#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception/cs/Iterating3.cs#3)]
      [!code-vb[System.InvalidOperationException#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception/vb/Iterating3.vb#3)]  
   
 <a name="Sorting"></a>   
 ### <a name="sorting-an-array-or-collection-whose-objects-cannot-be-compared"></a>排序無法比較的物件陣列或集合  
- 一般用途的排序方法，例如<xref:System.Array.Sort%28System.Array%29?displayProperty=nameWithType>方法或<xref:System.Collections.Generic.List%601.Sort?displayProperty=nameWithType>方法，通常需要至少一個要排序的物件實作<xref:System.IComparable%601>或<xref:System.IComparable>介面。 如果您沒有，無法排序的集合或陣列，並在方法擲回<xref:System.InvalidOperationException>例外狀況。 下列範例會定義`Person`類別，兩個存放區`Person`泛型中的物件<xref:System.Collections.Generic.List%601>物件，並嘗試對它們進行排序。 從範例所示，呼叫輸出<xref:System.Collections.Generic.List%601.Sort?displayProperty=nameWithType>方法會擲回<xref:System.InvalidOperationException>。  
+ 一般用途的排序方法，例如<xref:System.Array.Sort%28System.Array%29?displayProperty=nameWithType>方法或<xref:System.Collections.Generic.List%601.Sort?displayProperty=nameWithType>方法，通常需要至少一個要排序的物件實作<xref:System.IComparable%601>或<xref:System.IComparable>介面。 如果不是，無法排序集合或陣列，而且方法會擲回<xref:System.InvalidOperationException>例外狀況。 下列範例會定義`Person`類別，就會有兩個存放區`Person`物件，在泛型<xref:System.Collections.Generic.List%601>物件，並嘗試加以排序。 範例所示，呼叫的輸出<xref:System.Collections.Generic.List%601.Sort?displayProperty=nameWithType>方法會擲回<xref:System.InvalidOperationException>。  
   
  [!code-csharp[System.InvalidOperationException#12](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception/cs/List_Sort1.cs#12)]
  [!code-vb[System.InvalidOperationException#12](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception/vb/List_Sort1.vb#12)]  
   
  您可以排除任何一種方式中的例外狀況：  
   
--   如果您可以擁有想要排序 （也就是如果您要控制其原始碼） 的類型，您可以修改來實作<xref:System.IComparable%601>或<xref:System.IComparable>介面。 這需要，您實作<xref:System.IComparable%601.CompareTo%2A?displayProperty=nameWithType>或<xref:System.IComparable.CompareTo%2A>方法。 介面實作新增至現有的類型不是一項重大變更。  
+-   如果您可以擁有您嘗試排序 （亦即，如果您控制其原始碼） 的型別，您可以修改它以實作<xref:System.IComparable%601>或<xref:System.IComparable>介面。 這需要您實作其中一個<xref:System.IComparable%601.CompareTo%2A?displayProperty=nameWithType>或<xref:System.IComparable.CompareTo%2A>方法。 將介面實作新增至現有的類型不是一項重大變更。  
   
-     下列範例會使用這種方法提供<xref:System.IComparable%601>實作`Person`類別。 集合或陣列的一般的排序方法，仍然可以呼叫，如範例輸出所示，成功地排序集合。  
+     下列範例會使用這種方法來提供<xref:System.IComparable%601>實作`Person`類別。 您仍然可以呼叫集合或陣列的一般的排序方法，並如範例輸出所示，成功地排序的集合。  
   
      [!code-csharp[System.InvalidOperationException#13](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception/cs/List_Sort2.cs#13)]
      [!code-vb[System.InvalidOperationException#13](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception/vb/List_Sort2.vb#13)]  
   
--   如果您無法修改您嘗試排序的類型的原始程式碼，您可以定義特殊用途的排序類別可實作<xref:System.Collections.Generic.IComparer%601>介面。  您可以呼叫的多載`Sort`方法包含<xref:System.Collections.Generic.IComparer%601>參數。 這個方法是特別有用，如果您想要開發可排序多個準則為基礎的物件的特定排序類別。  
+-   如果您無法修改您嘗試排序類型的原始程式碼，您可以定義特殊用途的排序類別可實作<xref:System.Collections.Generic.IComparer%601>介面。  您可以呼叫的多載`Sort`方法，其中包含<xref:System.Collections.Generic.IComparer%601>參數。 這個方法會特別有用，如果您想要開發可以排序多個準則為基礎的物件的特定排序類別。  
   
-     下列範例會使用此方法透過開發自訂`PersonComparer`類別，用來排序`Person`集合。  接著，將這個類別的執行個體<xref:System.Collections.Generic.List%601.Sort%28System.Collections.Generic.IComparer%7B%600%7D%29?displayProperty=nameWithType>方法。  
+     下列範例會使用方法開發自訂`PersonComparer`類別，用來排序`Person`集合。  接著，將這個類別的執行個體<xref:System.Collections.Generic.List%601.Sort%28System.Collections.Generic.IComparer%7B%600%7D%29?displayProperty=nameWithType>方法。  
   
      [!code-csharp[System.InvalidOperationException#14](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception/cs/List_Sort3.cs#14)]
      [!code-vb[System.InvalidOperationException#14](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception/vb/List_Sort3.vb#14)]  
   
--   如果您無法修改類型的原始程式碼您正在嘗試排序，您可以建立<xref:System.Comparison%601>委派來執行排序。 委派簽章  
+-   如果您無法修改類型的原始程式碼您嘗試排序，您可以建立<xref:System.Comparison%601>執行排序委派。 委派簽章  
   
     ```vb  
     Function Comparison(Of T)(x As T, y As T) As Integer  
@@ -182,124 +184,124 @@
     int Comparison<T>(T x, T y)  
     ```  
   
-     下列範例會使用此方法藉由定義`PersonComparison`方法符合<xref:System.Comparison%601>委派簽章。  接著，將這個委派<xref:System.Collections.Generic.List%601.Sort%28System.Comparison%7B%600%7D%29?displayProperty=nameWithType>方法。  
+     下列範例會使用的方法，藉由定義`PersonComparison`符合方法<xref:System.Comparison%601>委派簽章。  接著，將這個委派<xref:System.Collections.Generic.List%601.Sort%28System.Comparison%7B%600%7D%29?displayProperty=nameWithType>方法。  
   
      [!code-csharp[System.InvalidOperationException#15](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception/cs/List_Sort4.cs#15)]
      [!code-vb[System.InvalidOperationException#15](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception/vb/List_Sort4.vb#15)]  
   
 <a name="Nullable"></a>   
-### <a name="casting-a-nullablet-that-is-null-to-its-underlying-type"></a>轉型將\<T > 為 null，為其基礎類型  
- 嘗試轉換<xref:System.Nullable%601>值為`null`轉為其基礎類型會擲回<xref:System.InvalidOperationException>例外狀況，並顯示錯誤訊息: 「**可為 Null 的物件必須具有值。**  
+### <a name="casting-a-nullablet-that-is-null-to-its-underlying-type"></a>轉換可為 Null\<T > 是 null，為其基礎類型  
+ 嘗試轉型<xref:System.Nullable%601>值，亦即`null`為其基礎類型會擲回<xref:System.InvalidOperationException>例外狀況，並顯示錯誤訊息: 「**可為 Null 的物件必須有值。**  
   
- 下列範例會擲回<xref:System.InvalidOperationException>例外狀況時，它會嘗試以逐一查看陣列，其中包含`Nullable(Of Integer)`值。  
+ 下列範例會擲回<xref:System.InvalidOperationException>例外狀況時，它會嘗試逐一查看陣列，包含`Nullable(Of Integer)`值。  
   
  [!code-csharp[System.InvalidOperationException#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception/cs/Nullable1.cs#4)]
  [!code-vb[System.InvalidOperationException#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception/vb/Nullable1.vb#4)]  
   
  若要避免這個例外狀況：  
   
--   使用<xref:System.Nullable%601.HasValue%2A?displayProperty=nameWithType>屬性，以選取那些不是的元素`null`。  
+-   使用<xref:System.Nullable%601.HasValue%2A?displayProperty=nameWithType>屬性，以選取不是這些項目`null`。  
   
 -   呼叫其中一種<xref:System.Nullable%601.GetValueOrDefault%2A?displayProperty=nameWithType>提供的預設值的多載`null`值。  
   
- 下列範例會執行同時避免<xref:System.InvalidOperationException>例外狀況。  
+ 下列範例會同時避免<xref:System.InvalidOperationException>例外狀況。  
   
  [!code-csharp[System.InvalidOperationException#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception/cs/Nullable2.cs#5)]
  [!code-vb[System.InvalidOperationException#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception/vb/Nullable2.vb#5)]  
   
 <a name="Empty"></a>   
 ### <a name="calling-a-systemlinqenumerable-method-on-an-empty-collection"></a>在空集合上呼叫的 System.Linq.Enumerable 方法  
- <xref:System.Linq.Enumerable.Aggregate%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.Average%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.First%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.Last%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.Max%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.Min%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.Single%2A?displayProperty=nameWithType>，和<xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType>方法在序列上執行作業，並傳回單一結果。   這些方法的某些多載會擲回<xref:System.InvalidOperationException>例外狀況序列若是空的雖然其他多載會傳回`null`。 <xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType>方法也會擲回<xref:System.InvalidOperationException>例外狀況，當序列包含一個以上的項目。  
+ <xref:System.Linq.Enumerable.Aggregate%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.Average%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.First%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.Last%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.Max%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.Min%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.Single%2A?displayProperty=nameWithType>，以及<xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType>方法執行一連串作業，並傳回單一結果。   這些方法的部分多載會擲回<xref:System.InvalidOperationException>例外狀況時，序列是空的而其他多載會傳回`null`。 <xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType>方法也會擲回<xref:System.InvalidOperationException>序列包含一個以上的項目時發生例外狀況。  
   
 > [!NOTE]
 >  方法會擲回的大部分<xref:System.InvalidOperationException>例外狀況會多載。 請確定您了解您所選擇的多載的行為。  
   
- 下表列出從例外狀況訊息<xref:System.InvalidOperationException>呼叫部分所擲回的例外狀況物件<xref:System.Linq.Enumerable?displayProperty=nameWithType>方法。  
+ 下表列出的例外狀況訊息<xref:System.InvalidOperationException>部分的呼叫所擲回的例外狀況物件<xref:System.Linq.Enumerable?displayProperty=nameWithType>方法。  
   
 |方法|訊息|  
 |------------|-------------|  
-|`Aggregate` <br /> `Average` <br /> `Last` <br /> `Max` <br /> `Min`|**序列未包含元素**|  
-|`First`|**序列包含沒有相符項目**|  
+|`Aggregate` <br /> `Average` <br /> `Last` <br /> `Max` <br /> `Min`|**序列中沒有包含任何項目**|  
+|`First`|**序列中沒有包含任何相符的項目**|  
 |`Single` <br /> `SingleOrDefault`|**序列包含一個以上相符的項目**|  
   
- 排除或處理例外狀況的方式取決於您的應用程式假設以及在您呼叫的特定方法。  
+ 消除或處理的例外狀況的方式取決於您的應用程式假設以及在您呼叫特定方法。  
   
--   當您刻意呼叫其中一種方法而不會檢查空的序列時，假設序列不是空白的、 和空的序列是未預期的元素。 在此情況下，則捕捉或重新擲回例外狀況就適當。  
+-   當您刻意呼叫其中一個方法而不檢查空的序列時，您會假設序列不是空的、 和空的序列是未預期的元素。 在此情況下，擷取或重新擲回例外狀況是適當的。  
   
--   如果不小心將空序列檢查失敗，您可以呼叫其中一個多載的<xref:System.Linq.Enumerable.Any%2A?displayProperty=nameWithType>多載來判斷序列是否包含任何項目。  
+-   如果您要檢查空序列的失敗不小心，您可以呼叫其中一個多載的<xref:System.Linq.Enumerable.Any%2A?displayProperty=nameWithType>多載來判斷序列是否包含任何項目。  
   
     > [!TIP]
-    >  呼叫<xref:System.Linq.Enumerable.Any%60%601%28System.Collections.Generic.IEnumerable%7B%60%600%7D%2CSystem.Func%7B%60%600%2CSystem.Boolean%7D%29?displayProperty=nameWithType>再產生一連串的方法可以改善效能，如果要處理的資料可能包含大量項目，或如果產生序列的作業是高度耗費資源。  
+    >  呼叫<xref:System.Linq.Enumerable.Any%60%601%28System.Collections.Generic.IEnumerable%7B%60%600%7D%2CSystem.Func%7B%60%600%2CSystem.Boolean%7D%29?displayProperty=nameWithType>才會產生一系列的方法可以改善效能，如果要處理的資料可能包含大量的項目或成本時產生序列的作業。  
   
--   如果您已呼叫方法，例如<xref:System.Linq.Enumerable.First%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.Last%2A?displayProperty=nameWithType>，或<xref:System.Linq.Enumerable.Single%2A?displayProperty=nameWithType>，您也可以替代的替代方法，例如<xref:System.Linq.Enumerable.FirstOrDefault%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.LastOrDefault%2A?displayProperty=nameWithType>，或<xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType>，會傳回預設值，而不是成員的順序。  
+-   如果您已呼叫的方法，例如<xref:System.Linq.Enumerable.First%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.Last%2A?displayProperty=nameWithType>，或<xref:System.Linq.Enumerable.Single%2A?displayProperty=nameWithType>，您可以替代的替代方法，例如<xref:System.Linq.Enumerable.FirstOrDefault%2A?displayProperty=nameWithType>， <xref:System.Linq.Enumerable.LastOrDefault%2A?displayProperty=nameWithType>，或<xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType>，會傳回預設值，而不是成員的順序。  
   
- 範例提供其他詳細資料。  
+ 範例會提供其他詳細資料。  
   
- 下列範例會使用<xref:System.Linq.Enumerable.Average%2A?displayProperty=nameWithType>方法來計算其值為大於 4 序列的平均值。 由於原始陣列中的沒有任何值超過 4，任何值會包含在序列中，並且在方法擲回<xref:System.InvalidOperationException>例外狀況。  
+ 下列範例會使用<xref:System.Linq.Enumerable.Average%2A?displayProperty=nameWithType>方法來計算平均值的序列，其值是大於 4。 因為沒有從原始陣列的值超過 4、 任何值都會包含在順序中，而且方法會擲回<xref:System.InvalidOperationException>例外狀況。  
   
  [!code-csharp[System.InvalidOperationException#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception/cs/Enumerable1.cs#6)]
  [!code-vb[System.InvalidOperationException#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception/vb/Enumerable1.vb#6)]  
   
- 例外狀況可以藉由呼叫排除<xref:System.Linq.Enumerable.Any%2A>方法來判斷序列是否包含任何項目之前呼叫方法的處理順序，如下列範例所示。  
+ 要消除例外狀況，請呼叫<xref:System.Linq.Enumerable.Any%2A>方法來判斷序列是否包含任何項目之前呼叫的方法，處理順序，如下列範例所示。  
   
  [!code-csharp[System.InvalidOperationException#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception/cs/Enumerable2.cs#7)]
  [!code-vb[System.InvalidOperationException#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception/vb/Enumerable2.vb#7)]  
   
- <xref:System.Linq.Enumerable.First%2A?displayProperty=nameWithType>方法會傳回第一個項目序列中符合指定的條件的順序中的第一個項目。 如果序列是空的因此也沒有第一個項目，它會擲回<xref:System.InvalidOperationException>例外狀況。  
+ <xref:System.Linq.Enumerable.First%2A?displayProperty=nameWithType>方法會傳回第一個項目序列或序列中符合指定的條件之第一個元素。 如果序列是空的因此不需要第一個項目，它會擲回<xref:System.InvalidOperationException>例外狀況。  
   
  在下列範例中，<xref:System.Linq.Enumerable.First%60%601%28System.Collections.Generic.IEnumerable%7B%60%600%7D%2CSystem.Func%7B%60%600%2CSystem.Boolean%7D%29?displayProperty=nameWithType>方法會擲回<xref:System.InvalidOperationException>例外狀況因為 dbQueryResults 陣列沒有包含大於 4 的元素。  
   
  [!code-csharp[System.InvalidOperationException#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception/cs/Enumerable3.cs#8)]
  [!code-vb[System.InvalidOperationException#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception/vb/Enumerable3.vb#8)]  
   
- 您可以呼叫<xref:System.Linq.Enumerable.FirstOrDefault%2A?displayProperty=nameWithType>方法，而非<xref:System.Linq.Enumerable.First%2A?displayProperty=nameWithType>，傳回指定或預設值。 如果方法在序列中找不到第一個項目，它會傳回該資料類型的預設值。  預設值是`null`參考型別，零的數值資料類型，和<xref:System.DateTime.MinValue?displayProperty=nameWithType>如<xref:System.DateTime>型別。  
+ 您可以呼叫<xref:System.Linq.Enumerable.FirstOrDefault%2A?displayProperty=nameWithType>方法，而非<xref:System.Linq.Enumerable.First%2A?displayProperty=nameWithType>傳回指定或預設值。 如果此方法在序列中找不到第一個項目，它會傳回該資料類型的預設值。  預設值是`null`是參考型別中，為零的數值資料類型，並<xref:System.DateTime.MinValue?displayProperty=nameWithType>如<xref:System.DateTime>型別。  
   
 > [!NOTE]
 >  解譯所傳回的值<xref:System.Linq.Enumerable.FirstOrDefault%2A?displayProperty=nameWithType>方法通常複雜類型的預設值可以是有效的值序列中的事實。 在此情況下，您呼叫<xref:System.Linq.Enumerable.Any%2A?displayProperty=nameWithType>方法來判斷序列是否具有有效的成員，然後再呼叫<xref:System.Linq.Enumerable.First%2A?displayProperty=nameWithType>方法。  
   
- 下列範例會呼叫<xref:System.Linq.Enumerable.FirstOrDefault%60%601%28System.Collections.Generic.IEnumerable%7B%60%600%7D%2CSystem.Func%7B%60%600%2CSystem.Boolean%7D%29?displayProperty=nameWithType>方法，以防止<xref:System.InvalidOperationException>前一個範例中擲回例外狀況。  
+ 下列範例會呼叫<xref:System.Linq.Enumerable.FirstOrDefault%60%601%28System.Collections.Generic.IEnumerable%7B%60%600%7D%2CSystem.Func%7B%60%600%2CSystem.Boolean%7D%29?displayProperty=nameWithType>方法，即可避免<xref:System.InvalidOperationException>在上述範例中擲回的例外狀況。  
   
  [!code-csharp[System.InvalidOperationException#9](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception/cs/Enumerable4.cs#9)]
  [!code-vb[System.InvalidOperationException#9](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception/vb/Enumerable4.vb#9)]  
   
 <a name="Single"></a>   
-### <a name="calling-enumerablesingle-or-enumerablesingleordefault-on-a-sequence-without-one-element"></a>上不含一個元素的順序呼叫 Enumerable.Single 或 Enumerable.SingleOrDefault  
- <xref:System.Linq.Enumerable.Single%2A?displayProperty=nameWithType>方法會傳回序列中，只有項目或序列中符合指定的條件的唯一項目。    如果有任何項目在順序中，或如果有多個項目，方法會擲回<xref:System.InvalidOperationException>例外狀況。  
+### <a name="calling-enumerablesingle-or-enumerablesingleordefault-on-a-sequence-without-one-element"></a>在沒有一個項目序列呼叫 Enumerable.Single 或 Enumerable.SingleOrDefault  
+ <xref:System.Linq.Enumerable.Single%2A?displayProperty=nameWithType>方法會傳回序列中，唯一的項目或唯一的項目序列中符合指定的條件。    如果序列中沒有項目，或者如果有多個項目，方法會擲回<xref:System.InvalidOperationException>例外狀況。  
   
- 您可以使用<xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType>方法來傳回預設值，而不是擲回例外狀況，當序列中沒有包含任何項目。 不過，<xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType>方法仍會擲回<xref:System.InvalidOperationException>例外狀況，當序列包含一個以上的項目。  
+ 您可以使用<xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType>方法來傳回預設值，而不是序列中沒有包含任何項目時擲回例外狀況。 不過，<xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType>方法仍會擲回<xref:System.InvalidOperationException>序列包含一個以上的項目時發生例外狀況。  
   
- 下表列出從例外狀況訊息<xref:System.InvalidOperationException>呼叫所擲回的例外狀況物件<xref:System.Linq.Enumerable.Single%2A?displayProperty=nameWithType>和<xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType>方法。  
+ 下表列出的例外狀況訊息<xref:System.InvalidOperationException>藉由呼叫擲回的例外狀況物件<xref:System.Linq.Enumerable.Single%2A?displayProperty=nameWithType>和<xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType>方法。  
   
 |方法|訊息|  
 |------------|-------------|  
-|`Single`|**序列包含沒有相符項目**|  
+|`Single`|**序列中沒有包含任何相符的項目**|  
 |`Single` <br /> `SingleOrDefault`|**序列包含一個以上相符的項目**|  
   
- 在下列範例中，呼叫<xref:System.Linq.Enumerable.Single%2A?displayProperty=nameWithType>方法會擲回<xref:System.InvalidOperationException>例外狀況因為順序不會包含大於 4 的元素。  
+ 在下列範例中，呼叫<xref:System.Linq.Enumerable.Single%2A?displayProperty=nameWithType>方法會擲回<xref:System.InvalidOperationException>例外狀況因為順序不一定大於 4 的項目。  
   
  [!code-csharp[System.InvalidOperationException#10](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception/cs/Enumerable5.cs#10)]
  [!code-vb[System.InvalidOperationException#10](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception/vb/Enumerable5.vb#10)]  
   
- 下列範例會嘗試防止<xref:System.InvalidOperationException>序列是空的改為呼叫時擲回的例外狀況<xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType>方法。 不過，由於此順序會傳回其值大於 2 的多個項目，它也會擲回<xref:System.InvalidOperationException>例外狀況。  
+ 下列範例會嘗試防止<xref:System.InvalidOperationException>改為呼叫序列是空白時擲回的例外狀況<xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType>方法。 不過，因為這個序列會傳回其值大於 2 的多個項目，它也會擲回<xref:System.InvalidOperationException>例外狀況。  
   
  [!code-csharp[System.InvalidOperationException#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.invalidoperationexception/cs/Enumerable6.cs#11)]
  [!code-vb[System.InvalidOperationException#11](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.invalidoperationexception/vb/Enumerable6.vb#11)]  
   
- 呼叫<xref:System.Linq.Enumerable.Single%2A?displayProperty=nameWithType>方法會假設序列或符合指定的準則的順序包含只有一個項目。  <xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType> 假設具有零個或一個結果，但沒有更多的順序。 這項假設您刻意建立一個，而且不符合這些條件，如果重新擲回或攔截產生<xref:System.InvalidOperationException>適合。 否則，或如果您需要無效的條件會以某些頻率發生，您應該考慮使用其他<xref:System.Linq.Enumerable>方法，例如<xref:System.Linq.Enumerable.FirstOrDefault%2A>或<xref:System.Linq.Enumerable.Where%2A>。  
+ 呼叫<xref:System.Linq.Enumerable.Single%2A?displayProperty=nameWithType>方法假設序列或符合指定的準則的順序包含只有一個項目。  <xref:System.Linq.Enumerable.SingleOrDefault%2A?displayProperty=nameWithType> 假設具有零個或一個結果，但沒有更多的順序。 如果這項假設是刻意在您的組件，而且不符合這些條件，重新擲回或攔截產生<xref:System.InvalidOperationException>適合。 否則，或如果您預期無效的條件會以某些頻率發生，您應該考慮使用其他<xref:System.Linq.Enumerable>方法，例如<xref:System.Linq.Enumerable.FirstOrDefault%2A>或<xref:System.Linq.Enumerable.Where%2A>。  
   
 <a name="Emit"></a>   
-### <a name="dynamic-cross-application-domain-field-access"></a>動態跨應用程式網域欄位存取權  
- <xref:System.Reflection.Emit.OpCodes.Ldflda?displayProperty=nameWithType> Microsoft intermediate language (MSIL) 指令會擲回<xref:System.InvalidOperationException>如果包含的欄位想要擷取其位址的物件不在程式碼執行的應用程式定義域內的例外狀況。 只能從它所在的應用程式網域存取欄位的位址。  
+### <a name="dynamic-cross-application-domain-field-access"></a>動態跨應用程式網域欄位存取  
+ <xref:System.Reflection.Emit.OpCodes.Ldflda?displayProperty=nameWithType> Microsoft intermediate language (MSIL) 指令則會擲回<xref:System.InvalidOperationException>如果包含想要擷取其地址 欄位的物件不在您的程式碼執行所在的應用程式定義域內的例外狀況。 只能從其所在的應用程式定義域存取欄位的位址。  
   
 <a name="Throwing"></a>   
 ## <a name="throwing-an-invalidoperationexception-exception"></a>擲回 InvalidOperationException 例外狀況  
- 您應該擲回<xref:System.InvalidOperationException>基於某些原因您物件的狀態不支援特定的方法呼叫時，才例外狀況。 也就是方法呼叫無效，在某些情況下或內容中，但不能用在其他人。  
+ 您應該擲回<xref:System.InvalidOperationException>只在基於某些原因您物件的狀態不支援特定的方法呼叫時的例外狀況。 也就是方法呼叫有效在某些情況下或內容中，但在其他無效。  
   
- 如果方法引動過程失敗的原因是無效的引數，然後<xref:System.ArgumentException>或其衍生的類別，其中<xref:System.ArgumentNullException>或<xref:System.ArgumentOutOfRangeException>，應該改為擲回。  
+ 如果方法引動過程失敗是由於無效的引數，則<xref:System.ArgumentException>或其衍生的類別，其中<xref:System.ArgumentNullException>或<xref:System.ArgumentOutOfRangeException>，應該改為擲回。  
   
 <a name="Misc"></a>   
 ## <a name="miscellaneous-information"></a>其他資訊  
- <xref:System.InvalidOperationException> 會使用 HRESULT COR_E_INVALIDOPERATION，0x80131509 的值。  
+ <xref:System.InvalidOperationException> 會使用 HRESULT COR_E_INVALIDOPERATION，其值 0x80131509。  
   
  如需執行個體的初始屬性值的清單<xref:System.InvalidOperationException>，請參閱<xref:System.InvalidOperationException.%23ctor%2A>建構函式。  
   
@@ -341,6 +343,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -355,7 +359,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個建構函式初始化<xref:System.Exception.Message%2A>屬性的新執行個體的系統提供的訊息描述錯誤，例如 「 無法執行要求的作業。 」 此訊息會考量目前的系統文化特性。  
+ 這個建構函式初始化<xref:System.Exception.Message%2A>屬性的新執行個體的系統提供的訊息，說明錯誤，例如 「 無法執行要求的作業。 」 此訊息會考量目前的系統文化特性。  
   
  下表顯示 <xref:System.InvalidOperationException> 執行個體的初始屬性值。  
   
@@ -387,6 +391,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -427,6 +433,8 @@
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -451,7 +459,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 進行還原序列化 (Deserialization) 期間會呼叫這個建構函式，以便重新構成經由資料流傳送的例外狀況物件。 如需詳細資訊，請參閱[XML 和 SOAP 序列化](~/docs/standard/serialization/xml-and-soap-serialization.md)。  
+ 進行還原序列化 (Deserialization) 期間會呼叫這個建構函式，以便重新構成經由資料流傳送的例外狀況物件。 如需詳細資訊，請參閱 < [XML 和 SOAP 序列化](~/docs/standard/serialization/xml-and-soap-serialization.md)。  
   
  ]]></format>
         </remarks>
@@ -476,6 +484,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
