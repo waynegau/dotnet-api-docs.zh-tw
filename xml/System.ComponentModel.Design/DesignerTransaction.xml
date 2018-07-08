@@ -1,11 +1,11 @@
 <Type Name="DesignerTransaction" FullName="System.ComponentModel.Design.DesignerTransaction">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="5d4478c4903b875b690eefbef1bcd9dd72eeea2f" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="93632f844b82f4df8c4cbc42b909bd2ee3dca7e3" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36707146" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37696546" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class DesignerTransaction : IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit DesignerTransaction extends System.Object implements class System.IDisposable" />
@@ -15,6 +15,8 @@
   <TypeSignature Language="F#" Value="type DesignerTransaction = class&#xA;    interface IDisposable" />
   <AssemblyInfo>
     <AssemblyName>System</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -41,28 +43,28 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 交易可以追蹤稍後可以復原的動作。 藉由取消交易，會自動嘗試將每個已變更的屬性設定為其變更前的值來還原每個變更，便可反轉交易期間所做的變更。 交易也可以將一系列的作業期間的效能改善可以延遲顯示更新，直到交易完成為止。  
+ 交易可以追蹤稍後可以復原的動作。 藉由取消交易，這會自動嘗試將每個已變更的屬性設定為其變更前的值來反轉每項變更可以反轉交易期間所做的變更。 交易也可以將一系列的作業期間的效能改善延後更新的顯示，直到交易完成。  
   
- 當交易正在進行中時，某些元件延遲其處理，直到交易完成透過接聽<xref:System.ComponentModel.Design.IDesignerHost.TransactionOpening>和<xref:System.ComponentModel.Design.IDesignerHost.TransactionClosed>事件。 [屬性] 視窗中，例如，不會更新它的顯示畫面直到異動關閉開啟的交易之後。  
+ 進行中交易時，某些元件延後其處理，直到交易完成藉由接聽<xref:System.ComponentModel.Design.IDesignerHost.TransactionOpening>和<xref:System.ComponentModel.Design.IDesignerHost.TransactionClosed>事件。 [屬性] 視窗中，比方說，不會更新它的顯示畫面之後的交易已開啟，直到交易已關閉。  
   
- 若要使用的交易復原或多個作業，已建立您的設計工具<xref:System.ComponentModel.Design.DesignerTransaction>針對每個作業或系列的作業，這應該是可復原。 請小心，不要執行動作可能會讓復原事件序列無法順利完成的交易之外。  
+ 若要使用的交易復原或多個作業，已建立您的設計工具<xref:System.ComponentModel.Design.DesignerTransaction>針對每個作業或系列的應該是可反轉的作業。 請小心，不要執行可能會阻止復原事件序列無法順利完成的交易之外的動作。  
   
- 您可以取得新<xref:System.ComponentModel.Design.DesignerTransaction>藉由呼叫<xref:System.ComponentModel.Design.IDesignerHost.CreateTransaction%2A>方法<xref:System.ComponentModel.Design.IDesignerHost>。 請務必取得每個<xref:System.ComponentModel.Design.DesignerTransaction>從作用中<xref:System.ComponentModel.Design.IDesignerHost>才能正確處理機制，而不是建立新的設計工具異動與整合<xref:System.ComponentModel.Design.DesignerTransaction>直接。  
+ 您可以取得新<xref:System.ComponentModel.Design.DesignerTransaction>藉由呼叫<xref:System.ComponentModel.Design.IDesignerHost.CreateTransaction%2A>方法<xref:System.ComponentModel.Design.IDesignerHost>。 請務必取得每個<xref:System.ComponentModel.Design.DesignerTransaction>從現用<xref:System.ComponentModel.Design.IDesignerHost>才能正確地整合與處理機制，而不是建立新的設計工具異動<xref:System.ComponentModel.Design.DesignerTransaction>直接。  
   
- 若要執行的動作，在交易中，您必須先建立交易。 您必須呼叫<xref:System.ComponentModel.Design.IComponentChangeService.OnComponentChanging%2A>方法之前發生每個變更或一組變更，而<xref:System.ComponentModel.Design.IComponentChangeService.OnComponentChanged%2A>方法在每個變更或一組變更之後發生。 最後，完成，並藉由呼叫關閉交易<xref:System.ComponentModel.Design.DesignerTransaction.Commit%2A>方法。  
+ 若要執行交易內的某個動作，您必須先建立交易。 您必須呼叫<xref:System.ComponentModel.Design.IComponentChangeService.OnComponentChanging%2A>方法之前發生每個變更或一組變更，而<xref:System.ComponentModel.Design.IComponentChangeService.OnComponentChanged%2A>方法在每個變更或一組變更之後發生。 最後，完成，然後藉由呼叫關閉交易<xref:System.ComponentModel.Design.DesignerTransaction.Commit%2A>方法。  
   
 > [!NOTE]
->  當變更屬性值，使用<xref:System.ComponentModel.PropertyDescriptor.SetValue%2A>方法<xref:System.ComponentModel.PropertyDescriptor>，呼叫的元件變更方法<xref:System.ComponentModel.Design.IComponentChangeService>並建立<xref:System.ComponentModel.Design.DesignerTransaction>自動表示變更。  
+>  當屬性值進行變更，使用<xref:System.ComponentModel.PropertyDescriptor.SetValue%2A>方法<xref:System.ComponentModel.PropertyDescriptor>，它會呼叫元件的變更方法<xref:System.ComponentModel.Design.IComponentChangeService>，並建立<xref:System.ComponentModel.Design.DesignerTransaction>自動代表變更。  
   
  若要執行的交易，請完成下列步驟：  
   
-1.  呼叫<xref:System.ComponentModel.Design.IDesignerHost.CreateTransaction%2A>取得<xref:System.ComponentModel.Design.DesignerTransaction>，可以用來控制交易。  
+1.  呼叫<xref:System.ComponentModel.Design.IDesignerHost.CreateTransaction%2A>以取得<xref:System.ComponentModel.Design.DesignerTransaction>，可用來控制交易。  
   
-2.  內`try`區塊中的，針對您想要追蹤與每個動作<xref:System.ComponentModel.Design.DesignerTransaction>，呼叫<xref:System.ComponentModel.Design.IComponentChangeService.OnComponentChanging%2A>方法，進行變更或變更，然後呼叫<xref:System.ComponentModel.Design.IComponentChangeService.OnComponentChanged%2A>方法來通知有已進行變更。  
+2.  內`try`區塊中的，針對您想要追蹤與每個動作<xref:System.ComponentModel.Design.DesignerTransaction>，呼叫<xref:System.ComponentModel.Design.IComponentChangeService.OnComponentChanging%2A>方法，請變更或變更的項目，然後呼叫<xref:System.ComponentModel.Design.IComponentChangeService.OnComponentChanged%2A>方法來通知有已進行變更。  
   
-3.  若要完成交易，呼叫<xref:System.ComponentModel.Design.DesignerTransaction.Commit%2A>從`finally`區塊。  
+3.  若要完成交易，呼叫<xref:System.ComponentModel.Design.DesignerTransaction.Commit%2A>內在`finally`區塊。  
   
- 在 C# 中，您可以使用`using`陳述式而非`try/finally`區塊，如下列範例所示。  
+ 在 C# 中，您可以使用`using`陳述式而非`try/finally`封鎖，如下列範例所示。  
   
 ```  
 using (host.CreateTransaction() {  
@@ -70,18 +72,18 @@ using (host.CreateTransaction() {
 }  
 ```  
   
- 若要取消，並嘗試回復的交易已認可之前，請呼叫<xref:System.ComponentModel.Design.DesignerTransaction.Cancel%2A>方法。 當<xref:System.ComponentModel.Design.DesignerTransaction.Cancel%2A>叫用方法時，所追蹤之動作<xref:System.ComponentModel.Design.DesignerTransaction>嘗試回復的變更會反轉。 若要復原的先前交易的一部分時發生的動作，您必須使用開發環境所提供的 [復原] 命令。  
+ 若要取消並嘗試回復的交易已認可之前，請呼叫<xref:System.ComponentModel.Design.DesignerTransaction.Cancel%2A>方法。 當<xref:System.ComponentModel.Design.DesignerTransaction.Cancel%2A>叫用方法時，所追蹤的動作<xref:System.ComponentModel.Design.DesignerTransaction>顛倒，用以嘗試回復的變更。 若要復原的先前交易過程中發生的動作，您必須使用開發環境所提供的 [復原] 命令。  
   
    
   
 ## Examples  
- 下列程式碼範例程式示範如何建立<xref:System.ComponentModel.Design.DesignerTransaction>從設計工具。 若要執行此範例中，將原始程式碼編譯為類別庫。 您必須加入 System.Design 組件的參考。 在新的專案中，將參考加入至已編譯的 DLL 和程式庫中加入元件**工具箱**。  
+ 下列程式碼範例程式會示範如何建立<xref:System.ComponentModel.Design.DesignerTransaction>從設計工具。 若要執行此範例，請將原始程式碼編譯至類別庫。 您必須新增 System.Design 組件的參考。 在新的專案中，將參考加入至已編譯的 DLL，並將元件新增至文件庫中**工具箱**。  
   
- 沒有對 Visual Studio 中的這項功能有廣泛的支援。  
+ 沒有這項功能在 Visual Studio 中的廣泛支援。  
   
- 另請參閱[逐步解說： 自動填入工具箱 「 自訂 」 元件](http://msdn.microsoft.com/library/fw694kde\(v=vs.110\).aspx)。  
+ 另請參閱[逐步解說： 自動填入 自訂元件工具箱](http://msdn.microsoft.com/library/fw694kde\(v=vs.110\).aspx)。  
   
- 在設計工具可以選擇性地顯示有關設計工具異動事件通知。 如果您加入的執行個體`DTComponent`表單在設計模式中的訊息方塊出現，詢問您想要接收設計工具異動事件通知。 您可以切換使用捷徑功能表的執行個體上按一下滑鼠右鍵時出現這些通知`DTComponent`。 當您變更使用 [屬性] 視窗的值時，會建立交易。 您也可以讓設計工具，即可執行交易**執行範例交易**元件的捷徑功能表上。  
+ 設計工具可以選擇顯示設計工具異動事件的相關通知。 如果您加入的執行個體`DTComponent`表單處於設計模式時，訊息方塊出現，詢問您想要接收設計工具異動事件通知。 您可以切換使用捷徑功能表的執行個體上按一下滑鼠右鍵時出現這些告知`DTComponent`。 當您變更使用屬性視窗的值時，會建立交易。 您也可以讓設計工具，即可執行異動**執行範例交易**元件的捷徑功能表上。  
   
  [!code-cpp[DesignerTransaction Sample#1](~/samples/snippets/cpp/VS_Snippets_Winforms/DesignerTransaction Sample/CPP/source.cpp#1)]
  [!code-csharp[DesignerTransaction Sample#1](~/samples/snippets/csharp/VS_Snippets_Winforms/DesignerTransaction Sample/CS/source.cs#1)]
@@ -89,7 +91,7 @@ using (host.CreateTransaction() {
   
  ]]></format>
     </remarks>
-    <permission cref="T:System.Security.NamedPermissionSet">系統資源的完整存取權。 要求的值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
+    <permission cref="T:System.Security.NamedPermissionSet">取得的完整存取系統資源。 要求值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
     <altmember cref="T:System.ComponentModel.Design.IDesignerHost" />
     <altmember cref="T:System.ComponentModel.Design.IComponentChangeService" />
     <altmember cref="T:System.ComponentModel.PropertyDescriptor" />
@@ -114,6 +116,8 @@ using (host.CreateTransaction() {
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -130,7 +134,7 @@ using (host.CreateTransaction() {
       <Docs>
         <summary>不使用描述，初始化 <see cref="T:System.ComponentModel.Design.DesignerTransaction" /> 類別的新執行個體。</summary>
         <remarks>To be added.</remarks>
-        <permission cref="T:System.Security.NamedPermissionSet">系統資源的完整存取權。 要求的值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
+        <permission cref="T:System.Security.NamedPermissionSet">取得的完整存取系統資源。 要求值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -143,6 +147,8 @@ using (host.CreateTransaction() {
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -165,11 +171,11 @@ using (host.CreateTransaction() {
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個建構函式初始化具有指定描述交易。  
+ 這個建構函式會初始化具有指定描述的交易。  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.NamedPermissionSet">系統資源的完整存取權。 要求的值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
+        <permission cref="T:System.Security.NamedPermissionSet">取得的完整存取系統資源。 要求值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
       </Docs>
     </Member>
     <Member MemberName="Cancel">
@@ -182,6 +188,8 @@ using (host.CreateTransaction() {
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -201,7 +209,7 @@ using (host.CreateTransaction() {
       <Docs>
         <summary>取消異動，並嘗試復原異動事件所做的變更。</summary>
         <remarks>To be added.</remarks>
-        <permission cref="T:System.Security.NamedPermissionSet">系統資源的完整存取權。 要求的值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
+        <permission cref="T:System.Security.NamedPermissionSet">取得的完整存取系統資源。 要求值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
         <altmember cref="M:System.ComponentModel.Design.DesignerTransaction.OnCancel" />
       </Docs>
     </Member>
@@ -215,6 +223,8 @@ using (host.CreateTransaction() {
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -237,11 +247,11 @@ using (host.CreateTransaction() {
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當設計工具交易被取消時，交易處理機制會嘗試回復已到目前為止在交易中的變更。 成功是每個作業類型，這類因素，是否與任何相關的程式碼狀態干擾其他作業，以及是否一連串預期的作業無法完成。  
+ 當取消設計工具的交易時，交易處理機制會嘗試回復已在交易中到目前為止所做的變更。 其他作業干擾任何有關的程式碼，以及一系列預期的作業無法完成，這是否成功是狀態的相依於這類因素，每個作業類型。  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.NamedPermissionSet">系統資源的完整存取權。 要求的值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
+        <permission cref="T:System.Security.NamedPermissionSet">取得的完整存取系統資源。 要求值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
       </Docs>
     </Member>
     <Member MemberName="Commit">
@@ -254,6 +264,8 @@ using (host.CreateTransaction() {
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -276,13 +288,13 @@ using (host.CreateTransaction() {
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 設計工具的交易認可時，就會被視為交易，而不會追蹤進一步的變更。  
+ 設計工具的交易認可時，交易就會被視為完成，且不會追蹤進一步的變更。  
   
- 一旦交易已認可，進一步呼叫此方法執行任何動作。 建立交易以確認交易會適當地關閉之後，務必呼叫這個方法。  
+ 一旦交易認可，進一步呼叫此方法執行任何動作。 建立交易，以確認異動正確關閉之後，務必呼叫這個方法。  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.NamedPermissionSet">系統資源的完整存取權。 要求的值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
+        <permission cref="T:System.Security.NamedPermissionSet">取得的完整存取系統資源。 要求值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
         <altmember cref="M:System.ComponentModel.Design.DesignerTransaction.OnCommit" />
       </Docs>
     </Member>
@@ -296,6 +308,8 @@ using (host.CreateTransaction() {
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -318,11 +332,11 @@ using (host.CreateTransaction() {
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 設計工具的交易認可時，就會被視為交易，而不會追蹤進一步的變更。  
+ 設計工具的交易認可時，交易就會被視為完成，且不會追蹤進一步的變更。  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.NamedPermissionSet">系統資源的完整存取權。 要求的值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
+        <permission cref="T:System.Security.NamedPermissionSet">取得的完整存取系統資源。 要求值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
       </Docs>
     </Member>
     <Member MemberName="Description">
@@ -335,6 +349,8 @@ using (host.CreateTransaction() {
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -357,11 +373,11 @@ using (host.CreateTransaction() {
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 交易可以有一段描述以在識別或多個作業的本質非常有用。  
+ 交易可以有一段描述以用於識別或多個作業的本質。  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.NamedPermissionSet">系統資源的完整存取權。 要求的值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
+        <permission cref="T:System.Security.NamedPermissionSet">取得的完整存取系統資源。 要求值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -374,6 +390,8 @@ using (host.CreateTransaction() {
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -400,16 +418,16 @@ using (host.CreateTransaction() {
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法會呼叫公用`Dispose()`方法和<xref:System.Object.Finalize%2A>方法。 `Dispose()` 叫用受保護`Dispose(Boolean)`方法`disposing`參數設定為`true`。 <xref:System.Object.Finalize%2A> 叫用`Dispose`與`disposing`設`false`。  
+ 這個方法會呼叫公用`Dispose()`方法和<xref:System.Object.Finalize%2A>方法。 `Dispose()` 叫用受保護`Dispose(Boolean)`方法`disposing`參數設為`true`。 <xref:System.Object.Finalize%2A> 叫用`Dispose`具有`disposing`設定為`false`。  
   
  `disposing` 參數為 `true` 時，這個方法會釋放 <xref:System.ComponentModel.Design.DesignerTransaction> 參考的任何 Managed 物件所掌握的資源。 這個方法會叫用每個參考物件的 `Dispose()` 方法。  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.NamedPermissionSet">系統資源的完整存取權。 要求的值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
+        <permission cref="T:System.Security.NamedPermissionSet">取得的完整存取系統資源。 要求值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
         <block subset="none" type="overrides">
           <para>
-            <see langword="Dispose" /> 可以被其他物件呼叫多次。覆寫 <see langword="Dispose(Boolean)" /> 時，請小心不要參考到先前已在對 <see langword="Dispose" /> 的早期呼叫中被處置 (Dispose) 的物件。如需有關如何實作<see langword="Dispose(Boolean)" />，請參閱 [實作 Dispose Method](~/docs/standard/garbage-collection/implementing-dispose.md)。如需有關<see langword="Dispose" />和<see cref="M:System.Object.Finalize" />，請參閱 [清理 Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md) 上和 [覆寫 Finalize 方法] (http://msdn.microsoft.com/library/8026cb68-fe93-43fc-96c1-c09ad7d64cd3)。</para>
+            <see langword="Dispose" /> 可以多次呼叫的其他物件。覆寫 <see langword="Dispose(Boolean)" /> 時，請小心不要參考到先前已在對 <see langword="Dispose" /> 的早期呼叫中被處置 (Dispose) 的物件。如需有關如何實作<see langword="Dispose(Boolean)" />，請參閱 [實作 Dispose Method](~/docs/standard/garbage-collection/implementing-dispose.md)。如需詳細資訊<see langword="Dispose" />並<see cref="M:System.Object.Finalize" />，請參閱 [清除設定未受管理的 Resources](~/docs/standard/garbage-collection/unmanaged.md) 和 [覆寫 Finalize 方法] (http://msdn.microsoft.com/library/8026cb68-fe93-43fc-96c1-c09ad7d64cd3)。</para>
         </block>
       </Docs>
     </Member>
@@ -423,6 +441,8 @@ using (host.CreateTransaction() {
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -447,13 +467,13 @@ using (host.CreateTransaction() {
 ## Remarks  
  這個方法會覆寫<xref:System.Object.Finalize%2A?displayProperty=nameWithType>並清除資源，藉由呼叫`Dispose(false)`。 覆寫 `Dispose(Boolean)` 以自訂清除。  
   
- 應用程式程式碼不應該呼叫這個方法。物件的`Finalize`方法會自動叫用記憶體回收期間，除非已停用記憶體回收行程的最終處理的呼叫所<xref:System.GC.SuppressFinalize%2A?displayProperty=nameWithType>方法。  
+ 應用程式程式碼不應該呼叫這個方法。物件的`Finalize`方法會自動叫用記憶體回收期間，除非呼叫已停用記憶體回收行程的最終處理<xref:System.GC.SuppressFinalize%2A?displayProperty=nameWithType>方法。  
   
- 如需詳細資訊，請參閱[Finalize 方法和解構函式](http://msdn.microsoft.com/library/fd376774-1643-499b-869e-9546a3aeea70)，[清除 Unmanaged 資源上](~/docs/standard/garbage-collection/unmanaged.md)，和[覆寫 Finalize 方法](http://msdn.microsoft.com/library/8026cb68-fe93-43fc-96c1-c09ad7d64cd3)。  
+ 如需詳細資訊，請參閱 < [Finalize 方法和解構函式](http://msdn.microsoft.com/library/fd376774-1643-499b-869e-9546a3aeea70)，[清除 Unmanaged 資源總](~/docs/standard/garbage-collection/unmanaged.md)，並[覆寫 Finalize 方法](http://msdn.microsoft.com/library/8026cb68-fe93-43fc-96c1-c09ad7d64cd3)。  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.NamedPermissionSet">系統資源的完整存取權。 要求的值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
+        <permission cref="T:System.Security.NamedPermissionSet">取得的完整存取系統資源。 要求值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
       </Docs>
     </Member>
     <Member MemberName="OnCancel">
@@ -466,6 +486,8 @@ using (host.CreateTransaction() {
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -488,11 +510,11 @@ using (host.CreateTransaction() {
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當設計工具交易被取消時，交易處理機制會嘗試回復已到目前為止在交易中的變更。 成功是每個作業類型，這類因素，是否與任何相關的程式碼狀態干擾其他作業，以及是否一連串預期的作業無法完成。  
+ 當取消設計工具的交易時，交易處理機制會嘗試回復已在交易中到目前為止所做的變更。 其他作業干擾任何有關的程式碼，以及一系列預期的作業無法完成，這是否成功是狀態的相依於這類因素，每個作業類型。  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.NamedPermissionSet">系統資源的完整存取權。 要求的值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
+        <permission cref="T:System.Security.NamedPermissionSet">取得的完整存取系統資源。 要求值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
         <block subset="none" type="overrides">
           <para>在衍生類別中實作時，這個方法會取消交易。</para>
         </block>
@@ -509,6 +531,8 @@ using (host.CreateTransaction() {
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -531,13 +555,13 @@ using (host.CreateTransaction() {
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 設計工具的交易認可時，就會被視為交易，而不會追蹤進一步的變更。  
+ 設計工具的交易認可時，交易就會被視為完成，且不會追蹤進一步的變更。  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.NamedPermissionSet">系統資源的完整存取權。 要求的值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
+        <permission cref="T:System.Security.NamedPermissionSet">取得的完整存取系統資源。 要求值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
         <block subset="none" type="overrides">
-          <para>在衍生類別中實作時，這個方法會執行與處理異動相關聯的工作。</para>
+          <para>在衍生類別中實作時，這個方法會執行與處理交易相關聯的工作。</para>
         </block>
         <altmember cref="M:System.ComponentModel.Design.DesignerTransaction.Commit" />
       </Docs>
@@ -554,6 +578,8 @@ using (host.CreateTransaction() {
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -576,11 +602,11 @@ using (host.CreateTransaction() {
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當處置交易時，它就會認可。  
+ 處置交易時，它會認可。  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.NamedPermissionSet">系統資源的完整存取權。 要求的值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
+        <permission cref="T:System.Security.NamedPermissionSet">取得的完整存取系統資源。 要求值： <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />。 相關聯的狀態：</permission>
       </Docs>
     </Member>
   </Members>
