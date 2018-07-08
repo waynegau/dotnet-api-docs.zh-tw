@@ -1,11 +1,11 @@
 <Type Name="SuppressUnmanagedCodeSecurityAttribute" FullName="System.Security.SuppressUnmanagedCodeSecurityAttribute">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="319c4461527764c15700f3a7bb447788e9477ec3" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="d38b7ee555069cda78d0e56b29d833cfc1e76028" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36423886" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37622335" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class SuppressUnmanagedCodeSecurityAttribute : Attribute" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit SuppressUnmanagedCodeSecurityAttribute extends System.Attribute" />
@@ -15,6 +15,8 @@
   <TypeSignature Language="F#" Value="type SuppressUnmanagedCodeSecurityAttribute = class&#xA;    inherit Attribute" />
   <AssemblyInfo>
     <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -47,17 +49,17 @@
 ## Remarks  
   
 > [!CAUTION]
->  使用這個屬性與必須特別小心。 使用不正確，可以建立安全性弱點。  
+>  您可以使用這個屬性，必須特別小心。 使用不正確造成安全性弱點。  
   
- 這個屬性可以套用至想要原生程式碼而不會產生執行階段安全性檢查的效能損失，這麼做時呼叫的方法。 執行在執行階段，省略呼叫 unmanaged 程式碼時導致效能大幅節省堆疊查核行程。 類別中使用這個屬性套用至所有包含的方法。  
+ 這個屬性可以套用至想要呼叫原生程式碼而不需要這麼做時，會造成效能損失，在執行階段安全性檢查的方法。 執行在執行階段，省略呼叫 unmanaged 程式碼時導致效能大幅節省堆疊查核行程。 在類別中使用這個屬性套用至所有包含的方法。  
   
- 一般來說，managed 程式碼呼叫 unmanaged 程式碼 （由原生程式碼的 PInvoke 或 COM interop)，只要沒有要求`UnmanagedCode`權限，以確保所有呼叫端具有必要的權限，允許此。 藉由套用此明確的屬性，開發人員就可以隱藏執行階段的要求。 開發人員必須負責確保轉換為 unmanaged 程式碼完全受到其他方式。 要求`UnmanagedCode`連結時，還是會發生權限。 例如，如果函式 A 呼叫 B 函式和函式 B 會標示<xref:System.Security.SuppressUnmanagedCodeSecurityAttribute>，函式 A 將檢查的 unmanaged 程式碼的權限在 just-in-time 編譯期間，但後續未在執行階段。  
+ 一般而言，每當 managed 程式碼呼叫 unmanaged 程式碼 （由原生程式碼 PInvoke 或 COM interop)，沒有要求`UnmanagedCode`權限，以確保所有呼叫端具有必要的權限，允許此。 開發人員可以藉由套用此明確的屬性，來隱藏在執行階段的需求。 開發人員必須負責確保轉換至 unmanaged 程式碼受到充分保護透過其他方式。 需求`UnmanagedCode`在連結時，還是會發生權限。 例如，如果函式的呼叫函式 B 和函式 B 會標示<xref:System.Security.SuppressUnmanagedCodeSecurityAttribute>，函式會檢查的 unmanaged 程式碼權限在 just-in-time 編譯期間，但不是後續在執行階段。  
   
- 這個屬性才有效時用於 PInvoke 方法 （或包含 PInvoke 方法的類別） 或將透過它進行 interop 呼叫介面的定義。 所有其他內容中，會忽略它。  
+ 這個屬性才有效時套用至 PInvoke 方法 （或包含 PInvoke 方法的類別） 或將透過它進行 interop 呼叫介面的定義。 在所有其他內容，將忽略它。  
   
- 這個屬性可用於實作提供透過 unmanaged 程式碼的系統資源的存取權的類別。 不需要存取 unmanaged 程式碼的權限的程式碼可以呼叫具有存取 unmanaged 程式碼的這個屬性的類別。 這只是安全的如果具有此屬性之類別的寫入器已設計為安全類別。 如果沒有，此屬性非常危險，並且可以讓使用被誤用的程式碼。  
+ 這個屬性可用於實作的類別，可讓您透過 unmanaged 程式碼的系統資源的存取。 沒有存取 unmanaged 程式碼的權限的程式碼可以呼叫具有此屬性來存取 unmanaged 程式碼的類別。 這只是安全，如果具有此屬性之類別的寫入器已設計為安全的類別。 如果沒有，此屬性非常危險，並且可以允許使用被誤用的程式碼。  
   
- 這不是宣告式安全性屬性，但一般屬性 (其衍生自<xref:System.Attribute>，而非<xref:System.Security.Permissions.SecurityAttribute>)。  
+ 這不是宣告式安全性屬性，但一般屬性 (它衍生自<xref:System.Attribute>，而非<xref:System.Security.Permissions.SecurityAttribute>)。  
   
  ]]></format>
     </remarks>
@@ -72,6 +74,8 @@
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>

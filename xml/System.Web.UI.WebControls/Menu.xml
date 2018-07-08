@@ -1,11 +1,11 @@
 <Type Name="Menu" FullName="System.Web.UI.WebControls.Menu">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="659f45513d8aea13ba3c36fe5ff9988b48fd2190" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="7bd36c0032f01ac7c7d4f16d38ff2a22c7a27854" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36580844" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37534938" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class Menu : System.Web.UI.WebControls.HierarchicalDataBoundControl, System.Web.UI.INamingContainer, System.Web.UI.IPostBackEventHandler" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Menu extends System.Web.UI.WebControls.HierarchicalDataBoundControl implements class System.Web.UI.INamingContainer, class System.Web.UI.IPostBackEventHandler" />
@@ -15,6 +15,7 @@
   <TypeSignature Language="F#" Value="type Menu = class&#xA;    inherit HierarchicalDataBoundControl&#xA;    interface IPostBackEventHandler&#xA;    interface INamingContainer" />
   <AssemblyInfo>
     <AssemblyName>System.Web</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
@@ -56,7 +57,7 @@
   
 -   [靜態資料](#static_data)  
   
--   [繫結至資料](#binding_to_data)  
+-   [在 DetailsView 控制項可以繫結至資料來源控制項，例如[SqlDataSource](#binding_to_data)或 AccessDataSource，或實作 System.Collections.IEnumerable 介面，例如 System.Data.DataView，任何資料來源System.Collections.ArrayList 和 System.Collections.Hashtable。](#binding_to_data)  
   
 -   [自訂使用者介面](#customizing_the_user_interface)  
   
@@ -68,61 +69,61 @@
   
 <a name="introduction"></a>   
 ## <a name="introduction"></a>簡介  
- <xref:System.Web.UI.WebControls.Menu>用來在 ASP.NET Web 網頁中顯示的功能表控制項，以及通常用於搭配<xref:System.Web.UI.WebControls.SiteMapDataSource>控制項瀏覽的網站。 <xref:System.Web.UI.WebControls.Menu>控制項支援下列功能：  
+ <xref:System.Web.UI.WebControls.Menu>用來在 ASP.NET 網頁中顯示的功能表控制項，以及通常用於搭配<xref:System.Web.UI.WebControls.SiteMapDataSource>瀏覽網站上的控制項。 <xref:System.Web.UI.WebControls.Menu>控制項支援下列功能：  
   
--   資料繫結，讓繫結至階層式資料來源控制項的功能表項目。  
+-   可讓控制項的功能表項目繫結至階層式資料來源的資料繫結。  
   
 -   站台瀏覽與整合<xref:System.Web.UI.WebControls.SiteMapDataSource>控制項。  
   
--   以程式設計方式存取<xref:System.Web.UI.WebControls.Menu>物件模型，以動態方式建立功能表、 填入功能表項目、 設定屬性，以及等等。  
+-   以程式設計方式存取<xref:System.Web.UI.WebControls.Menu>物件模型動態建立功能表、 填入功能表項目、 設定屬性，然後依此類推。  
   
--   透過佈景主題、 使用者定義的映像、 樣式和使用者定義的範本自訂外觀。  
+-   透過佈景主題、 使用者定義的映像、 樣式和使用者定義的範本來自訂外觀。  
   
- 當使用者按一下功能表項目，<xref:System.Web.UI.WebControls.Menu>控制項可以瀏覽至連結的網頁，或直接張貼至伺服器。 如果<xref:System.Web.UI.WebControls.MenuItem.NavigateUrl%2A>設定功能表項目的屬性，<xref:System.Web.UI.WebControls.Menu>控制項巡覽至連結的網頁; 否則它會張貼頁面回傳至伺服器進行處理。 根據預設，連結的頁面會顯示在相同的視窗或框架做為<xref:System.Web.UI.WebControls.Menu>控制項。 若要在不同的視窗或框架中顯示連結的內容，請使用<xref:System.Web.UI.WebControls.Menu.Target%2A>屬性<xref:System.Web.UI.WebControls.Menu>控制項。  
-  
-> [!NOTE]
->  <xref:System.Web.UI.WebControls.Menu.Target%2A>屬性會影響在控制項中的每個功能表項目。 若要指定視窗或框架的個別功能表項目，設定<xref:System.Web.UI.WebControls.MenuItem.Target%2A>屬性<xref:System.Web.UI.WebControls.MenuItem>直接物件。  
-  
- <xref:System.Web.UI.WebControls.Menu>控制項顯示功能表的兩種： 靜態功能表和動態功能表。 一律會以顯示靜態功能表<xref:System.Web.UI.WebControls.Menu>控制項。 根據預設，會顯示在靜態功能表中的根層級 （層級 0） 的功能表項目。 您可以在靜態功能表內顯示更多的功能表層級 （靜態子功能表），藉由設定<xref:System.Web.UI.WebControls.Menu.StaticDisplayLevels%2A>屬性。 功能表的項目 （如果有的話） 較高的層級所指定的值比<xref:System.Web.UI.WebControls.Menu.StaticDisplayLevels%2A>屬性會顯示在動態功能表中。 動態功能表會顯示只有當使用者將滑鼠指標停留包含動態子功能表的父功能表項目。 動態功能表會在特定期間之後會自動地消失。 使用<xref:System.Web.UI.WebControls.Menu.DisappearAfter%2A>屬性，以指定的持續時間。  
+ 當使用者按一下功能表項目，<xref:System.Web.UI.WebControls.Menu>控制項可以瀏覽到連結的網頁，或只是回傳給伺服器。 如果<xref:System.Web.UI.WebControls.MenuItem.NavigateUrl%2A>設定功能表項目的屬性，<xref:System.Web.UI.WebControls.Menu>控制項巡覽至 [連結] 頁面; 否則回傳將頁面回傳至伺服器進行處理。 根據預設，連結的頁面會顯示在相同的視窗或框架做為<xref:System.Web.UI.WebControls.Menu>控制項。 若要在不同的視窗或框架中顯示連結的內容，請使用<xref:System.Web.UI.WebControls.Menu.Target%2A>屬性<xref:System.Web.UI.WebControls.Menu>控制項。  
   
 > [!NOTE]
->  當使用者按一下功能表之外，也會消失動態功能表。  
+>  <xref:System.Web.UI.WebControls.Menu.Target%2A>屬性會影響在控制項中的每個功能表項目。 若要指定的視窗或框架的個別功能表項目，設定<xref:System.Web.UI.WebControls.MenuItem.Target%2A>屬性<xref:System.Web.UI.WebControls.MenuItem>直接物件。  
   
- 您也可以限制藉由設定顯示在動態功能表中的層級數目<xref:System.Web.UI.WebControls.Menu.MaximumDynamicDisplayLevels%2A>屬性。 功能表層級高於指定的值都會被捨棄。  
+ <xref:System.Web.UI.WebControls.Menu>控制項會顯示功能表的兩種： 靜態和動態功能表。 一律會以顯示靜態功能表<xref:System.Web.UI.WebControls.Menu>控制項。 根據預設，在根層級 （層級 0） 的功能表項目會顯示在靜態功能表中。 您可以藉由設定靜態功能表中顯示更多的功能表層級 （靜態子功能表）<xref:System.Web.UI.WebControls.Menu.StaticDisplayLevels%2A>屬性。 功能表的項目 （如果有的話） 層級所指定的值高於<xref:System.Web.UI.WebControls.Menu.StaticDisplayLevels%2A>屬性會顯示在動態功能表。 動態功能表會顯示只有當使用者將滑鼠指標放在父功能表項目包含動態子功能表。 動態功能表會在特定期間過後會自動地消失。 使用<xref:System.Web.UI.WebControls.Menu.DisappearAfter%2A>屬性來指定持續時間。  
   
 > [!NOTE]
->  <xref:System.Web.UI.WebControls.Menu>控制項不是在內部使用<xref:System.Web.UI.UpdatePanel>控制項。 您可以加入<xref:System.Web.UI.WebControls.Menu>外的網頁控制項<xref:System.Web.UI.UpdatePanel>控制項。 <xref:System.Web.UI.UpdatePanel> 控制項用來更新選取的區域，而不是整個頁面更新與回傳的頁面。 如需詳細資訊，請參閱[UpdatePanel 控制項概觀](http://msdn.microsoft.com/library/29a2265d-9674-4c19-b70e-e5560ee9689a)和[局部網頁呈現概觀](http://msdn.microsoft.com/library/5c12736d-d9e9-464a-9388-3fe0f9f49e49)。  
+>  當使用者按一下功能表之外，也就會消失動態功能表。  
+  
+ 您也可以限制的設定顯示在動態功能表中的層級數<xref:System.Web.UI.WebControls.Menu.MaximumDynamicDisplayLevels%2A>屬性。 功能表層級高於指定的值都會被捨棄。  
+  
+> [!NOTE]
+>  <xref:System.Web.UI.WebControls.Menu>控制項不是可用於<xref:System.Web.UI.UpdatePanel>控制項。 您可以加入<xref:System.Web.UI.WebControls.Menu>外的網頁控制項<xref:System.Web.UI.UpdatePanel>控制項。 <xref:System.Web.UI.UpdatePanel> 控制項用來更新選取的區域，而不是回傳以更新整個頁面的頁面。 如需詳細資訊，請參閱 < [UpdatePanel 控制項概觀](http://msdn.microsoft.com/library/29a2265d-9674-4c19-b70e-e5560ee9689a)並[網頁局部呈現概觀](http://msdn.microsoft.com/library/5c12736d-d9e9-464a-9388-3fe0f9f49e49)。  
   
 <a name="menu_items"></a>   
 ## <a name="menu-items"></a>功能表項目  
- A<xref:System.Web.UI.WebControls.Menu>控制項所組成的樹狀目錄中的功能表項目所代表<xref:System.Web.UI.WebControls.MenuItem>物件。 在最上層 （層級 0） 的功能表項目稱為根功能表項目。 功能表項目具有父功能表項目稱為子功能表項目。 所有根功能表項目會都儲存在<xref:System.Web.UI.WebControls.Menu.Items%2A>集合。 子功能表項目會儲存在父功能表項目的<xref:System.Web.UI.WebControls.MenuItem.ChildItems%2A>集合。  
+ A<xref:System.Web.UI.WebControls.Menu>控制項組成的功能表項目所表示的樹狀結構<xref:System.Web.UI.WebControls.MenuItem>物件。 在最上層 （層級 0） 的功能表項目稱為根功能表項目。 功能表項目具有父功能表項目稱為子功能表項目。 所有根功能表項目會都儲存在<xref:System.Web.UI.WebControls.Menu.Items%2A>集合。 子功能表項目會儲存在父功能表項目的<xref:System.Web.UI.WebControls.MenuItem.ChildItems%2A>集合。  
   
- 每個功能表項目具有<xref:System.Web.UI.WebControls.MenuItem.Text%2A>和<xref:System.Web.UI.WebControls.MenuItem.Value%2A>屬性。 值<xref:System.Web.UI.WebControls.MenuItem.Text%2A>屬性顯示在<xref:System.Web.UI.WebControls.Menu>控制項，而<xref:System.Web.UI.WebControls.MenuItem.Value%2A>屬性用來儲存功能表項目相關的任何其他資料，例如資料傳遞至功能表項目相關聯的回傳事件。 按一下時，功能表項目可以瀏覽至所指定的另一個網頁<xref:System.Web.UI.WebControls.MenuItem.NavigateUrl%2A>屬性。  
+ 每個功能表項目具有<xref:System.Web.UI.WebControls.MenuItem.Text%2A>和<xref:System.Web.UI.WebControls.MenuItem.Value%2A>屬性。 值<xref:System.Web.UI.WebControls.MenuItem.Text%2A>屬性會顯示在<xref:System.Web.UI.WebControls.Menu>控制項，而<xref:System.Web.UI.WebControls.MenuItem.Value%2A>屬性用來儲存功能表項目相關的任何其他資料，例如資料傳遞至功能表項目相關聯的回傳事件。 按一下時，功能表項目可以瀏覽至所指定的另一個網頁<xref:System.Web.UI.WebControls.MenuItem.NavigateUrl%2A>屬性。  
   
 > [!NOTE]
->  如果<xref:System.Web.UI.WebControls.MenuItem.NavigateUrl%2A>屬性未設定的功能表項目，<xref:System.Web.UI.WebControls.Menu>控制項只送出至伺服器進行處理時按一下功能表項目頁面。  
+>  如果<xref:System.Web.UI.WebControls.MenuItem.NavigateUrl%2A>的功能表項目中，未設定屬性<xref:System.Web.UI.WebControls.Menu>控制項只送出至伺服器進行處理時按下功能表項目頁面。  
   
- 您也可以顯示功能表項目中映像，藉由設定<xref:System.Web.UI.WebControls.MenuItem.ImageUrl%2A>屬性。  
+ 您也可以顯示功能表項目中的映像，藉由設定<xref:System.Web.UI.WebControls.MenuItem.ImageUrl%2A>屬性。  
   
  功能表項目上的詳細資訊，請參閱<xref:System.Web.UI.WebControls.MenuItem>。  
   
 <a name="static_data"></a>   
 ## <a name="static-data"></a>靜態資料  
- 最簡單的資料模型的<xref:System.Web.UI.WebControls.Menu>控制項是靜態功能表項目。 若要顯示使用宣告式語法的靜態功能表項目，第一次建立巢狀開啟和關閉`<Items>`標記的開頭和結尾標記之間<xref:System.Web.UI.WebControls.Menu>控制項。 接下來，建立巢狀結構的功能表結構`<asp:MenuItem>`開頭和結尾之間的項目`<Items>`標記。 每個`<asp:MenuItem>`元素代表控制項中的功能表項目，並將對應至<xref:System.Web.UI.WebControls.MenuItem>物件。 您可以藉由設定的屬性來設定每個功能表項目的屬性及其`<asp:MenuItem>`項目。 若要建立子功能表項目，巢狀其他`<asp:MenuItem>`開頭和結尾之間的項目`<asp:MenuItem>`父功能表項目的標記。  
+ 最簡單的資料模型的<xref:System.Web.UI.WebControls.Menu>控制項是靜態功能表項目。 若要顯示使用宣告式語法的靜態功能表項目，第一次建立巢狀左右`<Items>`標記的開頭和結尾標記之間<xref:System.Web.UI.WebControls.Menu>控制項。 接下來，建立巢狀功能表結構`<asp:MenuItem>`之間的開頭和結尾的項目`<Items>`標記。 每個`<asp:MenuItem>`項目表示控制項中的功能表項目，並將對應至<xref:System.Web.UI.WebControls.MenuItem>物件。 您可以藉由設定的屬性來設定每個功能表項目的屬性及其`<asp:MenuItem>`項目。 若要建立子功能表項目，將巢狀化其他`<asp:MenuItem>`之間的開頭和結尾的項目`<asp:MenuItem>`標記的父功能表項目。  
   
 <a name="binding_to_data"></a>   
-## <a name="binding-to-data"></a>繫結至資料  
- <xref:System.Web.UI.WebControls.Menu>控制項可以使用任何階層式資料來源控制項，例如<xref:System.Web.UI.WebControls.XmlDataSource>控制項或<xref:System.Web.UI.WebControls.SiteMapDataSource>控制項。 若要繫結至階層的資料來源控制項，將<xref:System.Web.UI.WebControls.DataBoundControl.DataSourceID%2A>屬性<xref:System.Web.UI.WebControls.Menu>控制權傳輸至<xref:System.Web.UI.Control.ID%2A>資料來源控制項的值。 <xref:System.Web.UI.WebControls.Menu>控制項自動繫結至指定的資料來源控制項。 這是慣用的方法繫結至資料。  
+## <a name="binding-to-data"></a>在 DetailsView 控制項可以繫結至資料來源控制項，例如SqlDataSource或 AccessDataSource，或實作 System.Collections.IEnumerable 介面，例如 System.Data.DataView，任何資料來源System.Collections.ArrayList 和 System.Collections.Hashtable。  
+ <xref:System.Web.UI.WebControls.Menu>控制項可以使用任何階層式資料來源控制項，例如<xref:System.Web.UI.WebControls.XmlDataSource>控制或<xref:System.Web.UI.WebControls.SiteMapDataSource>控制項。 若要繫結至階層式資料來源控制項，將<xref:System.Web.UI.WebControls.DataBoundControl.DataSourceID%2A>屬性<xref:System.Web.UI.WebControls.Menu>若要控制<xref:System.Web.UI.Control.ID%2A>資料來源控制項的值。 <xref:System.Web.UI.WebControls.Menu>控制項會自動繫結至指定的資料來源控制項。 此控制項可用來顯示使用者輸入，其中可能包含惡意的用戶端指令碼。  
   
- 當繫結至資料來源，其中每個資料項目都包含多個屬性 （例如 XML 項目具有多個屬性），功能表項目會顯示所傳回的值`ToString`方法的預設資料的項目。 在 XML 項目，功能表項目會顯示項目名稱，其中顯示功能表樹狀結構的基礎結構，不過沒有非常有用。 您可以使用功能表項目繫結至特定資料的項目屬性<xref:System.Web.UI.WebControls.Menu.DataBindings%2A>來指定功能表項目繫結的集合。 <xref:System.Web.UI.WebControls.Menu.DataBindings%2A>集合包含<xref:System.Web.UI.WebControls.MenuItemBinding>物件，定義資料項目及它所繫結功能表項目之間的關聯性。 您可以指定要顯示的節點中的繫結和資料項目屬性的準則。 如需功能表項目繫結的詳細資訊，請參閱<xref:System.Web.UI.WebControls.MenuItemBinding>。  
+ 當繫結至資料來源，其中每個資料項目包含多個屬性 （例如 XML 項目具有數個屬性） 的功能表項目會顯示所傳回的值`ToString`資料項目，根據預設的方法。 在 XML 項目，功能表項目會顯示項目名稱，其中顯示的功能表樹狀結構的基礎結構，不過沒有很有幫助。 您可以使用功能表項目繫結至特定的資料項目屬性<xref:System.Web.UI.WebControls.Menu.DataBindings%2A>指定功能表項目繫結的集合。 <xref:System.Web.UI.WebControls.Menu.DataBindings%2A>集合包含<xref:System.Web.UI.WebControls.MenuItemBinding>物件會定義資料項目及它所繫結至功能表項目之間的關聯性。 您可以指定要顯示在節點中的 繫結和資料項目屬性的準則。 如需有關功能表項目繫結的詳細資訊，請參閱<xref:System.Web.UI.WebControls.MenuItemBinding>。  
   
- 您無法建立空的節點中<xref:System.Web.UI.WebControls.Menu>藉由設定控制<xref:System.Web.UI.WebControls.MenuItemBinding.Text%2A>或<xref:System.Web.UI.WebControls.MenuItemBinding.TextField%2A>屬性為空字串 ("")。 為空字串中設定這些屬性具有未設定屬性相同的效果。 在此情況下，<xref:System.Web.UI.WebControls.Menu>控制項可讓您建立使用預設繫結<xref:System.Web.UI.WebControls.BaseDataBoundControl.DataSource%2A>屬性。 如需詳細資訊，請參閱[繫結至資料庫](http://msdn.microsoft.com/library/ab7b2846-975b-4057-a948-45527497c742)。  
+ 您無法建立空的節點，在<xref:System.Web.UI.WebControls.Menu>控制項，藉由設定<xref:System.Web.UI.WebControls.MenuItemBinding.Text%2A>或<xref:System.Web.UI.WebControls.MenuItemBinding.TextField%2A>屬性為空字串 ("")。 為空字串中設定這些屬性的效果與未設定屬性的效果相同。 在此情況下，<xref:System.Web.UI.WebControls.Menu>控制項可讓您建立預設的繫結使用<xref:System.Web.UI.WebControls.BaseDataBoundControl.DataSource%2A>屬性。 如需詳細資訊，請參閱 <<c0> [ 繫結至資料庫](http://msdn.microsoft.com/library/ab7b2846-975b-4057-a948-45527497c742)。  
   
 <a name="customizing_the_user_interface"></a>   
 ## <a name="customizing-the-user-interface"></a>自訂使用者介面  
- 有許多方法可自訂的外觀<xref:System.Web.UI.WebControls.Menu>控制項。 首先，您可以指定是否<xref:System.Web.UI.WebControls.Menu>呈現控制項水平或垂直藉由設定<xref:System.Web.UI.WebControls.Menu.Orientation%2A>屬性。 您也可以指定不同的樣式 （例如 字型和色彩） 的每個功能表項目類型。  
+ 有許多方式來自訂外觀<xref:System.Web.UI.WebControls.Menu>控制項。 首先，您可以指定是否<xref:System.Web.UI.WebControls.Menu>控制項藉由設定呈現水平或垂直<xref:System.Web.UI.WebControls.Menu.Orientation%2A>屬性。 您也可以針對每個功能表項目類型指定不同的樣式 （例如字型大小和色彩）。  
   
- 如果您使用階層式樣式表 (CSS) 來自訂控制項的外觀，使用內嵌樣式或個別的 CSS 檔案，但非兩者。 使用內嵌樣式和個別的 CSS 檔案，可能會造成非預期的結果。 如需有關如何使用控制項的樣式表的詳細資訊，請參閱[Web 伺服器控制項和 CSS 樣式](http://msdn.microsoft.com/library/782c2db6-fc9b-4243-8df9-a8ffe2f4cc42)。  
+ 如果您使用階層式樣式表 (CSS) 來自訂控制項的外觀時，使用內嵌樣式或個別的 CSS 檔案，但非兩者。 使用內嵌樣式和個別的 CSS 檔案，可能會造成非預期的結果。 如需有關使用使用控制項的樣式表的詳細資訊，請參閱 < [Web 伺服器控制項和 CSS 樣式](http://msdn.microsoft.com/library/782c2db6-fc9b-4243-8df9-a8ffe2f4cc42)。  
   
  下表列出可用的功能表項目樣式。  
   
@@ -134,56 +135,56 @@
 |<xref:System.Web.UI.WebControls.Menu.DynamicSelectedStyle%2A>|目前已選取動態功能表項目的樣式設定。|  
 |<xref:System.Web.UI.WebControls.Menu.StaticHoverStyle%2A>|當滑鼠指標位於靜態功能表項目的樣式設定。|  
 |<xref:System.Web.UI.WebControls.Menu.StaticMenuItemStyle%2A>|個別靜態功能表項目的樣式設定。|  
-|<xref:System.Web.UI.WebControls.Menu.StaticMenuStyle%2A>|針對靜態功能表樣式設定。|  
-|<xref:System.Web.UI.WebControls.Menu.StaticSelectedStyle%2A>|目前選取的靜態功能表項目的樣式設定。|  
+|<xref:System.Web.UI.WebControls.Menu.StaticMenuStyle%2A>|對於靜態功能表樣式設定。|  
+|<xref:System.Web.UI.WebControls.Menu.StaticSelectedStyle%2A>|目前選取之靜態功能表項目的樣式設定。|  
   
- 而不是設定個別的樣式屬性，您可以指定套用至使用下列樣式集合，根據其層級的功能表項目的樣式。  
+ 而不是設定個別的樣式屬性，您可以指定套用至功能表項目使用下列的樣式集合，根據其層級的樣式。  
   
-|集合層級的樣式|描述|  
+|層級的樣式集合|描述|  
 |-----------------------------|-----------------|  
 |<xref:System.Web.UI.WebControls.Menu.LevelMenuItemStyles%2A>|集合<xref:System.Web.UI.WebControls.MenuItemStyle>控制層級為基礎的功能表項目樣式的物件。|  
 |<xref:System.Web.UI.WebControls.Menu.LevelSelectedStyles%2A>|集合<xref:System.Web.UI.WebControls.MenuItemStyle>選取功能表項目層級為基礎的物件可控制的樣式。|  
 |<xref:System.Web.UI.WebControls.Menu.LevelSubMenuStyles%2A>|集合<xref:System.Web.UI.WebControls.MenuItemStyle>控制層級為基礎的子功能表項目樣式的物件。|  
   
- 集合中的第一個樣式會對應至功能表樹狀結構中，第一個層級的功能表項目的樣式。 集合中的第二個樣式會對應至功能表樹狀目錄中，以此類推，第二個層級的功能表項目的樣式。 這是最常用來產生內容樣式導覽功能表的功能表項目在某些深度其中應該具有相同的外觀，不論它們是否具有子功能表。  
+ 集合中的第一個樣式會對應至功能表樹狀結構中，第一個層級的功能表項目的樣式。 集合中的第二個樣式會對應至功能表項目中的功能表樹狀目錄中，並依此類推，第二個層級的樣式。 這是最常用來產生內容樣式導覽功能表的資料表位於特定深度的功能表項目應該有相同的外觀，不論它們是否具有子功能表的位置。  
   
 > [!NOTE]
->  如果您使用任何上述表格中所列的層級的樣式集合定義的樣式<xref:System.Web.UI.WebControls.Menu>控制項，這些樣式設定會覆寫個別的功能表項目樣式屬性。  
+>  如果您使用任何層級的樣式所列的集合上表中定義的樣式<xref:System.Web.UI.WebControls.Menu>控制項，這些樣式設定會覆寫個別功能表項目的樣式屬性。  
   
- 若要變更控制項的外觀的另一個方法是自訂映像中顯示<xref:System.Web.UI.WebControls.Menu>控制項。 您可以指定自己的自訂映像不同的組件控制項的設定下表中顯示的屬性。  
+ 若要變更控制項的外觀的另一個方法是自訂映像中顯示<xref:System.Web.UI.WebControls.Menu>控制項。 您可以指定自己的自訂映像不同的組件控制項的設定下表所示的屬性。  
   
 |影像屬性|描述|  
 |--------------------|-----------------|  
-|<xref:System.Web.UI.WebControls.Menu.DynamicBottomSeparatorImageUrl%2A>|顯示在動態功能表項目底部，將它與其他功能表項目分開的選擇性影像。|  
-|<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>|顯示在動態功能表項目來表示它具有子功能表中的選擇性影像。|  
-|<xref:System.Web.UI.WebControls.Menu.DynamicTopSeparatorImageUrl%2A>|顯示在動態功能表項目頂端，將它與其他功能表項目分開的選擇性影像。|  
-|<xref:System.Web.UI.WebControls.Menu.ScrollDownImageUrl%2A>|在功能表項目，表示使用者可以向上捲動到檢視其他功能表項目底部顯示的影像。|  
-|<xref:System.Web.UI.WebControls.Menu.ScrollUpImageUrl%2A>|頂端的功能表項目，表示使用者可以向上捲動檢視其他功能表項目顯示的影像。|  
-|<xref:System.Web.UI.WebControls.Menu.StaticBottomSeparatorImageUrl%2A>|顯示在靜態功能表項目底部，將它與其他功能表項目分開的選擇性影像。|  
-|<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>|顯示在靜態功能表項目來表示它具有子功能表中的選擇性影像。|  
-|<xref:System.Web.UI.WebControls.Menu.StaticTopSeparatorImageUrl%2A>|顯示在靜態功能表項目頂端，將它與其他功能表項目分開的選擇性影像。|  
+|<xref:System.Web.UI.WebControls.Menu.DynamicBottomSeparatorImageUrl%2A>|選擇性的影像，顯示在動態功能表項目底部，將它與其他功能表項目分開。|  
+|<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>|選擇性的影像，顯示在動態功能表項目，表示它具有子功能表。|  
+|<xref:System.Web.UI.WebControls.Menu.DynamicTopSeparatorImageUrl%2A>|選擇性的影像，顯示在動態功能表項目頂端，將它與其他功能表項目分開。|  
+|<xref:System.Web.UI.WebControls.Menu.ScrollDownImageUrl%2A>|底部的功能表項目，表示使用者可以捲動到檢視其他功能表項目顯示的影像。|  
+|<xref:System.Web.UI.WebControls.Menu.ScrollUpImageUrl%2A>|頂端的功能表項目，表示使用者可以捲動到檢視其他功能表項目顯示的影像。|  
+|<xref:System.Web.UI.WebControls.Menu.StaticBottomSeparatorImageUrl%2A>|選擇性的影像，顯示在靜態功能表項目底部，將它與其他功能表項目分開。|  
+|<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>|選擇性的影像，顯示在靜態功能表項目，表示它具有子功能表。|  
+|<xref:System.Web.UI.WebControls.Menu.StaticTopSeparatorImageUrl%2A>|選擇性的影像，顯示在靜態功能表項目頂端，將它與其他功能表項目分開。|  
   
- 完全控制使用者介面 (UI)，您可以定義您自己的自訂範本，如<xref:System.Web.UI.WebControls.Menu>控制使用下列範本內容。  
+ 完整的使用者介面 (UI) 控制項，您可以定義您自己的自訂範本<xref:System.Web.UI.WebControls.Menu>控制使用下列範本內容。  
   
-|樣板屬性|描述|  
+|Template 屬性|描述|  
 |-----------------------|-----------------|  
 |<xref:System.Web.UI.WebControls.Menu.DynamicItemTemplate%2A>|樣板，含有針對動態功能表項目呈現的自訂內容。|  
 |<xref:System.Web.UI.WebControls.Menu.StaticItemTemplate%2A>|樣板，含有針對靜態功能表項目呈現的自訂內容。|  
   
- 您可以設定來控制動態功能表相對於其父功能表項目垂直和水平位置<xref:System.Web.UI.WebControls.Menu.DynamicVerticalOffset%2A>和<xref:System.Web.UI.WebControls.Menu.DynamicHorizontalOffset%2A>屬性，分別。 若要控制靜態子功能表項目在靜態功能表內縮排，<xref:System.Web.UI.WebControls.Menu.StaticSubMenuIndent%2A>屬性。  
+ 您可以設定來控制的垂直和水平位置動態功能表相對於其父功能表項目<xref:System.Web.UI.WebControls.Menu.DynamicVerticalOffset%2A>和<xref:System.Web.UI.WebControls.Menu.DynamicHorizontalOffset%2A>屬性，分別。 若要控制靜態子功能表項目在靜態功能表內縮排，請使用<xref:System.Web.UI.WebControls.Menu.StaticSubMenuIndent%2A>屬性。  
   
 <a name="events"></a>   
 ## <a name="events"></a>事件  
- <xref:System.Web.UI.WebControls.Menu>控制項提供數個事件，您可以程式設計的。 這可讓您在事件發生時執行自訂的常式。 下表列出支援的事件。  
+ <xref:System.Web.UI.WebControls.Menu>控制項提供數個事件，您可以進行程式設計。 這可讓您執行自訂的常式，每當事件發生時。 下表列出支援的事件。  
   
 |Event - 事件|描述|  
 |-----------|-----------------|  
 |<xref:System.Web.UI.WebControls.Menu.MenuItemClick>|發生於按一下功能表項目。 此事件通常用來同步處理<xref:System.Web.UI.WebControls.Menu>與頁面上的另一個控制項的控制項。|  
-|<xref:System.Web.UI.WebControls.Menu.MenuItemDataBound>|發生於功能表項目繫結至資料。 此事件通常用來修改功能表項目之前呈現在<xref:System.Web.UI.WebControls.Menu>控制項。|  
+|<xref:System.Web.UI.WebControls.Menu.MenuItemDataBound>|發生於功能表項目繫結至資料。 此事件通常用來修改的功能表項目中呈現之前<xref:System.Web.UI.WebControls.Menu>控制項。|  
   
 <a name="accessibility"></a>   
 ## <a name="accessibility"></a>協助工具選項  
- 如需如何設定這個控制項，使其產生符合網頁可及性標準標記資訊，請參閱[Visual Studio 和 ASP.NET 中的協助工具](http://msdn.microsoft.com/library/7e3ce9c4-6b7d-4fb1-94b5-72cf2a44fe13)和[ASP.NET 控制項和協助工具](http://msdn.microsoft.com/library/847a37e3-ce20-41da-b0d3-7dfb0fdae9a0).  
+ 如需如何設定這個控制項，使其產生符合協助工具標準的標記資訊，請參閱[協助工具的 Visual Studio 及 ASP.NET](http://msdn.microsoft.com/library/7e3ce9c4-6b7d-4fb1-94b5-72cf2a44fe13)和[ASP.NET 控制項和協助工具](http://msdn.microsoft.com/library/847a37e3-ce20-41da-b0d3-7dfb0fdae9a0).  
   
 <a name="declarative_syntax"></a>   
 ## <a name="declarative-syntax"></a>宣告式語法  
@@ -509,19 +510,19 @@
    
   
 ## Examples  
- 本主題隨附了含有原始程式碼的 Visual Studio Web 站台專案：[下載](http://go.microsoft.com/fwlink/?LinkId=192868)。  
+ 本主題隨附了含有原始程式碼的 Visual Studio Web site 專案位於：[下載](http://go.microsoft.com/fwlink/?LinkId=192868)。  
   
  下列程式碼範例示範如何建立<xref:System.Web.UI.WebControls.Menu>使用宣告式語法的靜態功能表項目的控制項。  
   
  [!code-aspx-csharp[MenuDeclarative#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuDeclarative/CS/menudeclarativecs.aspx#1)]
  [!code-aspx-vb[MenuDeclarative#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuDeclarative/VB/menudeclarativevb.aspx#1)]  
   
- 下列程式碼範例示範如何將繫結<xref:System.Web.UI.WebControls.Menu>控制權傳輸至<xref:System.Web.UI.WebControls.SiteMapDataSource>控制項。 針對此範例正常運作，您必須為 Web.sitemap 檔案複製下面範例網站地圖資料。  
+ 下列程式碼範例示範如何繫結<xref:System.Web.UI.WebControls.Menu>控制對<xref:System.Web.UI.WebControls.SiteMapDataSource>控制項。 針對此範例正常運作，您必須為 Web.sitemap 檔案複製範例網站導覽資料如下。  
   
  [!code-aspx-csharp[MenuDataBind#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuDataBind/CS/menudatabindcs.aspx#1)]
  [!code-aspx-vb[MenuDataBind#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuDataBind/VB/menudatabindvb.aspx#1)]  
   
- 以下是範例網站導覽資料先前的範例。  
+ 以下是範例網站導覽資料上一個範例。  
   
 ```  
 <siteMap>  
@@ -572,6 +573,7 @@
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters />
@@ -581,12 +583,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用這個建構函式建立並初始化的新執行個體<xref:System.Web.UI.WebControls.Menu>類別。 若要以動態方式加入<xref:System.Web.UI.WebControls.Menu>控制項的頁面，建立新<xref:System.Web.UI.WebControls.Menu>物件、 設定其屬性，並再將它加入<xref:System.Web.UI.Control.Controls%2A>容器集合控制項，例如<xref:System.Web.UI.WebControls.PlaceHolder>。  
+ 使用這個建構函式來建立和初始化的新執行個體<xref:System.Web.UI.WebControls.Menu>類別。 若要動態方式加入<xref:System.Web.UI.WebControls.Menu>控制項加入頁面中，建立新<xref:System.Web.UI.WebControls.Menu>物件，設定其屬性，然後再將它加入<xref:System.Web.UI.Control.Controls%2A>集合的容器控制項，例如<xref:System.Web.UI.WebControls.PlaceHolder>。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用建構函式，以動態方式將<xref:System.Web.UI.WebControls.Menu>網頁的控制項。  
+ 下列程式碼範例示範如何使用建構函式，以動態方式加入<xref:System.Web.UI.WebControls.Menu>至網頁的控制項。  
   
  [!code-aspx-csharp[MenuCtor#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuCtor/CS/menuctorcs.aspx#1)]
  [!code-aspx-vb[MenuCtor#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuCtor/VB/menuctorvb.aspx#1)]  
@@ -607,6 +609,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -622,7 +625,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.Menu>控制覆寫<xref:System.Web.UI.WebControls.WebControl.AddAttributesToRender%2A>方法來重設<xref:System.Web.UI.WebControls.WebControl.AccessKey%2A>屬性<xref:System.String.Empty>。 衍生的自訂控制項時，由控制項開發人員主要使用這個成員<xref:System.Web.UI.WebControls.Menu>類別。  
+ <xref:System.Web.UI.WebControls.Menu>控制覆寫<xref:System.Web.UI.WebControls.WebControl.AddAttributesToRender%2A>方法來重設<xref:System.Web.UI.WebControls.WebControl.AccessKey%2A>屬性設<xref:System.String.Empty>。 衍生的自訂控制項時，由控制項開發人員主要使用這個成員<xref:System.Web.UI.WebControls.Menu>類別。  
   
  ]]></format>
         </remarks>
@@ -638,6 +641,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -651,7 +655,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.Menu.Controls%2A>屬性可讓您以程式設計方式存取的執行個體<xref:System.Web.UI.ControlCollection>類別<xref:System.Web.UI.WebControls.Menu>控制項。 您可以將控制項加入至集合，移除控制項的集合，或逐一查看集合中的伺服器控制項。  
+ <xref:System.Web.UI.WebControls.Menu.Controls%2A>屬性可讓您以程式設計方式存取的執行個體<xref:System.Web.UI.ControlCollection>類別<xref:System.Web.UI.WebControls.Menu>控制項。 您可以將控制項加入至集合，從集合移除的控制項或逐一查看集合中的伺服器控制項。  
   
  ]]></format>
         </remarks>
@@ -667,6 +671,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -681,7 +686,7 @@
 ## Remarks  
  衍生的自訂控制項時，由控制項開發人員主要使用這個成員<xref:System.Web.UI.WebControls.Menu>類別。  
   
- 會呼叫這個方法由 ASP.NET 基礎結構，以通知使用組合為基礎的實作，包括衍生自控制項的任何控制項<xref:System.Web.UI.WebControls.CompositeDataBoundControl>和<xref:System.Web.UI.WebControls.CompositeControl>。 若要建立任何子控制項它們包含在準備回傳或呈現。  
+ 這個方法會呼叫 ASP.NET 基礎結構，以通知使用組合為基礎的實作，包括衍生自控制項的任何控制項<xref:System.Web.UI.WebControls.CompositeDataBoundControl>和<xref:System.Web.UI.WebControls.CompositeControl>。 若要建立的任何子控制項包含在準備回傳或呈現。  
   
  ]]></format>
         </remarks>
@@ -697,6 +702,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -709,14 +715,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 衍生的自訂控制項時，使用此成員主要由控制項開發人員<xref:System.Web.UI.WebControls.Menu>類別。  
+ 衍生的自訂控制項時，這個成員主要由控制項開發人員用<xref:System.Web.UI.WebControls.Menu>類別。  
   
- 使用<xref:System.Web.UI.WebControls.Menu.DataBind%2A>方法將資料繫結至資料來源<xref:System.Web.UI.WebControls.Menu>控制項。 這個方法會解析所有資料繫結運算式在使用中的範本中的控制項。  
+ 使用<xref:System.Web.UI.WebControls.Menu.DataBind%2A>方法，以將資料繫結至資料來源<xref:System.Web.UI.WebControls.Menu>控制項。 這個方法會解析中的所有資料繫結運算式的使用中的範本的控制項。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>資料繫結控制項應該覆寫<see cref="M:System.Web.UI.WebControls.Menu.PerformDataBinding" />而不是<see cref="M:System.Web.UI.WebControls.Menu.DataBind" />。如果<see cref="M:System.Web.UI.WebControls.Menu.DataBind" />遭到覆寫，<see cref="M:System.Web.UI.WebControls.Menu.OnDataBinding(System.EventArgs)" />和<see cref="M:System.Web.UI.WebControls.BaseDataBoundControl.OnDataBound(System.EventArgs)" />事件的引發錯誤的順序。</para>
+          <para>資料繫結控制項應該覆寫<see cref="M:System.Web.UI.WebControls.Menu.PerformDataBinding" />而不是<see cref="M:System.Web.UI.WebControls.Menu.DataBind" />。如果<see cref="M:System.Web.UI.WebControls.Menu.DataBind" />會覆寫<see cref="M:System.Web.UI.WebControls.Menu.OnDataBinding(System.EventArgs)" />和<see cref="M:System.Web.UI.WebControls.BaseDataBoundControl.OnDataBound(System.EventArgs)" />事件所引發的錯誤的順序。</para>
         </block>
       </Docs>
     </Member>
@@ -730,6 +736,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -757,33 +764,33 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.Menu.DataBindings%2A>集合包含<xref:System.Web.UI.WebControls.MenuItemBinding>物件，定義資料項目及它所繫結功能表項目之間的關聯性。 當繫結至資料來源，其中每個資料項目都包含多個屬性 （例如 XML 項目具有多個屬性），功能表項目會顯示所傳回的值`ToString()`方法的預設資料的項目。 在 XML 項目，功能表項目會顯示項目名稱，其中顯示基礎結構的樹狀目錄中，不過沒有非常有用。 您可以藉由指定功能表項目繫結，功能表項目繫結至特定的資料屬性。  
+ <xref:System.Web.UI.WebControls.Menu.DataBindings%2A>集合包含<xref:System.Web.UI.WebControls.MenuItemBinding>物件會定義資料項目及它所繫結至功能表項目之間的關聯性。 當繫結至資料來源，其中每個資料項目包含多個屬性 （例如 XML 項目具有數個屬性） 的功能表項目會顯示所傳回的值`ToString()`資料項目，根據預設的方法。 在 XML 項目，功能表項目會顯示項目名稱，顯示的樹狀目錄中，基礎結構，但沒有很有幫助。 您可以藉由指定功能表項目繫結，功能表項目繫結至特定的資料項目屬性。  
   
- 當定義資料項目及功能表項目之間的關聯性，您必須指定繫結和資料項目的內容繫結至這兩個準則。 功能表項目應該繫結資料的項目時，就會指出準則。 可以使用深度、 資料成員，或兩者都指定準則。 深度會指定繫結的功能表層級。 例如，如果您指定深度為 0，所有功能表項目層級 0 的樹狀結構中會繫都結使用功能表項目繫結。 資料成員基礎資料來源中，指定資料的項目類型，但可以代表不同的資訊，根據資料來源。 例如，資料成員的 XML 項目會指定項目的名稱。  
+ 在定義資料項目及功能表項目之間的關聯性時，您必須指定為繫結和屬性資料項目的繫結至這兩個準則。 資料的項目應該繫結至功能表項目時，就會指出準則。 深度、 資料成員，或兩者都可以指定準則。 深度指定繫結的功能表層級。 比方說，如果您指定的深度為 0，層級 0 的樹狀結構中的所有功能表項目會繫都結使用的功能表項目繫結。 資料成員指定基礎資料來源中資料項目的類型，但可以代表不同的資訊，根據資料來源。 例如，XML 項目的資料成員會指定項目的名稱。  
   
- 若為多個<xref:System.Web.UI.WebControls.MenuItemBinding>物件定義與彼此衝突<xref:System.Web.UI.WebControls.Menu>控制項適用於功能表項目繫結，以下列順序的優先順序：  
+ 如果有多個<xref:System.Web.UI.WebControls.MenuItemBinding>會定義物件彼此衝突<xref:System.Web.UI.WebControls.Menu>控制項會套用順序的優先順序如下的功能表項目繫結：  
   
 1.  <xref:System.Web.UI.WebControls.MenuItemBinding>定義深度和資料成員的物件。  
   
-2.  <xref:System.Web.UI.WebControls.MenuItemBinding>定義只深度的物件。  
+2.  <xref:System.Web.UI.WebControls.MenuItemBinding>物件，定義只的深度。  
   
 3.  <xref:System.Web.UI.WebControls.MenuItemBinding>定義資料成員的物件。  
   
 4.  <xref:System.Web.UI.WebControls.MenuItemBinding>深度和資料成員都不會定義的物件。  
   
- 一旦建立繫結準則，您就可以繫結的屬性<xref:System.Web.UI.WebControls.MenuItem>能夠繫結至屬性或資料的項目欄位的物件。 例如，您可以繫結<xref:System.Web.UI.WebControls.MenuItem.Text%2A>屬性功能表項目文字的屬性上設定的 XML 項目<xref:System.Web.UI.WebControls.MenuItemBinding.TextField%2A>屬性<xref:System.Web.UI.WebControls.MenuItemBinding>物件。 您也可以繫結至靜態值。 如果您設定<xref:System.Web.UI.WebControls.MenuItemBinding.Text%2A>屬性<xref:System.Web.UI.WebControls.MenuItemBinding>物件、 所有功能表項目要<xref:System.Web.UI.WebControls.MenuItemBinding>物件套用共用相同的靜態文字值。 如需有關繫結的屬性<xref:System.Web.UI.WebControls.MenuItem>物件的值，請參閱<xref:System.Web.UI.WebControls.MenuItemBinding>。  
+ 一旦建立繫結準則，您可以再繫結的屬性<xref:System.Web.UI.WebControls.MenuItem>能夠繫結至屬性或欄位的資料項目的物件。 例如，您可以繫結<xref:System.Web.UI.WebControls.MenuItem.Text%2A>的功能表項目至 XML 項目所設定的文字屬性的屬性<xref:System.Web.UI.WebControls.MenuItemBinding.TextField%2A>屬性<xref:System.Web.UI.WebControls.MenuItemBinding>物件。 您也可以繫結至靜態值。 如果您設定<xref:System.Web.UI.WebControls.MenuItemBinding.Text%2A>的屬性<xref:System.Web.UI.WebControls.MenuItemBinding>物件時，所有的功能表項目要<xref:System.Web.UI.WebControls.MenuItemBinding>物件套用共用相同的靜態文字值。 如需有關繫結的屬性<xref:System.Web.UI.WebControls.MenuItem>物件的值，請參閱<xref:System.Web.UI.WebControls.MenuItemBinding>。  
   
- 雖然<xref:System.Web.UI.WebControls.Menu.DataBindings%2A>以程式設計方式填入集合，則通常會以宣告方式設定。 若要指定功能表項目繫結，第一次建立巢狀開啟和關閉`<DataBindings>`標記的開頭和結尾標記之間<xref:System.Web.UI.WebControls.Menu>控制項。 接下來，將`<asp:MenuItemBinding>`開頭和結尾之間的項目`<DataBindings>`標記每個功能表項目的繫結，您想要指定。  
+ 雖然<xref:System.Web.UI.WebControls.Menu.DataBindings%2A>以程式設計方式填入集合，通常會以宣告方式設定。 若要指定功能表項目繫結，先建立巢狀左右`<DataBindings>`標記的開頭和結尾標記之間<xref:System.Web.UI.WebControls.Menu>控制項。 接下來，將放`<asp:MenuItemBinding>`之間的開頭和結尾的項目`<DataBindings>`標記每個功能表項目繫結，您想要指定。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DataBindings%2A>集合定義的欄位之間的關聯性<xref:System.Web.UI.WebControls.XmlDataSource>控制項和功能表項目在<xref:System.Web.UI.WebControls.Menu>控制項。 針對此範例正常運作，您必須複製下列 XML 資料範例為 Map.xml 的檔案。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DataBindings%2A>定義的欄位之間的關聯性的集合<xref:System.Web.UI.WebControls.XmlDataSource>控制項和功能表項目在<xref:System.Web.UI.WebControls.Menu>控制項。 針對此範例正常運作，您必須為 Map.xml 檔案複製下列的 XML 資料範例。  
   
  [!code-aspx-csharp[MenuBindings#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuBindings/CS/menubindingscs.aspx#1)]
  [!code-aspx-vb[MenuBindings#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuBindings/VB/menubindingsvb.aspx#1)]  
   
- 以下是範例網站導覽資料先前的範例。  
+ 以下是範例網站導覽資料上一個範例。  
   
 ```  
 <MapHomeNode url="~\Home.aspx"   
@@ -834,6 +841,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -854,14 +862,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 根據預設，動態功能表會自動消失當滑鼠指標不再位於功能表在特定期間之後。 使用<xref:System.Web.UI.WebControls.Menu.DisappearAfter%2A>屬性，以指定的持續時間。  
+ 根據預設，動態功能表會自動消失之後當滑鼠指標不再位於功能表上的某段期間。 使用<xref:System.Web.UI.WebControls.Menu.DisappearAfter%2A>屬性來指定持續時間。  
   
 > [!NOTE]
 >  如果使用者按一下功能表之外，動態功能表就會立即消失。  
   
- 您也可以指定動態功能表應該永遠不會自動消失此屬性設定為-1。 在此情況下，只有當使用者按一下功能表外部，就會消失動態功能表項目。  
+ 您也可以指定動態功能表應該永遠不會自動消失了此屬性設定為-1。 在此情況下，只是當使用者按一下功能表外的時候，就會消失動態功能表項目。  
   
- 這個屬性無法由佈景主題或樣式表主題設定。 如需詳細資訊，請參閱<xref:System.Web.UI.ThemeableAttribute>和[ASP.NET 佈景主題和面板](http://msdn.microsoft.com/library/5df3ebbd-d46c-4502-9406-02f9df4ef2c3)。  
+ 這個屬性無法由佈景主題或樣式表主題設定。 如需詳細資訊，請參閱 <<c0> <xref:System.Web.UI.ThemeableAttribute> 並[ASP.NET 佈景主題和面板](http://msdn.microsoft.com/library/5df3ebbd-d46c-4502-9406-02f9df4ef2c3)。  
   
    
   
@@ -887,6 +895,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -913,15 +922,15 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.DynamicBottomSeparatorImageUrl%2A>屬性可指定選擇性的自訂映像，以顯示每個動態功能表項目底部。 此映像做為功能表項目之間的分隔符號，而且通常是一條線的映像。  
+ 使用<xref:System.Web.UI.WebControls.Menu.DynamicBottomSeparatorImageUrl%2A>屬性可指定選擇性的自訂映像，以顯示底部的每個動態功能表項目。 此映像做為功能表項目之間的分隔符號，而且通常是一條線的映像。  
   
 > [!NOTE]
->  您也可以顯示在每個動態功能表項目頂端分隔符號影像，藉由設定<xref:System.Web.UI.WebControls.Menu.DynamicTopSeparatorImageUrl%2A>屬性。  
+>  您也可以顯示在每個動態功能表項目頂端分隔符號映像，藉由設定<xref:System.Web.UI.WebControls.Menu.DynamicTopSeparatorImageUrl%2A>屬性。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicBottomSeparatorImageUrl%2A>屬性，在每個動態功能表項目底部顯示分隔符號影像。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicBottomSeparatorImageUrl%2A>底部的每個動態功能表項目顯示分隔符號影像的屬性。  
   
  [!code-aspx-csharp[MenuDynamicBottomSeparatorImageUrl#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuDynamicBottomSeparatorImageUrl/CS/menudynamicbottomseparatorimageurlcs.aspx#1)]
  [!code-aspx-vb[MenuDynamicBottomSeparatorImageUrl#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuDynamicBottomSeparatorImageUrl/VB/menudynamicbottomseparatorimageurlvb.aspx#1)]  
@@ -947,6 +956,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -965,23 +975,23 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當動態功能表項目包含子功能表時，可以顯示一個影像，表示使用者可以展開 [] 功能表中的滑鼠將游標放置功能表項目。 有兩種方式可顯示此映像：  
+ 當動態功能表項目含有子功能表時，可以顯示一個影像，表示使用者可以展開功能表的滑鼠將游標放置功能表項目。 有兩種方式可顯示此映像：  
   
--   設定<xref:System.Web.UI.WebControls.Menu.DynamicEnableDefaultPopOutImage%2A>屬性`true`使用內建的映像 （預設值）。  
+-   設定<xref:System.Web.UI.WebControls.Menu.DynamicEnableDefaultPopOutImage%2A>屬性設`true`使用內建的映像 （預設值）。  
   
 -   設定<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>屬性來指定自訂映像。  
   
- 如果<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>屬性設定，則該影像會覆寫內建影像。  
+ 如果<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>屬性設定，該映像會覆寫內建的映像。  
   
 > [!NOTE]
->  如果<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>屬性未設定而<xref:System.Web.UI.WebControls.Menu.DynamicEnableDefaultPopOutImage%2A>屬性設定為`false`，不會顯示影像。  
+>  如果<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>未設定屬性和<xref:System.Web.UI.WebControls.Menu.DynamicEnableDefaultPopOutImage%2A>屬性設定為`false`，不會顯示影像。  
   
- 您可以藉由設定指定之影像的替代文字<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageTextFormatString%2A>屬性。 當使用者將滑鼠指標停留在影像上時，此文字會顯示為工具提示。 此文字也提供可用來將控制項設為更容易存取的映像的描述的輔助技術裝置。  
+ 您可以藉由設定指定之影像的替代文字<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageTextFormatString%2A>屬性。 當使用者將滑鼠指標停留在影像上時，此文字會顯示為工具提示。 這段文字也會提供可用來將控制項設為更容易存取的映像的描述的輔助技術裝置。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicEnableDefaultPopOutImage%2A>屬性隱藏表示動態功能表項目具有子功能表的影像。 <xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>屬性也必須設定為空字串 ("") 為隱藏，映像。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicEnableDefaultPopOutImage%2A>屬性來隱藏影像，表示動態功能表項目具有子功能表。 <xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>屬性也必須設定為空字串 ("") 會隱藏起來，映像。  
   
  [!code-aspx-csharp[MenuDynamicEnableDefaultPopOutImage#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuDynamicEnableDefaultPopOutImage/CS/menudynamicenabledefaultpopoutimagecs.aspx#1)]
  [!code-aspx-vb[MenuDynamicEnableDefaultPopOutImage#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuDynamicEnableDefaultPopOutImage/VB/menudynamicenabledefaultpopoutimagevb.aspx#1)]  
@@ -1005,6 +1015,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1022,20 +1033,20 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.DynamicHorizontalOffset%2A>屬性來調整水平位置的動態功能表相對於其父功能表項目。 這個屬性會影響以不同的方式取決於是否動態功能表的位置<xref:System.Web.UI.WebControls.Menu>垂直或水平顯示控制項 (依指定<xref:System.Web.UI.WebControls.Menu.Orientation%2A>屬性)。 下表描述的差異。  
+ 使用<xref:System.Web.UI.WebControls.Menu.DynamicHorizontalOffset%2A>調整動態功能表相對於其父功能表項目水平位置的屬性。 這個屬性會影響以不同的方式取決於是否動態功能表的位置<xref:System.Web.UI.WebControls.Menu>水平或垂直顯示控制項 (依照<xref:System.Web.UI.WebControls.Menu.Orientation%2A>屬性)。 下表描述的差異。  
   
 |方向|描述|  
 |-----------------|-----------------|  
-|水平|根據預設，動態功能表會顯示其父功能表項目正下方。 設定這個屬性會讓動態功能表的位置水平從這個基底的位置。|  
-|垂直|根據預設，動態功能表項目會顯示任何之間沒有間距其父功能表項目旁。 設定這個屬性會控制 [動態] 功能表和其父功能表項目之間的水平間距。|  
+|水平|預設情況下，動態功能表會顯示正下方其父功能表項目。 設定這個屬性會轉移讓動態功能表的位置以水平方式從這個基底的位置。|  
+|垂直|預設情況下，動態功能表項目會顯示任何之間沒有間距其父功能表項目旁。 設定這個屬性會控制 [動態] 功能表和其父功能表項目之間的水平間距。|  
   
 > [!NOTE]
->  您可以將這個屬性設為負值，讓動態功能表以負數方向。 如果您要顯示垂直功能表，負值會導致動態功能表和其父功能表項目重疊。  
+>  您可以設定此屬性設為負數值以負數方向的動態功能表。 如果您要顯示垂直的功能表，動態功能表和其父功能表項目重疊，會造成負數的值。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicHorizontalOffset%2A>屬性來指定動態功能表和其父功能表項目之間有 5 像素的間隙。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicHorizontalOffset%2A>屬性來指定動態功能表和其父功能表項目之間有 5 個像素的間隙。  
   
  [!code-aspx-csharp[MenuDynamicHorizontalOffset#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuDynamicHorizontalOffset/CS/menudynamichorizontaloffsetcs.aspx#1)]
  [!code-aspx-vb[MenuDynamicHorizontalOffset#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuDynamicHorizontalOffset/VB/menudynamichorizontaloffsetvb.aspx#1)]  
@@ -1056,6 +1067,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1083,7 +1095,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.DynamicHoverStyle%2A>屬性，即可控制動態功能表項目的外觀，當滑鼠指標移至上方。 這個屬性是唯讀的。不過，您可以設定的屬性<xref:System.Web.UI.WebControls.Style>它所傳回的物件。 可以以宣告方式設定的屬性，在表單中`Property-Subproperty`，其中`Subproperty`屬性<xref:System.Web.UI.WebControls.Style>物件 (例如， `DynamicHoverStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單中`Property.Subproperty`(例如， `DynamicHoverStyle.ForeColor`)。  
+ 使用<xref:System.Web.UI.WebControls.Menu.DynamicHoverStyle%2A>屬性來控制滑鼠指標移至上方時的動態功能表項目的外觀。 這個屬性是唯讀的;不過，您可以在這裡設定的屬性<xref:System.Web.UI.WebControls.Style>物件傳回。 屬性可以宣告方式設定形式`Property-Subproperty`，其中`Subproperty`是屬性<xref:System.Web.UI.WebControls.Style>物件 (例如`DynamicHoverStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單`Property.Subproperty`(例如`DynamicHoverStyle.ForeColor`)。  
   
  動態功能表項目的樣式屬性會套用順序如下：  
   
@@ -1098,7 +1110,7 @@
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicHoverStyle%2A>要將動態功能表項目的背景色彩變更為淺 sky 藍色，當使用者將滑鼠指標進入此屬性。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicHoverStyle%2A>要將動態功能表項目的背景色彩變更為淺天藍，當使用者將滑鼠指標置於屬性。  
   
  [!code-aspx-csharp[MenuDynamicHoverStyle#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuDynamicHoverStyle/CS/menudynamichoverstylecs.aspx#1)]
  [!code-aspx-vb[MenuDynamicHoverStyle#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuDynamicHoverStyle/VB/menudynamichoverstylevb.aspx#1)]  
@@ -1127,6 +1139,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1144,12 +1157,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個屬性可以用來插入文字，以便在行動裝置上顯示的功能表中的動態功能表項目的格式。 <xref:System.Web.UI.WebControls.Menu>控制項支援的靜態和動態功能表項目顯示範本。 對於行動裝置，會忽略範本，因此這個屬性可讓您新增字元或文字，將格式套用至功能表項目不使用範本。  
+ 這個屬性可用來插入文字，以便在行動裝置上顯示的功能表中的動態功能表項目的格式。 <xref:System.Web.UI.WebControls.Menu>控制項顯示靜態和動態功能表項目支援範本。 針對行動裝置，範本會被忽略，因此這個屬性可讓您新增字元或文字，將格式套用至功能表項目不使用範本。  
   
 > [!NOTE]
->  若要達到一致的格式使用這個屬性時，您也應該設定<xref:System.Web.UI.WebControls.Menu.StaticItemFormatString%2A>屬性，如果您想要與相同的靜態和動態功能表項目之間的格式。  
+>  若要達到一致的格式使用這個屬性時，您也應該設定<xref:System.Web.UI.WebControls.Menu.StaticItemFormatString%2A>屬性，如果您想要完全相同的靜態和動態功能表項目之間的格式。  
   
- 如果範本格式設定與此屬性會套用，範本的格式設定的行動裝置會忽略。  
+ 如果範本格式和此屬性套用時，範本格式會忽略針對行動裝置。  
   
    
   
@@ -1175,6 +1188,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1202,7 +1216,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 而不是針對動態功能表中使用內建的轉譯，您可以定義您自己外觀與風格，動態功能表項目的使用<xref:System.Web.UI.WebControls.Menu.DynamicItemTemplate%2A>屬性。 若要指定自訂的範本，針對動態功能表項目，先將`<DynamicItemTemplate>`標記的開頭和結尾標記之間<xref:System.Web.UI.WebControls.Menu>控制項。 然後，您可以列出範本的開頭和結尾之間的內容`<DynamicItemTemplate>`標記。 您可以使用，以進一步控制動態功能表的外觀<xref:System.Web.UI.WebControls.Menu.DynamicItemFormatString%2A>屬性。  
+ 而不是針對動態功能表中使用內建的轉譯，您可以定義您自己的動態功能表項目的外觀及操作使用<xref:System.Web.UI.WebControls.Menu.DynamicItemTemplate%2A>屬性。 若要指定自訂的動態功能表項目範本，第一次放置`<DynamicItemTemplate>`標記的開頭和結尾標記之間<xref:System.Web.UI.WebControls.Menu>控制項。 然後，您可以列出範本的開頭和結尾之間的內容`<DynamicItemTemplate>`標記。 您可以使用，以進一步控制動態功能表的外觀<xref:System.Web.UI.WebControls.Menu.DynamicItemFormatString%2A>屬性。  
   
  ]]></format>
         </remarks>
@@ -1220,6 +1234,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1247,7 +1262,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.DynamicMenuItemStyle%2A>屬性，即可控制動態功能表中功能表項目的外觀。 這個屬性是唯讀的。不過，您可以設定的屬性<xref:System.Web.UI.WebControls.MenuItemStyle>它所傳回的物件。 可以以宣告方式設定的屬性，在表單中`Property-Subproperty`，其中`Subproperty`屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件 (例如， `DynamicMenuItemStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單中`Property.Subproperty`(例如， `DynamicMenuItemStyle.ForeColor`)。  
+ 使用<xref:System.Web.UI.WebControls.Menu.DynamicMenuItemStyle%2A>屬性，即可控制動態功能表中功能表項目的外觀。 這個屬性是唯讀的;不過，您可以在這裡設定的屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件傳回。 屬性可以宣告方式設定形式`Property-Subproperty`，其中`Subproperty`是屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件 (例如`DynamicMenuItemStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單`Property.Subproperty`(例如`DynamicMenuItemStyle.ForeColor`)。  
   
  動態功能表項目的樣式屬性會套用順序如下：  
   
@@ -1262,7 +1277,7 @@
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicMenuItemStyle%2A>屬性來指定在動態功能表中功能表項目的淺色 sky 藍色背景色彩。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicMenuItemStyle%2A>屬性來指定在動態功能表的功能表項目的淺色天空藍的背景色彩。  
   
  [!code-aspx-csharp[MenuDynamicMenuItemStyle#1](~/samples/snippets/csharp/VS_Snippets_WebNet/menudynamicmenuitemstyle/CS/MenuDynamicMenuItemStylecs.aspx#1)]
  [!code-aspx-vb[MenuDynamicMenuItemStyle#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/menudynamicmenuitemstyle/VB/MenuDynamicMenuItemStylevb.aspx#1)]  
@@ -1291,6 +1306,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1318,7 +1334,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.DynamicMenuStyle%2A>屬性，即可控制動態功能表的外觀。 這個屬性是唯讀的。不過，您可以設定的屬性<xref:System.Web.UI.WebControls.MenuItemStyle>它所傳回的物件。 可以以宣告方式設定的屬性，在表單中`Property-Subproperty`，其中`Subproperty`屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件 (例如， `DynamicMenuStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單中`Property.Subproperty`(例如， `DynamicMenuStyle.ForeColor`)。  
+ 使用<xref:System.Web.UI.WebControls.Menu.DynamicMenuStyle%2A>屬性，即可控制動態功能表的外觀。 這個屬性是唯讀的;不過，您可以在這裡設定的屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件傳回。 屬性可以宣告方式設定形式`Property-Subproperty`，其中`Subproperty`是屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件 (例如`DynamicMenuStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單`Property.Subproperty`(例如`DynamicMenuStyle.ForeColor`)。  
   
  動態功能表項目的樣式屬性會套用順序如下：  
   
@@ -1333,7 +1349,7 @@
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicMenuStyle%2A>屬性來指定動態功能表的淺藍色 sky 背景色彩。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicMenuStyle%2A>屬性來指定動態功能表的淺色天空藍的背景色彩。  
   
  [!code-aspx-csharp[MenuDynamicMenuStyle#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuDynamicMenuStyle/CS/menudynamicmenustylecs.aspx#1)]
  [!code-aspx-vb[MenuDynamicMenuStyle#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuDynamicMenuStyle/VB/menudynamicmenustylevb.aspx#1)]  
@@ -1362,6 +1378,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1374,16 +1391,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當動態功能表項目包含子功能表時，可以顯示一個影像，表示使用者可以展開功能表。 使用<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageTextFormatString%2A>屬性來指定此映像的替代文字。 您指定的文字會提供可用來將控制項設為更容易存取的映像的描述的輔助技術裝置。  
+ 當動態功能表項目含有子功能表時，可以顯示一個影像，表示使用者可以展開功能表。 使用<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageTextFormatString%2A>屬性來指定此影像的替代文字。 您指定的文字會提供可用來將控制項設為更容易存取的映像的描述的輔助技術裝置。  
   
  有兩種方式來顯示影像：  
   
--   設定<xref:System.Web.UI.WebControls.Menu.DynamicEnableDefaultPopOutImage%2A>屬性`true`使用內建的映像 （預設值）。  
+-   設定<xref:System.Web.UI.WebControls.Menu.DynamicEnableDefaultPopOutImage%2A>屬性設`true`使用內建的映像 （預設值）。  
   
 -   設定<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>屬性來指定自訂映像。  
   
 > [!NOTE]
->  這個屬性適用於內建的映像和自訂映像。  
+>  此屬性適用於內建的映像和自訂映像。  
   
    
   
@@ -1412,6 +1429,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1435,25 +1453,25 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當動態功能表項目包含子功能表時，可以顯示一個影像，表示使用者可以展開 [] 功能表中的滑鼠將游標放置功能表項目。 有兩種方式可顯示此映像：  
+ 當動態功能表項目含有子功能表時，可以顯示一個影像，表示使用者可以展開功能表的滑鼠將游標放置功能表項目。 有兩種方式可顯示此映像：  
   
--   設定<xref:System.Web.UI.WebControls.Menu.DynamicEnableDefaultPopOutImage%2A>屬性`true`使用內建的映像 （預設值）。  
+-   設定<xref:System.Web.UI.WebControls.Menu.DynamicEnableDefaultPopOutImage%2A>屬性設`true`使用內建的映像 （預設值）。  
   
 -   設定<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>屬性來指定自訂映像。  
   
- 如果<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>屬性設定，則該影像會覆寫內建影像。  
+ 如果<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>屬性設定，該映像會覆寫內建的映像。  
   
- 如果<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>屬性未設定而<xref:System.Web.UI.WebControls.Menu.DynamicEnableDefaultPopOutImage%2A>屬性設定為`false`，不會顯示影像。  
+ 如果<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>未設定屬性和<xref:System.Web.UI.WebControls.Menu.DynamicEnableDefaultPopOutImage%2A>屬性設定為`false`，不會顯示影像。  
   
 > [!NOTE]
->  當您設定這個屬性時，使用斜線 （/），而不是反斜線 (\\)。 如果您在路徑中使用反斜線，不會顯示指定的映像。  
+>  當您設定此屬性時，使用斜線 （/），而不是反斜線 (\\)。 如果您在路徑中使用反斜線，不會顯示指定的映像。  
   
  您可以藉由設定指定之影像的替代文字<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageTextFormatString%2A>屬性。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>屬性來指定要在動態功能表項目，表示功能表項目具有子功能表中顯示的自訂映像。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicPopOutImageUrl%2A>屬性來指定要顯示在動態功能表項目，表示功能表項目具有子功能表中的自訂映像。  
   
  [!code-aspx-csharp[MenuDynamicPopoutImageText#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuDynamicPopoutImageText/CS/menudynamicpopoutimagetextcs.aspx#1)]
  [!code-aspx-vb[MenuDynamicPopoutImageText#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuDynamicPopoutImageText/VB/menudynamicpopoutimagetextvb.aspx#1)]  
@@ -1477,6 +1495,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1504,7 +1523,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.DynamicSelectedStyle%2A>控制動態功能表項目的外觀，當使用者從功能表選取的屬性。 這個屬性是唯讀的。不過，您可以設定的屬性<xref:System.Web.UI.WebControls.MenuItemStyle>它所傳回的物件。 可以以宣告方式設定的屬性，在表單中`Property-Subproperty`，其中`Subproperty`屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件 (例如， `DynamicSelectedStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單中`Property.Subproperty`(例如， `DynamicSelectedStyle.ForeColor`)。  
+ 使用<xref:System.Web.UI.WebControls.Menu.DynamicSelectedStyle%2A>屬性，即可控制動態功能表項目的外觀，當使用者從功能表選取它。 這個屬性是唯讀的;不過，您可以在這裡設定的屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件傳回。 屬性可以宣告方式設定形式`Property-Subproperty`，其中`Subproperty`是屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件 (例如`DynamicSelectedStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單`Property.Subproperty`(例如`DynamicSelectedStyle.ForeColor`)。  
   
  動態功能表項目的樣式屬性會套用順序如下：  
   
@@ -1519,7 +1538,7 @@
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicSelectedStyle%2A>屬性來指定已選取動態功能表項目的淺藍色背景色彩。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicSelectedStyle%2A>屬性來指定已選取動態功能表項目的淡藍色背景色彩。  
   
  [!code-aspx-csharp[MenuDynamicSelectedStyle#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuDynamicSelectedStyle/CS/menudynamicselectedstylecs.aspx#1)]
  [!code-aspx-vb[MenuDynamicSelectedStyle#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuDynamicSelectedStyle/VB/menudynamicselectedstylevb.aspx#1)]  
@@ -1548,6 +1567,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1571,15 +1591,15 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.DynamicTopSeparatorImageUrl%2A>屬性可指定選擇性的自訂映像，以顯示每個動態功能表項目的頂端。 此映像做為功能表項目之間的分隔符號，而且通常是一條線的映像。  
+ 使用<xref:System.Web.UI.WebControls.Menu.DynamicTopSeparatorImageUrl%2A>屬性可指定選擇性的自訂映像，以顯示每個動態功能表項目頂端。 此映像做為功能表項目之間的分隔符號，而且通常是一條線的映像。  
   
 > [!NOTE]
->  您也可以顯示在每個動態功能表項目底部分隔符號影像，藉由設定<xref:System.Web.UI.WebControls.Menu.DynamicBottomSeparatorImageUrl%2A>屬性。  
+>  您也可以顯示底部的每個動態功能表項目分隔符號的映像，藉由設定<xref:System.Web.UI.WebControls.Menu.DynamicBottomSeparatorImageUrl%2A>屬性。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicTopSeparatorImageUrl%2A>分隔符號影像顯示在每個動態功能表項目頂端的屬性。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicTopSeparatorImageUrl%2A>頂端的每個動態功能表項目顯示分隔符號影像的屬性。  
   
  [!code-aspx-csharp[MenuDynamicTopSeparatorImageUrl#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuDynamicTopSeparatorImageUrl/CS/menudynamictopseparatorimageurlcs.aspx#1)]
  [!code-aspx-vb[MenuDynamicTopSeparatorImageUrl#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuDynamicTopSeparatorImageUrl/VB/menudynamictopseparatorimageurlvb.aspx#1)]  
@@ -1605,6 +1625,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1622,20 +1643,20 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.DynamicVerticalOffset%2A>調整動態功能表相對於其父功能表項目垂直位置的屬性。 這個屬性會影響以不同的方式取決於是否動態功能表的位置<xref:System.Web.UI.WebControls.Menu>垂直或水平顯示控制項 (依指定<xref:System.Web.UI.WebControls.Menu.Orientation%2A>屬性)。 下表描述的差異。  
+ 使用<xref:System.Web.UI.WebControls.Menu.DynamicVerticalOffset%2A>調整動態功能表相對於其父功能表項目垂直位置的屬性。 這個屬性會影響以不同的方式取決於是否動態功能表的位置<xref:System.Web.UI.WebControls.Menu>水平或垂直顯示控制項 (依照<xref:System.Web.UI.WebControls.Menu.Orientation%2A>屬性)。 下表描述的差異。  
   
 |方向|描述|  
 |-----------------|-----------------|  
-|水平|根據預設，動態功能表會顯示其父功能表項目，沒有任何間距，兩者之間的正下方。 設定這個屬性會控制 [動態] 功能表和其父功能表項目之間的垂直間距。|  
-|垂直|根據預設，動態功能表項目是其父功能表項目旁顯示的上邊緣對齊。 設定這個屬性會讓動態功能表的位置從垂直這個基底的位置。|  
+|水平|預設情況下，動態功能表會顯示其父功能表項目，沒有任何間距，兩者之間的正下方。 設定這個屬性會控制 [動態] 功能表和其父功能表項目之間的垂直間距。|  
+|垂直|根據預設，動態功能表項目是其父功能表項目旁邊顯示對齊上邊緣。 設定這個屬性會轉移讓動態功能表的位置以垂直方式從這個基底的位置。|  
   
 > [!NOTE]
->  您可以將這個屬性設為負值，讓動態功能表以負數方向。 如果您要顯示水平的功能表，負值會導致動態功能表和其父功能表項目重疊。  
+>  您可以設定此屬性設為負數值以負數方向的動態功能表。 如果您要顯示水平的功能表，動態功能表和其父功能表項目重疊，會造成負數的值。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicVerticalOffset%2A>向下移動動態功能表 10 個像素會從其父功能表項目頂端的屬性。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.DynamicVerticalOffset%2A>向下移動動態功能表的 10 個像素從其父功能表項目上的屬性。  
   
  [!code-aspx-csharp[MenuDynamicHorizontalOffset#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuDynamicHorizontalOffset/CS/menudynamichorizontaloffsetcs.aspx#1)]
  [!code-aspx-vb[MenuDynamicHorizontalOffset#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuDynamicHorizontalOffset/VB/menudynamichorizontaloffsetvb.aspx#1)]  
@@ -1657,6 +1678,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1671,7 +1693,7 @@
 ## Remarks  
   
 > [!NOTE]
->  這個方法用於主要由控制項開發人員擴充<xref:System.Web.UI.WebControls.Menu>控制項。  
+>  這個方法主要由控制項開發人員用來擴充<xref:System.Web.UI.WebControls.Menu>控制項。  
   
  ]]></format>
         </remarks>
@@ -1687,6 +1709,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1704,12 +1727,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.FindItem%2A>方法來擷取<xref:System.Web.UI.WebControls.MenuItem>物件從<xref:System.Web.UI.WebControls.Menu>控制項。 若要擷取<xref:System.Web.UI.WebControls.MenuItem>物件，您必須指定功能表項目的功能表路徑。 功能表路徑是形成根功能表項目從目前的功能表項目路徑的分隔值的字串。 若要判斷分隔符號字元，請使用<xref:System.Web.UI.WebControls.Menu.PathSeparator%2A>屬性。  
+ 使用<xref:System.Web.UI.WebControls.Menu.FindItem%2A>方法來擷取<xref:System.Web.UI.WebControls.MenuItem>物件從<xref:System.Web.UI.WebControls.Menu>控制項。 若要擷取<xref:System.Web.UI.WebControls.MenuItem>物件時，您必須指定功能表項目的功能表路徑。 功能表路徑是構成從根功能表項目通往目前功能表項目的路徑的分隔值的字串。 若要判斷目前的分隔符號，請使用<xref:System.Web.UI.WebControls.Menu.PathSeparator%2A>屬性。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.FindItem%2A>方法來擷取功能表項目從<xref:System.Web.UI.WebControls.Menu>控制項的指定的值路徑。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.FindItem%2A>方法來擷取功能表項目從<xref:System.Web.UI.WebControls.Menu>控制項位於指定的值路徑。  
   
  [!code-aspx-csharp[MenuPathSeparator#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuPathSeparator/CS/menupathseparatorcs.aspx#1)]
  [!code-aspx-vb[MenuPathSeparator#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuPathSeparator/VB/menupathseparatorvb.aspx#1)]  
@@ -1730,6 +1753,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1744,7 +1768,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.Menu.GetDesignModeState%2A>方法是 helper 方法，用來取得目前的設計階段狀態<xref:System.Web.UI.WebControls.Menu>控制項。  
+ <xref:System.Web.UI.WebControls.Menu.GetDesignModeState%2A>方法是用來取得目前的設計階段狀態的 helper 方法<xref:System.Web.UI.WebControls.Menu>控制項。  
   
  ]]></format>
         </remarks>
@@ -1778,15 +1802,15 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.Menu>控制項使用的 CSS 樣式來控制它在瀏覽器的外觀。 根據預設，它會呈現`style`它會使用包含 CSS 定義的 CSS 類別的項目。 您通常將此屬性設定為`false`在下列情況：  
+ <xref:System.Web.UI.WebControls.Menu>控制項使用的 CSS 樣式來控制其在瀏覽器的外觀。 根據預設，它會呈現`style`它會使用包含 CSS 定義之 CSS 類別的項目。 通常將這個屬性設定為`false`在下列情況：  
   
 -   您想要提供您自己的 CSS 定義自訂功能表的外觀。 然後，您必須提供您自己的區塊的 CSS 定義在頁面中，或包含外部 CSS 檔案包含定義的連結。  
   
--   您想要保留的預設外觀，但想要產生的 CSS 定義維持在個別的檔案。 您必須提供檔案，並在它的連結。  
+-   您想要保留的預設外觀，但想要產生的 CSS 定義維持在不同的檔案。 然後您就必須提供檔案，並在它的連結。  
   
- 在這些情況下，您可以取得一份預設 CSS 區塊，<xref:System.Web.UI.WebControls.Menu>控制項屬性設定為產生`true`、 執行頁面上，並在瀏覽器中檢視網頁。 您可以檢視網頁原始檔中的瀏覽器和複本，並將 CSS 區塊貼入網頁標記的個別檔案。  
+ 在這些情況下，您可以取得一份預設 CSS 區塊所<xref:System.Web.UI.WebControls.Menu>控制項產生的屬性設定為`true`、 執行頁面上，和在瀏覽器中檢視頁面。 然後，您可以複製與瀏覽器中檢視網頁原始檔，並將 CSS 區塊，在網頁標記或個別的檔案。  
   
- 如果您將此屬性設定為`false`，您無法設定樣式屬性。 例如，您無法加入`DynamicHoverStyle-ForeColor`標記或集合中的屬性`DynamicHoverStyle.ForeColor`程式碼中的屬性。  
+ 如果您將這個屬性設定為`false`，您不能設定樣式屬性。 例如，您無法新增`DynamicHoverStyle-ForeColor`標記或集合中的屬性`DynamicHoverStyle.ForeColor`在程式碼中的屬性。  
   
  ]]></format>
         </remarks>
@@ -1802,6 +1826,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1829,14 +1854,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.Items%2A>屬性 （集合），即可取得<xref:System.Web.UI.WebControls.MenuItemCollection>中的物件，其中包含所有功能表項目<xref:System.Web.UI.WebControls.Menu>控制項。 這個集合通常用來快速地逐一查看所有功能表項目，或存取特定的功能表項目。  
+ 使用<xref:System.Web.UI.WebControls.Menu.Items%2A>屬性 （集合） 來取得<xref:System.Web.UI.WebControls.MenuItemCollection>中的物件，其中包含所有功能表項目<xref:System.Web.UI.WebControls.Menu>控制項。 這個集合常用來快速地逐一查看所有功能表項目，或存取特定的功能表項目。  
   
- <xref:System.Web.UI.WebControls.Menu.Items%2A>集合也可用來以程式設計方式管理功能表項目。 您可以加入、 插入、 移除及擷取<xref:System.Web.UI.WebControls.MenuItem>集合物件。 集合的任何更新會自動反映在<xref:System.Web.UI.WebControls.Menu>往返到伺服器的下一步 後的控制項。  
+ <xref:System.Web.UI.WebControls.Menu.Items%2A>集合也可用來以程式設計方式管理的功能表項目。 您可以新增、 插入、 移除及擷取<xref:System.Web.UI.WebControls.MenuItem>集合物件。 集合的任何更新將會自動反映在<xref:System.Web.UI.WebControls.Menu>往返到伺服器的下一步 後的控制項。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.Items%2A>集合周遊功能表中的項目<xref:System.Web.UI.WebControls.Menu>控制項。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.Items%2A>中的項目集合周遊功能表<xref:System.Web.UI.WebControls.Menu>控制項。  
   
  [!code-aspx-csharp[MenuItems#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuItems/CS/menuitemscs.aspx#1)]
  [!code-aspx-vb[MenuItems#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuItems/VB/menuitemsvb.aspx#1)]  
@@ -1858,6 +1883,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1876,12 +1902,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.ItemWrap%2A>屬性來指定是否顯示每個功能表項目中的文字換行。 當文字用盡空間時，自動分割，並繼續到下一行。  
+ 使用<xref:System.Web.UI.WebControls.Menu.ItemWrap%2A>屬性來指定每個功能表項目中所顯示的文字是否換行。 當文字用盡空間時，它就會自動分割，並繼續在下一行。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.ItemWrap%2A>屬性來啟用中的文字換行<xref:System.Web.UI.WebControls.Menu>控制項。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.ItemWrap%2A>屬性，來啟用中的文字換行<xref:System.Web.UI.WebControls.Menu>控制項。  
   
  [!code-aspx-csharp[MenuItemWrap#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuItemWrap/CS/menuitemwrapcs.aspx#1)]
  [!code-aspx-vb[MenuItemWrap#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuItemWrap/VB/menuitemwrapvb.aspx#1)]  
@@ -1905,6 +1931,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1929,15 +1956,15 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.LevelMenuItemStyles%2A>集合，做為個別的樣式屬性的替代方式 (例如<xref:System.Web.UI.WebControls.Menu.DynamicMenuItemStyle%2A>) 來控制在個別的功能表層級的功能表項目的樣式。 這個集合中包含的樣式會套用至功能表層級為基礎的功能表項目。 集合中的第一個樣式會對應至第一個層級的功能表中功能表項目的樣式。 集合中的第二個樣式會對應至功能表上，等等的第二個層級中的功能表項目的樣式。 這個集合是最常用來產生內容樣式導覽功能表的其中的功能表項目在特定層級應該具有相同的外觀，不論它們是否具有子功能表。  
+ 使用<xref:System.Web.UI.WebControls.Menu.LevelMenuItemStyles%2A>做為替代的個別的樣式屬性的集合 (例如<xref:System.Web.UI.WebControls.Menu.DynamicMenuItemStyle%2A>) 來控制個別層級的功能表的功能表項目的樣式。 這個集合中包含的樣式會套用到根據員工的功能表層級的功能表項目。 集合中的第一個樣式會對應至功能表項目在功能表的第一層樣式。 集合中的第二個樣式會對應至功能表，並依此類推的第二個層級中的功能表項目的樣式。 這個集合是最常用來產生內容樣式導覽功能表的資料表，在特定層級的功能表項目應該有相同的外觀，不論它們是否具有子功能表。  
   
 > [!NOTE]
->  如果針對特定層級使用定義的樣式<xref:System.Web.UI.WebControls.Menu.LevelMenuItemStyles%2A>任何功能表項目集合，這個覆寫樣式該層級的功能表項目的設定。  
+>  如果樣式已定義特定層級使用<xref:System.Web.UI.WebControls.Menu.LevelMenuItemStyles%2A>集合，這個覆寫任何功能表項目設定樣式的功能表項目設定該層級。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.LevelMenuItemStyles%2A>將樣式設定套用至功能表項目在集合<xref:System.Web.UI.WebControls.Menu>控制項根據其層級。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.LevelMenuItemStyles%2A>集合中的功能表項目套用的樣式設定<xref:System.Web.UI.WebControls.Menu>控制項根據其層級。  
   
  [!code-aspx-csharp[MenuLevelMenuItemStyles#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuLevelMenuItemStyles/CS/menulevelmenuitemstylecs.aspx#1)]
  [!code-aspx-vb[MenuLevelMenuItemStyles#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuLevelMenuItemStyles/VB/menulevelmenuitemstylevb.aspx#1)]  
@@ -1966,6 +1993,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1990,15 +2018,15 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.LevelSelectedStyles%2A>集合做為替代<xref:System.Web.UI.WebControls.Menu.DynamicSelectedStyle%2A>和<xref:System.Web.UI.WebControls.Menu.StaticSelectedStyle%2A>屬性以控制選取的功能表項目在個別的功能表層級的樣式。 這個集合中包含的樣式會套用至選取的功能表項目，根據其功能表層級。 集合中的第一個樣式會對應至第一個層級的功能表中選取的功能表項目的樣式。 集合中的第二個樣式會對應至選取的功能表項目的功能表和等等的第二個層級中的樣式。 這個集合是最常用來產生內容樣式導覽功能表的其中的功能表項目在特定層級應該具有相同的外觀，不論它們是否具有子功能表。  
+ 使用<xref:System.Web.UI.WebControls.Menu.LevelSelectedStyles%2A>集合，做為替代<xref:System.Web.UI.WebControls.Menu.DynamicSelectedStyle%2A>和<xref:System.Web.UI.WebControls.Menu.StaticSelectedStyle%2A>屬性來控制個別層級的功能表選取的功能表項目的樣式。 這個集合中包含的樣式會套用至選取的功能表項目根據其功能表層級。 集合中的第一個樣式會對應至選取的功能表中的項目 功能表的第一層的樣式。 集合中的第二個樣式會對應至選取的功能表中的項目 功能表中，並依此類推的第二個層級的樣式。 這個集合是最常用來產生內容樣式導覽功能表的資料表，在特定層級的功能表項目應該有相同的外觀，不論它們是否具有子功能表。  
   
 > [!NOTE]
->  如果針對特定層級使用定義的樣式<xref:System.Web.UI.WebControls.Menu.LevelSelectedStyles%2A>集合，則會覆寫<xref:System.Web.UI.WebControls.Menu.DynamicSelectedStyle%2A>和<xref:System.Web.UI.WebControls.Menu.StaticSelectedStyle%2A>該層級的屬性。  
+>  如果已定義特定層級使用的樣式<xref:System.Web.UI.WebControls.Menu.LevelSelectedStyles%2A>集合，這會覆寫<xref:System.Web.UI.WebControls.Menu.DynamicSelectedStyle%2A>和<xref:System.Web.UI.WebControls.Menu.StaticSelectedStyle%2A>該層級的屬性。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.LevelSelectedStyles%2A>將樣式設定套用至選取的功能表項目中的集合<xref:System.Web.UI.WebControls.Menu>控制項根據其層級。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.LevelSelectedStyles%2A>要套用的樣式設定中選取之功能表項目的集合<xref:System.Web.UI.WebControls.Menu>控制項根據其層級。  
   
  [!code-aspx-csharp[MenuLevelMenuItemStyles#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuLevelMenuItemStyles/CS/menulevelmenuitemstylecs.aspx#1)]
  [!code-aspx-vb[MenuLevelMenuItemStyles#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuLevelMenuItemStyles/VB/menulevelmenuitemstylevb.aspx#1)]  
@@ -2027,6 +2055,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2051,15 +2080,15 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.LevelSubMenuStyles%2A>集合，做為個別的樣式屬性的替代方式 (例如<xref:System.Web.UI.WebControls.Menu.StaticMenuItemStyle%2A>) 來控制顯示在個別的層級靜態功能表中的靜態子功能表項目樣式。 這個集合中包含的樣式會套用至靜態子功能表項目，根據員工的功能表層級。 集合中的第一個樣式會對應至顯示在靜態功能表中的第一個靜態子功能表層級的樣式。 集合中的第二個樣式會對應至第二個層級顯示在靜態功能表中，等等的子功能表的樣式。 這個集合是最常用來產生內容樣式導覽功能表的其中的功能表項目在特定層級應該具有相同的外觀，不論它們是否具有子功能表。  
+ 使用<xref:System.Web.UI.WebControls.Menu.LevelSubMenuStyles%2A>做為替代的個別的樣式屬性的集合 (例如<xref:System.Web.UI.WebControls.Menu.StaticMenuItemStyle%2A>) 來控制個別層級靜態功能表中顯示的靜態子功能表項目的樣式。 這個集合中包含的樣式會套用至靜態功能表項目根據員工的功能表層級。 集合中的第一個樣式會對應至靜態功能表中顯示的第一個靜態的子功能表層級的樣式。 集合中的第二個樣式會對應至第二個層級顯示在靜態功能表，並依此類推的子功能表的樣式。 這個集合是最常用來產生內容樣式導覽功能表的資料表，在特定層級的功能表項目應該有相同的外觀，不論它們是否具有子功能表。  
   
 > [!NOTE]
->  如果針對特定層級使用定義的樣式<xref:System.Web.UI.WebControls.Menu.LevelSubMenuStyles%2A>任何靜態子功能表項目集合，這個覆寫樣式該層級的設定。  
+>  如果樣式已定義特定層級使用<xref:System.Web.UI.WebControls.Menu.LevelSubMenuStyles%2A>集合，這個覆寫任何靜態的子功能表項目在該層級樣式設定。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.LevelSubMenuStyles%2A>將樣式設定套用至靜態功能表中顯示的子功能表項目集合<xref:System.Web.UI.WebControls.Menu>控制項根據其層級。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.LevelSubMenuStyles%2A>要將樣式設定套用至靜態功能表中顯示的子功能表項目集合<xref:System.Web.UI.WebControls.Menu>控制項根據其層級。  
   
  [!code-aspx-csharp[MenuLevelSubMenuStyles#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuLevelSubMenuStyles/CS/menulevelsubmenustylescs.aspx#1)]
  [!code-aspx-vb[MenuLevelSubMenuStyles#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuLevelSubMenuStyles/VB/menulevelsubmenustylesvb.aspx#1)]  
@@ -2088,6 +2117,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2106,7 +2136,7 @@
 ## Remarks  
   
 > [!NOTE]
->  這個方法用於主要由控制項開發人員擴充<xref:System.Web.UI.WebControls.Menu>控制項。  
+>  這個方法主要由控制項開發人員用來擴充<xref:System.Web.UI.WebControls.Menu>控制項。  
   
  ]]></format>
         </remarks>
@@ -2122,6 +2152,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2147,6 +2178,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2167,10 +2199,10 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您可以藉由設定靜態功能表中顯示多個功能表層級<xref:System.Web.UI.WebControls.Menu.StaticDisplayLevels%2A>屬性設為大於 1 的值。 您也可以將這個屬性的值大於 0，來顯示在動態功能表中的其他層級。 例如，如果您在靜態功能表中顯示兩個功能表層級 (藉由設定<xref:System.Web.UI.WebControls.Menu.StaticDisplayLevels%2A>屬性 2) 然後將此屬性設定為 3，三個層級會顯示在動態功能表中的其他功能表。 所有剩餘較高的功能表層級 （如果有的話） 會被捨棄。  
+ 您也可以設定靜態功能表中顯示多個的功能表層級<xref:System.Web.UI.WebControls.Menu.StaticDisplayLevels%2A>屬性設為大於 1 的值。 您也可以將此屬性設為大於 0，來顯示在動態功能表中的其他層級。 例如，如果您在靜態功能表中顯示兩個的功能表層級 (藉由設定<xref:System.Web.UI.WebControls.Menu.StaticDisplayLevels%2A>屬性設為 2) 然後將此屬性設定為 3，這三個層級會顯示在動態功能表中的其他功能表。 所有其餘較高的功能表層級 （如果有的話） 都會被捨棄。  
   
 > [!NOTE]
->  將這個屬性設定為 0 就會顯示一般功能表到指定的層級<xref:System.Web.UI.WebControls.Menu.StaticDisplayLevels%2A>屬性，沒有任何動態功能表。  
+>  將這個屬性設定為 0 就會顯示一般功能表到所指定的層級<xref:System.Web.UI.WebControls.Menu.StaticDisplayLevels%2A>屬性，而不需要任何動態功能表。  
   
    
   
@@ -2197,6 +2229,7 @@
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2208,11 +2241,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.Menu.MenuItemClick>按一下中的功能表項目時，會引發事件<xref:System.Web.UI.WebControls.Menu>控制項。 這可讓您提供執行自訂的常式，如這個事件發生時，在頁面上，另一個控制項與同步處理的事件處理常式。  
+ <xref:System.Web.UI.WebControls.Menu.MenuItemClick>中按一下功能表項目時，會引發事件<xref:System.Web.UI.WebControls.Menu>控制項。 這可讓您提供執行自訂的常式，如這個事件發生時，與另一個控制項的頁面上，同步處理的事件處理常式。  
   
- A<xref:System.Web.UI.WebControls.MenuEventArgs>物件傳遞至事件處理常式，可讓您存取的屬性引發事件的功能表項目。  
+ A<xref:System.Web.UI.WebControls.MenuEventArgs>物件傳遞至事件處理常式，可讓您存取功能表項目引發事件的屬性。  
   
- 如需處理事件的詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
+ 如需有關如何處理事件的詳細資訊，請參閱 < [NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
   
    
   
@@ -2240,6 +2273,7 @@
       <MemberType>Field</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2267,6 +2301,7 @@
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2278,11 +2313,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.Menu.MenuItemDataBound>功能表項目中的資料繫結時，就會引發事件<xref:System.Web.UI.WebControls.Menu>控制項。 這可讓您提供執行自訂的常式，例如加入自訂內容或修改功能表項目之前呈現，只要就會發生此事件的事件處理常式。  
+ <xref:System.Web.UI.WebControls.Menu.MenuItemDataBound>功能表項目中的資料繫結時，會引發事件<xref:System.Web.UI.WebControls.Menu>控制項。 這可讓您提供執行自訂的常式，例如，將自訂內容新增或修改的功能表項目，轉譯之前，每次這個事件發生時的事件處理常式。  
   
- A<xref:System.Web.UI.WebControls.MenuEventArgs>物件傳遞至事件處理常式，可讓您存取的屬性引發事件的功能表項目。  
+ A<xref:System.Web.UI.WebControls.MenuEventArgs>物件傳遞至事件處理常式，可讓您存取功能表項目引發事件的屬性。  
   
- 如需處理事件的詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
+ 如需有關如何處理事件的詳細資訊，請參閱 < [NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
   
    
   
@@ -2310,6 +2345,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2331,7 +2367,7 @@
  這個成員會覆寫 <xref:System.Web.UI.Control.OnBubbleEvent%2A>。  
   
 > [!NOTE]
->  這個方法用於主要由控制項開發人員擴充<xref:System.Web.UI.WebControls.Menu>控制項。  
+>  這個方法主要由控制項開發人員用來擴充<xref:System.Web.UI.WebControls.Menu>控制項。  
   
  ]]></format>
         </remarks>
@@ -2347,6 +2383,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2363,18 +2400,18 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.Control.DataBinding>繫結至資料時，就會引發事件<xref:System.Web.UI.WebControls.Menu>控制項。 這個方法會通知控制項執行與它相關聯的任何資料繫結邏輯。  
+ <xref:System.Web.UI.Control.DataBinding>資料繫結來時，會引發事件<xref:System.Web.UI.WebControls.Menu>控制項。 這個方法會通知控制項，來執行與它相關聯的任何資料繫結邏輯。  
   
- <xref:System.Web.UI.WebControls.Menu.OnDataBinding%2A>方法允許衍生的類別處理事件，而不用附加委派。 這是在衍生類別中處理事件的慣用技巧。  
+ <xref:System.Web.UI.WebControls.Menu.OnDataBinding%2A>方法可讓衍生的類別，而不需要附加委派處理事件。 這是在衍生類別中處理事件的慣用技巧。  
   
- 擴充時，由控制項開發人員通常使用這個方法<xref:System.Web.UI.WebControls.Menu>類別。  
+ 這個方法通常由控制項開發人員擴充時<xref:System.Web.UI.WebControls.Menu>類別。  
   
- 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱[處理和引發事件](~/docs/standard/events/index.md)。  
+ 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱 <<c0> [ 處理和引發事件](~/docs/standard/events/index.md)。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>在覆寫<see cref="M:System.Web.UI.WebControls.Menu.OnDataBinding(System.EventArgs)" />在衍生類別中，請務必呼叫基底類別的<see cref="M:System.Web.UI.WebControls.Menu.OnDataBinding(System.EventArgs)" />方法，使已註冊的委派能接收到事件。</para>
+          <para>當覆寫<see cref="M:System.Web.UI.WebControls.Menu.OnDataBinding(System.EventArgs)" />衍生類別時，請務必呼叫基底類別的<see cref="M:System.Web.UI.WebControls.Menu.OnDataBinding(System.EventArgs)" />方法，讓已註冊的委派收到事件。</para>
         </block>
         <altmember cref="T:System.Web.UI.WebControls.MenuEventArgs" />
         <altmember cref="T:System.Web.UI.WebControls.MenuEventHandler" />
@@ -2391,6 +2428,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2407,16 +2445,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當通知由這個方法時，Web 伺服器控制項都必須執行建立及設定執行個體所需的任何初始化步驟。 在此階段的伺服器控制項的生命週期中，控制項的檢視狀態尚未填入。 此外，您無法存取其他伺服器控制項，呼叫這個方法時，無論它是子系或父這個控制項。 不保證會建立並準備好存取其他伺服器控制項。  
+ 當通知由這個方法時，Web 伺服器控制項必須執行建立和設定執行個體所需的任何初始化步驟。 在這個階段的伺服器控制項的生命週期中，控制項的檢視狀態尚未填入。 此外，您無法存取其他伺服器控制項，呼叫這個方法時，無論它是子網域或此控制項的父代。 其他伺服器控制項不保證會建立且可供存取。  
   
- 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱[處理和引發事件](~/docs/standard/events/index.md)。  
+ 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱 <<c0> [ 處理和引發事件](~/docs/standard/events/index.md)。  
   
  <xref:System.Web.UI.WebControls.Menu.OnInit%2A> 方法也允許衍生類別處理事件，而不用附加委派。 這是在衍生類別中處理事件的慣用技巧。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>在覆寫<see cref="M:System.Web.UI.WebControls.Menu.OnInit(System.EventArgs)" />在衍生類別中，請務必呼叫基底類別的<see cref="M:System.Web.UI.WebControls.Menu.OnInit(System.EventArgs)" />方法，使已註冊的委派能接收到事件。</para>
+          <para>當覆寫<see cref="M:System.Web.UI.WebControls.Menu.OnInit(System.EventArgs)" />衍生類別時，請務必呼叫基底類別的<see cref="M:System.Web.UI.WebControls.Menu.OnInit(System.EventArgs)" />方法，讓已註冊的委派收到事件。</para>
         </block>
       </Docs>
     </Member>
@@ -2430,6 +2468,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2446,16 +2485,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.Menu.OnMenuItemClick%2A>方法透過呼叫<xref:System.Web.UI.WebControls.Menu>控制項引發<xref:System.Web.UI.WebControls.Menu.MenuItemClick>事件。 擴充時，它通常會由控制項開發人員使用<xref:System.Web.UI.WebControls.Menu>類別。  
+ <xref:System.Web.UI.WebControls.Menu.OnMenuItemClick%2A>方法會呼叫<xref:System.Web.UI.WebControls.Menu>控制項來引發<xref:System.Web.UI.WebControls.Menu.MenuItemClick>事件。 擴充時，它通常會由控制項開發人員使用<xref:System.Web.UI.WebControls.Menu>類別。  
   
- 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱[處理和引發事件](~/docs/standard/events/index.md)。  
+ 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱 <<c0> [ 處理和引發事件](~/docs/standard/events/index.md)。  
   
  <xref:System.Web.UI.WebControls.Menu.OnMenuItemClick%2A> 方法也允許衍生類別處理事件，而不用附加委派。 這是在衍生類別中處理事件的慣用技巧。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>在覆寫<see cref="M:System.Web.UI.WebControls.Menu.OnMenuItemClick(System.Web.UI.WebControls.MenuEventArgs)" />在衍生類別中，請務必呼叫基底類別的<see cref="M:System.Web.UI.WebControls.Menu.OnMenuItemClick(System.Web.UI.WebControls.MenuEventArgs)" />方法，使已註冊的委派能接收到事件。</para>
+          <para>當覆寫<see cref="M:System.Web.UI.WebControls.Menu.OnMenuItemClick(System.Web.UI.WebControls.MenuEventArgs)" />衍生類別時，請務必呼叫基底類別的<see cref="M:System.Web.UI.WebControls.Menu.OnMenuItemClick(System.Web.UI.WebControls.MenuEventArgs)" />方法，讓已註冊的委派收到事件。</para>
         </block>
         <altmember cref="T:System.Web.UI.WebControls.MenuEventArgs" />
         <altmember cref="T:System.Web.UI.WebControls.MenuEventHandler" />
@@ -2473,6 +2512,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2489,16 +2529,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.Menu.OnMenuItemDataBound%2A>方法透過呼叫<xref:System.Web.UI.WebControls.Menu>控制項引發<xref:System.Web.UI.WebControls.Menu.MenuItemDataBound>事件。 擴充時，它通常會由控制項開發人員使用<xref:System.Web.UI.WebControls.Menu>類別。  
+ <xref:System.Web.UI.WebControls.Menu.OnMenuItemDataBound%2A>方法會呼叫<xref:System.Web.UI.WebControls.Menu>控制項來引發<xref:System.Web.UI.WebControls.Menu.MenuItemDataBound>事件。 擴充時，它通常會由控制項開發人員使用<xref:System.Web.UI.WebControls.Menu>類別。  
   
- 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱[處理和引發事件](~/docs/standard/events/index.md)。  
+ 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱 <<c0> [ 處理和引發事件](~/docs/standard/events/index.md)。  
   
  <xref:System.Web.UI.WebControls.Menu.OnMenuItemDataBound%2A> 方法也允許衍生類別處理事件，而不用附加委派。 這是在衍生類別中處理事件的慣用技巧。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>在覆寫<see cref="M:System.Web.UI.WebControls.Menu.OnMenuItemDataBound(System.Web.UI.WebControls.MenuEventArgs)" />在衍生類別中，請務必呼叫基底類別的<see cref="M:System.Web.UI.WebControls.Menu.OnMenuItemDataBound(System.Web.UI.WebControls.MenuEventArgs)" />方法，使已註冊的委派能接收到事件。</para>
+          <para>當覆寫<see cref="M:System.Web.UI.WebControls.Menu.OnMenuItemDataBound(System.Web.UI.WebControls.MenuEventArgs)" />衍生類別時，請務必呼叫基底類別的<see cref="M:System.Web.UI.WebControls.Menu.OnMenuItemDataBound(System.Web.UI.WebControls.MenuEventArgs)" />方法，讓已註冊的委派收到事件。</para>
         </block>
         <altmember cref="T:System.Web.UI.WebControls.MenuEventArgs" />
         <altmember cref="T:System.Web.UI.WebControls.MenuEventHandler" />
@@ -2516,6 +2556,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2531,16 +2572,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.Menu.OnPreRender%2A>方法透過呼叫<xref:System.Web.UI.WebControls.Menu>控制項引發<xref:System.Web.UI.Control.PreRender>事件。 擴充時，它通常會由控制項開發人員使用<xref:System.Web.UI.WebControls.Menu>類別。  
+ <xref:System.Web.UI.WebControls.Menu.OnPreRender%2A>方法會呼叫<xref:System.Web.UI.WebControls.Menu>控制項來引發<xref:System.Web.UI.Control.PreRender>事件。 擴充時，它通常會由控制項開發人員使用<xref:System.Web.UI.WebControls.Menu>類別。  
   
- 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱[處理和引發事件](~/docs/standard/events/index.md)。  
+ 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱 <<c0> [ 處理和引發事件](~/docs/standard/events/index.md)。  
   
  <xref:System.Web.UI.WebControls.Menu.OnPreRender%2A> 方法也允許衍生類別處理事件，而不用附加委派。 這是在衍生類別中處理事件的慣用技巧。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>在覆寫<see cref="M:System.Web.UI.WebControls.Menu.OnPreRender(System.EventArgs)" />在衍生類別中，請務必呼叫基底類別的<see cref="M:System.Web.UI.WebControls.Menu.OnPreRender(System.EventArgs)" />方法，使已註冊的委派能接收到事件。</para>
+          <para>當覆寫<see cref="M:System.Web.UI.WebControls.Menu.OnPreRender(System.EventArgs)" />衍生類別時，請務必呼叫基底類別的<see cref="M:System.Web.UI.WebControls.Menu.OnPreRender(System.EventArgs)" />方法，讓已註冊的委派收到事件。</para>
         </block>
       </Docs>
     </Member>
@@ -2554,6 +2595,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2575,13 +2617,13 @@
   
 |方向|描述|  
 |-----------------|-----------------|  
-|`Orientation.Horizontal`|<xref:System.Web.UI.WebControls.Menu>控制項的水平方式呈現。|  
+|`Orientation.Horizontal`|<xref:System.Web.UI.WebControls.Menu>水平呈現控制項。|  
 |`Orientation.Vertical`|<xref:System.Web.UI.WebControls.Menu>垂直顯示控制項。|  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.Orientation%2A>屬性來顯示水平的功能表。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.Orientation%2A>屬性來顯示水平功能表。  
   
  [!code-aspx-csharp[MenuOrientation#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuOrientation/CS/menuorientationcs.aspx#1)]
  [!code-aspx-vb[MenuOrientation#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuOrientation/VB/menuorientationvb.aspx#1)]  
@@ -2601,6 +2643,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2618,14 +2661,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 每個功能表項目 (由<xref:System.Web.UI.WebControls.MenuItem>物件) 中<xref:System.Web.UI.WebControls.Menu>控制項有<xref:System.Web.UI.WebControls.MenuItem.ValuePath%2A>屬性，指定功能表項目的位置。 值路徑是分隔的值可形成根功能表項目目前的功能表項目路徑的字串。 使用<xref:System.Web.UI.WebControls.Menu.PathSeparator%2A>屬性，以指定分隔字元用來分隔功能表路徑中的值。 這個值通常用於剖析為個別值的清單。  
+ 每個功能表項目 (由<xref:System.Web.UI.WebControls.MenuItem>物件) 中<xref:System.Web.UI.WebControls.Menu>控制項具有<xref:System.Web.UI.WebControls.MenuItem.ValuePath%2A>屬性，指定功能表項目的位置。 將值路徑是構成從根功能表項目通往目前功能表項目的路徑的分隔值的字串。 使用<xref:System.Web.UI.WebControls.Menu.PathSeparator%2A>屬性，以指定分隔字元，用來分隔功能表路徑中的值。 剖析的個別值的清單時，通常會使用此值。  
   
- 根據中顯示的文字<xref:System.Web.UI.WebControls.Menu>控制項，以避免任何衝突變更，可能需要分隔符號字元。 例如，如果您設定逗號分隔符號字元，所顯示的文字不應該包含任何逗號;否則，<xref:System.Web.UI.WebControls.MenuItem.ValuePath%2A>屬性無法正確剖析。  
+ 根據中顯示的文字<xref:System.Web.UI.WebControls.Menu>控制項，分隔符號字元可能需要變更，以避免任何衝突。 例如，如果您將分隔符號字元為逗號時，所顯示的文字不應包含任何逗號;否則，<xref:System.Web.UI.WebControls.MenuItem.ValuePath%2A>屬性無法正確剖析。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.PathSeparator%2A>屬性，以逗點變更功能表項目的值路徑的分隔符號字元。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.PathSeparator%2A>屬性，以將功能表項目的值路徑分隔符號字元變更為逗號。  
   
  [!code-aspx-csharp[MenuPathSeparator#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuPathSeparator/CS/menupathseparatorcs.aspx#1)]
  [!code-aspx-vb[MenuPathSeparator#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuPathSeparator/VB/menupathseparatorvb.aspx#1)]  
@@ -2646,6 +2689,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2658,7 +2702,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.Menu.PerformDataBinding%2A>方法是 helper 方法，由呼叫<xref:System.Web.UI.WebControls.Menu>控制項繫結至資料來源中的項目<xref:System.Web.UI.WebControls.Menu>控制項。  
+ <xref:System.Web.UI.WebControls.Menu.PerformDataBinding%2A>方法時所呼叫的 helper 方法<xref:System.Web.UI.WebControls.Menu>要繫結至資料來源中的項目控制項<xref:System.Web.UI.WebControls.Menu>控制項。  
   
  ]]></format>
         </remarks>
@@ -2678,6 +2722,7 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2704,6 +2749,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2729,6 +2775,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2744,12 +2791,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.Menu.RenderBeginTag%2A>方法加入標記屬性和控制項的開頭標記的標記寫入至發出給用戶端瀏覽器的回應資料流輸出資料流。  
+ <xref:System.Web.UI.WebControls.Menu.RenderBeginTag%2A>方法會將標記屬性，並將控制項開頭標記的標記寫入至發出給用戶端瀏覽器的回應資料流輸出資料流。  
   
- 覆寫<xref:System.Web.UI.WebControls.Menu.RenderBeginTag%2A>當您想要實作自訂行為，例如將多個標記寫任何之前，先在回應資料流控制內容，例如`<table><tr><td>`。 這個方法會覆寫<xref:System.Web.UI.WebControls.Menu.RenderBeginTag%2A>方法，將<xref:System.Web.UI.WebControls.Menu.SkipLinkText%2A>屬性。  
+ 覆寫<xref:System.Web.UI.WebControls.Menu.RenderBeginTag%2A>當您想要實作自訂行為，例如若要將多個標記寫入至回應資料流之前的任何控制項內容，例如`<table><tr><td>`。 這個方法會覆寫<xref:System.Web.UI.WebControls.Menu.RenderBeginTag%2A>方法來加入<xref:System.Web.UI.WebControls.Menu.SkipLinkText%2A>屬性。  
   
 > [!NOTE]
->  這個方法用於主要由控制項開發人員擴充<xref:System.Web.UI.WebControls.Menu>控制項。  
+>  這個方法主要由控制項開發人員用來擴充<xref:System.Web.UI.WebControls.Menu>控制項。  
   
  ]]></format>
         </remarks>
@@ -2765,6 +2812,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2780,7 +2828,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 覆寫<xref:System.Web.UI.WebControls.WebControl.RenderContents%2A>方法以呈現控制項的開始和結束標記之間的內容。 這個方法的預設實作會呈現任何子控制項。  
+ 覆寫<xref:System.Web.UI.WebControls.WebControl.RenderContents%2A>方法以呈現控制項的開始與結束標記之間的內容。 這個方法的預設實作會呈現任何子控制項。  
   
  ]]></format>
         </remarks>
@@ -2796,6 +2844,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2814,7 +2863,7 @@
  這個方法會覆寫<xref:System.Web.UI.WebControls.WebControl.RenderEndTag%2A?displayProperty=nameWithType>呈現<xref:System.Web.UI.WebControls.Menu>子功能表和<xref:System.Web.UI.WebControls.Menu.SkipLinkText%2A>屬性。  
   
 > [!NOTE]
->  這個方法用於主要由控制項開發人員擴充<xref:System.Web.UI.WebControls.Menu>控制項。  
+>  這個方法主要由控制項開發人員用來擴充<xref:System.Web.UI.WebControls.Menu>控制項。  
   
  ]]></format>
         </remarks>
@@ -2849,15 +2898,15 @@
 ## Remarks  
  值<xref:System.Web.UI.WebControls.Menu.RenderingMode%2A>屬性會決定功能表控制項的標記的呈現方式<xref:System.Web.UI.WebControls.Menu>控制項。  
   
- 在 ASP.NET 3.5 和舊版中，<xref:System.Web.UI.WebControls.Menu>控制項利用 HTML`table`項目和內嵌樣式，在瀏覽器中指定功能表的外觀。 在 ASP.NET 4 和更新版本中的，依預設<xref:System.Web.UI.WebControls.Menu>控制項利用 HTML`listitem`項目和階層式樣式表 (CSS) 樣式。  
+ 在 ASP.NET 3.5 和舊版<xref:System.Web.UI.WebControls.Menu>控制項利用 HTML`table`項目和內嵌樣式，來指定在瀏覽器中的功能表的外觀。 在 ASP.NET 4 和更新版本中的，依預設<xref:System.Web.UI.WebControls.Menu>控制項利用 HTML`listitem`項目和階層式樣式表 (CSS) 樣式。  
   
- 如果您未設定這個屬性，<xref:System.Web.UI.WebControls.Menu>控制項呈現標記由所表示的 ASP.NET 版本適合<xref:System.Web.UI.Control.RenderingCompatibility%2A?displayProperty=nameWithType>屬性。 <xref:System.Web.UI.WebControls.Menu>控制項會使用下列規則：  
+ 如果您未設定這個屬性，請<xref:System.Web.UI.WebControls.Menu>控制項會呈現標記所表示的 ASP.NET 版本適合<xref:System.Web.UI.Control.RenderingCompatibility%2A?displayProperty=nameWithType>屬性。 <xref:System.Web.UI.WebControls.Menu>控制項會使用下列規則：  
   
--   如果值<xref:System.Web.UI.Control.RenderingCompatibility%2A>屬性是`3.5`、<xref:System.Web.UI.WebControls.Menu>控制項利用 HTML`table`項目和內嵌樣式。  
+-   如果值<xref:System.Web.UI.Control.RenderingCompatibility%2A>屬性是`3.5`，則<xref:System.Web.UI.WebControls.Menu>控制項利用 HTML`table`項目和內嵌樣式。  
   
--   如果值<xref:System.Web.UI.Control.RenderingCompatibility%2A>屬性是`4.0`或更多，<xref:System.Web.UI.WebControls.Menu>控制項利用 HTML`listitem`項目和 CSS 樣式。  
+-   如果值<xref:System.Web.UI.Control.RenderingCompatibility%2A>屬性是`4.0`或更新版本<xref:System.Web.UI.WebControls.Menu>控制項利用 HTML`listitem`項目和 CSS 樣式。  
   
- 這個屬性會提供回溯相容性。 如果<xref:System.Web.UI.Control.RenderingCompatibility%2A>屬性會指出您想要產生為相容於 ASP.NET 4 或更新版本的 HTML 控制項，但您想要<xref:System.Web.UI.WebControls.Menu>控制要使用先前的行為的例外狀況，您可以將此屬性設定為<xref:System.Web.UI.WebControls.MenuRenderingMode.Table>。 比方說，如果您有 Web 網頁會顯示由右至左的文字，您可能想要將此屬性設定為<xref:System.Web.UI.WebControls.MenuRenderingMode.Table>因為某些瀏覽器不會顯示<xref:System.Web.UI.WebControls.MenuRenderingMode.List>模式標記正確地從右至左的文字。  
+ 這個屬性會提供回溯相容性。 如果<xref:System.Web.UI.Control.RenderingCompatibility%2A>屬性會指出您想要產生或更新版本，與 ASP.NET 4 相容的 HTML 控制項，但您想要<xref:System.Web.UI.WebControls.Menu>控制要使用先前的行為的例外狀況，您可以將此屬性設定為<xref:System.Web.UI.WebControls.MenuRenderingMode.Table>。 比方說，如果您有 Web 網頁會顯示由右至左的文字，您可能想要將此屬性設定為<xref:System.Web.UI.WebControls.MenuRenderingMode.Table>因為有些瀏覽器不會顯示<xref:System.Web.UI.WebControls.MenuRenderingMode.List>模式標記正確從右至左的文字。  
   
  ]]></format>
         </remarks>
@@ -2874,6 +2923,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2887,10 +2937,10 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法用來儲存中的屬性狀態<xref:System.Web.UI.WebControls.Menu>控制項需要保存，即使<xref:System.Web.UI.Control.EnableViewState%2A>屬性設定為`false`。 <xref:System.Web.UI.WebControls.Menu.SaveControlState%2A>方法而言是不可或缺的控制項的作業 （例如索引或關鍵字） 且為個別控制項的檢視狀態資料從狀態資料。  
+ 這個方法用來儲存狀態中的屬性<xref:System.Web.UI.WebControls.Menu>需要保存，即使控制項<xref:System.Web.UI.Control.EnableViewState%2A>屬性設定為`false`。 <xref:System.Web.UI.WebControls.Menu.SaveControlState%2A>方法而言是不可或缺的控制項的作業 （例如索引或關鍵字），也不同於控制項的檢視狀態資料的狀態資料。  
   
 > [!NOTE]
->  這個方法用於主要由控制項開發人員擴充<xref:System.Web.UI.WebControls.Menu>控制項。  
+>  這個方法主要由控制項開發人員用來擴充<xref:System.Web.UI.WebControls.Menu>控制項。  
   
  ]]></format>
         </remarks>
@@ -2906,6 +2956,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2929,6 +2980,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2952,23 +3004,23 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 在.NET 4.0 轉譯模式中不支援這個屬性。 如果這是必要屬性，您可以將功能表.NET 3.5 呈現模式中網頁的程式碼中加入下列：  
+ 在.NET 4.0 轉譯模式中不支援這個屬性。 如果需要此屬性，您可以設定成.NET 3.5 的轉譯模式功能表頁面的程式碼中新增下列內容：  
   
 ```  
 menuInstance.RenderingCompatibility = new Version(3, 5);  
 ```  
   
- 使用<xref:System.Web.UI.WebControls.Menu.ScrollDownImageUrl%2A>屬性來指定自訂映像底部的表示，使用者可以向下捲動其他功能表項目每個動態功能表顯示。  
+ 使用<xref:System.Web.UI.WebControls.Menu.ScrollDownImageUrl%2A>屬性來指定自訂的映像，來表示，使用者可以向下捲動其他功能表項目每個動態功能表的底部顯示。  
   
 > [!NOTE]
->  如果這個屬性未設定，內部會使用預設映像。  
+>  如果這個屬性未設定，內部則會使用預設映像。  
   
  您可以藉由設定指定之影像的替代文字<xref:System.Web.UI.WebControls.Menu.ScrollDownText%2A>屬性。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.ScrollDownImageUrl%2A>屬性來顯示使用者，可以動態功能表中的其他功能表項目向下捲動，指出自訂映像。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.ScrollDownImageUrl%2A>屬性來顯示表示動態功能表中的額外功能表項目使用者可以捲動的自訂映像。  
   
  [!code-aspx-csharp[MenuScrollDownImage#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuScrollDownImage/CS/menuscrolldownimagecs.aspx#1)]
  [!code-aspx-vb[MenuScrollDownImage#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuScrollDownImage/VB/menuscrolldownimagevb.aspx#1)]  
@@ -2990,6 +3042,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3008,20 +3061,20 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 在.NET 4.0 轉譯模式中不支援這個屬性。 如果這是必要屬性，您可以將功能表.NET 3.5 呈現模式中網頁的程式碼中加入下列：  
+ 在.NET 4.0 轉譯模式中不支援這個屬性。 如果需要此屬性，您可以設定成.NET 3.5 的轉譯模式功能表頁面的程式碼中新增下列內容：  
   
 ```  
 menuInstance.RenderingCompatibility = new Version(3, 5);  
 ```  
   
- 當動態功能表項目包含功能表底部的其他項目時，會顯示影像，表示使用者可以向上捲動到檢視其他功能表項目。 使用<xref:System.Web.UI.WebControls.Menu.ScrollDownText%2A>屬性來指定此映像的替代文字。 您指定的文字會提供可用來將控制項設為更容易存取的映像的描述的輔助技術裝置。  
+ 當動態功能表項目包含其他項目在功能表的底部時，會顯示影像，表示使用者可以向上捲動到檢視其他功能表項目。 使用<xref:System.Web.UI.WebControls.Menu.ScrollDownText%2A>屬性來指定此影像的替代文字。 您指定的文字會提供可用來將控制項設為更容易存取的映像的描述的輔助技術裝置。  
   
- 這個屬性的值設定時，可以自動儲存到資源檔使用設計工具。 如需詳細資訊，請參閱<xref:System.ComponentModel.LocalizableAttribute>和[全球化和當地語系化](http://msdn.microsoft.com/library/8ef3838e-9d05-4236-9dd0-ceecff9df80d)。  
+ 此屬性的值設定時，可以自動儲存到資源檔使用設計工具。 如需詳細資訊，請參閱 <<c0> <xref:System.ComponentModel.LocalizableAttribute> 並[全球化和當地語系化](http://msdn.microsoft.com/library/8ef3838e-9d05-4236-9dd0-ceecff9df80d)。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.ScrollDownText%2A>屬性來指定用來表示，使用者可以向下捲動動態功能表中的其他功能表項目影像的替代文字。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.ScrollDownText%2A>屬性來指定用來表示，使用者可以向下捲動動態功能表中的額外功能表項目影像的替代文字。  
   
  [!code-aspx-csharp[MenuScrollDownImage#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuScrollDownImage/CS/menuscrolldownimagecs.aspx#1)]
  [!code-aspx-vb[MenuScrollDownImage#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuScrollDownImage/VB/menuscrolldownimagevb.aspx#1)]  
@@ -3043,6 +3096,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3066,23 +3120,23 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 在.NET 4.0 轉譯模式中不支援這個屬性。 如果這是必要屬性，您可以將功能表.NET 3.5 呈現模式中網頁的程式碼中加入下列：  
+ 在.NET 4.0 轉譯模式中不支援這個屬性。 如果需要此屬性，您可以設定成.NET 3.5 的轉譯模式功能表頁面的程式碼中新增下列內容：  
   
 ```  
 menuInstance.RenderingCompatibility = new Version(3, 5);  
 ```  
   
- 使用<xref:System.Web.UI.WebControls.Menu.ScrollUpImageUrl%2A>屬性來指定要表示使用者可以向上捲動以檢視其他功能表項目每個動態功能表的頂端顯示的自訂映像。  
+ 使用<xref:System.Web.UI.WebControls.Menu.ScrollUpImageUrl%2A>屬性來指定要指出，使用者可以向上捲動以檢視其他功能表項目每個動態功能表的頂端顯示的自訂映像。  
   
 > [!NOTE]
->  如果這個屬性未設定，內部會使用預設映像。  
+>  如果這個屬性未設定，內部則會使用預設映像。  
   
  您可以藉由設定指定之影像的替代文字<xref:System.Web.UI.WebControls.Menu.ScrollUpText%2A>屬性。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.ScrollUpImageUrl%2A>屬性來顯示指出使用者，可以動態功能表中的其他功能表項目向上捲動的自訂映像。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.ScrollUpImageUrl%2A>屬性來顯示指出使用者，可以在動態功能表中的額外功能表項目向上捲動的自訂映像。  
   
  [!code-aspx-csharp[MenuScrollDownImage#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuScrollDownImage/CS/menuscrolldownimagecs.aspx#1)]
  [!code-aspx-vb[MenuScrollDownImage#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuScrollDownImage/VB/menuscrolldownimagevb.aspx#1)]  
@@ -3104,6 +3158,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3122,20 +3177,20 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 在.NET 4.0 轉譯模式中不支援這個屬性。 如果這是必要屬性，您可以將功能表.NET 3.5 呈現模式中網頁的程式碼中加入下列：  
+ 在.NET 4.0 轉譯模式中不支援這個屬性。 如果需要此屬性，您可以設定成.NET 3.5 的轉譯模式功能表頁面的程式碼中新增下列內容：  
   
 ```  
 menuInstance.RenderingCompatibility = new Version(3, 5);  
 ```  
   
- 當動態功能表項目包含功能表的頂端的其他項目時，會顯示影像，表示使用者可以向上捲動到檢視其他功能表項目。 使用<xref:System.Web.UI.WebControls.Menu.ScrollUpText%2A>屬性來指定此映像的替代文字。 您指定的文字會提供可用來將控制項設為更容易存取的映像的描述的輔助技術裝置。  
+ 當動態功能表項目包含功能表頂端的其他項目時，會顯示影像，表示使用者可以捲動到檢視其他功能表項目。 使用<xref:System.Web.UI.WebControls.Menu.ScrollUpText%2A>屬性來指定此影像的替代文字。 您指定的文字會提供可用來將控制項設為更容易存取的映像的描述的輔助技術裝置。  
   
- 這個屬性的值設定時，可以自動儲存到資源檔使用設計工具。 如需詳細資訊，請參閱<xref:System.ComponentModel.LocalizableAttribute>和[全球化和當地語系化](http://msdn.microsoft.com/library/8ef3838e-9d05-4236-9dd0-ceecff9df80d)。  
+ 此屬性的值設定時，可以自動儲存到資源檔使用設計工具。 如需詳細資訊，請參閱 <<c0> <xref:System.ComponentModel.LocalizableAttribute> 並[全球化和當地語系化](http://msdn.microsoft.com/library/8ef3838e-9d05-4236-9dd0-ceecff9df80d)。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.ScrollUpText%2A>屬性來指定用來表示，使用者可以向上捲動動態功能表中的其他功能表項目影像的替代文字。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.ScrollUpText%2A>屬性來指定用來表示，使用者可以向上捲動動態功能表中的額外功能表項目影像的替代文字。  
   
  [!code-aspx-csharp[MenuScrollDownImage#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuScrollDownImage/CS/menuscrolldownimagecs.aspx#1)]
  [!code-aspx-vb[MenuScrollDownImage#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuScrollDownImage/VB/menuscrolldownimagevb.aspx#1)]  
@@ -3157,6 +3212,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3178,17 +3234,17 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.SelectedItem%2A>屬性來判斷使用者選取功能表項目。  
+ 使用<xref:System.Web.UI.WebControls.Menu.SelectedItem%2A>屬性來判斷使用者所選取的功能表項目。  
   
 > [!NOTE]
->  快速的方式，您也可以決定選取的功能表項目的文字是直接使用<xref:System.Web.UI.WebControls.Menu.SelectedValue%2A>屬性。  
+>  當作捷徑使用，您也可以決定選取之功能表項目的文字是直接使用<xref:System.Web.UI.WebControls.Menu.SelectedValue%2A>屬性。  
   
- 當使用者選取功能表項目從<xref:System.Web.UI.WebControls.Menu>控制項，<xref:System.Web.UI.WebControls.Menu.MenuItemClick>引發事件時，可讓您藉由提供的事件處理常式執行自訂的常式。  
+ 當使用者選取功能表項目從<xref:System.Web.UI.WebControls.Menu>控制項，<xref:System.Web.UI.WebControls.Menu.MenuItemClick>引發事件時，可讓您藉由提供事件處理常式執行自訂的常式。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.SelectedItem%2A>屬性來判斷中的選取的功能表項目<xref:System.Web.UI.WebControls.Menu>控制項。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.SelectedItem%2A>屬性來判斷在選取的功能表項目<xref:System.Web.UI.WebControls.Menu>控制項。  
   
  [!code-aspx-csharp[MenuSelectedItem#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuSelectedItem/CS/menuselecteditemcs.aspx#1)]
  [!code-aspx-vb[MenuSelectedItem#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuSelectedItem/VB/menuselecteditemvb.aspx#1)]  
@@ -3209,6 +3265,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3232,12 +3289,12 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.SelectedValue%2A>屬性來判斷選取的功能表項目文字的捷徑。 若要存取選取的功能表項目中的其他屬性，請使用<xref:System.Web.UI.WebControls.Menu.SelectedItem%2A>屬性。  
+ 使用<xref:System.Web.UI.WebControls.Menu.SelectedValue%2A>屬性來判斷所選取的功能表項目文字的捷徑。 若要存取選取的功能表項目的其他屬性，請使用<xref:System.Web.UI.WebControls.Menu.SelectedItem%2A>屬性。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.SelectedValue%2A>屬性來判斷中選取的功能表項目的文字<xref:System.Web.UI.WebControls.Menu>控制項。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.SelectedValue%2A>屬性來判斷已選取的功能表中項目的文字<xref:System.Web.UI.WebControls.Menu>控制項。  
   
  [!code-aspx-csharp[MenuSelectedItem#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuSelectedItem/CS/menuselecteditemcs.aspx#1)]
  [!code-aspx-vb[MenuSelectedItem#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuSelectedItem/VB/menuselecteditemvb.aspx#1)]  
@@ -3258,6 +3315,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3277,7 +3335,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
  這個方法覆寫 <xref:System.Web.UI.Control.SetDesignModeState%2A>。  
   
 > [!NOTE]
->  這個方法用於主要由控制項開發人員擴充<xref:System.Web.UI.WebControls.Menu>控制項。  
+>  這個方法主要由控制項開發人員用來擴充<xref:System.Web.UI.WebControls.Menu>控制項。  
   
  ]]></format>
         </remarks>
@@ -3293,6 +3351,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3311,7 +3370,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.Menu.SetItemDataBound%2A>方法是 helper 方法，供衍生類別，來設定<xref:System.Web.UI.WebControls.MenuItem.DataBound%2A>屬性指定的<xref:System.Web.UI.WebControls.MenuItem>物件。  
+ <xref:System.Web.UI.WebControls.Menu.SetItemDataBound%2A>方法是協助程式方法，以供衍生類別，來設定<xref:System.Web.UI.WebControls.MenuItem.DataBound%2A>屬性指定的<xref:System.Web.UI.WebControls.MenuItem>物件。  
   
  ]]></format>
         </remarks>
@@ -3329,6 +3388,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3347,7 +3407,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.Menu.SetItemDataItem%2A>方法是 helper 方法，供衍生類別，來設定<xref:System.Web.UI.WebControls.MenuItem.DataItem%2A>屬性指定的<xref:System.Web.UI.WebControls.MenuItem>物件。  
+ <xref:System.Web.UI.WebControls.Menu.SetItemDataItem%2A>方法是協助程式方法，以供衍生類別，來設定<xref:System.Web.UI.WebControls.MenuItem.DataItem%2A>屬性指定的<xref:System.Web.UI.WebControls.MenuItem>物件。  
   
  ]]></format>
         </remarks>
@@ -3365,6 +3425,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3383,7 +3444,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.Menu.SetItemDataPath%2A>方法是 helper 方法，供衍生類別，來設定<xref:System.Web.UI.WebControls.MenuItem.DataPath%2A>屬性指定的<xref:System.Web.UI.WebControls.MenuItem>物件。  
+ <xref:System.Web.UI.WebControls.Menu.SetItemDataPath%2A>方法是協助程式方法，以供衍生類別，來設定<xref:System.Web.UI.WebControls.MenuItem.DataPath%2A>屬性指定的<xref:System.Web.UI.WebControls.MenuItem>物件。  
   
  ]]></format>
         </remarks>
@@ -3401,6 +3462,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3418,16 +3480,16 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.SkipLinkText%2A>螢幕助讀程式，讓您略過連結清單可以讀取屬性來指定隱藏影像的替代文字。 您指定的文字會提供具有隱藏的描述的輔助技術裝置跳過可用來將控制項設為更容易存取的連結映像。  
+ 使用<xref:System.Web.UI.WebControls.Menu.SkipLinkText%2A>提供能夠略過連結清單的螢幕助讀程式讀取屬性，指定隱藏影像的替代文字。 您指定的文字會提供描述隱藏的輔助技術裝置略過連結的影像，可用來將控制項設為更容易存取。  
   
- 這個屬性的值設定時，可以自動儲存到資源檔使用設計工具。 如需詳細資訊，請參閱<xref:System.ComponentModel.LocalizableAttribute>和[全球化和當地語系化](http://msdn.microsoft.com/library/8ef3838e-9d05-4236-9dd0-ceecff9df80d)。  
+ 此屬性的值設定時，可以自動儲存到資源檔使用設計工具。 如需詳細資訊，請參閱 <<c0> <xref:System.ComponentModel.LocalizableAttribute> 並[全球化和當地語系化](http://msdn.microsoft.com/library/8ef3838e-9d05-4236-9dd0-ceecff9df80d)。  
   
- <xref:System.Web.UI.WebControls.Menu>控制項提供<xref:System.Web.UI.WebControls.Menu.SkipLinkText%2A>屬性做為螢幕助讀程式所要略過整個控制項的方式。 如果<xref:System.Web.UI.WebControls.Menu.SkipLinkText%2A>屬性設定，呈現不可見的影像的替代文字，讓使用者選擇跳至控制項的結尾。 大聲閱讀，螢幕助讀程式讀取的替代文字和影像佔用一個像素的空間。 像素精確控制呈現頁面的詳細資訊，請設定<xref:System.Web.UI.WebControls.Menu.SkipLinkText%2A>屬性設為空字串 ("")，並提供您自己的機制，以略過 功能表。 <xref:System.Web.UI.WebControls.Menu.SkipLinkText%2A>根據預設屬性設定為空字串。  
+ <xref:System.Web.UI.WebControls.Menu>控制項提供<xref:System.Web.UI.WebControls.Menu.SkipLinkText%2A>方式由螢幕助讀員略過整個控制項的屬性。 如果<xref:System.Web.UI.WebControls.Menu.SkipLinkText%2A>屬性設定，呈現替代文字的不可見影像，讓使用者選擇跳到控制項的結尾。 螢幕助讀程式會大聲閱讀，讀取的替代文字和影像佔用只能有一個像素的空間。 像素精確地控制呈現頁面的詳細資訊，請設定<xref:System.Web.UI.WebControls.Menu.SkipLinkText%2A>屬性設為空字串 ("")，提供您自己的機制，以略過 [] 功能表。 <xref:System.Web.UI.WebControls.Menu.SkipLinkText%2A>屬性預設設定為空字串。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.SkipLinkText%2A>螢幕助讀程式，讓您略過連結清單可以讀取屬性來指定隱藏影像的替代文字。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.SkipLinkText%2A>提供能夠略過連結清單的螢幕助讀程式讀取屬性，指定隱藏影像的替代文字。  
   
  [!code-aspx-csharp[MenuSkipLinkText#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuSkipLinkText/CS/menuskiplinktextcs.aspx#1)]
  [!code-aspx-vb[MenuSkipLinkText#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuSkipLinkText/VB/menuskiplinktextvb.aspx#1)]  
@@ -3450,6 +3512,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3473,15 +3536,15 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.StaticBottomSeparatorImageUrl%2A>屬性來指定自訂的映像，在每個靜態功能表的底部顯示項目，做為功能表項目之間的分隔符號。  
+ 使用<xref:System.Web.UI.WebControls.Menu.StaticBottomSeparatorImageUrl%2A>屬性來指定自訂的映像，以顯示底部的每個靜態功能表項目，做為功能表項目之間的分隔符號。  
   
 > [!NOTE]
->  或者，您也可以顯示分隔符號影像上方的每個靜態功能表項目藉由設定<xref:System.Web.UI.WebControls.Menu.StaticTopSeparatorImageUrl%2A>屬性。  
+>  或者，您也可以顯示分隔符號影像頂端的每個靜態功能表項目設定<xref:System.Web.UI.WebControls.Menu.StaticTopSeparatorImageUrl%2A>屬性。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticBottomSeparatorImageUrl%2A>屬性來指定要顯示在每個靜態功能表項目底部分隔符號影像。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticBottomSeparatorImageUrl%2A>屬性，以指定的分隔符號映像，以顯示底部的每個靜態功能表項目。  
   
  [!code-aspx-csharp[MenuStaticBottomSeparatorImageUrl#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuStaticBottomSeparatorImageUrl/CS/menustaticbottomseparatorimageurlcs.aspx#1)]
  [!code-aspx-vb[MenuStaticBottomSeparatorImageUrl#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuStaticBottomSeparatorImageUrl/VB/menustaticbottomseparatorimageurlvb.aspx#1)]  
@@ -3507,6 +3570,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3527,7 +3591,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.StaticDisplayLevels%2A>屬性來指定要在靜態功能表中顯示的功能表層級數目。 所有的功能表層級低於指定的值會顯示在動態功能表。 您也可以限制以設定動態功能表中顯示的功能表層級數目<xref:System.Web.UI.WebControls.Menu.MaximumDynamicDisplayLevels%2A>屬性。  
+ 使用<xref:System.Web.UI.WebControls.Menu.StaticDisplayLevels%2A>屬性來指定要在靜態功能表中顯示的功能表層級數目。 所有的功能表層級低於指定的值會顯示在動態功能表。 您也可以限制要藉由設定顯示在動態功能表的功能表層級數目<xref:System.Web.UI.WebControls.Menu.MaximumDynamicDisplayLevels%2A>屬性。  
   
    
   
@@ -3553,6 +3617,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3573,21 +3638,21 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
 ## Remarks  
  如果靜態功能表項目含有子功能表，可以顯示一個影像，表示使用者可以展開功能表。 有兩種方式可顯示此映像：  
   
--   設定<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性`true`使用內建的映像 （預設值）。  
+-   設定<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性設`true`使用內建的映像 （預設值）。  
   
 -   設定<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>屬性來指定自訂映像。  
   
- 如果<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>屬性設定，則該影像會覆寫內建影像，不論值<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性。  
+ 如果<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>屬性設定，該映像會覆寫內建影像，不論值<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性。  
   
 > [!NOTE]
->  如果<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>屬性未設定而<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性設定為`false`，不會顯示影像。  
+>  如果<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>未設定屬性和<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性設定為`false`，不會顯示影像。  
   
  您可以藉由設定指定之影像的替代文字<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageTextFormatString%2A>屬性。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性隱藏表示靜態功能表項目具有子功能表的影像。 <xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>屬性也必須設定為空字串 ("") 為隱藏，映像。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性，可隱藏該影像表示靜態功能表項目具有子功能表。 <xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>屬性也必須設定為空字串 ("") 會隱藏起來，映像。  
   
  [!code-aspx-csharp[MenuStaticEnableDefaultPopOutImage#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuStaticEnableDefaultPopOutImage/CS/menustaticenabledefaultpopoutimagecs.aspx#1)]
  [!code-aspx-vb[MenuStaticEnableDefaultPopOutImage#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuStaticEnableDefaultPopOutImage/VB/menustaticenabledefaultpopoutimagevb.aspx#1)]  
@@ -3611,6 +3676,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3638,7 +3704,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.StaticHoverStyle%2A>屬性，即可控制靜態功能表項目的外觀，當滑鼠指標移至上方。 這個屬性是唯讀的。不過，您可以設定的屬性<xref:System.Web.UI.WebControls.Style>它所傳回的物件。 可以以宣告方式設定的屬性，在表單中`Property-Subproperty`，其中`Subproperty`屬性<xref:System.Web.UI.WebControls.Style>物件 (例如， `StaticHoverStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單中`Property.Subproperty`(例如， `StaticHoverStyle.ForeColor`)。  
+ 使用<xref:System.Web.UI.WebControls.Menu.StaticHoverStyle%2A>屬性，即可控制靜態功能表項目的外觀，當滑鼠指標移至上方時。 這個屬性是唯讀的;不過，您可以在這裡設定的屬性<xref:System.Web.UI.WebControls.Style>物件傳回。 屬性可以宣告方式設定形式`Property-Subproperty`，其中`Subproperty`是屬性<xref:System.Web.UI.WebControls.Style>物件 (例如`StaticHoverStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單`Property.Subproperty`(例如`StaticHoverStyle.ForeColor`)。  
   
  靜態功能表項目的樣式屬性會套用順序如下：  
   
@@ -3653,7 +3719,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticHoverStyle%2A>要將靜態功能表項目的背景色彩變更為淺 sky 藍色，當使用者將滑鼠指標進入此屬性。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticHoverStyle%2A>要將靜態功能表項目的背景色彩變更為淺天藍，當使用者將滑鼠指標置於屬性。  
   
  [!code-aspx-csharp[MenuStaticHoverStyle#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuStaticHoverStyle/CS/menustatichoverstylecs.aspx#1)]
  [!code-aspx-vb[MenuStaticHoverStyle#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuStaticHoverStyle/VB/menustatichoverstylevb.aspx#1)]  
@@ -3682,6 +3748,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3699,12 +3766,12 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個屬性可以用來插入文字，以便設定功能表中的靜態功能表項目的格式。 這是特別適用於行動裝置。 <xref:System.Web.UI.WebControls.Menu>控制項支援的靜態和動態功能表項目，顯示範本，但是範本會忽略在行動裝置上。 這個屬性可讓您將字元或文字，並將格式套用至功能表項目，適用於行動和桌面裝置不使用範本。  
+ 這個屬性可用來插入文字，以便在功能表中的靜態功能表項目的格式。 這是特別適用於行動裝置。 <xref:System.Web.UI.WebControls.Menu>控制項支援的靜態和動態功能表項目，顯示的範本，但會忽略 行動裝置上的 範本。 這個屬性可讓您加入字元或文字，並將格式套用至功能表項目，適用於行動和桌面的裝置不使用範本。  
   
 > [!NOTE]
->  若要達到一致的格式使用這個屬性時，您也應該設定<xref:System.Web.UI.WebControls.Menu.DynamicItemFormatString%2A>屬性，如果您想要與相同的靜態和動態功能表項目之間的格式。  
+>  若要達到一致的格式使用這個屬性時，您也應該設定<xref:System.Web.UI.WebControls.Menu.DynamicItemFormatString%2A>屬性，如果您想要完全相同的靜態和動態功能表項目之間的格式。  
   
- 如果範本格式設定與此屬性會套用，範本的格式設定的行動裝置會忽略。  
+ 如果範本格式和此屬性套用時，範本格式會忽略針對行動裝置。  
   
    
   
@@ -3730,6 +3797,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3757,7 +3825,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 而不是針對靜態功能表中使用內建的轉譯，您可以定義您自己的使用者介面 (UI)，靜態功能表項目的使用<xref:System.Web.UI.WebControls.Menu.StaticItemTemplate%2A>屬性。 若要指定靜態功能表項目的自訂範本，先將`<StaticTemplate>`標記的開頭和結尾標記之間<xref:System.Web.UI.WebControls.Menu>控制項。 然後，您可以列出範本的開頭和結尾之間的內容`<StaticTemplate>`標記。 您可以使用，以進一步控制靜態功能表的外觀<xref:System.Web.UI.WebControls.Menu.StaticMenuStyle%2A>屬性。  
+ 而不是使用內建的轉譯靜態功能表中，您可以定義您自己的使用者介面 (UI)，靜態功能表項目的使用<xref:System.Web.UI.WebControls.Menu.StaticItemTemplate%2A>屬性。 若要指定靜態功能表項目的自訂範本，請先將放`<StaticTemplate>`標記的開頭和結尾標記之間<xref:System.Web.UI.WebControls.Menu>控制項。 然後，您可以列出範本的開頭和結尾之間的內容`<StaticTemplate>`標記。 您可以使用，以進一步控制靜態功能表的外觀<xref:System.Web.UI.WebControls.Menu.StaticMenuStyle%2A>屬性。  
   
  ]]></format>
         </remarks>
@@ -3773,6 +3841,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3800,7 +3869,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.StaticMenuItemStyle%2A>屬性，即可控制靜態功能表中功能表項目的外觀。 這個屬性是唯讀的。不過，您可以設定的屬性<xref:System.Web.UI.WebControls.MenuItemStyle>它所傳回的物件。 可以以宣告方式設定的屬性，在表單中`Property-Subproperty`，其中`Subproperty`屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件 (例如， `StaticMenuItemStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單中`Property.Subproperty`(例如， `StaticMenuItemStyle.ForeColor`)。  
+ 使用<xref:System.Web.UI.WebControls.Menu.StaticMenuItemStyle%2A>屬性，即可控制靜態功能表中功能表項目的外觀。 這個屬性是唯讀的;不過，您可以在這裡設定的屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件傳回。 屬性可以宣告方式設定形式`Property-Subproperty`，其中`Subproperty`是屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件 (例如`StaticMenuItemStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單`Property.Subproperty`(例如`StaticMenuItemStyle.ForeColor`)。  
   
  靜態功能表項目的樣式屬性會套用順序如下：  
   
@@ -3815,7 +3884,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticMenuItemStyle%2A>屬性來指定靜態功能表中功能表項目的淺色 sky 藍色背景色彩。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticMenuItemStyle%2A>屬性可指定靜態功能表中的功能表項目的淺色天空藍的背景色彩。  
   
  [!code-aspx-csharp[MenuStaticMenuItemStyle#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuStaticMenuItemStyle/CS/menustaticmenuitemstylecs.aspx#1)]
  [!code-aspx-vb[MenuStaticMenuItemStyle#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuStaticMenuItemStyle/VB/menustaticmenuitemstylevb.aspx#1)]  
@@ -3844,6 +3913,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3871,7 +3941,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.StaticMenuStyle%2A>屬性，即可控制靜態功能表的外觀。 這個屬性是唯讀的。不過，您可以設定的屬性<xref:System.Web.UI.WebControls.MenuItemStyle>它所傳回的物件。 可以以宣告方式設定的屬性，在表單中`Property-Subproperty`，其中`Subproperty`屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件 (例如， `StaticMenuStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單中`Property.Subproperty`(例如， `StaticMenuStyle.ForeColor`)。  
+ 使用<xref:System.Web.UI.WebControls.Menu.StaticMenuStyle%2A>屬性，即可控制靜態功能表的外觀。 這個屬性是唯讀的;不過，您可以在這裡設定的屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件傳回。 屬性可以宣告方式設定形式`Property-Subproperty`，其中`Subproperty`是屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件 (例如`StaticMenuStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單`Property.Subproperty`(例如`StaticMenuStyle.ForeColor`)。  
   
  靜態功能表項目的樣式屬性會套用順序如下：  
   
@@ -3886,7 +3956,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticMenuStyle%2A>屬性可指定整個靜態功能表的淺藍色 sky 背景色彩。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticMenuStyle%2A>屬性可指定整個靜態功能表的淺色天空藍的背景色彩。  
   
  [!code-aspx-csharp[MenuStaticMenuStyle#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuStaticMenuStyle/CS/menustaticmenustylecs.aspx#1)]
  [!code-aspx-vb[MenuStaticMenuStyle#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuStaticMenuStyle/VB/menustaticmenustylevb.aspx#1)]  
@@ -3915,6 +3985,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3927,16 +3998,16 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果靜態功能表項目含有子功能表，可以顯示一個影像，表示使用者可以展開功能表。 使用<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageTextFormatString%2A>屬性來指定此映像的替代文字。  
+ 如果靜態功能表項目含有子功能表，可以顯示一個影像，表示使用者可以展開功能表。 使用<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageTextFormatString%2A>屬性來指定此影像的替代文字。  
   
  有兩種方式來顯示影像：  
   
--   設定<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性`true`使用內建的映像 （預設值）。  
+-   設定<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性設`true`使用內建的映像 （預設值）。  
   
 -   設定<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>屬性來指定自訂映像。  
   
 > [!NOTE]
->  這個屬性適用於內建的映像和自訂映像。  
+>  此屬性適用於內建的映像和自訂映像。  
   
    
   
@@ -3965,6 +4036,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3990,23 +4062,23 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
 ## Remarks  
  如果靜態功能表項目含有子功能表，可以顯示一個影像，表示使用者可以展開功能表。 有兩種方式可顯示此映像：  
   
--   設定<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性`true`使用內建的映像 （預設值）。  
+-   設定<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性設`true`使用內建的映像 （預設值）。  
   
 -   設定<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>屬性來指定自訂映像。  
   
- 如果<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>屬性設定，則該影像會覆寫內建影像，不論值<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性。  
+ 如果<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>屬性設定，該映像會覆寫內建影像，不論值<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性。  
   
- 如果<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>屬性未設定而<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性設定為`false`，不會顯示影像。  
+ 如果<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>未設定屬性和<xref:System.Web.UI.WebControls.Menu.StaticEnableDefaultPopOutImage%2A>屬性設定為`false`，不會顯示影像。  
   
 > [!NOTE]
->  當您設定這個屬性時，使用斜線 （/），而不是反斜線 (\\)。 如果您在路徑中使用反斜線，不會顯示指定的映像。  
+>  當您設定此屬性時，使用斜線 （/），而不是反斜線 (\\)。 如果您在路徑中使用反斜線，不會顯示指定的映像。  
   
  您可以藉由設定指定之影像的替代文字<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageTextFormatString%2A>屬性。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>屬性來指定功能表項目具有子功能表時，靜態功能表項目中顯示的自訂映像。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticPopOutImageUrl%2A>屬性，以指定的功能表項目具有子功能表時，靜態功能表項目中顯示的自訂映像。  
   
  [!code-aspx-csharp[MenuStaticPopoutImageText#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuStaticPopoutImageText/CS/menustaticpopoutimagetextcs.aspx#1)]
  [!code-aspx-vb[MenuStaticPopoutImageText#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuStaticPopoutImageText/VB/menustaticpopoutimagetextvb.aspx#1)]  
@@ -4030,6 +4102,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -4057,7 +4130,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.StaticSelectedStyle%2A>屬性來控制使用者在靜態功能表中選取之功能表項目的外觀。 這個屬性是唯讀的。不過，您可以設定的屬性<xref:System.Web.UI.WebControls.MenuItemStyle>它所傳回的物件。 可以以宣告方式設定的屬性，在表單中`Property-Subproperty`，其中`Subproperty`屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件 (例如， `StaticSelectedStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單中`Property.Subproperty`(例如， `StaticSelectedStyle.ForeColor`)。  
+ 使用<xref:System.Web.UI.WebControls.Menu.StaticSelectedStyle%2A>屬性來控制使用者在靜態功能表中選取之功能表項目的外觀。 這個屬性是唯讀的;不過，您可以在這裡設定的屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件傳回。 屬性可以宣告方式設定形式`Property-Subproperty`，其中`Subproperty`是屬性<xref:System.Web.UI.WebControls.MenuItemStyle>物件 (例如`StaticSelectedStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單`Property.Subproperty`(例如`StaticSelectedStyle.ForeColor`)。  
   
  靜態功能表項目的樣式屬性會套用順序如下：  
   
@@ -4072,7 +4145,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
 > [!IMPORTANT]
 >  下列重大變更。  
   
- .NET Framework 4.0，當定義之前`<asp:Menu>`控制項在.aspx 檔案中，使用者可設定`StaticSelectedStyle-CssClass`屬性來設定選取的控制項項目之 CSS 類別。 例如，使用者可能會有功能表控制項，如下所示：  
+ .NET Framework 4.0，定義時再`<asp:Menu>`控制項在.aspx 檔案中，使用者可以設定`StaticSelectedStyle-CssClass`屬性來設定選取的控制項項目的 CSS 類別。 例如，使用者可能會有功能表控制項，如下所示：  
   
 ```  
 <asp:Menu ID="Menu1" runat="server" Orientation="Horizontal"   
@@ -4086,7 +4159,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
 </asp:Menu>  
 ```  
   
- 與此功能表控制項轉譯為：  
+ 呈現為功能表控制項：  
   
 ```  
 <div id="Menu1" style="margin-bottom: 0px">  
@@ -4097,7 +4170,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
 </div>  
 ```  
   
- 不過，在.NET Framework 4.0 及更新版本中，選取的功能表項目會設定為`selected`CSS 類別，而所指定的類別不一定是`StaticSelectedStyle-CssClass`。 因此，上述的 ASP.NET 程式碼會改為轉譯成：  
+ 不過，在.NET Framework 4.0 和更新版本中，選取的功能表項目會設定為`selected`一律而不是所指定類別的 CSS 類別`StaticSelectedStyle-CssClass`。 因此，上述的 ASP.NET 程式碼會改成呈現為：  
   
 ```  
 <div id="Menu1" style="margin-bottom: 0px">  
@@ -4112,7 +4185,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticSelectedStyle%2A>屬性來指定選取靜態功能表項目的淺藍色背景色彩。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticSelectedStyle%2A>屬性來指定選取之靜態功能表項目的淡藍色背景色彩。  
   
  [!code-aspx-csharp[MenuStaticSelectedStyle#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuStaticSelectedStyle/CS/menustaticselectedstylecs.aspx#1)]
  [!code-aspx-vb[MenuStaticSelectedStyle#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuStaticSelectedStyle/VB/menustaticselectedstylevb.aspx#1)]  
@@ -4141,6 +4214,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -4162,12 +4236,12 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當靜態功能表就會顯示一個以上的功能表層級 (如果<xref:System.Web.UI.WebControls.Menu.StaticDisplayLevels%2A>屬性設定為高於 1 的值)，使用<xref:System.Web.UI.WebControls.Menu.StaticSubMenuIndent%2A>屬性來指定所要的子功能表項目，靜態功能表內縮排的像素數目。  
+ 當靜態功能表會顯示一個以上的功能表層級 (如果<xref:System.Web.UI.WebControls.Menu.StaticDisplayLevels%2A>屬性設定為大於 1 的值)，使用<xref:System.Web.UI.WebControls.Menu.StaticSubMenuIndent%2A>屬性來指定用來縮排 子功能表項目，靜態功能表內的像素數目。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticSubMenuIndent%2A>10 個像素的縮排在靜態功能表中的子功能表項目屬性。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticSubMenuIndent%2A>縮排的 10 個像素的子功能表項目，靜態功能表中的屬性。  
   
  [!code-aspx-csharp[MenuStaticSubMenuIndent#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuStaticSubMenuIndent/CS/menustaticsubmenuindentcs.aspx#1)]
  [!code-aspx-vb[MenuStaticSubMenuIndent#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuStaticSubMenuIndent/VB/menustaticsubmenuindentvb.aspx#1)]  
@@ -4190,6 +4264,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -4213,15 +4288,15 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.StaticTopSeparatorImageUrl%2A>屬性來指定自訂映像以顯示每個靜態功能表頂端的項目，做為功能表項目之間的分隔符號。  
+ 使用<xref:System.Web.UI.WebControls.Menu.StaticTopSeparatorImageUrl%2A>屬性來指定要在每個靜態功能表的頂端顯示自訂映像項目，做為功能表項目之間的分隔符號。  
   
 > [!NOTE]
->  或者，您也可以顯示分隔符號影像的每個靜態功能表項目底部藉由設定<xref:System.Web.UI.WebControls.Menu.StaticBottomSeparatorImageUrl%2A>屬性。  
+>  或者，您也可以顯示分隔符號映像底部的每個靜態功能表項目設定<xref:System.Web.UI.WebControls.Menu.StaticBottomSeparatorImageUrl%2A>屬性。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticTopSeparatorImageUrl%2A>屬性來指定要顯示在每個靜態功能表項目頂端分隔符號影像。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.Menu.StaticTopSeparatorImageUrl%2A>指定分隔符號映像，以在每個靜態功能表項目頂端顯示的屬性。  
   
  [!code-aspx-csharp[MenuStaticTopSeparatorImageUrl#1](~/samples/snippets/csharp/VS_Snippets_WebNet/MenuStaticTopSeparatorImageUrl/CS/menustatictopseparatorimageurlcs.aspx#1)]
  [!code-aspx-vb[MenuStaticTopSeparatorImageUrl#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/MenuStaticTopSeparatorImageUrl/VB/menustatictopseparatorimageurlvb.aspx#1)]  
@@ -4249,6 +4324,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -4274,6 +4350,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -4303,6 +4380,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -4320,7 +4398,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.Menu.Target%2A>屬性，以指定的視窗或框架，以顯示 Web 內容會連結至功能表項目，按一下該功能表項目時。 除了以底線為開頭的某些特殊值以外，值必須以 A 到 Z (不區分大小寫) 範圍內的字母為開頭，如下表所示。  
+ 使用<xref:System.Web.UI.WebControls.Menu.Target%2A>功能表項目時按下該功能表項目連結的屬性，以指定的視窗或框架，其中顯示 Web 內容。 除了以底線為開頭的某些特殊值以外，值必須以 A 到 Z (不區分大小寫) 範圍內的字母為開頭，如下表所示。  
   
 |目標值|描述|  
 |------------------|-----------------|  
@@ -4331,12 +4409,12 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
 |`_top`|在無框架的完整視窗中呈現內容。|  
   
 > [!NOTE]
->  請查閱您的瀏覽器文件，以判斷是否支援 `_search` 值。  例如，Internet Explorer 版本 5.0 和更新版本支援`_search`目標值  
+>  請查閱您的瀏覽器文件，以判斷是否支援 `_search` 值。  例如，Internet Explorer 版本 5.0 及更新版本，支援`_search`目標值  
   
- 這個屬性會套用至所有功能表項目在<xref:System.Web.UI.WebControls.Menu>控制項。 您可以選擇性地覆寫這個屬性設定<xref:System.Web.UI.WebControls.MenuItem.Target%2A>每個屬性<xref:System.Web.UI.WebControls.MenuItem>直接物件。  
+ 此屬性會套用至所有的功能表項目在<xref:System.Web.UI.WebControls.Menu>控制項。 您可以選擇性地覆寫這個屬性設定<xref:System.Web.UI.WebControls.MenuItem.Target%2A>每個屬性<xref:System.Web.UI.WebControls.MenuItem>直接物件。  
   
 > [!NOTE]
->  <xref:System.Web.UI.WebControls.MenuItem.Target%2A>屬性轉譯成目標屬性。 XHTML 1.1 嚴格的文件類型定義中不允許錨定項目上的目標屬性。 如果轉譯的輸出必須符合 XHTML 或協助工具標準，請勿設定<xref:System.Web.UI.WebControls.MenuItem.Target%2A>屬性。 如需詳細資訊，請參閱[XHTML 標準，在 Visual Studio 和 ASP.NET](http://msdn.microsoft.com/library/1b78d416-66bb-43a5-ac77-c703aab55b97)和[Visual Studio 和 ASP.NET 中的協助工具](http://msdn.microsoft.com/library/7e3ce9c4-6b7d-4fb1-94b5-72cf2a44fe13)。  
+>  <xref:System.Web.UI.WebControls.MenuItem.Target%2A>屬性會轉譯成目標屬性。 XHTML 1.1 strict 的文件類型定義中不允許在錨點項目上的目標屬性。 如果轉譯的輸出必須符合 XHTML 或協助工具標準，請勿設定<xref:System.Web.UI.WebControls.MenuItem.Target%2A>屬性。 如需詳細資訊，請參閱 < [XHTML 標準，在 Visual Studio 和 ASP.NET](http://msdn.microsoft.com/library/1b78d416-66bb-43a5-ac77-c703aab55b97)並[協助工具的 Visual Studio 及 ASP.NET](http://msdn.microsoft.com/library/7e3ce9c4-6b7d-4fb1-94b5-72cf2a44fe13)。  
   
    
   
@@ -4361,6 +4439,7 @@ menuInstance.RenderingCompatibility = new Version(3, 5);
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>

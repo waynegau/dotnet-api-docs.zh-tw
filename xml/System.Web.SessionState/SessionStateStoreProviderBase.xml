@@ -1,11 +1,11 @@
 <Type Name="SessionStateStoreProviderBase" FullName="System.Web.SessionState.SessionStateStoreProviderBase">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="750f19ccbe5ffeeefe94b6eba1845e3877c47a61" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="f67b526b76fe2727eda8b0a31e7600ff75016c6f" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36594039" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37602808" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class SessionStateStoreProviderBase : System.Configuration.Provider.ProviderBase" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit SessionStateStoreProviderBase extends System.Configuration.Provider.ProviderBase" />
@@ -15,6 +15,7 @@
   <TypeSignature Language="F#" Value="type SessionStateStoreProviderBase = class&#xA;    inherit ProviderBase" />
   <AssemblyInfo>
     <AssemblyName>System.Web</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
@@ -27,30 +28,30 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- ASP.NET 工作階段狀態讀取，並將所接收及使用工作階段狀態資料存放區的工作階段資料存放區提供者。 工作階段狀態存放區提供者是繼承的類別<xref:System.Web.SessionState.SessionStateStoreProviderBase>抽象類別並覆寫其成員與實作特殊的資料存放區。 工作階段狀態存放區提供者會呼叫<xref:System.Web.SessionState.SessionStateModule>期間與資料存放區的儲存體進行 ASP.NET 網頁的處理和擷取工作階段變數與相關的工作階段資訊，例如逾時值的類別。  
+ ASP.NET 工作階段狀態讀寫工作階段狀態資料存放區來回的工作階段資料存放區提供者。 工作階段狀態存放區提供者是繼承的類別<xref:System.Web.SessionState.SessionStateStoreProviderBase>抽象類別並覆寫其成員與實作特殊的資料存放區。 工作階段狀態存放區提供者會呼叫<xref:System.Web.SessionState.SessionStateModule>在 ASP.NET 網頁與資料存放區的儲存體通訊的處理與擷取工作階段變數與相關的工作階段資訊，例如逾時值期間的類別。  
   
  每個 ASP.NET 應用程式內的工作階段資料會分別儲存每個<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>屬性。 ASP.NET 應用程式不會共用工作階段資料。  
   
- 您可以指定自訂<xref:System.Web.SessionState.SessionStateStoreProviderBase>藉由設定 ASP.NET 應用程式實作`mode`屬性`sessionState`組態項目<xref:System.Web.SessionState.SessionStateMode.Custom>和`customProvider`做為此屬性的自訂提供者名稱本主題的範例所示。  
+ 您可以指定自訂<xref:System.Web.SessionState.SessionStateStoreProviderBase>藉由設定 ASP.NET 應用程式的實作`mode`屬性`sessionState`組態項目<xref:System.Web.SessionState.SessionStateMode.Custom>而`customProvider`屬性的自訂提供者中，名稱為本主題中範例所示。  
   
-## <a name="locking-session-store-data"></a>鎖定的工作階段儲存資料  
- 因為 ASP.NET 應用程式是多執行緒來支援並行要求的回應，很可能在並行要求可能會嘗試存取相同的工作階段資訊。 假設所有框架組中的多個框架存取相同的應用程式的位置。 框架組中的每個畫面格的個別要求可以同時在不同的執行緒在 Web 伺服器上執行。 如果 ASP.NET 網頁，針對每個框架來源存取工作階段狀態變數，您可以有多個執行緒同時存取工作階段的存放區。  
+## <a name="locking-session-store-data"></a>鎖定工作階段存放區資料  
+ 因為 ASP.NET 應用程式是多執行緒來支援並行要求的回應，就可以並行要求可能會嘗試存取相同的工作階段資訊。 假設所有框架組中的多個框架存取相同的應用程式的位置。 在框架組中的每個畫面格的個別要求可以在不同的執行緒上同時在 Web 伺服器上執行。 如果框架中的每個來源的 ASP.NET 頁面存取工作階段狀態變數，您可能有多個執行緒同時存取工作階段存放區。  
   
- 若要避免資料衝突的工作階段存放區和非預期的工作階段狀態行為<xref:System.Web.SessionState.SessionStateModule>和<xref:System.Web.SessionState.SessionStateStoreProviderBase>類別包含鎖定功能，以獨佔方式鎖定的持續時間的特定工作階段的工作階段的存放區項目ASP.NET 網頁的執行。 請注意，即使如果<xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>屬性標示為`ReadOnly`，可能可以寫入至工作階段存放區中，以便從存放區資料仍可能會結束等待唯讀的工作階段要求鎖定的資料是相同的應用程式中的其他 ASP.NET 網頁釋出。  
+ 若要避免在工作階段存放區和非預期的工作階段狀態行為的資料衝突<xref:System.Web.SessionState.SessionStateModule>和<xref:System.Web.SessionState.SessionStateStoreProviderBase>類別包含了鎖定功能，以獨佔方式鎖定特定的工作階段期間的 工作階段存放區項目在 ASP.NET 網頁執行。 請注意，即使<xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>屬性標示為`ReadOnly`，可能可以將寫入至工作階段存放區中，以便從存放區的資料仍可能會得到等候唯讀工作階段的要求鎖定的資料會在相同的應用程式中的其他 ASP.NET 網頁釋出。  
   
- 工作階段存放區資料的要求，請在呼叫開頭上設定鎖定<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法。 當要求完成時，會釋放鎖定的呼叫期間<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A>方法。  
+ 鎖定設定的工作階段存放區資料的要求，在呼叫開頭<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法。 在呼叫期間完成要求時，會釋放鎖定<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A>方法。  
   
- 如果<xref:System.Web.SessionState.SessionStateModule>物件在呼叫期間所遇到已鎖定的工作階段資料<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>或<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>方法，它將重新要求工作階段資料半秒的間隔之前或釋放鎖定的時間量，已鎖定工作階段資料的值<xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A>屬性。 如果超過執行逾時，<xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>釋放工作階段存放區資料，並在該時間要求的工作階段存放區資料的方法。  
+ 如果<xref:System.Web.SessionState.SessionStateModule>物件在呼叫期間發生鎖定的工作階段資料<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>或<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>方法，它會重新要求工作階段資料在半秒的時間間隔之前或釋放鎖定的時間量，已鎖定工作階段資料的值超過<xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A>屬性。 如果超過執行逾時，<xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>釋放工作階段存放區資料，並在該時間要求工作階段存放區資料的方法。  
   
- 因為鎖定工作階段存放區資料可能已由呼叫釋放<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>方法的呼叫之前的另一個執行緒上<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A>目前回應的方法，將無法嘗試要設定和發行工作階段狀態存放區的資料已經發行並由另一個工作階段修改。 若要避免此情況下，<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>和<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法傳回的鎖定識別碼。 這個鎖定識別碼必須是包含要修改已鎖定的工作階段儲存資料的每個要求。 工作階段存放區資料，才能修改資料存放區中的鎖定識別碼符合所提供的鎖定識別碼<xref:System.Web.SessionState.SessionStateModule>。  
+ 因為鎖定工作階段存放區的資料可能會先呼叫釋放<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>方法的呼叫之前在個別執行緒上<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A>目前回應的方法，可能會嘗試設定和發行工作階段狀態存放區的資料已發行並由另一個工作階段修改。 若要避免此情況下，<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>和<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法會傳回鎖定識別項。 此鎖定識別項必須包含每個要求來修改鎖定的工作階段存放區的資料。 工作階段存放區資料，才能修改資料存放區中的鎖定識別碼符合所提供的鎖定識別碼<xref:System.Web.SessionState.SessionStateModule>。  
   
-## <a name="deleting-expired-session-store-data"></a>刪除過期的工作階段儲存資料  
- 當<xref:System.Web.SessionState.HttpSessionState.Abandon%2A>方法針對特定工作階段呼叫，該工作階段資料會刪除從資料存放區使用<xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A>方法; 否則資料將保留在工作階段資料存放區伺服器未來要求工作階段。 它會<xref:System.Web.SessionState.SessionStateStoreProviderBase>刪除過期的工作階段資料的實作。  
+## <a name="deleting-expired-session-store-data"></a>刪除過期的工作階段存放區資料  
+ 當<xref:System.Web.SessionState.HttpSessionState.Abandon%2A>方法會針對特定的工作階段呼叫，該工作階段資料會刪除從資料存放區使用<xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A>方法; 否則資料會留在工作階段資料存放區伺服器的未來要求工作階段。 最多是<xref:System.Web.SessionState.SessionStateStoreProviderBase>刪除過期的工作階段資料的實作。  
   
    
   
 ## Examples  
- 如需工作階段狀態存放區提供者實作的範例，請參閱[實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
+ 如需工作階段狀態存放區提供者實作的範例，請參閱 <<c0> [ 實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
   
  下列程式碼範例顯示已設定為使用自訂的工作階段狀態存放區提供者的 ASP.NET 應用程式的 Web.config 檔案。  
   
@@ -87,6 +88,7 @@
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters />
@@ -101,7 +103,7 @@
    
   
 ## Examples  
- 如需工作階段狀態存放區提供者實作的範例，請參閱[實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
+ 如需工作階段狀態存放區提供者實作的範例，請參閱 <<c0> [ 實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
   
  ]]></format>
         </remarks>
@@ -117,6 +119,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -135,18 +138,18 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A>ASP.NET 網頁，要求的起始處方法期間<xref:System.Web.HttpApplication.AcquireRequestState>事件。 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A>呼叫方法時若：  
+ <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A>ASP.NET 網頁，在要求開始方法期間<xref:System.Web.HttpApplication.AcquireRequestState>事件。 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A>會呼叫方法：  
   
--   傳入的要求有任何工作階段識別碼，或  
+-   內送的要求有沒有工作階段識別碼，或  
   
--   傳入的要求有工作階段 ID，但資料存放區中找不到工作階段。  
+-   連入要求具有工作階段識別碼，但資料存放區中找不到工作階段。  
   
- <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A>方法建立新<xref:System.Web.SessionState.SessionStateStoreData>具有空白物件<xref:System.Web.SessionState.ISessionStateItemCollection>物件<xref:System.Web.HttpStaticObjectsCollection>集合，並指定`timeout`值。 <xref:System.Web.HttpStaticObjectsCollection> ASP.NET 應用程式的集合可以使用擷取<xref:System.Web.SessionState.SessionStateUtility.GetSessionStaticObjects%2A>方法。  
+ <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A>方法建立新<xref:System.Web.SessionState.SessionStateStoreData>物件，使用空<xref:System.Web.SessionState.ISessionStateItemCollection>物件<xref:System.Web.HttpStaticObjectsCollection>集合，並指定`timeout`值。 <xref:System.Web.HttpStaticObjectsCollection>集合的 ASP.NET 應用程式可以使用擷取<xref:System.Web.SessionState.SessionStateUtility.GetSessionStaticObjects%2A>方法。  
   
    
   
 ## Examples  
- 如需工作階段狀態存放區提供者實作的範例，請參閱[實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
+ 如需工作階段狀態存放區提供者實作的範例，請參閱 <<c0> [ 實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
   
  ]]></format>
         </remarks>
@@ -162,6 +165,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -181,18 +185,18 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A>方法搭配工作階段時`cookieless`和`regenerateExpiredSessionId`屬性都`true`。 具有`regenerateExpiredSessionId attribute`設`true`導致<xref:System.Web.SessionState.SessionStateModule>物件來產生新<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>時已過期的值<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>遇到值。  
+ <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A>方法搭配工作階段時`cookieless`並`regenerateExpiredSessionId`屬性都`true`。 擁有`regenerateExpiredSessionId attribute`設定為`true`會導致<xref:System.Web.SessionState.SessionStateModule>物件來產生新<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>時已過期的值<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>遇到值。  
   
- 產生新的程序<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值仍必須將瀏覽器重新導向至包含新產生的 URL<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值。 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A>包含過期的初始要求期間會呼叫方法<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值。 之後<xref:System.Web.SessionState.SessionStateModule>物件取得新<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值來取代過期的值，它會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A>方法，將未初始化的項目加入至工作階段狀態資料存放區。 瀏覽器會重新導向至包含新產生的 URL<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值。 未初始化的項目，工作階段資料存放區中是否存在時，可確保重新導向的要求，其中包含新產生<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值不被誤認為要求過期的工作階段，相反地，即視為新的工作階段。  
+ 產生新的程序<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值會要求瀏覽器重新導向至包含新產生的 URL<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值。 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A>方法呼叫期間包含 已過期的初始要求<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值。 在後<xref:System.Web.SessionState.SessionStateModule>物件取得新<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值來取代過期的值，它會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A>方法將未初始化的項目加入至工作階段狀態資料存放區。 瀏覽器重新導向至包含新產生的 URL<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值。 確保重新導向的要求，其中包含新產生的工作階段資料存放區中未初始化的項目是否存在<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值不要被誤認為要求過期的工作階段，相反地，即視為新的工作階段。  
   
- 工作階段資料存放區中未初始化的項目都與新產生<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值，並只包含預設值，包括到期日期和時間值，對應為`actionFlags`參數<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>和<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法。 工作階段狀態存放區中未初始化的項目應該包含`actionFlags`值等於<xref:System.Web.SessionState.SessionStateActions.InitializeItem>列舉值。 這個值會傳遞至<xref:System.Web.SessionState.SessionStateModule>物件<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>和<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法，並通知<xref:System.Web.SessionState.SessionStateModule>物件目前的工作階段是新但未初始化的工作階段。 <xref:System.Web.SessionState.SessionStateModule>物件接著會在初始化新的工作階段，並引發`Session_OnStart`事件。  
+ 工作階段資料存放區中未初始化的項目是與新產生相關聯<xref:System.Web.SessionState.HttpSessionState.SessionID%2A>值，並只包含預設值，包括到期日期和時間值，對應為`actionFlags`參數<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>和<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法。 工作階段狀態存放區中未初始化的項目應該包含`actionFlags`值等於<xref:System.Web.SessionState.SessionStateActions.InitializeItem>列舉值。 這個值會傳遞至<xref:System.Web.SessionState.SessionStateModule>物件所<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>並<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法，並通知<xref:System.Web.SessionState.SessionStateModule>物件，目前的工作階段是新但未初始化的工作階段。 <xref:System.Web.SessionState.SessionStateModule>物件接著會在初始化新的工作階段，並引發`Session_OnStart`事件。  
   
  如需無 cookie 工作階段的詳細資訊，請參閱<xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A>屬性。  
   
    
   
 ## Examples  
- 如需工作階段狀態存放區提供者實作的範例，請參閱[實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
+ 如需工作階段狀態存放區提供者實作的範例，請參閱 <<c0> [ 實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
   
  ]]></format>
         </remarks>
@@ -208,6 +212,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -220,12 +225,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateStoreProviderBase.Dispose%2A?displayProperty=nameWithType>方法時，會呼叫<xref:System.Web.SessionState.SessionStateModule.Dispose%2A?displayProperty=nameWithType>方法執行的應用程式定義域的結尾。 繼承的類別<xref:System.Web.SessionState.SessionStateStoreProviderBase>類別可以使用這個方法，以釋出不再使用中的任何資源。  
+ <xref:System.Web.SessionState.SessionStateStoreProviderBase.Dispose%2A?displayProperty=nameWithType>方法時，會呼叫<xref:System.Web.SessionState.SessionStateModule.Dispose%2A?displayProperty=nameWithType>方法會執行在應用程式定義域關閉。 繼承的類別<xref:System.Web.SessionState.SessionStateStoreProviderBase>類別可以使用這個方法，以釋出不再使用中的任何資源。  
   
    
   
 ## Examples  
- 如需工作階段狀態存放區提供者實作的範例，請參閱[實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
+ 如需工作階段狀態存放區提供者實作的範例，請參閱 <<c0> [ 實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
   
  ]]></format>
         </remarks>
@@ -241,6 +246,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -257,12 +263,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A>ASP.NET 網頁，要求結尾方法期間<xref:System.Web.HttpApplication.EndRequest>事件。 您可以使用<xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A>方法，以執行任何您的工作階段狀態存放區提供者所需的每個要求清除作業。  
+ <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A>ASP.NET 網頁，在要求結束方法期間<xref:System.Web.HttpApplication.EndRequest>事件。 您可以使用<xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A>方法來執行您的工作階段狀態存放區提供者所需的任何個別要求清除作業。  
   
    
   
 ## Examples  
- 如需工作階段狀態存放區提供者實作的範例，請參閱[實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
+ 如需工作階段狀態存放區提供者實作的範例，請參閱 <<c0> [ 實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
   
  ]]></format>
         </remarks>
@@ -278,6 +284,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -304,22 +311,22 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>方法的要求，開頭期間<xref:System.Web.HttpApplication.AcquireRequestState>事件，當<xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>屬性設為`ReadOnly`。 如果<xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>屬性設為`true`、<xref:System.Web.SessionState.SessionStateModule>物件會改為呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法。  
+ <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>開頭的要求方法期間<xref:System.Web.HttpApplication.AcquireRequestState>事件，當<xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>屬性設為`ReadOnly`。 如果<xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>屬性設定為`true`，則<xref:System.Web.SessionState.SessionStateModule>物件會改為呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法。  
   
- <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>方法會傳回<xref:System.Web.SessionState.SessionStateStoreData>物件填入資料存放區的工作階段資訊和更新的工作階段資料的到期日。 如果沒有工作階段項目資料在資料存放區中，找到<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>方法會設定`locked``out`參數`false`並傳回`null`。 這會導致<xref:System.Web.SessionState.SessionStateModule>物件呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A>方法，以在資料存放區中建立新的工作階段項目。  
+ <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>方法會傳回<xref:System.Web.SessionState.SessionStateStoreData>物件填入資料存放區的工作階段資訊和更新的工作階段資料的到期日。 如果沒有工作階段項目資料在資料存放區中，找到<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>方法會設定`locked``out`參數來`false`，並傳回`null`。 這會導致<xref:System.Web.SessionState.SessionStateModule>物件呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A>方法，以在資料存放區中建立新的工作階段項目。  
   
- 如果工作階段項目資料位於資料存放區，但資料已被鎖定，<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>方法會設定`locked``out`參數`true`，設定`lockAge``out`參數目前的日期和時間減去的日期與項目已鎖定時的時間 （這會從資料存放區），設定`lockId``out`鎖定識別項的參數從資料存放區，並傳回擷取`null`。 這會導致<xref:System.Web.SessionState.SessionStateModule>物件呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>再次半秒的間隔之後嘗試擷取工作階段項目資訊的方法。  
+ 如果工作階段項目資料位於資料存放區，但資料已被鎖定，<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>方法會設定`locked``out`參數來`true`，設定`lockAge``out`目前日期和時間減去日期的參數與項目已鎖定時的時間 （這擷取自資料存放區），設定`lockId``out`之鎖定識別項的參數擷取自資料存放區，並傳回`null`。 這會導致<xref:System.Web.SessionState.SessionStateModule>物件呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>再次半秒的間隔之後嘗試擷取工作階段項目資訊的方法。  
   
- 如果值的`lockAge``out`參數設定為超過<xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A>值，然後在<xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>方法，以清除工作階段項目資料，然後呼叫上的鎖定<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>方法一次。  
+ 如果值的`lockAge``out`參數設為超過<xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A>的值，則<xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>方法，以清除工作階段項目資料，然後呼叫上的鎖定<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>方法一次。  
   
- `actionFlags`參數使用時同時`cookieless`和`regenerateExpiredSessionId`屬性設定為`true`。 `actionFlags`值設定為<xref:System.Web.SessionState.SessionStateActions.InitializeItem>表示工作階段資料存放區中的項目是新的工作階段需要初始化的。 工作階段資料存放區中未初始化的項目會建立由呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A>方法。 如果從工作階段資料存放區的項目不是未初始化的項目，`actionFlags`參數會設定為零。  
+ `actionFlags`參數使用時都`cookieless`並`regenerateExpiredSessionId`屬性設定為`true`。 `actionFlags`值設定為<xref:System.Web.SessionState.SessionStateActions.InitializeItem>表示工作階段資料存放區中的項目是新的工作階段需要初始化。 未初始化的工作階段資料存放區中的項目藉由呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A>方法。 如果工作階段資料存放區中的項目不是未初始化的項目，`actionFlags`參數會設定為零。  
   
- 支援無 cookie 工作階段的自訂工作階段狀態存放區實作者應該設定`actionFlags``out`參數的值傳回的工作階段資料存放區中，為目前的項目。 如果`actionFlags`參數值會要求工作階段存放區項目等於<xref:System.Web.SessionState.SessionStateActions.InitializeItem>列舉值，然後在<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>方法應該將值設定為零之後設定資料存放區中`actionFlags``out`參數。  
+ 支援無 cookie 工作階段的自訂工作階段狀態存放區實作者應該設定`actionFlags``out`參數的值傳回從工作階段資料存放區，為目前的項目。 如果`actionFlags`要求的工作階段存放區的參數值項目等於<xref:System.Web.SessionState.SessionStateActions.InitializeItem>列舉值，則<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>方法應該設定為零之後設定, 資料存放區中的值`actionFlags``out`參數。  
   
    
   
 ## Examples  
- 如需工作階段狀態存放區提供者實作的範例，請參閱[實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
+ 如需工作階段狀態存放區提供者實作的範例，請參閱 <<c0> [ 實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
   
  ]]></format>
         </remarks>
@@ -335,6 +342,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -361,18 +369,18 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法的要求，開頭期間<xref:System.Web.HttpApplication.AcquireRequestState>事件，當<xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>屬性設為`true`，預設值。 如果<xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>屬性設為`ReadOnly`、<xref:System.Web.SessionState.SessionStateModule>物件會改為呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>方法。  
+ <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>開頭的要求方法期間<xref:System.Web.HttpApplication.AcquireRequestState>事件，當<xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>屬性設為`true`，這是預設值。 如果<xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>屬性設定為`ReadOnly`，則<xref:System.Web.SessionState.SessionStateModule>物件會改為呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>方法。  
   
- <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法會傳回<xref:System.Web.SessionState.SessionStateStoreData>填入資料存放區中，從工作階段資訊的物件更新儲存的資料的到期日，並要求的持續時間內鎖定資料存放區的工作階段項目資料。 如果沒有工作階段項目資料在資料存放區中，找到<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法會設定`locked``out`參數`false`並傳回`null`。 這會導致<xref:System.Web.SessionState.SessionStateModule>物件呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A>方法，以在資料存放區中建立新的工作階段項目。 如果工作階段項目資料位於資料存放區，但資料已被鎖定，<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法會設定`locked``out`參數`true`，設定`lockAge``out`參數目前的日期和時間減去的日期與項目已鎖定時的時間 （這會從資料存放區），設定`lockId``out`鎖定識別項的參數從資料存放區，並傳回擷取`null`。 這會導致<xref:System.Web.SessionState.SessionStateModule>物件呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>再次半秒的間隔之後嘗試擷取工作階段項目資訊並將資料上取得鎖定的方法。 如果值的`lockAge``out`參數設定為超過<xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A>值，然後在<xref:System.Web.SessionState.SessionStateModule>呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>方法，以清除工作階段項目資料，然後呼叫上的鎖定<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法一次。  
+ <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法會傳回<xref:System.Web.SessionState.SessionStateStoreData>更新到期日的已儲存的資料，填入資料存放區中，工作階段資訊的物件，並要求期間會鎖定資料存放區的工作階段項目資料。 如果沒有工作階段項目資料在資料存放區中，找到<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法會設定`locked``out`參數來`false`，並傳回`null`。 這會導致<xref:System.Web.SessionState.SessionStateModule>物件呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A>方法，以在資料存放區中建立新的工作階段項目。 如果工作階段項目資料位於資料存放區，但資料已被鎖定，<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法會設定`locked``out`參數來`true`，設定`lockAge``out`目前日期和時間減去日期的參數與項目已鎖定時的時間 （這擷取自資料存放區），設定`lockId``out`之鎖定識別項的參數擷取自資料存放區，並傳回`null`。 這會導致<xref:System.Web.SessionState.SessionStateModule>物件呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>再次半秒的間隔之後嘗試擷取工作階段項目資訊，並將資料上取得鎖定的方法。 如果此值， `lockAge` `out`參數設為超過<xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A>值，則<xref:System.Web.SessionState.SessionStateModule>呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>方法，以清除工作階段項目資料，然後呼叫上的鎖定<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法一次。  
   
- `actionFlags`參數使用時`cookieless`和`regenerateExpiredSessionId`屬性都設定為`true`。 `actionFlags`值設定為<xref:System.Web.SessionState.SessionStateActions.InitializeItem>表示工作階段資料存放區中的項目是新的工作階段需要初始化的。 工作階段資料存放區中未初始化的項目會建立由呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A>方法。 如果從工作階段資料存放區的項目不是未初始化的項目，`actionFlags`參數會設定為零。  
+ `actionFlags`會使用參數時`cookieless`並`regenerateExpiredSessionId`屬性都設為`true`。 `actionFlags`值設定為<xref:System.Web.SessionState.SessionStateActions.InitializeItem>表示工作階段資料存放區中的項目是新的工作階段需要初始化。 未初始化的工作階段資料存放區中的項目藉由呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A>方法。 如果工作階段資料存放區中的項目不是未初始化的項目，`actionFlags`參數會設定為零。  
   
- 支援無 cookie 工作階段的自訂工作階段狀態存放區實作者應該設定`actionFlags``out`參數的值傳回的工作階段資料存放區中，為目前的項目。 如果`actionFlags`參數值會要求工作階段存放區項目等於<xref:System.Web.SessionState.SessionStateActions.InitializeItem>列舉值，然後在<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法應該將值設定為零之後設定資料存放區中`actionFlags``out`參數。  
+ 支援無 cookie 工作階段的自訂工作階段狀態存放區實作者應該設定`actionFlags``out`參數的值傳回從工作階段資料存放區，為目前的項目。 如果`actionFlags`要求的工作階段存放區的參數值項目等於<xref:System.Web.SessionState.SessionStateActions.InitializeItem>列舉值，則<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A>方法應該設定為零之後設定, 資料存放區中的值`actionFlags``out`參數。  
   
    
   
 ## Examples  
- 如需工作階段狀態存放區提供者實作的範例，請參閱[實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
+ 如需工作階段狀態存放區提供者實作的範例，請參閱 <<c0> [ 實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
   
  ]]></format>
         </remarks>
@@ -388,6 +396,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -404,12 +413,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.InitializeRequest%2A>方法，然後再呼叫其他任何<xref:System.Web.SessionState.SessionStateStoreProviderBase>方法。 您可以使用<xref:System.Web.SessionState.SessionStateStoreProviderBase.InitializeRequest%2A>方法來執行任何您的工作階段狀態存放區提供者所需的每一個要求初始化。  
+ <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.InitializeRequest%2A>方法，然後再呼叫其他<xref:System.Web.SessionState.SessionStateStoreProviderBase>方法。 您可以使用<xref:System.Web.SessionState.SessionStateStoreProviderBase.InitializeRequest%2A>方法，以執行您的工作階段狀態存放區提供者所需的任何個別的要求初始化。  
   
    
   
 ## Examples  
- 如需工作階段狀態存放區提供者實作的範例，請參閱[實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
+ 如需工作階段狀態存放區提供者實作的範例，請參閱 <<c0> [ 實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
   
  ]]></format>
         </remarks>
@@ -425,6 +434,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -444,16 +454,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>方法來更新到期日，並釋放工作階段資料存放區中的項目上的鎖定。 在要求中，結尾處呼叫期間<xref:System.Web.HttpApplication.ReleaseRequestState>事件，如果工作階段的值為不變。 如果工作階段值已經被修改，<xref:System.Web.SessionState.SessionStateModule>物件會改為呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A>方法。  
+ <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>方法來更新到期日，並釋出鎖定工作階段資料存放區中的項目。 在要求中，結尾處呼叫期間<xref:System.Web.HttpApplication.ReleaseRequestState>事件，如果工作階段的值為不變。 如果工作階段值已經被修改，<xref:System.Web.SessionState.SessionStateModule>物件會改為呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A>方法。  
   
- <xref:System.Web.SessionState.SessionStateModule>物件也會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>方法時的鎖定工作階段資料存放區中的項目已超過<xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A>值。 鎖定的詳細資訊和詳細資料的鎖定識別碼，請參閱 < 鎖定工作階段存放區資料 > 中<xref:System.Web.SessionState.SessionStateStoreProviderBase>類別概觀。  
+ <xref:System.Web.SessionState.SessionStateModule>物件也會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>方法時的鎖定工作階段資料存放區中的項目已超過<xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A>值。 如需有關鎖定的詳細資訊和鎖定識別項的詳細資料，請參閱 < 鎖定工作階段存放區資料 」 中<xref:System.Web.SessionState.SessionStateStoreProviderBase>類別概觀。  
   
- <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>方法只會移除鎖定目前的應用程式符合提供的工作階段的工作階段資料存放區中的項目`id`和`lockId`值。 如果`lockId`不符的資料存放區中的一個<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>方法不會執行任何動作。  
+ <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>方法只會移除鎖定目前的應用程式符合提供的工作階段的工作階段資料存放區中的項目`id`和`lockId`值。 如果`lockId`不相符的資料存放區中的一個<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>方法不做任何動作。  
   
    
   
 ## Examples  
- 如需工作階段狀態存放區提供者實作的範例，請參閱[實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
+ 如需工作階段狀態存放區提供者實作的範例，請參閱 <<c0> [ 實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
   
  ]]></format>
         </remarks>
@@ -469,6 +479,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -491,12 +502,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A>結尾的要求，方法期間<xref:System.Web.HttpApplication.ReleaseRequestState>事件，若要從工作階段資料存放區刪除的資料工作階段項目，如果<xref:System.Web.SessionState.HttpSessionState.Abandon%2A>呼叫方法。 只有符合提供的工作階段的目前應用程式的工作階段資料`id`和`lockId`刪除值。 鎖定的詳細資訊和詳細資料的鎖定識別碼，請參閱 < 鎖定工作階段存放區資料 > 中<xref:System.Web.SessionState.SessionStateStoreProviderBase>類別概觀。  
+ <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A>結尾的要求，方法期間<xref:System.Web.HttpApplication.ReleaseRequestState>事件，以從工作階段資料存放區刪除工作階段項目的資料，如果<xref:System.Web.SessionState.HttpSessionState.Abandon%2A>已呼叫方法。 只有目前的應用程式符合提供的工作階段的工作階段資料`id`和`lockId`刪除值。 如需有關鎖定的詳細資訊和鎖定識別項的詳細資料，請參閱 < 鎖定工作階段存放區資料 」 中<xref:System.Web.SessionState.SessionStateStoreProviderBase>類別概觀。  
   
    
   
 ## Examples  
- 如需工作階段狀態存放區提供者實作的範例，請參閱[實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
+ 如需工作階段狀態存放區提供者實作的範例，請參閱 <<c0> [ 實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
   
  ]]></format>
         </remarks>
@@ -512,6 +523,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -529,18 +541,18 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.ResetItemTimeout%2A>方法，以更新的到期日期和時間工作階段目前的日期和時間加上工作階段<xref:System.Web.SessionState.HttpSessionState.Timeout%2A>值時可能是：  
+ <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.ResetItemTimeout%2A>方法來更新至目前的日期和時間加上工作階段的工作階段的時間與到期日<xref:System.Web.SessionState.HttpSessionState.Timeout%2A>值可能是：  
   
 -   <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>屬性是`true`，或  
   
--   要求未發出<xref:System.Web.HttpApplication.AcquireRequestState>和<xref:System.Web.HttpApplication.ReleaseRequestState>事件，因為發生錯誤。  
+-   要求並不會引發<xref:System.Web.HttpApplication.AcquireRequestState>和<xref:System.Web.HttpApplication.ReleaseRequestState>因為發生錯誤的事件。  
   
- 如果要求的 ASP.NET 網頁和<xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>屬性設為`false`、<xref:System.Web.SessionState.SessionStateStoreProviderBase.ResetItemTimeout%2A>方法仍會呼叫以更新的到期日期和時間的工作階段資料存放區中的資料。  
+ 如果在要求 ASP.NET 網頁和<xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>屬性設定為`false`，則<xref:System.Web.SessionState.SessionStateStoreProviderBase.ResetItemTimeout%2A>仍會呼叫方法來更新到期的日期和時間的工作階段資料存放區中的資料。  
   
    
   
 ## Examples  
- 如需工作階段狀態存放區提供者實作的範例，請參閱[實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
+ 如需工作階段狀態存放區提供者實作的範例，請參閱 <<c0> [ 實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
   
  ]]></format>
         </remarks>
@@ -556,6 +568,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -581,16 +594,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A>結尾的要求，方法期間<xref:System.Web.HttpApplication.ReleaseRequestState>事件，將目前的工作階段項目資訊插入至資料存放區，或使用目前的值，更新資料存放區中的現有工作階段項目資訊若要更新的到期時間，項目，並釋放的鎖定資料。 只有符合提供的工作階段的目前應用程式的工作階段資料`id`和`lockId`值更新。 如需有關鎖定的詳細資訊，請參閱 < 鎖定工作階段存放區資料 」 中<xref:System.Web.SessionState.SessionStateStoreProviderBase>類別概觀。  
+ <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A>結尾的要求，方法期間<xref:System.Web.HttpApplication.ReleaseRequestState>事件，將目前的工作階段項目資訊插入至資料存放區，或使用目前的值，更新資料存放區中的現有工作階段項目資訊若要更新的項目上的到期時間，並釋放的鎖定資料。 只有目前的應用程式符合提供的工作階段的工作階段資料`id`和`lockId`值更新。 如需有關鎖定的詳細資訊，請參閱 < 鎖定工作階段存放區資料 > 中<xref:System.Web.SessionState.SessionStateStoreProviderBase>類別概觀。  
   
- 如果目前要求的工作階段值尚未經過修改，<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A>不會呼叫方法。 相反地，<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>方法呼叫。  
+ 如果目前要求的工作階段值尚未經過修改，<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A>不會呼叫方法。 相反地，<xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>呼叫方法。  
   
- 如果<xref:System.Web.SessionState.HttpSessionState.Abandon%2A>已呼叫方法，<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A>不會呼叫方法。 相反地，<xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A>方法，以從資料來源中刪除工作階段項目資料。  
+ 如果<xref:System.Web.SessionState.HttpSessionState.Abandon%2A>呼叫的方法，<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A>不會呼叫方法。 相反地，<xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A>方法，以從資料來源中刪除工作階段項目資料。  
   
    
   
 ## Examples  
- 如需工作階段狀態存放區提供者實作的範例，請參閱[實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
+ 如需工作階段狀態存放區提供者實作的範例，請參閱 <<c0> [ 實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
   
  ]]></format>
         </remarks>
@@ -606,6 +619,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -622,14 +636,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetItemExpireCallback%2A>方法來判斷模組初始化時是否呼叫`Session_OnEnd`所支援事件<xref:System.Web.SessionState.SessionStateStoreProviderBase>實作以及關聯<xref:System.Web.SessionState.SessionStateItemExpireCallback>活動委派`Session_OnEnd`事件。  
+ <xref:System.Web.SessionState.SessionStateModule>物件會呼叫<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetItemExpireCallback%2A>方法來判斷初始化模組時是否呼叫`Session_OnEnd`事件都受到<xref:System.Web.SessionState.SessionStateStoreProviderBase>實作和關聯<xref:System.Web.SessionState.SessionStateItemExpireCallback>具有委派`Session_OnEnd`事件。  
   
- 自訂工作階段狀態存放區提供者實作者應該使用<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetItemExpireCallback%2A>方法，以通知<xref:System.Web.SessionState.SessionStateModule>物件是否呼叫`Session_OnEnd`支援事件，並設定的本機參考<xref:System.Web.SessionState.SessionStateItemExpireCallback>所提供的委派`expireCallback`參數。 自訂實作必須決定何時本機<xref:System.Web.SessionState.SessionStateItemExpireCallback>會呼叫委派。 例如，無法呼叫委派的呼叫期間<xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A>放棄工作階段時所呼叫的方法。  
+ 應該使用自訂的工作階段狀態存放區提供者實作人員<xref:System.Web.SessionState.SessionStateStoreProviderBase.SetItemExpireCallback%2A>方法，以通知<xref:System.Web.SessionState.SessionStateModule>物件是否呼叫`Session_OnEnd`支援事件，並設定的本機參考<xref:System.Web.SessionState.SessionStateItemExpireCallback>所提供的委派`expireCallback`參數。 自訂實作必須決定時本機<xref:System.Web.SessionState.SessionStateItemExpireCallback>會呼叫委派。 例如，無法在呼叫期間呼叫的委派<xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A>放棄工作階段時，會呼叫的方法。  
   
    
   
 ## Examples  
- 如需工作階段狀態存放區提供者實作的範例，請參閱[實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
+ 如需工作階段狀態存放區提供者實作的範例，請參閱 <<c0> [ 實作工作階段狀態存放區提供者](http://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)。  
   
  ]]></format>
         </remarks>
