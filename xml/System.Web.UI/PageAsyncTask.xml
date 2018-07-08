@@ -1,11 +1,11 @@
 <Type Name="PageAsyncTask" FullName="System.Web.UI.PageAsyncTask">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="9200f0d5a36d7d9b1c59b031ca32d0e2c5500b69" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="63f97b54ca06fa12b044f966010a5263614bba72" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36376647" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37587584" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class PageAsyncTask" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit PageAsyncTask extends System.Object" />
@@ -15,6 +15,7 @@
   <TypeSignature Language="F#" Value="type PageAsyncTask = class" />
   <AssemblyInfo>
     <AssemblyName>System.Web</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
@@ -27,17 +28,17 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- ASP.NET 2.0 版可讓您註冊多個工作的頁面和之前頁面的呈現以非同步方式執行。 您可以指定是否緩慢的程序，而且不想讓其他處理程序執行時，這會因工作會以非同步方式執行。 以平行方式或依序執行的非同步工作。  
+ ASP.NET 2.0 版可讓您註冊多個工作頁面，並以非同步方式執行之前呈現頁面。 您可以指定是否它是一個緩慢的程序，而且不想讓其他處理程序執行時受到占工作會以非同步方式執行。 非同步工作可以平行或循序執行。  
   
- A<xref:System.Web.UI.PageAsyncTask>物件必須透過網頁註冊<xref:System.Web.UI.Page.RegisterAsyncTask%2A>方法。 若要以非同步方式處理執行非同步工作沒有頁面本身。 您可以設定`Async`屬性設為  `true` （如下列程式碼範例所示） 或`false`頁面上指示詞和非同步工作會仍會以非同步方式處理：  
+ A<xref:System.Web.UI.PageAsyncTask>必須註冊物件，以逐頁瀏覽<xref:System.Web.UI.Page.RegisterAsyncTask%2A>方法。 以非同步方式處理執行非同步工作沒有頁面本身。 您可以設定`Async`屬性設為`true`（如下列程式碼範例所示） 或`false`頁面上指示詞和非同步工作將仍會以非同步方式處理：  
   
  `<%@ Page Async="true" %>`  
   
- 當`Async`屬性設為`false`，執行頁面的執行緒會封鎖，直到所有的非同步工作完成為止。  
+ 當`Async`屬性設為`false`，會封鎖執行頁面的執行緒，直到所有非同步工作完成為止。  
   
- 註冊任何非同步工作，才能<xref:System.Web.UI.Page.PreRenderComplete>事件將會自動由頁面時執行它們已經尚未執行。 這些非同步工作註冊之後<xref:System.Web.UI.Page.PreRenderComplete>必須明確地透過執行事件<xref:System.Web.UI.Page.ExecuteRegisteredAsyncTasks%2A>方法。 <xref:System.Web.UI.Page.ExecuteRegisteredAsyncTasks%2A>方法也可用來啟動工作，再<xref:System.Web.UI.Page.PreRenderComplete>事件。 <xref:System.Web.UI.Page.ExecuteRegisteredAsyncTasks%2A>尚未執行的頁面上執行所有已註冊的非同步工作的方法。  
+ 註冊之前的任何非同步工作<xref:System.Web.UI.Page.PreRenderComplete>事件將會自動由頁面時執行它們已經尚未執行。 這些非同步工作註冊後<xref:System.Web.UI.Page.PreRenderComplete>必須明確透過執行事件<xref:System.Web.UI.Page.ExecuteRegisteredAsyncTasks%2A>方法。 <xref:System.Web.UI.Page.ExecuteRegisteredAsyncTasks%2A>方法也可用來啟動工作，再<xref:System.Web.UI.Page.PreRenderComplete>事件。 <xref:System.Web.UI.Page.ExecuteRegisteredAsyncTasks%2A>尚未執行的頁面上執行所有已註冊的非同步工作的方法。  
   
- 根據預設，非同步工作會逾時如果未在 45 秒內完成。 您可以在 Web.config 檔或 page 指示詞中指定不同的逾時值。 `<pages>` Web.config 檔案區段包含`asyncTimeout`屬性，如下所示。  
+ 根據預設，非同步工作會將逾時，如果它未 45 秒內完成。 您可以在 Web.config 檔案或頁面指示詞中指定不同的逾時值。 `<pages>` Web.config 檔案區段包含`asyncTimeout`屬性，如下所示。  
   
  `<system.web>`  
   
@@ -54,7 +55,7 @@
    
   
 ## Examples  
- 下列程式碼範例會註冊至頁面的三個非同步工作，並以平行方式執行。 每個工作都會呼叫的方法，只會造成執行緒睡眠 5 秒鐘。  
+ 下列程式碼範例會註冊至頁面的三個非同步工作，並以平行方式執行。 每個工作都會呼叫的方法，只會造成執行緒進入睡眠狀態 5 秒。  
   
  [!code-aspx-csharp[System.Web.UI.PageAsyncTask#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.PageAsyncTask/CS/page_asynctask.aspx#1)]
  [!code-aspx-vb[System.Web.UI.PageAsyncTask#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.PageAsyncTask/VB/page_asynctask.aspx#1)]  
@@ -97,7 +98,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個建構函式會包裝<xref:System.Web.TaskEventHandler>委派以便<xref:System.Web.UI.PageAsyncTask>物件可以整合非同步程式碼 (根據<xref:System.Threading.Tasks.Task>物件) 與現有的 ASP.NET Web Form 非同步頁面功能。 表示 ASP.NET 將<xref:System.Threading.CancellationToken>傳遞至物件<xref:System.Web.TaskEventHandler>委派有無取消情形根據<xref:System.Web.UI.Page.AsyncTimeout%2A>屬性中設定`@ Page`網頁指示詞。 當<xref:System.Web.UI.Page.AsyncTimeout%2A>值已達到，<xref:System.Threading.CancellationToken>物件將會收到信號。 `CancellationToken`參數必須傳遞至您的實作會呼叫任何非同步 Api<xref:System.Web.TaskEventHandler>類別。  
+ 這個建構函式會包裝<xref:System.Web.TaskEventHandler>委派，讓<xref:System.Web.UI.PageAsyncTask>物件可以整合非同步程式碼 (根據<xref:System.Threading.Tasks.Task>物件) 與現有的 ASP.NET Web Form 的非同步頁面功能。 ASP.NET 會發出信號<xref:System.Threading.CancellationToken>傳遞至物件<xref:System.Web.TaskEventHandler>委派為基礎的取消<xref:System.Web.UI.Page.AsyncTimeout%2A>屬性中設定`@ Page`網頁指示詞。 當<xref:System.Web.UI.Page.AsyncTimeout%2A>到達的值，<xref:System.Threading.CancellationToken>物件就會收到訊號。 `CancellationToken`參數必須傳遞至任何實作所呼叫的非同步 Api<xref:System.Web.TaskEventHandler>類別。  
   
  ]]></format>
         </remarks>
@@ -134,6 +135,7 @@
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters>
@@ -152,7 +154,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這項實作建構函式設定<xref:System.Web.UI.PageAsyncTask.ExecuteInParallel%2A>屬性`false`以便與頁面上的其他工作平行處理時，非同步工作。  
+ 這項實作的建構函式集合<xref:System.Web.UI.PageAsyncTask.ExecuteInParallel%2A>屬性設`false`讓非同步工作未與頁面上的其他工作平行處理。  
   
  ]]></format>
         </remarks>
@@ -170,6 +172,7 @@
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters>
@@ -190,12 +193,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個建構函式的實作可讓您設定是否會與頁面上的其他工作平行處理非同步工作。  
+ 這個建構函式的實作可讓您設定是否會與頁面上的其他工作的平行處理非同步工作。  
   
    
   
 ## Examples  
- 下列程式碼範例會建立三個非同步工作會處理以平行方式彼此。 這個範例是在中找到之較大範例的一部分<xref:System.Web.UI.PageAsyncTask>類別概觀。  
+ 下列程式碼範例會建立彼此的平行處理的三個非同步工作。 這個範例屬於較大的範例中找到的<xref:System.Web.UI.PageAsyncTask>類別概觀。  
   
  [!code-csharp[System.Web.UI.PageAsyncTask#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.PageAsyncTask/CS/page_asynctask.aspx#3)]
  [!code-vb[System.Web.UI.PageAsyncTask#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.PageAsyncTask/VB/page_asynctask.aspx#3)]  
@@ -216,6 +219,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -229,12 +233,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.PageAsyncTask.BeginHandler%2A>委派設定於建構函式。  
+ <xref:System.Web.UI.PageAsyncTask.BeginHandler%2A>委派建構函式中設定。  
   
    
   
 ## Examples  
- 下列程式碼範例會註冊至頁面的三個非同步工作，並以平行方式執行。 每個工作都會呼叫的方法，只會造成執行緒睡眠 5 秒鐘。 A<xref:System.Web.UI.PageAsyncTask.BeginHandler%2A>委派指定的每個工作。  
+ 下列程式碼範例會註冊至頁面的三個非同步工作，並以平行方式執行。 每個工作都會呼叫的方法，只會造成執行緒進入睡眠狀態 5 秒。 A<xref:System.Web.UI.PageAsyncTask.BeginHandler%2A>委派指定的每個工作。  
   
  [!code-aspx-csharp[System.Web.UI.PageAsyncTask#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.PageAsyncTask/CS/page_asynctask.aspx#1)]
  [!code-aspx-vb[System.Web.UI.PageAsyncTask#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.PageAsyncTask/VB/page_asynctask.aspx#1)]  
@@ -256,6 +260,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -269,12 +274,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.PageAsyncTask.EndHandler%2A>委派設定於建構函式。  
+ <xref:System.Web.UI.PageAsyncTask.EndHandler%2A>委派建構函式中設定。  
   
    
   
 ## Examples  
- 下列程式碼範例會註冊至頁面的三個非同步工作，並以平行方式執行。 每個工作都會呼叫的方法，只會造成執行緒睡眠 5 秒鐘。 <xref:System.Web.UI.PageAsyncTask.EndHandler%2A>委派指定的每個工作。  
+ 下列程式碼範例會註冊至頁面的三個非同步工作，並以平行方式執行。 每個工作都會呼叫的方法，只會造成執行緒進入睡眠狀態 5 秒。 <xref:System.Web.UI.PageAsyncTask.EndHandler%2A>委派指定的每個工作。  
   
  [!code-aspx-csharp[System.Web.UI.PageAsyncTask#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.PageAsyncTask/CS/page_asynctask.aspx#1)]
  [!code-aspx-vb[System.Web.UI.PageAsyncTask#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.PageAsyncTask/VB/page_asynctask.aspx#1)]  
@@ -296,6 +301,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -308,12 +314,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.PageAsyncTask.ExecuteInParallel%2A>屬性設定於建構函式。 當多個工作都登錄在網頁和<xref:System.Web.UI.PageAsyncTask.ExecuteInParallel%2A>屬性設定為`true`，則會同時處理這些工作。 不過，如果<xref:System.Web.UI.PageAsyncTask.ExecuteInParallel%2A>屬性設定為`false`，則會依序處理這些工作。 例如，如果頁面包含兩個非同步工作，每個花費 5 秒才能完成和<xref:System.Web.UI.PageAsyncTask.ExecuteInParallel%2A>設為`true`，這兩項工作將在 5 秒內完成。 如果<xref:System.Web.UI.PageAsyncTask.ExecuteInParallel%2A>設`false`這些相同的兩個工作，則第一項工作會在 5 秒內完成，而第二個工作完成第一項工作完成後的 5 秒。  
+ <xref:System.Web.UI.PageAsyncTask.ExecuteInParallel%2A>建構函式中設定屬性。 多個工作在網頁中的註冊時，<xref:System.Web.UI.PageAsyncTask.ExecuteInParallel%2A>屬性設定為`true`，則會同時處理這些工作。 不過，如果<xref:System.Web.UI.PageAsyncTask.ExecuteInParallel%2A>屬性設定為`false`，則這些工作會循序處理。 比方說，如果頁面包含兩個非同步工作，每個需要 5 秒鐘才能完成及<xref:System.Web.UI.PageAsyncTask.ExecuteInParallel%2A>設為`true`，這兩項工作會在 5 秒內完成。 如果<xref:System.Web.UI.PageAsyncTask.ExecuteInParallel%2A>設為`false`這些相同的兩個工作，則第一項工作會在 5 秒內完成而第二項工作完成的第一個工作完成後的 5 秒。  
   
    
   
 ## Examples  
- 下列程式碼範例會定義三個非同步工作，每個設定為以平行方式處理。 這個範例是在中找到之較大範例的一部分<xref:System.Web.UI.PageAsyncTask>類別概觀。  
+ 下列程式碼範例會定義每個設定為平行處理的三個非同步工作。 這個範例屬於較大的範例中找到的<xref:System.Web.UI.PageAsyncTask>類別概觀。  
   
  [!code-csharp[System.Web.UI.PageAsyncTask#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.PageAsyncTask/CS/page_asynctask.aspx#3)]
  [!code-vb[System.Web.UI.PageAsyncTask#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.PageAsyncTask/VB/page_asynctask.aspx#3)]  
@@ -332,6 +338,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -345,12 +352,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.PageAsyncTask.State%2A>屬性設定於建構函式，而且無法修改執行非同步工作的期間。 您可以藉由指派到其各自的唯一字串值來區分在網頁中的非同步工作<xref:System.Web.UI.PageAsyncTask.State%2A>屬性。  
+ <xref:System.Web.UI.PageAsyncTask.State%2A>屬性設定在建構函式，並執行非同步工作的期間，無法修改。 您可以藉由指派至其各自的唯一字串值來區分在網頁中的非同步工作<xref:System.Web.UI.PageAsyncTask.State%2A>屬性。  
   
    
   
 ## Examples  
- 下列程式碼範例會建立三個非同步工作，並提供唯一值及其<xref:System.Web.UI.PageAsyncTask.State%2A>屬性。 這個範例是在中找到之較大範例的一部分<xref:System.Web.UI.PageAsyncTask>類別概觀。  
+ 下列程式碼範例會建立三個非同步工作，並提供它們的唯一值及其<xref:System.Web.UI.PageAsyncTask.State%2A>屬性。 這個範例屬於較大的範例中找到的<xref:System.Web.UI.PageAsyncTask>類別概觀。  
   
  [!code-csharp[System.Web.UI.PageAsyncTask#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.PageAsyncTask/CS/page_asynctask.aspx#3)]
  [!code-vb[System.Web.UI.PageAsyncTask#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.PageAsyncTask/VB/page_asynctask.aspx#3)]  
@@ -369,6 +376,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -382,12 +390,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.PageAsyncTask.TimeoutHandler%2A>委派設定於建構函式。  
+ <xref:System.Web.UI.PageAsyncTask.TimeoutHandler%2A>委派建構函式中設定。  
   
    
   
 ## Examples  
- 下列程式碼範例會註冊至頁面的三個非同步工作，並以平行方式執行。 每個工作都會呼叫的方法，只會造成執行緒睡眠 5 秒鐘。 A<xref:System.Web.UI.PageAsyncTask.TimeoutHandler%2A>委派指定的每個工作。  
+ 下列程式碼範例會註冊至頁面的三個非同步工作，並以平行方式執行。 每個工作都會呼叫的方法，只會造成執行緒進入睡眠狀態 5 秒。 A<xref:System.Web.UI.PageAsyncTask.TimeoutHandler%2A>委派指定的每個工作。  
   
  [!code-aspx-csharp[System.Web.UI.PageAsyncTask#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.PageAsyncTask/CS/page_asynctask.aspx#1)]
  [!code-aspx-vb[System.Web.UI.PageAsyncTask#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.PageAsyncTask/VB/page_asynctask.aspx#1)]  
