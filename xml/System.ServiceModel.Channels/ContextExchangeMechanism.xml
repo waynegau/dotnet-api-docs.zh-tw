@@ -1,11 +1,11 @@
 <Type Name="ContextExchangeMechanism" FullName="System.ServiceModel.Channels.ContextExchangeMechanism">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="433656842150ed58a18e0987d34a2b164231a71b" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="af79b503cc30b8212bfd4524b7ac1e678e7a00fc" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36422475" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37621586" />
   </Metadata>
   <TypeSignature Language="C#" Value="public enum ContextExchangeMechanism" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed ContextExchangeMechanism extends System.Enum" />
@@ -16,6 +16,10 @@
   <AssemblyInfo>
     <AssemblyName>System.ServiceModel</AssemblyName>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.WorkflowServices</AssemblyName>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Enum</BaseTypeName>
@@ -35,13 +39,13 @@
   
  需要內容交換通訊協定支援的服務端點，可以在發行的原則中明確陳述這項需求。 代表用戶端需求、以支援 SOAP 層級的內容交換通訊協定或要求啟用 HTTP cookie 支援的原則判斷提示，可由端點發行。 <xref:System.ServiceModel.Channels.ContextBindingElement.ContextExchangeMechanism%2A> 屬性值會決定是否在服務原則中產生這些判斷提示，如下所示：  
   
--   HttpCookie，產生下列判斷提示：  
+-   為了 HttpCookie，就會產生下列判斷提示：  
   
     ```  
     <HttpUseCookie xmlns="http://schemas.xmlsoap.org/soap/http"/>  
     ```  
   
--   為 contextsoapheader 時，會產生下列判斷提示：  
+-   為了 ContextSoapHeader，就會產生下列判斷提示：  
   
     ```  
     <IncludeContext   
@@ -49,9 +53,9 @@
     protectionLevel="Sign" />  
     ```  
   
- HttpCookie 列舉型別是在傳輸層實作。 Simplex 通訊可使用它，此時，用戶端建立一個初始要求，而內容則由服務在對應的回覆中提供。 之後，在整個交談生命週期間，服務與用戶端之間的所有後續訊息都會包含內容。 使用 HTTP 傳輸，以及同意使用 HTTP cookie 的用戶端的服務端點，可以利用 HttpCookie 列舉交換應用程式內容。 一旦使用 HTTP Cookie 來傳播內容，就應該透過傳輸安全性來保護這些 Cookie 的安全。 這個機制無法與非 HTTP 傳輸一起使用。  
+ HttpCookie 列舉型別是在傳輸層實作。 Simplex 通訊可使用它，此時，用戶端建立一個初始要求，而內容則由服務在對應的回覆中提供。 之後，在整個交談生命週期間，服務與用戶端之間的所有後續訊息都會包含內容。 針對使用 HTTP 傳輸，以及同意使用 HTTP cookie 的用戶端的服務端點，可使用 HttpCookie 列舉型別來交換應用程式內容。 一旦使用 HTTP Cookie 來傳播內容，就應該透過傳輸安全性來保護這些 Cookie 的安全。 這個機制無法與非 HTTP 傳輸一起使用。  
   
- Contextsoapheader 時列舉型別提供一個替代方式，它實作於自定內容通道，可與非 HTTP 傳輸與其他訊息交換模式，如要求-回覆與雙工工作階段。 此內容交換通訊協定提供由傳輸層 HTTP cookie 所提供、與 SOAP 相等的功能。 它引進新的 `wsc:Context` SOAP 標頭來代表內容資訊。 轉換時，必須保護 `wsc:Context` 標頭，避免遭到篡改，其理由與 WS-Addressing 標頭需要保護的理由相同︰訊息到達時，這些標頭是用來將訊息分派給正確的工作流程執行個體。 因此，當繫結提供訊息保護功能時，`wsc:Context` 標頭必須在 SOAP 或傳輸層經過數位簽署。  
+ ContextSoapHeader 列舉型別提供的替代方法，它實作於自定內容通道，並可用於非 HTTP 傳輸與其他訊息交換模式，例如要求-回覆和雙工工作階段。 此內容交換通訊協定提供由傳輸層 HTTP cookie 所提供、與 SOAP 相等的功能。 它引進新的 `wsc:Context` SOAP 標頭來代表內容資訊。 轉換時，必須保護 `wsc:Context` 標頭，避免遭到篡改，其理由與 WS-Addressing 標頭需要保護的理由相同︰訊息到達時，這些標頭是用來將訊息分派給正確的工作流程執行個體。 因此，當繫結提供訊息保護功能時，`wsc:Context` 標頭必須在 SOAP 或傳輸層經過數位簽署。  
   
  通道層級會透過 <xref:System.ServiceModel.Channels.ContextMessageProperty>，在應用程式層級中來回傳送內容。  
   
@@ -70,6 +74,10 @@
       <AssemblyInfo>
         <AssemblyName>System.ServiceModel</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.WorkflowServices</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.ServiceModel.Channels.ContextExchangeMechanism</ReturnType>
@@ -90,6 +98,10 @@
       <AssemblyInfo>
         <AssemblyName>System.ServiceModel</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.WorkflowServices</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.ServiceModel.Channels.ContextExchangeMechanism</ReturnType>

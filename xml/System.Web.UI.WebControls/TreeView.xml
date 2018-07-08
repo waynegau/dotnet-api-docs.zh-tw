@@ -1,11 +1,11 @@
 <Type Name="TreeView" FullName="System.Web.UI.WebControls.TreeView">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="a2131d9cf7e3f6ed711c19cbdd23cf8c5c05ca76" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="87cc020f35a27c4d7f7d936e438a24e4a68df887" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36379403" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37532997" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class TreeView : System.Web.UI.WebControls.HierarchicalDataBoundControl, System.Web.UI.ICallbackEventHandler, System.Web.UI.IPostBackDataHandler, System.Web.UI.IPostBackEventHandler" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit TreeView extends System.Web.UI.WebControls.HierarchicalDataBoundControl implements class System.Web.UI.ICallbackEventHandler, class System.Web.UI.IPostBackDataHandler, class System.Web.UI.IPostBackEventHandler" />
@@ -15,6 +15,7 @@
   <TypeSignature Language="F#" Value="type TreeView = class&#xA;    inherit HierarchicalDataBoundControl&#xA;    interface IPostBackEventHandler&#xA;    interface IPostBackDataHandler&#xA;    interface ICallbackEventHandler" />
   <AssemblyInfo>
     <AssemblyName>System.Web</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
@@ -59,9 +60,9 @@
   
 -   [靜態資料](#static_data)  
   
--   [繫結至資料](#binding_to_data)  
+-   [在 DetailsView 控制項可以繫結至資料來源控制項，例如[SqlDataSource](#binding_to_data)或 AccessDataSource，或實作 System.Collections.IEnumerable 介面，例如 System.Data.DataView，任何資料來源System.Collections.ArrayList 和 System.Collections.Hashtable。](#binding_to_data)  
   
--   [動態節點母體擴展](#dynamic_node_population)  
+-   [動態的節點數](#dynamic_node_population)  
   
 -   [自訂使用者介面](#customizing_the_user_interface)  
   
@@ -75,115 +76,115 @@
   
 <a name="introduction"></a>   
 ## <a name="introduction"></a>簡介  
- <xref:System.Web.UI.WebControls.TreeView>控制項用來顯示階層式資料，例如資料表的目錄或檔案目錄樹狀結構，並支援下列功能：  
+ <xref:System.Web.UI.WebControls.TreeView>控制項來顯示階層式資料，例如資料表的目錄或檔案目錄樹狀結構中，並支援下列功能：  
   
--   資料繫結，可讓控制項繫結至 XML，表格式或關聯式資料的節點。  
+-   資料繫結，可讓控制項繫結至 XML 表格式或關聯式資料的節點。  
   
 -   站台瀏覽與整合<xref:System.Web.UI.WebControls.SiteMapDataSource>控制項。  
   
 -   節點可以顯示為純文字或超連結的文字。  
   
--   以程式設計方式存取<xref:System.Web.UI.WebControls.TreeView>建立樹狀結構、 填入節點等動態設定屬性的物件模型。  
+-   以程式設計方式存取<xref:System.Web.UI.WebControls.TreeView>物件模型來建立樹狀結構、 填入節點等動態設定屬性。  
   
--   （在支援的瀏覽器） 的用戶端節點母體擴展。  
+-   （在支援的瀏覽器） 的用戶端節點數。  
   
 -   顯示每個節點旁邊的核取方塊的功能。  
   
--   透過佈景主題、 使用者定義的映像和樣式的可自訂外觀。  
+-   自訂佈景主題、 使用者定義的映像和樣式的外觀。  
   
     > [!NOTE]
-    >  <xref:System.Web.UI.WebControls.TreeView>控制項用來在內部使用<xref:System.Web.UI.UpdatePanel>控制時，才<xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>設`true`。 <xref:System.Web.UI.UpdatePanel> 控制項用來更新選取的區域，而不是整個頁面更新與回傳的頁面。 如需詳細資訊，請參閱[UpdatePanel 控制項概觀](http://msdn.microsoft.com/library/29a2265d-9674-4c19-b70e-e5560ee9689a)和[局部網頁呈現概觀](http://msdn.microsoft.com/library/5c12736d-d9e9-464a-9388-3fe0f9f49e49)。  
+    >  <xref:System.Web.UI.WebControls.TreeView>控制項的設計是要使用內部<xref:System.Web.UI.UpdatePanel>控制時，才<xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>設定為`true`。 <xref:System.Web.UI.UpdatePanel> 控制項用來更新選取的區域，而不是回傳以更新整個頁面的頁面。 如需詳細資訊，請參閱 < [UpdatePanel 控制項概觀](http://msdn.microsoft.com/library/29a2265d-9674-4c19-b70e-e5560ee9689a)並[網頁局部呈現概觀](http://msdn.microsoft.com/library/5c12736d-d9e9-464a-9388-3fe0f9f49e49)。  
   
 <a name="nodes"></a>   
 ## <a name="nodes"></a>節點  
- <xref:System.Web.UI.WebControls.TreeView>控制項所組成的節點。 在樹狀目錄中的每個項目稱為一個節點，而由<xref:System.Web.UI.WebControls.TreeNode>物件。 節點類型的定義方式如下：  
+ <xref:System.Web.UI.WebControls.TreeView>控制項由節點所組成。 在樹狀目錄中的每個項目都稱為節點，而且會以表示<xref:System.Web.UI.WebControls.TreeNode>物件。 節點類型定義，如下所示：  
   
--   包含其他節點的節點稱為*父節點*。  
+-   包含其他節點的節點，稱為*父節點*。  
   
--   所包含的另一個節點的節點稱為*子節點*。  
+-   包含在另一個節點的節點稱為*子節點*。  
   
 -   沒有子系的節點稱為*分葉節點*。  
   
--   不包含的任何其他節點，但不是所有其他節點上的階節點是*根節點*。  
+-   不包含任何其他節點，但不是所有其他節點之祖系節點*根節點*。  
   
- 節點可以是父代和子系，但根，父代，而且分葉節點為互斥。 節點的數個視覺和行為屬性會取決於節點是根、 子系或分葉節點。  
+ 節點可以是父代和子系，但根、 父代，而且是互斥的分葉節點。 節點的數個視覺化和行為屬性會取決於節點是否為根、 子系或分葉節點。  
   
- 雖然一般樹狀結構只能有一個根節點，<xref:System.Web.UI.WebControls.TreeView>控制項可讓您將多個根節點加入至樹狀結構。 當您想要顯示項目清單，而不會顯示單一根節點，例如產品類別目錄的清單，這非常有用。  
+ 雖然一般樹狀結構只能有一個根節點，<xref:System.Web.UI.WebControls.TreeView>控制項可讓您將多個根節點新增至樹狀結構。 當您想要顯示項目清單，而不會顯示單一根節點，例如產品類別目錄的清單，這非常有用。  
   
- 每個節點都<xref:System.Web.UI.WebControls.TreeNode.Text%2A>屬性和<xref:System.Web.UI.WebControls.TreeNode.Value%2A>屬性。 值<xref:System.Web.UI.WebControls.TreeNode.Text%2A>屬性顯示在<xref:System.Web.UI.WebControls.TreeView>，雖然<xref:System.Web.UI.WebControls.TreeNode.Value%2A>屬性用來儲存節點，例如傳遞至與節點相關聯的回傳事件的資料有關的任何其他資料。  
+ 每個節點都<xref:System.Web.UI.WebControls.TreeNode.Text%2A>屬性和<xref:System.Web.UI.WebControls.TreeNode.Value%2A>屬性。 值<xref:System.Web.UI.WebControls.TreeNode.Text%2A>屬性會顯示在<xref:System.Web.UI.WebControls.TreeView>，雖然<xref:System.Web.UI.WebControls.TreeNode.Value%2A>屬性用來儲存任何其他節點，例如傳遞至回傳與節點相關聯的事件資料相關資料。  
   
- 節點可以是兩個模式之一： 選取模式和瀏覽模式。 根據預設，節點處於選取模式。 若要將節點放入瀏覽模式中，設定<xref:System.Web.UI.WebControls.TreeNode.NavigateUrl%2A>屬性的節點為空字串以外的值 ("")。 節點處於選取模式中，設定<xref:System.Web.UI.WebControls.TreeNode.NavigateUrl%2A>屬性的節點為空字串 ("")。  
+ 節點可以是下列其中一種兩種模式： 選取模式和瀏覽模式。 根據預設，節點處於選取模式。 若要置於瀏覽模式中的節點，設定<xref:System.Web.UI.WebControls.TreeNode.NavigateUrl%2A>屬性的節點為空字串以外的值 ("")。 節點處於選取模式中，設定<xref:System.Web.UI.WebControls.TreeNode.NavigateUrl%2A>屬性的節點為空字串 ("")。  
   
 > [!NOTE]
->  某些網際網路瀏覽器有可能會影響效能的限制<xref:System.Web.UI.WebControls.TreeView>控制項。 例如，Microsoft Internet Explorer 6.0 有回傳的 2067年字元的 URL 字元限制。 如果節點的 URL 中的字元數大於此數目，展開該節點將會失敗並擲回任何例外狀況。  
+>  有些網際網路瀏覽器有可能會影響效能的限制<xref:System.Web.UI.WebControls.TreeView>控制項。 例如，Microsoft Internet Explorer 6.0 有回傳的 2067年字元的 URL 字元限制。 如果節點的 URL 中的字元數大於該數字，展開該節點將會失敗並擲回任何例外狀況。  
   
 <a name="static_data"></a>   
 ## <a name="static-data"></a>靜態資料  
- 最簡單的資料模型的<xref:System.Web.UI.WebControls.TreeView>控制項是靜態的資料。 若要顯示使用宣告式語法的靜態資料，第一次建立巢狀開啟和關閉`<Nodes>`標記的開頭和結尾標記之間<xref:System.Web.UI.WebControls.TreeView>控制項。 接下來，建立巢狀結構的樹狀結構`<asp:TreeNode>`開頭和結尾之間的項目`<Nodes>`標記。 每個`<asp:TreeNode>`元素代表在樹狀目錄中的節點，並將對應至<xref:System.Web.UI.WebControls.TreeNode>物件。 您可以設定每個節點的屬性所設定的屬性其`<asp:TreeNode>`項目。 若要建立子節點，巢狀其他`<asp:TreeNode>`開頭和結尾之間的項目`<asp:TreeNode>`父節點的標記。  
+ 最簡單的資料模型的<xref:System.Web.UI.WebControls.TreeView>控制項是靜態的資料。 若要顯示使用宣告式語法的靜態資料，第一次建立巢狀左右`<Nodes>`標記的開頭和結尾標記之間<xref:System.Web.UI.WebControls.TreeView>控制項。 接下來，建立巢狀樹狀結構`<asp:TreeNode>`之間的開頭和結尾的項目`<Nodes>`標記。 每個`<asp:TreeNode>`項目代表在樹狀目錄中的節點，並將對應至<xref:System.Web.UI.WebControls.TreeNode>物件。 您可以設定每個節點的屬性所設定的屬性其`<asp:TreeNode>`項目。 若要建立子節點，巢狀其他`<asp:TreeNode>`之間的開頭和結尾的項目`<asp:TreeNode>`父節點的標記。  
   
 <a name="binding_to_data"></a>   
-## <a name="binding-to-data"></a>繫結至資料  
- <xref:System.Web.UI.WebControls.TreeView>控制項可以也繫結至資料。 您可以使用兩種方法之一來繫結<xref:System.Web.UI.WebControls.TreeView>控制項至適當的資料來源類型：  
+## <a name="binding-to-data"></a>在 DetailsView 控制項可以繫結至資料來源控制項，例如SqlDataSource或 AccessDataSource，或實作 System.Collections.IEnumerable 介面，例如 System.Data.DataView，任何資料來源System.Collections.ArrayList 和 System.Collections.Hashtable。  
+ <xref:System.Web.UI.WebControls.TreeView>控制項可以也繫結至資料。 您可以使用兩種方法之一來繫結<xref:System.Web.UI.WebControls.TreeView>控制項以適當的資料來源類型：  
   
--   <xref:System.Web.UI.WebControls.TreeView>控制項就可以使用任何資料來源控制項實作<xref:System.Web.UI.IHierarchicalDataSource>介面，例如<xref:System.Web.UI.WebControls.XmlDataSource>控制項或<xref:System.Web.UI.WebControls.SiteMapDataSource>控制項。 若要繫結至資料來源控制項，將<xref:System.Web.UI.WebControls.DataBoundControl.DataSourceID%2A>屬性<xref:System.Web.UI.WebControls.TreeView>控制權傳輸至<xref:System.Web.UI.Control.ID%2A>資料來源控制項的值。 <xref:System.Web.UI.WebControls.TreeView>控制項自動繫結至指定的資料來源控制項。 這是慣用的方法繫結至資料。  
+-   <xref:System.Web.UI.WebControls.TreeView>控制項就可以使用任何資料來源控制項可實作<xref:System.Web.UI.IHierarchicalDataSource>介面，例如<xref:System.Web.UI.WebControls.XmlDataSource>控制項或<xref:System.Web.UI.WebControls.SiteMapDataSource>控制項。 若要繫結至資料來源控制項，將<xref:System.Web.UI.WebControls.DataBoundControl.DataSourceID%2A>屬性<xref:System.Web.UI.WebControls.TreeView>若要控制<xref:System.Web.UI.Control.ID%2A>資料來源控制項的值。 <xref:System.Web.UI.WebControls.TreeView>控制項會自動繫結至指定的資料來源控制項。 此控制項可用來顯示使用者輸入，其中可能包含惡意的用戶端指令碼。  
   
--   <xref:System.Web.UI.WebControls.TreeView>控制項可以也繫結至<xref:System.Xml.XmlDocument>物件或<xref:System.Data.DataSet>關聯的物件。 若要繫結至其中一個資料來源，設定<xref:System.Web.UI.WebControls.BaseDataBoundControl.DataSource%2A>屬性<xref:System.Web.UI.WebControls.TreeView>控制權傳輸至資料來源，然後再呼叫<xref:System.Web.UI.WebControls.BaseDataBoundControl.DataBind%2A>方法。  
+-   <xref:System.Web.UI.WebControls.TreeView>控制項可以也繫結至<xref:System.Xml.XmlDocument>物件或<xref:System.Data.DataSet>與關聯的物件。 若要繫結至其中一個資料來源，將<xref:System.Web.UI.WebControls.BaseDataBoundControl.DataSource%2A>的屬性<xref:System.Web.UI.WebControls.TreeView>控制項加入資料來源，並接著呼叫<xref:System.Web.UI.WebControls.BaseDataBoundControl.DataBind%2A>方法。  
   
- 當繫結至資料來源，其中每個資料項目都包含多個屬性 （例如 XML 項目具有多個屬性），節點會顯示所傳回的值`ToString`資料項目的 預設的方法。 在 XML 項目，該節點會顯示項目名稱，顯示的樹狀結構的基礎結構，但沒有很有用。 您可以藉由指定樹狀節點繫結使用的節點繫結至特定資料的項目屬性<xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>集合。 <xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>集合包含`TreeNodeBinding`物件，定義資料項目及它所繫結的節點之間的關聯性。 您可以指定要顯示的節點中的繫結和資料項目屬性的準則。 如需有關樹狀節點繫結的詳細資訊，請參閱<xref:System.Web.UI.WebControls.TreeNodeBinding>。  
+ 當繫結至資料來源，其中每個資料項目包含多個屬性 （例如 XML 項目具有數個屬性），節點會顯示所傳回的值`ToString`資料項目，根據預設的方法。 在 XML 項目，節點會顯示項目名稱，其中顯示樹狀結構的基礎結構，不過沒有很有幫助。 您可以藉由指定樹狀節點繫結使用節點繫結至特定的資料項目屬性<xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>集合。 <xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>集合包含`TreeNodeBinding`物件會定義資料項目及它所繫結至的節點之間的關聯性。 您可以指定要顯示在節點中的 繫結和資料項目屬性的準則。 如需有關樹狀節點繫結的詳細資訊，請參閱<xref:System.Web.UI.WebControls.TreeNodeBinding>。  
   
 > [!IMPORTANT]
->  惡意使用者可以建立回呼要求並取得資料的節點<xref:System.Web.UI.WebControls.TreeView>網頁開發人員不顯示控制項。 因此，資料來源必須實作之資料的安全性。 請勿使用<xref:System.Web.UI.WebControls.TreeView.MaxDataBindDepth%2A>屬性隱藏的資料。  
+>  惡意使用者可以建立回呼要求，並取得資料的節點<xref:System.Web.UI.WebControls.TreeView>頁面開發人員不顯示控制項。 因此，資料來源必須實作資料的安全性。 請勿使用<xref:System.Web.UI.WebControls.TreeView.MaxDataBindDepth%2A>屬性，可隱藏的資料。  
   
 <a name="dynamic_node_population"></a>   
-## <a name="dynamic-node-population"></a>動態節點母體擴展  
- 某些情況下，它不是靜態定義樹狀結構，因為資料來源傳回太多資料，或是要顯示的資料取決於您在執行階段取得的資訊。 因為這個緣故，<xref:System.Web.UI.WebControls.TreeView>控制項支援動態節點母體擴展。 當<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>節點的屬性設定為`true`，在執行階段的節點展開時填入該節點。 若要以動態方式填入節點，您必須定義的事件處理方法，包含該邏輯填入節點<xref:System.Web.UI.WebControls.TreeView.TreeNodePopulate>事件。  
+## <a name="dynamic-node-population"></a>動態的節點數  
+ 某些情況下，不適合以靜態方式定義樹狀結構，因為資料來源傳回太多資料，或是要顯示的資料取決於您在執行階段取得的資訊。 因為這個緣故，<xref:System.Web.UI.WebControls.TreeView>控制項支援動態的節點數。 當<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>節點的屬性設定為`true`，該節點會在執行階段節點展開時填入。 若要以動態方式填入節點，您必須定義包含邏輯，可填入的節點事件處理方法<xref:System.Web.UI.WebControls.TreeView.TreeNodePopulate>事件。  
   
- 瀏覽器支援回呼指令碼也可以利用用戶端節點母體擴展。 （這包括 Internet Explorer 5.5 及更新版本和一些其他瀏覽器）。可讓用戶端節點擴展<xref:System.Web.UI.WebControls.TreeView>控制項填入用戶端指令碼，當使用者展開節點，而不需要往返伺服器的節點。 如需有關用戶端節點母體擴展的詳細資訊，請參閱<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>。  
+ 瀏覽器支援回呼指令碼也可以利用用戶端節點數。 （這包括 Internet Explorer 5.5 和更新版本以及某些其他的瀏覽器）。可讓用戶端節點擴展<xref:System.Web.UI.WebControls.TreeView>控制項填入節點，使用用戶端指令碼，當使用者展開節點，而不需要往返伺服器。 如需有關用戶端節點數的詳細資訊，請參閱<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>。  
   
 <a name="customizing_the_user_interface"></a>   
 ## <a name="customizing-the-user-interface"></a>自訂使用者介面  
- 有許多方法可自訂的外觀<xref:System.Web.UI.WebControls.TreeView>控制項。 首先，您可以指定不同的樣式 （例如 字型和色彩） 的每個節點類型。  
+ 有許多方式來自訂外觀<xref:System.Web.UI.WebControls.TreeView>控制項。 首先，您可以指定不同的樣式 （例如字型大小和色彩） 的每個節點類型。  
   
- 如果您使用階層式樣式表 (CSS) 來自訂控制項的外觀，使用內嵌樣式或個別的 CSS 檔案，但非兩者。 使用內嵌樣式和個別的 CSS 檔案，可能會造成非預期的結果。 如需有關如何使用控制項的樣式表的詳細資訊，請參閱[Web 伺服器控制項和 CSS 樣式](http://msdn.microsoft.com/library/782c2db6-fc9b-4243-8df9-a8ffe2f4cc42)。  
+ 如果您使用階層式樣式表 (CSS) 來自訂控制項的外觀時，使用內嵌樣式或個別的 CSS 檔案，但非兩者。 使用內嵌樣式和個別的 CSS 檔案，可能會造成非預期的結果。 如需有關使用使用控制項的樣式表的詳細資訊，請參閱 < [Web 伺服器控制項和 CSS 樣式](http://msdn.microsoft.com/library/782c2db6-fc9b-4243-8df9-a8ffe2f4cc42)。  
   
  下表列出可用的節點樣式。  
   
 |節點的樣式屬性|描述|  
 |-------------------------|-----------------|  
-|<xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>|當滑鼠指標進入此節點的樣式設定。|  
+|<xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>|當滑鼠指標移至上方的節點樣式設定。|  
 |<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>|分葉節點的樣式設定。|  
 |<xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>|節點的預設樣式設定。|  
 |<xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>|父節點的樣式設定。|  
 |<xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A>|根節點的樣式設定。|  
-|<xref:System.Web.UI.WebControls.TreeView.SelectedNodeStyle%2A>|選取節點的樣式設定。|  
+|<xref:System.Web.UI.WebControls.TreeView.SelectedNodeStyle%2A>|選取的節點樣式設定。|  
   
- 您也可以藉由控制節點在樹狀結構中的特定深度樣式<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>集合。 集合中的第一個樣式會對應至節點在樹狀目錄中的第一個層級的樣式。 集合中的第二個樣式會對應為樣式的樹狀目錄中，等第二個層級的節點。 這是最常用於產生目錄樣式導覽功能表的資料表位置的特定深度的節點都必須有相同的外觀，不論它們是否具有子節點。  
+ 您也可以控制在樹狀結構中的特定深度的節點樣式使用<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>集合。 集合中的第一個樣式會對應至節點的樹狀目錄中的第一層樣式。 集合中的第二個樣式會對應至在樹狀目錄中，並依此類推的第二個層級的節點樣式。 這是最常用來產生資料表的內容 – 樣式巡覽功能表其中位於特定深度的節點應該具有相同的外觀，不論它們是否具有子節點。  
   
 > [!NOTE]
->  如果所定義的特定深度層級使用<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>集合，該樣式會覆寫任何根、 父系或分葉節點樣式設定為在該深度的節點。  
+>  如果已定義特定深度層級使用的樣式<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>集合，該樣式會覆寫任何根、 父代或位於該深度的節點的分葉節點樣式設定。  
   
- 若要變更控制項的外觀的另一個方法是自訂映像中所顯示的<xref:System.Web.UI.WebControls.TreeView>控制項。 您可以指定您自己的映像，以不同的組件控制項的自訂集，藉由設定下表中所顯示的內容。  
+ 若要變更控制項的外觀的另一個方法是自訂映像中所顯示的<xref:System.Web.UI.WebControls.TreeView>控制項。 您可以指定您自己自訂的控制項的不同部分的映像集，藉由設定下表所示的屬性。  
   
 |影像屬性|描述|  
 |--------------------|-----------------|  
-|<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>|可摺疊節點指示器顯示影像的 URL。 此映像通常是減號 （-）。|  
+|<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>|可摺疊節點指示器顯示之影像 URL。 此映像通常是減號 （-）。|  
 |<xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>|展開節點指示器顯示之影像 URL。 此映像通常是加號 （+）。|  
-|<xref:System.Web.UI.WebControls.TreeView.LineImagesFolder%2A>|包含用來連接到子節點的父節點的線條影像的資料夾 URL。 <xref:System.Web.UI.WebControls.TreeView.ShowLines%2A>屬性也必須設定為`true`造成影響的這個屬性。|  
-|<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>|無法展開節點指示器顯示影像的 URL。|  
+|<xref:System.Web.UI.WebControls.TreeView.LineImagesFolder%2A>|包含用來連接到子節點的父節點的線條影像的資料夾 URL。 <xref:System.Web.UI.WebControls.TreeView.ShowLines%2A>屬性也必須設為`true`影響這個屬性。|  
+|<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>|無法展開節點指示器顯示之影像 URL。|  
   
 > [!NOTE]
->  您不需要自訂每個映像的屬性。 如果未明確地設定影像屬性，則會使用內建的預設映像。  
+>  您不需要自訂每個映像屬性。 如果未明確設定為影像屬性，則會使用預設的內建映像。  
   
- <xref:System.Web.UI.WebControls.TreeView>控制項也可讓您顯示節點旁邊的核取方塊。 當<xref:System.Web.UI.WebControls.TreeView.ShowCheckBoxes%2A>以外屬性設定為值`TreeNodeTypes.None`，指定的節點型別旁顯示核取方塊。  
+ <xref:System.Web.UI.WebControls.TreeView>控制項也可讓您顯示的節點旁的核取方塊。 當<xref:System.Web.UI.WebControls.TreeView.ShowCheckBoxes%2A>以外的其他屬性設定為值`TreeNodeTypes.None`，指定的節點類型旁顯示核取方塊。  
   
 > [!NOTE]
->  <xref:System.Web.UI.WebControls.TreeView.ShowCheckBoxes%2A>屬性可以設定為的位元組合<xref:System.Web.UI.WebControls.TreeNodeTypes>列舉成員值。  
+>  <xref:System.Web.UI.WebControls.TreeView.ShowCheckBoxes%2A>屬性可設定成的位元組合<xref:System.Web.UI.WebControls.TreeNodeTypes>列舉成員值。  
   
- 網頁回傳至伺服器，每次<xref:System.Web.UI.WebControls.TreeView.CheckedNodes%2A>集合會自動填入選取的節點。 當顯示核取方塊時，您可以使用<xref:System.Web.UI.WebControls.TreeView.TreeNodeCheckChanged>執行自訂常式，每當發佈至伺服器期間的核取方塊的狀態變更事件。  
+ 網頁回傳至伺服器，每次<xref:System.Web.UI.WebControls.TreeView.CheckedNodes%2A>集合會自動填入選取的節點。 當顯示核取方塊時，您可以使用<xref:System.Web.UI.WebControls.TreeView.TreeNodeCheckChanged>事件，以執行自訂的常式，每當發佈至伺服器期間變更的核取方塊的狀態。  
   
 <a name="events"></a>   
 ## <a name="events"></a>事件  
- <xref:System.Web.UI.WebControls.TreeView>控制項提供數個事件，您可以程式設計的。 這可讓您在事件發生時執行自訂的常式。 下表列出支援的事件<xref:System.Web.UI.WebControls.TreeView>控制項。  
+ <xref:System.Web.UI.WebControls.TreeView>控制項提供數個事件，您可以進行程式設計。 這可讓您執行自訂的常式，每當事件發生時。 下表列出支援的事件<xref:System.Web.UI.WebControls.TreeView>控制項。  
   
 |Event - 事件|描述|  
 |-----------|-----------------|  
@@ -196,11 +197,11 @@
   
 <a name="scrolling"></a>   
 ## <a name="scrolling"></a>捲動  
- <xref:System.Web.UI.WebControls.TreeView>控制項沒有內建捲動。 若要加入捲動功能，加上<xref:System.Web.UI.WebControls.TreeView>控制<xref:System.Web.UI.WebControls.Panel>控制，並將捲軸來加入<xref:System.Web.UI.WebControls.Panel>控制項。 如需詳細資訊，請參閱[面板 Web 伺服器控制項概觀](http://msdn.microsoft.com/library/127b61ed-87f2-46f4-92a3-785166e7245b)。  
+ <xref:System.Web.UI.WebControls.TreeView>控制項沒有內建的捲動。 若要加入捲動功能，請將<xref:System.Web.UI.WebControls.TreeView>在中控制可<xref:System.Web.UI.WebControls.Panel>控制項，然後將捲軸以<xref:System.Web.UI.WebControls.Panel>控制項。 如需詳細資訊，請參閱 <<c0> [ 面板 Web Server Control Overview](http://msdn.microsoft.com/library/127b61ed-87f2-46f4-92a3-785166e7245b)。  
   
 <a name="accessibility"></a>   
 ## <a name="accessibility"></a>協助工具選項  
- 協助工具標準，可能不符合呈現，根據預設，此控制項的標記。 如需對這個控制項的協助工具支援的詳細資訊，請參閱[ASP.NET 控制項和協助工具](http://msdn.microsoft.com/library/847a37e3-ce20-41da-b0d3-7dfb0fdae9a0)。  
+ 根據預設，此控制項所呈現的標記可能不符合協助工具標準。 如需有關此控制項的協助工具支援的詳細資訊，請參閱 < [ASP.NET 控制項和協助工具](http://msdn.microsoft.com/library/847a37e3-ce20-41da-b0d3-7dfb0fdae9a0)。  
   
 <a name="declarative_syntax"></a>   
 ## <a name="declarative-syntax"></a>宣告式語法  
@@ -479,34 +480,34 @@
   
 -   第一個程式碼範例示範如何設定第二個程式碼範例中的框架。  
   
--   第二個程式碼範例示範如何使用宣告式語法，來顯示靜態資料<xref:System.Web.UI.WebControls.TreeView>控制項。  
+-   第二個程式碼範例示範如何使用宣告式語法中的靜態資料顯示<xref:System.Web.UI.WebControls.TreeView>控制項。  
   
--   第三個的程式碼範例示範如何將繫結<xref:System.Web.UI.WebControls.TreeView>XML 資料來源的控制項。  
+-   第三個程式碼範例示範如何繫結<xref:System.Web.UI.WebControls.TreeView>XML 資料來源的控制項。  
   
 -   第四個程式碼範例會提供第三個程式碼範例中的範例 XML 資料。  
   
--   第五個的程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView>控制項繫結至站台瀏覽<xref:System.Web.UI.WebControls.SiteMapDataSource>控制項。  
+-   第五個的程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView>控制項所繫結至網站導覽<xref:System.Web.UI.WebControls.SiteMapDataSource>控制項。  
   
--   第六個程式碼範例提供第五個的程式碼範例的範例網站地圖資料。  
+-   第六個的程式碼範例會將範例網站導覽資料提供的第五個的程式碼範例。  
   
--   第七個的程式碼範例示範如何擴展中的節點<xref:System.Web.UI.WebControls.TreeView>從用戶端的控制項。  
+-   第七個的程式碼範例示範如何在擴展集中的節點<xref:System.Web.UI.WebControls.TreeView>從用戶端的控制項。  
   
  下列程式碼範例示範如何設定如下列程式碼範例的框架。  
   
  [!code-aspx-csharp[TreeViewFrameSet#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewFrameSet/CS/framecs.aspx#1)]
  [!code-aspx-vb[TreeViewFrameSet#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewFrameSet/VB/framevb.aspx#1)]  
   
- 下列程式碼範例示範如何使用宣告式語法，來顯示靜態資料<xref:System.Web.UI.WebControls.TreeView>控制項。 本範例是上述範例中的框架組用來顯示資料表的內容。  
+ 下列程式碼範例示範如何使用宣告式語法中的靜態資料顯示<xref:System.Web.UI.WebControls.TreeView>控制項。 此範例是上述範例中的框架組用來顯示資料表的內容。  
   
  [!code-aspx-csharp[TreeViewFrameExample#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewFrameExample/CS/treeviewframecs.aspx#1)]
  [!code-aspx-vb[TreeViewFrameExample#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewFrameExample/VB/treeviewframevb.aspx#1)]  
   
- 下列程式碼範例示範如何將繫結<xref:System.Web.UI.WebControls.TreeView>XML 資料來源的控制項。 針對此範例正常運作，您必須複製此程式碼範例中，為 Book.xml 檔案之後所提供的範例 XML 資料。  
+ 下列程式碼範例示範如何繫結<xref:System.Web.UI.WebControls.TreeView>XML 資料來源的控制項。 針對此範例正常運作，您必須複製此程式碼範例中，名為 Book.xml 之後提供的範例 XML 資料。  
   
  [!code-aspx-csharp[TreeViewXml#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewXml/CS/treeviewxmlcs.aspx#1)]
  [!code-aspx-vb[TreeViewXml#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewXml/VB/treeviewxmlvb.aspx#1)]  
   
- 下列程式碼範例會提供 XML 資料，上述範例。  
+ 下列程式碼範例會提供上述範例中的範例 XML 資料。  
   
 ```  
 <Book Title="Book Title">  
@@ -523,12 +524,12 @@
 </Book>  
 ```  
   
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView>控制項繫結至站台瀏覽<xref:System.Web.UI.WebControls.SiteMapDataSource>控制項。 針對此範例正常運作，您必須複製範例站台對應資料，此程式碼範例中，為 Web.sitemap 檔案之後提供。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView>控制項所繫結至網站導覽<xref:System.Web.UI.WebControls.SiteMapDataSource>控制項。 針對此範例正常運作，您必須複製範例網站導覽資料，此程式碼範例中，為 Web.sitemap 檔案之後提供。  
   
  [!code-aspx-csharp[TreeViewAutoGenerateBindings#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewAutoGenerateBindings/CS/treeviewautogeneratebindingscs.aspx#1)]
  [!code-aspx-vb[TreeViewAutoGenerateBindings#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewAutoGenerateBindings/VB/treeviewautogeneratebindingsvb.aspx#1)]  
   
- 下列程式碼範例，上述程式碼範例提供範例網站地圖資料。  
+ 下列程式碼範例會將範例網站導覽資料提供上述的程式碼範例。  
   
 ```  
 <siteMap>  
@@ -541,7 +542,7 @@
 </siteMap>  
 ```  
   
- 下列程式碼範例示範如何擴展中的節點<xref:System.Web.UI.WebControls.TreeView>從用戶端的控制項。 啟用用戶端節點母體擴展時，節點會自動填入用戶端，而不需回傳至伺服器上。  
+ 下列程式碼範例示範如何在擴展集中的節點<xref:System.Web.UI.WebControls.TreeView>從用戶端的控制項。 啟用用戶端節點母體擴展時，會自動在用戶端，而不需要回傳給伺服器填入節點。  
   
  [!code-aspx-csharp[TreeViewPopulateNodesFromClient#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewPopulateNodesFromClient/CS/treeviewpopulatenodesfromclientcs.aspx#1)]
  [!code-aspx-vb[TreeViewPopulateNodesFromClient#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewPopulateNodesFromClient/VB/treeviewpopulatenodesfromclientvb.aspx#1)]  
@@ -576,6 +577,7 @@
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters />
@@ -585,19 +587,19 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.%23ctor%2A>建構函式來建立和初始化的新執行個體<xref:System.Web.UI.WebControls.TreeView>類別。 若要加入<xref:System.Web.UI.WebControls.TreeView>動態控制項加入頁面中，建立新<xref:System.Web.UI.WebControls.TreeView>物件、 設定其屬性，並再將它加入<xref:System.Web.UI.Control.Controls%2A?displayProperty=nameWithType>容器集合控制項，例如<xref:System.Web.UI.WebControls.PlaceHolder>控制項。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.%23ctor%2A>建構函式來建立和初始化的新執行個體<xref:System.Web.UI.WebControls.TreeView>類別。 若要新增<xref:System.Web.UI.WebControls.TreeView>動態控制項加入頁面中，建立新<xref:System.Web.UI.WebControls.TreeView>物件，設定其屬性，然後再將它加入<xref:System.Web.UI.Control.Controls%2A?displayProperty=nameWithType>集合的容器控制項，例如<xref:System.Web.UI.WebControls.PlaceHolder>控制項。  
   
    
   
 ## Examples  
- 本節包含兩個程式碼範例。 第一個程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.%23ctor%2A>建構函式來加入<xref:System.Web.UI.WebControls.TreeView>以動態方式控制的頁面。 第二個程式碼範例會提供第一個程式碼範例中的範例 XML 資料。  
+ 本節包含兩個程式碼範例。 第一個程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.%23ctor%2A>建構函式來加入<xref:System.Web.UI.WebControls.TreeView>動態控制項加入頁面。 第二個程式碼範例會提供第一個程式碼範例中的範例 XML 資料。  
   
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.%23ctor%2A>建構函式來加入<xref:System.Web.UI.WebControls.TreeView>以動態方式控制的頁面。 針對此範例正常運作，您必須複製此程式碼範例中，為 Book.xml 檔案後所提供的 XML 資料範例。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.%23ctor%2A>建構函式來加入<xref:System.Web.UI.WebControls.TreeView>動態控制項加入頁面。 針對此範例正常運作，您必須複製此程式碼範例中，名為 Book.xml 之後提供的範例 XML 資料。  
   
  [!code-aspx-csharp[TreeViewCtor#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewCtor/CS/treeviewctorcs.aspx#1)]
  [!code-aspx-vb[TreeViewCtor#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewCtor/VB/treeviewctorvb.aspx#1)]  
   
- 下列程式碼範例會提供 XML 資料，上述範例。  
+ 下列程式碼範例會提供上述範例中的範例 XML 資料。  
   
 ```  
 <Book Title="Book Title">  
@@ -630,6 +632,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -663,6 +666,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -681,12 +685,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 樹狀節點繫結會定義資料項目及它所繫結的節點之間的關聯性。 繫結至其中的每個資料項目包含多個屬性 （例如 XML 項目具有多個屬性），資料來源時<xref:System.Web.UI.WebControls.TreeView>控制項需要知道哪些資料的項目要繫結屬性的<xref:System.Web.UI.WebControls.TreeNode>屬性。 如果<xref:System.Web.UI.WebControls.TreeView.AutoGenerateDataBindings%2A>屬性設定為`true`、<xref:System.Web.UI.WebControls.TreeView>控制項自動產生預設樹狀節點繫結設定<xref:System.Web.UI.WebControls.TreeNode.Text%2A>屬性<xref:System.Web.UI.WebControls.TreeNode>為值的繫結相關聯的物件所傳回`ToString`資料項目的方法。  
+ 樹狀節點繫結會定義資料項目及它所繫結至的節點之間的關聯性。 當繫結至其中的每個資料項目包含多個屬性 （例如 XML 項目具有數個屬性），資料來源<xref:System.Web.UI.WebControls.TreeView>控制項需要知道哪些資料的項目屬性繫結至其<xref:System.Web.UI.WebControls.TreeNode>屬性。 如果<xref:System.Web.UI.WebControls.TreeView.AutoGenerateDataBindings%2A>屬性設定為`true`，則<xref:System.Web.UI.WebControls.TreeView>控制項會自動產生預設樹狀節點繫結設定<xref:System.Web.UI.WebControls.TreeNode.Text%2A>屬性<xref:System.Web.UI.WebControls.TreeNode>為值的繫結相關聯的物件所傳回`ToString`資料項目的方法。  
   
 > [!NOTE]
->  自動產生的樹狀節點繫結不會加入至<xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>集合。  
+>  自動產生的樹狀節點繫結不會新增至<xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>集合。  
   
- 在 XML 項目時，所傳回的值的情況下`ToString`方法則是項目名稱，顯示的 XML 檔案的基礎結構，但沒有很有用。 若要建立更有用的樹狀結構，您必須定義您自己的樹狀節點繫結填入<xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>集合。  
+ 在 XML 項目時，所傳回的值的情況下`ToString`方法是項目名稱，顯示的 XML 檔案中，基礎結構，但沒有很有幫助。 若要建立更有用的樹狀目錄中，您必須定義您自己的樹狀節點繫結填入<xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>集合。  
   
 > [!NOTE]
 >  如果您定義<xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>集合，<xref:System.Web.UI.WebControls.TreeView>控制項而不是自動產生的樹狀節點繫結中使用這些值。  
@@ -696,14 +700,14 @@
    
   
 ## Examples  
- 本節包含兩個程式碼範例。 第一個程式碼範例示範如何設定以停用自動樹狀結構節點繫結產生<xref:System.Web.UI.WebControls.TreeView.AutoGenerateDataBindings%2A>屬性`false`。 第二個程式碼範例的第一個程式碼範例提供範例網站地圖資料。  
+ 本節包含兩個程式碼範例。 第一個程式碼範例示範如何設定停用自動的樹狀節點繫結產生<xref:System.Web.UI.WebControls.TreeView.AutoGenerateDataBindings%2A>屬性設`false`。 第二個程式碼範例會將範例網站導覽資料提供第一個程式碼範例。  
   
- 下列程式碼範例示範如何設定以停用自動樹狀結構節點繫結產生<xref:System.Web.UI.WebControls.TreeView.AutoGenerateDataBindings%2A>屬性`false`。 A<xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>集合，然後定義建立關聯性中的資料項目之間<xref:System.Web.UI.WebControls.SiteMapDataSource>控制項和節點<xref:System.Web.UI.WebControls.TreeView>控制項。 針對此範例正常運作，您必須複製範例站台對應資料，此程式碼範例中，為 Web.sitemap 檔案之後提供。  
+ 下列程式碼範例示範如何設定停用自動的樹狀節點繫結產生<xref:System.Web.UI.WebControls.TreeView.AutoGenerateDataBindings%2A>屬性設`false`。 A<xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>以建立中的資料項目之間的關聯性，然後定義集合<xref:System.Web.UI.WebControls.SiteMapDataSource>控制項和節點<xref:System.Web.UI.WebControls.TreeView>控制項。 針對此範例正常運作，您必須複製範例網站導覽資料，此程式碼範例中，為 Web.sitemap 檔案之後提供。  
   
  [!code-aspx-csharp[TreeViewAutoGenerateBindings#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewAutoGenerateBindings/CS/treeviewautogeneratebindingscs.aspx#1)]
  [!code-aspx-vb[TreeViewAutoGenerateBindings#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewAutoGenerateBindings/VB/treeviewautogeneratebindingsvb.aspx#1)]  
   
- 下列程式碼範例會提供範例網站導覽資料，上述範例。  
+ 下列程式碼範例會將範例網站導覽資料提供上述範例中。  
   
 ```  
 <siteMap>  
@@ -733,6 +737,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -754,12 +759,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 核取方塊會顯示在<xref:System.Web.UI.WebControls.TreeView>控制項 (藉由設定<xref:System.Web.UI.WebControls.TreeView.ShowCheckBoxes%2A>屬性以外的值為`TreeNodeType.None`)，使用<xref:System.Web.UI.WebControls.TreeView.CheckedNodes%2A>屬性來判斷哪一個節點會顯示選取的核取方塊。 這個集合通常用於逐一查看所有已選取的核取方塊，在樹狀目錄中的節點。  
+ 當核取方塊會顯示在<xref:System.Web.UI.WebControls.TreeView>控制項 (藉由設定<xref:System.Web.UI.WebControls.TreeView.ShowCheckBoxes%2A>以外的值的屬性`TreeNodeType.None`)，使用<xref:System.Web.UI.WebControls.TreeView.CheckedNodes%2A>屬性來判斷哪些節點會顯示選取的核取方塊。 這個集合通常會用來逐一查看樹狀目錄中已選取的核取方塊的所有節點中。  
   
- <xref:System.Web.UI.WebControls.TreeView.TreeNodeCheckChanged>就會引發事件時的核取方塊<xref:System.Web.UI.WebControls.TreeView>控制項變更發佈至伺服器之間的狀態。 這可讓您提供執行自訂的常式，例如更新資料庫或顯示的內容時就會發生此事件的事件處理方法。  
+ <xref:System.Web.UI.WebControls.TreeView.TreeNodeCheckChanged>就會引發事件時的核取方塊<xref:System.Web.UI.WebControls.TreeView>控制項變更發佈至伺服器之間的狀態。 這可讓您提供執行自訂的常式，例如更新顯示的內容或資料庫時就會發生此事件的事件處理方法。  
   
 > [!NOTE]
->  <xref:System.Web.UI.WebControls.TreeView.CheckedNodes%2A>樹狀結構的深度優先周遊填入集合： 之前的下一個父節點會填入處理每個父節點及其子節點下。  
+>  <xref:System.Web.UI.WebControls.TreeView.CheckedNodes%2A>填入集合時使用的樹狀結構的深度優先周遊： 之前的下一個父節點會填入，將會處理其所有子節點下的每個父節點。  
   
    
   
@@ -786,6 +791,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -798,12 +804,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.CollapseAll%2A>方法提供便利的方式關閉每個節點在樹狀目錄中。  
+ <xref:System.Web.UI.WebControls.TreeView.CollapseAll%2A>方法提供便利的方式來關閉在樹狀目錄中的每個節點。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.CollapseAll%2A>摺疊中的所有節點的方法<xref:System.Web.UI.WebControls.TreeView>控制項在相同的時間。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.CollapseAll%2A>方法來摺疊中的所有節點<xref:System.Web.UI.WebControls.TreeView>控制項在相同的時間。  
   
  [!code-aspx-csharp[TreeViewExpandAll#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewExpandAll/CS/treeviewexpandallcs.aspx#1)]
  [!code-aspx-vb[TreeViewExpandAll#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewExpandAll/VB/treeviewexpandallvb.aspx#1)]  
@@ -823,6 +829,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -840,16 +847,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.CollapseImageToolTip%2A>屬性來指定可摺疊的映像的工具提示。 您指定的文字會提供可用來將控制項設為更容易存取的映像的描述的輔助技術裝置。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.CollapseImageToolTip%2A>屬性，以指定的可摺疊的映像的工具提示。 您指定的文字會提供可用來將控制項設為更容易存取的映像的描述的輔助技術裝置。  
   
  這個屬性的值會儲存檢視狀態中。  
   
- 這個屬性的值設定時，可以自動儲存到資源檔使用設計工具。 如需詳細資訊，請參閱<xref:System.ComponentModel.LocalizableAttribute>和[全球化和當地語系化](http://msdn.microsoft.com/library/8ef3838e-9d05-4236-9dd0-ceecff9df80d)。  
+ 此屬性的值設定時，可以自動儲存到資源檔使用設計工具。 如需詳細資訊，請參閱 <<c0> <xref:System.ComponentModel.LocalizableAttribute> 並[全球化和當地語系化](http://msdn.microsoft.com/library/8ef3838e-9d05-4236-9dd0-ceecff9df80d)。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.CollapseImageToolTip%2A>屬性，以指定的映像，可摺疊節點指示器會顯示工具提示。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.CollapseImageToolTip%2A>屬性來指定映像可摺疊節點指示器顯示之工具提示。  
   
  [!code-aspx-csharp[TreeViewCustomImage#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewCustomImage/CS/treeviewcustomimagecs.aspx#1)]
  [!code-aspx-vb[TreeViewCustomImage#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewCustomImage/VB/treeviewcustomimagevb.aspx#1)]  
@@ -872,6 +879,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -895,21 +903,21 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性來指定自訂映像可摺疊節點的指標。 此映像可摺疊的節點旁會顯示，而且通常是減號 （-）。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性可指定為可摺疊節點指示器之自訂影像。 此映像的可摺疊的節點旁會顯示，而且通常是減號 （-）。  
   
- 當<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性設定為`true`、<xref:System.Web.UI.WebControls.TreeView>控制項顯示加號 （+） 或減號 sign(-) 或影像預留位置，表示節點是否可展開、 摺疊，或無法展開分別節點旁邊。 您可以指定第一個設定的自訂映像<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性`TreeViewImageSet.Custom`，然後設定<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>， <xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>，和<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性，以自訂影像的 Url。 如果未不指定任何影像，則會使用預設映像。 若要隱藏展開節點指示器，設定<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性`false`。  
+ 當<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性設定為`true`，則<xref:System.Web.UI.WebControls.TreeView>控制項顯示一個加號 （+） 或減號 sign(-) 或影像預留位置，表示節點是否可展開、 摺疊，或無法展開，分別的節點旁。 您可以指定第一個設定的自訂映像<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性，以`TreeViewImageSet.Custom`，然後設定<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>， <xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>，和<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性，以自訂映像的 Url。 如果未不指定任何影像，則會使用預設映像。 若要隱藏展開節點指示器，設定<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性設`false`。  
   
 > [!NOTE]
->  若要確認節點在正確對齊<xref:System.Web.UI.WebControls.TreeView>控制使用自訂映像時，請確定所指定的所有映像<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>， <xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>，和<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性有相同的維度。  
+>  若要確保節點正確對齊<xref:System.Web.UI.WebControls.TreeView>控制項使用自訂映像時，請確定所指定的所有映像<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>， <xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>，和<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性具有相同維度。  
   
- 當使用自訂映像可摺疊節點指標時，您也應該考慮設定<xref:System.Web.UI.WebControls.TreeView.CollapseImageToolTip%2A>屬性來指定映像的工具提示。  
+ 當使用自訂映像可摺疊節點指示器，您也應該考慮設定<xref:System.Web.UI.WebControls.TreeView.CollapseImageToolTip%2A>屬性來指定映像的工具提示。  
   
  這個屬性的值會儲存檢視狀態中。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性來指定自訂映像可摺疊節點的指標。 程式碼範例，以顯示在控制項中顯示的映像，您必須提供自己的映像和<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性必須設定為`TreeNodeImageSet.Custom`。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性可指定為可摺疊節點指示器之自訂影像。 程式碼範例，即可顯示和控制項中顯示的影像，您必須提供自己的映像並<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性必須設為`TreeNodeImageSet.Custom`。  
   
  [!code-aspx-csharp[TreeViewCustomImage#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewCustomImage/CS/treeviewcustomimagecs.aspx#1)]
  [!code-aspx-vb[TreeViewCustomImage#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewCustomImage/VB/treeviewcustomimagevb.aspx#1)]  
@@ -934,6 +942,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -947,7 +956,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView>控制項不支援內嵌的子控制項。 若要防止加入子控制項的已覆寫這個方法，且一律會傳回<xref:System.Web.UI.EmptyControlCollection?displayProperty=nameWithType>物件。  
+ <xref:System.Web.UI.WebControls.TreeView>控制項不支援內嵌的子控制項。 若要防止子控制項的已覆寫這個方法，而且一律傳回<xref:System.Web.UI.EmptyControlCollection?displayProperty=nameWithType>物件。  
   
  ]]></format>
         </remarks>
@@ -964,6 +973,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -978,9 +988,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.CreateNode%2A>方法是 helper 方法，傳回的新執行個體<xref:System.Web.UI.WebControls.TreeNode>類別。  
+ <xref:System.Web.UI.WebControls.TreeView.CreateNode%2A>方法會傳回的新執行個體的協助程式方法<xref:System.Web.UI.WebControls.TreeNode>類別。  
   
- <xref:System.Web.UI.WebControls.TreeView.CreateNode%2A>方法主要由控制項開發人員使用。 控制要擴充的開發人員<xref:System.Web.UI.WebControls.TreeView>藉由擴充類別<xref:System.Web.UI.WebControls.TreeNode>類別應該覆寫此方法以傳回物件，衍生自<xref:System.Web.UI.WebControls.TreeNode>。 若要擴充的常見原因<xref:System.Web.UI.WebControls.TreeNode>類別是要覆寫<xref:System.Web.UI.WebControls.TreeNode.RenderPreText%2A>和<xref:System.Web.UI.WebControls.TreeNode.RenderPostText%2A>方法。  
+ <xref:System.Web.UI.WebControls.TreeView.CreateNode%2A>方法主要由控制項開發人員使用。 控制要擴充的開發人員<xref:System.Web.UI.WebControls.TreeView>類別的擴充<xref:System.Web.UI.WebControls.TreeNode>類別應該覆寫此方法以傳回衍生自物件<xref:System.Web.UI.WebControls.TreeNode>。 若要擴充的常見原因<xref:System.Web.UI.WebControls.TreeNode>類別會覆寫<xref:System.Web.UI.WebControls.TreeNode.RenderPreText%2A>和<xref:System.Web.UI.WebControls.TreeNode.RenderPostText%2A>方法。  
   
  ]]></format>
         </remarks>
@@ -996,6 +1006,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1025,6 +1036,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1052,39 +1064,39 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>集合包含<xref:System.Web.UI.WebControls.TreeNodeBinding>物件，定義資料項目及它所繫結的節點之間的關聯性。 當繫結至資料來源，其中每個資料項目都包含多個屬性 （例如 XML 項目具有多個屬性），節點會顯示所傳回的值`ToString`資料項目的 預設的方法。 在 XML 項目，該節點會顯示項目名稱，其中顯示基礎結構的樹狀目錄中，不過沒有非常有用。 您可以藉由指定樹狀節點繫結，節點繫結至特定的資料屬性。  
+ <xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>集合包含<xref:System.Web.UI.WebControls.TreeNodeBinding>物件會定義資料項目及它所繫結至的節點之間的關聯性。 當繫結至資料來源，其中每個資料項目包含多個屬性 （例如 XML 項目具有數個屬性），節點會顯示所傳回的值`ToString`資料項目，根據預設的方法。 在 XML 項目，節點會顯示項目名稱，顯示的樹狀目錄中，基礎結構，但沒有很有幫助。 您可以藉由指定樹狀節點繫結，節點繫結至特定的資料項目屬性。  
   
- 當定義資料項目及節點之間的關聯性，您必須指定繫結和值的屬性繫結準則<xref:System.Web.UI.WebControls.TreeNode>物件。 準則則表示資料的項目應該繫結到節點。 使用節點深度、 資料成員，或兩者，可以指定準則。 節點深度指定節點層級取得繫結。 比方說，如果您指定節點的深度為 0，層級 0 的樹狀結構中的所有節點都繫都結使用樹狀目錄節點繫結。 資料成員基礎資料來源中，指定資料的項目類型，但可以代表不同的資訊，根據資料來源。 例如，資料成員的 XML 項目會指定項目的名稱。  
+ 在定義的資料項目與節點之間的關聯性時，您必須指定這兩個準則的繫結，以及值的屬性繫結<xref:System.Web.UI.WebControls.TreeNode>物件。 資料的項目應該繫結至節點時，就會指出準則。 與節點深度、 資料成員，或兩者都可以指定準則。 節點深度指定節點層級取得繫結。 例如，如果您指定節點深度為 0，層級 0 的樹狀結構中的所有節點會繫都結使用樹狀節點繫結。 資料成員指定基礎資料來源中資料項目的類型，但可以代表不同的資訊，根據資料來源。 例如，XML 項目的資料成員會指定項目的名稱。  
   
- 若為多個<xref:System.Web.UI.WebControls.TreeNodeBinding>物件定義與彼此衝突<xref:System.Web.UI.WebControls.TreeView>控制項適用於樹狀節點繫結，以下列順序的優先順序：  
+ 如果有多個<xref:System.Web.UI.WebControls.TreeNodeBinding>會定義物件彼此衝突<xref:System.Web.UI.WebControls.TreeView>控制項會套用樹狀節點繫結，以下列順序的優先順序：  
   
 1.  <xref:System.Web.UI.WebControls.TreeNodeBinding>定義深度和資料成員的物件。  
   
-2.  <xref:System.Web.UI.WebControls.TreeNodeBinding>定義只深度的物件。  
+2.  <xref:System.Web.UI.WebControls.TreeNodeBinding>物件，定義只的深度。  
   
 3.  <xref:System.Web.UI.WebControls.TreeNodeBinding>定義資料成員的物件。  
   
 4.  <xref:System.Web.UI.WebControls.TreeNodeBinding>深度和資料成員都不會定義的物件。  
   
- 如果符合相同的優先順序條件指定了多個繫結，會套用在集合中的第一個繫結。  
+ 如果多個繫結會指定符合相同的優先順序準則，則會套用在集合中的第一個繫結。  
   
- 一旦建立繫結準則時，您就可以繫結的屬性<xref:System.Web.UI.WebControls.TreeNode>值可繫結的物件。 您可以將繫結至屬性或欄位的資料項目，或顯示靜態值。 如需有關繫結的屬性<xref:System.Web.UI.WebControls.TreeNode>物件的值，請參閱<xref:System.Web.UI.WebControls.TreeNodeBinding>。  
+ 一旦建立繫結準則之後，您可以再繫結的屬性<xref:System.Web.UI.WebControls.TreeNode>值可以繫結的物件。 您可以將繫結至屬性或欄位的資料項目，或顯示靜態值。 如需有關繫結的屬性<xref:System.Web.UI.WebControls.TreeNode>物件的值，請參閱<xref:System.Web.UI.WebControls.TreeNodeBinding>。  
   
- 雖然<xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>以程式設計方式填入集合，則通常會以宣告方式設定。 若要指定樹狀節點繫結，第一次建立巢狀開啟和關閉`<DataBindings>`標記的開頭和結尾標記之間<xref:System.Web.UI.WebControls.TreeView>控制項。 接下來，將`<asp:TreeNodeBinding>`開頭和結尾之間的項目`<DataBindings>`指定要繫結，您每個樹狀節點的標記。  
+ 雖然<xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>以程式設計方式填入集合，通常會以宣告方式設定。 若要指定樹狀節點繫結，先建立巢狀左右`<DataBindings>`標記的開頭和結尾標記之間<xref:System.Web.UI.WebControls.TreeView>控制項。 接下來，將放`<asp:TreeNodeBinding>`之間的開頭和結尾的項目`<DataBindings>`標記每個樹狀節點繫結，您想要指定。  
   
- 資料繫結所設定的建立時<xref:System.Web.UI.WebControls.TreeView.AutoGenerateDataBindings%2A>屬性<xref:System.Web.UI.WebControls.TreeView>控制權傳輸至`true`，繫結所建立的<xref:System.Web.UI.WebControls.TreeNodeBinding.PopulateOnDemand%2A>屬性設定為`true`。 以宣告方式建立的資料繫結具有<xref:System.Web.UI.WebControls.TreeNodeBinding.PopulateOnDemand%2A>屬性設定為`false`。 使用宣告式語法可讓您控制個別的資料繫結的行為。  
+ 當資料繫結藉由設定<xref:System.Web.UI.WebControls.TreeView.AutoGenerateDataBindings%2A>屬性<xref:System.Web.UI.WebControls.TreeView>來控制`true`，建立繫結都有<xref:System.Web.UI.WebControls.TreeNodeBinding.PopulateOnDemand%2A>屬性設定為`true`。 以宣告方式建立資料繫結都有<xref:System.Web.UI.WebControls.TreeNodeBinding.PopulateOnDemand%2A>屬性設定為`false`。 使用宣告式語法，可讓您控制個別的資料繫結的行為。  
   
    
   
 ## Examples  
- 本節包含兩個程式碼範例。 第一個程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>定義資料項目及它所繫結的節點之間的關聯性的集合。 第二個程式碼範例會提供第一個程式碼範例中的範例 XML 資料。  
+ 本節包含兩個程式碼範例。 第一個程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>來定義資料項目及它所繫結至的節點之間的關聯性的集合。 第二個程式碼範例會提供第一個程式碼範例中的範例 XML 資料。  
   
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>定義資料項目及它所繫結的節點之間的關聯性的集合。 針對此範例正常運作，您必須複製此程式碼範例中，為 Book.xml 檔案之後所提供的範例 XML 資料。 這個範例會指定只有<xref:System.Web.UI.WebControls.TreeNodeBinding.DataMember%2A>繫結屬性。 無法加入輕微的效能改善，藉由指定<xref:System.Web.UI.WebControls.TreeNodeBinding.Depth%2A>屬性。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.DataBindings%2A>來定義資料項目及它所繫結至的節點之間的關聯性的集合。 針對此範例正常運作，您必須複製此程式碼範例中，名為 Book.xml 之後提供的範例 XML 資料。 這個範例會指定只有<xref:System.Web.UI.WebControls.TreeNodeBinding.DataMember%2A>繫結屬性。 無法加入輕微的效能提升，藉由指定<xref:System.Web.UI.WebControls.TreeNodeBinding.Depth%2A>屬性。  
   
  [!code-aspx-csharp[TreeViewXml#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewXml/CS/treeviewxmlcs.aspx#1)]
  [!code-aspx-vb[TreeViewXml#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewXml/VB/treeviewxmlvb.aspx#1)]  
   
- 下列程式碼範例會提供 XML 資料，上述範例。  
+ 下列程式碼範例會提供上述範例中的範例 XML 資料。  
   
 ```  
 <Book Title="Book Title">  
@@ -1117,6 +1129,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1138,28 +1151,28 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>屬性來指定是否<xref:System.Web.UI.WebControls.TreeView>控制項呈現相容的瀏覽器，以展開和摺疊的事件處理上的用戶端指令碼。 當這個屬性設定為`true`，相容的瀏覽器執行的程式碼，以展開和摺疊節點，用戶端上。 樹狀目錄節點資料必須事先知道，讓用戶端指令碼工作。 使用用戶端指令碼可避免回傳至伺服器每次節點為展開或摺疊。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>屬性來指定是否<xref:System.Web.UI.WebControls.TreeView>控制項呈現相容的瀏覽器，以處理展開和摺疊事件上的用戶端指令碼。 當這個屬性設定為`true`，相容的瀏覽器執行的程式碼，以展開和摺疊節點，用戶端上。 必須事先知道樹狀節點資料的用戶端指令碼能夠運作。 使用用戶端指令碼可避免某篇文章回到伺服器每次節點為展開或摺疊。  
   
- 當無法事先知道樹狀節點資料時，填入來自用戶端的節點如果`PopulateNodesFromClient`屬性也會設為`true`。 在此案例中，您也必須提供的事件處理方法<xref:System.Web.UI.WebControls.TreeView.TreeNodePopulate>事件，以填入節點。 如需有關用戶端節點母體擴展的詳細資訊，請參閱<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>。  
+ 從用戶端可以填入事先不知道樹狀節點資料，當節點，如果`PopulateNodesFromClient`屬性也設為`true`。 在此案例中，您也必須提供的事件處理方法<xref:System.Web.UI.WebControls.TreeView.TreeNodePopulate>填入節點的事件。 如需有關用戶端節點數的詳細資訊，請參閱<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>。  
   
 > [!NOTE]
->  如果<xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>屬性設定為`false`、<xref:System.Web.UI.WebControls.TreeView>回傳至伺服器每次節點為展開或摺疊的控制項。  
+>  如果<xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>屬性設定為`false`，則<xref:System.Web.UI.WebControls.TreeView>控制項回傳至伺服器每次節點為展開或摺疊。  
   
  這個屬性的值會儲存檢視狀態中。  
   
- 這個屬性無法由佈景主題或樣式表主題設定。 如需詳細資訊，請參閱<xref:System.Web.UI.ThemeableAttribute>和[ASP.NET 佈景主題和面板](http://msdn.microsoft.com/library/5df3ebbd-d46c-4502-9406-02f9df4ef2c3)。  
+ 這個屬性無法由佈景主題或樣式表主題設定。 如需詳細資訊，請參閱 <<c0> <xref:System.Web.UI.ThemeableAttribute> 並[ASP.NET 佈景主題和面板](http://msdn.microsoft.com/library/5df3ebbd-d46c-4502-9406-02f9df4ef2c3)。  
   
    
   
 ## Examples  
- 本節包含兩個程式碼範例。 第一個程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>屬性來呈現用來展開和摺疊節點，在相容的瀏覽器上的用戶端指令碼。 第二個程式碼範例會提供第一個程式碼範例中的範例 XML 資料。  
+ 本節包含兩個程式碼範例。 第一個程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>呈現用來展開和摺疊節點，在相容的瀏覽器上的用戶端指令碼的屬性。 第二個程式碼範例會提供第一個程式碼範例中的範例 XML 資料。  
   
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>屬性來呈現用來展開和摺疊節點，在相容的瀏覽器上的用戶端指令碼。 請注意到伺服器後，才能展開和摺疊的節點時<xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>屬性設定為`false`。 針對此範例正常運作，您必須複製此程式碼範例中，為 Book.xml 檔案之後所提供的範例 XML 資料。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>呈現用來展開和摺疊節點，在相容的瀏覽器上的用戶端指令碼的屬性。 請注意，需要伺服器的 post，才能展開和摺疊節點時<xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>屬性設定為`false`。 針對此範例正常運作，您必須複製此程式碼範例中，名為 Book.xml 之後提供的範例 XML 資料。  
   
  [!code-aspx-csharp[TreeViewEnableClientScript#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewEnableClientScript/CS/treeviewenableclientscriptcs.aspx#1)]
  [!code-aspx-vb[TreeViewEnableClientScript#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewEnableClientScript/VB/treeviewenableclientscriptvb.aspx#1)]  
   
- 下列程式碼範例會提供 XML 資料，上述程式碼範例。  
+ 下列程式碼範例會提供上述的程式碼範例中的範例 XML 資料。  
   
 ```  
 <Book Title="Book Title">  
@@ -1192,6 +1205,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1204,7 +1218,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.ExpandAll%2A>方法提供便利的方式來開啟每個節點在樹狀目錄中。  
+ <xref:System.Web.UI.WebControls.TreeView.ExpandAll%2A>方法提供便利的方式，以開啟樹狀結構中的每個節點。  
   
    
   
@@ -1229,6 +1243,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1249,7 +1264,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.ExpandDepth%2A>屬性來控制轉換<xref:System.Web.UI.WebControls.TreeView>控制它會顯示第一次。 在後續回傳時，節點會保留其目前的展開的狀態。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.ExpandDepth%2A>屬性，即可控制呈現<xref:System.Web.UI.WebControls.TreeView>控制就會顯示第一次。 在後續回傳時，節點會保留其目前的展開的狀態。  
   
  ]]></format>
         </remarks>
@@ -1268,6 +1283,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1289,12 +1305,12 @@
   
  這個屬性的值會儲存檢視狀態中。  
   
- 這個屬性的值設定時，可以自動儲存到資源檔使用設計工具。 如需詳細資訊，請參閱<xref:System.ComponentModel.LocalizableAttribute>和[全球化和當地語系化](http://msdn.microsoft.com/library/8ef3838e-9d05-4236-9dd0-ceecff9df80d)。  
+ 此屬性的值設定時，可以自動儲存到資源檔使用設計工具。 如需詳細資訊，請參閱 <<c0> <xref:System.ComponentModel.LocalizableAttribute> 並[全球化和當地語系化](http://msdn.microsoft.com/library/8ef3838e-9d05-4236-9dd0-ceecff9df80d)。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.ExpandImageToolTip%2A>屬性，以指定的映像，展開節點指示器會顯示工具提示。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.ExpandImageToolTip%2A>屬性來指定映像的可展開節點指示器顯示之工具提示。  
   
  [!code-aspx-csharp[TreeViewCustomImage#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewCustomImage/CS/treeviewcustomimagecs.aspx#1)]
  [!code-aspx-vb[TreeViewCustomImage#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewCustomImage/VB/treeviewcustomimagevb.aspx#1)]  
@@ -1317,6 +1333,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1340,23 +1357,23 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>屬性來指定自訂映像可展開的節點指示器。 此映像可展開的節點旁會顯示，而且通常是加號 （+）。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>屬性來指定可展開節點指示器之自訂影像。 此映像可展開的節點旁顯示，而且通常是加號 （+）。  
   
- 當<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性設定為`true`、<xref:System.Web.UI.WebControls.TreeView>控制項顯示加號 （+） 或減號 （-） 或影像預留位置，表示節點是否可展開、 摺疊，或無法展開分別節點旁邊。 您可以指定第一個設定的自訂映像<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性`TreeViewImageSet.Custom`，然後設定<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>， <xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>，和<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性，以自訂影像的 Url。 如果未不指定任何影像，則會使用預設映像。 若要隱藏展開節點指示器，設定<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性`false`。  
+ 當<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性設定為`true`，則<xref:System.Web.UI.WebControls.TreeView>控制項顯示一個加號 （+） 或減號 （-） 或影像預留位置，表示節點是否可展開、 摺疊，或無法展開，分別的節點旁。 您可以指定第一個設定的自訂映像<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性，以`TreeViewImageSet.Custom`，然後設定<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>， <xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>，和<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性，以自訂映像的 Url。 如果未不指定任何影像，則會使用預設映像。 若要隱藏展開節點指示器，設定<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性設`false`。  
   
 > [!NOTE]
->  若要確認節點在正確對齊<xref:System.Web.UI.WebControls.TreeView>控制使用自訂映像時，請確定所指定的所有映像<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>， <xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>，和<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性有相同的維度。  
+>  若要確保節點正確對齊<xref:System.Web.UI.WebControls.TreeView>控制項使用自訂映像時，請確定所指定的所有映像<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>， <xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>，和<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性具有相同維度。  
   
- 若要正確地顯示的自訂映像，您可能需要設定<xref:System.Web.UI.WebControls.TreeView.ShowLines%2A>至`false`。  
+ 若要正確地顯示自訂映像，您可能需要設定<xref:System.Web.UI.WebControls.TreeView.ShowLines%2A>至`false`。  
   
- 當使用自訂映像可展開節點指標時，您也應該考慮設定<xref:System.Web.UI.WebControls.TreeView.ExpandImageToolTip%2A>屬性來指定映像的工具提示。  
+ 當使用可展開節點指示器之自訂影像，您也應該考慮設定<xref:System.Web.UI.WebControls.TreeView.ExpandImageToolTip%2A>屬性來指定映像的工具提示。  
   
  這個屬性的值會儲存檢視狀態中。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>屬性來指定自訂映像可展開的節點指示器。 程式碼範例，以顯示在控制項中顯示的映像，您必須提供自己的映像和<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性必須設定為`TreeNodeImageSet.Custom`。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>屬性來指定可展開節點指示器之自訂影像。 程式碼範例，即可顯示和控制項中顯示的影像，您必須提供自己的映像並<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性必須設為`TreeNodeImageSet.Custom`。  
   
  [!code-aspx-csharp[TreeViewCustomImage#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewCustomImage/CS/treeviewcustomimagecs.aspx#1)]
  [!code-aspx-vb[TreeViewCustomImage#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewCustomImage/VB/treeviewcustomimagevb.aspx#1)]  
@@ -1381,6 +1398,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1397,7 +1415,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.FindNode%2A>方法來取得從節點<xref:System.Web.UI.WebControls.TreeView>控制項的指定的值路徑。 值路徑包含表單的目前節點的路徑從根節點的節點值的分隔符號分隔清單。 每個節點會儲存在其值路徑<xref:System.Web.UI.WebControls.TreeNode.ValuePath%2A>屬性。 <xref:System.Web.UI.WebControls.TreeView.PathSeparator%2A>屬性會指定用來分隔節點值的分隔符號字元。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.FindNode%2A>方法來取得節點從<xref:System.Web.UI.WebControls.TreeView>控制項位於指定的值路徑。 將值路徑包含構成從根節點的路徑至目前節點的節點值的分隔符號分隔清單。 每個節點會儲存在中的值路徑<xref:System.Web.UI.WebControls.TreeNode.ValuePath%2A>屬性。 <xref:System.Web.UI.WebControls.TreeView.PathSeparator%2A>屬性會指定用來分隔的節點值的分隔符號字元。  
   
    
   
@@ -1430,6 +1448,7 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1443,7 +1462,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView>控制實作<xref:System.Web.UI.ICallbackEventHandler>介面並使用<xref:System.Web.UI.WebControls.TreeView.RaisePostBackEvent%2A>來擷取資料和<xref:System.Web.UI.WebControls.TreeView.GetCallbackResult%2A>方法來擷取的資料傳回至控制項。  
+ <xref:System.Web.UI.WebControls.TreeView>控制實作<xref:System.Web.UI.ICallbackEventHandler>介面，並使用<xref:System.Web.UI.WebControls.TreeView.RaisePostBackEvent%2A>擷取資料和<xref:System.Web.UI.WebControls.TreeView.GetCallbackResult%2A>方法，以傳回擷取的資料控制項。  
   
  ]]></format>
         </remarks>
@@ -1459,6 +1478,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1486,32 +1506,32 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>控制節點的外觀，當滑鼠指標進入此屬性。 這個屬性是唯讀的。不過，您可以設定的屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>它所傳回的物件。 可以以宣告方式設定的屬性，在表單中`Property-Subproperty`，其中`Subproperty`屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件 (例如， `HoverNodeStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單中`Property.Subproperty`(例如， `HoverNodeStyle.ForeColor`)。 只在指令碼支援的用戶端上支援此功能。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>屬性，即可控制節點的外觀，當滑鼠指標移至上方時。 這個屬性是唯讀的;不過，您可以在這裡設定的屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>它所傳回的物件。 屬性可以宣告方式設定形式`Property-Subproperty`，其中`Subproperty`是屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件 (例如`HoverNodeStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單`Property.Subproperty`(例如`HoverNodeStyle.ForeColor`)。 只能在指令碼支援的用戶端上支援此功能。  
   
 > [!NOTE]
->  若要使用<xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>屬性，您必須包含`<head>`具有項目`runat="server"`屬性。  
+>  若要使用<xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>屬性，您必須包含`<head>`項目`runat="server"`屬性。  
   
- 常見的設定通常包括自訂背景色彩、 前景色彩、 字型屬性和節點間距。 樣式屬性會套用順序如下：  
+ 常見的設定通常會包括自訂的背景色彩、 前景色彩、 字型屬性和節點的間距。 樣式屬性會套用順序如下：  
   
 1.  <xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>。  
   
-2.  <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A><xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，取決於節點類型。 如果<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>定義集合，它會套用在此階段中，覆寫的其他節點樣式屬性。  
+2.  <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A><xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，取決於節點類型。 如果<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>定義集合，它會套用在此階段中，覆寫其他的節點樣式屬性。  
   
 3.  <xref:System.Web.UI.WebControls.TreeView.SelectedNodeStyle%2A>。  
   
 4.  <xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>。  
   
 > [!NOTE]
->  樣式設定<xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>屬性覆寫中的任何對應節點樣式設定<xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>， <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A>， <xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>， <xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.SelectedNodeStyle%2A>屬性。  
+>  樣式設定<xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>屬性覆寫任何對應的節點樣式設定，位於<xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>， <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A>， <xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>， <xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.SelectedNodeStyle%2A>屬性。  
   
  <xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>屬性則不會與節點的方式呈現其<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>屬性設定為`TreeNodeSelectAction.None`。  
   
- 不同於<xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>和<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>屬性，也就是<xref:System.Web.UI.WebControls.TreeNodeStyle>物件<xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>屬性是<xref:System.Web.UI.WebControls.Style>物件。  
+ 不同於<xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>而<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>屬性，這些屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件<xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>屬性是<xref:System.Web.UI.WebControls.Style>物件。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>控制節點的外觀，當滑鼠指標進入此屬性。 讓範例能夠運作，您必須包含`<head>`具有項目`runat="server"`屬性。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>屬性，即可控制節點的外觀，當滑鼠指標移至上方時。 針對此範例正常運作，您必須包含`<head>`具有項目`runat="server"`屬性。  
   
  [!code-aspx-csharp[TreeViewHoverNodeStyle#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewHoverNodeStyle/CS/treeviewhovernodestylecs.aspx#1)]
  [!code-aspx-vb[TreeViewHoverNodeStyle#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewHoverNodeStyle/VB/treeviewhovernodestylevb.aspx#1)]  
@@ -1537,6 +1557,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1554,47 +1575,47 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性來指定要用於映像群組<xref:System.Web.UI.WebControls.TreeView>控制項。 您可以選取一組預先定義的映像，以提供控制項的標準外觀，或定義您自己自訂的集合。  
+ 使用 <xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性來指定要用於映像群組<xref:System.Web.UI.WebControls.TreeView>控制項。 您可以選取一組預先定義的映像以提供控制項的標準外觀，或定義您自己自訂的集合。  
   
 > [!NOTE]
 >  <xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性不會影響任何節點的樣式設定。 設定適當的樣式屬性，例如<xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>屬性，如果您想要新增自訂色彩和間距。  
   
- 下表列出的有效值<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性。  
+ 下表列出有效的值，如<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性。  
   
-|映像集|描述|  
+|影像集|描述|  
 |---------------|-----------------|  
-|`TreeViewImageSet.Arrows`|使用箭號映像的預先定義的映像集。|  
-|`TreeViewImageSet.BulletedList`|使用菱形式的項目符號影像的預先定義的映像集。|  
-|`TreeViewImageSet.BulletedList2`|使用方形的項目符號影像的預先定義的映像集。|  
+|`TreeViewImageSet.Arrows`|使用箭號影像的預先定義的影像集。|  
+|`TreeViewImageSet.BulletedList`|使用菱形項目符號影像的預先定義的影像集。|  
+|`TreeViewImageSet.BulletedList2`|使用方形項目符號影像的預先定義的影像集。|  
 |`TreeViewImageSet.BulletedList3`|預先定義的分段、菱形項目符號影像集。|  
 |`TreeViewImageSet.BulletedList4`|預先定義的替代分段、菱形項目符號影像集，影像的大小會因層級而異。|  
-|`TreeViewImageSet.Contacts`|使用 MSN Messenger 映像的預先定義的映像集。|  
+|`TreeViewImageSet.Contacts`|使用 MSN Messenger 映像的預先定義的影像集。|  
 |`TreeViewImageSet.Custom`|設定使用者定義的映像。|  
-|`TreeViewImageSet.Events`|使用事件記錄檔樣式影像的預先定義的映像集。|  
-|`TreeViewImageSet.Faq`|使用常見問題集樣式影像的預先定義的映像集。|  
-|`TreeViewImageSet.Inbox`|使用電子郵件樣式影像的預先定義的映像集。|  
-|`TreeViewImageSet.News`|預先定義的映像組，使用新聞群組樣式的影像。|  
-|`TreeViewImageSet.Simple`|使用簡單的圖形外框的預先定義的映像集。|  
-|`TreeViewImageSet.Simple2`|使用簡單填滿的圖案的預先定義的映像集。|  
-|`TreeViewImageSet.Msdn`|使用 MSDN 映像的預先定義的映像集。|  
-|`TreeViewImageSet.WindowsHelp`|使用 Microsoft Windows 說明的映像的預先定義的映像集。|  
-|`TreeViewImageSet.XPFileExplorer`|使用 Microsoft Windows XP 中可用的 Windows 檔案總管映像的預先定義的映像集。|  
+|`TreeViewImageSet.Events`|使用事件記錄檔樣式影像的預先定義的影像集。|  
+|`TreeViewImageSet.Faq`|使用 FAQ 樣式影像的預先定義的影像集。|  
+|`TreeViewImageSet.Inbox`|使用電子郵件樣式影像的預先定義的影像集。|  
+|`TreeViewImageSet.News`|使用新聞群組樣式影像的預先定義的影像集。|  
+|`TreeViewImageSet.Simple`|使用簡單形狀外框輪廓的預先定義的影像集。|  
+|`TreeViewImageSet.Simple2`|使用簡單的填滿的圖形的預先定義的影像集。|  
+|`TreeViewImageSet.Msdn`|使用 MSDN 映像的預先定義的影像集。|  
+|`TreeViewImageSet.WindowsHelp`|使用 Microsoft Windows 說明的映像的預先定義的影像集。|  
+|`TreeViewImageSet.XPFileExplorer`|使用 Windows 檔案總管映像可供 Microsoft Windows XP 的預先定義的影像集。|  
   
- 在定義一組自訂映像時，您應該指定映像的每一個屬性下表中。 否則，會使用該屬性的預設影像。  
+ 在定義一組自訂的映像時，您應該指定映像的每個在下表中的屬性。 否則，會使用該屬性的預設影像。  
   
 |屬性|描述|  
 |--------------|-----------------|  
-|<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>|可摺疊節點指標的自訂影像 URL。|  
-|<xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>|展開節點指示器的自訂影像 URL。|  
-|<xref:System.Web.UI.WebControls.TreeView.LineImagesFolder%2A>|包含連接節點的線條的自訂映像資料夾的 URL。|  
-|<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>|無法展開節點指標的自訂影像 URL。|  
+|<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>|可摺疊節點指示器之自訂影像 URL。|  
+|<xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>|展開節點指示器之自訂影像 URL。|  
+|<xref:System.Web.UI.WebControls.TreeView.LineImagesFolder%2A>|連接節點的程式碼行的自訂映像所在的資料夾 URL。|  
+|<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>|無法展開節點指示器之自訂影像 URL。|  
   
  這個屬性的值會儲存檢視狀態中。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性來顯示 Windows 檔案總管中的一組影像中<xref:System.Web.UI.WebControls.TreeView>控制項。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性以顯示中的映像的 Windows 檔案總管集<xref:System.Web.UI.WebControls.TreeView>控制項。  
   
  [!code-aspx-csharp[TreeViewImageSet#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewImageSet/CS/treeviewimagesetcs.aspx#1)]
  [!code-aspx-vb[TreeViewImageSet#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewImageSet/VB/treeviewimagesetvb.aspx#1)]  
@@ -1620,6 +1641,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1647,22 +1669,22 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>屬性，即可控制分葉節點中的外觀<xref:System.Web.UI.WebControls.TreeView>控制項。 這個屬性是唯讀的。不過，您可以設定的屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>它所傳回的物件。 可以以宣告方式設定的屬性，在表單中`Property-Subproperty`，其中`Subproperty`屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件 (例如， `LeafNodeStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單中`Property.Subproperty`(例如， `LeafNodeStyle.ForeColor`)。 常見的設定通常包括自訂背景色彩、 前景色彩、 字型屬性和節點間距。 樣式屬性會依下列優先順序套用：  
+ 使用<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>屬性，即可控制中的分葉節點的外觀<xref:System.Web.UI.WebControls.TreeView>控制項。 這個屬性是唯讀的;不過，您可以在這裡設定的屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件傳回。 屬性可以宣告方式設定形式`Property-Subproperty`，其中`Subproperty`是屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件 (例如`LeafNodeStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單`Property.Subproperty`(例如`LeafNodeStyle.ForeColor`)。 常見的設定通常會包括自訂的背景色彩、 前景色彩、 字型屬性和節點的間距。 樣式屬性會依下列優先順序套用：  
   
 1.  <xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>。  
   
-2.  <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A><xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，取決於節點類型。 如果<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>定義集合，它會套用在此階段中，覆寫的其他節點樣式屬性。  
+2.  <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A><xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，取決於節點類型。 如果<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>定義集合，它會套用在此階段中，覆寫其他的節點樣式屬性。  
   
 3.  <xref:System.Web.UI.WebControls.TreeView.SelectedNodeStyle%2A>。  
   
 4.  <xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>。  
   
- 如果您要產生的目錄樣式導覽功能表，在特定層級的節點都必須有相同的外觀，不論它們是否具有子節點，您可以考慮使用<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>而不是設定個別的屬性樣式屬性。  
+ 如果您要產生資料表的內容 – 樣式巡覽功能表，其中特定層級的節點應該具有相同的外觀，不論它們是否具有子節點，您可以考慮使用<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>而不是設定個別的屬性樣式屬性。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>屬性，即可控制分葉節點中的外觀<xref:System.Web.UI.WebControls.TreeView>控制項。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>屬性，即可控制中的分葉節點的外觀<xref:System.Web.UI.WebControls.TreeView>控制項。  
   
  [!code-aspx-csharp[TreeViewLeafNodeStyle#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewLeafNodeStyle/CS/treeviewleafnodestylecs.aspx#1)]
  [!code-aspx-vb[TreeViewLeafNodeStyle#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewLeafNodeStyle/VB/treeviewleafnodestylevb.aspx#1)]  
@@ -1687,6 +1709,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1711,13 +1734,13 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>集合，做為個別的樣式屬性的替代方式 (例如<xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>屬性) 來控制在個別的階層樹狀結構節點的樣式。 集合中的第一個樣式會對應至第一層的樹狀結構中節點的樣式。 集合中的第二個樣式會對應至樹狀目錄中，等第二層節點的樣式。 這個屬性是最常用來產生目錄樣式導覽功能表的資料表，在特定層級的節點都必須有相同的外觀，不論它們是否具有子節點。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>做為替代的個別的樣式屬性的集合 (例如<xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>屬性) 來控制個別樹狀結構的層級的節點樣式。 集合中的第一個樣式會對應至樹狀目錄中的第一層中的節點樣式。 集合中的第二個樣式會對應至樹狀目錄中，並依此類推的第二個層級中的節點樣式。 這個屬性是最常用來產生資料表的內容 – 樣式巡覽功能表其中某些層級的節點應該具有相同的外觀，不論它們是否具有子節點。  
   
  樣式屬性會套用順序如下：  
   
 1.  <xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>。  
   
-2.  <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A><xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，取決於節點類型。 如果<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>定義集合，它會套用在此階段中，覆寫的其他節點樣式屬性。  
+2.  <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A><xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，取決於節點類型。 如果<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>定義集合，它會套用在此階段中，覆寫其他的節點樣式屬性。  
   
 3.  <xref:System.Web.UI.WebControls.TreeView.SelectedNodeStyle%2A>。  
   
@@ -1726,7 +1749,7 @@
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>建立導覽功能表的屬性。 控制項始終是完全展開，展開節點指示器與隱藏的映像。 此外，<xref:System.Web.UI.WebControls.TreeNodeStyle.ChildNodesPadding%2A>屬性用來控制節點層級的間距。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>屬性，以建立導覽功能表。 一定會完整展開此控制項，以展開節點指示器和隱藏的映像。 此外，<xref:System.Web.UI.WebControls.TreeNodeStyle.ChildNodesPadding%2A>屬性用來控制節點層級的間距。  
   
  [!code-aspx-csharp[TreeViewLevelStyles#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewLevelStyles/CS/treeviewlevelstylescs.aspx#1)]
  [!code-aspx-vb[TreeViewLevelStyles#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewLevelStyles/VB/treeviewlevelstylesvb.aspx#1)]  
@@ -1754,6 +1777,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1771,40 +1795,40 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView>控制項可以顯示連接至父節點的子節點的行時<xref:System.Web.UI.WebControls.TreeView.ShowLines%2A>屬性設定為`true`。 當顯示線條時，使用<xref:System.Web.UI.WebControls.TreeView.LineImagesFolder%2A>屬性可指定網路存取的資料夾，其中包含一組用於線條預先呈現影像。 下表描述所使用的映像<xref:System.Web.UI.WebControls.TreeView>控制項。  
+ <xref:System.Web.UI.WebControls.TreeView>控制項可以顯示子節點連接至父節點的線條時<xref:System.Web.UI.WebControls.TreeView.ShowLines%2A>屬性設定為`true`。 當顯示線條時，使用<xref:System.Web.UI.WebControls.TreeView.LineImagesFolder%2A>屬性來指定 Web 存取的資料夾，其中包含預先轉譯的映像，以使用線條的集合。 下表描述所使用的映像<xref:System.Web.UI.WebControls.TreeView>控制項。  
   
 |Image|描述|  
 |-----------|-----------------|  
-|Dash.gif|樹狀結構中的只能有一個根節點與根節點時，根節點旁邊顯示的線條影像是分葉。|  
-|Dashminus.gif|減號 （-） 表示的根節點展開的樹狀結構中只能有一個根節點時，根節點旁邊顯示的影像。|  
-|Dashplus.gif|表示根節點已摺疊樹狀結構中只能有一個根節點時，根節點旁顯示加號 （+） 映像。|  
-|I.gif|顯示的線條影像將相鄰的節點連接。|  
+|Dash.gif|樹狀結構中的只能有一個根節點與根節點時，根節點旁顯示的線條影像是分葉節點。|  
+|Dashminus.gif|減號 （-） 表示的根節點展開的樹狀結構中只能有一個根節點時，根節點旁顯示的映像。|  
+|Dashplus.gif|表示的根節點會摺疊樹狀結構中只能有一個根節點時，根節點旁顯示加號 （+） 影像。|  
+|I.gif|顯示將相鄰的節點連接的線條影像。|  
 |L.gif|列旁邊顯示的影像到最後一個節點在分支中分葉節點時。|  
 |Lminus.gif|列旁邊顯示的影像到最後一個節點，表示節點已展開分支中。|  
-|Lplus.gif|列旁邊顯示的影像到最後一個節點，表示節點已摺疊的分支中。|  
-|Minus.gif|顯示包含多個根節點，表示節點的樹狀結構中之第一個根節點旁的減號 （-） 映像會展開。 此映像不包含額外的程式行，而且根節點已經摺疊一次之後，才會顯示。 當第一次載入頁面時，會顯示 Rminus.gif 映像。|  
-|Noexpand.gif|空白的空格字元顯示的影像是分葉節點旁邊。 此映像可讓文字垂直對齊。|  
-|Plus.gif|顯示包含多個根節點，表示節點的樹狀結構中之第一個根節點旁的加號 （+） 映像會摺疊。 此映像不包含額外的程式行，而且根節點已展開之後，才會顯示。 當第一次載入頁面時，會顯示 Rplus.gif 映像。|  
-|R.gif|在包含多個根節點，表示節點的樹狀結構中之第一個根節點旁顯示的線條影像為分葉節點。|  
-|Rminus.gif|顯示包含多個根節點，表示節點的樹狀結構中之第一個根節點旁的減號 （-） 映像會展開。 此映像包含額外的程式行，而且只在第一次載入頁面時，才會顯示。 在根目錄之後節點已經摺疊一旦 Minus.gif 影像隨即顯示。|  
-|Rplus.gif|顯示包含多個根節點，表示節點的樹狀結構中之第一個根節點旁的加號 （+） 映像會摺疊。 此映像包含額外的程式行，而且只在第一次載入頁面時，才會顯示。 在根目錄之後已經展開節點之後，Plus.gif 影像隨即顯示。|  
-|T.gif|顯示的線條影像的中間 （位於 t 交集處） 的樹狀節點旁，表示節點為分葉節點。|  
-|Tminus.gif|減號 （-），表示節點已展開的中間 （位於 t 交集處） 的樹狀節點旁顯示影像。|  
-|Tplus.gif|指出節點已摺疊的中間 （位於 t 交集處） 的樹狀節點旁顯示加號 （+） 映像。|  
+|Lplus.gif|列旁邊顯示的影像到最後一個節點，表示節點已摺疊分支中。|  
+|Minus.gif|減號 （-），其中包含多個根節點，以指出節點已展開樹狀結構的第一個根節點旁顯示的映像。 此映像不包含額外的程式行，而且只有在根節點摺疊一次之後，才會顯示。 當第一次載入頁面時，會顯示 Rminus.gif 映像。|  
+|Noexpand.gif|空白空格字元顯示的影像的分葉節點旁。 此映像可讓文字垂直對齊。|  
+|Plus.gif|顯示包含多個根節點，表示節點的樹狀結構中之第一個根節點旁邊的加號 （+） 映像會摺疊。 此映像不包含額外的程式行，而且只有在根節點具有展開一次之後，才會顯示。 當第一次載入頁面時，會顯示 Rplus.gif 映像。|  
+|R.gif|第一個根節點在樹狀結構，包含表示多個根節點的節點旁顯示的線條影像是分葉節點。|  
+|Rminus.gif|減號 （-），其中包含多個根節點，以指出節點已展開樹狀結構的第一個根節點旁顯示的映像。 此映像包含額外的程式行，而且只有在第一次載入頁面時，才會顯示。 在根目錄之後有已摺疊節點之後，您也可以 Minus.gif 影像隨即顯示。|  
+|Rplus.gif|顯示包含多個根節點，表示節點的樹狀結構中之第一個根節點旁邊的加號 （+） 映像會摺疊。 此映像包含額外的程式行，而且只有在第一次載入頁面時，才會顯示。 在根目錄之後節點已展開之後，Plus.gif 影像隨即顯示。|  
+|T.gif|表示節點為分葉中間 （位於 t 交集處） 的樹狀節點旁顯示的線條影像。|  
+|Tminus.gif|減號 （-） 來指出節點已展開樹狀結構 （位於 t 交集處） 的中間節點旁顯示的映像。|  
+|Tplus.gif|指出節點已摺疊樹狀結構 （位於 t 交集處） 的中間節點旁顯示加號 （+） 影像。|  
   
 > [!NOTE]
 >  如果<xref:System.Web.UI.WebControls.TreeView.LineImagesFolder%2A>未設定屬性，<xref:System.Web.UI.WebControls.TreeView>控制項將會使用內建的預設映像 （20 x 20 像素為單位）。  
   
- 視覺化的設計工具，例如 Microsoft Visual Studio 提供工具來產生線條影像。  
+ 視覺化的設計工具，例如 Microsoft Visual Studio 提供工具來產生的線條影像。  
   
- 在執行的階段不會翻轉由右至左顯示的自訂映像。 若要支援左到右及從右至左的網頁，您必須建立兩個方向的影像集合。  
+ 執行的階段不會翻轉由右至左顯示的自訂映像。 若要支援由右至左和由左到右的網頁，您必須建立兩個方向的影像集合。  
   
  這個屬性的值會儲存檢視狀態中。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.LineImagesFolder%2A>屬性來指定包含要在中顯示的線條影像的資料夾<xref:System.Web.UI.WebControls.TreeView>控制項。 若要使用此範例中，使用事先列設計工具 工具來建立一組線條影像。 請將它們放在目錄內命名 LineImages 範例應用程式的資料夾。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.LineImagesFolder%2A>屬性，以指定的資料夾，包含要在中顯示的線條影像<xref:System.Web.UI.WebControls.TreeView>控制項。 若要使用此範例中，使用列設計師工具事先建立一組的線條影像。 請將它們放在一個叫做 LineImages 目錄中，範例應用程式的資料夾。  
   
  [!code-aspx-csharp[TreeViewLineImagesFolderUrl#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewLineImagesFolderUrl/CS/treeviewlineimagesfolderurlcs.aspx#1)]
  [!code-aspx-vb[TreeViewLineImagesFolderUrl#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewLineImagesFolderUrl/VB/treeviewlineimagesfolderurlvb.aspx#1)]  
@@ -1832,6 +1856,7 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1850,7 +1875,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- ASP.NET 網頁架構會追蹤所有傳回的伺服器控制項`true`從<xref:System.Web.UI.WebControls.TreeView.LoadPostData%2A>方法呼叫中，然後再叫用<xref:System.Web.UI.WebControls.TreeView.RaisePostDataChangedEvent%2A>這些控制項上的方法。  
+ ASP.NET 網頁架構會追蹤傳回的所有伺服器控制項`true`從<xref:System.Web.UI.WebControls.TreeView.LoadPostData%2A>方法呼叫，然後再叫用<xref:System.Web.UI.WebControls.TreeView.RaisePostDataChangedEvent%2A>那些控制項上的方法。  
   
  ]]></format>
         </remarks>
@@ -1867,6 +1892,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1891,6 +1917,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1908,24 +1935,24 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 繫結時<xref:System.Web.UI.WebControls.TreeView>控制項至資料來源，使用<xref:System.Web.UI.WebControls.TreeView.MaxDataBindDepth%2A>屬性來限制要繫結至控制項的樹狀目錄層級數目。 例如，將此屬性設定為`2`根節點以及任何節點，會立即在根節點下，會將繫結<xref:System.Web.UI.WebControls.TreeView>控制項。 資料來源中的所有其餘節點都會被忽略。  
+ 當繫結<xref:System.Web.UI.WebControls.TreeView>控制項的資料來源，使用<xref:System.Web.UI.WebControls.TreeView.MaxDataBindDepth%2A>屬性來限制要繫結至控制項的樹狀結構層級數目。 例如，將此屬性設定為`2`繫結僅根節點和會立即在根節點下的任何節點<xref:System.Web.UI.WebControls.TreeView>控制項。 資料來源中的所有其餘節點都會被忽略。  
   
 > [!IMPORTANT]
->  惡意使用者可以建立回呼要求並取得資料的節點<xref:System.Web.UI.WebControls.TreeView>網頁開發人員不顯示控制項。 因此，資料來源必須實作之資料的安全性。 請勿使用<xref:System.Web.UI.WebControls.TreeView.MaxDataBindDepth%2A>屬性隱藏的資料。  
+>  惡意使用者可以建立回呼要求，並取得資料的節點<xref:System.Web.UI.WebControls.TreeView>頁面開發人員不顯示控制項。 因此，資料來源必須實作資料的安全性。 請勿使用<xref:System.Web.UI.WebControls.TreeView.MaxDataBindDepth%2A>屬性，可隱藏的資料。  
   
  這個屬性的值會儲存檢視狀態中。  
   
    
   
 ## Examples  
- 本節包含兩個程式碼範例。 第一個程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.MaxDataBindDepth%2A>屬性要繫結只有第一個兩個節點層級 （深度 0 和 1）<xref:System.Web.UI.WebControls.TreeView>控制項。 第二個程式碼範例會提供第一個程式碼範例中的範例 XML 資料。  
+ 本節包含兩個程式碼範例。 第一個程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.MaxDataBindDepth%2A>屬性只有第一個兩個節點層級 （深度 0 和 1） 繫結至<xref:System.Web.UI.WebControls.TreeView>控制項。 第二個程式碼範例會提供第一個程式碼範例中的範例 XML 資料。  
   
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.MaxDataBindDepth%2A>屬性要繫結只有第一個兩個節點層級 （深度 0 和 1）<xref:System.Web.UI.WebControls.TreeView>控制項。 資料來源中的所有節點層級會被都忽略。 針對此範例正常運作，您必須複製此程式碼範例中，為 Book.xml 檔案之後所提供的範例 XML 資料。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.MaxDataBindDepth%2A>屬性只有第一個兩個節點層級 （深度 0 和 1） 繫結至<xref:System.Web.UI.WebControls.TreeView>控制項。 資料來源中的所有節點層級會被都忽略。 針對此範例正常運作，您必須複製此程式碼範例中，名為 Book.xml 之後提供的範例 XML 資料。  
   
  [!code-aspx-csharp[TreeViewMaxDataBindDepth#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewMaxDataBindDepth/CS/treeviewmaxdatabinddepthcs.aspx#1)]
  [!code-aspx-vb[TreeViewMaxDataBindDepth#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewMaxDataBindDepth/VB/treeviewmaxdatabinddepthvb.aspx#1)]  
   
- 下列程式碼範例會提供 XML 資料，上述程式碼範例。  
+ 下列程式碼範例會提供上述的程式碼範例中的範例 XML 資料。  
   
 ```  
 <Book Title="Book Title">  
@@ -1958,6 +1985,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1975,10 +2003,10 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.NodeIndent%2A>屬性，即可控制子節點的左邊的緣和其父節點的左邊的緣之間的間距數量。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.NodeIndent%2A>屬性，即可控制的子節點左邊的緣和其父節點左邊的緣之間的間距大小。  
   
 > [!NOTE]
->  <xref:System.Web.UI.WebControls.TreeView.NodeIndent%2A>屬性會影響在每個子節點<xref:System.Web.UI.WebControls.TreeView>控制項。 您不可以個別控制每個節點的縮排數量。  
+>  <xref:System.Web.UI.WebControls.TreeView.NodeIndent%2A>屬性會影響在每個子節點<xref:System.Web.UI.WebControls.TreeView>控制項。 您不能夠個別控制每個節點的縮排數量。  
   
  這個屬性的值會儲存檢視狀態中。  
   
@@ -2012,6 +2040,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2039,14 +2068,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.Nodes%2A>屬性來取得<xref:System.Web.UI.WebControls.TreeNodeCollection>物件，其中包含在樹狀目錄中的所有根節點。 這個集合通常用來快速地逐一查看所有根節點，或存取特定根節點在樹狀目錄中。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.Nodes%2A>屬性來取得<xref:System.Web.UI.WebControls.TreeNodeCollection>物件，其中包含在樹狀目錄中的所有根節點。 這個集合常用來快速地逐一查看所有根節點，或存取在樹狀目錄中的特定根節點。  
   
 > [!NOTE]
->  典型的樹狀結構有只有一個根節點。不過，您可以加入多個根節點<xref:System.Web.UI.WebControls.TreeView>控制項。  
+>  典型的樹狀結構有只有一個根節點;不過，您可以新增多個根節點<xref:System.Web.UI.WebControls.TreeView>控制項。  
   
- <xref:System.Web.UI.WebControls.TreeView.Nodes%2A>屬性也可用來以程式設計方式管理在樹狀目錄中的根節點。 您可以加入、 插入、 移除及擷取<xref:System.Web.UI.WebControls.TreeNode>從集合的物件。 集合的任何更新會自動反映在<xref:System.Web.UI.WebControls.TreeView>往返到伺服器的下一步 後的控制項。  
+ <xref:System.Web.UI.WebControls.TreeView.Nodes%2A>屬性也可用來以程式設計方式管理樹狀目錄中的根節點。 您可以新增、 插入、 移除及擷取<xref:System.Web.UI.WebControls.TreeNode>從集合的物件。 集合的任何更新會自動反映在<xref:System.Web.UI.WebControls.TreeView>往返到伺服器的下一步 後的控制項。  
   
- 若要存取根節點的子節點，請使用<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>節點的屬性。 使用<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>節點層級下瀏覽每個後續的父層級節點的屬性。  
+ 若要存取根節點的子節點，請使用<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>節點的屬性。 使用<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>的每個後續的父層級節點的節點層級下瀏覽屬性。  
   
    
   
@@ -2073,6 +2102,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2100,20 +2130,20 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>屬性，即可控制中的節點的預設外觀<xref:System.Web.UI.WebControls.TreeView>控制項。 這個屬性是唯讀的。不過，您可以設定的屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>它所傳回的物件。 可以以宣告方式設定的屬性，在表單中`Property-Subproperty`，其中`Subproperty`屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件 (例如， `NodeStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單中`Property.Subproperty`(例如， `NodeStyle.ForeColor`)。 常見的設定通常包括自訂背景色彩、 前景色彩、 字型屬性和節點間距。 樣式屬性會依下列優先順序套用：  
+ 使用<xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>屬性，即可控制中的節點的預設外觀<xref:System.Web.UI.WebControls.TreeView>控制項。 這個屬性是唯讀的;不過，您可以在這裡設定的屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件傳回。 屬性可以宣告方式設定形式`Property-Subproperty`，其中`Subproperty`是屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件 (例如`NodeStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單`Property.Subproperty`(例如`NodeStyle.ForeColor`)。 常見的設定通常會包括自訂的背景色彩、 前景色彩、 字型屬性和節點的間距。 樣式屬性會依下列優先順序套用：  
   
 1.  <xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>。  
   
-2.  <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A><xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，取決於節點類型。 如果<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>定義集合，它會套用在此階段中，覆寫的其他節點樣式屬性。  
+2.  <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A><xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，取決於節點類型。 如果<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>定義集合，它會套用在此階段中，覆寫其他的節點樣式屬性。  
   
 3.  <xref:System.Web.UI.WebControls.TreeView.SelectedNodeStyle%2A>。  
   
 4.  <xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>。  
   
 > [!NOTE]
->  中對應的節點樣式設定<xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A>， <xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>屬性會覆寫的樣式設定<xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>屬性。  
+>  在對應的節點樣式設定<xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A>， <xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>屬性會覆寫的樣式設定<xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>屬性。  
   
- 如果您要產生的內容樣式導覽功能表，在特定層級的節點都必須有相同的外觀，不論它們是否具有子節點，您可以考慮使用<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>而不是設定個別的屬性樣式屬性。  
+ 如果您要產生資料表的內容樣式巡覽功能表，其中特定層級的節點應該具有相同的外觀，不論它們是否具有子節點，您可以考慮使用<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>而不是設定個別的屬性樣式屬性。  
   
    
   
@@ -2143,6 +2173,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2161,14 +2192,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.NodeWrap%2A>屬性來指定空間不足時，是否換行顯示每個節點中的文字。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.NodeWrap%2A>屬性來指定空間不足時每個節點中顯示的文字是否換行。  
   
  這個屬性的值會儲存檢視狀態中。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.NodeWrap%2A>屬性的文字應換行<xref:System.Web.UI.WebControls.TreeView>控制項。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.NodeWrap%2A>屬性的文字換行<xref:System.Web.UI.WebControls.TreeView>控制項。  
   
  [!code-aspx-csharp[TreeViewNodeWrap#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewNodeWrap/CS/treeviewnodewrapcs.aspx#1)]
  [!code-aspx-vb[TreeViewNodeWrap#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewNodeWrap/VB/treeviewnodewrapvb.aspx#1)]  
@@ -2189,6 +2220,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2212,19 +2244,19 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>屬性來指定非可展開的節點指示器的自訂映像。 無法展開節點指標影像 （或空格字元） 旁會顯示分葉節點 （取代的可展開及摺疊節點指標） 對齊父代或根節點的分葉節點。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>屬性來指定無法展開節點指示器之自訂影像。 無法展開節點指示器映像 （或空格字元） 旁會顯示分葉節點 （取代展開及摺疊節點指示器） 對齊分葉節點包含父代或根節點。  
   
- 當<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性設定為`true`、<xref:System.Web.UI.WebControls.TreeView>控制項顯示加號 （+） 或減號 （-） 或影像預留位置，表示節點是否可展開、 摺疊，或無法展開分別節點旁邊。 您可以指定第一個設定的自訂映像<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性`TreeViewImageSet.Custom`，然後設定<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>， <xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>，和<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性，以自訂影像的 Url。 如果未不指定任何影像，則會使用預設映像。 若要隱藏展開節點指示器，設定<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性`false`。  
+ 當<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性設定為`true`，則<xref:System.Web.UI.WebControls.TreeView>控制項顯示一個加號 （+） 或減號 （-） 或影像預留位置，表示節點是否可展開、 摺疊，或無法展開，分別的節點旁。 您可以指定第一個設定的自訂映像<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性，以`TreeViewImageSet.Custom`，然後設定<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>， <xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>，和<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性，以自訂映像的 Url。 如果未不指定任何影像，則會使用預設映像。 若要隱藏展開節點指示器，設定<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性設`false`。  
   
 > [!NOTE]
->  若要確認節點在正確對齊<xref:System.Web.UI.WebControls.TreeView>控制使用自訂映像時，請確定所指定的所有映像<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>， <xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>，和<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性有相同的維度。  
+>  若要確保節點正確對齊<xref:System.Web.UI.WebControls.TreeView>控制項使用自訂映像時，請確定所指定的所有映像<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>， <xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>，和<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性具有相同維度。  
   
  這個屬性的值會儲存檢視狀態中。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>屬性來指定非可展開的節點指示器的自訂映像。 程式碼範例，以顯示在控制項中顯示的映像，您必須提供自己的映像和<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性必須設定為`TreeNodeImageSet.Custom`。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>屬性來指定無法展開節點指示器之自訂影像。 程式碼範例，即可顯示和控制項中顯示的影像，您必須提供自己的映像並<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性必須設為`TreeNodeImageSet.Custom`。  
   
  [!code-aspx-csharp[TreeViewCustomImage#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewCustomImage/CS/treeviewcustomimagecs.aspx#1)]
  [!code-aspx-vb[TreeViewCustomImage#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewCustomImage/VB/treeviewcustomimagevb.aspx#1)]  
@@ -2248,6 +2280,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2263,16 +2296,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.OnInit%2A>方法透過呼叫<xref:System.Web.UI.WebControls.TreeView>控制項引發<xref:System.Web.UI.Control.Init>事件。 擴充時，它通常會由控制項開發人員使用<xref:System.Web.UI.WebControls.TreeView>類別。  
+ <xref:System.Web.UI.WebControls.TreeView.OnInit%2A>方法會呼叫<xref:System.Web.UI.WebControls.TreeView>控制項來引發<xref:System.Web.UI.Control.Init>事件。 擴充時，它通常會由控制項開發人員使用<xref:System.Web.UI.WebControls.TreeView>類別。  
   
- 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱[處理和引發事件](~/docs/standard/events/index.md)。  
+ 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱 <<c0> [ 處理和引發事件](~/docs/standard/events/index.md)。  
   
  <xref:System.Web.UI.WebControls.TreeView.OnInit%2A> 方法也允許衍生類別處理事件，而不用附加委派。 這是在衍生類別中處理事件的慣用技巧。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>在覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnInit(System.EventArgs)" />方法在衍生類別中，請務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnInit(System.EventArgs)" />方法的基底類別，使已註冊的委派能接收到事件。</para>
+          <para>當覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnInit(System.EventArgs)" />方法在衍生類別中，務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnInit(System.EventArgs)" />方法的基底類別，好讓註冊的委派收到事件。</para>
         </block>
         <altmember cref="E:System.Web.UI.Control.Init" />
       </Docs>
@@ -2287,6 +2320,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2302,16 +2336,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.OnPreRender%2A>来註冊用於回傳覆寫方法。 如果已啟用用戶端指令碼，它也會呈現隱藏的欄位與必要的指令碼。  
+ <xref:System.Web.UI.WebControls.TreeView.OnPreRender%2A>来註冊用於回傳會覆寫方法。 如果已啟用用戶端指令碼，它也會呈現所需的指令碼和隱藏的欄位。  
   
- 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
+ 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱 < [NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
   
  <xref:System.Web.UI.WebControls.TreeView.OnPreRender%2A> 方法也允許衍生類別處理事件，而不用附加委派。 這是在衍生類別中處理事件的慣用技巧。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>在覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnPreRender(System.EventArgs)" />方法在衍生類別中，請務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnPreRender(System.EventArgs)" />方法的基底類別，使已註冊的委派能接收到事件。</para>
+          <para>當覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnPreRender(System.EventArgs)" />方法在衍生類別中，務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnPreRender(System.EventArgs)" />方法的基底類別，好讓註冊的委派收到事件。</para>
         </block>
         <altmember cref="E:System.Web.UI.Control.PreRender" />
       </Docs>
@@ -2326,6 +2360,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2341,21 +2376,21 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.SelectedNodeChanged>中選取節點時，就會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，例如更新顯示的內容時就會發生此事件的事件處理方法。  
+ <xref:System.Web.UI.WebControls.TreeView.SelectedNodeChanged>中選取節點時，會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，例如每次這個事件發生時，更新顯示的內容中，事件處理方法。  
   
- 您可以選擇設定<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>屬性的節點指定選取該節點時，就會引發的事件。  
+ 您可以選擇性地設定<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>屬性的節點可指定當選取該節點時，會引發的事件。  
   
 > [!NOTE]
->  <xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>的節點不會呈現其<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>屬性設定為`TreeNodeSelectAction.None`。  
+>  <xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>則不會呈現與節點及其<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>屬性設定為`TreeNodeSelectAction.None`。  
   
- 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
+ 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱 < [NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
   
  <xref:System.Web.UI.WebControls.TreeView.OnSelectedNodeChanged%2A> 方法也允許衍生類別處理事件，而不用附加委派。 這是在衍生類別中處理事件的慣用技巧。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>在覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnSelectedNodeChanged(System.EventArgs)" />方法在衍生類別中，請務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnSelectedNodeChanged(System.EventArgs)" />方法的基底類別，使已註冊的委派能接收到事件。</para>
+          <para>當覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnSelectedNodeChanged(System.EventArgs)" />方法在衍生類別中，務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnSelectedNodeChanged(System.EventArgs)" />方法的基底類別，好讓註冊的委派收到事件。</para>
         </block>
         <altmember cref="E:System.Web.UI.WebControls.TreeView.SelectedNodeChanged" />
       </Docs>
@@ -2370,6 +2405,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2386,16 +2422,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.TreeNodeCheckChanged>中核取方塊時，就會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項變更發佈至伺服器之間的狀態。 這可讓您提供執行自訂的常式，例如更新資料庫或顯示的內容時就會發生此事件的事件處理方法。  
+ <xref:System.Web.UI.WebControls.TreeView.TreeNodeCheckChanged>中的核取方塊時，會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項變更發佈至伺服器之間的狀態。 這可讓您提供執行自訂的常式，例如更新顯示的內容或資料庫時就會發生此事件的事件處理方法。  
   
- 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
+ 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱 < [NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
   
  <xref:System.Web.UI.WebControls.TreeView.OnTreeNodeCheckChanged%2A> 方法也允許衍生類別處理事件，而不用附加委派。 這是在衍生類別中處理事件的慣用技巧。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>在覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeCheckChanged(System.Web.UI.WebControls.TreeNodeEventArgs)" />在衍生類別中，請務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeCheckChanged(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法的基底類別，使已註冊的委派能接收到事件。</para>
+          <para>當覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeCheckChanged(System.Web.UI.WebControls.TreeNodeEventArgs)" />衍生類別時，請務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeCheckChanged(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法的基底類別，好讓註冊的委派收到事件。</para>
         </block>
         <altmember cref="E:System.Web.UI.WebControls.TreeView.TreeNodeCheckChanged" />
       </Docs>
@@ -2410,6 +2446,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2426,16 +2463,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.TreeNodeCollapsed>中摺疊的節點時，就會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，每當發生此事件的事件處理方法。  
+ <xref:System.Web.UI.WebControls.TreeView.TreeNodeCollapsed>中摺疊節點時，會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，每當發生此事件的事件處理方法。  
   
- 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
+ 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱 < [NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
   
  <xref:System.Web.UI.WebControls.TreeView.OnTreeNodeCollapsed%2A> 方法也允許衍生類別處理事件，而不用附加委派。 這是在衍生類別中處理事件的慣用技巧。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>在覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeCollapsed(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法在衍生類別中，請務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeCollapsed(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法的基底類別，使已註冊的委派能接收到事件。</para>
+          <para>當覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeCollapsed(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法在衍生類別中，務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeCollapsed(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法的基底類別，好讓註冊的委派收到事件。</para>
         </block>
         <altmember cref="E:System.Web.UI.WebControls.TreeView.TreeNodeCollapsed" />
       </Docs>
@@ -2450,6 +2487,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2466,16 +2504,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.TreeNodeDataBound>資料項目所繫結中的節點時，就會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，每當發生此事件的事件處理方法。  
+ <xref:System.Web.UI.WebControls.TreeView.TreeNodeDataBound>資料項目所繫結中的節點時，會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，每當發生此事件的事件處理方法。  
   
- 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
+ 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱 < [NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
   
  <xref:System.Web.UI.WebControls.TreeView.OnTreeNodeDataBound%2A> 方法也允許衍生類別處理事件，而不用附加委派。 這是在衍生類別中處理事件的慣用技巧。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>在覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeDataBound(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法在衍生類別中，請務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeDataBound(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法的基底類別，使已註冊的委派能接收到事件。</para>
+          <para>當覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeDataBound(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法在衍生類別中，務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeDataBound(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法的基底類別，好讓註冊的委派收到事件。</para>
         </block>
         <altmember cref="E:System.Web.UI.WebControls.TreeView.TreeNodeDataBound" />
       </Docs>
@@ -2490,6 +2528,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2506,19 +2545,19 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded>在展開的節點時，就會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，每當發生此事件的事件處理方法。  
+ <xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded>中展開節點時，會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，每當發生此事件的事件處理方法。  
   
 > [!NOTE]
->  如果<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>節點的屬性設定為<xref:System.Web.UI.WebControls.TreeNodeSelectAction.Expand>或<xref:System.Web.UI.WebControls.TreeNodeSelectAction.SelectExpand>、<xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded>中按一下該節點時，也會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。  
+>  如果<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>節點的屬性設定為<xref:System.Web.UI.WebControls.TreeNodeSelectAction.Expand>或是<xref:System.Web.UI.WebControls.TreeNodeSelectAction.SelectExpand>，則<xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded>中按一下該節點時，也會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。  
   
- 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
+ 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱 < [NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
   
  <xref:System.Web.UI.WebControls.TreeView.OnTreeNodeExpanded%2A> 方法也允許衍生類別處理事件，而不用附加委派。 這是在衍生類別中處理事件的慣用技巧。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>在覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeExpanded(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法在衍生類別中，請務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeExpanded(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法的基底類別，使已註冊的委派能接收到事件。</para>
+          <para>當覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeExpanded(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法在衍生類別中，務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodeExpanded(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法的基底類別，好讓註冊的委派收到事件。</para>
         </block>
         <altmember cref="E:System.Web.UI.WebControls.TreeView.TreeNodeExpanded" />
         <altmember cref="P:System.Web.UI.WebControls.TreeNode.SelectAction" />
@@ -2534,6 +2573,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2550,23 +2590,23 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 某些情況下，它並不實用靜態地預先定義的資料大小，或根據使用者輸入的自訂內容的樹狀結構。 因為這個緣故，<xref:System.Web.UI.WebControls.TreeView>控制項支援動態節點母體擴展。 當<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>節點的屬性設定為`true`，在執行階段的節點展開時填入該節點。  
+ 某些情況下，它並不實際靜態預先定義的資料大小或取決於使用者輸入的自訂內容的樹狀結構。 因為這個緣故，<xref:System.Web.UI.WebControls.TreeView>控制項支援動態的節點數。 當<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>節點的屬性設定為`true`，該節點會在執行階段節點展開時填入。  
   
- 若要以動態方式填入節點，請先設定<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>屬性節點，以`true`。 接下來，定義的事件處理方法<xref:System.Web.UI.WebControls.TreeView.TreeNodePopulate>以程式設計方式填入節點的事件。 典型的事件處理方法會從資料來源擷取節點的資料、 將資料放入節點結構，和將節點結構<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>在擴展節點的集合。 節點結構由加入<xref:System.Web.UI.WebControls.TreeNode>物件加入至<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>父節點的集合。  
+ 若要以動態方式填入節點，請先設定<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>屬性的節點`true`。 接下來，定義的事件處理方法<xref:System.Web.UI.WebControls.TreeView.TreeNodePopulate>以程式設計方式填入節點的事件。 一般的事件處理方法節點資料擷取的資料來源會將資料放到節點結構中，然後加入的節點結構<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>所填入之節點的集合。 節點結構由加入<xref:System.Web.UI.WebControls.TreeNode>物件至<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>父節點的集合。  
   
 > [!NOTE]
->  當<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>節點的屬性設定為`true`，必須以動態方式填入節點。 您無法以宣告方式建立巢狀其; 下的另一個節點否則，會在頁面上發生錯誤。  
+>  當<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>節點的屬性設定為`true`，必須以動態方式填入的節點。 您無法以宣告方式建立巢狀其; 下的另一個節點否則，會發生錯誤，在頁面上。  
   
- 支援的瀏覽器 (Microsoft Internet Explorer 4.0 相容的瀏覽器和更新版本) 也可以利用用戶端節點填入。 啟用時，這可讓<xref:System.Web.UI.WebControls.TreeView>控制項來動態填入用戶端上的節點，展開該節點時，這會避免需回傳至伺服器。 如需有關用戶端節點母體擴展的詳細資訊，請參閱<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>。  
+ 支援的瀏覽器 (Microsoft Internet Explorer 4.0 相容的瀏覽器和更新版本) 也可以利用用戶端節點填入。 啟用時，這可讓<xref:System.Web.UI.WebControls.TreeView>得以動態地填入用戶端上的節點，展開該節點時，避免將回傳給伺服器。 如需有關用戶端節點數的詳細資訊，請參閱<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>。  
   
- 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
+ 引發事件會透過委派叫用此事件處理常式。 如需詳細資訊，請參閱 < [NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
   
  <xref:System.Web.UI.WebControls.TreeView.OnTreeNodePopulate%2A> 方法也允許衍生類別處理事件，而不用附加委派。 這是在衍生類別中處理事件的慣用技巧。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>在覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodePopulate(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法在衍生類別中，請務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodePopulate(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法的基底類別，使已註冊的委派能接收到事件。</para>
+          <para>當覆寫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodePopulate(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法在衍生類別中，務必呼叫<see cref="M:System.Web.UI.WebControls.TreeView.OnTreeNodePopulate(System.Web.UI.WebControls.TreeNodeEventArgs)" />方法的基底類別，好讓註冊的委派收到事件。</para>
         </block>
         <altmember cref="E:System.Web.UI.WebControls.TreeView.TreeNodePopulate" />
         <altmember cref="P:System.Web.UI.WebControls.TreeNode.PopulateOnDemand" />
@@ -2583,6 +2623,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2610,17 +2651,17 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>屬性，即可控制中的父節點的外觀<xref:System.Web.UI.WebControls.TreeView>控制項。 這個屬性是唯讀的。不過，您可以設定的屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>它所傳回的物件。 可以以宣告方式設定的屬性，在表單中`Property-Subproperty`，其中`Subproperty`屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件 (例如， `ParentNodeStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單中`Property.Subproperty`(例如， `ParentNodeStyle.ForeColor`)。 常見的設定通常包括自訂背景色彩、 前景色彩、 字型屬性和節點間距。 樣式屬性會依下列優先順序套用：  
+ 使用<xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>屬性，即可控制中的父節點的外觀<xref:System.Web.UI.WebControls.TreeView>控制項。 這個屬性是唯讀的;不過，您可以在這裡設定的屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件傳回。 屬性可以宣告方式設定形式`Property-Subproperty`，其中`Subproperty`是屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件 (例如`ParentNodeStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單`Property.Subproperty`(例如`ParentNodeStyle.ForeColor`)。 常見的設定通常會包括自訂的背景色彩、 前景色彩、 字型屬性和節點的間距。 樣式屬性會依下列優先順序套用：  
   
 1.  <xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>。  
   
-2.  <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A><xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，取決於節點類型。 如果<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>定義集合，它會套用在此階段中，覆寫的其他節點樣式屬性。  
+2.  <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A><xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，取決於節點類型。 如果<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>定義集合，它會套用在此階段中，覆寫其他的節點樣式屬性。  
   
 3.  <xref:System.Web.UI.WebControls.TreeView.SelectedNodeStyle%2A>。  
   
 4.  <xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>。  
   
- 如果您要產生的內容樣式導覽功能表，在特定層級的節點都必須有相同的外觀，不論它們是否具有子節點，您可以考慮使用<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>而不是設定個別的屬性樣式屬性。  
+ 如果您要產生資料表的內容樣式巡覽功能表，其中特定層級的節點應該具有相同的外觀，不論它們是否具有子節點，您可以考慮使用<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>而不是設定個別的屬性樣式屬性。  
   
    
   
@@ -2650,6 +2691,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2667,16 +2709,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeNode.ValuePath%2A>屬性包含表單的目前節點的路徑從根節點的節點值的分隔符號分隔清單。 使用<xref:System.Web.UI.WebControls.TreeView.PathSeparator%2A>屬性，以指定的分隔符號字元，用以分隔節點值。 這個值通常用於剖析為個別值的清單。  
+ <xref:System.Web.UI.WebControls.TreeNode.ValuePath%2A>屬性包含構成從根節點的路徑至目前節點的節點值的分隔符號分隔清單。 使用<xref:System.Web.UI.WebControls.TreeView.PathSeparator%2A>屬性，以指定的分隔符號字元，用來分隔的節點值。 剖析的個別值的清單時，通常會使用此值。  
   
- 根據文字中顯示<xref:System.Web.UI.WebControls.TreeView>控制項，以避免任何衝突變更，可能需要分隔符號字元。 例如，如果您設定逗號分隔符號字元，所顯示的文字不應該包含任何逗號;否則，<xref:System.Web.UI.WebControls.TreeNode.ValuePath%2A>屬性無法正確剖析。  
+ 根據文字中顯示<xref:System.Web.UI.WebControls.TreeView>控制項，分隔符號字元可能需要變更，以避免任何衝突。 例如，如果您將分隔符號字元為逗號時，所顯示的文字不應包含任何逗號;否則，<xref:System.Web.UI.WebControls.TreeNode.ValuePath%2A>屬性無法正確剖析。  
   
  這個屬性的值會儲存檢視狀態中。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.PathSeparator%2A>屬性，以指定的分隔符號字元<xref:System.Web.UI.WebControls.TreeNode.ValuePath%2A>節點的屬性。 此值，然後用來剖析<xref:System.Web.UI.WebControls.TreeNode.ValuePath%2A>的個別值的屬性。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.PathSeparator%2A>屬性，以指定的分隔符號字元<xref:System.Web.UI.WebControls.TreeNode.ValuePath%2A>節點的屬性。 此值，然後用來剖析<xref:System.Web.UI.WebControls.TreeNode.ValuePath%2A>個別值的屬性。  
   
  [!code-aspx-csharp[TreeViewPathSeparator2#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewPathSeparator2/CS/treeviewpathseparatorcs.aspx#1)]
  [!code-aspx-vb[TreeViewPathSeparator2#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewPathSeparator2/VB/treeviewpathseparatorvb.aspx#1)]  
@@ -2696,6 +2738,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2708,12 +2751,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.PerformDataBinding%2A>方法是 helper 方法，由呼叫<xref:System.Web.UI.WebControls.TreeView>指定的資料來源繫結至控制項的控制項。  
+ <xref:System.Web.UI.WebControls.TreeView.PerformDataBinding%2A>方法是呼叫 helper 方法<xref:System.Web.UI.WebControls.TreeView>將指定的資料來源繫結至控制項的控制項。  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>因為<see cref="M:System.Web.UI.WebControls.BaseDataBoundControl.DataBind" />方法已密封，您應該覆寫<see cref="M:System.Web.UI.WebControls.TreeView.PerformDataBinding" />方法，如果您需要執行任何額外的工作，當資料繫結。</para>
+          <para>因為<see cref="M:System.Web.UI.WebControls.BaseDataBoundControl.DataBind" />方法密封格式，您應該覆寫<see cref="M:System.Web.UI.WebControls.TreeView.PerformDataBinding" />方法，如果您需要執行任何額外的工作，當資料繫結。</para>
         </block>
       </Docs>
     </Member>
@@ -2727,6 +2770,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2745,27 +2789,27 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 某些情況下，它並不實用靜態地預先定義的資料大小，或根據使用者輸入的自訂內容的樹狀結構。 因為這個緣故，<xref:System.Web.UI.WebControls.TreeView>控制項支援動態節點母體擴展。 當<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>節點的屬性設定為`true`，在執行階段的節點展開時填入該節點。  
+ 某些情況下，它並不實際靜態預先定義的資料大小或取決於使用者輸入的自訂內容的樹狀結構。 因為這個緣故，<xref:System.Web.UI.WebControls.TreeView>控制項支援動態的節點數。 當<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>節點的屬性設定為`true`，該節點會在執行階段節點展開時填入。  
   
- 除了填入隨選的節點，便可填入直接上支援的用戶端瀏覽器的節點。 當<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>屬性設定為`true`，服務會呼叫從用戶端填入樹狀結構節點中，如此就不需回傳至伺服器。 否則，<xref:System.Web.UI.WebControls.TreeView>控制項回傳至伺服器來填入節點。  
-  
-> [!NOTE]
->  <xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>屬性也必須設定為`true`順序<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>屬性設定為`true`。  
-  
- 若要填入用戶端上的節點，請先設定<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>屬性`true`，然後設定<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>屬性節點，以`true`。 接下來，定義的事件處理方法<xref:System.Web.UI.WebControls.TreeView.TreeNodePopulate>以程式設計方式填入節點的事件。 典型的事件處理方法會從資料來源擷取節點的資料、 將資料放入節點結構，和將節點結構<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>在擴展節點的集合。 您將建立的節點結構<xref:System.Web.UI.WebControls.TreeNode>物件加入至<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>父節點的集合。  
+ 除了填入隨選的節點，就可以填入直接在支援的用戶端瀏覽器上的節點。 當<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>屬性設定為`true`，從就不需要回傳給伺服器來填入樹狀節點中，用戶端呼叫服務。 否則，<xref:System.Web.UI.WebControls.TreeView>控制項回傳至伺服器以填入節點。  
   
 > [!NOTE]
->  當<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>節點的屬性設定為`true`，必須以動態方式填入節點。 您無法以宣告方式建立巢狀其; 下的另一個節點否則，會在頁面上發生錯誤。  
+>  <xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>屬性也必須設定為`true`以便<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>屬性設為`true`。  
+  
+ 若要填入的節點上的用戶端，請先設定<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>屬性，以`true`，然後設定<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>的節點屬性`true`。 接下來，定義的事件處理方法<xref:System.Web.UI.WebControls.TreeView.TreeNodePopulate>以程式設計方式填入節點的事件。 一般的事件處理方法節點資料擷取的資料來源會將資料放到節點結構中，然後加入的節點結構<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>所填入之節點的集合。 您建立的節點結構加上<xref:System.Web.UI.WebControls.TreeNode>物件至<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>父節點的集合。  
   
 > [!NOTE]
->  瀏覽器支援回呼指令碼支援的用戶端節點母體擴展的功能。 若要檢查瀏覽器是否支援回呼指令碼存取，請使用<xref:System.Web.Configuration.HttpCapabilitiesBase.SupportsCallback%2A>屬性<xref:System.Web.HttpBrowserCapabilities>類別。 您可以存取的執行個體<xref:System.Web.HttpBrowserCapabilities>類別目前的要求，透過<xref:System.Web.HttpRequest.Browser%2A>屬性<xref:System.Web.HttpRequest>類別。  
+>  當<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>節點的屬性設定為`true`，必須以動態方式填入的節點。 您無法以宣告方式建立巢狀其; 下的另一個節點否則，會發生錯誤，在頁面上。  
+  
+> [!NOTE]
+>  瀏覽器支援回呼指令碼支援的用戶端節點母體擴展功能。 若要檢查瀏覽器是否支援回呼指令碼存取，請使用<xref:System.Web.Configuration.HttpCapabilitiesBase.SupportsCallback%2A>屬性<xref:System.Web.HttpBrowserCapabilities>類別。 您可以存取的執行個體<xref:System.Web.HttpBrowserCapabilities>類別目前的要求，透過<xref:System.Web.HttpRequest.Browser%2A>屬性<xref:System.Web.HttpRequest>類別。  
   
  這個屬性的值會儲存檢視狀態中。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>屬性來啟用用戶端母體擴展中的節點<xref:System.Web.UI.WebControls.TreeView>控制項。 請注意，當啟用用戶端節點擴展時，節點會自動填入用戶端，而不需回傳至伺服器上。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>屬性，讓用戶端母體擴展集中的節點<xref:System.Web.UI.WebControls.TreeView>控制項。 請注意，啟用用戶端節點母體擴展時，會自動填入節點在用戶端，而不需要回傳給伺服器。  
   
  [!code-aspx-csharp[TreeViewPopulateNodesFromClient#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewPopulateNodesFromClient/CS/treeviewpopulatenodesfromclientcs.aspx#1)]
  [!code-aspx-vb[TreeViewPopulateNodesFromClient#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewPopulateNodesFromClient/VB/treeviewpopulatenodesfromclientvb.aspx#1)]  
@@ -2790,6 +2834,7 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2825,6 +2870,7 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2840,9 +2886,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 頁面值傳遞給`eventArgument`參數<xref:System.Web.UI.WebControls.TreeView.RaisePostBackEvent%2A>之控制項的實作方法<xref:System.Web.UI.IPostBackEventHandler?displayProperty=nameWithType>介面。 這<xref:System.Web.UI.WebControls.TreeView>控制項也會轉譯導致回傳事件發生的 HTML 項目。 如果控制項轉譯回傳至伺服器的用戶端指令碼時，傳入的引數，從指令碼`eventArgument`參數。 如果因為簡單回傳事件提交至伺服器，`eventArgument`參數是`null`。  
+ 頁面值傳遞給`eventArgument`參數來<xref:System.Web.UI.WebControls.TreeView.RaisePostBackEvent%2A>之控制項的實作方法<xref:System.Web.UI.IPostBackEventHandler?displayProperty=nameWithType>介面。 這<xref:System.Web.UI.WebControls.TreeView>控制項也會呈現 HTML 項目，會導致發生回傳事件。 如果控制項呈現張貼至伺服器的用戶端指令碼，從指令碼的引數會傳入`eventArgument`參數。 如果回傳事件因為簡單提交到伺服器，`eventArgument`參數是`null`。  
   
- <xref:System.Web.UI.WebControls.TreeView.RaisePostBackEvent%2A>方法提供許多事件會由 HTML 和 Web 伺服器控制項所實作的功能。  
+ <xref:System.Web.UI.WebControls.TreeView.RaisePostBackEvent%2A>方法提供的功能由 HTML 和 Web 伺服器控制項的許多事件。  
   
  ]]></format>
         </remarks>
@@ -2862,6 +2908,7 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2891,6 +2938,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2925,6 +2973,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2941,7 +2990,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.RenderContents%2A>方法以呈現在節點<xref:System.Web.UI.WebControls.TreeView>用戶端的控制項。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.RenderContents%2A>方法以呈現在節點<xref:System.Web.UI.WebControls.TreeView>給用戶端的控制項。  
   
  ]]></format>
         </remarks>
@@ -2958,6 +3007,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2992,6 +3042,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3019,17 +3070,17 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A>屬性，即可控制中的根節點的外觀<xref:System.Web.UI.WebControls.TreeView>控制項。 這個屬性是唯讀的。不過，您可以設定的屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>它所傳回的物件。 可以以宣告方式設定的屬性，在表單中`Property-Subproperty`，其中`Subproperty`屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件 (例如， `RootNodeStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單中`Property.Subproperty`(例如， `RootNodeStyle.ForeColor`)。 常見的設定通常包括自訂背景色彩、 前景色彩、 字型屬性和節點間距。 樣式屬性會依下列優先順序套用：  
+ 使用<xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A>屬性，即可控制中的根節點的外觀<xref:System.Web.UI.WebControls.TreeView>控制項。 這個屬性是唯讀的;不過，您可以在這裡設定的屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件傳回。 屬性可以宣告方式設定形式`Property-Subproperty`，其中`Subproperty`是屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件 (例如`RootNodeStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單`Property.Subproperty`(例如`RootNodeStyle.ForeColor`)。 常見的設定通常會包括自訂的背景色彩、 前景色彩、 字型屬性和節點的間距。 樣式屬性會依下列優先順序套用：  
   
 1.  <xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>。  
   
-2.  <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A><xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，取決於節點類型。 如果<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>定義集合，它會套用在此階段中，覆寫的其他節點樣式屬性。  
+2.  <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A><xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，取決於節點類型。 如果<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>定義集合，它會套用在此階段中，覆寫其他的節點樣式屬性。  
   
 3.  <xref:System.Web.UI.WebControls.TreeView.SelectedNodeStyle%2A>  
   
 4.  <xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>。  
   
- 如果您要產生的內容樣式導覽功能表，在特定層級的節點都必須有相同的外觀，不論它們是否具有子節點，您可以考慮使用<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>而不是設定個別的屬性樣式屬性。  
+ 如果您要產生資料表的內容樣式巡覽功能表，其中特定層級的節點應該具有相同的外觀，不論它們是否具有子節點，您可以考慮使用<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>而不是設定個別的屬性樣式屬性。  
   
    
   
@@ -3059,6 +3110,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3081,6 +3133,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3102,29 +3155,29 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 在節點的文字<xref:System.Web.UI.WebControls.TreeView>控制項可以處於兩種模式： 選取模式和瀏覽模式。 根據預設，節點處於選取模式。 若要將節點放入瀏覽模式中，設定<xref:System.Web.UI.WebControls.TreeNode.NavigateUrl%2A>屬性的節點為空字串以外的值 ("")。 節點處於選取模式中，設定<xref:System.Web.UI.WebControls.TreeNode.NavigateUrl%2A>屬性的節點為空字串 ("")。  
+ 在節點的文字<xref:System.Web.UI.WebControls.TreeView>控制項可以處於兩種模式之一： 選取模式和瀏覽模式。 根據預設，節點處於選取模式。 若要置於瀏覽模式中的節點，設定<xref:System.Web.UI.WebControls.TreeNode.NavigateUrl%2A>屬性的節點為空字串以外的值 ("")。 節點處於選取模式中，設定<xref:System.Web.UI.WebControls.TreeNode.NavigateUrl%2A>屬性的節點為空字串 ("")。  
   
- 當節點處於選取模式時，使用者可以按一下節點來選取節點中的文字。 使用<xref:System.Web.UI.WebControls.TreeView.SelectedNode%2A>屬性來判斷哪一個節點中選取<xref:System.Web.UI.WebControls.TreeView>控制項。  
+ 當節點處於選取模式時，使用者可以選取的節點，依序按一下 [] 節點中的文字。 使用<xref:System.Web.UI.WebControls.TreeView.SelectedNode%2A>屬性來判斷哪一個節點中選取<xref:System.Web.UI.WebControls.TreeView>控制項。  
   
 > [!NOTE]
->  節點不能為時選取<xref:System.Web.UI.WebControls.TreeView>控制項會顯示超連結。 當顯示超連結時，<xref:System.Web.UI.WebControls.TreeView.SelectedNode%2A>屬性一律會傳回`null`。  
+>  節點不能選取當<xref:System.Web.UI.WebControls.TreeView>控制項會顯示超連結。 當顯示超連結時，<xref:System.Web.UI.WebControls.TreeView.SelectedNode%2A>屬性一律會傳回`null`。  
   
- 當使用者選取的不同節點<xref:System.Web.UI.WebControls.TreeView>即可在新的節點中，文字控制項<xref:System.Web.UI.WebControls.TreeView.SelectedNodeChanged>引發事件時，根據預設。 您可以設定來指定不同的事件<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>屬性的屬性。 下表列出可用的選項。  
+ 當使用者選取中的不同節點<xref:System.Web.UI.WebControls.TreeView>，即可在新的節點中，文字控制項<xref:System.Web.UI.WebControls.TreeView.SelectedNodeChanged>引發事件時，預設情況下。 您可以指定不同的事件，藉由設定<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>屬性的屬性。 下表列出可用的選項。  
   
 |選取動作|描述|  
 |----------------------|-----------------|  
-|<xref:System.Web.UI.WebControls.TreeNodeSelectAction.Expand>|切換展開或摺疊節點。 引發<xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded>或<xref:System.Web.UI.WebControls.TreeView.TreeNodeCollapsed>事件，視需要。|  
+|<xref:System.Web.UI.WebControls.TreeNodeSelectAction.Expand>|切換展開或摺疊的節點。 會引發<xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded>或<xref:System.Web.UI.WebControls.TreeView.TreeNodeCollapsed>事件，視需要。|  
 |<xref:System.Web.UI.WebControls.TreeNodeSelectAction.None>|選取節點時，不引發任何事件。|  
 |<xref:System.Web.UI.WebControls.TreeNodeSelectAction.Select>|選取節點時，引發 <xref:System.Web.UI.WebControls.TreeView.SelectedNodeChanged> 事件。|  
 |<xref:System.Web.UI.WebControls.TreeNodeSelectAction.SelectExpand>|選取節點時，引發 <xref:System.Web.UI.WebControls.TreeView.SelectedNodeChanged> 和 <xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded> 事件。 只會展開節點，而不會摺疊。|  
   
 > [!NOTE]
->  <xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>的節點不會呈現其<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>屬性設定為`TreeNodeSelectAction.None`。  
+>  <xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>則不會呈現與節點及其<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>屬性設定為`TreeNodeSelectAction.None`。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.SelectedNode%2A>屬性來判斷所選取的節點中的值<xref:System.Web.UI.WebControls.TreeView>控制項。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.SelectedNode%2A>屬性來判斷的值中選取的節點<xref:System.Web.UI.WebControls.TreeView>控制項。  
   
  [!code-aspx-csharp[TreeViewSelectedNodeStyle#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewSelectedNodeStyle/CS/treeviewselectednodestylecs.aspx#1)]
  [!code-aspx-vb[TreeViewSelectedNodeStyle#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewSelectedNodeStyle/VB/treeviewselectednodestylevb.aspx#1)]  
@@ -3149,6 +3202,7 @@
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3160,23 +3214,23 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.SelectedNodeChanged>中選取節點時，就會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，例如更新顯示的內容時就會發生此事件的事件處理方法。  
+ <xref:System.Web.UI.WebControls.TreeView.SelectedNodeChanged>中選取節點時，會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，例如每次這個事件發生時，更新顯示的內容中，事件處理方法。  
   
- 您可以選擇設定<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>屬性節點，以指定選取該節點時，就會引發的事件。 下表列出可用的選項。  
+ 您可以選擇性地設定<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>屬性節點可指定當選取該節點時，會引發的事件。 下表列出可用的選項。  
   
 |選取動作|描述|  
 |----------------------|-----------------|  
-|<xref:System.Web.UI.WebControls.TreeNodeSelectAction.Expand>|切換展開或摺疊節點。 引發<xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded>或<xref:System.Web.UI.WebControls.TreeView.TreeNodeCollapsed>事件，視需要。|  
+|<xref:System.Web.UI.WebControls.TreeNodeSelectAction.Expand>|切換展開或摺疊的節點。 會引發<xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded>或<xref:System.Web.UI.WebControls.TreeView.TreeNodeCollapsed>事件，視需要。|  
 |<xref:System.Web.UI.WebControls.TreeNodeSelectAction.None>|選取節點時，不引發任何事件。|  
 |<xref:System.Web.UI.WebControls.TreeNodeSelectAction.Select>|選取節點時，引發 <xref:System.Web.UI.WebControls.TreeView.SelectedNodeChanged> 事件。|  
 |<xref:System.Web.UI.WebControls.TreeNodeSelectAction.SelectExpand>|選取節點時，引發 <xref:System.Web.UI.WebControls.TreeView.SelectedNodeChanged> 和 <xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded> 事件。 只會展開節點，而不會摺疊。|  
   
 > [!NOTE]
->  <xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>的節點不會呈現其<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>屬性設定為`TreeNodeSelectAction.None`。  
+>  <xref:System.Web.UI.WebControls.TreeView.HoverNodeStyle%2A>則不會呈現與節點及其<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>屬性設定為`TreeNodeSelectAction.None`。  
   
- <xref:System.Web.UI.WebControls.TreeView.SelectedNodeChanged>時使用者按下一個節點只能在 post 上引發事件。 如果未引發事件<xref:System.Web.UI.WebControls.TreeView.SelectedNode%2A>屬性以程式設計方式變更。  
+ <xref:System.Web.UI.WebControls.TreeView.SelectedNodeChanged>回當使用者按一下節點時，才只會在文章上引發事件。 如果未引發事件<xref:System.Web.UI.WebControls.TreeView.SelectedNode%2A>屬性以程式設計方式變更。  
   
- 如需處理事件的詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
+ 如需有關如何處理事件的詳細資訊，請參閱 < [NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
   
    
   
@@ -3201,6 +3255,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3228,11 +3283,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.SelectedNodeStyle%2A>屬性，即可控制中的選定節點的外觀<xref:System.Web.UI.WebControls.TreeView>控制項。 這個屬性是唯讀的。不過，您可以設定的屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>它所傳回的物件。 可以以宣告方式設定的屬性，在表單中`Property-Subproperty`，其中`Subproperty`屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件 (例如， `SelectedNodeStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單中`Property.Subproperty`(例如， `SelectedNodeStyle.ForeColor`)。 常見的設定通常包括自訂背景色彩、 前景色彩、 字型屬性和節點間距。 樣式屬性會依下列優先順序套用：  
+ 使用<xref:System.Web.UI.WebControls.TreeView.SelectedNodeStyle%2A>屬性，即可控制中的選定節點的外觀<xref:System.Web.UI.WebControls.TreeView>控制項。 這個屬性是唯讀的;不過，您可以在這裡設定的屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件傳回。 屬性可以宣告方式設定形式`Property-Subproperty`，其中`Subproperty`是屬性<xref:System.Web.UI.WebControls.TreeNodeStyle>物件 (例如`SelectedNodeStyle-ForeColor`)。 屬性也可以設定以程式設計方式在表單`Property.Subproperty`(例如`SelectedNodeStyle.ForeColor`)。 常見的設定通常會包括自訂的背景色彩、 前景色彩、 字型屬性和節點的間距。 樣式屬性會依下列優先順序套用：  
   
 1.  <xref:System.Web.UI.WebControls.TreeView.NodeStyle%2A>。  
   
-2.  <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A><xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，取決於節點類型。 如果<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>定義集合，它會套用在此階段中，覆寫的其他節點樣式屬性。  
+2.  <xref:System.Web.UI.WebControls.TreeView.RootNodeStyle%2A><xref:System.Web.UI.WebControls.TreeView.ParentNodeStyle%2A>，或<xref:System.Web.UI.WebControls.TreeView.LeafNodeStyle%2A>，取決於節點類型。 如果<xref:System.Web.UI.WebControls.TreeView.LevelStyles%2A>定義集合，它會套用在此階段中，覆寫其他的節點樣式屬性。  
   
 3.  <xref:System.Web.UI.WebControls.TreeView.SelectedNodeStyle%2A>。  
   
@@ -3266,6 +3321,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3289,7 +3345,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.SelectedValue%2A>屬性提供便利的方式來決定選取之節點的值。 這個屬性只會傳回的值<xref:System.Web.UI.WebControls.TreeNode.Value%2A>屬性<xref:System.Web.UI.WebControls.TreeNode>所參考的物件<xref:System.Web.UI.WebControls.TreeView.SelectedNode%2A>屬性。 如果沒有節點中目前選取<xref:System.Web.UI.WebControls.TreeView>控制，則為空字串 ("") 會傳回。  
+ <xref:System.Web.UI.WebControls.TreeView.SelectedValue%2A>屬性提供便利的方式，來決定選取之節點的值。 此屬性只會傳回的值<xref:System.Web.UI.WebControls.TreeNode.Value%2A>的屬性<xref:System.Web.UI.WebControls.TreeNode>所參考的物件<xref:System.Web.UI.WebControls.TreeView.SelectedNode%2A>屬性。 如果在目前選取的節點不<xref:System.Web.UI.WebControls.TreeView>控制項，則為空字串 ("") 會傳回。  
   
  ]]></format>
         </remarks>
@@ -3306,6 +3362,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3330,7 +3387,7 @@
         </remarks>
         <block subset="none" type="overrides">
           <para>
-            <see cref="M:System.Web.UI.WebControls.TreeView.SetNodeDataBound(System.Web.UI.WebControls.TreeNode,System.Boolean)" />方法提供來讓衍生自控制項<see cref="T:System.Web.UI.WebControls.TreeView" />控制來設定<see cref="P:System.Web.UI.WebControls.TreeNode.DataBound" />節點上的屬性。</para>
+            <see cref="M:System.Web.UI.WebControls.TreeView.SetNodeDataBound(System.Web.UI.WebControls.TreeNode,System.Boolean)" />方法，以允許控制項衍生自<see cref="T:System.Web.UI.WebControls.TreeView" />控制項以設定<see cref="P:System.Web.UI.WebControls.TreeNode.DataBound" />節點上的屬性。</para>
         </block>
         <altmember cref="M:System.Web.UI.WebControls.TreeView.SetNodeDataItem(System.Web.UI.WebControls.TreeNode,System.Object)" />
         <altmember cref="M:System.Web.UI.WebControls.TreeView.SetNodeDataPath(System.Web.UI.WebControls.TreeNode,System.String)" />
@@ -3346,6 +3403,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3382,6 +3440,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3400,7 +3459,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.SetNodeDataPath%2A>方法，以設定所指定的資料路徑<xref:System.Web.UI.WebControls.TreeNode>控制項。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.SetNodeDataPath%2A>方法來設定指定的資料路徑<xref:System.Web.UI.WebControls.TreeNode>控制項。  
   
  ]]></format>
         </remarks>
@@ -3418,6 +3477,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3436,31 +3496,31 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 多節點選取項目中提供支援<xref:System.Web.UI.WebControls.TreeView>控制項，您可以顯示的映像 節點旁邊的核取方塊。 使用<xref:System.Web.UI.WebControls.TreeView.ShowCheckBoxes%2A>屬性，以指定哪種節點類型會顯示核取方塊。 例如，如果這個屬性設定為`TreeNodeType.Parent`，核取方塊會顯示在樹狀目錄中每個父節點。 下表列出這個屬性的有效值。  
+ 多節點選取項目中提供支援<xref:System.Web.UI.WebControls.TreeView>控制項，您可以顯示的映像節點旁邊的核取方塊。 使用<xref:System.Web.UI.WebControls.TreeView.ShowCheckBoxes%2A>屬性來指定哪些節點型別將會顯示核取方塊。 例如，如果這個屬性設定為`TreeNodeType.Parent`，核取方塊會顯示在樹狀目錄中每個父節點。 下表列出有效的值，這個屬性。  
   
 |節點類型|描述|  
 |---------------|-----------------|  
 |`TreeNodeType.All`|核取方塊會顯示所有節點。|  
-|`TreeNodeType.Leaf`|所有分葉節點會顯示核取方塊。|  
+|`TreeNodeType.Leaf`|核取方塊會顯示所有分葉節點。|  
 |`TreeNodeType.None`|不會顯示核取方塊。|  
 |`TreeNodeType.Parent`|核取方塊會顯示所有父節點。|  
-|`TreeNodeType.Root`|核取方塊會顯示為所有根節點。|  
+|`TreeNodeType.Root`|核取方塊會顯示適用於所有根節點。|  
   
- 用於列舉型別<xref:System.Web.UI.WebControls.TreeView.ShowCheckBoxes%2A>屬性是旗標列舉，可讓您結合透過位元運算的值。 例如，若要顯示父節點和分葉節點的核取方塊，使用位元 OR 運算子結合`TreeNodeType.Parent`和`TreeNodeType.Leaf`值。  
+ 使用於列舉型別<xref:System.Web.UI.WebControls.TreeView.ShowCheckBoxes%2A>屬性是旗標列舉型別，可讓您結合透過位元運算的值。 比方說，若要顯示父] 和 [分葉節點的核取方塊，請使用位元的 OR 運算子結合`TreeNodeType.Parent`和`TreeNodeType.Leaf`值。  
   
- 若要判斷哪一個節點擁有其核取方塊選取，逐一查看的節點<xref:System.Web.UI.WebControls.TreeView.CheckedNodes%2A>集合。  
+ 若要判斷哪個節點擁有其核取方塊選取，逐一查看的節點<xref:System.Web.UI.WebControls.TreeView.CheckedNodes%2A>集合。  
   
 > [!NOTE]
 >  您可以覆寫<xref:System.Web.UI.WebControls.TreeView.ShowCheckBoxes%2A>設定所設定<xref:System.Web.UI.WebControls.TreeNode.ShowCheckBox%2A>每個節點的屬性。  
   
- 如果您需要提供只有單一選取支援，請考慮使用<xref:System.Web.UI.WebControls.TreeView.SelectedNode%2A>屬性。  
+ 如果您需要提供只有單一選取的支援，請考慮使用<xref:System.Web.UI.WebControls.TreeView.SelectedNode%2A>屬性。  
   
  這個屬性的值會儲存檢視狀態中。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.ShowCheckBoxes%2A>屬性來顯示和隱藏不同節點型別的核取方塊。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.ShowCheckBoxes%2A>屬性來顯示和隱藏的不同節點類型的核取方塊。  
   
  [!code-aspx-csharp[TreeViewShowCheckBoxes#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewShowCheckBoxes/CS/treeviewshowcheckboxescs.aspx#1)]
  [!code-aspx-vb[TreeViewShowCheckBoxes#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewShowCheckBoxes/VB/treeviewshowcheckboxesvb.aspx#1)]  
@@ -3482,6 +3542,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3500,16 +3561,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 展開節點指標用來顯示節點是否已展開、 摺疊，或無法展開。 使用<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性來指定是否展開節點指示器會顯示在<xref:System.Web.UI.WebControls.TreeView>控制項。  
+ 展開節點指示器用來顯示節點是否已展開、 摺疊，或無法展開。 使用<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性來指定是否要展開節點指示器會顯示在<xref:System.Web.UI.WebControls.TreeView>控制項。  
   
- 當<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性設定為`true`、<xref:System.Web.UI.WebControls.TreeView>控制項顯示加號 （+） 或減號 （-） 或影像預留位置，表示節點是否可展開、 摺疊，或無法展開分別節點旁邊。 您可以指定第一個設定的自訂映像<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性`TreeViewImageSet.Custom`，然後設定<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>， <xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>，和<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性，以自訂影像的 Url。 如果未不指定任何影像，則會使用預設映像。  
+ 當<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性設定為`true`，則<xref:System.Web.UI.WebControls.TreeView>控制項顯示一個加號 （+） 或減號 （-） 或影像預留位置，表示節點是否可展開、 摺疊，或無法展開，分別的節點旁。 您可以指定第一個設定的自訂映像<xref:System.Web.UI.WebControls.TreeView.ImageSet%2A>屬性，以`TreeViewImageSet.Custom`，然後設定<xref:System.Web.UI.WebControls.TreeView.NoExpandImageUrl%2A>， <xref:System.Web.UI.WebControls.TreeView.ExpandImageUrl%2A>，和<xref:System.Web.UI.WebControls.TreeView.CollapseImageUrl%2A>屬性，以自訂映像的 Url。 如果未不指定任何影像，則會使用預設映像。  
   
  這個屬性的值會儲存檢視狀態中。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性來顯示和隱藏擴充節點圖示。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.ShowExpandCollapse%2A>屬性來顯示和隱藏展開的節點圖示。  
   
  [!code-aspx-csharp[TreeViewShowExpandCollapse#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewShowExpandCollapse/CS/treeviewshowexpandcollapsecs.aspx#1)]
  [!code-aspx-vb[TreeViewShowExpandCollapse#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewShowExpandCollapse/VB/treeviewshowexpandcollapsevb.aspx#1)]  
@@ -3531,6 +3592,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3549,7 +3611,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.ShowLines%2A>屬性來指定是否要顯示要連接至父節點的子節點的線條。 當這個屬性設定為`true`、<xref:System.Web.UI.WebControls.TreeView>控制項搜尋所指定的 Web 存取資料夾<xref:System.Web.UI.WebControls.TreeView.LineImagesFolder%2A>線條影像的屬性。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.ShowLines%2A>屬性來指定是否要顯示的線條會連接至父節點的子節點。 當這個屬性設定為`true`，則<xref:System.Web.UI.WebControls.TreeView>控制搜尋所指定的 Web 存取資料夾<xref:System.Web.UI.WebControls.TreeView.LineImagesFolder%2A>的線條影像的屬性。  
   
 > [!NOTE]
 >  如果<xref:System.Web.UI.WebControls.TreeView.LineImagesFolder%2A>未設定屬性，<xref:System.Web.UI.WebControls.TreeView>控制項將會使用內建的預設映像 （20 x 20 像素為單位）。  
@@ -3559,7 +3621,7 @@
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.ShowLines%2A>屬性來顯示連線節點中的行<xref:System.Web.UI.WebControls.TreeView>控制項。 請務必使用行設計師工具來建立一組線條影像，並將它們放在命名 LineImages 目錄中的範例應用程式的資料夾。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.ShowLines%2A>屬性以顯示連接節點的線條<xref:System.Web.UI.WebControls.TreeView>控制項。 請務必使用列設計師工具來建立一組的線條影像，並將它們放在一個叫做 LineImages 目錄中，範例應用程式的資料夾。  
   
  [!code-aspx-csharp[TreeViewLineImagesFolderUrl#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewLineImagesFolderUrl/CS/treeviewlineimagesfolderurlcs.aspx#1)]
  [!code-aspx-vb[TreeViewLineImagesFolderUrl#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewLineImagesFolderUrl/VB/treeviewlineimagesfolderurlvb.aspx#1)]  
@@ -3579,6 +3641,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3596,15 +3659,15 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.SkipLinkText%2A>屬性是您可以設定讓網頁更多或少都能存取的屬性。 一種機制，以略過的內容來自大聲閱讀螢幕助讀程式的使用者可以提供網頁包含重複的內容。  
+ <xref:System.Web.UI.WebControls.TreeView.SkipLinkText%2A>屬性是您可以設定讓網頁更多或更少存取的屬性。 網頁包含重複的內容可以提供一種機制，以略過的內容從大聲閱讀螢幕助讀程式的使用者。  
   
- <xref:System.Web.UI.WebControls.TreeView>控制項提供<xref:System.Web.UI.WebControls.TreeView.SkipLinkText%2A>屬性做為螢幕助讀程式所要略過整個控制項的方式。 如果<xref:System.Web.UI.WebControls.TreeView.SkipLinkText%2A>屬性設定，呈現不可見的影像的替代文字，讓使用者選擇跳至控制項的結尾。 螢幕助讀程式大聲的替代文字，而影像佔用一個像素的空間。 像素精確控制呈現頁面的詳細資訊，請設定<xref:System.Web.UI.WebControls.TreeView.SkipLinkText%2A>屬性設為空字串 ("")，並提供您自己的機制，以略過樹狀結構。  
+ <xref:System.Web.UI.WebControls.TreeView>控制項提供<xref:System.Web.UI.WebControls.TreeView.SkipLinkText%2A>方式由螢幕助讀員略過整個控制項的屬性。 如果<xref:System.Web.UI.WebControls.TreeView.SkipLinkText%2A>屬性設定，呈現替代文字的不可見影像，讓使用者選擇跳到控制項的結尾。 大聲閱讀，而影像佔用只能有一個像素的空間時，螢幕助讀程式將讀取的替代文字。 像素精確地控制呈現頁面的詳細資訊，請設定<xref:System.Web.UI.WebControls.TreeView.SkipLinkText%2A>屬性設為空字串 ("")，提供您自己的機制，以略過樹狀結構。  
   
  <xref:System.Web.UI.WebControls.TreeView.SkipLinkText%2A>根據預設，讓螢幕助讀員略過控制項屬性設定為空字串。  
   
  這個屬性的值會儲存檢視狀態中。  
   
- 這個屬性的值設定時，可以自動儲存到資源檔使用設計工具。 如需詳細資訊，請參閱<xref:System.ComponentModel.LocalizableAttribute>和[全球化和當地語系化](http://msdn.microsoft.com/library/8ef3838e-9d05-4236-9dd0-ceecff9df80d)。  
+ 此屬性的值設定時，可以自動儲存到資源檔使用設計工具。 如需詳細資訊，請參閱 <<c0> <xref:System.ComponentModel.LocalizableAttribute> 並[全球化和當地語系化](http://msdn.microsoft.com/library/8ef3838e-9d05-4236-9dd0-ceecff9df80d)。  
   
  ]]></format>
         </remarks>
@@ -3623,6 +3686,7 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3636,7 +3700,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView>控制實作<xref:System.Web.UI.ICallbackEventHandler>介面並使用<xref:System.Web.UI.WebControls.TreeView.RaisePostBackEvent%2A>來擷取資料和<xref:System.Web.UI.WebControls.TreeView.GetCallbackResult%2A>方法來擷取的資料傳回至控制項。  
+ <xref:System.Web.UI.WebControls.TreeView>控制實作<xref:System.Web.UI.ICallbackEventHandler>介面，並使用<xref:System.Web.UI.WebControls.TreeView.RaisePostBackEvent%2A>擷取資料和<xref:System.Web.UI.WebControls.TreeView.GetCallbackResult%2A>方法，以傳回擷取的資料控制項。  
   
  ]]></format>
         </remarks>
@@ -3654,6 +3718,7 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3688,6 +3753,7 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3725,6 +3791,7 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3756,6 +3823,7 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3787,6 +3855,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3804,7 +3873,7 @@
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>您可以覆寫<see cref="P:System.Web.UI.WebControls.TreeView.TagKey" />屬性以指定的<see cref="T:System.Web.UI.HtmlTextWriterTag" />用於衍生的控制項值。</para>
+          <para>您可以覆寫<see cref="P:System.Web.UI.WebControls.TreeView.TagKey" />屬性來指定<see cref="T:System.Web.UI.HtmlTextWriterTag" />来用來將衍生的控制項值。</para>
         </block>
         <altmember cref="T:System.Web.UI.HtmlTextWriterTag" />
       </Docs>
@@ -3819,6 +3888,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -3833,24 +3903,24 @@
         <summary>取得或設定目標視窗或框架，在其中顯示與節點關聯的 Web 網頁內容。</summary>
         <value>在其中顯示連結 Web 網頁內容的目標視窗或框架。 除了以底線為開頭的某些特殊值以外，值必須以 A 到 Z (不區分大小寫) 範圍內的字母為開頭，如下表所示。  
   
- <list type="table"><listheader><term> 目標值</term><description>中呈現內容</description></listheader><item><term><see langword="_blank" /></term><description>新沒有框架視窗。</description></item><item><term><see langword="_parent" /></term><description> 即時運算框架組的父代。</description></item><item><term><see langword="_search" /></term><description> [搜尋] 窗格中。</description></item><item><term><see langword="_self" /></term><description> 具有焦點的框架。</description></item><item><term><see langword="_top" /></term><description> 框架不完整的視窗。</description></item></list><block subset="none" type="note"><para> 請檢查您的瀏覽器文件，以判斷是否<see langword="_search" />支援值。例如，Microsoft Internet Explorer 5.0 和更新版本支援<see langword="_search" />目標值。</para></block>  預設為空字串 ("")，會重新整理的視窗或具有焦點的框架。</value>
+ <list type="table"><listheader><term> 目標值</term><description>中呈現內容</description></listheader><item><term><see langword="_blank" /></term><description>無框架的新視窗。</description></item><item><term><see langword="_parent" /></term><description> 直接框架組父代。</description></item><item><term><see langword="_search" /></term><description> [搜尋] 窗格中。</description></item><item><term><see langword="_self" /></term><description> 具有焦點的框架。</description></item><item><term><see langword="_top" /></term><description> 沒有框架的全視窗。</description></item></list><block subset="none" type="note"><para> 請檢查您的瀏覽器文件，以判斷<see langword="_search" />支援值。例如，Microsoft Internet Explorer 5.0 和更新版本支援<see langword="_search" />目標值。</para></block>  預設值為空字串 ("")，會重新整理視窗或框架，具有焦點。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Web.UI.WebControls.TreeView.Target%2A>屬性，以指定的視窗或框架中顯示 Web 內容的連結節點時按一下該節點。  
+ 使用<xref:System.Web.UI.WebControls.TreeView.Target%2A>屬性，以指定的視窗或框架中顯示 Web 內容，會連結至節點上，按一下該節點時。  
   
 > [!NOTE]
->  <xref:System.Web.UI.WebControls.TreeView.Target%2A>屬性轉譯成`target`屬性。 `target`屬性`anchor`XHTML 1.1 文件類型定義中不允許項目。 請勿設定<xref:System.Web.UI.WebControls.TreeView.Target%2A>屬性，如果轉譯的輸出為<xref:System.Web.UI.WebControls.TreeView>必須 XHTML 1.1 相容。 如需詳細資訊，請參閱[XHTML 標準，在 Visual Studio 和 ASP.NET](http://msdn.microsoft.com/library/1b78d416-66bb-43a5-ac77-c703aab55b97)。  
+>  <xref:System.Web.UI.WebControls.TreeView.Target%2A>屬性會轉譯成`target`屬性。 `target`屬性上`anchor`XHTML 1.1 文件類型定義中不允許的項目。 未設定<xref:System.Web.UI.WebControls.TreeView.Target%2A>屬性，如果轉譯的輸出，如<xref:System.Web.UI.WebControls.TreeView>必須與 XHTML 1.1 相容。 如需詳細資訊，請參閱 < [XHTML 標準，在 Visual Studio 及 ASP.NET](http://msdn.microsoft.com/library/1b78d416-66bb-43a5-ac77-c703aab55b97)。  
 >   
->  在建立可存取網頁時，您應該避免使用<xref:System.Web.UI.WebControls.TreeView.Target%2A>指向另一個視窗中的屬性。 如需詳細資訊，請參閱[ASP.NET 控制項和協助工具](http://msdn.microsoft.com/library/847a37e3-ce20-41da-b0d3-7dfb0fdae9a0)。  
+>  在建立可存取網頁時，您應該避免使用<xref:System.Web.UI.WebControls.TreeView.Target%2A>指向另一個視窗中的屬性。 如需詳細資訊，請參閱 < [ASP.NET 控制項和協助工具](http://msdn.microsoft.com/library/847a37e3-ce20-41da-b0d3-7dfb0fdae9a0)。  
   
  這個屬性的值會儲存檢視狀態中。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.Target%2A>屬性來顯示 Web 內容在按下該節點時，連結至新視窗中的節點。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.Target%2A>屬性來顯示 Web 內容，按一下該節點時連結到新的視窗中的節點。  
   
  [!code-aspx-csharp[TreeViewTarget#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewTarget/CS/treeviewtargetcs.aspx#1)]
  [!code-aspx-vb[TreeViewTarget#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewTarget/VB/treeviewtargetvb.aspx#1)]  
@@ -3870,6 +3940,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3900,6 +3971,7 @@
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3911,16 +3983,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.TreeNodeCheckChanged>中核取方塊時，就會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項變更發佈至伺服器之間的狀態。 這可讓您提供執行自訂的常式，例如更新資料庫或顯示的內容時就會發生此事件的事件處理方法。  
+ <xref:System.Web.UI.WebControls.TreeView.TreeNodeCheckChanged>中的核取方塊時，會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項變更發佈至伺服器之間的狀態。 這可讓您提供執行自訂的常式，例如更新顯示的內容或資料庫時就會發生此事件的事件處理方法。  
   
- 即使<xref:System.Web.UI.WebControls.TreeView.TreeNodeCheckChanged>事件會在回傳，變更核取方塊不會導致回傳。  
+ 即使<xref:System.Web.UI.WebControls.TreeView.TreeNodeCheckChanged>引發事件上處理回傳，變更核取方塊不會造成回傳。  
   
- 如需處理事件的詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
+ 如需有關如何處理事件的詳細資訊，請參閱 < [NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.TreeNodeCheckChanged>事件來更新<xref:System.Web.UI.WebControls.Label>負責控制何時核取方塊的<xref:System.Web.UI.WebControls.TreeView>控制項變更發佈至伺服器之間的狀態。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.TreeNodeCheckChanged>事件來更新<xref:System.Web.UI.WebControls.Label>控制何時核取方塊<xref:System.Web.UI.WebControls.TreeView>控制項變更發佈至伺服器之間的狀態。  
   
  [!code-aspx-csharp[TreeViewCheckChanged#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewCheckChanged/CS/treeviewcheckchangedcs.aspx#1)]
  [!code-aspx-vb[TreeViewCheckChanged#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewCheckChanged/VB/treeviewcheckchangedvb.aspx#1)]  
@@ -3940,6 +4012,7 @@
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3951,9 +4024,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.TreeNodeCollapsed>中摺疊的節點時，就會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，每當發生此事件的事件處理方法。  
+ <xref:System.Web.UI.WebControls.TreeView.TreeNodeCollapsed>中摺疊節點時，會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，每當發生此事件的事件處理方法。  
   
- 如需處理事件的詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
+ 如需有關如何處理事件的詳細資訊，請參閱 < [NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
   
    
   
@@ -3978,6 +4051,7 @@
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -3989,21 +4063,21 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.TreeNodeDataBound>資料項目所繫結中的節點時，就會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，每當發生此事件的事件處理方法。  
+ <xref:System.Web.UI.WebControls.TreeView.TreeNodeDataBound>資料項目所繫結中的節點時，會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，每當發生此事件的事件處理方法。  
   
- 如需處理事件的詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
+ 如需有關如何處理事件的詳細資訊，請參閱 < [NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
   
    
   
 ## Examples  
- 本節包含兩個程式碼範例。 第一個程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.TreeNodeDataBound>事件以某些條件符合時，變更節點的影像。 第二個程式碼範例會提供第一個程式碼範例中的範例 XML 資料。  
+ 本節包含兩個程式碼範例。 第一個程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.TreeNodeDataBound>事件，以符合一些條件時，變更節點的映像。 第二個程式碼範例會提供第一個程式碼範例中的範例 XML 資料。  
   
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.TreeNodeDataBound>事件以某些條件符合時，變更節點的影像。 針對此範例正常運作，您必須複製此程式碼範例中，為 Book.xml 檔案之後所提供的範例 XML 資料。 另外請務必提供這個範例顯示的影像。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.TreeNodeDataBound>事件，以符合一些條件時，變更節點的映像。 針對此範例正常運作，您必須複製此程式碼範例中，名為 Book.xml 之後提供的範例 XML 資料。 也請務必提供自己的映像，以顯示此範例。  
   
  [!code-aspx-csharp[TreeViewTreeNodeDataBound#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewTreeNodeDataBound/CS/treeviewtreenodedataboundcs.aspx#1)]
  [!code-aspx-vb[TreeViewTreeNodeDataBound#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewTreeNodeDataBound/VB/treeviewtreenodedataboundvb.aspx#1)]  
   
- 下列程式碼範例會提供 XML 資料，上述程式碼範例。  
+ 下列程式碼範例會提供上述的程式碼範例中的範例 XML 資料。  
   
 ```  
 <Book Title="Book Title">  
@@ -4035,6 +4109,7 @@
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -4046,17 +4121,17 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded>在展開的節點時，就會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，每當發生此事件的事件處理方法。  
+ <xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded>中展開節點時，會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。 這可讓您提供執行自訂的常式，每當發生此事件的事件處理方法。  
   
 > [!NOTE]
->  如果<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>節點的屬性設定為`TreeNodeSelectAction.Expand`或`TreeNodeSelectAction.SelectExpand`、<xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded>中按一下該節點時，也會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。  
+>  如果<xref:System.Web.UI.WebControls.TreeNode.SelectAction%2A>節點的屬性設定為`TreeNodeSelectAction.Expand`或是`TreeNodeSelectAction.SelectExpand`，則<xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded>中按一下該節點時，也會引發事件<xref:System.Web.UI.WebControls.TreeView>控制項。  
   
- 如需處理事件的詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
+ 如需有關如何處理事件的詳細資訊，請參閱 < [NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded>事件，以更新的內容<xref:System.Web.UI.WebControls.Label>控制當使用者擴充中的節點<xref:System.Web.UI.WebControls.TreeView>控制項。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.TreeNodeExpanded>事件，以更新的內容<xref:System.Web.UI.WebControls.Label>控制當使用者展開集中的節點<xref:System.Web.UI.WebControls.TreeView>控制項。  
   
  [!code-aspx-csharp[TreeViewTreeNodeExpand#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewTreeNodeExpand/CS/treeviewtreenodeexpandcs.aspx#1)]
  [!code-aspx-vb[TreeViewTreeNodeExpand#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewTreeNodeExpand/VB/treeviewtreenodeexpandvb.aspx#1)]  
@@ -4077,6 +4152,7 @@
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -4088,21 +4164,21 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 某些情況下，它並不實用靜態地預先定義的資料大小，或根據使用者輸入的自訂內容的樹狀結構。 因為這個緣故，<xref:System.Web.UI.WebControls.TreeView>控制項支援動態節點母體擴展。 當<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>節點的屬性設定為`true`，在執行階段的節點展開時填入該節點。  
+ 某些情況下，它並不實際靜態預先定義的資料大小或取決於使用者輸入的自訂內容的樹狀結構。 因為這個緣故，<xref:System.Web.UI.WebControls.TreeView>控制項支援動態的節點數。 當<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>節點的屬性設定為`true`，該節點會在執行階段節點展開時填入。  
   
- 若要以動態方式填入節點，請先設定<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>屬性節點，以`true`。 接下來，定義的事件處理方法<xref:System.Web.UI.WebControls.TreeView.TreeNodePopulate>以程式設計方式填入節點的事件。 典型的事件處理方法會從資料來源擷取節點的資料、 將資料放入節點結構，和將節點結構<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>在擴展節點的集合。 節點結構由加入<xref:System.Web.UI.WebControls.TreeNode>物件加入至<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>父節點的集合。  
+ 若要以動態方式填入節點，請先設定<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>屬性的節點`true`。 接下來，定義的事件處理方法<xref:System.Web.UI.WebControls.TreeView.TreeNodePopulate>以程式設計方式填入節點的事件。 一般的事件處理方法節點資料擷取的資料來源會將資料放到節點結構中，然後加入的節點結構<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>所填入之節點的集合。 節點結構由加入<xref:System.Web.UI.WebControls.TreeNode>物件至<xref:System.Web.UI.WebControls.TreeNode.ChildNodes%2A>父節點的集合。  
   
 > [!NOTE]
->  當<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>節點的屬性設定為`true`，必須以動態方式填入節點。 您無法以宣告方式建立巢狀其; 下的另一個節點否則，會在頁面上發生錯誤。  
+>  當<xref:System.Web.UI.WebControls.TreeNode.PopulateOnDemand%2A>節點的屬性設定為`true`，必須以動態方式填入的節點。 您無法以宣告方式建立巢狀其; 下的另一個節點否則，會發生錯誤，在頁面上。  
   
- 支援的瀏覽器 (Microsoft Internet Explorer 4.0 相容的瀏覽器和更新版本) 也可以利用用戶端節點填入。 啟用時，這可讓<xref:System.Web.UI.WebControls.TreeView>控制項來擴展以動態方式在用戶端上的節點展開該節點時，這會避免需回傳至伺服器。 如需有關用戶端節點母體擴展的詳細資訊，請參閱<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>。  
+ 支援的瀏覽器 (Microsoft Internet Explorer 4.0 相容的瀏覽器和更新版本) 也可以利用用戶端節點填入。 啟用時，這可讓<xref:System.Web.UI.WebControls.TreeView>填入動態用戶端上的節點展開該節點時，避免將回傳給伺服器控制項。 如需有關用戶端節點數的詳細資訊，請參閱<xref:System.Web.UI.WebControls.TreeView.PopulateNodesFromClient%2A>。  
   
- 如需處理事件的詳細資訊，請參閱[NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
+ 如需有關如何處理事件的詳細資訊，請參閱 < [NIB： 使用事件](http://msdn.microsoft.com/library/01e4f1bc-e55e-413f-98c7-6588493e5f67)。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.TreeNodePopulate>事件，以填入中的節點<xref:System.Web.UI.WebControls.TreeView>以動態方式在伺服器上的控制項。 請注意，<xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>屬性設定為`false`來防止在用戶端上處理的展開節點事件。  
+ 下列程式碼範例示範如何使用<xref:System.Web.UI.WebControls.TreeView.TreeNodePopulate>事件來擴展集中的節點<xref:System.Web.UI.WebControls.TreeView>以動態方式在伺服器上的控制項。 請注意，<xref:System.Web.UI.WebControls.TreeView.EnableClientScript%2A>屬性設定為`false`防止展開節點事件處理用戶端上。  
   
  [!code-aspx-csharp[TreeViewTreeNodePopulate#1](~/samples/snippets/csharp/VS_Snippets_WebNet/TreeViewTreeNodePopulate/CS/treeviewtreenodepopulatecs.aspx#1)]
  [!code-aspx-vb[TreeViewTreeNodePopulate#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/TreeViewTreeNodePopulate/VB/treeviewtreenodepopulatevb.aspx#1)]  
@@ -4124,6 +4200,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
