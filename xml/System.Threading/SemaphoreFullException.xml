@@ -1,11 +1,11 @@
 <Type Name="SemaphoreFullException" FullName="System.Threading.SemaphoreFullException">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="465d12c63165fb84e4220d19a875fd17949ddf2c" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="3376f73eb9294bdba4a519f82e567653975fccf6" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36605970" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37548675" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class SemaphoreFullException : SystemException" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit SemaphoreFullException extends System.SystemException" />
@@ -29,6 +29,10 @@
     <AssemblyName>netstandard</AssemblyName>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Exception</BaseTypeName>
     <BaseTypeName FrameworkAlternate="netframework-4.5">System.SystemException</BaseTypeName>
@@ -48,19 +52,19 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 號誌計數會每次在執行緒進入號誌，及執行緒釋放號誌時遞增遞減。 當計數為零時，後續的要求封鎖，直到其他的執行緒釋放號誌。 所有執行緒都釋放號誌，計數為最大值時指定已建立號誌。 如果是程式設計錯誤導致呼叫執行緒<xref:System.Threading.Semaphore.Release%2A?displayProperty=nameWithType>方法在此時，<xref:System.Threading.SemaphoreFullException>就會擲回。  
+ 號誌計數會每次在執行緒進入號誌，及執行緒釋放號誌時，遞增遞減。 當計數為零時，後續的要求封鎖，直到其他執行緒釋放號誌。 所有執行緒都釋放號誌，計數會達到最大值時指定已建立的號誌。 如果是程式設計錯誤會造成呼叫執行緒<xref:System.Threading.Semaphore.Release%2A?displayProperty=nameWithType>到目前為止，方法<xref:System.Threading.SemaphoreFullException>就會擲回。  
   
 > [!NOTE]
->  <xref:System.Threading.Semaphore>類別不會強制執行呼叫的執行緒識別<xref:System.Threading.WaitHandle.WaitOne%2A?displayProperty=nameWithType>和<xref:System.Threading.Semaphore.Release%2A?displayProperty=nameWithType>方法。 您不需要針對同一個執行緒呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>呼叫<xref:System.Threading.Semaphore.Release%2A>。  
+>  <xref:System.Threading.Semaphore>類別不會強制呼叫的執行緒身分識別<xref:System.Threading.WaitHandle.WaitOne%2A?displayProperty=nameWithType>和<xref:System.Threading.Semaphore.Release%2A?displayProperty=nameWithType>方法。 您不需要為同一個執行緒呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>呼叫<xref:System.Threading.Semaphore.Release%2A>。  
   
- <xref:System.Threading.SemaphoreFullException> 不一定表示有問題發生的例外狀況的程式碼。 請考慮下列狀況： 執行緒 A 和執行緒 B 輸入的最大計數為 2 號誌。 執行緒 B 中的程式設計錯誤導致呼叫<xref:System.Threading.Semaphore.Release%2A>兩次，以便在號誌計數已滿。 如此一來，當執行緒 A 終於呼叫<xref:System.Threading.Semaphore.Release%2A>、<xref:System.Threading.SemaphoreFullException>就會擲回。  
+ <xref:System.Threading.SemaphoreFullException> 不一定表示有問題發生例外狀況的程式碼。 請考慮下列案例： 執行緒 A 和執行緒 B 輸入的最大計數的兩個號誌。 執行緒 B 中的程式設計錯誤導致呼叫<xref:System.Threading.Semaphore.Release%2A>兩次，以便在號誌計數已滿。 如此一來，當執行緒 A 終於呼叫<xref:System.Threading.Semaphore.Release%2A>、<xref:System.Threading.SemaphoreFullException>就會擲回。  
   
  如需 <xref:System.Threading.SemaphoreFullException> 類別之執行個體的初始屬性值清單，請參閱 <xref:System.Threading.SemaphoreFullException.%23ctor> 建構函式。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何在一個執行緒中的程式設計錯誤導致<xref:System.Threading.SemaphoreFullException>另一個執行緒： 兩個執行緒進入號誌。 第二個執行緒兩次，釋放號誌，前者的執行緒仍在執行其工作時。 當第一個執行緒完成並釋放號誌時，號誌計數已滿，並擲回例外狀況。  
+ 下列程式碼範例示範如何在一個執行緒的程式設計錯誤導致<xref:System.Threading.SemaphoreFullException>另一個執行緒： 兩個執行緒進入號誌。 兩次，而第一個執行緒仍在執行其工作時，第二個執行緒將釋放號誌。 當第一個執行緒完成並釋放號誌時，號誌計數已滿，並擲回例外狀況。  
   
  [!code-cpp[System.Threading.SemaphoreFullException#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.SemaphoreFullException/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.SemaphoreFullException#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.SemaphoreFullException/CS/source.cs#1)]
@@ -105,6 +109,10 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
       <Parameters />
       <Docs>
         <summary>使用預設值，初始化 <see cref="T:System.Threading.SemaphoreFullException" /> 類別的新執行個體。</summary>
@@ -112,7 +120,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個建構函式初始化<xref:System.Exception.Message%2A>屬性的新執行個體的系統提供的訊息描述錯誤，例如"指定的計數加入號誌，會使它超過其最大計數。 」 此訊息會考量目前的系統文化特性。  
+ 這個建構函式初始化<xref:System.Exception.Message%2A>屬性的新執行個體的系統提供的訊息，說明錯誤，例如 「 號誌中加入指定的計數會使它超過最大計數。 」 此訊息會考量目前的系統文化特性。  
   
  下表顯示 <xref:System.Threading.SemaphoreFullException> 類別執行個體的初始屬性值。  
   
@@ -148,6 +156,10 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters>
@@ -196,6 +208,10 @@
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
         <AssemblyVersion>4.1.1.0</AssemblyVersion>
       </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
       <Parameters>
         <Parameter Name="info" Type="System.Runtime.Serialization.SerializationInfo" />
         <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
@@ -210,7 +226,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 進行還原序列化 (Deserialization) 期間會呼叫這個建構函式，以便重新構成經由資料流傳送的例外狀況物件。 如需詳細資訊，請參閱[XML 和 SOAP 序列化](~/docs/standard/serialization/xml-and-soap-serialization.md)。  
+ 進行還原序列化 (Deserialization) 期間會呼叫這個建構函式，以便重新構成經由資料流傳送的例外狀況物件。 如需詳細資訊，請參閱 < [XML 和 SOAP 序列化](~/docs/standard/serialization/xml-and-soap-serialization.md)。  
   
  ]]></format>
         </remarks>
@@ -239,6 +255,10 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters>

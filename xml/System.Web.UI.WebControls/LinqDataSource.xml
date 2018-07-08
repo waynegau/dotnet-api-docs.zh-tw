@@ -1,11 +1,11 @@
 <Type Name="LinqDataSource" FullName="System.Web.UI.WebControls.LinqDataSource">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="43113d93d80de9936c4290c834d8d861c9f352d4" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="dfda2c90a9c0a214d662eabe4e4583f819e9bbb3" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36581608" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37592718" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class LinqDataSource : System.Web.UI.WebControls.ContextDataSource, System.Web.DynamicData.IDynamicDataSource" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit LinqDataSource extends System.Web.UI.WebControls.ContextDataSource implements class System.Web.DynamicData.IDynamicDataSource, class System.Web.UI.IDataSource" />
@@ -15,10 +15,12 @@
   <TypeSignature Language="F#" Value="type LinqDataSource = class&#xA;    inherit ContextDataSource&#xA;    interface IDynamicDataSource&#xA;    interface IDataSource" />
   <AssemblyInfo>
     <AssemblyName>System.Web.Extensions</AssemblyName>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Web.UI.WebControls.ContextDataSource</BaseTypeName>
+    <BaseTypeName FrameworkAlternate="netframework-3.5">System.Web.UI.DataSourceControl</BaseTypeName>
   </Base>
   <Interfaces>
     <Interface>
@@ -55,7 +57,7 @@
   
 -   [簡介](#introduction)  
   
--   [作業順序](#order_of_operations)  
+-   [作業的順序](#order_of_operations)  
   
 -   [排序資料](#ordering_data)  
   
@@ -63,7 +65,7 @@
   
 -   [資料修改](#data_modifications)  
   
--   [在執行階段評估值](#evaluating_value_at_run_time)  
+-   [在執行階段的評估值](#evaluating_value_at_run_time)  
   
 -   [使用預存程序](#working_with_stored_procedures)  
   
@@ -71,76 +73,76 @@
   
 <a name="introduction"></a>   
 ## <a name="introduction"></a>簡介  
- Language Integrated Query (LINQ) 會定義一組讓周遊、 篩選和投射作業的任何宣告式的方式來表示的查詢運算子的查詢語法。以網路為基礎的程式設計語言。 資料物件可以是記憶體中的資料集合或表示資料庫資料的物件。 您可以擷取或修改的資料，而不需要撰寫 SQL 命令，針對每項作業。  
+ Language Integrated Query (LINQ) 是定義一組查詢運算子，可讓在任何以宣告方式表示周遊、 篩選和投射作業的查詢語法。以.NET 為基礎的程式設計語言。 資料物件可以是記憶體中資料收集或表示資料庫資料的物件。 您可以擷取或修改的資料，而不需要撰寫 SQL 命令，針對每個作業。  
   
- <xref:System.Web.UI.WebControls.LinqDataSource>控制項可讓您使用 ASP.NET Web 網頁中的 LINQ 標記文字中設定屬性。 <xref:System.Web.UI.WebControls.LinqDataSource>控制使用 LINQ to SQL 自動產生資料命令。 如需有關 LINQ to SQL 的詳細資訊，請參閱[LINQ to SQL](http://msdn.microsoft.com/library/73d13345-eece-471a-af40-4cc7a2f11655)。  
+ <xref:System.Web.UI.WebControls.LinqDataSource>控制項可讓您在 ASP.NET 網頁中使用 LINQ，藉由設定屬性以標記文字。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項會用來自動產生資料命令的 LINQ to SQL。 如需有關 LINQ to SQL 的詳細資訊，請參閱 < [LINQ to SQL](http://msdn.microsoft.com/library/73d13345-eece-471a-af40-4cc7a2f11655)。  
   
- 您會從記憶體中的資料集合中擷取資料，當您設定<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性來包含資料收集的類別。 您設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性或欄位，傳回資料集合的屬性。 比方說，您可能會有類別，名為`Person`，包含屬性，名為`FavoriteCities`所傳回的字串值陣列。 在此情況下，您將設定<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性`Person`並設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性`FavoriteCities`。  
+ 當您要從記憶體中的資料集合中擷取資料時，您設定<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>類別，其中包含資料集合的屬性。 您設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性或欄位傳回的資料集合的屬性。 比方說，您可能會有類別，名為`Person`，其中包含一個名為屬性`FavoriteCities`所傳回的字串值陣列。 在此情況下，您設定<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性，以`Person`並設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性設`FavoriteCities`。  
   
- 當您查詢資料庫時，您必須先建立資料庫與資料表代表實體類別。 您可以使用[!INCLUDE[vs_ordesigner_long](~/includes/vs-ordesigner-long-md.md)]或 SqlMetal.exe 公用程式來產生這些類別。 然後設定<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性來表示資料庫的類別，並設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性，以代表資料庫資料表的內容。  
+ 當您查詢資料庫時，您必須先建立代表資料庫與資料表的實體類別。 您可以使用[!INCLUDE[vs_ordesigner_long](~/includes/vs-ordesigner-long-md.md)]或 SqlMetal.exe 公用程式來產生這些類別。 然後，您設定<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性，以代表資料庫的類別，並設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性，以代表資料庫資料表的內容。  
   
 <a name="order_of_operations"></a>   
-## <a name="order-of-operations"></a>作業順序  
+## <a name="order-of-operations"></a>作業的順序  
  <xref:System.Web.UI.WebControls.LinqDataSource>控制項適用於資料作業順序如下：  
   
 1.  位置 （指定要傳回的資料記錄）。  
   
 2.  Order By （排序）。  
   
-3.  Group By （共用的值彙總資料記錄）。  
+3.  Group By （共用的值彙總的資料記錄） 中。  
   
-4.  依群組的排序 （排序群組資料）。  
+4.  依 （排序分組的資料） 中的群組。  
   
 5.  選取 （指定哪些欄位或屬性傳回）。  
   
-6.  自動排序 （由使用者選取的屬性來排序資料記錄）。  
+6.  自動排序 （由使用者選取的屬性排序資料記錄）。  
   
-7.  自動頁面 （擷取的使用者所選取的資料記錄的子集）。  
+7.  自動頁面 （擷取使用者所選取的資料記錄的子集）。  
   
- 您可以將條件加入至<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性來篩選從查詢中傳回的資料記錄。 如果<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>未設定屬性，<xref:System.Web.UI.WebControls.LinqDataSource>控制從資料物件擷取每一筆記錄。  
+ 您可以將條件加入至<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>來篩選從查詢傳回的資料記錄的屬性。 如果<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>未設定屬性，<xref:System.Web.UI.WebControls.LinqDataSource>控制從資料物件擷取每一筆記錄。  
   
 <a name="ordering_data"></a>   
 ## <a name="ordering-data"></a>排序資料  
- 您使用<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性來指定從傳回的資料來排序屬性的名稱。  
+ 您使用<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性來指定從傳回的資料，排序所依據的屬性名稱。  
   
 > [!NOTE]
->  當您使用<xref:System.Web.UI.WebControls.LinqDataSource>用來控制[!INCLUDE[ss2k](~/includes/ss2k-md.md)]或[!INCLUDE[ssEW](~/includes/ssew-md.md)]和<xref:System.Web.UI.WebControls.LinqDataSource.AutoPage%2A>屬性設定為`true`，您必須提供值，以在<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性。 根據預設，<xref:System.Web.UI.WebControls.LinqDataSource.AutoPage%2A>屬性是`true`。 如果您指派值給<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性，您必須也包含所有 identity 資料行中傳回查詢中的屬性清單。  
+>  當您使用<xref:System.Web.UI.WebControls.LinqDataSource>用來控制[!INCLUDE[ss2k](~/includes/ss2k-md.md)]或[!INCLUDE[ssEW](~/includes/ssew-md.md)]並<xref:System.Web.UI.WebControls.LinqDataSource.AutoPage%2A>屬性設定為`true`，您必須提供值，以在<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性。 根據預設，<xref:System.Web.UI.WebControls.LinqDataSource.AutoPage%2A>屬性是`true`。 如果您將值指派給<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性，您必須也包含所有 identity 資料行在查詢中傳回的屬性清單中。  
   
 <a name="grouping_data"></a>   
 ## <a name="grouping-data"></a>分組資料  
- 您使用<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性，以指定的屬性用來合併具有相同值的資料記錄。 分組資料，您可以包含`Key`和`It`，其中中動態建立屬性，<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 `Key`屬性表示用來將資料分組，一個或多個屬性值。 例如，如果您依屬性分組`Category`、`Key`屬性會包含中的所有唯一值`Category`屬性。 `It`屬性參考到資料群組中個別記錄的集合。 您可以反覆`It`屬性，以擷取已在群組作業中彙總的個別記錄。 例如，如果您依屬性分組`Category`、`It`屬性包含共用共通的值中的所有個別記錄`Category`屬性。  
+ 您使用<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性，以指定哪一個屬性用來合併具有相同值的資料記錄。 分組資料，您可以包含`Key`並`It`，以動態方式建立所在內容，在<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 `Key`屬性是用來將資料分組一個或多個屬性的值。 例如，如果您依屬性分組`Category`，則`Key`屬性會包含中的所有唯一值`Category`屬性。 `It`屬性參考的資料群組中的個別記錄的集合。 您可以反覆`It`屬性，以擷取分組作業中已合併的個別記錄。 例如，如果您依屬性分組`Category`，則`It`屬性包含所有共用常見值中的個別記錄`Category`屬性。  
   
- 您使用<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy%2A>屬性來指定要用來排序群組的資料的屬性。 當您群組資料，<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性會指定如何排序群組資料中的個別記錄。  
+ 您使用<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy%2A>屬性來指定要用來排序群組的資料的屬性。 當您在群組資料，<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性會指定如何排序分組的資料內的個別記錄。  
   
- 根據預設，<xref:System.Web.UI.WebControls.LinqDataSource>控制從資料物件擷取所有屬性的值。 您使用<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性來指定要傳回您要使用的可用屬性子集的內容。 選取作業套用之後 Where、 Order By 和 Group By 作業。 因此，如果您在 Select 子句中建立的別名，別名不提供其他子句。  
+ 根據預設，<xref:System.Web.UI.WebControls.LinqDataSource>控制從資料物件擷取所有屬性的值。 您使用<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性來指定要傳回如果您想要使用 可用的屬性子集的屬性。 選取的作業會套用之後 Where、 Order By 和 Group By 作業。 因此，如果您在 Select 子句中建立的別名，別名無法使用。 在其他子句  
   
 <a name="data_modifications"></a>   
 ## <a name="data-modifications"></a>資料修改  
- 您可以指定是否啟用資料修改，以使用<xref:System.Web.UI.WebControls.LinqDataSource.EnableDelete%2A>， <xref:System.Web.UI.WebControls.LinqDataSource.EnableInsert%2A>，和<xref:System.Web.UI.WebControls.LinqDataSource.EnableUpdate%2A>屬性。 修改資料的使用者介面<xref:System.Web.UI.WebControls.LinqDataSource>控制項通常提供透過資料繫結控制項，例如<xref:System.Web.UI.WebControls.DetailsView>控制項。 除了設定<xref:System.Web.UI.WebControls.LinqDataSource.EnableDelete%2A>， <xref:System.Web.UI.WebControls.LinqDataSource.EnableInsert%2A>，或<xref:System.Web.UI.WebControls.LinqDataSource.EnableUpdate%2A>至`true`，啟用自動的資料修改所需的下列條件：  
+ 您可以指定是否啟用資料修改，以利用<xref:System.Web.UI.WebControls.LinqDataSource.EnableDelete%2A>， <xref:System.Web.UI.WebControls.LinqDataSource.EnableInsert%2A>，和<xref:System.Web.UI.WebControls.LinqDataSource.EnableUpdate%2A>屬性。 修改資料的使用者介面<xref:System.Web.UI.WebControls.LinqDataSource>控制項通常會提供透過資料繫結控制項，例如<xref:System.Web.UI.WebControls.DetailsView>控制項。 除了設定<xref:System.Web.UI.WebControls.LinqDataSource.EnableDelete%2A>， <xref:System.Web.UI.WebControls.LinqDataSource.EnableInsert%2A>，或<xref:System.Web.UI.WebControls.LinqDataSource.EnableUpdate%2A>到`true`，啟用自動的資料修改所需的下列條件：  
   
--   <xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性不能指定一個值。  
+-   <xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性無法指派值。  
   
--   <xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性不能指定一個值。  
+-   <xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性無法指派值。  
   
 -   指派給類別<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性必須衍生自<xref:System.Data.Linq.DataContext>。  
   
 -   指派給屬性<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性必須衍生自<xref:System.Data.Linq.Table%601>。  
   
- 您可以限制中有兩種資料繫結控制項所顯示的屬性。 您可以設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性子集的內容，或者您可以定義資料繫結控制項的欄位加<xref:System.Web.UI.WebControls.DataControlField>控制項。 不過，如果您設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性，表示不啟用自動更新、 插入和刪除作業。 如果您想要啟用自動的資料修改，當您使用的可用屬性子集時，就不要設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 相反地，從資料物件擷取所有屬性和管理要使用的資料繫結控制項中顯示哪些。 當您使用<xref:System.Web.UI.WebControls.DetailsView>控制項或<xref:System.Web.UI.WebControls.GridView>控制項，您也必須設定<xref:System.Web.UI.WebControls.DetailsView.AutoGenerateRows%2A>或<xref:System.Web.UI.WebControls.GridView.AutoGenerateColumns%2A>屬性`false`。 這可防止將資料繫結控制項自動包含編輯和刪除資料的按鈕。 不會顯示在資料繫結控制項的任何值會儲存在檢視狀態。 它們會原封不動地傳遞至資料來源時執行資料更新。  
+ 您可以限制有兩種資料繫結控制項中所顯示的屬性。 您可以設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性的子集屬性，也可以定義資料繫結控制項的欄位加上<xref:System.Web.UI.WebControls.DataControlField>控制項。 不過，如果您將設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性，表示無法啟用自動更新、 插入和刪除作業。 如果您想要啟用自動的資料修改，當您使用的可用屬性子集，請勿設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 相反地，從資料物件擷取所有屬性，並管理要顯示哪些使用資料繫結控制項。 當您使用<xref:System.Web.UI.WebControls.DetailsView>控制項或<xref:System.Web.UI.WebControls.GridView>控制項，您也必須設定<xref:System.Web.UI.WebControls.DetailsView.AutoGenerateRows%2A>或是<xref:System.Web.UI.WebControls.GridView.AutoGenerateColumns%2A>屬性，以`false`。 這可防止自動包括按鈕來編輯和刪除資料的資料繫結控制項。 不會顯示在資料繫結控制項中的任何值會儲存在檢視狀態。 它們不變時傳遞至資料來源執行資料更新。  
   
 <a name="evaluating_value_at_run_time"></a>   
-## <a name="evaluating-values-at-run-time"></a>在執行階段評估值  
- 如果您有篩選，來排序，執行階段評估的值或群組值，您可以將參數加入至<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>， <xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>， <xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsByParameters%2A>，或<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合。  
+## <a name="evaluating-values-at-run-time"></a>在執行階段的評估值  
+ 如果您有要在執行階段排序，評估值篩選，或群組值，您可以將參數加入至<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>， <xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>， <xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsByParameters%2A>，或<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合。  
   
- 如果您想要指定預設值，您可以加入參數，以便<xref:System.Web.UI.WebControls.LinqDataSource.InsertParameters%2A>集合。  
+ 如果您想要指定預設值，您可以新增參數至<xref:System.Web.UI.WebControls.LinqDataSource.InsertParameters%2A>集合。  
   
- 如果您想要檢查或修改值，執行資料作業之前，您可以處理<xref:System.Web.UI.WebControls.LinqDataSource.Deleting>， <xref:System.Web.UI.WebControls.LinqDataSource.Inserting>， <xref:System.Web.UI.WebControls.LinqDataSource.Selecting>，或<xref:System.Web.UI.WebControls.LinqDataSource.Updating>事件。 若要取消資料作業，或檢查您根據使用者輸入的資料類別中設定屬性時所發生的驗證錯誤，您也可以處理這些事件。  
+ 如果您想要檢查或修改值，執行資料作業之前，您可以處理<xref:System.Web.UI.WebControls.LinqDataSource.Deleting>， <xref:System.Web.UI.WebControls.LinqDataSource.Inserting>， <xref:System.Web.UI.WebControls.LinqDataSource.Selecting>，或<xref:System.Web.UI.WebControls.LinqDataSource.Updating>事件。 若要取消資料作業，或檢查您根據使用者輸入的資料類別中設定屬性時，所發生的驗證錯誤，您也可以處理這些事件。  
   
- 若要資料作業完成之後，請檢查值，處理<xref:System.Web.UI.WebControls.LinqDataSource.Deleted>， <xref:System.Web.UI.WebControls.LinqDataSource.Inserted>， <xref:System.Web.UI.WebControls.LinqDataSource.Selected>，或<xref:System.Web.UI.WebControls.LinqDataSource.Updated>事件。  
+ 若要在資料作業完成之後，請檢查值，處理<xref:System.Web.UI.WebControls.LinqDataSource.Deleted>， <xref:System.Web.UI.WebControls.LinqDataSource.Inserted>， <xref:System.Web.UI.WebControls.LinqDataSource.Selected>，或<xref:System.Web.UI.WebControls.LinqDataSource.Updated>事件。  
   
 <a name="working_with_stored_procedures"></a>   
 ## <a name="working-with-stored-procedures"></a>使用預存程序  
- 您使用<xref:System.Web.UI.WebControls.LinqDataSource>控制項來擷取預存程序中的資料，藉由建立的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件。 在事件處理常式，您呼叫方法的資料內容類別，代表預存程序中，並將結果設<xref:System.Web.UI.WebControls.LinqDataSourceSelectEventArgs.Result%2A>屬性<xref:System.Web.UI.WebControls.LinqDataSourceSelectEventArgs>物件。 如果您想要啟用自動更新、 插入和刪除作業的資料，從方法傳回的型別必須符合中指定的型別<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性。 如需建立資料內容方法的詳細資訊，請參閱[How to： 建立 DataContext 方法對應至預存程序和函式 （O/R 設計工具）](http://msdn.microsoft.com/library/e7ca32f1-50b3-48af-ad92-ceafd749296a)。  
+ 您使用<xref:System.Web.UI.WebControls.LinqDataSource>來擷取預存程序中的資料，藉由建立的事件處理常式的控制項<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件。 在事件處理常式中，您呼叫方法表示預存程序的資料內容類別中，並將結果設<xref:System.Web.UI.WebControls.LinqDataSourceSelectEventArgs.Result%2A>屬性<xref:System.Web.UI.WebControls.LinqDataSourceSelectEventArgs>物件。 如果您想要啟用自動更新、 插入和刪除作業的資料，從方法傳回的型別必須符合在指定的型別<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性。 如需建立資料內容方法的詳細資訊，請參閱 <<c0> [ 如何： 對應至預存程序和函式 （O/R 設計工具） 建立 DataContext 方法](http://msdn.microsoft.com/library/e7ca32f1-50b3-48af-ad92-ceafd749296a)。  
   
 <a name="declarative_syntax"></a>   
 ## <a name="declarative-syntax"></a>宣告式語法  
@@ -196,27 +198,27 @@
    
   
 ## Examples  
- 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>會從名為實體類別擷取資料的控制項`Products`。 實體類別已產生使用[!INCLUDE[vs_ordesigner_short](~/includes/vs-ordesigner-short-md.md)]或 SqlMetal.exe 公用程式。 <xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性設定為傳回中有值的記錄`Price`屬性大於 50。 A<xref:System.Web.UI.WebControls.GridView>控制項繫結至<xref:System.Web.UI.WebControls.LinqDataSource>控制項來顯示資料。  
+ 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>會從名為實體類別擷取資料的控制項`Products`。 實體類別已產生使用[!INCLUDE[vs_ordesigner_short](~/includes/vs-ordesigner-short-md.md)]或 SqlMetal.exe 公用程式。 <xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性設定為傳回有一個值的記錄`Price`大於 50 的屬性。 A<xref:System.Web.UI.WebControls.GridView>控制項繫結至<xref:System.Web.UI.WebControls.LinqDataSource>控制項來顯示資料。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#5](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default5.aspx#5)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default5.aspx#5)]  
   
- 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>控制項，可讓使用者更新、 刪除和插入資料來源中的記錄。 A<xref:System.Web.UI.WebControls.DetailsView>控制項繫結至<xref:System.Web.UI.WebControls.LinqDataSource>控制，可讓使用者查看和修改資料。 請注意，任何 SQL 命令都需要以選取、 更新、 刪除或插入記錄。  
+ 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>控制項，可讓使用者更新、 刪除和插入資料來源中的記錄。 A<xref:System.Web.UI.WebControls.DetailsView>控制項繫結至<xref:System.Web.UI.WebControls.LinqDataSource>控制項，並可讓使用者查看和修改資料。 請注意，不含 SQL 命令，才能選取、 更新、 刪除或插入記錄。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default2.aspx#2)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default2.aspx#2)]  
   
- 下列範例顯示的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>所設定的資料物件的事件會根據網頁中的值。  
+ 下列範例顯示的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>所設定的資料物件的事件會根據在網頁中的值。  
   
  [!code-csharp[System.Web.UI.WebControls.LinqDataSourceSelectEventArgs#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSourceSelectEventArgs/cs/Default3.aspx.cs#3)]
  [!code-vb[System.Web.UI.WebControls.LinqDataSourceSelectEventArgs#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSourceSelectEventArgs/vb/Default3.aspx.vb#3)]  
   
- 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>也就是控制設定群組的兩個資料行。 `Key`屬性參考的物件具有兩個屬性：`ProductCategory`和`Color`。 所表示之物件`It`是重新命名 （別名） `Products`。 重新命名`Products`物件都包含在群組中個別記錄的集合。 每個執行個體會包含的所有資料行`Products`資料表。  
+ 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>控制項設定的兩個資料行的群組。 `Key`屬性會參考具有兩個屬性的物件`ProductCategory`和`Color`。 所表示之物件`It`是已重新命名 （別名） `Products`。 已重新命名`Products`物件包含在群組中的個別記錄的集合。 每個執行個體包含所有資料行，從`Products`資料表。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource.GroupBy#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.GroupBy/cs/Default.aspx#1)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource.GroupBy#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.GroupBy/vb/Default.aspx#1)]  
   
- 下列範例示範兩個<xref:System.Web.UI.WebControls.ListView>控制項顯示資料的<xref:System.Web.UI.WebControls.LinqDataSource>前一個範例中的控制項。 一個<xref:System.Web.UI.WebControls.ListView>控制項會顯示群組的資料，以及其他<xref:System.Web.UI.WebControls.ListView>控制項會顯示個別的隸屬於該群組的產品名稱。 巢狀的資料繫結控制項的<xref:System.Web.UI.WebControls.BaseDataList.DataSource%2A>屬性設定為`Products`，這是別名`It`物件。  
+ 下列範例示範兩個<xref:System.Web.UI.WebControls.ListView>控制項顯示資料的<xref:System.Web.UI.WebControls.LinqDataSource>在上述範例中的控制項。 一<xref:System.Web.UI.WebControls.ListView>控制項會顯示群組的資料，以及其他<xref:System.Web.UI.WebControls.ListView>控制項會顯示個別產品屬於該群組的名稱。 巢狀的資料繫結控制項的<xref:System.Web.UI.WebControls.BaseDataList.DataSource%2A>屬性設定為`Products`，這是別名`It`物件。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource.GroupBy#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.GroupBy/cs/Default.aspx#2)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource.GroupBy#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.GroupBy/vb/Default.aspx#2)]  
@@ -234,6 +236,7 @@
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters />
@@ -252,6 +255,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -268,19 +272,19 @@
       <Docs>
         <summary>取得或設定值，指出 <see cref="T:System.Web.UI.WebControls.LinqDataSource" /> 控制項是否會根據 <see cref="P:System.Web.UI.WebControls.LinqDataSource.OrderByParameters" /> 集合中的值，動態建立 ORDER BY 子句。</summary>
         <value>
-          <see langword="true" /> 如果<see cref="T:System.Web.UI.WebControls.LinqDataSource" />控制項建立 Order By 子句，否則<see langword="false" />。 預設值為 <see langword="false" />。</value>
+          <see langword="true" /> 如果<see cref="T:System.Web.UI.WebControls.LinqDataSource" />控制項會建立 Order By 子句，否則<see langword="false" />。 預設值為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當您將<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A>屬性`true`、<xref:System.Web.UI.WebControls.LinqDataSource>控制項會以動態方式建立 Order By 子句中的值為基礎的<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項的第一個參數的排序資料，然後此外排序每個額外參數的資料。 含有參數`null`或 Order By 子句中不包含空值。  
+ 當您設定<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A>屬性，以`true`，則<xref:System.Web.UI.WebControls.LinqDataSource>控制項會動態建立 Order By 子句中的值為基礎的<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項第一個參數所排序的資料，然後另外排序每個額外參數的資料。 參數包含`null`或 Order By 子句中不包含空值。  
   
- 您沒有設定<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性時<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A>設`true`，因為剖析器會動態建立的 Order By 子句。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項會擲回例外狀況，如果<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A>設`true`和<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>指派值給屬性。  
+ 您未設定<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性時<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A>設定為`true`，因為剖析器會動態建立 Order By 子句。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項時擲回例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A>設為`true`而<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性會被指派值。  
   
    
   
 ## Examples  
- 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>用來控制<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A>設`true`。 參數包含在<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合來排序屬性為基礎的資料名稱的使用者會從選取<xref:System.Web.UI.WebControls.DropDownList>控制項。  
+ 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>用來控制<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A>設定為`true`。 參數包含在<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>從選取的排序依據之屬性的資料名稱的使用者的集合<xref:System.Web.UI.WebControls.DropDownList>控制項。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#8](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default8.aspx#8)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#8](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default8.aspx#8)]  
@@ -302,6 +306,7 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -322,16 +327,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當您將<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>屬性`true`、<xref:System.Web.UI.WebControls.LinqDataSource>控制項會以動態方式建立 Where 子句中的參數從<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合。 您將加入至每個參數<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合必須有其<xref:System.Web.UI.WebControls.Parameter.Name%2A>屬性設定為符合正在進行查詢的資料物件中的屬性值。 自動產生子句會檢查是否在指定的值<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合等於資料物件中的比對屬性的值。 如果您提供一個以上的參數，參數會與邏輯連結`AND`作業。 含有參數`null`或空的值不包含在 where 子句。  
+ 當您設定<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>屬性，以`true`，則<xref:System.Web.UI.WebControls.LinqDataSource>控制項會動態建立 Where 子句中的參數<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合。 您將新增至每個參數<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合必須有其<xref:System.Web.UI.WebControls.Parameter.Name%2A>屬性設定為符合所查詢資料物件中的屬性的值。 自動產生子句會檢查是否在指定的值<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合等於資料物件中的相符屬性的值。 如果您提供多個參數，與邏輯連結參數`AND`作業。 參數包含`null`或空值不包含在 Where 子句。  
   
- 自動產生<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>子句可以只測試是否相等，以及可以連結參數只能搭配`AND`作業。 請勿設定<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>屬性`true`或者如果您需要將不會測試是否相等的條件產生關聯的參數有`OR`作業。 您可以完成這些工作，藉由設定<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>屬性`false`並加入中的預留位置<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性中每個參數<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合。 在<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性，與每個預留位置名稱的前面上 @ 符號。  
+ 自動產生<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>子句可以只測試是否相等，並可以連結參數只能搭配`AND`作業。 未設定<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>屬性，以`true`如果您必須新增不會測試是否相等的條件，或如果您有關聯的參數`OR`作業。 您可以完成這些工作，藉由設定<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>屬性，以`false`並加入中的預留位置<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性中每個參數<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合。 在 <xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性，與每個預留位置名稱前加上 @ 符號。  
   
- 您沒有設定<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性時<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>屬性是`true`，因為剖析器以動態方式建立 Where 子句。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項會擲回例外狀況，如果<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>屬性是`true`和<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>指派值給屬性。  
+ 您未設定<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性時<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>屬性是`true`，因為剖析器會動態建立 Where 子句。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項時擲回例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>屬性是`true`而<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性會被指派值。  
   
    
   
 ## Examples  
- 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>用來控制<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>設`true`。 A<xref:System.Web.UI.WebControls.GridView>控制項繫結至<xref:System.Web.UI.WebControls.LinqDataSource>控制項來顯示查詢傳回的資料。 A<xref:System.Web.UI.WebControls.DropDownList>控制項也就是包含三個值擴展。 參數包含在<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合名稱設為`Category,`會比對其中一個資料物件的屬性。 其<xref:System.Web.UI.WebControls.ControlParameter.ControlID%2A>屬性設定為 ID<xref:System.Web.UI.WebControls.DropDownList>控制項。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項會自動建立<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性記錄的資料篩選根據使用者從選取的值<xref:System.Web.UI.WebControls.DropDownList>控制項。 查詢會傳回記錄其`Category`屬性會比對使用者已從選取的值<xref:System.Web.UI.WebControls.DropDownList>控制項。  
+ 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>用來控制<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>設定為`true`。 A<xref:System.Web.UI.WebControls.GridView>控制項繫結至<xref:System.Web.UI.WebControls.LinqDataSource>控制項來顯示從查詢傳回的資料。 A<xref:System.Web.UI.WebControls.DropDownList>也就是包含控制項填入三個值。 參數包含在<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>具有名稱設定為集合`Category,`會比對其中一個資料物件的屬性。 其<xref:System.Web.UI.WebControls.ControlParameter.ControlID%2A>屬性設定為識別碼<xref:System.Web.UI.WebControls.DropDownList>控制項。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項會自動建立<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>來篩選記錄的屬性，根據使用者從選取的值<xref:System.Web.UI.WebControls.DropDownList>控制項。 查詢會傳回記錄其`Category`屬性會比對使用者已從選取的值<xref:System.Web.UI.WebControls.DropDownList>控制項。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#7](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default7.aspx#7)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#7](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default7.aspx#7)]  
@@ -350,6 +355,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -370,12 +376,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 設定<xref:System.Web.UI.WebControls.LinqDataSource.AutoPage%2A>屬性`true`以啟用分頁中的<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 若要讓使用者逐頁查看資料，連接提供介面，用於分頁的資料繫結控制項<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 當<xref:System.Web.UI.WebControls.LinqDataSource.AutoPage%2A>屬性設定為`true`、<xref:System.Web.UI.WebControls.LinqDataSource>控制項擷取的資料繫結控制項中的一個頁面足以記錄。 它會使用<xref:System.Linq.Enumerable.Skip%2A>和<xref:System.Linq.Enumerable.Take%2A>方法來擷取目前頁面的記錄。  
+ 設定<xref:System.Web.UI.WebControls.LinqDataSource.AutoPage%2A>屬性，以`true`若要啟用中的分頁<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 若要讓使用者逐頁查看資料，連線提供介面，用於分頁的資料繫結控制項<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 當<xref:System.Web.UI.WebControls.LinqDataSource.AutoPage%2A>屬性設定為`true`，則<xref:System.Web.UI.WebControls.LinqDataSource>控制項擷取資料繫結控制項中的一個頁面足以記錄。 它會使用<xref:System.Linq.Enumerable.Skip%2A>和<xref:System.Linq.Enumerable.Take%2A>方法來擷取目前頁面的記錄。  
   
    
   
 ## Examples  
- 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>用來控制<xref:System.Web.UI.WebControls.LinqDataSource.AutoPage%2A>屬性設定為`true`和<xref:System.Web.UI.WebControls.GridView>繫結至控制項<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 <xref:System.Web.UI.WebControls.GridView.AllowPaging%2A>屬性<xref:System.Web.UI.WebControls.GridView>控制設為 `true`提供介面，可讓使用者逐頁查看資料。  
+ 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>用來控制<xref:System.Web.UI.WebControls.LinqDataSource.AutoPage%2A>屬性設定為`true`並<xref:System.Web.UI.WebControls.GridView>繫結至控制項<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 <xref:System.Web.UI.WebControls.GridView.AllowPaging%2A>的屬性<xref:System.Web.UI.WebControls.GridView>控制設為 `true`提供介面，讓使用者逐頁查看資料。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default.aspx#1)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default.aspx#1)]  
@@ -394,6 +400,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -414,16 +421,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.LinqDataSource>控制項支援兩種方法來排序資料。 您可以使用<xref:System.Web.UI.WebControls.LinqDataSource.AutoSort%2A>屬性使執行階段排序，或者您可以設定<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性可定義在設計階段的排序。  
+ <xref:System.Web.UI.WebControls.LinqDataSource>控制項支援兩種方法來排序資料。 您可以使用<xref:System.Web.UI.WebControls.LinqDataSource.AutoSort%2A>若要啟用執行階段排序的屬性，或者您可以設定<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性可定義在設計階段的排序。  
   
- 設定<xref:System.Web.UI.WebControls.LinqDataSource.AutoSort%2A>屬性`true`啟用中排序<xref:System.Web.UI.WebControls.LinqDataSource>為基礎的排序運算式，從在資料繫結控制項的控制項。 資料繫結控制項提供介面，讓使用者在執行階段選取用來排序的屬性。  
+ 設定<xref:System.Web.UI.WebControls.LinqDataSource.AutoSort%2A>屬性，以`true`以啟用排序<xref:System.Web.UI.WebControls.LinqDataSource>為基礎的排序運算式，從資料繫結控制項的控制項。 資料繫結控制項提供介面，讓使用者在執行階段選取用來排序的屬性。  
   
- 您可以透過程式設計方式設定藉由設定傳回資料的順序<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性或多個用於排序的屬性。 當<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性設定為屬性和<xref:System.Web.UI.WebControls.LinqDataSource.AutoSort%2A>屬性是`true`，從資料繫結控制項的排序運算式中的運算式之後套用<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性。 因此，這會決定最終排序的資料。  
+ 您可以透過程式設計方式設定藉由設定傳回資料的順序<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>到用來排序屬性的屬性。 當<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性設定為屬性和<xref:System.Web.UI.WebControls.LinqDataSource.AutoSort%2A>屬性是`true`，從資料繫結控制項的排序運算式會在運算式之後套用<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性。 因此，這會決定最終排序資料。  
   
    
   
 ## Examples  
- 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>用來控制<xref:System.Web.UI.WebControls.LinqDataSource.AutoSort%2A>屬性設定為`true`和<xref:System.Web.UI.WebControls.GridView>繫結至控制項<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 <xref:System.Web.UI.WebControls.GridView.AllowSorting%2A>屬性<xref:System.Web.UI.WebControls.GridView>控制設為 `true`提供可讓使用者排序資料的介面。  
+ 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>用來控制<xref:System.Web.UI.WebControls.LinqDataSource.AutoSort%2A>屬性設定為`true`並<xref:System.Web.UI.WebControls.GridView>繫結至控制項<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 <xref:System.Web.UI.WebControls.GridView.AllowSorting%2A>的屬性<xref:System.Web.UI.WebControls.GridView>控制設為 `true`提供介面，讓使用者排序資料。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default.aspx#1)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default.aspx#1)]  
@@ -442,6 +449,7 @@
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -458,11 +466,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 處理<xref:System.Web.UI.WebControls.LinqDataSource.ContextCreated>檢查內容型別物件，或檢查在建立物件時引發的例外狀況的事件。 擷取內容型別物件，從<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Result%2A>屬性<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>與此事件相關聯的物件。 擷取從資料作業中引發的例外狀況<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性。  
+ 處理<xref:System.Web.UI.WebControls.LinqDataSource.ContextCreated>來檢查內容型別物件，或檢查建立物件時引發的例外狀況的事件。 擷取內容型別物件，從<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Result%2A>屬性<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>與此事件相關聯的物件。 擷取從資料作業期間引發的例外狀況<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性。  
   
- 內容型別物件建立期間選取、 更新、 插入和刪除作業，並會在要求中重複使用。  
+ 內容型別物件在 select、 update、 insert 和刪除作業期間建立，並會在要求中重複使用。  
   
- 沒有不引發事件時的一次。 這是當您以程式設計方式設定<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Result%2A>屬性的物件期間<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件。 額外的條件是要儲存檢視狀態或在物件中，不需要原始值<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Result%2A>屬性實作<xref:System.Data.Linq.ITable>介面。  
+ 沒有時不會引發此事件一次。 這是當您以程式設計方式設定<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Result%2A>屬性的物件期間<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件。 額外的條件時，不需要原始值儲存在檢視狀態或中的物件<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Result%2A>屬性會實作<xref:System.Data.Linq.ITable>介面。  
   
  ]]></format>
         </remarks>
@@ -478,6 +486,7 @@
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -494,16 +503,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 根據預設，<xref:System.Web.UI.WebControls.LinqDataSource>控制項建立執行個體中指定的型別<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項會呼叫來建立物件的執行個體的資料內容物件的預設建構函式。 可能是您必須使用非預設建構函式，或您必須建立不同的物件中指定的<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性。 在此情況下，您必須處理<xref:System.Web.UI.WebControls.LinqDataSource.ContextCreating>事件，手動建立的資料內容物件。  
+ 根據預設，<xref:System.Web.UI.WebControls.LinqDataSource>控制項會建立中所指定類型的執行個體<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性。 <xref:System.Web.UI.WebControls.LinqDataSource>控制呼叫來建立物件的執行個體的資料內容物件的預設建構函式。 可能是您必須使用非預設建構函式，或您必須建立不同的物件中所指定從<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性。 在此情況下，您必須處理<xref:System.Web.UI.WebControls.LinqDataSource.ContextCreating>事件，並以手動方式建立資料內容物件。  
   
  選取、 更新、 插入和刪除作業期間，會建立內容型別物件。  
   
- 沒有不引發事件時的一次。 這是當您以程式設計方式設定<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Result%2A>屬性中的事件處理常式的物件<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件。 額外的條件是要儲存檢視狀態或在物件中，不需要原始值<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Result%2A>屬性實作<xref:System.Data.Linq.ITable>介面。  
+ 沒有時不會引發此事件一次。 這是當您以程式設計方式設定<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Result%2A>屬性中的事件處理常式的物件<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件。 額外的條件時，不需要原始值儲存在檢視狀態或中的物件<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Result%2A>屬性會實作<xref:System.Data.Linq.ITable>介面。  
   
    
   
 ## Examples  
- 下列範例示範如何使用非預設建構函式期間建立的資料內容物件<xref:System.Web.UI.WebControls.LinqDataSource.ContextCreating>事件。 程式碼指派的物件<xref:System.Web.UI.WebControls.LinqDataSourceContextEventArgs.ObjectInstance%2A>屬性。  
+ 下列範例示範如何使用非預設建構函式期間建立的資料內容物件<xref:System.Web.UI.WebControls.LinqDataSource.ContextCreating>事件。 此程式碼指派到物件<xref:System.Web.UI.WebControls.LinqDataSourceContextEventArgs.ObjectInstance%2A>屬性。  
   
  [!code-csharp[System.Web.UI.WebControls.LinqDataSource.ContextCreating#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.ContextCreating/cs/Default.aspx.cs#1)]
  [!code-vb[System.Web.UI.WebControls.LinqDataSource.ContextCreating#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.ContextCreating/vb/Default.aspx.vb#1)]  
@@ -522,6 +531,7 @@
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -538,7 +548,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您處理<xref:System.Web.UI.WebControls.LinqDataSource.ContextDisposing>事件，手動處置的物件，或在執行清理之前終結物件的特定物件。  
+ 您處理<xref:System.Web.UI.WebControls.LinqDataSource.ContextDisposing>手動處置物件，或執行清理之前終結物件的特定物件的事件。  
   
  ]]></format>
         </remarks>
@@ -554,6 +564,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -574,27 +585,27 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當您使用<xref:System.Web.UI.WebControls.LinqDataSource>控制從記憶體中的資料集合或資料庫擷取資料，您必須指定兩個屬性。 第一個是代表資料來源的資料內容類別。 第二個是包含資料的資料內容類別中的屬性。 您設定<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性名稱的資料內容類別，並設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性至包含資料的資料集合。  
+ 當您使用<xref:System.Web.UI.WebControls.LinqDataSource>控制項從記憶體中的資料集合或資料庫擷取資料，您必須指定兩個屬性。 第一個是代表資料來源的資料內容類別。 第二個是包含資料的資料內容類別中的屬性。 您設定<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性的名稱之資料內容類別，以及設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>資料集合，其中包含資料的屬性。  
   
- 例如，當您從資料庫擷取資料，設定<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性來表示資料庫類別的名稱。 也設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性，以代表資料庫中的資料表的內容。 若要從資料庫中產生類別，請使用[!INCLUDE[vs_ordesigner_short](~/includes/vs-ordesigner-short-md.md)]或 SqlMetal.exe 公用程式，以自動產生這些類別。  
+ 例如，當您從資料庫擷取資料，設定<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性，以代表資料庫類別的名稱。 也設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性，以代表資料庫中的資料表的內容。 若要從資料庫產生的類別，使用[!INCLUDE[vs_ordesigner_short](~/includes/vs-ordesigner-short-md.md)]或 SqlMetal.exe 公用程式，以自動產生這些類別。  
   
- 當您從記憶體中的資料集合，例如陣列中擷取資料時，設定<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性至包含陣列屬性的類別名稱。 然後設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性來取得陣列的屬性。  
+ 當您從記憶體中的資料集合，例如陣列擷取資料時，設定<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>包含陣列屬性的類別名稱的屬性。 然後設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性，以取得陣列的屬性。  
   
- 若要啟用自動更新、 插入或刪除作業透過<xref:System.Web.UI.WebControls.LinqDataSource>控制項，指派給類別<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性必須衍生自<xref:System.Data.Linq.DataContext>。 此外，指派屬性給<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性必須衍生自<xref:System.Data.Linq.Table%601>。 如果您不需要啟用自動更新、 插入或刪除作業，您可以指派的任何類型的類別名稱<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性。  
+ 若要啟用自動更新，插入或刪除作業，透過<xref:System.Web.UI.WebControls.LinqDataSource>控制項，指派給類別<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性必須衍生自<xref:System.Data.Linq.DataContext>。 此外，將屬性指派給<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性必須衍生自<xref:System.Data.Linq.Table%601>。 如果您不需要啟用自動更新、 插入或刪除作業，您可以指派任何類型的類別名稱<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性。  
   
- 如需如何從類別的執行個體中選取資料的資訊，請參閱<xref:System.Web.UI.WebControls.LinqDataSourceSelectEventArgs.Result%2A>屬性。  
+ 如需有關如何從類別的執行個體中選取資料的資訊，請參閱<xref:System.Web.UI.WebControls.LinqDataSourceSelectEventArgs.Result%2A>屬性。  
   
    
   
 ## Examples  
- 下列範例示範如何設定<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性包含字串陣列的類別。 它也示範如何將屬性設定為類別 (所產生[!INCLUDE[vs_ordesigner_short](~/includes/vs-ordesigner-short-md.md)])，表示資料庫。  
+ 下列範例示範如何設定<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性，以包含字串陣列的類別。 它也會示範如何將屬性設定為類別 (所產生[!INCLUDE[vs_ordesigner_short](~/includes/vs-ordesigner-short-md.md)])，表示資料庫。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Overview#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Overview/cs/Default.aspx#2)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Overview#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Overview/vb/Default.aspx#2)]  
   
- 名為的類別`ExampleDataContext`，代表資料庫資料表不會顯示在此範例中。 要讓範例能夠運作，您必須建立此類別將具名的 Example.dbml 並拖曳資料表名為電影到 LINQ 到 SQL 類別加入[!INCLUDE[vs_ordesigner_short](~/includes/vs-ordesigner-short-md.md)]。 類別，名為`ExampleDataContext`與屬性，名為`Movies`產生。  
+ 名為的類別`ExampleDataContext`，表示資料庫資料表不會顯示在此範例中。 此範例正常運作，您必須建立這個類別加上具名的 Example.dbml 並拖曳資料表名為到電影的 LINQ 到 SQL 類別[!INCLUDE[vs_ordesigner_short](~/includes/vs-ordesigner-short-md.md)]。 類別，名為`ExampleDataContext`屬性，名為`Movies`產生。  
   
- 下列範例會示範名為的類別`MovieLibrary`，用來參考之<xref:System.Web.UI.WebControls.LinqDataSource>控制項。  
+ 下列範例顯示名為的類別`MovieLibrary`，用來參考之<xref:System.Web.UI.WebControls.LinqDataSource>控制項。  
   
  [!code-csharp[System.Web.UI.WebControls.LinqDataSource_Overview#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Overview/cs/App_Code/MovieLibrary.cs#1)]
  [!code-vb[System.Web.UI.WebControls.LinqDataSource_Overview#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Overview/vb/App_Code/MovieLibrary.vb#1)]  
@@ -635,6 +646,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -648,7 +660,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 若要提供自訂的檢視，您可以覆寫這個方法在衍生類別中。  
+ 若要提供自訂檢視，您可以覆寫這個方法在衍生類別中。  
   
  ]]></format>
         </remarks>
@@ -664,6 +676,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -682,7 +695,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 一般而言，您不必呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Delete%2A>從您的程式碼的方法。 當您使用<xref:System.Web.UI.WebControls.LinqDataSource>與資料繫結控制項，資料繫結控制項的控制項將會自動呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Delete%2A>方法，當使用者採取動作來刪除記錄。 明確地呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Delete%2A>方法，當您想要建立您自己的處理程序，刪除資料。 例如，您可以呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Delete%2A>方法，當您想要刪除記錄時根據外的資料繫結控制項的事件。  
+ 一般而言，您就不必呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Delete%2A>從您的程式碼的方法。 當您使用<xref:System.Web.UI.WebControls.LinqDataSource>與資料繫結控制項，將資料繫結控制項的控制項將會自動呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Delete%2A>方法，當使用者採取動作來刪除記錄。 明確地呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Delete%2A>方法，當您想要建立自己的程序，刪除資料。 例如，您可以呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Delete%2A>根據外的資料繫結控制項的事件的方法，當您想要刪除的記錄。  
   
  ]]></format>
         </remarks>
@@ -698,6 +711,7 @@
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -714,7 +728,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 處理<xref:System.Web.UI.WebControls.LinqDataSource.Deleted>攔截任何例外狀況的刪除作業或作業完成之後，請檢查輸出參數的事件。 您可以擷取輸出參數，從<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>傳遞至事件處理常式的物件。  
+ 處理<xref:System.Web.UI.WebControls.LinqDataSource.Deleted>事件攔截任何例外狀況，從刪除作業，或在作業完成之後，請檢查輸出參數。 您可以擷取輸出參數，從<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>傳遞至事件處理常式的物件。  
   
  ]]></format>
         </remarks>
@@ -730,6 +744,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -769,6 +784,7 @@
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -785,14 +801,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 處理<xref:System.Web.UI.WebControls.LinqDataSource.Deleting>來驗證物件被刪除，以檢查資料類別，來變更值，以刪除作業之前，或取消刪除作業從資料驗證錯誤的事件。 <xref:System.Web.UI.WebControls.LinqDataSource>控制權會將<xref:System.Web.UI.WebControls.LinqDataSourceDeleteEventArgs>事件處理常式的物件<xref:System.Web.UI.WebControls.LinqDataSource.Deleting>事件。 <xref:System.Web.UI.WebControls.LinqDataSourceDeleteEventArgs>物件包含的資料將被刪除，並可讓您取消刪除作業。 如果資料類別會擲回<xref:System.Web.UI.WebControls.LinqDataSourceValidationException>例外狀況，<xref:System.Web.UI.WebControls.LinqDataSourceDeleteEventArgs>物件包含在該例外狀況<xref:System.Web.UI.WebControls.LinqDataSourceDeleteEventArgs.Exception%2A>屬性。  
+ 處理<xref:System.Web.UI.WebControls.LinqDataSource.Deleting>事件，以便驗證被刪除，以檢查是否有從資料類別，來變更值，以刪除作業之前，或取消刪除作業的資料驗證錯誤的物件。 <xref:System.Web.UI.WebControls.LinqDataSource>控制傳遞<xref:System.Web.UI.WebControls.LinqDataSourceDeleteEventArgs>物件的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Deleting>事件。 <xref:System.Web.UI.WebControls.LinqDataSourceDeleteEventArgs>物件包含的資料將會被刪除，並可讓您取消刪除作業。 如果資料類別會擲回<xref:System.Web.UI.WebControls.LinqDataSourceValidationException>例外狀況<xref:System.Web.UI.WebControls.LinqDataSourceDeleteEventArgs>物件包含在該例外狀況<xref:System.Web.UI.WebControls.LinqDataSourceDeleteEventArgs.Exception%2A>屬性。  
   
- 如果事件處理常式中擲回例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Deleting>事件，您必須處理該事件處理常式中的例外狀況。 例外狀況不會傳遞至事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Deleted>事件 (透過<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>物件)。 <xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性包含之後就會擲回的例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Deleting>事件。  
+ 如果事件處理常式中擲回例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Deleting>事件，您必須處理該事件處理常式中的例外狀況。 例外狀況不會傳遞至事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Deleted>事件 (透過<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>物件)。 <xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性包含之後，會擲回的例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Deleting>事件。  
   
    
   
 ## Examples  
- 下列範例顯示的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Deleting>事件。 程式碼中的屬性為基礎的刪除作業會取消<xref:System.Web.UI.WebControls.LinqDataSourceDeleteEventArgs.OriginalObject%2A>網頁之值和屬性。 在範例中，當`OnSale`屬性設定為`true`，使用者必須先選取<xref:System.Web.UI.WebControls.CheckBox>確認是否應該刪除記錄的控制項。  
+ 下列範例顯示的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Deleting>事件。 程式碼取消刪除作業中的屬性為基礎<xref:System.Web.UI.WebControls.LinqDataSourceDeleteEventArgs.OriginalObject%2A>屬性和值，以從網頁。 在範例中，當`OnSale`屬性設定為`true`，使用者必須選取<xref:System.Web.UI.WebControls.CheckBox>確認應該刪除記錄的控制項。  
   
  [!code-csharp[System.Web.UI.WebControls.LinqDataSource.Deleting#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.Deleting/cs/Default.aspx.cs#1)]
  [!code-vb[System.Web.UI.WebControls.LinqDataSource.Deleting#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.Deleting/vb/Default.aspx.vb#1)]  
@@ -814,6 +830,7 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -834,14 +851,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 設定<xref:System.Web.UI.WebControls.LinqDataSource.EnableDelete%2A>屬性`true`當您想要讓使用者可以刪除資料錄透過<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 當<xref:System.Web.UI.WebControls.LinqDataSource.EnableDelete%2A>是`true`、<xref:System.Web.UI.WebControls.LinqDataSource>控制使用 LINQ to SQL 會自動建立的資料刪除命令。 您必須加入介面，可讓使用者選取的記錄，若要刪除，例如<xref:System.Web.UI.WebControls.DetailsView>控制項。  
+ 設定<xref:System.Web.UI.WebControls.LinqDataSource.EnableDelete%2A>屬性，以`true`當您想讓使用者可以刪除資料錄透過<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 當<xref:System.Web.UI.WebControls.LinqDataSource.EnableDelete%2A>已`true`，則<xref:System.Web.UI.WebControls.LinqDataSource>控制項用來自動建立命令以刪除資料的 LINQ to SQL。 您必須包含的介面可讓使用者選取的記錄，若要刪除，例如<xref:System.Web.UI.WebControls.DetailsView>控制項。  
   
- <xref:System.Web.UI.WebControls.LinqDataSource>控制項不支援自動刪除作業時<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性或<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性設定。 在此情況下，<xref:System.Web.UI.WebControls.LinqDataSource>控制如果嘗試刪除作業將會擲回例外狀況。  
+ <xref:System.Web.UI.WebControls.LinqDataSource>控制項不支援自動刪除作業時<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性或<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性設定。 在此情況下，<xref:System.Web.UI.WebControls.LinqDataSource>控制項會擲回例外狀況，如果嘗試刪除作業。  
   
    
   
 ## Examples  
- 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>控制項具有<xref:System.Web.UI.WebControls.LinqDataSource.EnableDelete%2A>設`true`。 A<xref:System.Web.UI.WebControls.DetailsView>控制項顯示的資料，並建立按鈕，讓使用者可刪除的資料記錄。  
+ 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>控制項，其<xref:System.Web.UI.WebControls.LinqDataSource.EnableDelete%2A>設定為`true`。 A<xref:System.Web.UI.WebControls.DetailsView>控制項顯示資料，並建立可讓使用者刪除的資料記錄的按鈕。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default2.aspx#2)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default2.aspx#2)]  
@@ -863,6 +880,7 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -883,14 +901,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 設定<xref:System.Web.UI.WebControls.LinqDataSource.EnableInsert%2A>屬性`true`當您想要讓使用者插入新的資料記錄，到<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 當<xref:System.Web.UI.WebControls.LinqDataSource.EnableInsert%2A>是`true`、<xref:System.Web.UI.WebControls.LinqDataSource>控制使用 LINQ to SQL 會自動建立 插入資料的命令。 您必須加入介面，可讓使用者插入新的記錄，例如<xref:System.Web.UI.WebControls.DetailsView>控制項。  
+ 設定<xref:System.Web.UI.WebControls.LinqDataSource.EnableInsert%2A>屬性，以`true`當您想讓使用者能夠插入新的資料記錄，透過<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 當<xref:System.Web.UI.WebControls.LinqDataSource.EnableInsert%2A>是`true`，則<xref:System.Web.UI.WebControls.LinqDataSource>控制項用來自動建立命令以插入資料的 LINQ to SQL。 您必須包含的介面可讓使用者插入新的記錄，例如<xref:System.Web.UI.WebControls.DetailsView>控制項。  
   
- <xref:System.Web.UI.WebControls.LinqDataSource>控制項不支援自動插入作業時<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性或<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性設定。 在此情況下，<xref:System.Web.UI.WebControls.LinqDataSource>控制如果嘗試插入作業將會擲回例外狀況。  
+ <xref:System.Web.UI.WebControls.LinqDataSource>控制項不支援自動插入作業時<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性或<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性設定。 在此情況下，<xref:System.Web.UI.WebControls.LinqDataSource>控制項會擲回例外狀況，如果嘗試插入作業。  
   
    
   
 ## Examples  
- 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>控制項具有<xref:System.Web.UI.WebControls.LinqDataSource.EnableInsert%2A>設`true`。 A<xref:System.Web.UI.WebControls.DetailsView>控制項顯示資料，並顯示切換插入模式下，使用者可以建立並儲存新的記錄控制項的按鈕。  
+ 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>控制項，其<xref:System.Web.UI.WebControls.LinqDataSource.EnableInsert%2A>設定為`true`。 A<xref:System.Web.UI.WebControls.DetailsView>控制項顯示的資料，並顯示一個按鈕，切換插入的模式，使用者可建立並儲存新記錄的控制項。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default2.aspx#2)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default2.aspx#2)]  
@@ -909,6 +927,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -929,9 +948,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.LinqDataSource.EnableObjectTracking%2A> LINQ 到 SQL 資料內容物件從選取的資料時，才會使用屬性。  
+ <xref:System.Web.UI.WebControls.LinqDataSource.EnableObjectTracking%2A>從 LINQ 到 SQL 資料內容物件中選取資料時，才會使用屬性。  
   
- 當您與唯讀資料互動時，設定<xref:System.Web.UI.WebControls.LinqDataSource.EnableObjectTracking%2A>屬性`false`改善效能，因為資料不會快取來判斷是否已變更。 不過，它也會停用延後的查詢執行。 這個屬性必須設定為`true`如果您想要使用延後的查詢執行。  
+ 當您與唯讀資料互動時，設定<xref:System.Web.UI.WebControls.LinqDataSource.EnableObjectTracking%2A>屬性設`false`改善效能，因為資料不會快取來判斷是否已變更。 不過，它也會停用延後的查詢執行。 此屬性必須設為`true`如果您想要使用延後的查詢執行。  
   
  ]]></format>
         </remarks>
@@ -951,6 +970,7 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -971,20 +991,73 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 設定<xref:System.Web.UI.WebControls.LinqDataSource.EnableUpdate%2A>屬性`true`當您想要讓使用者可以使用更新的資料記錄<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 當<xref:System.Web.UI.WebControls.LinqDataSource.EnableUpdate%2A>是`true`、<xref:System.Web.UI.WebControls.LinqDataSource>控制使用 LINQ to SQL 會自動建立命令以更新的資料。 您必須加入介面，可讓使用者更新記錄，例如<xref:System.Web.UI.WebControls.DetailsView>控制項。  
+ 設定<xref:System.Web.UI.WebControls.LinqDataSource.EnableUpdate%2A>屬性，以`true`當您想讓使用者能夠使用更新資料錄<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 當<xref:System.Web.UI.WebControls.LinqDataSource.EnableUpdate%2A>已`true`，則<xref:System.Web.UI.WebControls.LinqDataSource>控制項用來自動建立命令以更新資料的 LINQ to SQL。 您必須包含的介面可讓使用者更新一筆記錄，例如<xref:System.Web.UI.WebControls.DetailsView>控制項。  
   
- <xref:System.Web.UI.WebControls.LinqDataSource>控制項不支援自動更新作業時<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性或<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性設定。 在此情況下，<xref:System.Web.UI.WebControls.LinqDataSource>控制如果嘗試更新作業將會擲回例外狀況。  
+ <xref:System.Web.UI.WebControls.LinqDataSource>控制項不支援自動更新作業時<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性或<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性設定。 在此情況下，<xref:System.Web.UI.WebControls.LinqDataSource>控制項會擲回例外狀況，如果嘗試更新作業。  
   
    
   
 ## Examples  
- 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>控制項具有<xref:System.Web.UI.WebControls.LinqDataSource.EnableUpdate%2A>設`true`。 A<xref:System.Web.UI.WebControls.DetailsView>控制項顯示的資料，並建立可讓使用者更新的資料記錄的按鈕。  
+ 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>控制項，其<xref:System.Web.UI.WebControls.LinqDataSource.EnableUpdate%2A>設定為`true`。 A<xref:System.Web.UI.WebControls.DetailsView>控制項顯示的資料及建立讓使用者得以更新資料錄的按鈕。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default2.aspx#2)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default2.aspx#2)]  
   
  ]]></format>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetView">
+      <MemberSignature Language="C#" Value="protected override System.Web.UI.DataSourceView GetView (string viewName);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance class System.Web.UI.DataSourceView GetView(string viewName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.WebControls.LinqDataSource.GetView(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Function GetView (viewName As String) As DataSourceView" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override System::Web::UI::DataSourceView ^ GetView(System::String ^ viewName);" />
+      <MemberSignature Language="F#" Value="override this.GetView : string -&gt; System.Web.UI.DataSourceView" Usage="linqDataSource.GetView viewName" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Web.UI.IDataSource.GetView(System.String)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.UI.DataSourceView</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="viewName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="viewName">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetViewNames">
+      <MemberSignature Language="C#" Value="protected override System.Collections.ICollection GetViewNames ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance class System.Collections.ICollection GetViewNames() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.WebControls.LinqDataSource.GetViewNames" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Function GetViewNames () As ICollection" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override System::Collections::ICollection ^ GetViewNames();" />
+      <MemberSignature Language="F#" Value="override this.GetViewNames : unit -&gt; System.Collections.ICollection" Usage="linqDataSource.GetViewNames " />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Web.UI.IDataSource.GetViewNames</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.ICollection</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GroupBy">
@@ -997,6 +1070,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1017,15 +1091,15 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您使用<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性，以指定的屬性會用於合併具有相同值的資料記錄。 例如，如果您設定<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性`Name`，所有記錄在查詢中所提供的相同`Name`屬性值會傳回成單一的彙總記錄。  
+ 您使用<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性來指定合併具有相同值的資料記錄會使用哪些屬性。 例如，如果您設定<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性，以`Name`中的所有記錄的查詢具有相同`Name`屬性值傳回成單一彙總記錄。  
   
- 您可以指派至一個以上屬性<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性中的所有屬性，只要`new`函式，並使用逗號分隔每一個屬性。 例如，若要群組的屬性`Name`然後`Category`，將<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性`new(Name, Category)`。  
+ 您可以指派多個屬性<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>住中的所有屬性的屬性`new`函式，並使用逗號分隔每個屬性。 例如，若依屬性群組要`Name`，然後`Category`，將<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性設`new(Name, Category)`。  
   
- 用來分組屬性中的值會傳回產生的屬性，名為透過`Key`。 您包含`Key`屬性<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性，以擷取群組的值。 您可以設定`Key`使用別名的屬性`As`關鍵字，但您不需要使用別名。 例如，您可能會設定<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性至屬性，名為`Category`。 您可以擷取的合併的值`Category`藉由設定屬性<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性`new(Key As ProductCategory)`。  
+ 屬性中用來分組的值會傳回產生的屬性，名為透過`Key`。 您包含`Key`屬性中的<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>擷取群組的值的屬性。 您可以設定`Key`屬性，以使用別名`As`關鍵字，但您不需要使用別名。 例如，您可能會設定<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性至屬性，名為`Category`。 您可以擷取從合併的值`Category`屬性，藉由設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性設`new(Key As ProductCategory)`。  
   
- 您可以存取群組中的個別記錄包括`It`屬性<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 `It`屬性包含記錄共用的分組屬性值的集合。 您可以反覆`It`屬性來擷取個別的記錄。  
+ 您可以存取在群組中的個別記錄包括`It`屬性中的<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 `It`屬性包含的共用中的群組屬性的值的記錄集合。 您可以反覆`It`屬性來擷取個別的記錄。  
   
- <xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性通常用於彙總方法。 您可以使用下列的彙總方法：  
+ <xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性通常會搭配彙總方法。 您可以使用下列彙總方法：  
   
 -   `Count()`  
   
@@ -1043,22 +1117,22 @@
   
 -   `All(` *條件* `)`  
   
- 如需詳細資訊，請參閱[NIB: LinqDataSource Web 伺服器控制項概觀](http://msdn.microsoft.com/library/104cfc3f-7385-47d3-8a51-830dfa791136)和[How to： 群組和彙總的資料使用 LinqDataSource 控制項](http://msdn.microsoft.com/library/b922cf69-251f-4158-b405-ea960993a1af)。  
+ 如需詳細資訊，請參閱 < [NIB: LinqDataSource Web Server Control Overview](http://msdn.microsoft.com/library/104cfc3f-7385-47d3-8a51-830dfa791136)並[如何： 群組和彙總的資料使用 LinqDataSource 控制項](http://msdn.microsoft.com/library/b922cf69-251f-4158-b405-ea960993a1af)。  
   
    
   
 ## Examples  
- 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>群組名為屬性所傳回的資料控制項`Category`。 它會傳回共用的值，並計算平均價格分組資料錄。  
+ 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>屬性，名為依據群組傳回的資料控制項`Category`。 它會傳回共用的值，並計算平均的價格為群組的記錄。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default3.aspx#3)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default3.aspx#3)]  
   
- 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>也就是控制設定群組的兩個資料行。 `Key`屬性參考的物件具有兩個屬性：`ProductCategory`和`Color`。 所表示之物件`It`已重新命名`Products`。 重新命名`Products`物件都包含在群組中，個別記錄的集合和每個執行個體包含從 Products 資料表的所有資料行。  
+ 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>控制項設定的兩個資料行的群組。 `Key`屬性會參考具有兩個屬性的物件`ProductCategory`和`Color`。 所表示之物件`It`已重新命名`Products`。 已重新命名`Products`物件包含的群組中的個別記錄集合，而每個執行個體包含從 Products 資料表的所有資料行。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource.GroupBy#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.GroupBy/cs/Default.aspx#1)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource.GroupBy#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.GroupBy/vb/Default.aspx#1)]  
   
- 下列範例示範兩個<xref:System.Web.UI.WebControls.ListView>如何顯示資料的控制項<xref:System.Web.UI.WebControls.LinqDataSource>前一個範例中的控制項。 一個<xref:System.Web.UI.WebControls.ListView>控制項會顯示群組的資料和其他<xref:System.Web.UI.WebControls.ListView>控制項會顯示個別的隸屬於該群組的產品名稱。 巢狀的資料繫結控制項的<xref:System.Web.UI.WebControls.BaseDataList.DataSource%2A>屬性設定為`Products`，這是別名`It`物件。  
+ 下列範例示範兩個<xref:System.Web.UI.WebControls.ListView>來顯示將資料從控制項<xref:System.Web.UI.WebControls.LinqDataSource>在上述範例中的控制項。 一<xref:System.Web.UI.WebControls.ListView>控制項會顯示群組的資料和其他<xref:System.Web.UI.WebControls.ListView>控制項會顯示個別產品屬於該群組的名稱。 巢狀的資料繫結控制項的<xref:System.Web.UI.WebControls.BaseDataList.DataSource%2A>屬性設定為`Products`，這是別名`It`物件。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource.GroupBy#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.GroupBy/cs/Default.aspx#2)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource.GroupBy#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.GroupBy/vb/Default.aspx#2)]  
@@ -1077,6 +1151,7 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1106,13 +1181,13 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.LinqDataSource>控制使用中的參數<xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>集合，以建立在執行階段的 Group By 子句。 通常您不使用<xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>來分組資料的集合。 相反地，您可以使用<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性。 您使用<xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>集合時，才在 Group By 子句中的值必須設定在執行階段，而且該值不是屬性名稱。 例如，使用<xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>來分組資料的集合，依據是否`LastName`資料記錄中的屬性值等於使用者所提供的值。  
+ <xref:System.Web.UI.WebControls.LinqDataSource>控制項使用中的參數<xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>集合，以在執行階段建立 Group By 子句。 通常您不會使用<xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>來分組資料的集合。 相反地，您可以使用<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性。 您使用<xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>集合時，才在 Group By 子句中的值必須在執行階段設定，以及該值不是屬性名稱。 例如，使用<xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>集合來分組資料根據`LastName`資料記錄中的屬性值等於使用者所提供的值。  
   
- 如果想要依屬性來群組資料，而且該屬性並沒有在執行階段設定，您可以定義在群組屬性<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性。 例如，若要從資料庫資料表傳回值分組`LastName`，將<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>至"LastName"，不含任何參數。 如果您想要動態群組資料的屬性，建立事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件和自訂<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>所需的屬性。  
+ 如果您要依屬性分組資料，而且該屬性不需要在執行階段進行設定，您可以定義中的 [群組] 屬性<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性。 例如，若要從資料庫資料表中傳回的值分組`LastName`，將<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>至"LastName"，不含任何參數。 如果您想要動態群組資料屬性，建立的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件和自訂<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>所需的屬性。  
   
- 您無法指派屬性的名稱做為中的參數值<xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>集合。 加入參數，以便<xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>集合，當您想要加入至條件<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>必須在執行階段設定的屬性。  
+ 您無法指派屬性的名稱做為參數的值<xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>集合。 新增參數<xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>集合，當您想要新增條件，以<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>必須在執行階段設定的屬性。  
   
- 在中設定值<xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>集合，您指派給每個參數的名稱，然後再新增中的預留位置<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>名為參數的屬性。 在 Group By 子句中，名稱的前面上每個參數使用 @ 符號。  
+ 若要設定值，在<xref:System.Web.UI.WebControls.LinqDataSource.GroupByParameters%2A>集合中，您指派給每個參數的名稱，然後再新增內某個預留位置<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性的具名參數。 在 Group By 子句中前, 加上每一參數名稱以 @ 符號。  
   
  ]]></format>
         </remarks>
@@ -1128,6 +1203,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1144,17 +1220,17 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 一般而言，您不必呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Insert%2A>從您的程式碼的方法。 資料繫結控制項將會自動呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Insert%2A>方法，當使用者採取動作來插入新的記錄。 明確地呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Insert%2A>方法，當您想要建立您自己的處理程序，用於插入資料。  
+ 一般而言，您就不必呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Insert%2A>從您的程式碼的方法。 資料繫結控制項將會自動呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Insert%2A>方法，當使用者採取動作來插入新的記錄。 明確地呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Insert%2A>方法，當您想要建立自己的程序插入資料。  
   
    
   
 ## Examples  
- 下列範例會示範如何以程式設計方式插入新的記錄資料來源中，使用者按一下按鈕後。 在程式碼通過<xref:System.Collections.Specialized.ListDictionary>物件，其中包含預設值至<xref:System.Web.UI.WebControls.LinqDataSource.Insert%2A>方法。  
+ 下列範例示範如何以程式設計方式於使用者按一下按鈕之後，資料來源中插入新的記錄。 程式碼會傳遞<xref:System.Collections.Specialized.ListDictionary>物件，其中包含預設值來<xref:System.Web.UI.WebControls.LinqDataSource.Insert%2A>方法。  
   
  [!code-csharp[System.Web.UI.WebControls.LinqDataSource.Insert#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.Insert/cs/Default2.aspx.cs#1)]
  [!code-vb[System.Web.UI.WebControls.LinqDataSource.Insert#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.Insert/vb/Default2.aspx.vb#1)]  
   
- 下列範例顯示先前的範例標記。  
+ 下列範例顯示上一個範例的標記。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource.Insert#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.Insert/cs/Default2.aspx#2)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource.Insert#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.Insert/vb/Default2.aspx#2)]  
@@ -1173,6 +1249,7 @@
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1189,12 +1266,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 處理<xref:System.Web.UI.WebControls.LinqDataSource.Inserted>事件攔截任何例外狀況的插入作業，或在插入作業完成之後，檢查的值。 您可以擷取到的新值<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>傳遞至事件處理常式的物件。 例如，您可以使用<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>擷取新的資料記錄的資料庫所產生的識別屬性的物件。  
+ 處理<xref:System.Web.UI.WebControls.LinqDataSource.Inserted>事件攔截任何例外狀況，從 插入作業，或在插入作業完成之後，請檢查的值。 您可以擷取新的值，透過<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>傳遞至事件處理常式的物件。 例如，您可以使用<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>擷取新的資料記錄的資料庫所產生的識別屬性的物件。  
   
    
   
 ## Examples  
- 下列範例示範如何建立事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Inserted>事件，以檢查例外狀況，並擷取新記錄的 identity 屬性。  
+ 下列範例示範如何建立事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Inserted>檢查例外狀況，並擷取新資料錄的識別屬性的事件。  
   
  [!code-csharp[System.Web.UI.WebControls.LinqDataSourceStatusEventArgs#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSourceStatusEventArgs/cs/Default.aspx#1)]
  [!code-vb[System.Web.UI.WebControls.LinqDataSourceStatusEventArgs#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSourceStatusEventArgs/vb/Default.aspx#1)]  
@@ -1213,6 +1290,7 @@
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1229,16 +1307,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 處理<xref:System.Web.UI.WebControls.LinqDataSource.Inserting>來驗證物件要插入、 檢查來自資料類別，以將值插入作業之前，變更或取消插入作業的資料驗證錯誤的事件。 <xref:System.Web.UI.WebControls.LinqDataSourceInsertEventArgs>物件傳遞至事件處理常式，此事件報告功能包含要插入資料來源中的新物件。  
+ 處理<xref:System.Web.UI.WebControls.LinqDataSource.Inserting>事件，以便驗證要插入、 檢查來自資料類別，並將值插入作業之前，變更或取消插入作業的資料驗證錯誤的物件。 <xref:System.Web.UI.WebControls.LinqDataSourceInsertEventArgs>物件傳遞至事件處理常式，此事件報告功能包含在資料來源中插入新的物件。  
   
- 如果在插入作業期間發生驗證錯誤<xref:System.Web.UI.WebControls.LinqDataSourceInsertEventArgs>物件包含的資料類別所擲回驗證例外狀況。 如果要插入的值不符合資料類別中屬性的型別或是它未通過自訂的驗證檢查，就會發生驗證錯誤。 中的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Inserting>事件，您可以擷取驗證例外狀況並採取適當的動作。  
+ 如果插入作業期間，發生驗證錯誤<xref:System.Web.UI.WebControls.LinqDataSourceInsertEventArgs>物件包含的資料類別所擲回驗證例外狀況。 如果要插入的值不符合在資料類別中，屬性的型別，或如果它未通過自訂驗證檢查，就會發生驗證錯誤。 中的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Inserting>事件，您可以擷取驗證例外狀況並採取適當動作。  
   
- 如果事件處理常式中擲回例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Inserting>事件，您必須處理該事件處理常式中的例外狀況。 例外狀況不會傳遞至事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Inserted>事件 (透過<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>物件)。 <xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性包含之後就會擲回的例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Inserting>事件。  
+ 如果事件處理常式中擲回例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Inserting>事件，您必須處理該事件處理常式中的例外狀況。 例外狀況不會傳遞至事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Inserted>事件 (透過<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>物件)。 <xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性包含之後，會擲回的例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Inserting>事件。  
   
    
   
 ## Examples  
- 下列範例顯示的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Inserting>修改資料之前插入作業的事件。 從物件<xref:System.Web.UI.WebControls.LinqDataSourceInsertEventArgs.NewObject%2A>屬性會轉型為類型，名為`Product`。 `DateModified`屬性`Product`物件設定為目前的日期和時間。  
+ 下列範例顯示的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Inserting>修改資料之前插入作業的事件。 從物件<xref:System.Web.UI.WebControls.LinqDataSourceInsertEventArgs.NewObject%2A>屬性會轉換名為的型別`Product`。 `DateModified`屬性`Product`物件設定為目前的日期和時間。  
   
  [!code-csharp[System.Web.UI.WebControls.LinqDataSource.Inserting#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.Inserting/cs/Default.aspx.cs#1)]
  [!code-vb[System.Web.UI.WebControls.LinqDataSource.Inserting#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.Inserting/vb/Default.aspx.vb#1)]  
@@ -1276,7 +1354,7 @@ protected void LinqDataSource_Inserting(object sender,
 }  
 ```  
   
- 先前的範例會擷取驗證例外狀況。 如果值不符合屬性類型，可能會擲回例外狀況。 它可能也會擲回從自訂的檢查，如下列範例中的一個。 `OnAgeChanging`方法檢查數目`Age`屬性不可以是負數。  
+ 前一個範例會擷取驗證例外狀況。 如果值不符合屬性類型，可能會擲回例外狀況。 它可能也會擲回類似下列範例中的自訂檢查。 `OnAgeChanging`方法會檢查數目`Age`屬性不是負數。  
   
 ```csharp  
 partial void  OnAgeChanging(int? value)  
@@ -1310,6 +1388,7 @@ End Sub
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1339,20 +1418,44 @@ End Sub
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 通常所需的插入作業的值會傳遞至<xref:System.Web.UI.WebControls.LinqDataSource>資料繫結控制項的控制項。 您指定當您想要提供預設值時，插入參數值或定義是否將空值轉換為`null`。 您沒有提供參數的每個值會被插入，僅適用於使用者未提供值時，必須處理的值。  
+ 通常會在插入作業所需的值會傳遞至<xref:System.Web.UI.WebControls.LinqDataSource>資料繫結控制項的控制項。 插入參數，當您想要提供的預設值或定義是否將空的值，您指定`null`。 您不必針對每個值插入，僅為使用者未提供值時，必須處理的值提供的參數。  
   
- 您在中提供的值<xref:System.Web.UI.WebControls.LinqDataSource.InsertParameters%2A>集合只用於資料來源中所定義，但未繫結資料控制項欄位。 例如，假設資料庫資料表資料行名稱、 地址和郵遞區號，名為但<xref:System.Web.UI.WebControls.ListView>繫結至資料表的控制項繫結名稱和地址欄位。 中的值<xref:System.Web.UI.WebControls.LinqDataSource.InsertParameters%2A>集合將只能用於 [郵遞區號] 欄位。 它們不使用名稱和地址欄位。 即使未輸入任何值，這些欄位也是如此。 如果資料中的所有欄位的資料繫結控制項的自動產生欄位來源，從任何值<xref:System.Web.UI.WebControls.LinqDataSource.InsertParameters%2A>將用於集合。  
+ 您在中提供的值<xref:System.Web.UI.WebControls.LinqDataSource.InsertParameters%2A>集合僅適用於使用資料來源中定義的但未繫結中的資料控制項欄位。 例如，假設資料庫資料表有資料行名稱、 地址和郵遞區號，名為但<xref:System.Web.UI.WebControls.ListView>繫結至資料表的控制項繫結只以名稱和地址欄位。 中的值<xref:System.Web.UI.WebControls.LinqDataSource.InsertParameters%2A>集合將只用於 [郵遞區號] 欄位。 它們不會用於名稱和地址 欄位。 這是，則為 true，即使那些欄位輸入任何值。 如果資料中的所有欄位的資料繫結控制項的自動產生欄位來源，從任何值<xref:System.Web.UI.WebControls.LinqDataSource.InsertParameters%2A>將用於集合。  
   
    
   
 ## Examples  
- 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>提供中的預設值的參數控制<xref:System.Web.UI.WebControls.LinqDataSource.InsertParameters%2A>集合。 如果使用者未提供的值`Category`屬性，預設值所提供的參數儲存在資料庫中。  
+ 下列範例所示<xref:System.Web.UI.WebControls.LinqDataSource>控制項以提供預設值中的參數<xref:System.Web.UI.WebControls.LinqDataSource.InsertParameters%2A>集合。 如果使用者未提供的值`Category`屬性，參數所提供的預設值儲存在資料庫中。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#9](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default9.aspx#9)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#9](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default9.aspx#9)]  
   
  ]]></format>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadViewState">
+      <MemberSignature Language="C#" Value="protected override void LoadViewState (object savedState);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void LoadViewState(object savedState) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.WebControls.LinqDataSource.LoadViewState(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub LoadViewState (savedState As Object)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void LoadViewState(System::Object ^ savedState);" />
+      <MemberSignature Language="F#" Value="override this.LoadViewState : obj -&gt; unit" Usage="linqDataSource.LoadViewState savedState" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="savedState" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="savedState">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="OnInit">
@@ -1365,6 +1468,7 @@ End Sub
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1389,6 +1493,7 @@ End Sub
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1414,6 +1519,7 @@ End Sub
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1434,19 +1540,19 @@ End Sub
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您使用<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性來指定從傳回的資料，用來排序的屬性。 排序資料的屬性必須存在於原始資料來源，但是並沒有包含在<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 您可以加入一個空格和`Ascending`， `ASC`， `Descending`，或`DESC`中的屬性<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>字串來指定如何傳回已排序的資料。  
+ 您使用<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性來指定要用來排序傳回的資料中的哪些屬性。 排序資料的屬性必須存在於原始資料來源，但它並沒有包含在<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 您可以加上空格並`Ascending`， `ASC`， `Descending`，或`DESC`中的屬性<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>字串來指定如何傳回已排序的資料。  
   
- 您可以提供多個屬性在<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>使用逗號分隔每一個屬性的屬性。 例如，若要依屬性名為`LastName`和`FirstName`，將<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>"LastName FirstName"的屬性。  
+ 您可以提供多個屬性在<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>使用逗號分隔每個屬性的屬性。 比方說，要依具名的屬性`LastName`並`FirstName`，將<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>"LastName、 FirstName 」 的屬性。  
   
 > [!NOTE]
->  當您使用<xref:System.Web.UI.WebControls.LinqDataSource>用來控制[!INCLUDE[ss2k](~/includes/ss2k-md.md)]或[!INCLUDE[ssEW](~/includes/ssew-md.md)]和<xref:System.Web.UI.WebControls.LinqDataSource.AutoPage%2A>屬性設定為`true`，您必須提供值，以在<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性。 根據預設，<xref:System.Web.UI.WebControls.LinqDataSource.AutoPage%2A>屬性是`true`。 如果您指派值給<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性，您必須也包含所有 identity 資料行中傳回查詢中的屬性清單。  
+>  當您使用<xref:System.Web.UI.WebControls.LinqDataSource>用來控制[!INCLUDE[ss2k](~/includes/ss2k-md.md)]或[!INCLUDE[ssEW](~/includes/ssew-md.md)]並<xref:System.Web.UI.WebControls.LinqDataSource.AutoPage%2A>屬性設定為`true`，您必須提供值，以在<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性。 根據預設，<xref:System.Web.UI.WebControls.LinqDataSource.AutoPage%2A>屬性是`true`。 如果您將值指派給<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性，您必須也包含所有 identity 資料行在查詢中傳回的屬性清單中。  
   
- 如果<xref:System.Web.UI.WebControls.LinqDataSource.AutoSort%2A>屬性設定為`true`，資料繫結控制項可以將排序運算式，以傳遞<xref:System.Web.UI.WebControls.LinqDataSource>控制項在執行階段。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項將套用從資料繫結控制項的排序運算式之後套用<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性。 因此，資料會根據排序運算式傳回的資料繫結控制項。  
+ 如果<xref:System.Web.UI.WebControls.LinqDataSource.AutoSort%2A>屬性設定為`true`，在資料繫結控制項可以將排序運算式，以傳遞<xref:System.Web.UI.WebControls.LinqDataSource>控制項在執行階段。 <xref:System.Web.UI.WebControls.LinqDataSource>可控制在套用之後，會套用從資料繫結控制項的排序運算式<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性。 因此，會傳回資料的排序運算式根據從資料繫結控制項。  
   
    
   
 ## Examples  
- 下列範例會傳回資料，以根據值的反向字母順序`Category`屬性。  
+ 下列範例會傳回以反向字母順序，根據值的資料`Category`屬性。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#4](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default4.aspx#4)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default4.aspx#4)]  
@@ -1465,6 +1571,7 @@ End Sub
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1494,16 +1601,16 @@ End Sub
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.LinqDataSource>控制使用中的參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合，以在執行階段建立 Order By 子句。 通常您會設定<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A>屬性`true`當您將參數加入至<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合。 當<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A>屬性設定為`true`，在每個參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合加入 Order By 子句中指定的順序<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合。 當<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A>屬性是`true`，不需要參數，所以它們會依序套用和不相符的預留位置來命名。  
+ <xref:System.Web.UI.WebControls.LinqDataSource>控制項使用中的參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合，以在執行階段建立 Order By 子句。 您的設定通常<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A>屬性，以`true`當您將參數加入至<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合。 當<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A>屬性設定為`true`，在每個參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合加入 Order By 子句中指定的序列中<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合。 當<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A>屬性是`true`，因為它們會依序套用，而且不會對應到預留位置顯示為沒有參數。  
   
- 如果您不需要在 Order By 子句中的執行階段設定值，您不必使用<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合。 您可以定義要用於排序中的資料欄位<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性。 例如，若要從資料庫資料表傳回值依`LastName`，將<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>至"LastName"，不含任何參數。  
+ 如果您沒有在 Order By 子句中的執行階段設定值，您不必使用<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合。 您可以定義要用於排序的資料中的欄位<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性。 例如，若要從資料庫資料表中傳回值依排序`LastName`，將<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>至"LastName"，不含任何參數。  
   
- 您可以在 設定參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合，而且符合中預留位置的參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性，但是這種方法具有有限的應用程式。 當您使用這種方法中的參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合無法表示資料行名稱。 您可以設定參數的值，然後進行比較值屬性中的值。 例如，您可以排序依據屬性中的值是否小於參數代表的執行階段值的資料。  
+ 您可以在 設定參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合中預留位置的參數搭<xref:System.Web.UI.WebControls.LinqDataSource.OrderBy%2A>屬性，但這種方法具有有限的應用程式。 當您使用這種方法中的參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合無法表示資料行名稱。 您可以將參數設定值，然後比較該數值到屬性中的值。 例如，您可以排序依據屬性中的值是否小於參數所表示的執行階段值的資料。  
   
    
   
 ## Examples  
- 下列範例顯示將 <xref:System.Web.UI.WebControls.LinqDataSource> 屬性設定為 <xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A> 的 `true` 控制項。 參數包含在<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>集合來排序屬性為基礎的資料名稱的使用者會從選取<xref:System.Web.UI.WebControls.DropDownList>控制項。  
+ 下列範例顯示將 <xref:System.Web.UI.WebControls.LinqDataSource> 屬性設定為 <xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateOrderByClause%2A> 的 `true` 控制項。 參數包含在<xref:System.Web.UI.WebControls.LinqDataSource.OrderByParameters%2A>從選取的排序依據之屬性的資料名稱的使用者的集合<xref:System.Web.UI.WebControls.DropDownList>控制項。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#8](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default8.aspx#8)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#8](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default8.aspx#8)]  
@@ -1522,6 +1629,7 @@ End Sub
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1537,28 +1645,28 @@ End Sub
       </ReturnValue>
       <Docs>
         <summary>取得或設定用於排序分組資料的欄位。</summary>
-        <value>字串，用來建立的順序群組 By 子句。</value>
+        <value>字串，用來建立 Order Groups By 子句。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您使用<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy%2A>屬性來指定如何排序資料的群組。 例如，您可以依分組`CategoryID`屬性，然後排序每個類別目錄識別碼分組的平均`Price`屬性。  
+ 您使用<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy%2A>屬性來指定如何排序群組的資料。 例如，您可以依分組`CategoryID`屬性，然後排序每個類別目錄識別碼分組的平均`Price`屬性。  
   
  您可以設定<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy%2A>屬性只有在已分組的資料時。 如果您設定<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy%2A>屬性未設定<xref:System.Web.UI.WebControls.LinqDataSource.GroupBy%2A>屬性，<xref:System.Web.UI.WebControls.LinqDataSource>控制項會擲回例外狀況。  
   
- 用來排序資料的屬性必須為此屬性，用來分組資料或在群組資料的彙總函式的結果。 若要指定資料的排序方式，加入一個空格和字串"Ascending"、"ASC 」、 「 遞減 」 或"DESC"中的屬性名稱<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy%2A>字串。  
+ 用來排序資料的屬性必須是此屬性，用來分組資料或在群組資料的彙總函式的結果。 若要指定資料的排序方式，加入一個空格和"Ascending"、"ASC"、 「 遞減 」 或"DESC"的字串中的屬性名稱<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy%2A>字串。  
   
- 您可以指定多個屬性在<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy%2A>屬性。 使用逗號分隔每一個屬性。  
+ 您可以指定多個屬性在<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy%2A>屬性。 使用逗號分隔每個屬性。  
   
    
   
 ## Examples  
- 下列範例顯示如何群組資料，使用兩個屬性，以及如何使用其中一個屬性來排序群組的資料。 從名為資料表資料`Products`使用名為的屬性分組`CategoryID`和`Discontinued`。 群組的資料依照`CategoryID`屬性。  
+ 下列範例顯示如何群組資料的使用兩個屬性，以及如何使用其中一個屬性排序分組的資料。 名為資料表中的資料`Products`藉由使用名為的屬性分組`CategoryID`和`Discontinued`。 分組的資料會依照`CategoryID`屬性。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy/cs/Default.aspx#1)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy/vb/Default.aspx#1)]  
   
- 下列範例示範如何使用屬性，來群組資料以及如何排序會根據彙總函式的結果。 從資料`Products`資料表會依使用`CategoryID`屬性。 排序依據的平均`UnitPrice`每個群組內的屬性。  
+ 下列範例會示範如何用來分組資料的屬性，以及如何排序它所依據的彙總函式的結果。 將資料從`Products`資料表會依使用`CategoryID`屬性。 排序依據的平均值`UnitPrice`每個群組內的屬性。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy/cs/Default2.aspx#2)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy/vb/Default2.aspx#2)]  
@@ -1577,6 +1685,7 @@ End Sub
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1601,19 +1710,41 @@ End Sub
       </ReturnValue>
       <Docs>
         <summary>取得用來建立 Order Groups By 子句的參數集合。</summary>
-        <value>用來建立的順序群組 By 子句的參數。</value>
+        <value>用來建立 Order Groups By 子句的參數。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.LinqDataSource>控制使用中的參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsByParameters%2A>集合，以在執行階段建立的順序群組 By 子句。  
+ <xref:System.Web.UI.WebControls.LinqDataSource>控制項使用中的參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsByParameters%2A>來建立 Order Groups By 子句在執行階段的集合。  
   
- 您新增值以<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsByParameters%2A>只有當您必須在群組 By 子句中的執行階段設定值的集合。 您可以定義用來排序資料所使用的欄位<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy%2A>屬性。  
+ 您新增值以<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsByParameters%2A>只有當您必須在 Order Groups By 子句中的執行階段設定值的集合。 您可以定義用來排序資料所使用的欄位<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy%2A>屬性。  
   
- 您可以在 設定參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsByParameters%2A>集合，而且符合中預留位置的參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy%2A>屬性。 不過，當您使用這種方法中的參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsByParameters%2A>集合無法表示資料行名稱，則還必須有值。 您可以設定參數的值，然後進行比較的屬性值。 例如，您可以排序依據屬性中的值是否小於參數代表的執行階段值的資料。  
+ 您可以在 設定參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsByParameters%2A>集合中預留位置的參數搭<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsBy%2A>屬性。 不過，當您使用這種方法中的參數<xref:System.Web.UI.WebControls.LinqDataSource.OrderGroupsByParameters%2A>集合無法表示資料行名稱，還必須有值。 您可以將參數設定值，然後比較該屬性的值。 例如，您可以排序依據屬性中的值是否小於參數所表示的執行階段值的資料。  
   
  ]]></format>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SaveViewState">
+      <MemberSignature Language="C#" Value="protected override object SaveViewState ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance object SaveViewState() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.WebControls.LinqDataSource.SaveViewState" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Function SaveViewState () As Object" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override System::Object ^ SaveViewState();" />
+      <MemberSignature Language="F#" Value="override this.SaveViewState : unit -&gt; obj" Usage="linqDataSource.SaveViewState " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Select">
@@ -1626,6 +1757,7 @@ End Sub
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1646,15 +1778,15 @@ End Sub
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果您未設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性，<xref:System.Web.UI.WebControls.LinqDataSource>控制從資料物件擷取所有的屬性 （資料行）。 您使用<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性從物件擷取屬性的子集，或擷取資料時計算新的值。  
+ 如果您未設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性，<xref:System.Web.UI.WebControls.LinqDataSource>控制從資料物件擷取所有的屬性 （資料行）。 您使用<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性從物件擷取屬性的子集，或擷取資料時，計算新值。  
   
- 您指定的屬性來擷取設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>至您想要傳回的資料中包含的屬性名稱的屬性。  
+ 您指定要擷取所設定的屬性<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>您想要在傳回的資料中包含的屬性名稱的屬性。  
   
- 如果您從資料物件擷取屬性的子集<xref:System.Web.UI.WebControls.LinqDataSource>控制項會以動態方式建立僅包含屬性中所指定的類別<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 如果您要計算不是屬性中的資料物件的屬性，也會動態建立類別。 在這些情況下，從查詢傳回的物件不是類別中所指定的執行個體<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性。 相反地，您必須使用`new`方法中的<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性，指出新的類別從查詢傳回。 例如，若要只傳回`FirstName`和`LastName`屬性從物件，包含多個這些屬性，設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性`new(FirstName, LastName)`。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項將以動態方式建立新的類別中所指定`new`方法。  
+ 如果您從資料物件，擷取屬性的子集<xref:System.Web.UI.WebControls.LinqDataSource>控制項會動態建立類別，其中包含您在中指定的屬性<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 如果您計算都不是資料物件中的屬性的屬性，也會動態建立類別。 在這些情況下，從查詢傳回的物件不是類別中所指定的執行個體<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性。 相反地，您必須使用`new`方法中的<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>表示新的類別從查詢傳回的屬性。 例如，若要只傳回`FirstName`並`LastName`屬性的物件，包含多個這些屬性，設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性設`new(FirstName, LastName)`。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項要以動態方式建立新的類別中所指定`new`方法。  
   
- 您可以使用`As`關鍵字來指派別名給選取的值。 如果您指定別名，您必須包含中的別名屬性`new`方法。 將繫結至結果的任何資料繫結控制項<xref:System.Web.UI.WebControls.LinqDataSource>控制項必須別名所參考的屬性。 例如，如果您設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性`new(Region As SalesRegion, Revenue / 1000 As RevenueThousands)`，資料繫結控制項可以存取兩個屬性：`SalesRegion`和`RevenueThousands`。  
+ 您可以使用`As`關鍵字來將別名指派給選取的值。 如果您指派別名時，您必須包含中的別名屬性`new`方法。 繫結至結果的任何資料繫結控制項<xref:System.Web.UI.WebControls.LinqDataSource>控制項必須由別名所參考屬性。 比方說，如果您設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性，以`new(Region As SalesRegion, Revenue / 1000 As RevenueThousands)`，將資料繫結控制項可以存取兩個屬性，`SalesRegion`和`RevenueThousands`。  
   
- 您使用`new`函式在<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>下表列出根據之條件的屬性。  
+ 您使用`new`函式中<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>根據條件的屬性如下表所示。  
   
 |選用版|使用新的|範例|  
 |------------|----------------|-------------|  
@@ -1662,9 +1794,9 @@ End Sub
 |多個屬性。|`new` 所需。|`Select="new(Cateogry, Name)"`|  
 |單一或多個有別名的屬性。|`new` 所需。|`Select="new(Category As CategoryGroup)"`|  
   
- 如果您想要啟用自動的資料修改，但不是想顯示從資料物件的所有屬性，就不要設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 請改用管理透過資料繫結控制項的顯示。 當您使用<xref:System.Web.UI.WebControls.DetailsView>控制項或<xref:System.Web.UI.WebControls.GridView>控制項，您也必須設定<xref:System.Web.UI.WebControls.DetailsView.AutoGenerateRows%2A>或<xref:System.Web.UI.WebControls.GridView.AutoGenerateColumns%2A>屬性`false`。 不會顯示在資料繫結控制項的任何值會儲存在檢視狀態。 它們會原封不動地傳遞至資料來源時執行資料更新。  
+ 如果您想要啟用自動的資料修改，但不是想顯示從資料物件的所有屬性，請勿設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 相反地，管理透過資料繫結控制項顯示。 當您使用<xref:System.Web.UI.WebControls.DetailsView>控制項或<xref:System.Web.UI.WebControls.GridView>控制項，您也必須設定<xref:System.Web.UI.WebControls.DetailsView.AutoGenerateRows%2A>或<xref:System.Web.UI.WebControls.GridView.AutoGenerateColumns%2A>屬性設`false`。 不會顯示在資料繫結控制項中的任何值會儲存在檢視狀態。 它們不變時傳遞至資料來源執行資料更新。  
   
- 分組資料的查詢中，您可以包含在彙總方法<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 您可以使用下列的彙總方法：  
+ 分組資料的查詢中，您可以包含在彙總方法<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 您可以使用下列彙總方法：  
   
 -   `Count()`  
   
@@ -1682,11 +1814,11 @@ End Sub
   
 -   `All(` *條件* `)`  
   
- 如需詳細資訊，請參閱[NIB: LinqDataSource Web 伺服器控制項概觀](http://msdn.microsoft.com/library/104cfc3f-7385-47d3-8a51-830dfa791136)和[How to： 群組和彙總的資料使用 LinqDataSource 控制項](http://msdn.microsoft.com/library/b922cf69-251f-4158-b405-ea960993a1af)。  
+ 如需詳細資訊，請參閱 < [NIB: LinqDataSource Web Server Control Overview](http://msdn.microsoft.com/library/104cfc3f-7385-47d3-8a51-830dfa791136)並[如何： 群組和彙總的資料使用 LinqDataSource 控制項](http://msdn.microsoft.com/library/b922cf69-251f-4158-b405-ea960993a1af)。  
   
- 分組資料，您可以包含`Key`和`It`，其中中動態建立屬性，<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 `Key`屬性表示用來將資料分組，一個或多個屬性值。 例如，如果您依屬性分組`Category`、`Key`屬性會包含在每個唯一值`Category`屬性。 `It`屬性參考到資料群組中個別記錄的集合。 您可以反覆`It`屬性，以擷取已在群組作業中彙總的個別記錄。 例如，如果您依屬性分組`Category`、`It`屬性包含共用共通的值中的所有個別記錄`Category`屬性。  
+ 分組資料，您可以包含`Key`並`It`，以動態方式建立所在內容，在<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 `Key`屬性是用來將資料分組一個或多個屬性的值。 例如，如果您依屬性分組`Category`，則`Key`屬性會包含在每個唯一值`Category`屬性。 `It`屬性參考的資料群組中的個別記錄的集合。 您可以反覆`It`屬性，以擷取分組作業中已合併的個別記錄。 例如，如果您依屬性分組`Category`，則`It`屬性包含所有共用常見值中的個別記錄`Category`屬性。  
   
- 如果您包含`It`關鍵字<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性將資料分組時，您必須指派別名`It`關鍵字。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項將會擲回例外狀況，如果`It`沒有別名。 您可以指派別名`Key`關鍵字，但這不是必要。  
+ 如果您納入`It`中的關鍵字<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性將資料分組時，您必須將指派的別名`It`關鍵字。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項將會擲回例外狀況，如果`It`沒有別名。 您可以指派至別名`Key`關鍵字，但這並非必要。  
   
    
   
@@ -1696,7 +1828,7 @@ End Sub
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#10](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default10.aspx#10)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#10](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default10.aspx#10)]  
   
- 下列範例顯示如何擷取已用來群組資料的屬性中的值，以及擷取群組的記錄的平均值。 `Key`關鍵字包含用於分組資料的屬性。 在此範例中，`Key`將包含共用的值從`ProductCategory`屬性。  
+ 下列範例顯示如何擷取已用來分組資料的屬性中的值，以及擷取群組的資料錄的平均值。 `Key`關鍵字包含曾經用於分組資料的屬性。 在此範例中，`Key`將包含共用的值從`ProductCategory`屬性。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default3.aspx#3)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default3.aspx#3)]  
@@ -1715,6 +1847,7 @@ End Sub
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1731,7 +1864,7 @@ End Sub
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 處理<xref:System.Web.UI.WebControls.LinqDataSource.Selected>事件來攔截任何例外狀況，從資料擷取作業或擷取作業完成之後，檢查資料物件。 物件是可從<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>傳遞至事件處理常式的物件。  
+ 處理<xref:System.Web.UI.WebControls.LinqDataSource.Selected>攔截任何例外狀況，從資料擷取作業，或擷取作業完成之後，請檢查資料物件的事件。 物件是可從<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>傳遞至事件處理常式的物件。  
   
  ]]></format>
         </remarks>
@@ -1747,6 +1880,7 @@ End Sub
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1763,11 +1897,11 @@ End Sub
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 處理<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件才能執行下列工作：  
+ 處理<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件，執行下列工作：  
   
--   修改參數來擷取資料。  
+-   修改的資料擷取的參數。  
   
--   以程式設計方式產生查詢。  
+-   以程式設計方式產生的查詢。  
   
 -   修改用於排序或分頁的值。  
   
@@ -1775,21 +1909,21 @@ End Sub
   
 -   取消資料擷取作業。  
   
- <xref:System.Web.UI.WebControls.LinqDataSourceSelectEventArgs>這個事件包含資料擷取作業的參數傳遞至事件處理常式的物件。 您可以修改中的參數<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件處理常式之前執行的查詢，或您可以建立新的結果集，並將其指派給<xref:System.Web.UI.WebControls.LinqDataSourceSelectEventArgs.Result%2A>屬性。  
+ <xref:System.Web.UI.WebControls.LinqDataSourceSelectEventArgs>本項目中包含資料擷取作業的參數傳遞至事件處理常式的物件。 您可以修改中的參數<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件處理常式之前執行的查詢，或您可以建立新的結果集，並將其指派給<xref:System.Web.UI.WebControls.LinqDataSourceSelectEventArgs.Result%2A>屬性。  
   
- 您實作自訂排序或分頁處理常式中，針對此事件可能會受到繫結至控制項的能力<xref:System.Web.UI.WebControls.LinqDataSource>。 例如，當資料行標頭的<xref:System.Web.UI.WebControls.GridView>按一下控制項時，控制項執行自動排序這可能會覆寫任何排序您建立在事件處理常式。  
+ 您可以實作自訂的排序或分頁處理常式中，針對此事件可能會受到繫結至控制項的能力<xref:System.Web.UI.WebControls.LinqDataSource>。 例如，當資料行標頭<xref:System.Web.UI.WebControls.GridView>按一下控制項時，控制項就會執行自動排序這可能會覆寫任何排序您建立在事件處理常式。  
   
- 如果事件處理常式中擲回例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件，您必須處理該事件處理常式中的例外狀況。 例外狀況不會傳遞至事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Selected>事件 (透過<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>物件)。 <xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性包含之後就會擲回的例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件。  
+ 如果事件處理常式中擲回例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件，您必須處理該事件處理常式中的例外狀況。 例外狀況不會傳遞至事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Selected>事件 (透過<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>物件)。 <xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性包含之後，會擲回的例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件。  
   
    
   
 ## Examples  
- 下列範例顯示的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件。 此處理常式會建立查詢來擷取 Web 網頁中的字串值的陣列中的值。  
+ 下列範例顯示的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件。 處理常式會建立查詢來擷取值，從網頁中的字串值的陣列。  
   
  [!code-csharp[System.Web.UI.WebControls.LinqDataSourceSelectEventArgs#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSourceSelectEventArgs/cs/Default3.aspx.cs#3)]
  [!code-vb[System.Web.UI.WebControls.LinqDataSourceSelectEventArgs#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSourceSelectEventArgs/vb/Default3.aspx.vb#3)]  
   
- 下列範例示範如何指派<xref:System.Web.UI.WebControls.LinqDataSourceSelectEventArgs.Result%2A>屬性來從表示預存程序的方法傳回的物件。  
+ 下列範例示範如何指派<xref:System.Web.UI.WebControls.LinqDataSourceSelectEventArgs.Result%2A>方法，表示預存程序傳回之物件的屬性。  
   
 ```vb  
 Protected Sub LinqDataSource_Selecting(ByVal sender As Object, _  
@@ -1822,6 +1956,7 @@ protected void LinqDataSource_Selecting(object sender,
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1851,18 +1986,18 @@ protected void LinqDataSource_Selecting(object sender,
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.LinqDataSource>控制使用中的參數<xref:System.Web.UI.WebControls.LinqDataSource.SelectParameters%2A>集合，以在執行階段建立 Select 子句。 加入參數，以便<xref:System.Web.UI.WebControls.LinqDataSource.SelectParameters%2A>集合，當您想要在 Select 子句中使用執行階段值。 例如，您可以在其中加入參數來<xref:System.Web.UI.WebControls.LinqDataSource.SelectParameters%2A>來代表使用者的設定檔中的屬性集合。 您接著可以來計算新值從資料來源使用該屬性和值。  
+ <xref:System.Web.UI.WebControls.LinqDataSource>控制項使用中的參數<xref:System.Web.UI.WebControls.LinqDataSource.SelectParameters%2A>在執行階段建立 Select 子句的集合。 新增參數<xref:System.Web.UI.WebControls.LinqDataSource.SelectParameters%2A>當您想要在 Select 子句中使用執行階段值的集合。 比方說，您可以在其中加入參數來<xref:System.Web.UI.WebControls.LinqDataSource.SelectParameters%2A>來代表使用者的設定檔中的屬性集合。 您接著可以來計算新的值從資料來源使用該屬性和值。  
   
- 如果您不需要在 Select 子句中的執行階段設定值，您不必使用<xref:System.Web.UI.WebControls.LinqDataSource.SelectParameters%2A>集合。 您可以定義要在擷取的屬性<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 例如，若要傳回`FirstName`和`LastName`值從資料庫資料表時，設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>"FirstName，LastName"以不含任何參數。  
+ 如果您沒有在 Select 子句中的執行階段設定值，您不必使用<xref:System.Web.UI.WebControls.LinqDataSource.SelectParameters%2A>集合。 您可以定義要擷取的屬性<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性。 例如，若要傳回`FirstName`並`LastName`值從資料庫資料表時，設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>"Firstname，LastName"未包含任何參數。  
   
- 若要設定值，在<xref:System.Web.UI.WebControls.LinqDataSource.SelectParameters%2A>集合，您加入內某個預留位置<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性，為具名參數。 在 Select 子句中，名稱的前面上每個參數使用 @ 符號。  
+ 若要設定值，在<xref:System.Web.UI.WebControls.LinqDataSource.SelectParameters%2A>集合，您可以加入內某個預留位置<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>為具名參數的屬性。 在 Select 子句中前, 加上每一參數名稱以 @ 符號。  
   
- 您無法使用中的參數<xref:System.Web.UI.WebControls.LinqDataSource.SelectParameters%2A>來代表屬性名稱的集合。 若要動態方式設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>屬性名稱的屬性，建立事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件和自訂<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>所需的屬性。  
+ 您無法使用中的參數<xref:System.Web.UI.WebControls.LinqDataSource.SelectParameters%2A>來表示屬性名稱的集合。 若要以動態方式設定<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>的屬性名稱的屬性建立的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Selecting>事件和自訂<xref:System.Web.UI.WebControls.LinqDataSource.Select%2A>所需的屬性。  
   
    
   
 ## Examples  
- 下列範例會示範如何使用使用者提供的值來計算值中傳回的資料。 使用者可以輸入值，在文字方塊中的製造天數表示。 該值會除以代表數天來製造產品的資料庫中的值。 傳回的值，表示在指定天數期間可以製造的產品。 使用者的輸入透過選取命令中包含<xref:System.Web.UI.WebControls.LinqDataSource.SelectParameters%2A>集合。  
+ 下列範例示範如何使用使用者提供的值來計算傳回的資料中的值。 使用者可以在文字方塊中的製造天數表示輸入的值。 該值除以代表天來製造產品的數目的資料庫中的值。 傳回的值，表示在指定天數期間可以製造的產品。 使用者的輸入包含在 Select 命令，透過<xref:System.Web.UI.WebControls.LinqDataSource.SelectParameters%2A>集合。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource.SelectParameters#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.SelectParameters/cs/Default.aspx#1)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource.SelectParameters#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.SelectParameters/vb/Default.aspx#1)]  
@@ -1881,6 +2016,7 @@ protected void LinqDataSource_Selecting(object sender,
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1901,13 +2037,13 @@ protected void LinqDataSource_Selecting(object sender,
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 根據預設，當更新和刪除作業已啟用，<xref:System.Web.UI.WebControls.LinqDataSource>控制會儲存原始值的所有資料錄檢視狀態中。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項儲存的所有主索引鍵的值和所有屬性未都標記為`UpdateCheck.Never`中`Column`屬性。 您設定`UpdateCheck`屬性`Column`屬性[!INCLUDE[vs_ordesigner_short](~/includes/vs-ordesigner-short-md.md)]。  
+ 根據預設，當更新和刪除作業已啟用，<xref:System.Web.UI.WebControls.LinqDataSource>控制項檢視狀態的所有記錄會儲存原始值。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項儲存的所有主索引鍵的值，以及所有屬性未都標記為`UpdateCheck.Never`在`Column`屬性。 您設定`UpdateCheck`的屬性`Column`屬性中[!INCLUDE[vs_ordesigner_short](~/includes/vs-ordesigner-short-md.md)]。  
   
- LINQ to SQL 更新或刪除資料之前，它會檢查在檢視狀態資料來源中的目前值的值。 如果值不相符，已變更的資料來源記錄。 在此情況下，LINQ to SQL 會擲回例外狀況並不繼續更新或刪除作業。 如需有關 LINQ to SQL 的詳細資訊，請參閱[LINQ to SQL](http://msdn.microsoft.com/library/73d13345-eece-471a-af40-4cc7a2f11655)。  
+ LINQ to SQL 會更新或刪除資料之前，它會檢查在檢視狀態資料來源中的目前值的值。 如果值不相符，已變更的資料來源的記錄。 在此情況下，LINQ to SQL 會擲回例外狀況並不繼續更新或刪除作業。 如需有關 LINQ to SQL 的詳細資訊，請參閱 < [LINQ to SQL](http://msdn.microsoft.com/library/73d13345-eece-471a-af40-4cc7a2f11655)。  
   
- 在檢視中儲存原始值狀態可能會造成頁面大小變得過大，而且可以公開給惡意使用者的機密資料。 您可以停用儲存檢視狀態中的值，藉由設定<xref:System.Web.UI.WebControls.LinqDataSource.StoreOriginalValuesInViewState%2A>屬性`false`。 如果您這樣做，您必須提供自己的方法來確保資料未變更。 如果您設定<xref:System.Web.UI.WebControls.LinqDataSource.StoreOriginalValuesInViewState%2A>屬性`false`，原始的值不會保存在資料繫結控制項的檢視狀態。 在此情況下，LINQ to SQL 無法驗證資料的完整性。 LINQ to SQL 將會擲回例外狀況，指出資料衝突，即使資料來源中的資料實際變更。  
+ 儲存原始值在檢視狀態可能會造成頁面大小變得不必要地大，而且可以公開給惡意使用者的機密資料。 您可以停用儲存檢視狀態中的值，藉由設定<xref:System.Web.UI.WebControls.LinqDataSource.StoreOriginalValuesInViewState%2A>屬性設`false`。 如果您這麼做，您必須提供自己的方式，以確定資料已無法變更。 如果您設定<xref:System.Web.UI.WebControls.LinqDataSource.StoreOriginalValuesInViewState%2A>屬性設`false`，原始的值不會保存在資料繫結控制項的檢視狀態。 在此情況下，LINQ to SQL 無法驗證資料的完整性。 LINQ to SQL 將會擲回例外狀況，指出資料衝突，即使資料來源中的資料實際變更。  
   
- 如果基礎資料來源包含時間戳記欄位會自動更新更新期間，您可以儲存只有在檢視狀態中的值。 在此情況下，實體類別中的時間戳記屬性設定為`IsVersion=true`和所有屬性都會都設為`UpdateCheck.Never`。 因為每次在該記錄中資料的變更時，時間戳記欄位會自動更新資料庫，LINQ to SQL 決定從該值時，資料已經變更。 這有助於減少檢視狀態的大小，而會公開任何機密資料。 LINQ to SQL 會檢查資料的一致性藉由比較時間戳記值在檢視狀態，且在資料庫中的時間戳記值。 如需詳細資訊，請參閱[逐步解說： 使用時間戳記與檢查資料完整性 LinqDataSource 控制項](http://msdn.microsoft.com/library/e7700162-4f05-4130-81f7-3be1361027fa)。  
+ 如果基礎資料來源包含時間戳記欄位，就會自動更新在更新期間，您可以只將該值儲存在檢視狀態。 在此情況下，實體類別中的時間戳記屬性設為`IsVersion=true`和所有屬性都會都設為`UpdateCheck.Never`。 因為每次變更時，該記錄中的資料，時間戳記欄位會自動更新資料庫，LINQ to SQL 會決定從該值如果資料已變更。 這有助於減少的檢視狀態大小，並會公開任何機密資料。 LINQ to SQL 會檢查資料一致性藉由在檢視中比較時間戳記值與資料庫中的時間戳記值的狀態。 如需詳細資訊，請參閱 <<c0> [ 逐步解說： 使用時間戳記與檢查資料完整性 LinqDataSource 控制項](http://msdn.microsoft.com/library/e7700162-4f05-4130-81f7-3be1361027fa)。  
   
  ]]></format>
         </remarks>
@@ -1926,6 +2062,7 @@ protected void LinqDataSource_Selecting(object sender,
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1957,6 +2094,7 @@ protected void LinqDataSource_Selecting(object sender,
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1986,6 +2124,7 @@ protected void LinqDataSource_Selecting(object sender,
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2006,6 +2145,7 @@ protected void LinqDataSource_Selecting(object sender,
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2026,31 +2166,52 @@ protected void LinqDataSource_Selecting(object sender,
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性名稱的屬性或欄位，表示您想要擷取的資料。 當您要連接至資料庫資料表中時，屬性的名稱通常是資料表的名稱相同。 當您要連接到記憶體中的資料集合時，設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性的屬性或欄位，傳回資料集合的名稱。  
+ 設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性名稱的屬性或欄位，表示您想要擷取的資料。 當您要連接至資料庫資料表中時，屬性的名稱通常是資料表的名稱相同。 當您要連接到記憶體中的資料集合時，設定<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性的屬性或欄位傳回的資料集合的名稱。  
   
- 您可以將傳回任何類型的屬性指派<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>擷取作業的屬性。 如果屬性所表示之物件未實作<xref:System.Collections.IEnumerable>、<xref:System.Web.UI.WebControls.LinqDataSource>控制項自動包裝的執行個體中的物件<xref:System.Collections.IEnumerable>物件。  
+ 您可以指派此屬性會傳回任何類型，<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>擷取作業的屬性。 如果由屬性所表示之物件不會實作<xref:System.Collections.IEnumerable>，則<xref:System.Web.UI.WebControls.LinqDataSource>控制項將會自動包裝物件的執行個體中<xref:System.Collections.IEnumerable>物件。  
   
- 若要啟用自動更新、 插入或刪除作業，指派給類別<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性必須衍生自<xref:System.Data.Linq.DataContext>和指派給屬性<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性必須衍生自<xref:System.Data.Linq.Table%601>。  
+ 若要啟用自動更新、 插入或刪除作業，就會指派給類別<xref:System.Web.UI.WebControls.LinqDataSource.ContextTypeName%2A>屬性必須衍生自<xref:System.Data.Linq.DataContext>，並將屬性指派給<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性必須衍生自<xref:System.Data.Linq.Table%601>。  
   
- 如需如何從類別的執行個體中選取資料的資訊，請參閱<xref:System.Web.UI.WebControls.LinqDataSourceSelectEventArgs.Result%2A>屬性。  
+ 如需有關如何從類別的執行個體中選取資料的資訊，請參閱<xref:System.Web.UI.WebControls.LinqDataSourceSelectEventArgs.Result%2A>屬性。  
   
    
   
 ## Examples  
- 下列範例示範兩個<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 其中一個<xref:System.Web.UI.WebControls.LinqDataSource>控制項，<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性設定為類別中的屬性。 該屬性會傳回字串陣列。 在其他<xref:System.Web.UI.WebControls.LinqDataSource>控制項，<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性設定為代表資料庫資料表的屬性。  
+ 下列範例示範兩個<xref:System.Web.UI.WebControls.LinqDataSource>控制項。 其中一<xref:System.Web.UI.WebControls.LinqDataSource>控制項，<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性設定為類別中的屬性。 該屬性會傳回字串陣列。 在另<xref:System.Web.UI.WebControls.LinqDataSource>控制項，<xref:System.Web.UI.WebControls.LinqDataSource.TableName%2A>屬性設定為表示資料庫資料表的屬性。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Overview#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Overview/cs/Default.aspx#2)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Overview#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Overview/vb/Default.aspx#2)]  
   
- 名為的類別`ExampleDataContext`，代表資料庫資料表不會顯示在此範例中。 要讓範例能夠運作，您必須建立這個類別加入 LINQ to SQL 類別具名的 Example.dbml 並拖曳資料表名為電影到[!INCLUDE[vs_ordesigner_short](~/includes/vs-ordesigner-short-md.md)]。 類別，名為`ExampleDataContext`與屬性，名為`Movies`產生。  
+ 名為的類別`ExampleDataContext`，表示資料庫資料表不會顯示在此範例中。 此範例正常運作，您必須建立這個類別加入 LINQ to SQL 類別具名的 Example.dbml 並拖曳資料表名為影片到[!INCLUDE[vs_ordesigner_short](~/includes/vs-ordesigner-short-md.md)]。 類別，名為`ExampleDataContext`屬性，名為`Movies`產生。  
   
- 下列範例會示範名為的類別`MovieLibrary`，用來參考之<xref:System.Web.UI.WebControls.LinqDataSource>控制項。  
+ 下列範例顯示名為的類別`MovieLibrary`，用來參考之<xref:System.Web.UI.WebControls.LinqDataSource>控制項。  
   
  [!code-csharp[System.Web.UI.WebControls.LinqDataSource_Overview#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Overview/cs/App_Code/MovieLibrary.cs#1)]
  [!code-vb[System.Web.UI.WebControls.LinqDataSource_Overview#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Overview/vb/App_Code/MovieLibrary.vb#1)]  
   
  ]]></format>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TrackViewState">
+      <MemberSignature Language="C#" Value="protected override void TrackViewState ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void TrackViewState() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.WebControls.LinqDataSource.TrackViewState" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub TrackViewState ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void TrackViewState();" />
+      <MemberSignature Language="F#" Value="override this.TrackViewState : unit -&gt; unit" Usage="linqDataSource.TrackViewState " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Update">
@@ -2063,6 +2224,7 @@ protected void LinqDataSource_Selecting(object sender,
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -2083,17 +2245,17 @@ protected void LinqDataSource_Selecting(object sender,
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 一般而言，您不必呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Update%2A>從您的程式碼的方法。 資料繫結控制項將會自動呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Update%2A>方法，當使用者採取動作來更新記錄。 明確地呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Update%2A>方法，當您想要建立自己的程序來更新資料。  
+ 一般而言，您就不必呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Update%2A>從您的程式碼的方法。 資料繫結控制項將會自動呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Update%2A>方法，當使用者採取動作來更新記錄。 明確地呼叫<xref:System.Web.UI.WebControls.LinqDataSource.Update%2A>方法，當您想要建立自己的程序來更新資料。  
   
    
   
 ## Examples  
- 下列範例會示範如何以程式設計方式在使用者按一下按鈕後，更新資料來源中的記錄。 在程式碼通過<xref:System.Collections.Specialized.ListDictionary>物件，其中包含的索引鍵值，<xref:System.Collections.Specialized.ListDictionary>物件，其中包含的原始值和<xref:System.Collections.Specialized.ListDictionary>物件，其中包含新的值來<xref:System.Web.UI.WebControls.LinqDataSource.Update%2A>方法。  
+ 下列範例示範如何在使用者按一下按鈕之後，以程式設計方式更新資料來源中的記錄。 程式碼會傳遞<xref:System.Collections.Specialized.ListDictionary>物件，其中包含金鑰值，<xref:System.Collections.Specialized.ListDictionary>物件，其中包含原始的值，以及<xref:System.Collections.Specialized.ListDictionary>物件，其中包含新的值來<xref:System.Web.UI.WebControls.LinqDataSource.Update%2A>方法。  
   
  [!code-csharp[System.Web.UI.WebControls.LinqDataSource.Update#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.Update/cs/Default2.aspx.cs#1)]
  [!code-vb[System.Web.UI.WebControls.LinqDataSource.Update#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.Update/vb/Default3.aspx.vb#1)]  
   
- 下列範例顯示先前的範例標記。  
+ 下列範例顯示上一個範例的標記。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource.Update#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.Update/cs/Default2.aspx#2)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource.Update#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.Update/vb/Default3.aspx#2)]  
@@ -2112,6 +2274,7 @@ protected void LinqDataSource_Selecting(object sender,
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2128,7 +2291,7 @@ protected void LinqDataSource_Selecting(object sender,
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 處理<xref:System.Web.UI.WebControls.LinqDataSource.Updated>事件來攔截任何例外狀況，從更新作業，或檢查的值更新作業完成之後，輸出參數。 輸出參數都是從<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>傳遞至事件處理常式的物件。  
+ 處理<xref:System.Web.UI.WebControls.LinqDataSource.Updated>事件，以攔截任何例外狀況，更新作業，或若要檢查的值更新作業完成之後，輸出參數。 輸出參數都是從<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>傳遞至事件處理常式的物件。  
   
  ]]></format>
         </remarks>
@@ -2144,6 +2307,7 @@ protected void LinqDataSource_Selecting(object sender,
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2183,6 +2347,7 @@ protected void LinqDataSource_Selecting(object sender,
       <MemberType>Event</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2199,16 +2364,16 @@ protected void LinqDataSource_Selecting(object sender,
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 處理<xref:System.Web.UI.WebControls.LinqDataSource.Updating>來驗證物件更新，以檢查資料類別，來變更值，更新作業之前，或取消更新作業中的資料驗證錯誤的事件。 <xref:System.Web.UI.WebControls.LinqDataSourceUpdateEventArgs>傳遞至事件處理常式的物件包含的原始物件和更新的物件。  
+ 處理<xref:System.Web.UI.WebControls.LinqDataSource.Updating>事件，以便驗證更新，以檢查是否有從資料類別，並將值更新作業之前，變更或取消更新作業的資料驗證錯誤的物件。 <xref:System.Web.UI.WebControls.LinqDataSourceUpdateEventArgs>傳遞至事件處理常式的物件包含原始物件，以及更新的物件。  
   
- 如果在更新作業期間發生驗證錯誤<xref:System.Web.UI.WebControls.LinqDataSourceInsertEventArgs>物件包含的資料類別所擲回驗證例外狀況。 如果要更新的值不符合資料類別中屬性的型別，或如果未通過自訂的驗證檢查，就會發生驗證錯誤。 中的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Updating>事件，您可以擷取驗證例外狀況並採取適當的動作。  
+ 如果在更新作業期間發生驗證錯誤<xref:System.Web.UI.WebControls.LinqDataSourceInsertEventArgs>物件包含的資料類別所擲回驗證例外狀況。 如果要更新的值不符合在資料類別中，屬性的型別，或如果它未通過自訂驗證檢查，就會發生驗證錯誤。 中的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Updating>事件，您可以擷取驗證例外狀況並採取適當動作。  
   
- 如果事件處理常式中擲回例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Updating>事件，您必須處理該事件處理常式中的例外狀況。 例外狀況不會傳遞至事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Updated>事件 (透過<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>物件)。 <xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性包含之後就會擲回的例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Updating>事件。  
+ 如果事件處理常式中擲回例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Updating>事件，您必須處理該事件處理常式中的例外狀況。 例外狀況不會傳遞至事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Updated>事件 (透過<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性<xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs>物件)。 <xref:System.Web.UI.WebControls.LinqDataSourceStatusEventArgs.Exception%2A>屬性包含之後，會擲回的例外狀況<xref:System.Web.UI.WebControls.LinqDataSource.Updating>事件。  
   
    
   
 ## Examples  
- 下列範例顯示的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Updating>事件。 程式碼會比較從屬性<xref:System.Web.UI.WebControls.LinqDataSourceUpdateEventArgs.OriginalObject%2A>屬性和<xref:System.Web.UI.WebControls.LinqDataSourceUpdateEventArgs.NewObject%2A>屬性來查看是否已變更的值。 如果值已變更，值為<xref:System.Web.UI.WebControls.LinqDataSourceUpdateEventArgs.NewObject%2A>屬性設定為`true`。  
+ 下列範例顯示的事件處理常式<xref:System.Web.UI.WebControls.LinqDataSource.Updating>事件。 程式碼比較屬性與<xref:System.Web.UI.WebControls.LinqDataSourceUpdateEventArgs.OriginalObject%2A>屬性和<xref:System.Web.UI.WebControls.LinqDataSourceUpdateEventArgs.NewObject%2A>屬性，以查看是否已變更的值。 如果值已變更，值為<xref:System.Web.UI.WebControls.LinqDataSourceUpdateEventArgs.NewObject%2A>屬性設定為`true`。  
   
  [!code-csharp[System.Web.UI.WebControls.LinqDataSource.Updating#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.Updating/cs/Default.aspx.cs#1)]
  [!code-vb[System.Web.UI.WebControls.LinqDataSource.Updating#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource.Updating/vb/Default.aspx.vb#1)]  
@@ -2246,7 +2411,7 @@ protected void LinqDataSource_Updating(object sender,
 }  
 ```  
   
- 先前的範例會擷取驗證例外狀況。 如果值不符合屬性類型，可能會擲回例外狀況。 它可能也會擲回從自訂的檢查，如下列範例中的一個。 `OnAgeChanging`方法檢查數目`Age`屬性不可以是負數。  
+ 前一個範例會擷取驗證例外狀況。 如果值不符合屬性類型，可能會擲回例外狀況。 它可能也會擲回類似下列範例中的自訂檢查。 `OnAgeChanging`方法會檢查數目`Age`屬性不是負數。  
   
 ```csharp  
 partial void  OnAgeChanging(int? value)  
@@ -2283,6 +2448,7 @@ End Sub
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2303,28 +2469,28 @@ End Sub
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您使用<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性來指定要從查詢傳回的資料錄的條件。 語法<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性是 LINQ Where 子句在 C# 中的語法相同。  
+ 您使用<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性來指定要從查詢中傳回之記錄的條件。 語法<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性是 LINQ Where 子句在 C# 中的語法相同。  
   
- 您指定的運算式會產生布林值，如果運算式評估為`true`對於給定的資料列，將資料列納入結果集。 運算式所組成的資料行名稱、 比較運算子和值比較，如下列範例所示：  
+ 您指定的運算式，結果為布林值，如果運算式評估為`true`對於給定的資料列，該資料列包含在結果集中。 運算式包含資料行名稱、 比較運算子和值比較，如下列範例所示：  
   
 ```  
 <asp:LinqDataSource ... Where="Price > 50"...>  
 ```  
   
- 若要指定多個運算式，由邏輯連結`AND`或`OR`運算子，您會使用`&&`當做邏輯 AND 運算子和`||`做為邏輯 OR 運算子，如下列範例所示：  
+ 若要指定多個由邏輯連結的運算式`AND`或`OR`操作員，您可使用`&&`做為邏輯 AND 運算子和`||`做為邏輯 OR 運算子，如下列範例所示：  
   
 ```  
 <asp:LinqDataSource ... Where="Price > 50 && Price < 100"...>  
 <asp:LinqDataSource ... Where="Price <= 50 || Price >= 100"...>  
 ```  
   
- 如果您想要測試對常值字串值的屬性，常值字串值必須括在雙引號中。 若要在標記中這樣做，請將<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>子句值以單引號，如下列範例所示：  
+ 如果您想要測試對常值字串屬性，常值字串值必須用雙引號括住。 若要在標記中這樣做，請將<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>子句值以單引號，如下列範例所示：  
   
 ```  
 <asp:LinqDataSource ... Where='Category = "Sports"' ... >  
 ```  
   
- 若要測試程式碼中的常值字串值，請使用逸出字元，適合用來以插入雙引號括住，如下列範例所示所使用的語言：  
+ 若要測試程式碼中的常值字串值，請使用適用於以插入雙引號括住，如下列範例所示所使用的語言逸出字元：  
   
 ```vb  
 LinqDataSource1.Where = "Category = ""Sports"""  
@@ -2334,7 +2500,7 @@ LinqDataSource1.Where = "Category = ""Sports"""
 LinqDataSource1.Where = "Category = \"Sports\"";  
 ```  
   
- 如果您想要測試字串是否大於或小於另一個字串，您必須使用方法來<xref:System.String>類別，而不是使用`<`或`>`運算子的資料行名稱的字串值之間。 下列範例顯示如何選取資料列的類別值小於、 小於或等於大於，或大於或等於"運動":  
+ 如果您想要測試字串是否大於或小於另一個字串，您必須使用的方法<xref:System.String>類別，而不是使用`<`或`>`運算子的資料行名稱的字串值之間。 下列範例會示範如何選取的類別，有值小於、 小於或等於資料列，大於或大於或等於 「 體育 」:  
   
 ```  
 <asp:LinqDataSource ... Where='Category.CompareTo("Sports") < 0' ... >  
@@ -2343,23 +2509,23 @@ LinqDataSource1.Where = "Category = \"Sports\"";
 <asp:LinqDataSource ... Where='Category.CompareTo("Sports") >= 0' ... >  
 ```  
   
- 您也可以使用其他方法的<xref:System.String>類別，例如<xref:System.String.StartsWith%2A>， <xref:System.String.EndsWith%2A>，和<xref:System.String.Contains%2A>。 如需如何比較字串的詳細資訊，請參閱[比較字串](~/docs/standard/base-types/comparing.md)。 如需有關 Where 子句語法，請參閱[C# 運算子](http://msdn.microsoft.com/library/0301e31f-22ad-49af-ac3c-d5eae7f0ac43)和[其中子句](~/docs/csharp/language-reference/keywords/where-clause.md)。  
+ 您也可以使用其他方法<xref:System.String>類別，例如<xref:System.String.StartsWith%2A>， <xref:System.String.EndsWith%2A>，和<xref:System.String.Contains%2A>。 如需如何比較字串的詳細資訊，請參閱[比較的字串](~/docs/standard/base-types/comparing.md)。 如需有關 Where 子句語法，請參閱[C# 運算子](http://msdn.microsoft.com/library/0301e31f-22ad-49af-ac3c-d5eae7f0ac43)和[其中子句](~/docs/csharp/language-reference/keywords/where-clause.md)。  
   
- 除了篩選根據您定義當您建立網頁上的靜態值，您可以篩選在執行階段評估的根據動態值。 在此情況下，您可以包含中的具名的參數<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>做為預留位置，做為值的屬性。 然後您加入具有相符名稱的參數<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合。  
+ 除了您定義當您建立網頁的靜態值為基礎的篩選，您可以篩選根據在執行階段評估的動態值。 在此情況下，您可以包含中的具名的參數<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性做為值的預留位置。 您再新增具有相符名稱的參數，<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合。  
   
- 或者，您可以設定<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>屬性`true`定義中的參數和<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合。 當<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>屬性是`true`，沒有包含中的具名的參數<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性。 相反地，<xref:System.Web.UI.WebControls.LinqDataSource>控制項自動產生 Where 子句中的參數從<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>屬性。  
+ 或者，您可以設定<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>屬性，以`true`並定義中的參數<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合。 當<xref:System.Web.UI.WebControls.LinqDataSource.AutoGenerateWhereClause%2A>屬性是`true`，您就不必在包括中的具名的參數<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性。 相反地，<xref:System.Web.UI.WebControls.LinqDataSource>控制項會自動產生 Where 子句中的參數從<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>屬性。  
   
- 如需如何篩選資料的詳細資訊，請參閱[逐步解說： 選取和篩選以 LinqDataSource 和 GridView 控制項的資料子集](http://msdn.microsoft.com/library/c1cca3e8-86e4-4e69-a29f-1c05b91f2205)。  
+ 如需如何篩選資料的詳細資訊，請參閱[逐步解說： 選取和篩選 LinqDataSource 與 GridView 控制項的資料子集](http://msdn.microsoft.com/library/c1cca3e8-86e4-4e69-a29f-1c05b91f2205)。  
   
    
   
 ## Examples  
- 下列範例會示範如何篩選查詢，根據靜態條件所傳回的資料。  
+ 下列範例示範如何篩選查詢，根據靜態條件所傳回的資料。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#5](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default5.aspx#5)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default5.aspx#5)]  
   
- 下列範例會示範如何根據篩選資料由使用者在執行階段提供的值。 在此範例中<xref:System.Web.UI.WebControls.DropDownList>控制項和<xref:System.Web.UI.WebControls.GridView>頁面上顯示控制項。 當使用者選取其中一個值在<xref:System.Web.UI.WebControls.DropDownList>控制項，<xref:System.Web.UI.WebControls.LinqDataSource>控制項選取從`Products`資料表具有的資料列`UserPrice`值等於所選的值。 <xref:System.Web.UI.WebControls.GridView>控制項接著會顯示篩選過的資料。  
+ 下列範例示範如何根據篩選資料在執行階段由使用者提供的值。 在此範例中<xref:System.Web.UI.WebControls.DropDownList>控制項和<xref:System.Web.UI.WebControls.GridView>頁面上顯示控制項。 當使用者選取中的值的其中一個<xref:System.Web.UI.WebControls.DropDownList>控制<xref:System.Web.UI.WebControls.LinqDataSource>從選取的控制項`Products`資料表具有資料列`UserPrice`值等於選取的值。 <xref:System.Web.UI.WebControls.GridView>控制項接著會顯示篩選過的資料。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#6](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default6.aspx#6)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default6.aspx#6)]  
@@ -2381,6 +2547,7 @@ LinqDataSource1.Where = "Category = \"Sports\"";
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -2410,16 +2577,16 @@ LinqDataSource1.Where = "Category = \"Sports\"";
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.UI.WebControls.LinqDataSource>控制使用中的參數<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合，以建立 Where 子句，在執行階段。 加入參數，以便<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合，當您想要以程式設計方式設定一或多個條件，在 where 子句。 比方說，您可能會搜尋資料庫資料表中記錄的值相等的姓氏<xref:System.Web.UI.WebControls.TextBox>控制項。 在此情況下，您將參數加入<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>文字方塊值的集合。  
+ <xref:System.Web.UI.WebControls.LinqDataSource>控制項使用中的參數<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合來建立 Where 子句，在執行階段。 新增參數<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合，當您想要以程式設計方式設定一或多個條件，在 Where 子句。 比方說，您可能會在其中搜尋記錄的值相等的最後一個名稱的資料庫資料表<xref:System.Web.UI.WebControls.TextBox>控制項。 在此情況下，您將參數加入<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>文字方塊值的集合。  
   
- 如果您沒有在執行階段設定值，在 where 子句中，您不必使用<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合。 您可以定義中所要擷取欄位<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性。 例如，若要從資料庫資料表傳回值其中`LastName`equals"Adams 」 在標記中，設定<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性`'LastName = "Adams"'`不含任何參數。  
+ 如果您沒有在執行階段設定值，在 Where 子句中，您就不必使用<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合。 您可以定義要擷取的欄位<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性。 例如，若要從資料庫資料表傳回值所在`LastName`等於"Adams 」 在標記中，設定<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>屬性設`'LastName = "Adams"'`不含任何參數。  
   
- 若要設定值，在<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合，您指派給每個參數的名稱，然後再新增中的預留位置<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>該參數的屬性。 在 where 子句中，與每個參數名稱的前面上 @ 符號。  
+ 若要設定值，在<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合中，您指派給每個參數的名稱，然後再新增內某個預留位置<xref:System.Web.UI.WebControls.LinqDataSource.Where%2A>該參數的屬性。 在 Where 子句中，與每個參數名稱前加上 @ 符號。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合，以動態建立 Where 子句。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項會傳回值中的所有記錄`Price`大於中使用者所選取的值的資料行<xref:System.Web.UI.WebControls.DropDownList>控制項。  
+ 下列範例示範如何使用<xref:System.Web.UI.WebControls.LinqDataSource.WhereParameters%2A>集合以動態方式建立 Where 子句。 <xref:System.Web.UI.WebControls.LinqDataSource>控制項會傳回值中的所有記錄`Price`資料行中的使用者所選取的值大於<xref:System.Web.UI.WebControls.DropDownList>控制項。  
   
  [!code-aspx-csharp[System.Web.UI.WebControls.LinqDataSource_Simple#6](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/cs/Default6.aspx#6)]
  [!code-aspx-vb[System.Web.UI.WebControls.LinqDataSource_Simple#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.WebControls.LinqDataSource_Simple/vb/Default6.aspx#6)]  
