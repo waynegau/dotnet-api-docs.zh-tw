@@ -1,11 +1,11 @@
 <Type Name="IProvideCustomContentState" FullName="System.Windows.Navigation.IProvideCustomContentState">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="e177a1ab1a88dfebeb61428bf7a1fa4fbaa974f6" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="e865ab5b5955c788af8ee53fe8dd03348ab79143" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36465391" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37551900" />
   </Metadata>
   <TypeSignature Language="C#" Value="public interface IProvideCustomContentState" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IProvideCustomContentState" />
@@ -15,6 +15,7 @@
   <TypeSignature Language="F#" Value="type IProvideCustomContentState = interface" />
   <AssemblyInfo>
     <AssemblyName>PresentationFramework</AssemblyName>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Interfaces />
@@ -24,9 +25,9 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Windows.Navigation.IProvideCustomContentState> 可讓您建立關聯的自訂狀態，以做為自訂實作<xref:System.Windows.Navigation.CustomContentState>類別，與瀏覽歷程記錄項目遠離瀏覽內容。  
+ <xref:System.Windows.Navigation.IProvideCustomContentState> 可讓您將建立關聯的自訂狀態，實作為自訂<xref:System.Windows.Navigation.CustomContentState>類別，且具有已巡覽離開內容的巡覽記錄項目。  
   
- 也可以使用下列方法以這種方式相關自訂狀態：  
+ 也可以使用下列方法以這種方式關聯自訂狀態：  
   
 -   呼叫**AddBackEntry**:  
   
@@ -36,7 +37,7 @@
   
     -   <xref:System.Windows.Controls.Frame.AddBackEntry%2A?displayProperty=nameWithType>。  
   
--   設定<xref:System.Windows.Navigation.NavigatingCancelEventArgs.Content%2A?displayProperty=nameWithType>任一下列事件引發時：  
+-   設定<xref:System.Windows.Navigation.NavigatingCancelEventArgs.Content%2A?displayProperty=nameWithType>其中一個下列事件引發時：  
   
     -   <xref:System.Windows.Navigation.NavigationService.Navigating?displayProperty=nameWithType>  
   
@@ -46,20 +47,20 @@
   
     -   <xref:System.Windows.Navigation.NavigationWindow.Navigating?displayProperty=nameWithType>  
   
- 您必須實作<xref:System.Windows.Navigation.IProvideCustomContentState>當您新增自訂狀態到瀏覽歷程記錄藉由呼叫**AddBackEntry**，否則瀏覽歷程記錄將無法正確運作，請考慮下列步驟：  
+ 您必須實作<xref:System.Windows.Navigation.IProvideCustomContentState>當您新增自訂狀態至巡覽記錄藉由呼叫**AddBackEntry**，否則瀏覽歷程記錄將無法正確運作，請考慮下列步驟：  
   
-1.  **AddBackEntry**呼叫以將自訂的狀態與目前的內容產生關聯。  
+1.  **AddBackEntry**稱為自訂狀態相關聯的目前內容。  
   
-2.  瀏覽歷程記錄項目巡覽回，而<xref:System.Windows.Navigation.CustomContentState.Replay%2A>呼叫方法的自訂狀態時，以及狀態套用至內容。  
+2.  瀏覽歷程記錄項目巡覽回，而<xref:System.Windows.Navigation.CustomContentState.Replay%2A>呼叫方法的自訂狀態，以及狀態套用至內容。  
   
-3.  先前的內容是向前巡覽記錄中巡覽。  
+3.  先前的內容來巡覽至向前巡覽記錄中。  
   
-4.  瀏覽歷程記錄項目巡覽回，但自訂狀態不會保留關聯的瀏覽歷程記錄項目所巡覽最後一次。  
+4.  瀏覽歷程記錄項目會巡覽回但未關聯的巡覽歷程記錄項目巡覽至最後一次保留的自訂狀態。  
   
- 這是預設行為，因為已將它加入瀏覽歷程記錄之後，可能會變更一開始會記錄在自訂狀態的狀態。 如果自訂狀態物件巡覽回，並且它的狀態，在某些方面的狀態變更之前，巡覽至巡覽記錄中的項目之前狀態變更無法反映在自訂狀態物件。 此外，<xref:System.Windows.Navigation.NavigationService.AddBackEntry%2A>無法明確呼叫來新增自訂狀態物件，這會反映狀態變更。 因此，以確保目前狀態的特定瀏覽一律儲存在瀏覽歷程記錄中<xref:System.Windows.Navigation.IProvideCustomContentState.GetContentState%2A>呼叫。  
+ 這會是預設行為，因為它加入至巡覽記錄之後，可能會變更一開始會以自訂的狀態記錄的狀態。 如果自訂狀態物件瀏覽回到且其狀態已套用，在某些方面的狀態變更之前瀏覽歷程記錄中的項目巡覽之前狀態的變更無法反映在自訂狀態物件。 此外，<xref:System.Windows.Navigation.NavigationService.AddBackEntry%2A>無法明確呼叫來新增新的自訂狀態物件，以反映狀態變更。 因此，以確保目前的狀態以特定的瀏覽一律儲存在巡覽記錄，<xref:System.Windows.Navigation.IProvideCustomContentState.GetContentState%2A>呼叫。  
   
 > [!IMPORTANT]
->  當您將資訊儲存自訂內容的狀態時，您無法儲存的頁面會記住其狀態的執行個體的任何參考。 這可防止[!INCLUDE[TLA2#tla_wpf](~/includes/tla2sharptla-wpf-md.md)]釋放頁面執行個體和擊敗的目的預設巡覽記錄行為。 如果您必須這麼做，您可以考慮使用<xref:System.Windows.Controls.Page.KeepAlive%2A>改為。  
+>  當您將資訊儲存在自訂內容的狀態時，您無法儲存要記住其狀態之頁面的執行個體的任何參考。 這可防止[!INCLUDE[TLA2#tla_wpf](~/includes/tla2sharptla-wpf-md.md)]從發行的網頁執行個體和失效的預設瀏覽歷程記錄行為的目的。 如果您必須這麼做，您可以考慮使用<xref:System.Windows.Controls.Page.KeepAlive%2A>改。  
   
  ]]></format>
     </remarks>
@@ -75,6 +76,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
