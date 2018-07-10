@@ -1,11 +1,11 @@
 <Type Name="ICustomMarshaler" FullName="System.Runtime.InteropServices.ICustomMarshaler">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="39f080201b9247188e6562c5fd981137ce4f6fec" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="be96cf3b310b21cd1fb19adf1505581a78166d88" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36538227" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37637508" />
   </Metadata>
   <TypeSignature Language="C#" Value="public interface ICustomMarshaler" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract ICustomMarshaler" />
@@ -15,6 +15,8 @@
   <TypeSignature Language="F#" Value="type ICustomMarshaler = interface" />
   <AssemblyInfo>
     <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -39,29 +41,29 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 封送處理器會提供舊的功能與新的介面之間的橋樑。 自訂封送處理具有下列優點：  
+ 封送處理器會提供舊的功能與新的介面之間的橋樑。 自訂封送處理會提供下列優點：  
   
--   它可讓用戶端應用程式，才能使用舊介面也與實作新介面伺服器搭配使用所設計。  
+-   它可讓用戶端應用程式都設計成使用舊的介面，也會使用實作新介面的伺服器。  
   
--   它可讓用戶端建置的應用程式使用新的介面，以使用實作舊介面的伺服器。  
+-   它可讓用戶端應用程式建置目的為使用新的介面，以使用實作舊介面的伺服器。  
   
- 如果您有所導入了不同的封送處理行為，或不同的方式公開元件物件模型 (COM) 的介面，您可以設計自訂的封送處理器，而不是使用 interop 封送處理器。 藉由使用自訂封送處理器，您可以減少新.NET Framework 元件與現有的 COM 元件之間的差異。  
+ 如果您有的介面所導入了不同的封送處理行為，或以不同方式來公開元件物件模型 (COM)，您可以設計自訂的封送處理器，而不是使用 interop 封送處理器。 藉由使用自訂封送處理器，您可以減少新的.NET Framework 元件與現有的 COM 元件之間的差異。  
   
- 例如，假設您正在開發在受管理的介面稱為`INew`。 當此介面會公開至 COM，透過標準 COM 可呼叫包裝函式 (CCW) 時，它會有相同的方法可作為受管理的介面，並使用 interop 封送處理器內建的封送處理規則。 現在，假設是已知的 COM 介面呼叫`IOld`已經提供的相同功能與`INew`介面。 您可以藉由設計自訂封送處理器，提供 unmanaged 的實作`IOld`的委派呼叫的 managed 實作`INew`介面。 因此，自訂封送處理器會做為 managed 和 unmanaged 介面之間的橋樑。  
+ 例如，假設您正在開發名為的 managed 的介面`INew`。 當這個介面會公開至 COM，透過標準 COM 可呼叫包裝函式 (CCW) 時，它會為受管理的介面具有相同的方法，並使用 interop 封送處理器內建的封送處理規則。 現在，假設已知的 COM 介面，呼叫`IOld`已提供相同的功能`INew`介面。 藉由設計自訂封送處理器，您可以提供未受管理的實作`IOld`，只會委派呼叫的 managed 實作`INew`介面。 因此，自訂封送處理器會作為 managed 和 unmanaged 介面之間的橋樑。  
   
 > [!NOTE]
 >  從 managed 程式碼呼叫 unmanaged 程式碼僅分派介面上時，不會叫用自訂封送處理器。  
   
 ## <a name="defining-the-marshaling-type"></a>定義封送處理類型  
- 您可以建立自訂封送處理器之前，您必須定義要封送處理 managed 和 unmanaged 介面。 這些介面通常會執行相同的功能，但是以不同的方式公開給 managed 和 unmanaged 物件。  
+ 您可以建立自訂封送處理器之前，您必須定義要封送處理的 managed 和 unmanaged 介面。 這些介面通常會執行相同的函式，但會以不同的方式公開 managed 和 unmanaged 物件。  
   
- Managed 的編譯器會產生 managed 的介面從中繼資料，並產生介面看起來像任何其他受管理的介面。 下列範例示範典型的介面。  
+ Managed 的編譯器會產生中繼資料，從 managed 的介面，產生的介面看起來像任何其他受管理的介面。 下列範例示範典型的介面。  
   
  [!code-cpp[System.Runtime.InteropServices.ICustomMarshaler#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.runtime.interopservices.icustommarshaler/cpp/source.cpp#1)]
  [!code-csharp[System.Runtime.InteropServices.ICustomMarshaler#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.interopservices.icustommarshaler/cs/source.cs#1)]
  [!code-vb[System.Runtime.InteropServices.ICustomMarshaler#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.runtime.interopservices.icustommarshaler/vb/source.vb#1)]  
   
- 介面定義語言 (IDL) 中定義 unmanaged 的類型，並使用 Microsoft 介面定義語言 (MIDL) 編譯器進行編譯。 定義在程式庫陳述式中的介面，並將它指派介面識別碼與通用唯一識別碼 (UUID) 屬性，如下列範例所示。  
+ 定義 unmanaged 型別在介面定義語言 (IDL)，並使用 Microsoft 介面定義語言 (MIDL) 編譯器進行編譯。 定義在 library 陳述式中的介面，並將它指派的通用唯一識別碼 (UUID) 屬性，與介面識別碼，如下列範例所示。  
   
 ```  
  [uuid(9B2BAADA-0705-11D3-A0CD-00C04FA35826)]  
@@ -72,13 +74,13 @@ library OldLib {
 }  
 ```  
   
- MIDL 編譯器會產生多個輸出檔案。 如果 Old.idl 中定義的介面時，輸出檔 Old_i.c 定義`const`變數與介面識別項 (IID) 的介面，如下列範例所示。  
+ MIDL 編譯器會產生數個輸出檔案。 如果介面定義在 Old.idl，輸出檔 Old_i.c 定義`const`變數與介面識別項 (IID) 的介面，如下列範例所示。  
   
 ```  
 const IID IID_IOld = {0x9B2BAADD,0x0705,0x11D3,{0xA0,0xCD,0x00,0xC0,0x4F,0xA3,0x58,0x26}};  
 ```  
   
- Old.h 檔案也會由 MIDL 產生的。 它包含 c + + 定義可以包含在您的 c + + 程式碼的介面。  
+ Old.h 檔案也會由 MIDL 產生。 它包含 c + + 的定義可以包含在您的 c + + 程式碼的介面。  
   
 ## <a name="implementing-the-icustommarshaler-interface"></a>實作 ICustomMarshaler 介面  
  您的自訂封送處理器必須實作<xref:System.Runtime.InteropServices.ICustomMarshaler>介面，以提供適當的包裝函式以執行階段。  
@@ -89,24 +91,24 @@ const IID IID_IOld = {0x9B2BAADD,0x0705,0x11D3,{0xA0,0xCD,0x00,0xC0,0x4F,0xA3,0x
  [!code-csharp[System.Runtime.InteropServices.ICustomMarshaler#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.interopservices.icustommarshaler/cs/source.cs#2)]
  [!code-vb[System.Runtime.InteropServices.ICustomMarshaler#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.runtime.interopservices.icustommarshaler/vb/source.vb#2)]  
   
- <xref:System.Runtime.InteropServices.ICustomMarshaler>介面包含提供轉換支援、 清除支援，以及要封送處理資料的相關資訊的方法。  
+ <xref:System.Runtime.InteropServices.ICustomMarshaler>介面包含可提供轉換支援、 清理支援，以及要封送處理資料的相關資訊的方法。  
   
-|運算類型|ICustomMarshaler 方法|描述|  
+|作業類型|ICustomMarshaler 方法|描述|  
 |-----------------------|-----------------------------|-----------------|  
-|轉換 （從 managed 程式碼的原生）|<xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalNativeToManaged%2A>|封原生資料指標送處理成 managed 物件。 這個方法傳回的自訂執行階段可呼叫包裝函式 (RCW) 可以封送處理會傳遞做為引數的 unmanaged 的介面。 封送處理器應傳回自訂 RCW 該類型的執行個體。|  
-|轉換 （從 managed 為原生程式碼）|<xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalManagedToNative%2A>|將 managed 的物件成原生資料的指標。 這個方法傳回的自訂 COM 可呼叫包裝函式 (CCW) 可以封送處理 managed 的介面做為引數傳遞。 封送處理器應傳回自訂 CCW，該型別的執行的個體。|  
-|清除作業 （原生程式碼）|<xref:System.Runtime.InteropServices.ICustomMarshaler.CleanUpNativeData%2A>|可讓以清除所傳回之原生資料 (CCW) 封送處理器<xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalManagedToNative%2A>方法。|  
-|清除 （的 managed 程式碼）|<xref:System.Runtime.InteropServices.ICustomMarshaler.CleanUpManagedData%2A>|可讓以清除所傳回的 managed 資料 (RCW) 封送處理器<xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalNativeToManaged%2A>方法。|  
-|（原生程式碼的資訊）|<xref:System.Runtime.InteropServices.ICustomMarshaler.GetNativeDataSize%2A>|傳回 unmanaged 封送處理資料的大小。|  
+|（從原生至 managed 程式碼） 轉換|<xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalNativeToManaged%2A>|將原生資料指標封送到受管理的物件。 這個方法傳回的自訂執行階段可呼叫包裝函式 (RCW) 可以封送處理傳遞做為引數的 unmanaged 的介面。 封送處理器應傳回自訂 RCW，該型別的執行的個體。|  
+|（從原生至 managed 程式碼） 轉換|<xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalManagedToNative%2A>|將 managed 的物件封送至原生資料的指標。 這個方法傳回的自訂 COM 可呼叫包裝函式 (CCW) 可以封送處理 managed 的介面做為引數傳遞。 封送處理器應傳回自訂 CCW，該型別的執行的個體。|  
+|清除 （的原生程式碼）|<xref:System.Runtime.InteropServices.ICustomMarshaler.CleanUpNativeData%2A>|可讓以清除所傳回之原生資料 (CCW) 封送處理器<xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalManagedToNative%2A>方法。|  
+|清除 （的 managed 程式碼）|<xref:System.Runtime.InteropServices.ICustomMarshaler.CleanUpManagedData%2A>|可讓以清除所傳回的受管理資料 (RCW)，封送處理器<xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalNativeToManaged%2A>方法。|  
+|資訊 （原生程式碼）|<xref:System.Runtime.InteropServices.ICustomMarshaler.GetNativeDataSize%2A>|傳回要封送處理之 unmanaged 資料的大小。|  
   
 ### <a name="conversion"></a>轉換  
  <xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalNativeToManaged%2A?displayProperty=nameWithType>  
   
- 封原生資料指標送處理成 managed 物件。 這個方法傳回的自訂執行階段可呼叫包裝函式 (RCW) 可以封送處理會傳遞做為引數的 unmanaged 的介面。 封送處理器應傳回自訂 RCW 該類型的執行個體。  
+ 將原生資料指標封送到受管理的物件。 這個方法傳回的自訂執行階段可呼叫包裝函式 (RCW) 可以封送處理傳遞做為引數的 unmanaged 的介面。 封送處理器應傳回自訂 RCW，該型別的執行的個體。  
   
  <xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalManagedToNative%2A?displayProperty=nameWithType>  
   
- 將 managed 的物件成原生資料的指標。 這個方法傳回的自訂 COM 可呼叫包裝函式 (CCW) 可以封送處理 managed 的介面做為引數傳遞。 封送處理器應傳回自訂 CCW，該型別的執行的個體。  
+ 將 managed 的物件封送至原生資料的指標。 這個方法傳回的自訂 COM 可呼叫包裝函式 (CCW) 可以封送處理 managed 的介面做為引數傳遞。 封送處理器應傳回自訂 CCW，該型別的執行的個體。  
   
 ### <a name="cleanup"></a>清除  
  <xref:System.Runtime.InteropServices.ICustomMarshaler.CleanUpNativeData%2A?displayProperty=nameWithType>  
@@ -115,15 +117,15 @@ const IID IID_IOld = {0x9B2BAADD,0x0705,0x11D3,{0xA0,0xCD,0x00,0xC0,0x4F,0xA3,0x
   
  <xref:System.Runtime.InteropServices.ICustomMarshaler.CleanUpManagedData%2A?displayProperty=nameWithType>  
   
- 可讓以清除所傳回的 managed 資料 (RCW) 封送處理器<xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalNativeToManaged%2A>方法。  
+ 可讓以清除所傳回的受管理資料 (RCW)，封送處理器<xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalNativeToManaged%2A>方法。  
   
-### <a name="size-information"></a>大小資訊  
+### <a name="size-information"></a>大小的資訊  
  <xref:System.Runtime.InteropServices.ICustomMarshaler.GetNativeDataSize%2A?displayProperty=nameWithType>  
   
- 傳回 unmanaged 封送處理資料的大小。  
+ 傳回要封送處理之 unmanaged 資料的大小。  
   
 ## <a name="implementing-the-getinstance-method"></a>實作 GetInstance 方法  
- 除了實作<xref:System.Runtime.InteropServices.ICustomMarshaler>自訂封送處理器必須實作的介面，`static`方法呼叫`GetInstance`接受<xref:System.String>做為參數的傳回型別和<xref:System.Runtime.InteropServices.ICustomMarshaler>。 這`static`方法由 common language runtime 的 COM interop 層級來具現化的自訂封送處理器執行個體呼叫。 傳遞至字串`GetInstance`cookie，方法可以用來自訂傳回的自訂封送處理器。  
+ 除了實作<xref:System.Runtime.InteropServices.ICustomMarshaler>介面，必須實作自訂封送處理器`static`方法呼叫`GetInstance`可接受<xref:System.String>做為參數且傳回型別<xref:System.Runtime.InteropServices.ICustomMarshaler>。 這`static`方法由 common language runtime 的 COM interop 層級的自訂封送處理器執行個體具現化呼叫。 傳遞至字串`GetInstance`方法可用來自訂傳回自訂封送處理器的 cookie。  
   
 ```  
 static ICustomMarshaler *GetInstance(String *pstrCookie);  
@@ -132,27 +134,27 @@ static ICustomMarshaler *GetInstance(String *pstrCookie);
 ## <a name="applying-marshalasattribute"></a>套用 MarshalAsAttribute  
  若要使用自訂封送處理器，您必須套用<xref:System.Runtime.InteropServices.MarshalAsAttribute>屬性的參數或已封送處理的欄位。  
   
- 您還必須傳遞<xref:System.Runtime.InteropServices.UnmanagedType.CustomMarshaler?displayProperty=nameWithType>列舉值，以<xref:System.Runtime.InteropServices.MarshalAsAttribute>建構函式。 此外，您必須指定<xref:System.Runtime.InteropServices.MarshalAsAttribute.MarshalType>欄位與具名參數的下列其中之一：  
+ 您也必須傳遞<xref:System.Runtime.InteropServices.UnmanagedType.CustomMarshaler?displayProperty=nameWithType>列舉值，以<xref:System.Runtime.InteropServices.MarshalAsAttribute>建構函式。 此外，您必須指定<xref:System.Runtime.InteropServices.MarshalAsAttribute.MarshalType>欄位使用具名參數的下列其中之一：  
   
--   <xref:System.Runtime.InteropServices.MarshalAsAttribute.MarshalType> （必要）： 自訂封送處理器的組件限定名稱。 此名稱應該包含的命名空間和類別的自訂封送處理器。 如果自訂封送處理器未定義中使用組件中時，您必須指定定義所在的組件的名稱。  
+-   <xref:System.Runtime.InteropServices.MarshalAsAttribute.MarshalType> （必要）： 自訂封送處理器的組件限定名稱。 此名稱應包含的命名空間和類別的自訂封送處理器。 如果它用在組件中未定義自訂封送處理器，您必須指定它定義所在的組件名稱。  
   
     > [!NOTE]
-    >  您可以使用<xref:System.Runtime.InteropServices.MarshalAsAttribute.MarshalTypeRef>欄位而非<xref:System.Runtime.InteropServices.MarshalAsAttribute.MarshalType>欄位。 <xref:System.Runtime.InteropServices.MarshalAsAttribute.MarshalTypeRef> 會更輕鬆地指定類型。  
+    >  您可以使用<xref:System.Runtime.InteropServices.MarshalAsAttribute.MarshalTypeRef>欄位，而不是<xref:System.Runtime.InteropServices.MarshalAsAttribute.MarshalType>欄位。 <xref:System.Runtime.InteropServices.MarshalAsAttribute.MarshalTypeRef> 採用型別所指定的工作變得更容易。  
   
--   <xref:System.Runtime.InteropServices.MarshalAsAttribute.MarshalCookie> （選擇性）： cookie 傳遞至自訂封送處理器。 您可以使用 cookie 來提供其他資訊給封送處理器。 例如，如果相同的封送處理器用來提供的包裝函式的數字，cookie 會識別特定的包裝函式。 Cookie 傳遞至`GetInstance`方法封送處理器。  
+-   <xref:System.Runtime.InteropServices.MarshalAsAttribute.MarshalCookie> （選擇性）： 傳遞給自訂封送處理器的 cookie。 您可以使用 cookie 來提供封送處理器的其他資訊。 例如，如果相同的封送處理器會用來提供包裝函式的數目，cookie 會識別特定的包裝函式。 Cookie 會傳遞至`GetInstance`封送處理器的方法。  
   
- <xref:System.Runtime.InteropServices.MarshalAsAttribute>屬性會識別自訂封送處理器，因此它可以啟動適當的包裝函式。 Common language runtime 的 interop 服務然後會檢查屬性和自訂封送處理器第一次會建立要封送處理引數 （參數或欄位） 的需求。  
+ <xref:System.Runtime.InteropServices.MarshalAsAttribute>屬性識別的自訂封送處理器，因此它可以啟用適當的包裝函式。 Common language runtime 的 interop 服務接著會檢查屬性，並自訂封送處理器第一次會建立要封送處理引數 （參數或欄位） 的需求。  
   
- 執行階段接著會呼叫<xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalNativeToManaged%2A>和<xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalManagedToNative%2A>啟動正確的包裝函式來處理呼叫自訂封送處理器上的方法。  
+ 執行階段接著會呼叫<xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalNativeToManaged%2A>和<xref:System.Runtime.InteropServices.ICustomMarshaler.MarshalManagedToNative%2A>啟用正確的包裝函式來處理呼叫的自訂封送處理器上的方法。  
   
 ## <a name="using-a-custom-marshaler"></a>使用自訂封送處理器  
- 完成自訂封送處理器時，您可以使用它作為自訂包裝函式的特定型別。 下列範例顯示定義`IUserData`managed 的介面：  
+ 完成自訂封送處理器時，您可以使用它的自訂包裝函式的特定型別。 下列範例顯示定義`IUserData`managed 的介面：  
   
  [!code-cpp[System.Runtime.InteropServices.ICustomMarshaler#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.runtime.interopservices.icustommarshaler/cpp/source.cpp#3)]
  [!code-csharp[System.Runtime.InteropServices.ICustomMarshaler#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.interopservices.icustommarshaler/cs/source.cs#3)]
  [!code-vb[System.Runtime.InteropServices.ICustomMarshaler#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.runtime.interopservices.icustommarshaler/vb/source.vb#3)]  
   
- 在下列範例中，`IUserData`介面使用`NewOldMarshaler`自訂封送處理器，讓未受管理的用戶端應用程式傳遞`IOld`介面`DoSomeStuff`方法。 受管理的描述`DoSomeStuff`方法會採用`INew`介面，如先前範例中所示，而未受管理的版本`DoSomeStuff`採用`IOld`的介面指標，如下列範例所示。  
+ 在下列範例中，`IUserData`介面會使用`NewOldMarshaler`若要啟用將未受管理的用戶端應用程式的自訂封送處理器`IOld`介面`DoSomeStuff`方法。 受管理的描述`DoSomeStuff`方法會採用`INew`介面，如上述範例中中, 所示，而未受管理的版本`DoSomeStuff`採用`IOld`介面指標，如下列範例所示。  
   
 ```  
 [uuid(9B2BAADA-0705-11D3-A0CD-00C04FA35826)]  
@@ -163,7 +165,7 @@ library UserLib {
 }  
 ```  
   
- 類型程式庫所匯出的 managed 的定義產生`IUserData`會產生未受管理的定義，而不是標準定義這個範例所示。 <xref:System.Runtime.InteropServices.MarshalAsAttribute>屬性套用至`INew`引數中的 managed 定義`DoSomeStuff`方法表示的引數使用自訂封送處理器，如下列範例所示。  
+ 類型程式庫所匯出的 managed 的定義產生`IUserData`產生的未受管理的定義，而不是標準的定義範例所示。 <xref:System.Runtime.InteropServices.MarshalAsAttribute>套用至屬性`INew`引數中的 managed 定義`DoSomeStuff`方法表示的引數使用自訂封送處理器，如下列範例所示。  
   
  [!code-cpp[System.Runtime.InteropServices.ICustomMarshaler#4](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.runtime.interopservices.icustommarshaler/cpp/source.cpp#4)]
  [!code-csharp[System.Runtime.InteropServices.ICustomMarshaler#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.interopservices.icustommarshaler/cs/source.cs#4)]
@@ -175,7 +177,7 @@ library UserLib {
   
  在上一個範例中，第一個參數提供給<xref:System.Runtime.InteropServices.MarshalAsAttribute>屬性是<xref:System.Runtime.InteropServices.UnmanagedType.CustomMarshaler?displayProperty=nameWithType>列舉值`UnmanagedType.CustomMarshaler`。  
   
- 第二個參數是<xref:System.Runtime.InteropServices.MarshalAsAttribute.MarshalType>欄位，提供自訂封送處理器的組件限定名稱。 此名稱包含命名空間和類別的自訂封送處理器 (`MarshalType="MyCompany.NewOldMarshaler"`)。  
+ 第二個參數是<xref:System.Runtime.InteropServices.MarshalAsAttribute.MarshalType>欄位，以提供自訂封送處理器的組件限定名稱。 此名稱所組成的命名空間和類別的自訂封送處理器 (`MarshalType="MyCompany.NewOldMarshaler"`)。  
   
  ]]></format>
     </remarks>
@@ -191,6 +193,8 @@ library UserLib {
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -225,6 +229,8 @@ library UserLib {
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -259,6 +265,8 @@ library UserLib {
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -291,6 +299,8 @@ library UserLib {
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -326,6 +336,8 @@ library UserLib {
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
