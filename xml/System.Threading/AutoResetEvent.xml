@@ -1,11 +1,11 @@
 <Type Name="AutoResetEvent" FullName="System.Threading.AutoResetEvent">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="7526a17165511a13b7213d3a9d257c6304cccb3b" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="c79efb880d15907bddea1d039a240af1ebfce8c7" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36407148" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37609130" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class AutoResetEvent : System.Threading.EventWaitHandle" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit AutoResetEvent extends System.Threading.EventWaitHandle" />
@@ -22,6 +22,8 @@
   </AssemblyInfo>
   <AssemblyInfo>
     <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -31,6 +33,7 @@
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Threading.EventWaitHandle</BaseTypeName>
+    <BaseTypeName FrameworkAlternate="netframework-1.1">System.Threading.WaitHandle</BaseTypeName>
   </Base>
   <Interfaces />
   <Attributes>
@@ -39,42 +42,42 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>向等候的執行緒通知發生事件。 這個類別無法被繼承。</summary>
+    <summary>向等候的執行緒通知發生事件。 此類別無法被繼承。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- `AutoResetEvent` 可讓執行緒信號與對方進行通訊。 一般而言，當執行緒需要獨佔存取資源時使用這個類別。  
+ `AutoResetEvent` 可讓執行緒藉由發出訊號，與彼此進行通訊。 一般而言，當執行緒需要獨佔存取資源時使用這個類別。  
   
 > [!IMPORTANT]
->  此類型會實作<xref:System.IDisposable>介面。 當您完成使用類型時，您應該會處置它直接或間接。 若要直接處置的類型，呼叫其<xref:System.IDisposable.Dispose%2A>方法中的`try` / `catch`區塊。 若要為其配置間接，使用語言建構例如`using`（C# 中） 或`Using`（在 Visual Basic)。 如需詳細資訊，請參閱中的 「 使用物件的實作 IDisposable 」 一節<xref:System.IDisposable>介面 > 主題。  
+>  此類型會實作<xref:System.IDisposable>介面。 當您完成使用型別時，您應該處置它直接或間接。 若要直接處置型別，呼叫其<xref:System.IDisposable.Dispose%2A>方法中的`try` / `catch`區塊。 若要處置它間接，使用的語言建構這類`using`（在 C# 中) 或`Using`（在 Visual Basic)。 如需詳細資訊，請參閱 「 使用物件，實作 IDisposable 」 一節<xref:System.IDisposable>介面 > 主題。  
   
- 執行緒藉由呼叫等候信號<xref:System.Threading.WaitHandle.WaitOne%2A>上`AutoResetEvent`。 如果`AutoResetEvent`處於未收到訊號，則執行緒會封鎖，等候執行緒目前控制訊號藉由呼叫有可用資源的資源<xref:System.Threading.EventWaitHandle.Set%2A>。  
+ 執行緒藉由呼叫等候信號<xref:System.Threading.WaitHandle.WaitOne%2A>上`AutoResetEvent`。 如果`AutoResetEvent`處於 「 未收到信號的狀態，則執行緒會封鎖，等候執行緒目前控制的資源，以表示該資源可透過呼叫<xref:System.Threading.EventWaitHandle.Set%2A>。  
   
- 呼叫`Set`訊號`AutoResetEvent`釋放等候執行緒。 `AutoResetEvent` 單一等候中執行緒已發行，並會自動傳回為未收到信號狀態之前，會維持為收到信號。 如果沒有任何執行緒正在等待，一直維持信號狀態。  
+ 呼叫`Set`訊號`AutoResetEvent`釋放等候中的執行緒。 `AutoResetEvent` 單一等候執行緒被釋放，並會自動傳回為未收到信號的狀態之前，會保持收到信號。 如果沒有執行緒在等候時，狀態會維持收到訊號的狀態無限期。  
   
- 如果呼叫執行緒<xref:System.Threading.WaitHandle.WaitOne%2A>時<xref:System.Threading.AutoResetEvent>是在收到信號的狀態，執行緒不會封鎖。 <xref:System.Threading.AutoResetEvent>立即釋放執行緒，並傳回未收到訊號的狀態。  
+ 如果執行緒呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>雖然<xref:System.Threading.AutoResetEvent>是在已收到訊號的狀態中，執行緒不會封鎖。 <xref:System.Threading.AutoResetEvent>立即釋放執行緒，並傳回為未收到信號的狀態。  
   
 > [!IMPORTANT]
->  不保證，每次呼叫<xref:System.Threading.EventWaitHandle.Set%2A>方法會釋放執行緒。 如果兩個呼叫太接近，使第二次呼叫發生於之前已釋放執行緒，只有一個執行緒在釋出。 就如同第二個呼叫並未發生。 此外，如果<xref:System.Threading.EventWaitHandle.Set%2A>沒有等候的執行緒時，會呼叫和<xref:System.Threading.AutoResetEvent>已經發出信號，呼叫沒有任何作用。  
+>  不保證，每次呼叫<xref:System.Threading.EventWaitHandle.Set%2A>方法會釋放執行緒。 如果兩個呼叫太接近，以便之前已釋放執行緒，就會發生在第二個呼叫，會釋放只有一個執行緒。 這是因為如果第二次呼叫未發生。 此外，如果<xref:System.Threading.EventWaitHandle.Set%2A>沒有等待的執行緒時，會呼叫和<xref:System.Threading.AutoResetEvent>已收到訊號，呼叫沒有任何作用。  
   
- 您可以控制的初始狀態`AutoResetEvent`藉由傳遞建構函式的布林值：`true`如果收到信號的初始狀態和`false`否則。  
+ 您可以控制的初始狀態`AutoResetEvent`藉由傳遞建構函式的布林值：`true`如果收到訊號的初始狀態和`false`否則。  
   
  `AutoResetEvent` 也可與`static`<xref:System.Threading.WaitHandle.WaitAll%2A>和<xref:System.Threading.WaitHandle.WaitAny%2A>方法。  
   
  如需執行緒的同步處理機制的詳細資訊，請參閱[AutoResetEvent](~/docs/standard/threading/autoresetevent.md)概念文件。  
   
- .NET Framework 2.0 版中，從<xref:System.Threading.AutoResetEvent>衍生自新<xref:System.Threading.EventWaitHandle>類別。 <xref:System.Threading.AutoResetEvent>其作用相當於<xref:System.Threading.EventWaitHandle>以建立<xref:System.Threading.EventResetMode.AutoReset?displayProperty=nameWithType>。  
+ 從.NET Framework 2.0 版中，<xref:System.Threading.AutoResetEvent>衍生自新<xref:System.Threading.EventWaitHandle>類別。 <xref:System.Threading.AutoResetEvent>相當於<xref:System.Threading.EventWaitHandle>以建立<xref:System.Threading.EventResetMode.AutoReset?displayProperty=nameWithType>。  
   
 > [!NOTE]
->  不同於<xref:System.Threading.AutoResetEvent>類別<xref:System.Threading.EventWaitHandle>類別會提供存取具名的系統同步處理事件。  
+>  不同於<xref:System.Threading.AutoResetEvent>類別，<xref:System.Threading.EventWaitHandle>類別提供存取具名的系統同步處理事件。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.Threading.AutoResetEvent>一次釋放單一執行緒，藉由呼叫<xref:System.Threading.EventWaitHandle.Set%2A>方法 （在基底類別中） 每次使用者按下**Enter**索引鍵。 此範例會啟動三個執行緒，等候<xref:System.Threading.AutoResetEvent>收到信號狀態中建立。 因為立即釋放第一個執行緒<xref:System.Threading.AutoResetEvent>已在收到信號狀態。 這會重設<xref:System.Threading.AutoResetEvent>未收到訊號的狀態，如此後續的執行緒封鎖。 已封鎖的執行緒不會釋放直到使用者放開它們一次按下**Enter**索引鍵。  
+ 下列範例示範如何使用<xref:System.Threading.AutoResetEvent>呼叫一次釋放一個執行緒<xref:System.Threading.EventWaitHandle.Set%2A>方法 （在基底類別中） 每次使用者按下**Enter**索引鍵。 此範例會啟動三個執行緒，等候<xref:System.Threading.AutoResetEvent>收到信號的狀態中建立。 第一次釋放執行緒後立即執行，因為<xref:System.Threading.AutoResetEvent>已經處於收到信號的狀態。 這會重設<xref:System.Threading.AutoResetEvent>未收到信號的狀態，以便後續的執行緒封鎖。 已封鎖的執行緒不會釋放直到使用者放開它們一一次按下**Enter**索引鍵。  
   
- 執行緒會從第一個發行之後<xref:System.Threading.AutoResetEvent>，它們在另一台等候<xref:System.Threading.AutoResetEvent>未收到訊號的狀態中建立。 封鎖所有的三個執行緒，所以<xref:System.Threading.EventWaitHandle.Set%2A>方法必須全部釋放呼叫三次。  
+ 執行緒會從第一個釋放之後<xref:System.Threading.AutoResetEvent>，在等候另一個<xref:System.Threading.AutoResetEvent>中未收到信號的狀態建立。 所有的三個執行緒封鎖，因此<xref:System.Threading.EventWaitHandle.Set%2A>方法必須發行所有的這些呼叫三次。  
   
  [!code-cpp[System.Threading.AutoResetEvent#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.AutoResetEvent/CPP/simplerisbetter.cpp#3)]
  [!code-csharp[System.Threading.AutoResetEvent#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.AutoResetEvent/CS/simplerisbetter.cs#3)]
@@ -103,6 +106,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -121,13 +126,13 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- 下列範例會使用<xref:System.Threading.AutoResetEvent>來同步處理兩個執行緒的活動。 第一個執行緒，也就是應用程式執行緒執行`Main`。 將值寫入至受保護資源，也就是`static`(`Shared`在 Visual Basic 中) 名為欄位`number`。 第二個執行緒執行靜態`ThreadProc`方法，這個方法會讀取寫入的值`Main`。  
+ 下列範例會使用<xref:System.Threading.AutoResetEvent>來同步處理兩個執行緒的活動。 第一個執行緒，也就是應用程式執行緒，執行`Main`。 它會將值寫入受保護的資源，亦即`static`(`Shared` Visual Basic 中) 名為欄位`number`。 第二個執行緒執行靜態`ThreadProc`方法，它會讀取寫入的值`Main`。  
   
- `ThreadProc`方法會等候<xref:System.Threading.AutoResetEvent>。 當`Main`呼叫<xref:System.Threading.EventWaitHandle.Set%2A>方法<xref:System.Threading.AutoResetEvent>、`ThreadProc`方法會讀取一個值。 <xref:System.Threading.AutoResetEvent>立即重設，所以`ThreadProc`方法會等候一次。  
+ `ThreadProc`方法會等候<xref:System.Threading.AutoResetEvent>。 當`Main`呼叫<xref:System.Threading.EventWaitHandle.Set%2A>方法<xref:System.Threading.AutoResetEvent>，則`ThreadProc`方法會讀取一個值。 <xref:System.Threading.AutoResetEvent>立即重設，所以`ThreadProc`方法會等候一次。  
   
- 程式邏輯可確保`ThreadProc`方法將永遠不會讀取相同的值兩次。 它不保證`ThreadProc`方法會讀取寫入每個值`Main`。 保證會需要第二個<xref:System.Threading.AutoResetEvent>鎖定。  
+ 程式邏輯會保證`ThreadProc`方法將永遠不會讀取相同的值兩次。 它不保證`ThreadProc`方法會讀取寫入的每個值`Main`。 這項保證會需要第二個<xref:System.Threading.AutoResetEvent>鎖定。  
   
- 每個寫入作業之後，`Main`藉由呼叫會產生<xref:System.Threading.Thread.Sleep%2A?displayProperty=nameWithType>方法，讓第二個執行緒來執行。 否則，在單一處理器電腦上`Main`要用來撰寫兩個讀取作業的許多任何之間的值。  
+ 每個寫入作業之後，`Main`藉由呼叫會產生<xref:System.Threading.Thread.Sleep%2A?displayProperty=nameWithType>方法，以讓第二個執行緒有機會執行。 否則，在單一處理器電腦上`Main`可以用來撰寫兩個讀取作業的許多任何之間的值。  
   
  [!code-cpp[System.Threading.AutoResetEvent#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.AutoResetEvent/CPP/class1.cpp#1)]
  [!code-csharp[System.Threading.AutoResetEvent#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.AutoResetEvent/CS/class1.cs#1)]
@@ -136,6 +141,50 @@
  ]]></format>
         </remarks>
         <altmember cref="T:System.Threading.WaitHandle" />
+      </Docs>
+    </Member>
+    <Member MemberName="Reset">
+      <MemberSignature Language="C#" Value="public bool Reset ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Reset() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.AutoResetEvent.Reset" />
+      <MemberSignature Language="VB.NET" Value="Public Function Reset () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool Reset();" />
+      <MemberSignature Language="F#" Value="member this.Reset : unit -&gt; bool" Usage="autoResetEvent.Reset " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Set">
+      <MemberSignature Language="C#" Value="public bool Set ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Set() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.AutoResetEvent.Set" />
+      <MemberSignature Language="VB.NET" Value="Public Function Set () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool Set();" />
+      <MemberSignature Language="F#" Value="member this.Set : unit -&gt; bool" Usage="autoResetEvent.Set " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
   </Members>
