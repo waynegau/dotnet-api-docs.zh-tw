@@ -1,11 +1,11 @@
 <Type Name="CommonAcl" FullName="System.Security.AccessControl.CommonAcl">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="bb41e1eb4f0018ee8d138696f70e3be4c5900c3b" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="107c2006ca780c28267ef6d4d2fb56f63f02f079" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36532835" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37466073" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class CommonAcl : System.Security.AccessControl.GenericAcl" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit CommonAcl extends System.Security.AccessControl.GenericAcl" />
@@ -20,6 +20,7 @@
   </AssemblyInfo>
   <AssemblyInfo>
     <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -34,11 +35,11 @@
   
 ## Remarks  
   
--   某些繼承和存取遮罩旗標的組合是無意義：  
+-   某些繼承和存取遮罩旗標的組合便沒有意義：  
   
--   會移除具有零存取遮罩任何存取控制項目 (ACE)。  
+-   移除具有零存取遮罩任何存取控制項目 (ACE)。  
   
--   只有繼承 Ace 內物件的 Acl 會移除。  
+-   內部物件 Acl 的僅繼承 Ace 已移除。  
   
 -   <xref:System.Security.AccessControl.PropagationFlags.InheritOnly><xref:System.Security.AccessControl.PropagationFlags.NoPropagateInherit>， <xref:System.Security.AccessControl.InheritanceFlags.ContainerInherit>，和<xref:System.Security.AccessControl.InheritanceFlags.ObjectInherit>旗標上所有的 Ace，分葉物件 Acl 會被清除。  
   
@@ -46,29 +47,29 @@
   
 -   <xref:System.Security.AccessControl.PropagationFlags.NoPropagateInherit>旗標不存在<xref:System.Security.AccessControl.InheritanceFlags.ContainerInherit>或<xref:System.Security.AccessControl.InheritanceFlags.ObjectInherit>可以移除旗標。  
   
--   有的 Ace<xref:System.Security.AccessControl.AuditFlags>值<xref:System.Security.AccessControl.AuditFlags.Success>或<xref:System.Security.AccessControl.AuditFlags.Failure>判別存取控制清單 (Dacl) 都會被移除。  
+-   有的 Ace<xref:System.Security.AccessControl.AuditFlags>的值<xref:System.Security.AccessControl.AuditFlags.Success>或<xref:System.Security.AccessControl.AuditFlags.Failure>判別存取控制清單 (Dacl) 都會被移除。  
   
--   任何稽核 ACE，未指定<xref:System.Security.AccessControl.AuditFlags.Success>或<xref:System.Security.AccessControl.AuditFlags.Failure>已移除。  
+-   任何稽核未指定的 ACE<xref:System.Security.AccessControl.AuditFlags.Success>或<xref:System.Security.AccessControl.AuditFlags.Failure>會移除。  
   
--   在 Dacl，會移除 SystemAudit 和 SystemAlarm Ace。  
+-   在 Dacl，SystemAudit 和 SystemAlarm Ace 會移除。  
   
 -   在系統存取控制清單 (Sacl)，會移除 AccessAllowed 和 AccessDenied Ace。  
   
- 根據下列演算法來維護標準順序：  
+ 標準順序是根據下列演算法來維護：  
   
--   明確 Ace 優先於繼承 Ace。這個規則套用到 Dacl 和 Sacl。  
+-   明確的 Ace 優先於繼承 Ace;這個規則套用到 Dacl 和 Sacl。  
   
--   在 Dacl，之間的明確 Ace，拒絕存取的 Ace 優先於允許存取的 Ace。 目錄物件 Acl，非物件 Ace 的前面物件 Ace。  
+-   在 Dacl，之間的明確 Ace，Ace 拒絕存取的優先於允許存取的 Ace。 目錄物件 Acl，非 Ace 前面物件 Ace。  
   
--   所有一般 Ace 的優先順序高於 noncommon Ace。  
+-   所有常見的 Ace 的優先順序高於 noncommon Ace。  
   
--   繼承的 Ace 標準後維護其相對順序。  
+-   標準後，繼承的 Ace 會維護其相對順序。  
   
 -   Dacl 和 Sacl 中不允許無法辨識和自訂的 Ace。  
   
--   在連續範圍 （明確 AccessDenied 和 Dacl，所有明確 Ace Sacl AccessAllowed Ace），內 Ace 會依照使用<xref:System.Security.Principal.SecurityIdentifier.CompareTo%2A>方法<xref:System.Security.Principal.SecurityIdentifier>Ace 相關聯的物件。  
+-   連續範圍 （明確的 AccessDenied 和在 Dacl，所有在 Sacl 的明確 Ace AccessAllowed Ace），在使用來排序 Ace<xref:System.Security.Principal.SecurityIdentifier.CompareTo%2A>方法的<xref:System.Security.Principal.SecurityIdentifier>Ace 相關聯的物件。  
   
- 如果適當的話，會結合相鄰的 Ace。  這可縮小的 ACL 不會影響它會授與的存取控制語意。  
+ 合併相鄰的 Ace，如果適用的話。  這可縮小的 ACL 不會影響它會授與的存取控制語意。  
   
  ]]></format>
     </remarks>
@@ -89,6 +90,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -116,6 +118,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -143,6 +146,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -175,6 +179,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -202,6 +207,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -229,6 +235,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -256,6 +263,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -287,6 +295,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -317,6 +326,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -344,6 +354,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>

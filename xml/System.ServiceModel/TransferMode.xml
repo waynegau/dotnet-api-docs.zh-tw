@@ -1,11 +1,11 @@
 <Type Name="TransferMode" FullName="System.ServiceModel.TransferMode">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="fd27ea071ce2cdc686ce977d83a9516b7b04aeb8" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="eb3a0b4f3d0f2b79019682d8846a12c4a818ab0a" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36410291" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37611746" />
   </Metadata>
   <TypeSignature Language="C#" Value="public enum TransferMode" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed TransferMode extends System.Enum" />
@@ -16,6 +16,7 @@
   <AssemblyInfo>
     <AssemblyName>System.ServiceModel</AssemblyName>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <AssemblyInfo>
@@ -33,13 +34,13 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Windows Communication Foundation (WCF) 傳輸支援兩種傳輸每個方向的訊息模式：  
+ Windows Communication Foundation (WCF) 傳輸支援兩種傳輸訊息的每個方向模式：  
   
 -   緩衝處理的傳輸會將整個訊息保留在記憶體緩衝區中，直到完成傳輸作業為止。  
   
 -   資料流處理的傳輸只緩衝訊息標頭，而公開訊息本文為資料流，每次讀取較小部分的資料。  
   
- 將傳輸模式設定為 Streamed 啟用雙向資料流通訊。 StreamedRequest 或 StreamedResponse 設定傳輸模式可讓資料流只指定方向的通訊。  
+ 傳輸模式設為 Streamed 可讓兩個方向的資料流通訊。 StreamedRequest 或 StreamedResponse 將傳輸模式可讓資料流只指定方向的通訊。  
   
  資料流處理的傳輸可以藉由消除大量記憶體緩衝區的需求來改善服務的延展性 (Scalability)。 變更傳輸模式是否真能改善延展性，實際需視所傳輸的訊息大小而定。 當大型訊息使用資料流而非緩衝傳輸時，延展性的改善應當最為顯著。  
   
@@ -49,15 +50,15 @@
   
  使用緩衝或資料流傳輸的決定是在 HTTP 傳輸端點本機上決定的。 對於 HTTP 傳輸，傳輸模式不會透過連線傳播，或是傳播到 Proxy 伺服器或其他媒介。 設定傳輸模式不會反映在服務合約的描述中。 為服務產生 Proxy 之後，您可以 (允許但並非必要) 為要搭配資料流傳輸使用的服務編輯組態檔，以設定傳輸模式。 如果是 TCP 和具名管道傳輸，會傳播傳輸模式做為原則判斷提示。  
   
- 使用 Streamed 傳輸模式時，會造成 WCF 執行階段強制執行其他限制。  
+ 使用 Streamed 傳輸模式會導致 WCF 執行階段強制執行其他限制。  
   
 -   在資料流處理的傳輸中發生的作業，會與最多一個輸入和/或一個輸出參數 (在程式設計模型層) 簽訂合約。 該參數對應於整個訊息本文而且必定是 <xref:System.ServiceModel.Channels.Message>、<xref:System.IO.Stream> 的子類型或是 <xref:System.Xml.Serialization.IXmlSerializable> 介面的實作。 擁有作業的傳回值，相當於擁有輸出參數。  
   
--   某些 WCF 功能，例如可信賴傳訊與 SOAP 訊息層級安全性會仰賴緩衝處理的訊息來進行傳輸。 使用這些功能可能減少或消除使用資料流處理模式而獲得的效能優勢。 若要保護資料流處理傳輸的安全，請單純使用傳輸層級安全性，或是使用混合模式安全性，也就是 WS-Security 與傳輸安全性的結合。  
+-   有些 WCF 功能，例如可靠的傳訊和 SOAP 訊息層級安全性會仰賴緩衝處理的訊息來進行傳輸。 使用這些功能可能減少或消除使用資料流處理模式而獲得的效能優勢。 若要保護資料流處理傳輸的安全，請單純使用傳輸層級安全性，或是使用混合模式安全性，也就是 WS-Security 與傳輸安全性的結合。  
   
--   SOAP 標頭一定會緩衝處理，即使 Streamed 來設定傳輸模式。 訊息的標頭不得超出 MaxBufferSize 傳輸配額的大小。此配額於各種繫結與繫結項目上公開。  
+-   SOAP 標頭一律會進行緩衝，即使設定傳輸模式為 Streamed。 訊息的標頭不得超出 MaxBufferSize 傳輸配額的大小。此配額於各種繫結與繫結項目上公開。  
   
- 從緩衝的傳輸模式變更為 「 Streamed 也會變更 TCP 和具名的管道傳輸的原生通道類型。 對於緩衝處理的傳輸來說，原生的通道類型為 <xref:System.ServiceModel.Channels.IDuplexSessionChannel>。 對於資料流處理的傳輸來說，原生通道為 <xref:System.ServiceModel.Channels.IRequestChannel> 和 <xref:System.ServiceModel.Channels.IReplyChannel>。 結果就是工作階段服務合約無法搭配傳輸資料流使用。  
+ 從緩衝的傳輸模式變更為 「 Streamed 時，也會變更 TCP 和具名的管道傳輸的原生的通道形狀。 對於緩衝處理的傳輸來說，原生的通道類型為 <xref:System.ServiceModel.Channels.IDuplexSessionChannel>。 對於資料流處理的傳輸來說，原生通道為 <xref:System.ServiceModel.Channels.IRequestChannel> 和 <xref:System.ServiceModel.Channels.IReplyChannel>。 結果就是工作階段服務合約無法搭配傳輸資料流使用。  
   
    
   
@@ -73,7 +74,7 @@ BinaryMessageEncodingBindingElement encoder = new BinaryMessageEncodingBindingEl
 CustomBinding binding = new CustomBinding(encoder, transport);  
 ```  
   
- 下列範例將示範<xref:System.ServiceModel.TransferMode.Streamed>Streamed 透過組態屬性：  
+ 下列範例示範<xref:System.ServiceModel.TransferMode.Streamed>Streamed 透過組態屬性：  
   
 ```  
 <customBinding>  
@@ -99,6 +100,7 @@ CustomBinding binding = new CustomBinding(encoder, transport);
       <AssemblyInfo>
         <AssemblyName>System.ServiceModel</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -126,6 +128,7 @@ CustomBinding binding = new CustomBinding(encoder, transport);
       <AssemblyInfo>
         <AssemblyName>System.ServiceModel</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -153,6 +156,7 @@ CustomBinding binding = new CustomBinding(encoder, transport);
       <AssemblyInfo>
         <AssemblyName>System.ServiceModel</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -180,6 +184,7 @@ CustomBinding binding = new CustomBinding(encoder, transport);
       <AssemblyInfo>
         <AssemblyName>System.ServiceModel</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
