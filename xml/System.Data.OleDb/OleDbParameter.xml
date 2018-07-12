@@ -1,11 +1,11 @@
 <Type Name="OleDbParameter" FullName="System.Data.OleDb.OleDbParameter">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="87f06ad546b1cd66e85c9d635abe6abf14e8a882" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="2e1ea3c77e0670b525f78518bb022aa0963d1354" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36685436" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37676861" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class OleDbParameter : System.Data.Common.DbParameter, ICloneable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit OleDbParameter extends System.Data.Common.DbParameter implements class System.Data.IDataParameter, class System.Data.IDbDataParameter, class System.ICloneable" />
@@ -15,10 +15,13 @@
   <TypeSignature Language="F#" Value="type OleDbParameter = class&#xA;    inherit DbParameter&#xA;    interface ICloneable&#xA;    interface IDbDataParameter&#xA;    interface IDataParameter" />
   <AssemblyInfo>
     <AssemblyName>System.Data</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Data.Common.DbParameter</BaseTypeName>
+    <BaseTypeName FrameworkAlternate="netframework-1.1">System.MarshalByRefObject</BaseTypeName>
   </Base>
   <Interfaces>
     <Interface>
@@ -36,9 +39,9 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- OLE DB.NET Framework 資料提供者會使用問號 （？） 而不是具名參數標記的位置參數。  
+ OLE DB.NET Framework 資料提供者會使用標記的位置參數，加上問號 （？） 而不是具名參數。  
   
- 在查詢時使用 Microsoft OLE DB Provider for Oracle (MSDAORA) 和 OLE DB.NET Framework 資料提供者的 Oracle 資料庫，使用`LIKE`子句來查詢中固定長度欄位的值可能不會傳回所有預期的相符項目。 原因是： 當 Oracle 符合中的固定長度欄位`LIKE`子句，它會比對整個字串的長度，包括任何填補的後端空格。 例如，如果資料表中 Oracle 資料庫包含名為"Field1"定義為欄位`char(3)`，並輸入值"a"該資料表中，下列程式碼中的資料列不會傳回資料列。  
+ 查詢時使用 Microsoft OLE DB Provider for Oracle (MSDAORA) 和 OLE DB.NET Framework 資料提供者的 Oracle 資料庫，使用`LIKE`子句來查詢在固定長度欄位的值可能不會傳回所有預期的相符項目。 原因是，當 Oracle 比對中的固定長度欄位`LIKE`子句，它會比對整個字串的長度，包括任何填補的後端空格。 比方說，如果資料表在 Oracle 資料庫包含名為"Field1"定義為欄位`char(3)`，並輸入值"a"，資料表中，下列程式碼中的資料列不會傳回資料列。  
   
 ```vb  
 Dim queryString As String = "SELECT * FROM Table1 WHERE Field1 LIKE ?"  
@@ -54,14 +57,14 @@ command.Parameters.Add("@p1", OleDbType.Char, 3).Value = "a";
 OleDbDataReader reader = command.ExecuteReader();  
 ```  
   
- 這是因為 Oracle 儲存的資料行值為"a"(填補以"a"後, 端空格，3 的固定的欄位長度)，Oracle 不會將當成參數值的"a"相符項目是其`LIKE`固定長度欄位的比較。  
+ 這是因為 Oracle 儲存的資料行值為"a"(填補"a"，與後端空格，3 的固定的欄位長度)，其中 Oracle 不會將為"a"的參數值相符的情況`LIKE`比較的固定長度欄位。  
   
- 若要解決這個問題，請附加百分比 （"%"） 萬用字元參數值 (`"a%"`)，或使用 SQL`=`比較改為。  
+ 若要解決此問題，請附加百分比 （"%"） 萬用字元參數值 (`"a%"`)，或使用 SQL`=`比較改。  
   
    
   
 ## Examples  
- 下列範例會建立多個執行個體<xref:System.Data.OleDb.OleDbParameter>透過<xref:System.Data.OleDb.OleDbParameterCollection>集合內<xref:System.Data.OleDb.OleDbDataAdapter>。 這些參數可用來從資料來源選取資料，並將放在資料<xref:System.Data.DataSet>。 這個範例假設<xref:System.Data.DataSet>和<xref:System.Data.OleDb.OleDbDataAdapter>已經建立使用適當的結構描述、 命令及連線。  
+ 下列範例會建立多個執行個體<xref:System.Data.OleDb.OleDbParameter>經由<xref:System.Data.OleDb.OleDbParameterCollection>內的集合<xref:System.Data.OleDb.OleDbDataAdapter>。 這些參數用來從資料來源選取資料，並將放在資料<xref:System.Data.DataSet>。 這個範例假設<xref:System.Data.DataSet>和<xref:System.Data.OleDb.OleDbDataAdapter>已經建立使用適當的結構描述、 命令和連線。  
   
  [!code-csharp[Classic WebData OleDbParameter Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OleDbParameter Example/CS/source.cs#1)]
  [!code-vb[Classic WebData OleDbParameter Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OleDbParameter Example/VB/source.vb#1)]  
@@ -88,6 +91,8 @@ OleDbDataReader reader = command.ExecuteReader();
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters />
@@ -97,7 +102,7 @@ OleDbDataReader reader = command.ExecuteReader();
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其屬性的某些。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其部分屬性。  
   
  [!code-csharp[Classic WebData OleDbParameter.OleDbParameter Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OleDbParameter.OleDbParameter Example/CS/source.cs#1)]
  [!code-vb[Classic WebData OleDbParameter.OleDbParameter Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OleDbParameter.OleDbParameter Example/VB/source.vb#1)]  
@@ -116,6 +121,8 @@ OleDbDataReader reader = command.ExecuteReader();
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters>
@@ -130,12 +137,12 @@ OleDbDataReader reader = command.ExecuteReader();
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 資料類型，並視情況<xref:System.Data.OleDb.OleDbParameter.Size%2A>和<xref:System.Data.OleDb.OleDbParameter.Precision%2A>會推斷的值從`dataType`參數。  
+ 資料類型，並視情況<xref:System.Data.OleDb.OleDbParameter.Size%2A>及<xref:System.Data.OleDb.OleDbParameter.Precision%2A>的值會被推斷`dataType`參數。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其屬性的某些。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其部分屬性。  
   
  [!code-csharp[Classic WebData OleDbParameter.OleDbParameter1 Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OleDbParameter.OleDbParameter1 Example/CS/source.cs#1)]
  [!code-vb[Classic WebData OleDbParameter.OleDbParameter1 Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OleDbParameter.OleDbParameter1 Example/VB/source.vb#1)]  
@@ -156,6 +163,8 @@ OleDbDataReader reader = command.ExecuteReader();
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters>
@@ -176,7 +185,7 @@ OleDbDataReader reader = command.ExecuteReader();
 Parameter = new OleDbParameter("@pname", Convert.ToInt32(0));  
 ```  
   
- 如果您不會執行這項轉換，則編譯器會假設您嘗試呼叫<xref:System.Data.OleDb.OleDbParameter.%23ctor%2A>建構函式多載。  
+ 如果您不會執行這項轉換，編譯器會假設您嘗試呼叫<xref:System.Data.OleDb.OleDbParameter.%23ctor%2A>建構函式多載。  
   
    
   
@@ -200,6 +209,8 @@ Parameter = new OleDbParameter("@pname", Convert.ToInt32(0));
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters>
@@ -216,12 +227,12 @@ Parameter = new OleDbParameter("@pname", Convert.ToInt32(0));
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.OleDb.OleDbParameter.Size%2A>推斷的值從`dataType`參數，如果未明確設定`size`參數。  
+ <xref:System.Data.OleDb.OleDbParameter.Size%2A>會從值推斷`dataType`參數，如果沒有明確設定`size`參數。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其屬性的某些。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其部分屬性。  
   
  [!code-csharp[Classic WebData OleDbParameter.OleDbParameter2 Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OleDbParameter.OleDbParameter2 Example/CS/source.cs#1)]
  [!code-vb[Classic WebData OleDbParameter.OleDbParameter2 Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OleDbParameter.OleDbParameter2 Example/VB/source.vb#1)]  
@@ -242,6 +253,8 @@ Parameter = new OleDbParameter("@pname", Convert.ToInt32(0));
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters>
@@ -260,12 +273,12 @@ Parameter = new OleDbParameter("@pname", Convert.ToInt32(0));
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.OleDb.OleDbParameter.Size%2A>推斷的值從`dataType`參數，如果未明確設定`size`參數。  
+ <xref:System.Data.OleDb.OleDbParameter.Size%2A>會從值推斷`dataType`參數，如果沒有明確設定`size`參數。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其屬性的某些。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其部分屬性。  
   
  [!code-csharp[Classic WebData OleDbParameter.OleDbParameter3 Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OleDbParameter.OleDbParameter3 Example/CS/source.cs#1)]
  [!code-vb[Classic WebData OleDbParameter.OleDbParameter3 Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OleDbParameter.OleDbParameter3 Example/VB/source.vb#1)]  
@@ -286,11 +299,13 @@ Parameter = new OleDbParameter("@pname", Convert.ToInt32(0));
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+          <AttributeName>System.ComponentModel.EditorBrowsable</AttributeName>
         </Attribute>
       </Attributes>
       <Parameters>
@@ -324,12 +339,12 @@ Parameter = new OleDbParameter("@pname", Convert.ToInt32(0));
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.OleDb.OleDbParameter.Size%2A>和<xref:System.Data.OleDb.OleDbParameter.Precision%2A>會推斷的值從`dataType`參數，如果沒有明確設定`size`和`precision`參數。  
+ <xref:System.Data.OleDb.OleDbParameter.Size%2A>並<xref:System.Data.OleDb.OleDbParameter.Precision%2A>的值會被推斷`dataType`參數，如果沒有明確設定`size`和`precision`參數。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並顯示<xref:System.Data.OleDb.OleDbParameter.ParameterName%2A>。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>，並顯示<xref:System.Data.OleDb.OleDbParameter.ParameterName%2A>。  
   
  [!code-csharp[Classic WebData OleDbParameter.OleDbParameter4 Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OleDbParameter.OleDbParameter4 Example/CS/source.cs#1)]
  [!code-vb[Classic WebData OleDbParameter.OleDbParameter4 Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OleDbParameter.OleDbParameter4 Example/VB/source.vb#1)]  
@@ -350,11 +365,12 @@ Parameter = new OleDbParameter("@pname", Convert.ToInt32(0));
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+          <AttributeName>System.ComponentModel.EditorBrowsable</AttributeName>
         </Attribute>
       </Attributes>
       <Parameters>
@@ -388,12 +404,12 @@ Parameter = new OleDbParameter("@pname", Convert.ToInt32(0));
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.OleDb.OleDbParameter.Size%2A>和<xref:System.Data.OleDb.OleDbParameter.Precision%2A>會推斷的值從`dataType`參數，如果沒有明確設定`size`和`precision`參數。  
+ <xref:System.Data.OleDb.OleDbParameter.Size%2A>並<xref:System.Data.OleDb.OleDbParameter.Precision%2A>的值會被推斷`dataType`參數，如果沒有明確設定`size`和`precision`參數。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並顯示<xref:System.Data.OleDb.OleDbParameter.ParameterName%2A>。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>，並顯示<xref:System.Data.OleDb.OleDbParameter.ParameterName%2A>。  
   
  [!code-csharp[Classic WebData OleDbParameter.OleDbParameter4 Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OleDbParameter.OleDbParameter4 Example/CS/source.cs#1)]
  [!code-vb[Classic WebData OleDbParameter.OleDbParameter4 Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OleDbParameter.OleDbParameter4 Example/VB/source.vb#1)]  
@@ -417,6 +433,8 @@ Parameter = new OleDbParameter("@pname", Convert.ToInt32(0));
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -431,12 +449,12 @@ Parameter = new OleDbParameter("@pname", Convert.ToInt32(0));
 ## Remarks  
  <xref:System.Data.OleDb.OleDbParameter.OleDbType%2A>和<xref:System.Data.OleDb.OleDbParameter.DbType%2A>連結。 因此，設定<xref:System.Data.OleDb.OleDbParameter.DbType%2A>變更<xref:System.Data.OleDb.OleDbParameter.OleDbType%2A>支援<xref:System.Data.OleDb.OleDbParameter.OleDbType%2A>。  
   
- 如需支援的資料類型的清單，請參閱適當<xref:System.Data.OleDb.OleDbParameter.OleDbType%2A>成員。 如需詳細資訊，請參閱[DataAdapter 的參數](~/docs/framework/data/adonet/dataadapter-parameters.md)。  
+ 如需支援的資料類型的清單，請參閱適當<xref:System.Data.OleDb.OleDbParameter.OleDbType%2A>成員。 如需詳細資訊，請參閱 < [DataAdapter 的參數](~/docs/framework/data/adonet/dataadapter-parameters.md)。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其屬性的某些。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其部分屬性。  
   
  [!code-csharp[Classic WebData OleDbParameter.DbType Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OleDbParameter.DbType Example/CS/source.cs#1)]
  [!code-vb[Classic WebData OleDbParameter.DbType Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OleDbParameter.DbType Example/VB/source.vb#1)]  
@@ -459,6 +477,8 @@ Parameter = new OleDbParameter("@pname", Convert.ToInt32(0));
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -476,14 +496,14 @@ Parameter = new OleDbParameter("@pname", Convert.ToInt32(0));
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果<xref:System.Data.ParameterDirection>是輸出，以及執行相關聯的<xref:System.Data.OleDb.OleDbCommand>沒有傳回值，<xref:System.Data.OleDb.OleDbParameter>包含 null 值。  
+ 如果<xref:System.Data.ParameterDirection>是輸出，以及執行相關聯<xref:System.Data.OleDb.OleDbCommand>不會傳回一個值，<xref:System.Data.OleDb.OleDbParameter>包含 null 值。  
   
- `Output``InputOut`，和`ReturnValue`透過呼叫所傳回的參數<xref:System.Data.OleDb.OleDbCommand.ExecuteReader%2A>無法存取，直到您呼叫<xref:System.Data.OleDb.OleDbDataReader.Close%2A>或**處置**上<xref:System.Data.OleDb.OleDbDataReader>。  
+ `Output``InputOut`，並`ReturnValue`藉由呼叫傳回的參數<xref:System.Data.OleDb.OleDbCommand.ExecuteReader%2A>無法存取，直到您呼叫<xref:System.Data.OleDb.OleDbDataReader.Close%2A>或是**處置**上<xref:System.Data.OleDb.OleDbDataReader>。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其屬性的某些。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其部分屬性。  
   
 ```vb  
 Public Sub CreateOleDbParameter()  
@@ -515,6 +535,8 @@ public void CreateOleDbParameter()
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -532,7 +554,7 @@ public void CreateOleDbParameter()
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其屬性的某些。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其部分屬性。  
   
 ```vb  
 Public Sub CreateOleDbParameter()  
@@ -572,7 +594,7 @@ public void CreateOleDbParameter()
           <AttributeName>System.ComponentModel.Browsable(false)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+          <AttributeName>System.ComponentModel.EditorBrowsable</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -594,6 +616,8 @@ public void CreateOleDbParameter()
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -616,7 +640,7 @@ public void CreateOleDbParameter()
 ## Remarks  
  <xref:System.Data.OleDb.OleDbParameter.OleDbType%2A>和<xref:System.Data.OleDb.OleDbParameter.DbType%2A>連結。 因此，設定<xref:System.Data.OleDb.OleDbParameter.DbType%2A>變更<xref:System.Data.OleDb.OleDbParameter.OleDbType%2A>支援<xref:System.Data.OleDb.OleDbType>。  
   
- 如需支援的資料類型的清單，請參閱適當<xref:System.Data.OleDb.OleDbType>成員。 如需詳細資訊，請參閱[DataAdapter 的參數](~/docs/framework/data/adonet/dataadapter-parameters.md)。  
+ 如需支援的資料類型的清單，請參閱適當<xref:System.Data.OleDb.OleDbType>成員。 如需詳細資訊，請參閱 < [DataAdapter 的參數](~/docs/framework/data/adonet/dataadapter-parameters.md)。  
   
  ]]></format>
         </remarks>
@@ -635,6 +659,8 @@ public void CreateOleDbParameter()
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -648,12 +674,12 @@ public void CreateOleDbParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- OLE DB.NET 提供者會使用問號 （？） 而不是具名參數標記的位置參數。  
+ OLE DB.NET 提供者會使用標記的位置參數，加上問號 （？） 而不是具名參數。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其屬性的某些。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其部分屬性。  
   
 ```vb  
 Public Sub CreateOleDbParameter()  
@@ -687,6 +713,8 @@ public void CreateOleDbParameter()
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -704,24 +732,24 @@ public void CreateOleDbParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.OleDb.OleDbParameter.Precision%2A>屬性只能用於十進位數字輸入參數。  
+ <xref:System.Data.OleDb.OleDbParameter.Precision%2A>屬性只能用於十進位和數值輸入參數。  
   
- <xref:System.Data.OleDb.OleDbParameter.Precision%2A>屬性應該設定僅適用於`Decimal`和`Numeric`參數，然後才呼叫<xref:System.Data.OleDb.OleDbCommand.Prepare%2A>方法<xref:System.Data.OleDb.OleDbCommand>。  
+ <xref:System.Data.OleDb.OleDbParameter.Precision%2A>屬性應該設定僅適用於`Decimal`並`Numeric`前呼叫的參數<xref:System.Data.OleDb.OleDbCommand.Prepare%2A>方法<xref:System.Data.OleDb.OleDbCommand>。  
   
- 為資料庫中的值以外的值設定這個屬性的資料提供者實作而定，可能會傳回錯誤程式碼中，截斷或捨入資料。  
+ 將此屬性設定為在資料庫中的值以外的值的資料提供者實作而定，可能會傳回錯誤程式碼中，截斷或四捨五入資料。  
   
  `Precision`屬性只會影響參數其<xref:System.Data.OleDb.OleDbType>是`Decimal`， `Numeric`，或`VarNumeric`。 對於其他資料類型，`Precision`會被忽略。  
   
 > [!NOTE]
->  不支援使用這個屬性，以強制資料傳遞至資料庫。 Round 截斷，或否則 coerce 資料傳遞至資料庫之前，請使用<xref:System.Math>類別屬於`System`之前指派值給參數的命名空間`Value`屬性。  
+>  不支援使用這個屬性，以強制轉型資料傳遞至資料庫。 若要 round、 截斷，否則將強制轉型的資料傳遞給資料庫之前，使用<xref:System.Math>類別一部分`System`之前指派值給參數的命名空間`Value`屬性。  
   
 > [!NOTE]
->  隨附於.NET Framework 1.0 版的.NET framework 資料提供者不會驗證<xref:System.Data.OleDb.OleDbParameter.Precision%2A>或<xref:System.Data.OleDb.OleDbParameter.Scale%2A>的<xref:System.Decimal>參數值。 這可能會導致截斷的資料插入到資料來源。 如果您使用.NET Framework 1.0 版，驗證<xref:System.Data.OleDb.OleDbParameter.Precision%2A>和<xref:System.Data.OleDb.OleDbParameter.Scale%2A>的<xref:System.Decimal>設定參數值之前的值。 <xref:System.Data.OleDb.OleDbParameter.Scale%2A> 值超過<xref:System.Decimal>參數的小數點位數仍然會被截斷。  
+>  隨附於.NET Framework 1.0 版的.NET framework 資料提供者不會驗證<xref:System.Data.OleDb.OleDbParameter.Precision%2A>或是<xref:System.Data.OleDb.OleDbParameter.Scale%2A>的<xref:System.Decimal>參數值。 這會導致截斷的資料，要插入在資料來源。 如果您使用.NET Framework 1.0 版，驗證<xref:System.Data.OleDb.OleDbParameter.Precision%2A>並<xref:System.Data.OleDb.OleDbParameter.Scale%2A>的<xref:System.Decimal>之前先設定參數值的值。 <xref:System.Data.OleDb.OleDbParameter.Scale%2A> 值超過<xref:System.Decimal>仍然會截斷參數小數位數。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其屬性的某些。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其部分屬性。  
   
 ```vb  
 Public Sub CreateOleDbParameter()  
@@ -756,6 +784,7 @@ public void CreateOleDbParameter()
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -768,7 +797,7 @@ public void CreateOleDbParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 執行命令時，其中包含參數值、 程式碼可以明確地設定參數的型別或參數可以推斷其類型的值。 呼叫這個方法，使推斷其類型，從傳入參數中的值時，一次，會重設參數。 呼叫這個方法會同時影響<xref:System.Data.OleDb.OleDbParameter.DbType%2A>和<xref:System.Data.OleDb.OleDbParameter.OleDbType%2A>屬性<xref:System.Data.OleDb.OleDbParameter>。  
+ 執行命令時，包含參數值、 程式碼可以明確地設定參數的型別或參數可以推斷其類型，從它的值。 呼叫這個方法，以便推斷其類型參數中傳遞的值時，一次，會重設的參數。 呼叫這個方法會影響兩者<xref:System.Data.OleDb.OleDbParameter.DbType%2A>並<xref:System.Data.OleDb.OleDbParameter.OleDbType%2A>的屬性<xref:System.Data.OleDb.OleDbParameter>。  
   
  ]]></format>
         </remarks>
@@ -787,6 +816,7 @@ public void CreateOleDbParameter()
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -799,7 +829,7 @@ public void CreateOleDbParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 執行命令時，其中包含參數值、 程式碼可以明確地設定參數的型別或參數可以推斷其類型的值。 呼叫這個方法，使推斷其類型，從傳入參數中的值時，一次，會重設參數。 呼叫這個方法會同時影響<xref:System.Data.OleDb.OleDbParameter.DbType%2A>和<xref:System.Data.OleDb.OleDbParameter.OleDbType%2A>屬性<xref:System.Data.OleDb.OleDbParameter>。  
+ 執行命令時，包含參數值、 程式碼可以明確地設定參數的型別或參數可以推斷其類型，從它的值。 呼叫這個方法，以便推斷其類型參數中傳遞的值時，一次，會重設的參數。 呼叫這個方法會影響兩者<xref:System.Data.OleDb.OleDbParameter.DbType%2A>並<xref:System.Data.OleDb.OleDbParameter.OleDbType%2A>的屬性<xref:System.Data.OleDb.OleDbParameter>。  
   
  ]]></format>
         </remarks>
@@ -821,6 +851,8 @@ public void CreateOleDbParameter()
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -839,22 +871,22 @@ public void CreateOleDbParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.OleDb.OleDbParameter.Scale%2A>屬性只能用於十進位數字輸入參數然後再呼叫<xref:System.Data.OleDb.OleDbCommand.Prepare%2A>方法<xref:System.Data.OleDb.OleDbCommand>並指定數值的輸出參數。  
+ <xref:System.Data.OleDb.OleDbParameter.Scale%2A>屬性只適用於小數和數字輸入參數，然後再呼叫<xref:System.Data.OleDb.OleDbCommand.Prepare%2A>方法<xref:System.Data.OleDb.OleDbCommand>，並指定數值的輸出參數。  
   
- 為資料庫中的值以外的值設定這個屬性的資料提供者實作而定，可能會傳回錯誤程式碼中，截斷或捨入資料。  
+ 將此屬性設定為在資料庫中的值以外的值的資料提供者實作而定，可能會傳回錯誤程式碼中，截斷或四捨五入資料。  
   
- 當使用 SQL Server Native Client 10 （或更新版本），將繫結參數的型別`Decimal`， `Numeric`， `VarNumeric`， `DBDate`，或`DBTimeStamp`，您必須手動指定適當的標尺值。  
-  
-> [!NOTE]
->  不支援使用這個屬性，以強制資料傳遞至資料庫。 Round 截斷，或否則 coerce 資料傳遞至資料庫之前，請使用<xref:System.Math>類別屬於`System`之前指派值給參數的命名空間`Value`屬性。  
+ 當使用 SQL Server Native Client 10 （或更新版本），來繫結參數的型別`Decimal`， `Numeric`， `VarNumeric`， `DBDate`，或`DBTimeStamp`，您必須手動指定適當的調整值。  
   
 > [!NOTE]
->  隨附於.NET Framework 1.0 版的.NET framework 資料提供者不會驗證<xref:System.Data.OleDb.OleDbParameter.Precision%2A>或<xref:System.Data.OleDb.OleDbParameter.Scale%2A>的<xref:System.Decimal>參數值。 這可能會導致截斷的資料插入到資料來源。 如果您使用.NET Framework 1.0 版，驗證<xref:System.Data.OleDb.OleDbParameter.Precision%2A>和<xref:System.Data.OleDb.OleDbParameter>的<xref:System.Decimal>設定參數值之前的值。 <xref:System.Data.OleDb.OleDbParameter.Scale%2A> 值超過<xref:System.Decimal>參數的小數點位數仍然會被截斷。  
+>  不支援使用這個屬性，以強制轉型資料傳遞至資料庫。 若要 round、 截斷，否則將強制轉型的資料傳遞給資料庫之前，使用<xref:System.Math>類別一部分`System`之前指派值給參數的命名空間`Value`屬性。  
+  
+> [!NOTE]
+>  隨附於.NET Framework 1.0 版的.NET framework 資料提供者不會驗證<xref:System.Data.OleDb.OleDbParameter.Precision%2A>或是<xref:System.Data.OleDb.OleDbParameter.Scale%2A>的<xref:System.Decimal>參數值。 這會導致截斷的資料，要插入在資料來源。 如果您使用.NET Framework 1.0 版，驗證<xref:System.Data.OleDb.OleDbParameter.Precision%2A>並<xref:System.Data.OleDb.OleDbParameter>的<xref:System.Decimal>之前先設定參數值的值。 <xref:System.Data.OleDb.OleDbParameter.Scale%2A> 值超過<xref:System.Decimal>仍然會截斷參數小數位數。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其屬性的某些。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其部分屬性。  
   
 ```vb  
 Public Sub CreateOleDbParameter()  
@@ -892,6 +924,8 @@ public void CreateOleDbParameter()
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -904,24 +938,24 @@ public void CreateOleDbParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.OleDb.OleDbParameter.Size%2A>屬性適用於二進位和字串類型。  
+ <xref:System.Data.OleDb.OleDbParameter.Size%2A>屬性適用於二進位檔和字串型別。  
   
- 針對非字串資料類型和 ANSI 字串資料，<xref:System.Data.OleDb.OleDbParameter.Size%2A>屬性參考到的位元組數目。 Unicode 字串資料，<xref:System.Data.OleDb.OleDbParameter.Size%2A>指的是字元數。 字串的計數不包括結束的字元。  
+ 針對非字串資料類型和 ANSI 字串資料，<xref:System.Data.OleDb.OleDbParameter.Size%2A>屬性參考的位元組數目。 Unicode 字串資料，<xref:System.Data.OleDb.OleDbParameter.Size%2A>指的是字元數。 字串的計數不包含結束的字元。  
   
- 可變長度資料類型，<xref:System.Data.OleDb.OleDbParameter.Size%2A>說明資料傳輸至伺服器的最大數量。 例如，針對 Unicode 字串值，<xref:System.Data.OleDb.OleDbParameter.Size%2A>無法用來限制傳送給伺服器前, 100 個字元的資料量。  
+ 可變長度資料類型，<xref:System.Data.OleDb.OleDbParameter.Size%2A>說明資料傳輸到伺服器的最大數量。 例如，對於 Unicode 字串值，<xref:System.Data.OleDb.OleDbParameter.Size%2A>無法用來限制傳送至伺服器的前 100 個字元的資料量。  
   
- 針對雙向和輸出參數和傳回值，您必須設定的值<xref:System.Data.OleDb.OleDbParameter.Size%2A>。 這是不必要的輸入參數，而且如果未明確設定的值推斷，從指定之參數的實際大小參數化陳述式執行時。  
+ 針對雙向和輸出參數和傳回值，您必須設定的值<xref:System.Data.OleDb.OleDbParameter.Size%2A>。 這是不必要的輸入參數，以及如果未明確設定的值推斷而來從指定的參數的實際大小執行參數化陳述式。  
   
- <xref:System.Data.OleDb.OleDbParameter.DbType%2A>， <xref:System.Data.OleDb.OleDbParameter.OleDbType%2A>，和<xref:System.Data.OleDb.OleDbParameter.Size%2A>參數的屬性，可以藉由設定推斷<xref:System.Data.OleDb.OleDbParameter.Value%2A>。 因此，您不需要指定它們。 不過，它們不會顯示在<xref:System.Data.OleDb.OleDbParameter>屬性設定。 例如，如果已推斷參數的大小，<xref:System.Data.OleDb.OleDbParameter.Size%2A>陳述式執行之後未包含推斷的值。  
+ <xref:System.Data.OleDb.OleDbParameter.DbType%2A>， <xref:System.Data.OleDb.OleDbParameter.OleDbType%2A>，並<xref:System.Data.OleDb.OleDbParameter.Size%2A>能夠推斷參數的屬性，請設定<xref:System.Data.OleDb.OleDbParameter.Value%2A>。 因此，您不需要加以指定。 不過，不會公開在<xref:System.Data.OleDb.OleDbParameter>屬性設定。 例如，如果已推斷出參數的大小，<xref:System.Data.OleDb.OleDbParameter.Size%2A>陳述式執行之後未包含推斷的值。  
   
  固定長度資料類型，值<xref:System.Data.OleDb.OleDbParameter.Size%2A>會被忽略。 它可以擷取僅供參考之用，並且會傳回的位元組的提供者會使用傳輸伺服器參數的值時的最大數量。  
   
- 如果提供之值的大小<xref:System.Data.OleDb.OleDbParameter>超過指定<xref:System.Data.OleDb.OleDbParameter.Size%2A>、<xref:System.Data.OleDb.OleDbParameter.Value%2A>的<xref:System.Data.OleDb.OleDbParameter>包含指定的值，截斷大小為<xref:System.Data.OleDb.OleDbParameter>。  
+ 如果提供值的大小<xref:System.Data.OleDb.OleDbParameter>超過指定<xref:System.Data.OleDb.OleDbParameter.Size%2A>，則<xref:System.Data.OleDb.OleDbParameter.Value%2A>的<xref:System.Data.OleDb.OleDbParameter>包含指定的值的大小截斷<xref:System.Data.OleDb.OleDbParameter>。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其屬性的某些。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其部分屬性。  
   
 ```vb  
 Public Sub CreateOleDbParameter()  
@@ -961,6 +995,8 @@ public void CreateOleDbParameter()
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -973,14 +1009,14 @@ public void CreateOleDbParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當<xref:System.Data.OleDb.OleDbParameter.SourceColumn%2A>設而不是空字串，參數的值擷取自資料行的任何項目<xref:System.Data.OleDb.OleDbParameter.SourceColumn%2A>名稱。 如果<xref:System.Data.OleDb.OleDbParameter.Direction%2A>設`Input`，值取自<xref:System.Data.DataSet>。 如果<xref:System.Data.OleDb.OleDbParameter.Direction%2A>設`Output`，值取自資料來源。 A<xref:System.Data.OleDb.OleDbParameter.Direction%2A>的`InputOutput`是兩者的組合。  
+ 當<xref:System.Data.OleDb.OleDbParameter.SourceColumn%2A>設為空字串，參數的值以外的資料行從擷取的任何項目<xref:System.Data.OleDb.OleDbParameter.SourceColumn%2A>名稱。 如果<xref:System.Data.OleDb.OleDbParameter.Direction%2A>設定為`Input`，值取自<xref:System.Data.DataSet>。 如果<xref:System.Data.OleDb.OleDbParameter.Direction%2A>設為`Output`，該值為擷取自資料來源。 A<xref:System.Data.OleDb.OleDbParameter.Direction%2A>的`InputOutput`是兩者的組合。  
   
- 如需有關如何使用<xref:System.Data.OleDb.OleDbParameter.SourceColumn%2A>屬性，請參閱[DataAdapter 的參數](~/docs/framework/data/adonet/dataadapter-parameters.md)和[以 Dataadapter 更新資料來源](~/docs/framework/data/adonet/updating-data-sources-with-dataadapters.md)。  
+ 如需有關如何使用<xref:System.Data.OleDb.OleDbParameter.SourceColumn%2A>屬性，請參閱 < [DataAdapter 的參數](~/docs/framework/data/adonet/dataadapter-parameters.md)並[使用 Dataadapter 更新資料來源](~/docs/framework/data/adonet/updating-data-sources-with-dataadapters.md)。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其屬性的某些。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其部分屬性。  
   
 ```vb  
 Public Sub CreateOleDbParameter()  
@@ -1011,6 +1047,7 @@ public void CreateOleDbParameter()
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1023,22 +1060,22 @@ public void CreateOleDbParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.OleDb.OleDbParameter.SourceColumnNullMapping%2A> 正由<xref:System.Data.Common.DbCommandBuilder>正確處理可為 null 的資料行時，產生更新命令。 一般而言，使用<xref:System.Data.OleDb.OleDbParameter.SourceColumnNullMapping%2A>僅限於開發人員繼承自<xref:System.Data.Common.DbCommandBuilder>。  
+ <xref:System.Data.OleDb.OleDbParameter.SourceColumnNullMapping%2A> 會使用<xref:System.Data.Common.DbCommandBuilder>正確處理可為 null 的資料行時，產生更新命令。 一般而言，使用<xref:System.Data.OleDb.OleDbParameter.SourceColumnNullMapping%2A>限制為繼承自的開發人員<xref:System.Data.Common.DbCommandBuilder>。  
   
- <xref:System.Data.Common.DbCommandBuilder> 使用這個屬性來判斷來源資料行是否可為 null，並將此屬性設定為`true`是否可為 null，和`false`如果不是。 當<xref:System.Data.Common.DbCommandBuilder>會產生其 Update 陳述式，它會檢查<xref:System.Data.OleDb.OleDbParameter.SourceColumnNullMapping%2A>每個參數。 如果屬性是`true`，<xref:System.Data.Common.DbCommandBuilder>會產生類似下面的 WHERE 子句 （在這個查詢運算式中，"FieldName"代表欄位的名稱）：  
+ <xref:System.Data.Common.DbCommandBuilder> 使用這個屬性來判斷來源資料行是否可為 null，並將此屬性設定為`true`它是否可為 null，和`false`如果不是。 當<xref:System.Data.Common.DbCommandBuilder>是要產生其 Update 陳述式，它會檢查<xref:System.Data.OleDb.OleDbParameter.SourceColumnNullMapping%2A>每個參數。 如果屬性是`true`，<xref:System.Data.Common.DbCommandBuilder>產生 WHERE 子句，如下所示 （在這個查詢運算式中，"FieldName"代表欄位的名稱）：  
   
 ```  
 ((@IsNull_FieldName = 1 AND FieldName IS NULL) OR   
   (FieldName = @Original_FieldName))  
 ```  
   
- 如果<xref:System.Data.OleDb.OleDbParameter.SourceColumnNullMapping%2A>為 false，此欄位為<xref:System.Data.Common.DbCommandBuilder>會產生下列 WHERE 子句：  
+ 如果<xref:System.Data.OleDb.OleDbParameter.SourceColumnNullMapping%2A>為 false，欄位為<xref:System.Data.Common.DbCommandBuilder>會產生下列 WHERE 子句：  
   
 ```  
 FieldName = @OriginalFieldName  
 ```  
   
- 此外，@IsNull_FieldName包含 1，如果來源欄位包含 null 和 0 如果不存在。 這項機制可讓 SQL Server 中的效能最佳化，並提供可跨多個提供者的通用程式碼。  
+ 颾魤 ㄛ@IsNull_FieldName包含 1，如果來源欄位中包含 null，而 0 則。 這項機制可讓 SQL Server 中的效能最佳化，並提供適用於多個提供者的通用程式碼。  
   
  ]]></format>
         </remarks>
@@ -1057,6 +1094,8 @@ FieldName = @OriginalFieldName
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1069,12 +1108,12 @@ FieldName = @OriginalFieldName
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Data.OleDb.OleDbDataAdapter.UpdateCommand%2A>來判斷是否要將參數值設定為更新作業期間`Current`或`Original`。 這可讓更新的主索引鍵。 此屬性設定為版本<xref:System.Data.DataRow>供<xref:System.Data.DataRow.Item%2A>屬性，或<xref:System.Data.DataRow.GetChildRows%2A>方法<xref:System.Data.DataRow>物件。  
+ 供<xref:System.Data.OleDb.OleDbDataAdapter.UpdateCommand%2A>來判斷是否要將參數值設定為更新作業期間`Current`或`Original`。 這可讓更新的主索引鍵。 此屬性設定為新版<xref:System.Data.DataRow>供<xref:System.Data.DataRow.Item%2A>屬性，或<xref:System.Data.DataRow.GetChildRows%2A>方法<xref:System.Data.DataRow>物件。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其屬性的某些。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其部分屬性。  
   
 ```vb  
 Public Sub CreateOleDbParameter()  
@@ -1110,6 +1149,8 @@ public void CreateOleDbParameter()
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1139,6 +1180,8 @@ public void CreateOleDbParameter()
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -1164,6 +1207,8 @@ public void CreateOleDbParameter()
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
@@ -1185,20 +1230,20 @@ public void CreateOleDbParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 輸入參數的值繫結至<xref:System.Data.OleDb.OleDbCommand>傳送到伺服器。 輸出和傳回值參數，在完成設定值<xref:System.Data.OleDb.OleDbCommand>及之後<xref:System.Data.OleDb.OleDbDataReader>已關閉。  
+ 輸入參數的值繫結至<xref:System.Data.OleDb.OleDbCommand>傳送到伺服器。 輸出和傳回值參數，此值設定完成<xref:System.Data.OleDb.OleDbCommand>和<xref:System.Data.OleDb.OleDbDataReader>已關閉。  
   
- 當您傳送 null 參數值到伺服器時，您必須指定<xref:System.DBNull>、 不是 null。 系統中的 Null 值是沒有值的空物件。 <xref:System.DBNull> 用於表示 null 值。  
+ 當您將 null 參數值傳送至伺服器時，您必須指定<xref:System.DBNull>、 不是 null。 系統中的 Null 值是沒有值的空物件。 <xref:System.DBNull> 用於表示 null 值。  
   
- 如果應用程式指定的資料庫型別，繫結的值會轉換成該類型，提供者將資料傳送到伺服器時。 提供者會嘗試將值的任何類型的轉換，如果支援<xref:System.IConvertible>介面。 如果指定的型別不相容的值，可能導致轉換錯誤。  
+ 如果應用程式指定的資料庫型別，繫結的值會轉換成該類型，提供者將資料傳送到伺服器時。 提供者會嘗試將值的任何類型的轉換，如果它支援<xref:System.IConvertible>介面。 如果指定的型別不相容的值，可能會導致轉換錯誤。  
   
- 同時<xref:System.Data.OleDb.OleDbParameter.DbType%2A>和<xref:System.Data.OleDb.OleDbParameter.OleDbType%2A>屬性可用以推斷的值設定。  
+ 同時<xref:System.Data.OleDb.OleDbParameter.DbType%2A>和<xref:System.Data.OleDb.OleDbParameter.OleDbType%2A>屬性可以設定的值推斷而來。  
   
  <xref:System.Data.OleDb.OleDbParameter.Value%2A>屬性會覆寫的 Update 方法<xref:System.Data.IDbDataAdapter>。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其屬性的某些。  
+ 下列範例會建立<xref:System.Data.OleDb.OleDbParameter>並設定其部分屬性。  
   
 ```vb  
 Public Sub CreateOleDbParameter()  

@@ -1,11 +1,11 @@
 <Type Name="COMException" FullName="System.Runtime.InteropServices.COMException">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="d7ad1d0247e6cd46538471a90e584c3ddd82cba3" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="a1ebdd124805528cc6535036e5cb1afd5828facf" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36635072" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37470350" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class COMException : System.Runtime.InteropServices.ExternalException" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit COMException extends System.Runtime.InteropServices.ExternalException" />
@@ -25,6 +25,8 @@
   </AssemblyInfo>
   <AssemblyInfo>
     <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -48,28 +50,28 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Common language runtime 已知將 HRESULTs 轉換為.NET Framework 例外狀況，讓 COM 物件能將有意義的錯誤訊息傳回 managed 用戶端。 HRESULT 與例外狀況的對應也能運作，另一個方向的特定的 Hresult 傳回 unmanaged 用戶端。 對應的詳細資訊，請參閱[如何： 對應 Hresult 和例外狀況](~/docs/framework/interop/how-to-map-hresults-and-exceptions.md)。  
+ Common language runtime 會將讓有意義的錯誤資訊傳回給受管理的用戶端的 COM 物件以.NET Framework 例外狀況，已知的 HRESULTs 轉換。 例外狀況對應到 HRESULT 也另一個方向運作，藉由將特定的 Hresult 傳回給未受管理的用戶端。 對應的詳細資訊，請參閱 <<c0> [ 如何： 對應 Hresult 和例外狀況](~/docs/framework/interop/how-to-map-hresults-and-exceptions.md)。  
   
- 當執行階段遇到不熟悉的 HRESULT (沒有特定的對應例外狀況的 HRESULT) 時，就會擲回的執行個體<xref:System.Runtime.InteropServices.COMException>類別。 這個所有目的的例外狀況會公開任何例外狀況，相同的成員，並且會繼承公用<xref:System.Runtime.InteropServices.ExternalException.ErrorCode%2A>屬性包含 HRESULT 傳回呼叫端。 如果可執行階段錯誤訊息 (取自[IErrorInfo](https://msdn.microsoft.com/library/windows/desktop/ms723041\(v=vs.85\).aspx)介面或`Err`物件在 Visual Basic 中，或在某些情況下，從作業系統)，則會傳回訊息給呼叫者。 但是，如果 COM 組件開發人員無法納入錯誤訊息，執行階段則會傳回八位元的 HRESULT 取代訊息字串。 取得 HRESULT 可讓呼叫端判斷泛型例外狀況的原因。  
+ 當執行階段遇到不熟悉的 HRESULT (沒有特定的對應例外狀況的 HRESULT) 時，就會擲回的執行個體<xref:System.Runtime.InteropServices.COMException>類別。 此全方位的例外狀況會公開任何例外狀況中，相同的成員，並繼承公用<xref:System.Runtime.InteropServices.ExternalException.ErrorCode%2A>被呼叫端所傳回的屬性，其中包含 HRESULT。 如果錯誤訊息可供執行階段 (取自[IErrorInfo](https://msdn.microsoft.com/library/windows/desktop/ms723041\(v=vs.85\).aspx)介面或`Err`在 Visual Basic 中，或在某些情況下，從作業系統的物件)，則會傳回訊息給呼叫者。 但是，如果 COM 組件開發人員無法納入錯誤訊息，執行階段則會傳回八位元的 HRESULT 取代訊息字串。 取得 HRESULT 可讓呼叫端判斷泛型例外狀況的原因。  
   
 ## <a name="handling-a-comexception-exception"></a>處理 COMException 例外狀況  
  以下是疑難排解的一些考量<xref:System.Runtime.InteropServices.COMException>例外狀況。  
   
- 請檢查<xref:System.Runtime.InteropServices.ExternalException.ErrorCode%2A>屬性  
- 當執行階段遇到不熟悉的 HRESULT，並擲回<xref:System.Runtime.InteropServices.COMException>例外狀況，<xref:System.Runtime.InteropServices.ExternalException.ErrorCode%2A>屬性包含錯誤訊息或錯誤訊息，無法使用，八位元 HRESULT 值。  HRESULT 值或錯誤訊息可協助您判斷例外狀況的原因。  
+ 檢查<xref:System.Runtime.InteropServices.ExternalException.ErrorCode%2A>屬性  
+ 當執行階段遇到不熟悉的 HRESULT，而且會擲回<xref:System.Runtime.InteropServices.COMException>例外狀況，<xref:System.Runtime.InteropServices.ExternalException.ErrorCode%2A>屬性包含錯誤訊息，或如果無法使用，一則錯誤訊息的八位元 HRESULT 值。  錯誤訊息或 HRESULT 值可協助您判斷例外狀況的原因。  
   
- 如需 HRESULT 值的清單，請參閱[常見的 HRESULT 值](https://msdn.microsoft.com/library/windows/desktop/aa378137\(v=vs.85\).aspx)。  
+ 如需 HRESULT 值的清單，請參閱 <<c0> [ 常見的 HRESULT 值](https://msdn.microsoft.com/library/windows/desktop/aa378137\(v=vs.85\).aspx)。  
   
  晚期繫結引數和 Microsoft Office 物件  
- 將晚期繫結引數傳遞至 Microsoft Office 物件的方法<xref:System.Runtime.InteropServices.COMException>這個物件若是 COM 物件時，可能會擲回例外狀況。 晚期繫結器 (Binder) 會假設這個方法呼叫包含 `ByRef` 參數，並假設您傳遞的屬性具 有 `set` 存取子。 如果屬性不存在，就會產生.NET Framework<xref:System.MissingMethodException>例外狀況 (與`CORE_E_MISSINGMETHOD`HRESULT)。 若要解決這個行為，請使用早期繫結的物件，或傳遞變數而不要傳遞物件的屬性。  
+ 將晚期繫結引數傳遞至方法的 Microsoft Office 物件時<xref:System.Runtime.InteropServices.COMException>物件是 COM 物件時，可能會擲回例外狀況。 晚期繫結器 (Binder) 會假設這個方法呼叫包含 `ByRef` 參數，並假設您傳遞的屬性具 有 `set` 存取子。 如果屬性不存在，就會產生.NET Framework<xref:System.MissingMethodException>例外狀況 (與`CORE_E_MISSINGMETHOD`HRESULT)。 若要解決這個行為，請使用早期繫結的物件，或傳遞變數而不要傳遞物件的屬性。  
   
  Visual Studio 和裝載處理序  
- COM 用於 Visual Studio 之間的通訊和[裝載處理序](https://msdn.microsoft.com/library/ms185331.aspx)。 因為它會呼叫在程式碼執行之前使用[CoInitializeSecurity](https://msdn.microsoft.com/library/windows/desktop/ms693736\(v=vs.85\).aspx)造成擲回這個例外狀況。  
+ COM 用於 Visual Studio 之間的通訊並[裝載處理序](https://msdn.microsoft.com/library/ms185331.aspx)。 因為正在使用它之前的程式碼執行時，呼叫[CoInitializeSecurity](https://msdn.microsoft.com/library/windows/desktop/ms693736\(v=vs.85\).aspx)造成擲回這個例外狀況。  
   
  在某些情況下，系統管理員身分執行 Visual Studio 可解決此問題。 您也可以[停用裝載處理序](https://msdn.microsoft.com/library/ms185330.aspx)。  
   
 ## <a name="throwing-a-comexception-exception"></a>擲回 COMException 例外狀況  
- 雖然您可以使用<xref:System.Runtime.InteropServices.COMException>類別，以特定的 Hresult 傳回 unmanaged 用戶端，擲回特定的.NET Framework 例外狀況會優於使用泛型例外狀況。 請考慮 managed 用戶端，以及未受管理的用戶端可以使用您的.NET Framework 物件，並擲回 managed 呼叫端的 HRESULT 是較不易於比擲回例外狀況。  
+ 雖然您可以使用<xref:System.Runtime.InteropServices.COMException>類別，以傳回特定的 Hresult 來擲回特定的.NET Framework 例外狀況的 unmanaged 用戶端會比使用一般的例外狀況更好。 請考慮受管理用戶端，以及未受管理的用戶端可以使用您的.NET Framework 物件，並擲回 managed 呼叫端的 HRESULT 是較不易於瞭解比擲回例外狀況。  
   
  ]]></format>
     </remarks>
@@ -109,6 +111,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -154,6 +158,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -192,6 +198,8 @@
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -216,7 +224,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 進行還原序列化 (Deserialization) 期間會呼叫這個建構函式，以便重新構成經由資料流傳送的例外狀況物件。 如需詳細資訊，請參閱[XML 和 SOAP 序列化](~/docs/standard/serialization/xml-and-soap-serialization.md)。  
+ 進行還原序列化 (Deserialization) 期間會呼叫這個建構函式，以便重新構成經由資料流傳送的例外狀況物件。 如需詳細資訊，請參閱 < [XML 和 SOAP 序列化](~/docs/standard/serialization/xml-and-soap-serialization.md)。  
   
  <xref:System.Runtime.InteropServices.COMException> 繼承自 <xref:System.Runtime.InteropServices.ExternalException>。  
   
@@ -247,6 +255,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -300,6 +310,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -319,7 +331,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這<xref:System.Runtime.InteropServices.COMException>建構函式設定的基底訊息與錯誤碼。  
+ 這<xref:System.Runtime.InteropServices.COMException>建構函式設定的基底的訊息，並告知錯誤碼。  
   
  <xref:System.Runtime.InteropServices.COMException> 繼承自 <xref:System.Runtime.InteropServices.ExternalException>。 下表顯示這個建構函式如何設定的屬性<xref:System.Exception>物件。  
   
@@ -342,6 +354,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
