@@ -1,11 +1,11 @@
 <Type Name="TaskScheduler" FullName="System.Threading.Tasks.TaskScheduler">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="4d9adf13c8a7e851e5512c4b8b0e6ada78afa563" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="9101875b3c768590b23db0c0c08ee17d09fc5e38" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36407616" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37609218" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class TaskScheduler" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit TaskScheduler extends System.Object" />
@@ -54,72 +54,72 @@
   
  預設工作排程器是以 .NET Framework 4 執行緒集區為基礎，其可提供工作竊取 (以達到平衡負載)、執行緒插入/停用 (以達到最大輸送量)，以及整體良好效能。 這應該足以應付大多數的情況。  
   
- <xref:System.Threading.Tasks.TaskScheduler>類別也可做為所有可自訂的排程邏輯的擴充點。  這包括機制，例如如何排程工作執行，以及如何排程的工作應該會公開給偵錯工具。 如果您需要特殊功能，您可以建立自訂排程器，並啟用針對特定工作或查詢。  
+ <xref:System.Threading.Tasks.TaskScheduler>類別也可做為所有可自訂的排程邏輯的擴充點。  這包括機制，例如如何排程執行的工作，以及如何排定的工作應該公開給偵錯工具。 如果您需要特殊的功能，您可以建立自訂排程器，並啟用針對特定工作或查詢。  
   
  本主題內容：  
 [預設工作排程器和執行緒集區](#Default)  
  [全域佇列與本機佇列](#Queues)  
  [工作竊取](#Stealing)  
  [長時間執行的工作](#LongRunning)  
- [工作內嵌](#Inlining)  
+ [內嵌工作](#Inlining)  
 [指定同步處理內容](#Sync)  
   
 <a name="Default"></a>   
 ## <a name="the-default-task-scheduler-and-the-thread-pool"></a>預設工作排程器和執行緒集區  
- 工作平行程式庫和 PLINQ 的預設排程器會使用.NET Framework 執行緒集區，由<xref:System.Threading.ThreadPool>類別，以佇列並執行工作。 執行緒集區會使用所提供的資訊<xref:System.Threading.Tasks.Task>有效率地支援細部平行處理原則 （存留時間短暫的工作單位），平行工作和查詢通常所代表的類型。  
+ 工作平行程式庫和 PLINQ 的預設排程器會使用.NET Framework 執行緒集區，由<xref:System.Threading.ThreadPool>類別，以排入佇列，並執行工作。 執行緒集區會使用所提供的資訊<xref:System.Threading.Tasks.Task>有效率地支援細部平行處理原則 （存留較短的工作單位） 的平行工作和查詢通常代表的型別。  
   
 <a name="Queues"></a>   
 ### <a name="the-global-queue-vs-local-queues"></a>全域佇列與本機佇列  
- 執行緒集區會維護全域 FIFO （先進先出） 工作在每個應用程式定義域中為執行緒的佇列。 每當程式呼叫<xref:System.Threading.ThreadPool.QueueUserWorkItem%2A?displayProperty=nameWithType>(或<xref:System.Threading.ThreadPool.UnsafeQueueUserWorkItem%2A?displayProperty=nameWithType>) 方法，這個方法的工作是放入這個共用佇列和最終取消排入佇列到下一個可用的執行緒。 從.NET Framework 4 開始，此佇列已改良為使用無鎖定演算法類似<xref:System.Collections.Concurrent.ConcurrentQueue%601>類別。 藉由使用這種無鎖定實作，執行緒集區會花較少的時間，當它放入或佇列工作項目。 這項效能優點可供使用執行緒集區的所有程式。  
+ 執行緒集區會維護全域 FIFO （先進先出） 工作在每個應用程式定義域中為執行緒的佇列。 每當程式呼叫<xref:System.Threading.ThreadPool.QueueUserWorkItem%2A?displayProperty=nameWithType>(或<xref:System.Threading.ThreadPool.UnsafeQueueUserWorkItem%2A?displayProperty=nameWithType>) 方法，工作放入這個共用佇列，最後再從佇列到下一個可用的執行緒。 從.NET Framework 4 開始，此佇列已改良為使用類似的無鎖定演算法<xref:System.Collections.Concurrent.ConcurrentQueue%601>類別。 藉由使用這種無鎖定實作，執行緒集區會花較少的時間，放入或移出佇列的工作項目。 此效能優點是能夠使用執行緒集區的所有程式。  
   
- 如同任何其他的工作 (Work) 項目，最上層工作 (Task) (也就是不是在其他工作 (Task) 的內容中建立的工作 (Task)) 會放入全域佇列中。 不過，巢狀工作或子工作 (也就是在其他工作的內容中建立的工作) 的處理方式則相當不同。 子工作或巢狀工作會放入執行父工作的執行緒專屬的本機佇列中。 父工作可以是最上層工作，也可以是其他工作的子工作。 這個執行緒在準備好要處理更多工作時，會先查看本機佇列。 如果本機佇列中有待處理的工作項目，則可以快速存取這些工作項目。 後進先出順序 (LIFO) 保留快取位置並減少爭用情形會存取本機佇列。 如需子工作和巢狀的工作的詳細資訊，請參閱[附加與中斷連結子工作](~/docs/standard/parallel-programming/attached-and-detached-child-tasks.md)。  
+ 如同任何其他的工作 (Work) 項目，最上層工作 (Task) (也就是不是在其他工作 (Task) 的內容中建立的工作 (Task)) 會放入全域佇列中。 不過，巢狀工作或子工作 (也就是在其他工作的內容中建立的工作) 的處理方式則相當不同。 子工作或巢狀工作會放入執行父工作的執行緒專屬的本機佇列中。 父工作可以是最上層工作，也可以是其他工作的子工作。 這個執行緒在準備好要處理更多工作時，會先查看本機佇列。 如果本機佇列中有待處理的工作項目，則可以快速存取這些工作項目。 本機佇列存取後進先出順序 (LIFO) 來保留快取位置，並減少爭用情形。 如需子工作和巢狀的工作的詳細資訊，請參閱[附加與中斷連結子工作](~/docs/standard/parallel-programming/attached-and-detached-child-tasks.md)。  
   
- 使用本機佇列不僅可減少在全域佇列，不足的壓力，也會利用資料位置。 工作項目，在本機佇列經常參考的實體上彼此靠近會在記憶體中資料結構。 在這些情況下，資料便已經快取中之後第一項工作已執行，而可供快速存取。 同時[平行 LINQ (PLINQ)](~/docs/standard/parallel-programming/parallel-linq-plinq.md)和<xref:System.Threading.Tasks.Parallel>類別，使用巢狀工作和子工作，並且利用本機工作佇列達到處理速度明顯加快。  
+ 使用本機佇列不僅可減少全域佇列中，不足的壓力，也會利用資料位置。 在本機的工作項目排入佇列經常在記憶體中實際上是彼此接近的參考資料結構。 在這些情況下，資料已經在快取之後的第一個工作已經執行，而且可以快速存取。 兩者[平行 LINQ (PLINQ)](~/docs/standard/parallel-programming/parallel-linq-plinq.md)而<xref:System.Threading.Tasks.Parallel>廣泛，類別使用巢狀工作和子工作，並使用本機工作佇列達到顯著的加速效果。  
   
 <a name="Stealing"></a>   
 ### <a name="work-stealing"></a>工作竊取  
- 從.NET Framework 4 開始，執行緒集區也提供了工作竊取演算法，協助確保沒有任何執行緒會有某些閒置而其他人仍有工作在佇列。 執行緒集區的執行緒在準備好要處理更多工作時，會先查看自己本機佇列的開頭，接著查看全域佇列，然後再查看其他執行緒的本機佇列。 如果在其他執行緒的本機佇列中發現了工作項目，它會先套用啟發學習法，確定可有效率地執行工作。 如果可以它將佇列佇列工作項目 （以 FIFO 順序） 與 tail。 這樣可以減少本機佇列爭用的情形發生，並保留資料位置。 此架構有助於執行緒集區達到負載平衡工作比舊版更有效率。  
+ 從.NET Framework 4 開始，執行緒集區也提供工作竊取演算法，可協助您確認沒有任何執行緒會有某些閒置而其他人仍有工作在其佇列。 執行緒集區的執行緒在準備好要處理更多工作時，會先查看自己本機佇列的開頭，接著查看全域佇列，然後再查看其他執行緒的本機佇列。 如果在其他執行緒的本機佇列中發現了工作項目，它會先套用啟發學習法，確定可有效率地執行工作。 如果可以它會移出佇列工作中的項目 （以 FIFO 順序） 的結尾。 這樣可以減少本機佇列爭用的情形發生，並保留資料位置。 這個架構會讓執行緒集區進行負載平衡工作比舊版更有效率。  
   
 <a name="LongRunning"></a>   
 ### <a name="long-running-tasks"></a>長時間執行的工作  
- 您可以明確防止將工作放入本機佇列中。 例如，您可能知道某個工作項目會執行相當長的一段時間，而可能阻礙本機佇列上所有其他工作項目的進度。 在這種情況下，您可以指定 <xref:System.Threading.Tasks.TaskCreationOptions?displayProperty=nameWithType> 選項，提示排程器可能需要再加入一個執行緒來執行工作，才不會阻礙本機佇列上其他執行緒或工作項目的進度。 使用此選項您執行緒集區完全避免，包括全域和本機佇列。  
+ 您可以明確防止將工作放入本機佇列中。 例如，您可能知道某個工作項目會執行相當長的一段時間，而可能阻礙本機佇列上所有其他工作項目的進度。 在這種情況下，您可以指定 <xref:System.Threading.Tasks.TaskCreationOptions?displayProperty=nameWithType> 選項，提示排程器可能需要再加入一個執行緒來執行工作，才不會阻礙本機佇列上其他執行緒或工作項目的進度。 使用此選項您避免在執行緒集區完全，包括全域和本機佇列。  
   
 <a name="Inlining"></a>   
-### <a name="task-inlining"></a>工作內嵌  
- 在某些情況下時<xref:System.Threading.Tasks.Task>等候是 on 時，它可能會執行以同步方式執行等候作業的執行緒上。 這可以提升效能，這樣就不需要其他的執行緒，並改為使用現有的執行緒，否則會封鎖。 若要避免回到錯誤，只會執行內嵌工作在相關執行緒的本機佇列中發現等候目標時。  
+### <a name="task-inlining"></a>內嵌工作  
+ 在某些情況下當<xref:System.Threading.Tasks.Task>就等著，它可能會執行以同步方式執行等候作業的執行緒上。 這可以提升效能，這樣就不需要額外的執行緒，並改為使用現有的執行緒，否則會封鎖。 若要避免之後回到錯誤，內嵌的工作才會發生相關執行緒的本機佇列中發現等候目標時。  
   
 <a name="Sync"></a>   
 ## <a name="specifying-a-synchronization-context"></a>指定同步處理內容  
  您可以使用 <xref:System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext%2A?displayProperty=nameWithType> 方法，指定應該將工作排定在特定執行緒上執行。 在 Windows Form 和 Windows Presentation Foundation 等架構中，只有在當初建立使用者介面物件的執行緒上執行的程式碼能夠存取該 UI 物件，因此很適合使用這個方法。  
   
- 下列範例會使用<xref:System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext%2A?displayProperty=nameWithType>來排程工作，以建立使用者介面 (UI) 控制項的相同執行緒上的 Windows Presentation Foundation (WPF) 應用程式中的方法。   此範例會建立從指定的目錄中隨機選取的映像的馬賽克。 WPF 物件可用來載入及調整影像的大小。 若要使用的工作接著會傳遞未經處理的像素為單位<xref:System.Threading.Tasks.Parallel.For%2A>在大型的單一位元組陣列中寫入的像素資料的迴圈。 因為沒有兩個磚會佔據相同的陣列項目，不就需要任何同步處理。 也可以將圖格寫入任何順序，因為它們的位置計算獨立於任何其他磚。 大型陣列接著傳遞給像素資料載入影像控制項的位置，在 UI 執行緒執行的工作。  
+ 下列範例會使用<xref:System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext%2A?displayProperty=nameWithType>排程的工作建立使用者介面 (UI) 控制項的相同執行緒上的 Windows Presentation Foundation (WPF) 應用程式中的方法。   此範例會建立 mosaic 從指定的目錄中隨機選取的映像。 WPF 物件會用來載入和調整影像大小。 未經處理的像素接著會傳遞至工作會使用<xref:System.Threading.Tasks.Parallel.For%2A>迴圈，以像素資料寫入大型的單一位元組陣列。 任何同步處理不是必要的因為沒有任何兩個磚佔據相同的陣列項目。 圖格也依照任何順序寫入，因為它們的位置計算獨立於任何其他的圖格。 大型的陣列然後傳遞給像素資料載入影像控制項的位置在 UI 執行緒執行的工作。  
   
- 這個範例會將在 UI 執行緒外的資料移動、 加以修改使用平行迴圈和<xref:System.Threading.Tasks.Task>物件，然後再將其傳遞回 UI 執行緒執行的工作。 這種方法時，您必須使用工作平行程式庫來執行作業，不支援的 WPF 應用程式開發介面，或者不夠快。 若要建立映像馬賽克 WPF 中的另一種方式是使用<xref:System.Windows.Controls.WrapPanel?displayProperty=nameWithType>控制，並將影像加入至它。 <xref:System.Windows.Controls.WrapPanel>處理定位圖格的工作。 不過，這項工作只能在 UI 執行緒上執行。  
+ 此範例會將在 UI 執行緒外的資料移動、 修改使用平行迴圈和<xref:System.Threading.Tasks.Task>物件，然後再將它傳遞回 UI 執行緒執行的工作。 當您必須使用工作平行程式庫來執行作業，不支援由 WPF API，或不夠快，則這個方法會很有用。 在 WPF 中建立的映像 mosaic 的另一種方式是使用<xref:System.Windows.Controls.WrapPanel?displayProperty=nameWithType>控制項，並將影像加入至它。 <xref:System.Windows.Controls.WrapPanel>處理定位的圖格的工作。 不過，這項工作只可以在 UI 執行緒上執行。  
   
  [!code-csharp[TPL_SyncContext#01](~/samples/snippets/csharp/VS_Snippets_Misc/tpl_synccontext/cs/mainwindow.xaml.cs#01)]
  [!code-vb[TPL_SyncContext#01](~/samples/snippets/visualbasic/VS_Snippets_Misc/tpl_synccontext/vb/MainWindow.xaml.vb#01)]  
   
- 若要建立範例，在 Visual Studio 中建立 WPF 應用程式專案，並將它指派您選擇的名稱。 然後執行下列作業：  
+ 若要建立範例，在 Visual Studio 中建立 WPF 應用程式專案，並將它指派您所選擇的名稱。 然後執行下列作業：  
   
-1.  在 [設計] 檢視中，拖曳<xref:System.Windows.Controls.Image>控制項從**工具箱**至設計介面。 在 [XAML] 檢視中，指定水平對齊方式，為 「 左 」。 因為控制項在執行階段動態調整大小並不重要。 接受預設名稱，「 影像 」。  
+1.  在 [設計] 檢視中，拖曳<xref:System.Windows.Controls.Image>控制項從**工具箱**至設計介面。 在 XAML 檢視中，指定 水平對齊方式，為"Left"。 因為控制項在執行階段動態調整大小並不重要。 接受預設名稱，"影像"。  
   
-2.  拖曳<xref:System.Windows.Controls.Button>控制項從**工具箱**到左的應用程式視窗的下方。 按兩下這個按鈕，新增<xref:System.Windows.Controls.Primitives.ButtonBase.Click>事件處理常式。 在 [XAML] 檢視中，指定<xref:System.Windows.Controls.ContentControl.Content%2A>按鈕為 「 讓馬賽克 」，並指定其為 「 左 」 的水平對齊方式的屬性。 接受預設名稱，"button"。  
+2.  拖曳<xref:System.Windows.Controls.Button>控制項從**工具箱**到應用程式視窗左側的下半部。 按兩下按鈕以新增<xref:System.Windows.Controls.Primitives.ButtonBase.Click>事件處理常式。 在 [XAML] 檢視中，指定<xref:System.Windows.Controls.ContentControl.Content%2A>按鈕 「 讓馬賽克 」，並指定"Left"作為其水平對齊方式的屬性。 接受預設名稱，"button"。  
   
-3.  這個範例中的程式碼取代 MainWindow.xaml.cs 或 MainWindow.xaml.vb 檔案的整個內容。 請確定工作區的名稱符合專案名稱。  
+3.  MainWindow.xaml.cs 或 MainWindow.xaml.vb 檔案的整個內容取代這個範例的程式碼。 請確定工作區的名稱符合專案名稱。  
   
-4.  此範例會從名為 C:\Users\Public\Pictures\Sample 圖片的目錄中讀取 JPEG 影像\\。 建立目錄和置於一些映像，或變更來參照其他包含映像的目錄路徑。  
+4.  此範例會讀取名為雰枆 C:\Users\Public\Pictures\Sample Pictures 目錄中的 JPEG 影像\\。 建立目錄和放置一些映像，或變更以指向其他包含映像的目錄路徑。  
   
- 這個範例有一些限制。 例如，支援只有 32-位元-每個像素映像。其他格式的映像已損毀的<xref:System.Windows.Media.Imaging.BitmapImage>調整大小作業期間的物件。 此外，來源映像都必須大於並排顯示大小。 您可以將進一步的練習中，新增功能，以處理多個像素格式和檔案大小。  
+ 此範例中會有一些限制。 例如，支援只有 32-位元-每個像素映像;其他格式的映像已損毀的<xref:System.Windows.Media.Imaging.BitmapImage>調整大小作業期間的物件。 此外，原始碼映像全都必須大於的並排顯示大小。 為進一步的練習中，您可以新增功能，以處理多個像素格式和檔案大小。  
   
    
   
 ## Examples  
- 下列範例取自[使用.NET Framework 4 進行平行程式設計的範例](http://go.microsoft.com/fwlink/?LinkID=165717)MSDN Code Gallery 網站上。  它會建立自訂工作排程器，限制應用程式所使用的執行緒數目。 然後會啟動兩組工作，並會顯示有關工作和執行工作的執行緒資訊。  
+ 下列範例取自[使用.NET Framework 4 進行平行程式設計的範例](http://go.microsoft.com/fwlink/?LinkID=165717)MSDN Code Gallery 網站上。  它會建立自訂工作排程器，以限制應用程式所使用的執行緒數目。 然後啟動兩組工作，並顯示工作和工作執行所在之執行緒的相關資訊。  
   
  [!code-csharp[TPL_Schedulers#02](~/samples/snippets/csharp/VS_Snippets_Misc/tpl_schedulers/cs/limitex1.cs#02)]
  [!code-vb[TPL_Schedulers#02](~/samples/snippets/visualbasic/VS_Snippets_Misc/tpl_schedulers/vb/module2.vb#02)]  
   
- 此外，數個範例工作排程器上可用的程式碼庫：[使用.NET Framework 4 進行平行程式設計的範例](http://go.microsoft.com/fwlink/?LinkID=165717)。  
+ 此外，數個範例工作排程器可在程式碼庫上：[使用.NET Framework 4 進行平行程式設計的範例](http://go.microsoft.com/fwlink/?LinkID=165717)。  
   
  ]]></format>
     </remarks>
@@ -240,10 +240,31 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如需詳細資訊，請參閱[工作排程器](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65)。  
+ 如需詳細資訊，請參閱 <<c0> [ 工作排程器](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65)。  
   
  ]]></format>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~TaskScheduler ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.Tasks.TaskScheduler.Finalize" />
+      <MemberSignature Language="VB.NET" Value="Finalize ()" />
+      <MemberSignature Language="C++ CLI" Value="!TaskScheduler ()" />
+      <MemberSignature Language="F#" Value="override this.Finalize : unit -&gt; unit" Usage="taskScheduler.Finalize " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromCurrentSynchronizationContext">
@@ -284,9 +305,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 所有<xref:System.Threading.Tasks.Task>佇列所傳回的執行個體將會執行排程器，透過呼叫<xref:System.Threading.SynchronizationContext.Post%2A>該內容上的方法。  
+ 所有<xref:System.Threading.Tasks.Task>佇列所傳回的執行個體將會執行排程器，透過呼叫<xref:System.Threading.SynchronizationContext.Post%2A>在內容上的方法。  
   
- 如需詳細資訊，請參閱[工作排程器](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65)。  
+ 如需詳細資訊，請參閱 <<c0> [ 工作排程器](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65)。  
   
  ]]></format>
         </remarks>
@@ -336,9 +357,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 類別衍生自<xref:System.Threading.Tasks.TaskScheduler>會實作這個方法，以支援與偵錯工具整合。 這個方法就只會叫用.NET Framework 偵錯工具要求資料的存取權時。 將偵錯公用程式來存取工作可周遊的可列舉傳回目前已排入這個排程器，啟用偵錯工具提供這項資訊的使用者介面中的表示法。  
+ 類別衍生自<xref:System.Threading.Tasks.TaskScheduler>會實作這個方法，以支援偵錯工具整合。 這個方法會只叫用.NET Framework 偵錯工具要求資料的存取權時。 將偵錯公用程式來存取工作可周遊的可列舉值傳回目前已排入至這個排程器，讓偵錯工具提供這項資訊的使用者介面中的表示法。  
   
- 請務必注意，呼叫這個方法時，所有其他的執行緒程序中將會凍結。 因此，務必避免與其他可能會導致封鎖的執行緒同步處理。 如果同步處理是必要的而且您無法取得鎖定，此方法中的，然後您應該擲回例外狀況，讓偵錯工具不會不會停止回應。 下列範例顯示 C# 中的一個可能的方法：  
+ 請務必請注意，呼叫這個方法時，此程序中的所有其他執行緒就會被凍結。 因此，務必避免與其他可能會導致封鎖的執行緒同步處理。 如果同步處理是必要的而且您無法取得這個方法中的鎖定，然後您應該擲回例外狀況，讓偵錯工具不會停止回應。 下列範例會示範一個可能的方法，在 C# 中：  
   
 ```  
 protected override IEnumerable<Task> GetScheduledTasks()  
@@ -359,11 +380,11 @@ protected override IEnumerable<Task> GetScheduledTasks()
     }}  
 ```  
   
- 此外，這個方法，並傳回列舉必須修改任何全域可見狀態。  
+ 此外，這個方法，並傳回列舉不能修改任何全域可見狀態。  
   
- 傳回可列舉應該永遠不會是 null。 如果目前沒有任何佇列的工作，應該改為傳回空列舉。  
+ 傳回可列舉應該絕不會是 null。 如果目前沒有任何已排入佇列的工作，應該改為傳回空的可列舉。  
   
- 開發人員實作自訂的偵錯工具不應該直接呼叫這個方法，但是應該使用內部包裝函式方法`GetScheduledTasksForDebugger`改用： `internal Task[] GetScheduledTasksForDebugger()`。 這個包裝函式方法會傳回工作，而不是可列舉的陣列。 若要擷取作用中排程器的清單，請使用內部的方法`internal static TaskScheduler[] GetTaskSchedulersForDebugger()`。 這個靜態方法會傳回所有作用中的陣列<xref:System.Threading.Tasks.TaskScheduler>執行個體。 然後您可以使用`GetScheduledTasksForDebugger`擷取其排定工作的清單每個排程器執行個體。  
+ 開發人員要實作自訂的偵錯工具不應該直接呼叫這個方法，但是應該使用的內部包裝函式方法`GetScheduledTasksForDebugger`改為： `internal Task[] GetScheduledTasksForDebugger()`。 這個包裝函式方法會傳回工作，而不是可列舉陣列。 若要擷取一份作用中排程器，請使用內部的方法`internal static TaskScheduler[] GetTaskSchedulersForDebugger()`。 這個靜態方法傳回的所有作用中的陣列<xref:System.Threading.Tasks.TaskScheduler>執行個體。 您可以接著使用`GetScheduledTasksForDebugger`來擷取它的已排程的工作清單的每個排程器執行個體上。  
   
  ]]></format>
         </remarks>
@@ -407,7 +428,7 @@ protected override IEnumerable<Task> GetScheduledTasks()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如需詳細資訊，請參閱[工作排程器](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65)。  
+ 如需詳細資訊，請參閱 <<c0> [ 工作排程器](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65)。  
   
  ]]></format>
         </remarks>
@@ -450,7 +471,7 @@ protected override IEnumerable<Task> GetScheduledTasks()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如需詳細資訊，請參閱[工作排程器](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65)。  
+ 如需詳細資訊，請參閱 <<c0> [ 工作排程器](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65)。  
   
  ]]></format>
         </remarks>
@@ -500,11 +521,11 @@ protected override IEnumerable<Task> GetScheduledTasks()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 類別衍生自<xref:System.Threading.Tasks.TaskScheduler>實作這個方法，以接受工作排程器上進行排程。  
+ 類別衍生自<xref:System.Threading.Tasks.TaskScheduler>實作這個方法，以接受 工作排程器上進行排程。  
   
- 一般的實作會將工作儲存在內部資料結構中，將會在某段時間在未來執行這些工作的執行緒服務。  
+ 一般實作會將工作儲存在內部資料結構中，會由會在未來的某個時間點執行這些工作的執行緒。  
   
- 這個方法僅用於.NET Framework 所呼叫，並不應該直接由衍生類別呼叫。 這是所需的維護系統的一致性。  
+ 這個方法只是由.NET Framework 呼叫，並不應該直接由衍生類別呼叫。 這是必要的維護系統的一致性。  
   
  ]]></format>
         </remarks>
@@ -557,9 +578,9 @@ protected override IEnumerable<Task> GetScheduledTasks()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如需詳細資訊，請參閱[工作排程器](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65)。  
+ 如需詳細資訊，請參閱 <<c0> [ 工作排程器](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65)。  
   
- 這個方法可能會執行 finally 區塊。因此它應該傳回盡快讓該任何資源，例如<xref:System.Threading.CancellationTokenRegistration>可以及時的處置物件。  
+ 這個方法可能會執行 finally 區塊;因此它應該傳回儘速因此讓任何資源，例如<xref:System.Threading.CancellationTokenRegistration>可以及時的處置物件。  
   
  ]]></format>
         </remarks>
@@ -612,9 +633,9 @@ protected override IEnumerable<Task> GetScheduledTasks()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 排程器的實作所提供的<xref:System.Threading.Tasks.Task>執行個體要透過執行<xref:System.Threading.Tasks.TaskScheduler.QueueTask%2A>方法或<xref:System.Threading.Tasks.TaskScheduler.TryExecuteTaskInline%2A>方法。 當排程器認為適合用來執行所提供的工作，<xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A>應該用來執行這項操作。 TryExecuteTask 處理執行的工作，包括動作引動過程、 例外狀況處理、 狀態管理和生命週期控制項的所有層面。  
+ 排程器實作所隨附<xref:System.Threading.Tasks.Task>執行個體，以透過執行<xref:System.Threading.Tasks.TaskScheduler.QueueTask%2A>方法或<xref:System.Threading.Tasks.TaskScheduler.TryExecuteTaskInline%2A>方法。 當排程器認為適合用來執行所提供的工作，<xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A>應該用來執行這項操作。 TryExecuteTask 處理執行的工作，包括動作引動過程、 例外狀況處理、 狀態管理和生命週期控制的所有層面。  
   
- <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A> 必須僅用於由.NET Framework 基礎結構提供給這個排程器工作。 它不應該用來執行任意的工作，透過自訂機制取得。  
+ <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A> 必須只用於由.NET Framework 基礎結構提供給這個排程器的工作。 它不應該用來執行任意工作，透過自訂機制取得。  
   
  ]]></format>
         </remarks>
@@ -669,13 +690,13 @@ protected override IEnumerable<Task> GetScheduledTasks()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 類別衍生自<xref:System.Threading.Tasks.TaskScheduler>實作此函式可支援內嵌在工作執行初始化工作物件上的等候的執行緒上。 內嵌執行為選擇性，而且該要求可能會遭到拒絕，透過傳回 false。 不過，更多的工作，可以內嵌，較佳的排程器將會調整。 事實上，排程器的內嵌太少可能容易造成死結。 正確的實作應該確保，保證排程器原則 下執行的要求可以成功地內嵌。 例如，如果排程器使用專屬的執行緒執行工作，該執行緒從任何內嵌要求應該會成功。  
+ 類別衍生自<xref:System.Threading.Tasks.TaskScheduler>實作此函式來初始化工作物件上的等候的執行緒上支援內嵌在工作執行。 內嵌執行是選擇性的並要求可能會遭到拒絕，藉由傳回 false。 不過，更多的工作，可以內嵌、 較佳的排程器將會調整。 事實上，排程器的內嵌太少可能容易發生死結。 適當的實作應該確定在排程器所保證的原則下執行的要求可以成功地內嵌。 例如，如果排程器會使用專用的執行緒來執行工作，來自該執行緒的任何內嵌要求應該會成功。  
   
- 如果排程器會決定要執行的內嵌執行，它應該這樣藉由呼叫至基底的 TaskScheduler<xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A>與提供的工作物件，將傳播的傳回值的方法。 它也可能適用於從其內部資料結構移除內嵌的工作，如果決定要接受內嵌要求排程器。 請注意，在某些情況下排程器可能會要求您內嵌的工作，先前未提供給它與<xref:System.Threading.Tasks.TaskScheduler.QueueTask%2A>方法。  
+ 如果排程器會決定執行內嵌執行，它應該這樣呼叫基底的 TaskScheduler<xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A>與提供的工作物件，將傳播的傳回值的方法。 它也可能是適用於從其內部資料結構移除內嵌的工作，如果它會決定要接受此內嵌要求排程器。 請注意，在某些情況下排程器可能會要求內嵌工作先前未提供給它與<xref:System.Threading.Tasks.TaskScheduler.QueueTask%2A>方法。  
   
- 在衍生的排程器會負責確保呼叫執行緒適合用來執行它自己的排程就指定的工作，並執行原則而言。  
+ 在衍生的排程器會負責確保呼叫執行緒很適合執行指定的工作而言它自己的排程，並執行原則而言。  
   
- 如需詳細資訊，請參閱[工作排程器](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65)。  
+ 如需詳細資訊，請參閱 <<c0> [ 工作排程器](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65)。  
   
  ]]></format>
         </remarks>
@@ -729,9 +750,9 @@ protected override IEnumerable<Task> GetScheduledTasks()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個應用程式全網域的事件會提供一個機制，以避免例外狀況擴大原則 （，根據預設，終止處理序），從觸發。  
+ 此應用程式的全網域的事件會提供一個機制，以避免例外狀況擴大原則 （其預設的情況下，終止處理序），從觸發。  
   
- 若要簡化開發人員撰寫非同步程式碼，根據工作，[!INCLUDE[net_v45](~/includes/net-v45-md.md)]變成未觀察到的例外狀況的預設例外狀況行為。 雖然仍未觀察到的例外狀況引發<xref:System.Threading.Tasks.TaskScheduler.UnobservedTaskException>例外狀況，處理程序不會終止預設。 相反地，例外狀況是由處理執行階段後引發事件時，不論是否事件處理常式會觀察到的例外狀況。 可以設定此行為。 從開始[!INCLUDE[net_v45](~/includes/net-v45-md.md)]，您可以使用的組態項目，若要還原的行為[!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)]和終止處理序：  
+ 為了方便開發人員撰寫工作為基礎的非同步程式碼[!INCLUDE[net_v45](~/includes/net-v45-md.md)]變成未觀察到的例外狀況的預設例外狀況行為。 雖然仍未觀察到的例外狀況引發<xref:System.Threading.Tasks.TaskScheduler.UnobservedTaskException>例外狀況，處理程序不會終止預設。 相反地，例外狀況是由處理執行階段引發事件，不論事件處理常式是否會觀察到例外狀況之後。 可以設定此行為。 開頭[!INCLUDE[net_v45](~/includes/net-v45-md.md)]，您可以使用的組態項目，若要還原的行為[!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)]並且終止處理序：  
   
 ```xml  
 <configuration>   
