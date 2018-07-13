@@ -1,11 +1,11 @@
 <Type Name="SqlDataReader" FullName="System.Data.SqlClient.SqlDataReader">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="2a701a231397a479eaff7504852800da0b9d22c9" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="bedcf698791ee314d07e27319b54a5f52c202058" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36680181" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37672661" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class SqlDataReader : System.Data.Common.DbDataReader, IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit SqlDataReader extends System.Data.Common.DbDataReader implements class System.Data.IDataReader, class System.Data.IDataRecord, class System.IDisposable" />
@@ -20,6 +20,8 @@
   </AssemblyInfo>
   <AssemblyInfo>
     <AssemblyName>System.Data</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -29,6 +31,7 @@
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Data.Common.DbDataReader</BaseTypeName>
+    <BaseTypeName FrameworkAlternate="netframework-1.1">System.MarshalByRefObject</BaseTypeName>
   </Base>
   <Interfaces>
     <Interface>
@@ -43,21 +46,21 @@
 ## Remarks  
  若要建立<xref:System.Data.SqlClient.SqlDataReader>，您必須呼叫<xref:System.Data.SqlClient.SqlCommand.ExecuteReader%2A>方法<xref:System.Data.SqlClient.SqlCommand>物件，而不是直接使用建構函式。  
   
- 雖然<xref:System.Data.SqlClient.SqlDataReader>正在使用中，相關聯<xref:System.Data.SqlClient.SqlConnection>忙於處理<xref:System.Data.SqlClient.SqlDataReader>，並可以對任何其他作業<xref:System.Data.SqlClient.SqlConnection>以外關閉它。 這是之前，這個情況<xref:System.Data.SqlClient.SqlDataReader.Close%2A>方法<xref:System.Data.SqlClient.SqlDataReader>呼叫。 比方說，您無法擷取輸出參數，直到您呼叫之後<xref:System.Data.SqlClient.SqlDataReader.Close%2A>。  
+ 雖然<xref:System.Data.SqlClient.SqlDataReader>正在使用中，相關聯<xref:System.Data.SqlClient.SqlConnection>忙於處理<xref:System.Data.SqlClient.SqlDataReader>，並可對任何其他作業<xref:System.Data.SqlClient.SqlConnection>以外關閉它。 此情況下，直到<xref:System.Data.SqlClient.SqlDataReader.Close%2A>方法的<xref:System.Data.SqlClient.SqlDataReader>呼叫。 比方說，您無法擷取輸出參數，直到您呼叫之後<xref:System.Data.SqlClient.SqlDataReader.Close%2A>。  
   
- 結果集，另一個處理序或執行緒正在讀取資料時，所做的變更可能會顯示使用者的`SqlDataReader`。 不過，精確的行為取決於時間點。  
+ 結果集，另一個處理序或執行緒正在讀取資料時所做的變更可能會顯示給使用者，是`SqlDataReader`。 不過，精確的行為取決於時間點。  
   
- <xref:System.Data.SqlClient.SqlDataReader.IsClosed%2A> 和<xref:System.Data.SqlClient.SqlDataReader.RecordsAffected%2A>屬性之後，您可以呼叫<xref:System.Data.SqlClient.SqlDataReader>已關閉。 雖然<xref:System.Data.SqlClient.SqlDataReader.RecordsAffected%2A>屬性時<xref:System.Data.SqlClient.SqlDataReader>存在，請務必呼叫<xref:System.Data.SqlClient.SqlDataReader.Close%2A>傳回的值之前<xref:System.Data.SqlClient.SqlDataReader.RecordsAffected%2A>保證精確的傳回值。  
+ <xref:System.Data.SqlClient.SqlDataReader.IsClosed%2A> 並<xref:System.Data.SqlClient.SqlDataReader.RecordsAffected%2A>是您可以呼叫之後的唯一屬性<xref:System.Data.SqlClient.SqlDataReader>已關閉。 雖然<xref:System.Data.SqlClient.SqlDataReader.RecordsAffected%2A>可能會存取屬性雖然<xref:System.Data.SqlClient.SqlDataReader>存在，一定要呼叫<xref:System.Data.SqlClient.SqlDataReader.Close%2A>傳回的值之前<xref:System.Data.SqlClient.SqlDataReader.RecordsAffected%2A>以確保正確的傳回值。  
   
- 使用循序存取時 (<xref:System.Data.CommandBehavior.SequentialAccess?displayProperty=nameWithType>)、<xref:System.InvalidOperationException>時產生<xref:System.Data.SqlClient.SqlDataReader>位置進階和另一個讀取前一個資料行上嘗試執行作業。  
+ 使用循序存取時 (<xref:System.Data.CommandBehavior.SequentialAccess?displayProperty=nameWithType>)，則<xref:System.InvalidOperationException>若系統將產生<xref:System.Data.SqlClient.SqlDataReader>位置進階和另一個讀取上一個資料行上嘗試執行作業。  
   
 > [!NOTE]
->  為了達到最佳效能，<xref:System.Data.SqlClient.SqlDataReader>可以避免建立不必要的物件或進行不必要資料複本。 因此，多個方法等呼叫<xref:System.Data.SqlClient.SqlDataReader.GetValue%2A>傳回相同物件的參考。 如果您要修改的物件，例如，由方法傳回的基礎值小心<xref:System.Data.SqlClient.SqlDataReader.GetValue%2A>。  
+>  為了達到最佳效能，<xref:System.Data.SqlClient.SqlDataReader>可避免建立不必要的物件，或進行不必要資料的複本。 因此，多個呼叫方法這類<xref:System.Data.SqlClient.SqlDataReader.GetValue%2A>傳回相同物件的參考。 如果您要修改這類方法所傳回的物件的基礎值特別小心<xref:System.Data.SqlClient.SqlDataReader.GetValue%2A>。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.SqlClient.SqlConnection>、 <xref:System.Data.SqlClient.SqlCommand>，和<xref:System.Data.SqlClient.SqlDataReader>。 此範例會讀取整個資料，並將它寫出至主控台視窗。 然後關閉該程式碼<xref:System.Data.SqlClient.SqlDataReader>。 <xref:System.Data.SqlClient.SqlConnection>結尾會自動關閉`using`程式碼區塊。  
+ 下列範例會建立<xref:System.Data.SqlClient.SqlConnection>，則<xref:System.Data.SqlClient.SqlCommand>，和<xref:System.Data.SqlClient.SqlDataReader>。 此範例會讀取資料，並將它寫出至主控台視窗。 程式碼接著會關閉<xref:System.Data.SqlClient.SqlDataReader>。 <xref:System.Data.SqlClient.SqlConnection>結尾的自動關閉`using`程式碼區塊。  
   
  [!code-csharp[Classic WebData SqlDataReader.Read Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataReader.Read Example/CS/source.cs#1)]
  [!code-vb[Classic WebData SqlDataReader.Read Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataReader.Read Example/VB/source.vb#1)]  
@@ -79,6 +82,8 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -92,17 +97,17 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您必須明確呼叫<xref:System.Data.SqlClient.SqlDataReader.Close%2A>方法，當您完成使用<xref:System.Data.SqlClient.SqlDataReader>使用相關聯<xref:System.Data.SqlClient.SqlConnection>用於其他用途。  
+ 您必須明確呼叫<xref:System.Data.SqlClient.SqlDataReader.Close%2A>方法，當您透過使用<xref:System.Data.SqlClient.SqlDataReader>相關聯<xref:System.Data.SqlClient.SqlConnection>用於其他用途。  
   
- `Close`方法填入輸出參數，傳回值的值和`RecordsAffected`，增加關閉所花費的時間`SqlDataReader`用來處理大型或複雜的查詢。 當傳回值和受影響的查詢記錄的數字皆屬於不顯著，關閉所花費的時間`SqlDataReader`藉由呼叫，可降低<xref:System.Data.SqlClient.SqlCommand.Cancel%2A>方法相關聯的<xref:System.Data.SqlClient.SqlCommand>物件之前先呼叫`Close`方法。  
+ `Close`方法會填滿輸出參數、 傳回值的值與`RecordsAffected`，增加關閉所花費的時間`SqlDataReader`用來處理大型或複雜的查詢。 當傳回值和查詢所影響的記錄數目就不重要，關閉所花費的時間`SqlDataReader`可藉由呼叫來降低<xref:System.Data.SqlClient.SqlCommand.Cancel%2A>方法的相關聯<xref:System.Data.SqlClient.SqlCommand>物件，再呼叫`Close`方法。  
   
 > [!CAUTION]
->  請勿呼叫`Close`或`Dispose`連線、 DataReader 或在任何其他 managed 的物件上`Finalize`類別的方法。 在完成項中，您應該只需釋放類別直接擁有的 unmanaged 的資源。 如果類別未擁有任何 Unmanaged 資源，請不要在類別定義中包含 `Finalize` 方法。 如需詳細資訊，請參閱[回收](~/docs/standard/garbage-collection/index.md)。  
+>  請勿呼叫`Close`或是`Dispose`連線、 DataReader 或在任何其他 managed 的物件上`Finalize`您類別的方法。 在完成項中，您應該僅釋放類別直接擁有的 unmanaged 的資源。 如果類別未擁有任何 Unmanaged 資源，請不要在類別定義中包含 `Finalize` 方法。 如需詳細資訊，請參閱 <<c0> [ 回收](~/docs/standard/garbage-collection/index.md)。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.SqlClient.SqlConnection>、 `SqlCommand`，和<xref:System.Data.SqlClient.SqlDataReader>。 此範例會讀取整個資料，並將它寫出至主控台視窗。 然後關閉該程式碼<xref:System.Data.SqlClient.SqlDataReader>。 <xref:System.Data.SqlClient.SqlConnection>結尾會自動關閉`using`程式碼區塊。  
+ 下列範例會建立<xref:System.Data.SqlClient.SqlConnection>，則`SqlCommand`，和<xref:System.Data.SqlClient.SqlDataReader>。 此範例會讀取資料，並將它寫出至主控台視窗。 程式碼接著會關閉<xref:System.Data.SqlClient.SqlDataReader>。 <xref:System.Data.SqlClient.SqlConnection>結尾的自動關閉`using`程式碼區塊。  
   
  [!code-csharp[Classic WebData SqlDataReader.Close Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataReader.Close Example/CS/source.cs#1)]
  [!code-vb[Classic WebData SqlDataReader.Close Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataReader.Close Example/VB/source.vb#1)]  
@@ -126,6 +131,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -160,6 +166,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -201,6 +209,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -218,7 +228,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 執行的查詢，本質上，不會傳回資料列 （例如刪除查詢），設定<xref:System.Data.SqlClient.SqlDataReader.FieldCount%2A>設為 0。 不過。 這應不會傳回 0 個資料列的查詢與混淆 (如 SELECT * FROM*資料表*WHERE 1 = 2） 在此情況下<xref:System.Data.SqlClient.SqlDataReader.FieldCount%2A>資料表，包括隱藏的欄位中傳回的資料行數目。 使用 <xref:System.Data.SqlClient.SqlDataReader.VisibleFieldCount%2A> 以排除隱藏欄位。  
+ 執行查詢的本質上，不會傳回資料列 （例如刪除查詢），設定<xref:System.Data.SqlClient.SqlDataReader.FieldCount%2A>設為 0。 不過。 這不應該混淆與的查詢會傳回 0 個資料列 (例如 SELECT * FROM*表格*WHERE 1 = 2） 在此情況下<xref:System.Data.SqlClient.SqlDataReader.FieldCount%2A>在資料表中，包括隱藏的欄位傳回的資料行數目。 使用 <xref:System.Data.SqlClient.SqlDataReader.VisibleFieldCount%2A> 以排除隱藏欄位。  
   
  ]]></format>
         </remarks>
@@ -243,6 +253,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -266,7 +278,7 @@
 ## Remarks  
  不會進行轉換;因此，擷取的資料必須已經是布林值，也會產生例外狀況。  
   
- 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>呼叫這個方法之前檢查是否有 null 值。  
+ 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>之前呼叫這個方法檢查是否有 null 值。  
   
  ]]></format>
         </remarks>
@@ -291,6 +303,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -314,7 +328,7 @@
 ## Remarks  
  不會進行轉換;因此，擷取的資料必須已經是一個位元組。  
   
- 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>呼叫這個方法之前檢查是否有 null 值。  
+ 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>之前呼叫這個方法檢查是否有 null 值。  
   
  ]]></format>
         </remarks>
@@ -339,6 +353,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -368,9 +384,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.SqlClient.SqlDataReader.GetBytes%2A> 在欄位中傳回可用位元組的數。 大部分的情況下這是欄位的確切的長度。 不過，傳回的數字可能小於欄位的實際長度如果`GetBytes`已經使用來取得位元組的欄位。 這種情況下，比方說，如果可能<xref:System.Data.SqlClient.SqlDataReader>讀入緩衝區的大型資料結構。 如需詳細資訊，請參閱`SequentialAccess`設定<xref:System.Data.CommandBehavior>。  
+ <xref:System.Data.SqlClient.SqlDataReader.GetBytes%2A> 在欄位中傳回可用位元組的數。 大多數情況下這是欄位的實際長度。 不過，傳回的數字可能小於欄位的長度，則為 true 如果`GetBytes`已經使用來取得位元組的欄位。 這種情況下，比方說，如果可能<xref:System.Data.SqlClient.SqlDataReader>讀入緩衝區的大型資料結構。 如需詳細資訊，請參閱 <<c0> `SequentialAccess` 設定<xref:System.Data.CommandBehavior>。  
   
- 如果您要傳入的緩衝區`null`，<xref:System.Data.SqlClient.SqlDataReader.GetBytes%2A>傳回整個欄位的長度，以位元組為單位，不剩餘大小的緩衝區位移參數為基礎。  
+ 如果您傳遞的緩衝區`null`，<xref:System.Data.SqlClient.SqlDataReader.GetBytes%2A>傳回整個欄位的長度，以位元組為單位，而非剩餘大小緩衝區的位移參數為基礎。  
   
  不會進行轉換;因此，擷取的資料必須已經是位元組陣列。  
   
@@ -396,6 +412,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -405,7 +423,7 @@
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
+          <AttributeName>System.ComponentModel.EditorBrowsable</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -447,6 +465,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -476,17 +496,50 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.SqlClient.SqlDataReader.GetChars%2A> 在欄位中傳回可用字元的數。 這通常是欄位的確切的長度。 不過，傳回的數字可能小於欄位的實際長度如果`GetChars`已經使用從欄位取得字元。 這種情況下，比方說，如果可能<xref:System.Data.SqlClient.SqlDataReader>讀入緩衝區的大型資料結構。 如需詳細資訊，請參閱`SequentialAccess`設定<xref:System.Data.CommandBehavior>。  
+ <xref:System.Data.SqlClient.SqlDataReader.GetChars%2A> 在欄位中傳回可用字元的數。 這通常是欄位的實際長度。 不過，傳回的數字可能小於欄位的長度，則為 true 如果`GetChars`已經使用從欄位取得字元。 這種情況下，比方說，如果可能<xref:System.Data.SqlClient.SqlDataReader>讀入緩衝區的大型資料結構。 如需詳細資訊，請參閱 <<c0> `SequentialAccess` 設定<xref:System.Data.CommandBehavior>。  
   
- 如果欄位的結束為止，實際讀取的字元數目可以小於所要求的長度。 如果您要傳入的緩衝區`null`，<xref:System.Data.SqlClient.SqlDataReader.GetChars%2A>以字元為單位的其餘根據緩衝區的位移參數大小不會傳回整個欄位的長度。  
+ 如果欄位結尾為止，實際讀取的字元數目可以小於所要求的長度。 如果您傳遞的緩衝區`null`，<xref:System.Data.SqlClient.SqlDataReader.GetChars%2A>傳回整個欄位的長度，以字元為單位，而非剩餘大小緩衝區的位移參數為基礎。  
   
  不會進行轉換;因此。 擷取的資料必須已經是字元陣列。  
   
 > [!NOTE]
->  <xref:System.Data.SqlClient.SqlDataReader.GetChars%2A>方法會傳回 0 時`dataIndex`是負數。  
+>  <xref:System.Data.SqlClient.SqlDataReader.GetChars%2A>方法會傳回 0 時`dataIndex`為負數。  
   
  ]]></format>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetData">
+      <MemberSignature Language="C#" Value="public System.Data.IDataReader GetData (int i);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Data.IDataReader GetData(int32 i) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlDataReader.GetData(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetData (i As Integer) As IDataReader" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Data::IDataReader ^ GetData(int i);" />
+      <MemberSignature Language="F#" Value="abstract member GetData : int -&gt; System.Data.IDataReader&#xA;override this.GetData : int -&gt; System.Data.IDataReader" Usage="sqlDataReader.GetData i" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Data.IDataRecord.GetData(System.Int32)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Data.IDataReader</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="i" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="i">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetDataTypeName">
@@ -507,6 +560,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -530,7 +585,7 @@
 ## Remarks  
  傳回後端資料類型的名稱。  
   
- `numeric` 是針對 SQL Server 中的同義字`decimal`資料型別。 `GetDataTypeName` 會傳回 「 小數點 」 定義為十進位或數值資料行。  
+ `numeric` 是適用於 SQL Server 中的同義字`decimal`資料型別。 `GetDataTypeName` 會傳回 「 小數點 」 定義為十進位或數值資料行。  
   
  ]]></format>
         </remarks>
@@ -554,6 +609,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -577,7 +634,7 @@
 ## Remarks  
  不會進行轉換;因此，擷取的資料必須已經是<xref:System.DateTime>物件。  
   
- 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>呼叫這個方法之前檢查是否有 null 值。  
+ 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>之前呼叫這個方法檢查是否有 null 值。  
   
  ]]></format>
         </remarks>
@@ -599,6 +656,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -622,7 +680,7 @@
 ## Remarks  
  不會進行轉換;因此，擷取的資料必須已經是<xref:System.DateTimeOffset>物件。  
   
- 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>呼叫這個方法之前檢查是否有 null 值。  
+ 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>之前呼叫這個方法檢查是否有 null 值。  
   
  ]]></format>
         </remarks>
@@ -647,6 +705,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -670,7 +730,7 @@
 ## Remarks  
  不會進行轉換;因此，擷取的資料必須已經是<xref:System.Decimal>物件。  
   
- 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>呼叫這個方法之前檢查是否有 null 值。  
+ 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>之前呼叫這個方法檢查是否有 null 值。  
   
  ]]></format>
         </remarks>
@@ -695,6 +755,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -718,7 +780,7 @@
 ## Remarks  
  不會進行轉換。 因此，擷取的資料必須已經是雙精確度浮點數。  
   
- 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>呼叫這個方法之前檢查是否有 null 值。  
+ 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>之前呼叫這個方法檢查是否有 null 值。  
   
  ]]></format>
         </remarks>
@@ -740,6 +802,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -759,7 +822,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 雖然您可以使用這個方法來擷取明確的列舉值，以語言支援`foreach`建構，它是簡單直接以逐一查看資料讀取器中的資料列使用迴圈建構。  
+ 雖然您可以使用這個方法來擷取明確的列舉值，以語言支援`foreach`建構，它是直接以逐一查看資料讀取器中的資料列中使用迴圈建構的工作變得更容易。  
   
  ]]></format>
         </remarks>
@@ -783,6 +846,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -856,7 +921,7 @@
 |SqlInt64|SqlMoney|SqlSingle|SqlString|  
 |String|UDT，可以是任何 CLR 類型標記為<xref:Microsoft.SqlServer.Server.SqlUserDefinedTypeAttribute>。|||  
   
- 如需詳細資訊，請參閱[SqlClient 串流支援](~/docs/framework/data/adonet/sqlclient-streaming-support.md)。  
+ 如需詳細資訊，請參閱 < [SqlClient 資料流支援](~/docs/framework/data/adonet/sqlclient-streaming-support.md)。  
   
  ]]></format>
         </remarks>
@@ -920,7 +985,7 @@
 |SqlInt64|SqlMoney|SqlSingle|SqlString|  
 |String|UDT，可以是任何 CLR 類型標記為<xref:Microsoft.SqlServer.Server.SqlUserDefinedTypeAttribute>。|||  
   
- 如需詳細資訊，請參閱[SqlClient 串流支援](~/docs/framework/data/adonet/sqlclient-streaming-support.md)。  
+ 如需詳細資訊，請參閱 < [SqlClient 資料流支援](~/docs/framework/data/adonet/sqlclient-streaming-support.md)。  
   
  ]]></format>
         </remarks>
@@ -951,6 +1016,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -972,9 +1039,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不會進行轉換。 因此，擷取的資料必須是單精確度浮點數。  
+ 不會進行轉換。 因此，擷取的資料必須已經是單精確度浮點數。  
   
- 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>呼叫這個方法之前檢查是否有 null 值。  
+ 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>之前呼叫這個方法檢查是否有 null 值。  
   
  ]]></format>
         </remarks>
@@ -999,6 +1066,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1022,7 +1091,7 @@
 ## Remarks  
  不會進行轉換;因此，擷取的資料必須是 GUID。  
   
- 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>呼叫這個方法之前檢查是否有 null 值。  
+ 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>之前呼叫這個方法檢查是否有 null 值。  
   
  ]]></format>
         </remarks>
@@ -1047,6 +1116,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1068,9 +1139,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不會進行轉換;因此，擷取的資料必須是 16 位元帶正負號的整數。  
+ 不會進行轉換;因此，擷取的資料必須已經是 16 位元帶正負號的整數。  
   
- 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>呼叫這個方法之前檢查是否有 null 值。  
+ 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>之前呼叫這個方法檢查是否有 null 值。  
   
  ]]></format>
         </remarks>
@@ -1095,6 +1166,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1116,9 +1189,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不會進行轉換;因此，擷取的資料必須是 32 位元帶正負號的整數。  
+ 不會進行轉換;因此，擷取的資料必須已經是 32 位元帶正負號的整數。  
   
- 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>呼叫這個方法之前檢查是否有 null 值。  
+ 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>之前呼叫這個方法檢查是否有 null 值。  
   
  ]]></format>
         </remarks>
@@ -1143,6 +1216,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1164,9 +1239,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不會進行轉換;因此，擷取的資料必須是 64 位元帶正負號的整數。  
+ 不會進行轉換;因此，擷取的資料必須已經是 64 位元帶正負號的整數。  
   
- 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>呼叫這個方法之前檢查是否有 null 值。  
+ 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>之前呼叫這個方法檢查是否有 null 值。  
   
  ]]></format>
         </remarks>
@@ -1191,6 +1266,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1229,6 +1306,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1250,11 +1329,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- `GetOrdinal` 第一次執行區分大小寫的查閱。 如果失敗，第二個，就會發生不區分大小寫的搜尋 (不區分大小寫的比較是使用資料庫定序)。 比較會受到特定文化特性大小寫規則，就會發生非預期的結果。 例如，在土耳其文，下列範例會產生錯誤結果因為土耳其文中的檔案系統不會使用語言大小寫規則的字母 'i' 中 「 檔案 」。 方法會擲回`IndexOutOfRange`例外狀況，如果找不到以零為起始的資料行序數。  
+ `GetOrdinal` 第一次執行區分大小寫的查閱。 如果失敗，第二個，就會發生不區分大小寫的搜尋 (不區分大小寫的比較是使用資料庫定序)。 比較會受到特定文化特性的大小寫規則，就會發生非預期的結果。 例如，在土耳其文，下列範例會產生錯誤的結果因為土耳其文中的檔案系統不會使用語言大小寫規則，以字母 'i' 中 「 檔案 」。 方法會擲回`IndexOutOfRange`例外狀況，如果找不到的以零為起始的資料行序數。  
   
- `GetOrdinal` 不會區分假名寬度。  
+ `GetOrdinal` 假名寬度是不區分大小寫的。  
   
- 因為根據序數進行查閱比具名查閱更有效率，很效率不佳，呼叫`GetOrdinal`在迴圈內。 呼叫以節省時間`GetOrdinal`一次，將結果指派給整數變數在迴圈中使用。  
+ 因為根據序數進行查閱比具名查閱更有效率，很效率不佳，呼叫`GetOrdinal`迴圈內。 節省時間，藉由呼叫`GetOrdinal`一次，並將結果指派給整數變數以便使用於迴圈。  
   
    
   
@@ -1284,6 +1363,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1320,6 +1400,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1357,6 +1438,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1390,6 +1472,8 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1404,43 +1488,43 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如<xref:System.Data.SqlClient.SqlDataReader.GetSchemaTable%2A>方法會傳回有關每個資料行的中繼資料以下列順序：  
+ 針對<xref:System.Data.SqlClient.SqlDataReader.GetSchemaTable%2A>方法會傳回有關每個資料行的中繼資料，以下列順序：  
   
 |DataReader 資料行|描述|  
 |-----------------------|-----------------|  
-|AllowDBNull|如果取用者可以設為 null 值的資料行，或如果無法判斷提供者，取用者是否可以設定為 null 值的資料行設定。 否則，未設定。 資料行可以包含 null 值，即使它不能設為 null 的值。|  
-|BaseCatalogName|包含資料行的資料存放區中的類別目錄名稱。 如果無法判斷基底目錄名稱，則為 NULL。 此資料行的預設值為 null 的值。|  
-|BaseColumnName|在資料存放區中的資料行名稱。 這可能是不同的資料行名稱傳回 ColumnName 資料行中原先使用別名。 如果無法判斷基底的資料行名稱，或如果資料列集資料行衍生而來但不是完全相同，資料中的資料行存放區，則為 null 值。 此資料行的預設值為 null 的值。|  
-|BaseSchemaName|包含資料行的資料存放區中的結構描述名稱。 如果無法判斷基底結構描述名稱，則為 null 值。 此資料行的預設值為 null 的值。|  
+|AllowDBNull|如果取用者可以設定為 null 值的資料行，或提供者無法判斷取用者是否可以設定為 null 值的資料行設定。 否則，不設定。 資料行可能包含 null 值，即使它不能設為 null 的值。|  
+|BaseCatalogName|包含資料行的資料存放區中的類別目錄名稱。 如果無法判斷基底目錄名稱，則為 NULL。 此資料行的預設值為 null 值。|  
+|BaseColumnName|在資料存放區中的資料行名稱。 這可能是不同的資料行名稱傳回 [ColumnName] 欄中原先使用別名。 如果無法判斷基底資料行名稱，或如果資料列集資料行衍生而來但不是完全相同，資料中的資料行存放區，則為 null 值。 此資料行的預設值為 null 值。|  
+|BaseSchemaName|包含資料行的資料存放區中的結構描述名稱。 如果無法判斷基底結構描述名稱，則為 null 值。 此資料行的預設值為 null 值。|  
 |BaseServerName|所使用的 Microsoft SQL server 執行個體名稱<xref:System.Data.SqlClient.SqlDataReader>。|  
-|BaseTableName|資料表或檢視中包含資料行的資料存放區的名稱。 如果無法判斷基底資料表名稱，則為 null 值。 此資料行的預設值為 null 的值。|  
-|ColumnName|資料行; 的名稱這可能不是唯一的。 如果無法判別，則會傳回 null 值。 這個名稱一律會反映目前的檢視或命令文字中的資料行的最新重新命名。|  
+|BaseTableName|資料表或檢視中包含之資料行的資料存放區的名稱。 如果無法判斷基底資料表名稱，則為 null 值。 此資料行的預設值為 null 值。|  
+|ColumnName|資料行的名稱這可能不是唯一的。 如果無法判別，則會傳回 null 值。 這個名稱永遠會反映最近的目前檢視] 或 [命令文字中的資料行重新命名。|  
 |ColumnOrdinal|資料行以零為起始的序數。 此資料行不能包含 null 值。|  
-|ColumnSize|資料行中值的最大可能長度。 使用固定長度的資料類型的資料行，這是資料類型的大小。 如`nvarchar(MAX)`， `varchar(MAX)`，和`varbinary(MAX)`資料行儲存在 SQL Server 資料庫，大小上限是 2 GB。 如果這些資料行儲存及存取檔案，最大大小的限制會加上檔案系統。 此值變更時使用`Type System Version`連接字串中的關鍵字。  新的類型，就會表示為舊版型別。 MAX 資料類型傳回的標準 4k `nvarchar` 8000 `varchar`。 如需詳細資訊，請參閱 SQL Server 線上叢書 》 中的 TRANSACT-SQL 參考。|  
-|DataTypeName|傳回字串，代表指定之資料行的資料類型。|  
-|IsAliased|`true`： 資料行名稱是別名。<br /><br /> `false`： 資料行名稱不是別名。|  
-|IsAutoIncrement|`true`： 資料行指派值到新的資料列，以固定遞增方式。<br /><br /> `false`： 資料行不會指派值給新的資料列，以固定遞增方式。 此資料行的預設值是`false`。|  
+|ColumnSize|資料行中值的最大可能長度。 使用固定長度資料類型的資料行，這是資料類型的大小。 針對`nvarchar(MAX)`， `varchar(MAX)`，和`varbinary(MAX)`資料行儲存在 SQL Server 資料庫，大小上限是 2 GB。 如果這些資料行儲存及存取檔案，最大大小限制是由檔案系統。 此值變更時使用`Type System Version`連接字串中的關鍵字。  新類型，它們會表示為舊版型別。 MAX 資料類型傳回的一般 4k `nvarchar` 8000 `varchar`。 如需詳細資訊，請參閱 SQL Server 線上叢書 》 中的 TRANSACT-SQL 參考。|  
+|DataTypeName|傳回字串，表示指定的資料行的資料類型。|  
+|IsAliased|`true`： 資料行名稱會是別名。<br /><br /> `false`： 資料行名稱不是別名。|  
+|IsAutoIncrement|`true`: 資料行至新的資料列，以固定遞增方式指派值。<br /><br /> `false`: 資料行不會以新的資料列，以固定遞增方式指派值。 此資料行的預設值是`false`。|  
 |IsColumnSet|`true`: 資料行是疏鬆資料行的資料行集的成員。|  
-|IsExpression|`true`: 資料行是運算式。<br /><br /> `false`： 資料行不是運算式。|  
-|IsHidden|`true`： 隱藏資料行。<br /><br /> `false`： 無法隱藏此資料行。|  
+|IsExpression|`true`: 資料行是運算式。<br /><br /> `false`: 資料行不是運算式。|  
+|IsHidden|`true`： 隱藏資料行。<br /><br /> `false`: 資料行不會隱藏。|  
 |IsIdentity|`true`: 資料行是識別資料行。<br /><br /> `false`: 資料行不是識別資料行。|  
-|IsKey|`true`： 資料行是一組資料列集中的資料行的其中一個，結合在一起唯一識別資料列。 與資料行集中`IsKey`設`true`必須唯一識別資料列集中的資料列。 沒有這個資料行集是資料行的最小集合的需求。 這個資料行集可能會產生來自基底資料表主索引鍵、 唯一條件約束或唯一索引鍵。<br /><br /> `false`： 資料行不是需要唯一識別資料列。|  
-|IsLong|`true`: 資料行包含二進位長物件 (BLOB)，其中包含很長的資料。 非常長資料的定義是特定提供者。<br /><br /> `false`： 資料行不包含二進位長物件 (BLOB)，其中包含很長的資料。|  
-|IsReadOnly|`true`： 無法修改資料行。<br /><br /> `false`： 您可以修改資料行。|  
-|IsRowVersion|`true`： 資料行都包含永續性資料列識別碼，不能寫入，且沒有有意義值除了識別資料列。<br /><br /> `false`: 資料行不包含不能寫入，持續性的資料列識別碼，且具有無意義的值除了識別資料列。|  
-|IsUnique|`true`： 資料行是類型`timestamp`。<br /><br /> `false`： 資料行的類型不是`timestamp`。|  
-|NonVersionedProviderType|不論目前的資料行的類型`Type System Version`連接字串中指定。 傳回的值是從<xref:System.Data.SqlDbType>列舉型別。|  
-|NumericPrecision|如果`ProviderType`是數值資料類型，這是資料行的最大有效位數。 精確度取決於資料行的定義。 如果`ProviderType`不是數值資料類型，這是 255。|  
+|IsKey|`true`： 資料行是一組資料列集中的資料行的其中一個，結合起來，可唯一識別資料列。 使用的資料行集中`IsKey`設定為`true`必須唯一識別資料列集中的資料列。 沒有這個資料行集是資料行的最少的需求。 這組資料行可能會產生來自基底資料表主索引鍵、 唯一條件約束或唯一索引。<br /><br /> `false`: 資料行不是需要唯一識別資料列。|  
+|IsLong|`true`： 此資料行包含二進位長物件 (BLOB)，其中包含很長的資料。 非常長資料的定義是特定提供者。<br /><br /> `false`: 資料行不包含二進位長物件 (BLOB)，其中包含很長的資料。|  
+|IsReadOnly|`true`： 無法修改資料行。<br /><br /> `false`: 您可以修改資料行。|  
+|IsRowVersion|`true`: 資料行都包含永續性資料列識別碼，不能寫入，而且沒有有意義值除了身分識別資料列。<br /><br /> `false`:，資料行不包含永續性的資料列識別碼不能寫入，且除了識別資料列的有意義值。|  
+|IsUnique|`true`: Sloupec je typu `timestamp`。<br /><br /> `false`： 資料行的類型不是`timestamp`。|  
+|NonVersionedProviderType|無論目前的資料行的類型`Type System Version`連接字串中指定。 傳回的值是從<xref:System.Data.SqlDbType>列舉型別。|  
+|NumericPrecision|如果`ProviderType`是數值資料類型，這是資料行的最大有效位數。 精確度取決於資料行定義。 如果`ProviderType`不是數值資料類型，這是 255。|  
 |NumericScale|如果`ProviderType`DBTYPE_DECIMAL 或 DBTYPE_NUMERIC，小數點右邊的位數。 否則，這是 255。|  
 |ProviderSpecificDataType|傳回提供者特定資料類型為基礎的資料行`Type System Version`連接字串中的關鍵字。|  
 |提供者類型|資料行的資料類型的指標。 如果資料行的資料類型而有所不同逐列，這必須是物件。 此資料行不能包含 null 值。|  
 |UdtAssemblyQualifiedName|如果資料行是使用者定義型別 (UDT)，這是為每個 UDT 的組件的限定的名稱<xref:System.Type.AssemblyQualifiedName%2A>。 如果資料行不是 UDT，這個值是 null。|  
-|XmlSchemaCollectionDatabase|這個 XML 執行個體的結構描述集合所在位置，如果資料列包含 XML 資料行的相關資訊的資料庫名稱。 這個值是`null`(`Nothing`在 Visual Basic 中) 如果在目前資料庫中定義之集合。 它也是 null 是否有任何結構描述集合，在此情況下`XmlSchemaCollectionName`和`XmlSchemaCollectionOwningSchema`資料行也是 null。|  
-|XmlSchemaCollectionName|這個 XML 執行個體，如果資料列包含 XML 資料行的相關資訊的結構描述集合名稱。 這個值是`null`(`Nothing`在 Visual Basic 中) 如果沒有相關聯的結構描述集合。 如果值為 null，`XmlSchemaCollectionDatabase`和`XmlSchemaCollectionOwningSchema`資料行也是 null。|  
-|XmlSchemaCollectionOwningSchema|這個 XML 執行個體的結構描述集合所在位置，如果資料列包含 XML 資料行的相關資訊主控關聯式結構描述。 這個值是`null`(`Nothing`在 Visual Basic 中) 如果在目前資料庫中定義之集合。 它也是 null 是否有任何結構描述集合，在此情況下`XmlSchemaCollectionDatabase`和`XmlSchemaCollectionName`資料行也是 null。|  
+|XmlSchemaCollectionDatabase|這個 XML 執行個體的結構描述集合所在位置，如果資料列包含的 XML 資料行的相關資訊的資料庫名稱。 這個值是`null`(`Nothing` Visual Basic 中) 如果在目前資料庫中定義之集合。 它也是 null 是否有任何結構描述集合，在此情況下`XmlSchemaCollectionName`和`XmlSchemaCollectionOwningSchema`資料行也是 null。|  
+|XmlSchemaCollectionName|這個 XML 執行個體，如果資料列包含的 XML 資料行的相關資訊的結構描述集合名稱。 這個值是`null`(`Nothing` Visual Basic 中) 如果沒有相關聯的結構描述集合。 如果值是 null，`XmlSchemaCollectionDatabase`和`XmlSchemaCollectionOwningSchema`資料行也是 null。|  
+|XmlSchemaCollectionOwningSchema|這個 XML 執行個體的結構描述集合所在位置，如果資料列包含資訊的 XML 資料行擁有關聯式結構描述。 這個值是`null`(`Nothing` Visual Basic 中) 如果在目前資料庫中定義之集合。 它也是 null 是否有任何結構描述集合，在此情況下`XmlSchemaCollectionDatabase`和`XmlSchemaCollectionName`資料行也是 null。|  
   
 > [!NOTE]
->  若要確定中繼資料行傳回正確的資訊，您必須呼叫<xref:System.Data.SqlClient.SqlCommand.ExecuteReader%2A>與`behavior`參數設定為`KeyInfo`。 否則，有些結構描述資料表中的資料行可能會傳回預設值，null 或不正確的資料。  
+>  若要確定中繼資料資料行傳回正確的資訊，您必須呼叫<xref:System.Data.SqlClient.SqlCommand.ExecuteReader%2A>具有`behavior`參數設為`KeyInfo`。 否則，一些結構描述資料表中的資料行可能會傳回預設值，null，或不正確的資料。  
   
  ]]></format>
         </remarks>
@@ -1463,6 +1547,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1484,7 +1570,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不會進行轉換;因此擷取的資料必須已經是二進位結構，或產生例外狀況。  
+ 不會進行轉換;因此擷取的資料必須已經是二進位結構，或會產生例外狀況。  
   
  ]]></format>
         </remarks>
@@ -1505,6 +1591,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1547,6 +1635,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1568,7 +1658,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不會進行轉換;因此擷取的資料必須已經是一個位元組或會產生例外狀況。  
+ 不會進行轉換;因此擷取的資料必須已經是一個位元組，或會產生例外狀況。  
   
  ]]></format>
         </remarks>
@@ -1589,6 +1679,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1624,6 +1715,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1659,6 +1751,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1680,7 +1774,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不會進行轉換;因此，擷取的資料必須已經是日期/時間值，也會產生例外狀況。  
+ 不會進行轉換;因此，擷取的資料必須已經是日期/時間值，或會產生例外狀況。  
   
  ]]></format>
         </remarks>
@@ -1701,6 +1795,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1722,7 +1818,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不會進行轉換;因此，擷取的資料必須已經是十進位的值，也會產生例外狀況。  
+ 不會進行轉換;因此，擷取的資料必須已經是十進位的值，或會產生例外狀況。  
   
  ]]></format>
         </remarks>
@@ -1743,6 +1839,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1764,7 +1862,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不會進行轉換;因此，擷取的資料必須已經是雙精確度浮點數，也會產生例外狀況。  
+ 不會進行轉換;因此，擷取的資料必須已經是雙精確度浮點數，或會產生例外狀況。  
   
  ]]></format>
         </remarks>
@@ -1785,6 +1883,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1806,7 +1906,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不會進行轉換;因此，擷取的資料必須已經是 GUID，也會產生例外狀況。  
+ 不會進行轉換;因此，擷取的資料必須已經是 GUID，或會產生例外狀況。  
   
  ]]></format>
         </remarks>
@@ -1827,6 +1927,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1848,7 +1950,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不會進行轉換;因此，擷取的資料必須已經是 16 位元帶正負號的整數，也會產生例外狀況。  
+ 不會進行轉換;因此，擷取的資料必須已經是 16 位元帶正負號的整數，或會產生例外狀況。  
   
  ]]></format>
         </remarks>
@@ -1869,6 +1971,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1911,6 +2015,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1932,7 +2038,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不會進行轉換;因此，擷取的資料必須已經是 64 位元帶正負號的整數，也會產生例外狀況。  
+ 不會進行轉換;因此，擷取的資料必須已經是 64 位元帶正負號的整數，或會產生例外狀況。  
   
  ]]></format>
         </remarks>
@@ -1953,6 +2059,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1974,7 +2082,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不會進行轉換;因此，擷取的資料必須已經是十進位的值，也會產生例外狀況。  
+ 不會進行轉換;因此，擷取的資料必須已經是十進位的值，或會產生例外狀況。  
   
  ]]></format>
         </remarks>
@@ -1995,6 +2103,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2016,7 +2126,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不會進行轉換;因此，擷取的資料必須已經是單精確度浮點數，也會產生例外狀況。  
+ 不會進行轉換;因此，擷取的資料必須已經是單精確度浮點數，或會產生例外狀況。  
   
  ]]></format>
         </remarks>
@@ -2037,6 +2147,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2058,7 +2170,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不會進行轉換;因此，擷取的資料必須已經是一個字串，也會產生例外狀況。  
+ 不會進行轉換;因此，擷取的資料必須已經是一個字串，或會產生例外狀況。  
   
  ]]></format>
         </remarks>
@@ -2079,6 +2191,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2100,7 +2214,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.SqlClient.SqlDataReader.GetSqlValue%2A> 傳回的資料使用原生 SQL Server 型別。 若要使用擷取資料的.NET Framework 型別，請參閱<xref:System.Data.SqlClient.SqlDataReader.GetValue%2A>。  
+ <xref:System.Data.SqlClient.SqlDataReader.GetSqlValue%2A> 傳回使用原生的 SQL Server 類型的資料。 若要擷取使用.NET Framework 類型的資料，請參閱<xref:System.Data.SqlClient.SqlDataReader.GetValue%2A>。  
   
  ]]></format>
         </remarks>
@@ -2121,6 +2235,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2142,7 +2258,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 在單一呼叫中，使用 SQL 類型系統，而不 CLR 型別系統記錄中傳回所有資料行的值。 長度<xref:System.Object>陣列不需要符合的記錄中的資料行數目。 您可以傳遞<xref:System.Object>陣列包含少於一個記錄中包含的資料行數目。 資料量<xref:System.Object>陣列，含有複製到的資料行序數 0 為起始的陣列。 您也可以傳遞<xref:System.Object>陣列，其長度都是多個資料行包含在產生的資料列數目。 任何其餘的資料行是不變。  
+ 在單一呼叫中，使用 SQL 類型系統，而不 CLR 型別系統記錄中傳回所有資料行的值。 長度<xref:System.Object>陣列不需要符合的記錄中的資料行數目。 您可以傳遞<xref:System.Object>陣列包含少於一個記錄中所包含的資料行數目。 資料量<xref:System.Object>陣列會保存已複製到資料行序數的 0 為起始的陣列。 您也可以傳遞<xref:System.Object>陣列，其長度都是多個資料行包含在產生的資料列數目。 任何其餘的資料行是不變。  
   
  ]]></format>
         </remarks>
@@ -2165,6 +2281,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2189,7 +2306,7 @@
 ## Remarks  
  不會進行轉換;因此，擷取的資料必須是 XML 值。  
   
- 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>呼叫這個方法之前檢查是否有 null 值。  
+ 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>之前呼叫這個方法檢查是否有 null 值。  
   
  ]]></format>
         </remarks>
@@ -2234,15 +2351,15 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.IO.Stream.ReadTimeout%2A> 預設值為<xref:System.Data.SqlClient.SqlCommand.CommandTimeout%2A>; 但您可以修改<xref:System.IO.Stream.ReadTimeout%2A>透過<xref:System.Data.SqlClient.SqlDataReader.GetStream%2A>。  
+ <xref:System.IO.Stream.ReadTimeout%2A> 預設值<xref:System.Data.SqlClient.SqlCommand.CommandTimeout%2A>; 但您可以修改<xref:System.IO.Stream.ReadTimeout%2A>透過<xref:System.Data.SqlClient.SqlDataReader.GetStream%2A>。  
   
  Null 值會傳回空白 （零個位元組） 為<xref:System.IO.Stream>。  
   
- <xref:System.Data.SqlClient.SqlDataReader.GetBytes%2A> 將會引發<xref:System.InvalidOperationException>例外狀況時所傳回的物件上使用<xref:System.Data.SqlClient.SqlDataReader.GetStream%2A>時<xref:System.Data.CommandBehavior.SequentialAccess>作用中。  
+ <xref:System.Data.SqlClient.SqlDataReader.GetBytes%2A> 將會引發<xref:System.InvalidOperationException>例外狀況時所傳回的物件上使用<xref:System.Data.SqlClient.SqlDataReader.GetStream%2A>當<xref:System.Data.CommandBehavior.SequentialAccess>作用中。  
   
- <xref:System.Data.SqlClient.SqlException> 從引發例外狀況<xref:System.IO.Stream>擲回做<xref:System.IO.IOException>例外狀況，請參閱內部例外狀況的<xref:System.Data.SqlClient.SqlException>。  
+ <xref:System.Data.SqlClient.SqlException> 從引發例外狀況<xref:System.IO.Stream>做為擲回<xref:System.IO.IOException>例外狀況; 請檢查內部例外狀況<xref:System.Data.SqlClient.SqlException>。  
   
- 下列<xref:System.IO.Stream>成員並不是適用於所傳回的物件<xref:System.Data.SqlClient.SqlDataReader.GetStream%2A>:  
+ 下列<xref:System.IO.Stream>成員不能用於所傳回的物件<xref:System.Data.SqlClient.SqlDataReader.GetStream%2A>:  
   
 -   BeginWrite  
   
@@ -2262,9 +2379,9 @@
   
 -   WriteTimeout  
   
- 當連接屬性`ContextConnection=true`，<xref:System.Data.SqlClient.SqlDataReader.GetStream%2A>只循序同時支援同步的資料擷取 (<xref:System.Data.CommandBehavior.SequentialAccess>) 和非循序 (<xref:System.Data.CommandBehavior.Default>) 存取。  
+ 當連接屬性`ContextConnection=true`，<xref:System.Data.SqlClient.SqlDataReader.GetStream%2A>僅支援循序兩者同步的資料擷取 (<xref:System.Data.CommandBehavior.SequentialAccess>) 和非循序 (<xref:System.Data.CommandBehavior.Default>) 存取。  
   
- 如需詳細資訊，請參閱[SqlClient 串流支援](~/docs/framework/data/adonet/sqlclient-streaming-support.md)。  
+ 如需詳細資訊，請參閱 < [SqlClient 資料流支援](~/docs/framework/data/adonet/sqlclient-streaming-support.md)。  
   
  ]]></format>
         </remarks>
@@ -2291,6 +2408,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2314,7 +2433,7 @@
 ## Remarks  
  不會進行轉換;因此，擷取的資料必須是字串。  
   
- 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>呼叫這個方法之前檢查是否有 null 值。  
+ 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>之前呼叫這個方法檢查是否有 null 值。  
   
  ]]></format>
         </remarks>
@@ -2357,15 +2476,15 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.SqlClient.SqlException> 從引發例外狀況<xref:System.IO.TextReader>擲回做<xref:System.IO.IOException>例外狀況，請參閱內部例外狀況的<xref:System.Data.SqlClient.SqlException>。  
+ <xref:System.Data.SqlClient.SqlException> 從引發例外狀況<xref:System.IO.TextReader>做為擲回<xref:System.IO.IOException>例外狀況; 請檢查內部例外狀況<xref:System.Data.SqlClient.SqlException>。  
   
  Null 值會傳回空白 （零個位元組） 為<xref:System.IO.TextReader>。  
   
- <xref:System.Data.SqlClient.SqlDataReader.GetChars%2A> 將會引發<xref:System.InvalidOperationException>例外狀況時所傳回的物件上使用<xref:System.Data.SqlClient.SqlDataReader.GetTextReader%2A>時<xref:System.Data.CommandBehavior.SequentialAccess>作用中。  
+ <xref:System.Data.SqlClient.SqlDataReader.GetChars%2A> 將會引發<xref:System.InvalidOperationException>例外狀況時所傳回的物件上使用<xref:System.Data.SqlClient.SqlDataReader.GetTextReader%2A>當<xref:System.Data.CommandBehavior.SequentialAccess>作用中。  
   
- 當連接屬性`ContextConnection=true`，<xref:System.Data.SqlClient.SqlDataReader.GetTextReader%2A>只循序同時支援同步的資料擷取 (<xref:System.Data.CommandBehavior.SequentialAccess>) 和非循序 (<xref:System.Data.CommandBehavior.Default>) 存取。  
+ 當連接屬性`ContextConnection=true`，<xref:System.Data.SqlClient.SqlDataReader.GetTextReader%2A>僅支援循序兩者同步的資料擷取 (<xref:System.Data.CommandBehavior.SequentialAccess>) 和非循序 (<xref:System.Data.CommandBehavior.Default>) 存取。  
   
- 如需詳細資訊，請參閱[SqlClient 串流支援](~/docs/framework/data/adonet/sqlclient-streaming-support.md)。  
+ 如需詳細資訊，請參閱 < [SqlClient 資料流支援](~/docs/framework/data/adonet/sqlclient-streaming-support.md)。  
   
  ]]></format>
         </remarks>
@@ -2389,6 +2508,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2412,7 +2532,7 @@
 ## Remarks  
  不會進行轉換;因此，擷取的資料必須已經是<xref:System.TimeSpan>物件。  
   
- 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>呼叫這個方法之前檢查是否有 null 值。  
+ 呼叫<xref:System.Data.SqlClient.SqlDataReader.IsDBNull%2A>之前呼叫這個方法檢查是否有 null 值。  
   
  ]]></format>
         </remarks>
@@ -2437,6 +2557,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2482,6 +2604,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2503,16 +2627,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 對於大部分的應用程式，這個方法會提供有效率的方法來擷取所有資料行，而不是個別擷取每個資料行。  
+ 對於大部分的應用程式，這個方法會提供有效率的方法，用於擷取所有的資料行，而不是個別擷取每個資料行。  
   
- 您可以傳遞<xref:System.Object>陣列包含少於一個產生的資料列中所包含的資料行數目。 資料量<xref:System.Object>陣列，含有複製到陣列。 您也可以傳遞<xref:System.Object>陣列，其長度都是多個資料行包含在產生的資料列數目。  
+ 您可以傳遞<xref:System.Object>陣列包含少於一個資料行包含在產生的資料列數目。 資料量<xref:System.Object>陣列會保存已複製到陣列。 您也可以傳遞<xref:System.Object>陣列，其長度都是多個資料行包含在產生的資料列數目。  
   
  對於 null 資料庫資料行來說，這個方法會傳回 <xref:System.DBNull>。  
   
    
   
 ## Examples  
- 下列範例示範如何使用正確大小的陣列讀取目前的資料列中所提供的所有值<xref:System.Data.SqlClient.SqlDataReader>。 此外，此範例會示範使用固定大小的陣列，可能是較小或較大的可用資料行數目。  
+ 下列範例示範如何使用正確大小的陣列讀取從目前的資料列中所提供的所有值<xref:System.Data.SqlClient.SqlDataReader>。 此外，此範例會示範使用固定大小的陣列，可能較小或大於可用的資料行數目。  
   
  [!code-csharp[DataWorks DataTableReader.GetValueObject#2](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks DataTableReader.GetValueObject/CS/source.cs#2)]
  [!code-vb[DataWorks DataTableReader.GetValueObject#2](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks DataTableReader.GetValueObject/VB/source.vb#2)]  
@@ -2557,13 +2681,13 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Xml.XmlReader>所傳回物件<xref:System.Data.SqlClient.SqlDataReader.GetXmlReader%2A>不支援非同步作業。 如果您需要非同步作業上<xref:System.Xml.XmlReader>、 nvarchar （max） 將 XML 資料行轉換在伺服器上，以及使用<xref:System.Data.SqlClient.SqlDataReader.GetTextReader%2A>與<xref:System.Xml.XmlReader.Create%2A>。  
+ <xref:System.Xml.XmlReader>所傳回的物件<xref:System.Data.SqlClient.SqlDataReader.GetXmlReader%2A>不支援非同步作業。 如果您需要非同步作業<xref:System.Xml.XmlReader>，在伺服器上轉換的 nvarchar （max） 的 XML 資料行，並使用<xref:System.Data.SqlClient.SqlDataReader.GetTextReader%2A>使用<xref:System.Xml.XmlReader.Create%2A>。  
   
- <xref:System.Data.SqlClient.SqlException> 從引發例外狀況<xref:System.Xml.XmlReader>擲回做<xref:System.Xml.XmlException>例外狀況，請參閱內部例外狀況的<xref:System.Data.SqlClient.SqlException>。  
+ <xref:System.Data.SqlClient.SqlException> 從引發例外狀況<xref:System.Xml.XmlReader>做為擲回<xref:System.Xml.XmlException>例外狀況; 請檢查內部例外狀況<xref:System.Data.SqlClient.SqlException>。  
   
- <xref:System.Data.SqlClient.SqlDataReader.GetChars%2A> 將會引發<xref:System.InvalidOperationException>例外狀況時所傳回的物件上使用<xref:System.Data.SqlClient.SqlDataReader.GetXmlReader%2A>時<xref:System.Data.CommandBehavior.SequentialAccess>作用中。  
+ <xref:System.Data.SqlClient.SqlDataReader.GetChars%2A> 將會引發<xref:System.InvalidOperationException>例外狀況時所傳回的物件上使用<xref:System.Data.SqlClient.SqlDataReader.GetXmlReader%2A>當<xref:System.Data.CommandBehavior.SequentialAccess>作用中。  
   
- 如需詳細資訊，請參閱[SqlClient 串流支援](~/docs/framework/data/adonet/sqlclient-streaming-support.md)。  
+ 如需詳細資訊，請參閱 < [SqlClient 資料流支援](~/docs/framework/data/adonet/sqlclient-streaming-support.md)。  
   
  ]]></format>
         </remarks>
@@ -2587,6 +2711,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2621,6 +2747,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2654,6 +2782,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2696,6 +2825,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2717,7 +2848,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 呼叫這個方法來檢查是否有 null 資料行值，然後再呼叫的型別有 get 的方法 (例如， <xref:System.Data.SqlClient.SqlDataReader.GetByte%2A>， <xref:System.Data.SqlClient.SqlDataReader.GetChar%2A>，依此類推) 以避免引發錯誤。  
+ 呼叫這個方法來檢查是否有 null 的資料行的值，然後再呼叫具型別的 get 方法 (例如<xref:System.Data.SqlClient.SqlDataReader.GetByte%2A>，<xref:System.Data.SqlClient.SqlDataReader.GetChar%2A>等等) 以避免引發錯誤。  
   
  [!code-csharp[SqlDataReader_IsDbNull#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/sqldatareader_isdbnull/cs/source.cs#1)]
  [!code-vb[SqlDataReader_IsDbNull#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/sqldatareader_isdbnull/vb/source.vb#1)]  
@@ -2764,7 +2895,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如需詳細資訊，請參閱[SqlClient 串流支援](~/docs/framework/data/adonet/sqlclient-streaming-support.md)。  
+ 如需詳細資訊，請參閱 < [SqlClient 資料流支援](~/docs/framework/data/adonet/sqlclient-streaming-support.md)。  
   
  ]]></format>
         </remarks>
@@ -2802,6 +2933,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2841,6 +2974,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2862,9 +2997,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 第一次執行區分大小寫的查閱。 如果失敗，就會建立第二個不區分大小寫的搜尋 (不區分大小寫的比較是使用資料庫定序)。 比較會受到特定文化特性大小寫規則，就會發生非預期的結果。 例如，在土耳其文，下列範例會產生錯誤結果因為土耳其文中的檔案系統不會使用語言大小寫規則的字母 'i' 中 「 檔案 」。  
+ 第一次執行區分大小寫的查閱。 如果失敗，就會建立第二個不區分大小寫的搜尋 (不區分大小寫的比較是使用資料庫定序)。 比較會受到特定文化特性的大小寫規則，就會發生非預期的結果。 例如，在土耳其文，下列範例會產生錯誤的結果因為土耳其文中的檔案系統不會使用語言大小寫規則，以字母 'i' 中 「 檔案 」。  
   
- 這個方法是區分假名寬度。  
+ 這個方法會區分假名寬度。  
   
  ]]></format>
         </remarks>
@@ -2889,6 +3024,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2907,9 +3044,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 用來處理多個結果，可以藉由執行 TRANSACT-SQL 批次陳述式產生。  
+ 用來處理多個結果，可以執行批次 TRANSACT-SQL 陳述式所產生。  
   
- 根據預設，資料讀取器上的第一個結果。  
+ 根據預設，資料讀取器定位於第一個結果。  
   
  ]]></format>
         </remarks>
@@ -2950,7 +3087,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如需在.NET Framework Data Provider for SQL Server 的非同步程式設計的詳細資訊，請參閱[進行非同步程式設計](~/docs/framework/data/adonet/asynchronous-programming.md)。  
+ 如需有關在.NET Framework Data Provider for SQL Server 的非同步程式設計的詳細資訊，請參閱[非同步程式設計](~/docs/framework/data/adonet/asynchronous-programming.md)。  
   
  ]]></format>
         </remarks>
@@ -2978,6 +3115,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -2996,14 +3135,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 預設位置<xref:System.Data.SqlClient.SqlDataReader>是第一個資料錄之前。 因此，您必須呼叫<xref:System.Data.SqlClient.SqlDataReader.Read%2A>開始存取任何資料。  
+ 預設位置<xref:System.Data.SqlClient.SqlDataReader>之前第一筆記錄。 因此，您必須呼叫<xref:System.Data.SqlClient.SqlDataReader.Read%2A>以開始存取任何資料。  
   
- 只有一個`SqlDataReader`每個相關聯<xref:System.Data.SqlClient.SqlConnection>可能開啟了一次，而且任何嘗試開啟另一個將會失敗，直到關閉第一個。 同樣地，雖然`SqlDataReader`正在使用中，相關聯`SqlConnection`正忙於處理直到您呼叫<xref:System.Data.SqlClient.SqlDataReader.Close%2A>。  
+ 只有一個`SqlDataReader`每個相關聯<xref:System.Data.SqlClient.SqlConnection>可能開啟了一次，並開啟另一個的任何嘗試會失敗，直到關閉第一個。 同樣地，雖然`SqlDataReader`正在使用中，相關聯`SqlConnection`忙碌處理直到您呼叫<xref:System.Data.SqlClient.SqlDataReader.Close%2A>。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.SqlClient.SqlConnection>、 <xref:System.Data.SqlClient.SqlCommand>，和<xref:System.Data.SqlClient.SqlDataReader>。 此範例會讀取整個資料，並將它寫出至主控台視窗。 然後關閉該程式碼<xref:System.Data.SqlClient.SqlDataReader>。 <xref:System.Data.SqlClient.SqlConnection>結尾會自動關閉`using`程式碼區塊。  
+ 下列範例會建立<xref:System.Data.SqlClient.SqlConnection>，則<xref:System.Data.SqlClient.SqlCommand>，和<xref:System.Data.SqlClient.SqlDataReader>。 此範例會讀取資料，並將它寫出至主控台視窗。 程式碼接著會關閉<xref:System.Data.SqlClient.SqlDataReader>。 <xref:System.Data.SqlClient.SqlConnection>結尾的自動關閉`using`程式碼區塊。  
   
  [!code-csharp[Classic WebData SqlDataReader.Read Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlDataReader.Read Example/CS/source.cs#1)]
  [!code-vb[Classic WebData SqlDataReader.Read Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlDataReader.Read Example/VB/source.vb#1)]  
@@ -3047,9 +3186,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果`behavior`參數<xref:System.Data.SqlClient.SqlCommand.ExecuteReaderAsync%2A>設`Default`，<xref:System.Data.SqlClient.SqlDataReader.ReadAsync%2A>傳回工作之前讀取整個資料列。  
+ 如果`behavior`的參數<xref:System.Data.SqlClient.SqlCommand.ExecuteReaderAsync%2A>設為`Default`，<xref:System.Data.SqlClient.SqlDataReader.ReadAsync%2A>讀取整個資料列之前傳回的工作。  
   
- 如需詳細資訊，包括關於在.NET Framework Data Provider for SQL Server 的非同步程式設計的程式碼範例，請參閱[進行非同步程式設計](~/docs/framework/data/adonet/asynchronous-programming.md)。  
+ 如需詳細資訊，包括程式碼範例，關於在.NET Framework Data Provider for SQL Server 的非同步程式設計[非同步程式設計](~/docs/framework/data/adonet/asynchronous-programming.md)。  
   
  ]]></format>
         </remarks>
@@ -3077,6 +3216,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -3094,14 +3235,38 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.SqlClient.SqlDataReader.RecordsAffected%2A>直到讀取所有資料列，而且您關閉屬性未設定<xref:System.Data.SqlClient.SqlDataReader>。  
+ <xref:System.Data.SqlClient.SqlDataReader.RecordsAffected%2A>屬性才會設定讀取所有資料列，而且您關閉<xref:System.Data.SqlClient.SqlDataReader>。  
   
- 這個屬性的值是累計的。 例如，如果兩筆記錄會在批次模式中，值插入`RecordsAffected`將兩個。  
+ 這個屬性的值是累計的。 例如，如果在批次模式中，值插入兩筆記錄`RecordsAffected`是兩個。  
   
- <xref:System.Data.SqlClient.SqlDataReader.IsClosed%2A> 和<xref:System.Data.SqlClient.SqlDataReader.RecordsAffected%2A>屬性之後，您可以呼叫<xref:System.Data.SqlClient.SqlDataReader>已關閉。  
+ <xref:System.Data.SqlClient.SqlDataReader.IsClosed%2A> 並<xref:System.Data.SqlClient.SqlDataReader.RecordsAffected%2A>是您可以呼叫之後的唯一屬性<xref:System.Data.SqlClient.SqlDataReader>已關閉。  
   
  ]]></format>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Collections.IEnumerable.GetEnumerator">
+      <MemberSignature Language="C#" Value="System.Collections.IEnumerator IEnumerable.GetEnumerator ();" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance class System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlDataReader.System#Collections#IEnumerable#GetEnumerator" />
+      <MemberSignature Language="VB.NET" Value="Function GetEnumerator () As IEnumerator Implements IEnumerable.GetEnumerator" />
+      <MemberSignature Language="C++ CLI" Value=" virtual System::Collections::IEnumerator ^ System.Collections.IEnumerable.GetEnumerator() = System::Collections::IEnumerable::GetEnumerator;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Collections.IEnumerable.GetEnumerator</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.IEnumerator</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="System.Data.IDataRecord.GetData">
@@ -3116,11 +3281,12 @@
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
+          <AttributeName>System.ComponentModel.EditorBrowsable</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -3143,6 +3309,29 @@
         </remarks>
       </Docs>
     </Member>
+    <Member MemberName="System.IDisposable.Dispose">
+      <MemberSignature Language="C#" Value="void IDisposable.Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.IDisposable.Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlDataReader.System#IDisposable#Dispose" />
+      <MemberSignature Language="VB.NET" Value="Sub Dispose () Implements IDisposable.Dispose" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.IDisposable.Dispose() = IDisposable::Dispose;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
     <Member MemberName="VisibleFieldCount">
       <MemberSignature Language="C#" Value="public override int VisibleFieldCount { get; }" />
       <MemberSignature Language="ILAsm" Value=".property instance int32 VisibleFieldCount" />
@@ -3158,6 +3347,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>

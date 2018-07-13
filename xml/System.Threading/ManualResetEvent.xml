@@ -1,11 +1,11 @@
 <Type Name="ManualResetEvent" FullName="System.Threading.ManualResetEvent">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="3c19185907e45c5b7b80aae8627946c15d4efd4f" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="c0a17f12cc4e28122f27008de4d7c78591b617c4" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36605902" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37608961" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class ManualResetEvent : System.Threading.EventWaitHandle" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit ManualResetEvent extends System.Threading.EventWaitHandle" />
@@ -22,6 +22,8 @@
   </AssemblyInfo>
   <AssemblyInfo>
     <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -31,6 +33,7 @@
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Threading.EventWaitHandle</BaseTypeName>
+    <BaseTypeName FrameworkAlternate="netframework-1.1">System.Threading.WaitHandle</BaseTypeName>
   </Base>
   <Interfaces />
   <Attributes>
@@ -44,18 +47,18 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 在.NET Framework 2.0 版中，<xref:System.Threading.ManualResetEvent>衍生自新<xref:System.Threading.EventWaitHandle>類別。 A<xref:System.Threading.ManualResetEvent>其作用相當於<xref:System.Threading.EventWaitHandle>以建立<xref:System.Threading.EventResetMode.ManualReset?displayProperty=nameWithType>。  
+ 在.NET Framework 2.0 版中，<xref:System.Threading.ManualResetEvent>衍生自新<xref:System.Threading.EventWaitHandle>類別。 A<xref:System.Threading.ManualResetEvent>相當於<xref:System.Threading.EventWaitHandle>以建立<xref:System.Threading.EventResetMode.ManualReset?displayProperty=nameWithType>。  
   
 > [!NOTE]
->  不同於<xref:System.Threading.ManualResetEvent>類別<xref:System.Threading.EventWaitHandle>類別會提供存取具名的系統同步處理事件。  
+>  不同於<xref:System.Threading.ManualResetEvent>類別，<xref:System.Threading.EventWaitHandle>類別提供存取具名的系統同步處理事件。  
   
- <xref:System.Threading.ManualResetEvent> 可讓執行緒信號與對方進行通訊。 通常，此通訊是有關的工作的執行緒必須完成其他執行緒才能繼續。  
+ <xref:System.Threading.ManualResetEvent> 可讓執行緒藉由發出訊號，與彼此進行通訊。 通常，此通訊是有關哪一個執行緒必須先完成其他執行緒才能繼續工作。  
   
- 執行緒開始其他之前必須完成的活動時執行緒繼續執行，它會呼叫<xref:System.Threading.EventWaitHandle.Reset%2A>放置`ManualResetEvent`未收到訊號的狀態。 這個執行緒可以想成控制`ManualResetEvent`。 執行緒呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>上`ManualResetEvent`會封鎖，等待訊號。 當控制執行緒完成的活動時，它會呼叫<xref:System.Threading.EventWaitHandle.Set%2A>發出信號的等候中執行緒才能繼續。 會釋放所有等候中執行緒。  
+ 當執行緒開始的活動，必須先完成才能其他執行緒繼續執行，它會呼叫<xref:System.Threading.EventWaitHandle.Reset%2A>把`ManualResetEvent`未收到信號的狀態。 這個執行緒可以視為控制`ManualResetEvent`。 執行緒呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>上`ManualResetEvent`會封鎖，等待訊號。 當控制執行緒完成的活動時，它會呼叫<xref:System.Threading.EventWaitHandle.Set%2A>來表示可以繼續等候中執行緒。 會釋放所有等候中執行緒。  
   
- 一旦收到信號，`ManualResetEvent`會保留已收到信號，直到手動重設為止。 也就是說，呼叫`WaitOne`立即傳回。  
+ 一旦收到信號，`ManualResetEvent`會維持收到訊號的狀態，直到手動重設為止。 也就是呼叫`WaitOne`立即傳回。  
   
- 您可以控制的初始狀態`ManualResetEvent`將布林值傳遞至建構函式，`true`如果收到信號的初始狀態和`false`否則。  
+ 您可以控制的初始狀態`ManualResetEvent`建構函式，傳遞布林值`true`如果收到訊號的初始狀態和`false`否則。  
   
  `ManualResetEvent` 也可與`static`<xref:System.Threading.WaitHandle.WaitAll%2A>和<xref:System.Threading.WaitHandle.WaitAny%2A>方法。  
   
@@ -64,11 +67,11 @@
    
   
 ## Examples  
- 下列範例會示範如何<xref:System.Threading.ManualResetEvent>的運作方式。 此範例會啟動具有<xref:System.Threading.ManualResetEvent>信號的狀態 (也就是`false`傳遞至建構函式)。 此範例會建立三個執行緒，每個哪些區塊在<xref:System.Threading.ManualResetEvent>藉由呼叫其<xref:System.Threading.WaitHandle.WaitOne%2A>方法。 當使用者按**Enter**索引鍵，範例會呼叫<xref:System.Threading.EventWaitHandle.Set%2A>方法，這個方法會釋放所有的三個執行緒。 這和行為的<xref:System.Threading.AutoResetEvent>類別，這會釋放執行緒一一次之後每個版本, 的自動重設。  
+ 下列範例示範如何<xref:System.Threading.ManualResetEvent>的運作方式。 此範例開頭<xref:System.Threading.ManualResetEvent>中未發出訊號的狀態 (也就是`false`傳遞至建構函式)。 此範例會建立三個執行緒，每個哪些區塊<xref:System.Threading.ManualResetEvent>藉由呼叫其<xref:System.Threading.WaitHandle.WaitOne%2A>方法。 當使用者按下**Enter**鍵，此範例會呼叫<xref:System.Threading.EventWaitHandle.Set%2A>方法來釋放所有的三個執行緒。 與此相反的行為與<xref:System.Threading.AutoResetEvent>類別，這會釋放一個執行緒一次，每個版本發行後的自動重設。  
   
- 按下**Enter**金鑰再次示範<xref:System.Threading.ManualResetEvent>會保留在收到信號的狀態，直到其<xref:System.Threading.EventWaitHandle.Reset%2A>方法呼叫： 此範例會啟動兩個的多個執行緒。 這些執行緒不會封鎖它們呼叫時<xref:System.Threading.WaitHandle.WaitOne%2A>方法，但改為執行到完成為止。  
+ 按下**Enter**金鑰再次示範<xref:System.Threading.ManualResetEvent>會保留在收到信號的狀態，直到其<xref:System.Threading.EventWaitHandle.Reset%2A>方法呼叫： 此範例會啟動兩個的多個執行緒。 這些執行緒不會封鎖撥打電話時<xref:System.Threading.WaitHandle.WaitOne%2A>方法，但改為執行到完成為止。  
   
- 按下**Enter**金鑰一次會造成呼叫範例<xref:System.Threading.EventWaitHandle.Reset%2A>方法，並啟動一個更多的執行緒，它會封鎖呼叫時，如果<xref:System.Threading.WaitHandle.WaitOne%2A>。 按下**Enter**其中一個索引鍵為最後一次呼叫<xref:System.Threading.EventWaitHandle.Set%2A>釋放最後一個執行緒，並在程式結束。  
+ 按下**Enter**金鑰一次會造成呼叫範例<xref:System.Threading.EventWaitHandle.Reset%2A>方法，並啟動一個更多的執行緒，它會封鎖呼叫時<xref:System.Threading.WaitHandle.WaitOne%2A>。 按下**Enter**最後一次呼叫將其中一個金鑰<xref:System.Threading.EventWaitHandle.Set%2A>釋放最後一個執行緒，以及程式結束。  
   
  [!code-cpp[System.Threading.ManualResetEvent#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ManualResetEvent/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.ManualResetEvent#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ManualResetEvent/CS/source.cs#1)]
@@ -97,6 +100,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -114,11 +119,55 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果初始狀態<xref:System.Threading.ManualResetEvent>收到信號 (亦即，如果它由傳遞`true`如`initialState`)，等候的執行緒<xref:System.Threading.ManualResetEvent>不會封鎖。 如果未收到訊號的初始狀態，執行緒會封鎖直到<xref:System.Threading.EventWaitHandle.Set%2A>方法呼叫。  
+ 如果的初始狀態<xref:System.Threading.ManualResetEvent>收到信號 (亦即，如果它由傳遞`true`for `initialState`)，等候的執行緒<xref:System.Threading.ManualResetEvent>不會封鎖。 如果未收到訊號的初始狀態，執行緒會封鎖直到<xref:System.Threading.EventWaitHandle.Set%2A>呼叫方法。  
   
  ]]></format>
         </remarks>
         <altmember cref="T:System.Threading.WaitHandle" />
+      </Docs>
+    </Member>
+    <Member MemberName="Reset">
+      <MemberSignature Language="C#" Value="public bool Reset ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Reset() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ManualResetEvent.Reset" />
+      <MemberSignature Language="VB.NET" Value="Public Function Reset () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool Reset();" />
+      <MemberSignature Language="F#" Value="member this.Reset : unit -&gt; bool" Usage="manualResetEvent.Reset " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Set">
+      <MemberSignature Language="C#" Value="public bool Set ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Set() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ManualResetEvent.Set" />
+      <MemberSignature Language="VB.NET" Value="Public Function Set () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool Set();" />
+      <MemberSignature Language="F#" Value="member this.Set : unit -&gt; bool" Usage="manualResetEvent.Set " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
   </Members>
