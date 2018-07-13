@@ -1,11 +1,11 @@
 <Type Name="ReaderWriterLock" FullName="System.Threading.ReaderWriterLock">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="ed9a740eab700d16f5778c2b6c1ce675521e870e" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="eceaf936001c4e98e1bf97071c933f2a511a4a69" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36605886" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37754689" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class ReaderWriterLock : System.Runtime.ConstrainedExecution.CriticalFinalizerObject" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit ReaderWriterLock extends System.Runtime.ConstrainedExecution.CriticalFinalizerObject" />
@@ -15,6 +15,8 @@
   <TypeSignature Language="F#" Value="type ReaderWriterLock = class&#xA;    inherit CriticalFinalizerObject" />
   <AssemblyInfo>
     <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -29,6 +31,7 @@
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Runtime.ConstrainedExecution.CriticalFinalizerObject</BaseTypeName>
+    <BaseTypeName FrameworkAlternate="netframework-1.1">System.Object</BaseTypeName>
   </Base>
   <Interfaces />
   <Attributes>
@@ -46,39 +49,39 @@
 > [!IMPORTANT]
 >  [!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)] 擁有 <xref:System.Threading.ReaderWriterLockSlim> 和 <xref:System.Threading.ReaderWriterLock> 這兩個 Reader-Writer 鎖定。 建議針對所有新的開發使用 <xref:System.Threading.ReaderWriterLockSlim>。 <xref:System.Threading.ReaderWriterLockSlim> 類似於 <xref:System.Threading.ReaderWriterLock>，但是它有遞迴以及升級和降級鎖定狀態的簡化規則。 <xref:System.Threading.ReaderWriterLockSlim> 可避免可能發生死結的許多情況。 此外，<xref:System.Threading.ReaderWriterLockSlim> 的效能明顯優於 <xref:System.Threading.ReaderWriterLock>。  
   
- <xref:System.Threading.ReaderWriterLock> 用來同步處理資源的存取權。 在任何時候，它可讓多重執行緒的並行讀取權限，或是單一執行緒的寫入權限。 資源不常變更的情況下`ReaderWriterLock`提供更佳的輸送量，比簡單的其中一個-一次鎖定，例如<xref:System.Threading.Monitor>。  
+ <xref:System.Threading.ReaderWriterLock> 用來同步處理資源的存取權。 在任何時候，它可讓多個執行緒的並行讀取權限，或是單一執行緒的寫入權限。 資源不常變更的情況下`ReaderWriterLock`提供更佳的輸送量比簡單的一個-一次鎖定，例如<xref:System.Threading.Monitor>。  
   
- `ReaderWriterLock` 其中大部分的存取，則讀取、 寫入不頻繁和短時間內，效果最好。 多個讀取器的替代與單一寫入器，因此會讀取器或寫入器會封鎖長時間。  
+ `ReaderWriterLock` 其中大部分的存取是讀取、 寫入是不常執行和短時間內的效果最佳。 多個讀取器的替代與單一寫入器，以便讀取或寫入器不會封鎖長時間。  
   
 > [!NOTE]
->  長期保留讀取鎖定或寫入器鎖定會影響其他執行緒。 為了達到最佳效能，請考慮重建您的應用程式寫入的持續時間降至最低。  
+>  長期保留讀取鎖定或寫入器鎖定會影響其他執行緒。 為了達到最佳效能，請考慮重新建構您的應用程式，將寫入的持續時間降至最低。  
   
- 執行緒可以保留讀取鎖定或寫入器鎖定，但不可同時在相同的時間。 而不是為了取得寫入器鎖定釋放讀取器的鎖定，您可以使用<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>和<xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A>。  
+ 鎖定或寫入器鎖定，但不要同時在相同的時間，執行緒可以保留讀取器。 而不是為了取得寫入器鎖定釋放讀取器的鎖定，您可以使用<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>和<xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A>。  
   
- 遞迴的鎖定要求增加上鎖定的鎖定計數。  
+ 遞迴的鎖定要求增加鎖定的鎖定計數。  
   
- 是個別佇列讀取器和寫入器。 當執行緒釋放寫入器的鎖定時，那時讀取器佇列中等待的所有執行緒授都與讀取器鎖定。當這些讀取器鎖定的所有已發行下, 一個執行緒等候寫入器中排入佇列，如果任何，授與寫入器的鎖定，等等。 換句話說，`ReaderWriterLock`交替讀取器，集合和一個寫入器。  
+ 是個別佇列讀取器和寫入。 當執行緒釋放寫入器鎖定時，那時讀取器佇列中等候的所有執行緒會被授都與讀取器鎖定;當這些讀取器鎖定的所有已發行下, 一個執行緒等候寫入器中排入佇列，如果任何項目，授與寫入器的鎖定，等等。 換句話說，`ReaderWriterLock`交替的讀卡機，集合和一個寫入器。  
   
- 當寫入器佇列中的執行緒正在等候讀取器鎖定釋出時，要求新的讀取器鎖定的執行緒會累積讀取器佇列中。 要求未獲授予，即使它們無法與現有的讀取器鎖定持有者; 共用的並行存取這有助於保護針對讀取者無限期發生封鎖情形等的寫入器。  
+ 雖然寫入器佇列中的執行緒正在等候使用中的讀取器的鎖定釋出，要求新的讀取器鎖定的執行緒會累積讀取器佇列中。 其不授與，即使它們無法分享現有的讀取器鎖定持有者; 中的並行存取這有助於保護對讀取器不會無限期妨礙的寫入器。  
   
- 大部分的方法上取得鎖定`ReaderWriterLock`接受逾時值。 若要避免死結，應用程式中的使用逾時。 比方說，執行緒可能會取得一個資源寫入器鎖定，而且然後要求第二個資源; 讀取器鎖定在此同時，另一個執行緒可能取得寫入器鎖定，第二個資源，並要求在第一個讀取器的鎖定。 除非使用逾時，執行緒會鎖死。  
+ 大部分的方法上取得鎖定`ReaderWriterLock`接受逾時值。 若要避免死結，在您的應用程式中使用逾時。 比方說，執行緒可能會取得在一個資源上的寫入器鎖定，而接著要求第二個資源的讀取器鎖定在此同時，另一個執行緒可能會取得第二個資源中，寫入器鎖定，並要求讀取器的鎖定在第一天。 除非使用逾時，執行緒會鎖死。  
   
- 如果逾時間隔到期且未被授與鎖定要求，方法會傳回控制項至呼叫的執行緒所擲回<xref:System.ApplicationException>。 執行緒可以捕捉此例外狀況，並判斷要採取的後續動作。  
+ 如果逾時間隔到期且未被授與鎖定要求，方法將控制權還給呼叫的執行緒擲回<xref:System.ApplicationException>。 執行緒可以攔截此例外狀況，並判斷後續要採取什麼動作。  
   
- 逾時值被以毫秒為單位。 如果您使用<xref:System.TimeSpan?displayProperty=nameWithType>指定逾時，所使用的值是由表示整數毫秒總數<xref:System.TimeSpan>。 下表顯示有效的逾時值以毫秒為單位。  
+ 逾時值被以毫秒為單位。 如果您使用<xref:System.TimeSpan?displayProperty=nameWithType>若要指定在逾時，所使用的值是所表示之整數毫秒總數<xref:System.TimeSpan>。 下表顯示有效的逾時值以毫秒為單位。  
   
 |值|描述|  
 |-----------|-----------------|  
-|-1|執行緒等候，直到鎖定，則不論花費的時間。 指定的整數逾時、 常數的方法<xref:System.Threading.Timeout.Infinite>可用。|  
-|0|執行緒不會等候取得鎖定。 如果無法立即取得鎖定，則方法傳回。|  
+|-1|在執行緒等候，直到取得鎖定，不論它花多少時間。 指定的整數逾時、 常數的方法<xref:System.Threading.Timeout.Infinite>可用。|  
+|0|執行緒不會等候取得鎖定。 如果無法立即取得鎖定，此方法會傳回。|  
 |>0|要等候的毫秒數。|  
   
- -1，除了不允許負值。 如果您指定-1 以外的負數的整數，改為使用零的逾時值。 （亦即，方法會傳回而不要等候，如果無法立即取得鎖定。）如果您指定<xref:System.TimeSpan>表示毫秒-1，以外的負數<xref:System.ArgumentOutOfRangeException>就會擲回。  
+ 除了-1，不允許負值的逾時值。 如果您指定-1 以外的負數整數，改為使用零的逾時值。 （亦即，方法會傳回而不等待，如果無法立即取得鎖定。）如果您指定<xref:System.TimeSpan>表示的負毫秒數目-1，以外<xref:System.ArgumentOutOfRangeException>就會擲回。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.Threading.ReaderWriterLock>若要保護的共用的資源，整數值，名為`resource`，也就是同時讀取和寫入專屬的多個執行緒。 請注意，<xref:System.Threading.ReaderWriterLock>宣告類別層級，因此它會顯示所有執行緒。  
+ 下列範例示範如何使用<xref:System.Threading.ReaderWriterLock>若要保護的共用的資源，整數值，名為`resource`，也就是以獨佔方式所多個執行緒同時讀取和寫入。 請注意，<xref:System.Threading.ReaderWriterLock>宣告類別層級，因此它會顯示所有執行緒。  
   
  [!code-cpp[System.Threading.ReaderWriterLock#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.ReaderWriterLock#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#1)]
@@ -98,6 +101,8 @@
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -119,7 +124,7 @@
 ## Examples  
  下列程式碼範例示範如何建立 <xref:System.Threading.ReaderWriterLock> 類別的新執行個體。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
   
  [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
  [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
@@ -152,6 +157,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -177,23 +184,23 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Threading.ReaderWriterLock.AcquireReaderLock%2A> 如果在不同的執行緒寫入器的鎖定，或至少一個執行緒正在等候寫入器的鎖定封鎖。  
+ <xref:System.Threading.ReaderWriterLock.AcquireReaderLock%2A> 如果不同的執行緒寫入器的鎖定，或至少一個執行緒正在等候寫入器鎖定封鎖。  
   
 > [!NOTE]
->  如果目前執行緒已寫入器的鎖定，沒有讀取器鎖定。 相反地，寫入器的鎖定上的鎖定計數會遞增。 這可防止在其本身的寫入器鎖定上封鎖執行緒。 結果是完全呼叫相同<xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>，以及額外的呼叫<xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>釋放寫入器鎖定時，就需要。  
+>  如果目前的執行緒已經寫入器鎖定，沒有讀取器會取得鎖定。 相反地，寫入器鎖定上的鎖定計數會遞增。 這可防止在它自己的寫入器鎖定上封鎖執行緒。 結果正是呼叫相同<xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>，以及額外的呼叫<xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>釋放寫入器鎖定時是必要的。  
   
- `AcquireReaderLock` 支援遞迴的讀取器鎖定要求。 也就是說，執行緒可以呼叫 AcquireReaderLock 多次，這在每次增加的鎖定計數。 您必須呼叫<xref:System.Threading.ReaderWriterLock.ReleaseReaderLock%2A>一次針對每次呼叫`AcquireReaderLock`。 或者，您可以呼叫<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>減少鎖定計數為零立即。  
+ `AcquireReaderLock` 支援遞迴的讀取器鎖定要求。 也就是說，執行緒可以呼叫 AcquireReaderLock 多次，這在每次增加的鎖定計數。 您必須呼叫<xref:System.Threading.ReaderWriterLock.ReleaseReaderLock%2A>針對每次呼叫一次`AcquireReaderLock`。 或者，您可以呼叫<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>減少為零立即鎖定計數。  
   
- 遞迴的鎖定要求會一律立即授與，而不會讓讀取器佇列中要求的執行緒。 遞迴鎖定謹慎使用，以避免長時間封鎖寫入器鎖定要求。  
+ 遞迴的鎖定要求是一律立即授與，而不會讓要求的執行緒在讀取器佇列中。 遞迴鎖定謹慎使用，以避免長時間封鎖寫入器鎖定要求。  
   
  有效的逾時值，請參閱<xref:System.Threading.ReaderWriterLock>。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何取得及釋放讀取器的鎖定，以及如何處理時要求逾時擲回的例外狀況。  
+ 下列程式碼範例示範如何取得和釋放讀取器的鎖定，以及如何處理時的要求逾時擲回的例外狀況。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
   
  [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
  [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
@@ -221,6 +228,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -247,14 +256,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Threading.ReaderWriterLock.AcquireReaderLock%2A> 如果在不同的執行緒寫入器的鎖定，或至少一個執行緒正在等候寫入器的鎖定封鎖。  
+ <xref:System.Threading.ReaderWriterLock.AcquireReaderLock%2A> 如果不同的執行緒寫入器的鎖定，或至少一個執行緒正在等候寫入器鎖定封鎖。  
   
 > [!NOTE]
->  如果目前執行緒已寫入器的鎖定，沒有讀取器鎖定。 相反地，寫入器的鎖定上的鎖定計數會遞增。 這可防止在其本身的寫入器鎖定上封鎖執行緒。 結果是完全呼叫相同<xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>，以及額外的呼叫<xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>釋放寫入器鎖定時，就需要。  
+>  如果目前的執行緒已經寫入器鎖定，沒有讀取器會取得鎖定。 相反地，寫入器鎖定上的鎖定計數會遞增。 這可防止在它自己的寫入器鎖定上封鎖執行緒。 結果正是呼叫相同<xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>，以及額外的呼叫<xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>釋放寫入器鎖定時是必要的。  
   
- `AcquireReaderLock` 支援遞迴的讀取器鎖定要求。 也就是說，執行緒可以呼叫 AcquireReaderLock 多次，這在每次增加的鎖定計數。 您必須呼叫<xref:System.Threading.ReaderWriterLock.ReleaseReaderLock%2A>一次針對每次呼叫`AcquireReaderLock`。 或者，您可以呼叫<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>減少鎖定計數為零立即。  
+ `AcquireReaderLock` 支援遞迴的讀取器鎖定要求。 也就是說，執行緒可以呼叫 AcquireReaderLock 多次，這在每次增加的鎖定計數。 您必須呼叫<xref:System.Threading.ReaderWriterLock.ReleaseReaderLock%2A>針對每次呼叫一次`AcquireReaderLock`。 或者，您可以呼叫<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>減少為零立即鎖定計數。  
   
- 遞迴的鎖定要求會一律立即授與，而不會讓讀取器佇列中要求的執行緒。 遞迴鎖定謹慎使用，以避免長時間封鎖寫入器鎖定要求。  
+ 遞迴的鎖定要求是一律立即授與，而不會讓要求的執行緒在讀取器佇列中。 遞迴鎖定謹慎使用，以避免長時間封鎖寫入器鎖定要求。  
   
  有效的逾時值，請參閱<xref:System.Threading.ReaderWriterLock>。  
   
@@ -286,6 +295,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -311,25 +322,25 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法會封鎖，如果另一個執行緒讀取器的鎖定或寫入器鎖定。 如需寫入器的鎖定會與多個並行讀取器鎖定交替出現的方式的說明，請參閱<xref:System.Threading.ReaderWriterLock>類別。  
+ 如果另一個執行緒讀取器的鎖定或寫入器鎖定，就會封鎖此方法。 如需寫入器鎖定會與多個並行讀取器鎖定交替出現的方式的說明，請參閱<xref:System.Threading.ReaderWriterLock>類別。  
   
- 已讀取器的鎖定的執行緒可以取得寫入器鎖定在兩種方式之一： 釋放讀取鎖定，然後再呼叫<xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>，或藉由呼叫<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>。  
+ 已將讀取器鎖定的執行緒可以取得寫入器鎖定在兩種方式之一： 釋放讀取器的鎖定，然後再呼叫<xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>，或藉由呼叫<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>。  
   
 > [!CAUTION]
->  如果呼叫執行緒`AcquireWriterLock`時仍有讀取器的鎖定，它會封鎖讀取器鎖定上; 如果指定無限逾時，就會鎖死的執行緒。 若要避免這類死結，請使用<xref:System.Threading.ReaderWriterLock.IsReaderLockHeld%2A>來判斷目前的執行緒是否已有讀取器的鎖定。  
+>  如果執行緒呼叫`AcquireWriterLock`仍有讀取器的鎖定，它就會封鎖讀取器鎖定; 如果指定無限逾時，則執行緒會鎖死。 若要避免發生這類死結，請使用<xref:System.Threading.ReaderWriterLock.IsReaderLockHeld%2A>來判斷目前的執行緒是否已有讀取器的鎖定。  
   
- `AcquireWriterLock` 支援遞迴的寫入器鎖定要求。 也就是說，執行緒可以呼叫`AcquireWriterLock`許多次，其中的鎖定計數遞增每一次。 您必須呼叫<xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>一次針對每次呼叫`AcquireWriterLock`。 或者，您可以呼叫<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>減少鎖定計數為零立即。  
+ `AcquireWriterLock` 支援遞迴的寫入器鎖定要求。 也就是說，執行緒可以呼叫`AcquireWriterLock`許多次，其中的鎖定計數遞增每一次。 您必須呼叫<xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>針對每次呼叫一次`AcquireWriterLock`。 或者，您可以呼叫<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>減少為零立即鎖定計數。  
   
- 遞迴的鎖定要求會一律立即授與，而不會讓寫入器佇列中要求的執行緒。  
+ 遞迴的鎖定要求是一律立即授與，而不會讓寫入器佇列中的要求的執行緒。  
   
  有效的逾時值，請參閱<xref:System.Threading.ReaderWriterLock>。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何取得並發行寫入器鎖定，以及如何處理時要求逾時擲回的例外狀況。  
+ 下列程式碼範例示範如何取得和釋放寫入器鎖定，以及如何處理時的要求逾時擲回的例外狀況。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
   
  [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
  [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
@@ -357,6 +368,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -383,16 +396,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法會封鎖，如果另一個執行緒讀取器的鎖定或寫入器鎖定。 如需寫入器的鎖定會與多個並行讀取器鎖定交替出現的方式的說明，請參閱<xref:System.Threading.ReaderWriterLock>類別。  
+ 如果另一個執行緒讀取器的鎖定或寫入器鎖定，就會封鎖此方法。 如需寫入器鎖定會與多個並行讀取器鎖定交替出現的方式的說明，請參閱<xref:System.Threading.ReaderWriterLock>類別。  
   
- 已讀取器的鎖定的執行緒可以取得寫入器鎖定在兩種方式之一： 釋放讀取鎖定，然後再呼叫<xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>，或藉由呼叫<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>。  
+ 已將讀取器鎖定的執行緒可以取得寫入器鎖定在兩種方式之一： 釋放讀取器的鎖定，然後再呼叫<xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>，或藉由呼叫<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>。  
   
 > [!CAUTION]
->  如果呼叫執行緒`AcquireWriterLock`時仍有讀取器的鎖定，它會封鎖讀取器鎖定上; 如果指定無限逾時，就會鎖死的執行緒。 若要避免這類死結，請使用<xref:System.Threading.ReaderWriterLock.IsReaderLockHeld%2A>來判斷目前的執行緒是否已有讀取器的鎖定。  
+>  如果執行緒呼叫`AcquireWriterLock`仍有讀取器的鎖定，它就會封鎖讀取器鎖定; 如果指定無限逾時，則執行緒會鎖死。 若要避免發生這類死結，請使用<xref:System.Threading.ReaderWriterLock.IsReaderLockHeld%2A>來判斷目前的執行緒是否已有讀取器的鎖定。  
   
- `AcquireWriterLock` 支援遞迴的寫入器鎖定要求。 也就是說，執行緒可以呼叫`AcquireWriterLock`許多次，其中的鎖定計數遞增每一次。 您必須呼叫<xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>一次針對每次呼叫`AcquireWriterLock`。 或者，您可以呼叫<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>減少鎖定計數為零立即。  
+ `AcquireWriterLock` 支援遞迴的寫入器鎖定要求。 也就是說，執行緒可以呼叫`AcquireWriterLock`許多次，其中的鎖定計數遞增每一次。 您必須呼叫<xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>針對每次呼叫一次`AcquireWriterLock`。 或者，您可以呼叫<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>減少為零立即鎖定計數。  
   
- 遞迴的鎖定要求會一律立即授與，而不會讓寫入器佇列中要求的執行緒。  
+ 遞迴的鎖定要求是一律立即授與，而不會讓寫入器佇列中的要求的執行緒。  
   
  有效的逾時值，請參閱<xref:System.Threading.ReaderWriterLock>。  
   
@@ -414,6 +427,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -440,16 +455,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您可以使用<xref:System.Threading.ReaderWriterLock.WriterSeqNum%2A>和`AnyWritersSince`改善應用程式效能。 例如，執行緒可能會快取保留讀取鎖定時取得的資訊。 釋出和更新版本重新取得鎖定之後, 可以使用執行緒`AnyWritersSince`來判斷是否其他執行緒的資源寫入暫時; 如果沒有，可以使用快取的資訊。 這個技術非常有用是高度耗費資源; 讀取鎖定所保護的資訊例如，執行資料庫查詢。  
+ 您可以使用<xref:System.Threading.ReaderWriterLock.WriterSeqNum%2A>和`AnyWritersSince`改善應用程式效能。 例如，執行緒可能會快取的讀取器鎖定時取得的資訊。 釋出，並稍後重新取得鎖定之後, 可以使用執行緒`AnyWritersSince`來判斷是否其他執行緒就會有寫入資源中，在此過渡期間，如果沒有，可以使用快取的資訊。 這個技術非常有用是昂貴; 讀取鎖定所保護的資訊例如，執行資料庫查詢。  
   
- 呼叫端必須寫入器鎖定或讀取器鎖定保留順序，序號才能發揮作用。  
+ 呼叫端必須將讀取器鎖定或寫入器鎖定保留順序的序號，才能發揮作用。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Threading.ReaderWriterLock.AnyWritersSince%2A>方法和<xref:System.Threading.ReaderWriterLock.WriterSeqNum%2A>屬性來判斷另一個執行緒是否已受保護的資源寫入器鎖定，因為目前的執行緒上一次保留寫入器的鎖定。  
+ 下列程式碼範例示範如何使用<xref:System.Threading.ReaderWriterLock.AnyWritersSince%2A>方法和<xref:System.Threading.ReaderWriterLock.WriterSeqNum%2A>屬性來判斷另一個執行緒是否會取得受保護資源的寫入器鎖定，因為目前的執行緒上一次保留的寫入器鎖定。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
   
  [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
  [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
@@ -475,6 +490,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -501,19 +518,19 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A> 釋放寫入器的鎖定，不論遞迴鎖定計數，並還原已由執行緒持有然後再升級至寫入器鎖定的讀取器鎖定。 在讀取器鎖定的鎖定計數就會還原。  
+ <xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A> 釋放寫入器鎖定，不會考慮遞迴鎖定計數，並還原已由執行緒持有才能升級至寫入器鎖定的讀取器鎖定。 讀取器鎖定上的鎖定計數就會還原。  
   
 > [!NOTE]
->  `DowngradeFromWriterLock` 接受<xref:System.Threading.LockCookie>藉由呼叫取得<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>。 請勿使用`LockCookie`傳回<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>。  
+>  `DowngradeFromWriterLock` 接受<xref:System.Threading.LockCookie>藉由呼叫取得<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>。 請勿使用`LockCookie`所傳回<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>。  
   
- 執行緒不會封鎖寫入器的鎖定，從降級時，即使其他執行緒正在等候寫入器的鎖定，因為當使用者放開寫入器鎖定授與所有的讀取器鎖定要求。  
+ 執行緒不會封鎖寫入器的鎖定，從降級時，即使其他執行緒正在等候寫入器的鎖定，因為當使用者放開寫入器鎖定授與讀取器鎖定的所有要求。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何要求讀取器的鎖定、 將讀取器鎖定升級至寫入器鎖定，以及一次降級為讀取器的鎖定。  
+ 下列程式碼範例示範如何要求讀取器的鎖定，將讀取器鎖定升級至寫入器鎖定，再降級為讀取器的鎖定。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
   
  [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
  [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
@@ -542,6 +559,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -576,6 +594,8 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -603,7 +623,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- 下列程式碼範例示範如何使用`IsReaderLockHeld`若要避免死結。  
+ 下列程式碼範例示範如何使用`IsReaderLockHeld`為了避免死結。  
   
  [!code-cpp[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/CS/source.cs#1)]
@@ -623,6 +643,8 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -650,7 +672,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- 下列程式碼範例示範當嘗試取得具有寫入器鎖定，在執行緒上的讀取器鎖定`ReaderWriterLock`不授與讀取器鎖定，但改為遞增寫入器的鎖定上的鎖定計數。  
+ 下列程式碼範例示範當嘗試取得已寫入器鎖定的執行緒上的讀取器鎖定`ReaderWriterLock`不會授與讀取器鎖定，但改為遞增 寫入器鎖定上的鎖定計數。  
   
  [!code-cpp[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/CS/source.cs#1)]
@@ -670,6 +692,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -694,14 +718,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> 釋放讀取器鎖定或寫入器鎖定，不論遞迴鎖定計數。 若要還原狀態的鎖定，包括的鎖定計數，將傳遞<xref:System.Threading.LockCookie>至<xref:System.Threading.ReaderWriterLock.RestoreLock%2A>。  
+ <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> 釋放的讀取器鎖定或寫入器鎖定，不會考慮遞迴鎖定計數。 若要還原狀態的鎖定，其中包括鎖定計數，傳遞<xref:System.Threading.LockCookie>至<xref:System.Threading.ReaderWriterLock.RestoreLock%2A>。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>方法，以釋出鎖定，不論多少次它已經取得的執行緒，以及如何還原的更新版本的鎖定狀態。  
+ 下列程式碼範例示範如何使用<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>執行緒，以及如何還原之後的鎖定狀態已收購方法，以釋出鎖定，不論它多少次。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
   
  [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
  [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
@@ -727,6 +751,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -757,14 +783,14 @@
  <xref:System.Threading.ReaderWriterLock.ReleaseReaderLock%2A> 減量鎖定計數。 當計數到達零時，會釋放鎖定。  
   
 > [!NOTE]
->  如果執行緒有將寫入器鎖定，則呼叫`ReleaseReaderLock`具有相同的效果與呼叫<xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>。 如果執行緒不有任何鎖定，則呼叫`ReleaseReaderLock`會擲回<xref:System.ApplicationException>。  
+>  如果執行緒必須寫入器鎖定，則呼叫`ReleaseReaderLock`具有相同的效果，與呼叫<xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>。 如果執行緒不有任何鎖定，則呼叫`ReleaseReaderLock`會擲回<xref:System.ApplicationException>。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何取得及釋放讀取器的鎖定，以及如何處理時要求逾時擲回的例外狀況。  
+ 下列程式碼範例示範如何取得和釋放讀取器的鎖定，以及如何處理時的要求逾時擲回的例外狀況。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
   
  [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
  [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
@@ -791,6 +817,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -818,17 +846,17 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A> 減量寫入器的鎖定計數。 當計數到達零時，就會寫入器鎖定釋放。  
+ <xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A> 減量寫入器的鎖定計數。 當計數到達零時，會釋放寫入器鎖定。  
   
 > [!NOTE]
->  如果執行緒有讀取器的鎖定或沒有鎖定，則呼叫`ReleaseWriterLock`會擲回<xref:System.ApplicationException>。  
+>  如果執行緒必須讀取器的鎖定或不需要鎖定，則呼叫`ReleaseWriterLock`會擲回<xref:System.ApplicationException>。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何取得並發行寫入器鎖定，以及如何處理時要求逾時擲回的例外狀況。  
+ 下列程式碼範例示範如何取得和釋放寫入器鎖定，以及如何處理時的要求逾時擲回的例外狀況。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
   
  [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
  [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
@@ -855,6 +883,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -881,21 +911,21 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 還原狀態`RestoreLock`包含遞迴鎖定計數。  
+ 狀態還原`RestoreLock`包含遞迴鎖定計數。  
   
- 如果它嘗試還原另一個執行緒取得寫入器鎖定之後，或如果它嘗試還原另一個執行緒取得讀取器鎖定或寫入器鎖定之後的寫入器鎖定的讀取器的鎖定的執行緒封鎖。 因為`RestoreLock`不接受逾時，您應謹慎避免可能的死結。  
+ 如果它嘗試還原另一個執行緒取得寫入器鎖定之後，或如果它嘗試還原另一個執行緒已取得讀取器的鎖定或寫入器鎖定之後的寫入器鎖定的讀取器鎖定的執行緒封鎖。 因為`RestoreLock`不接受逾時，您應該謹慎地避免可能的死結。  
   
 > [!CAUTION]
->  然後再呼叫`RestoreLock`，請確定在您釋放所有的呼叫取得的鎖定<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>。 例如，執行緒死結若取得讀取器的鎖定，然後再嘗試還原較早的寫入器鎖定。 使用<xref:System.Threading.ReaderWriterLock.IsReaderLockHeld%2A>和<xref:System.Threading.ReaderWriterLock.IsWriterLockHeld%2A>偵測這類額外的鎖定。  
+>  然後再呼叫`RestoreLock`，請確定您已發行的呼叫之後取得的所有鎖定<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>。 例如，執行緒死結 （deadlock) 若已取得讀取器鎖定，然後再嘗試還原較早的寫入器鎖定。 使用<xref:System.Threading.ReaderWriterLock.IsReaderLockHeld%2A>和<xref:System.Threading.ReaderWriterLock.IsWriterLockHeld%2A>來偵測這類其他鎖定。  
   
- 請勿使用<xref:System.Threading.LockCookie>從傳回<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>。  
+ 請勿使用<xref:System.Threading.LockCookie>傳回<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>方法，以釋出鎖定，不論多少次它已經取得的執行緒，以及如何還原的更新版本的鎖定狀態。  
+ 下列程式碼範例示範如何使用<xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>執行緒，以及如何還原之後的鎖定狀態已收購方法，以釋出鎖定，不論它多少次。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
   
  [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
  [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
@@ -933,6 +963,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -960,12 +992,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當一個執行緒呼叫`UpgradeToWriterLock`釋放讀取器鎖定，鎖定計數，不管和執行緒進行的寫入器鎖定的佇列結尾。 因此，其他執行緒可能會寫入之前要求升級會授與寫入器鎖定的執行緒資源。  
+ 當執行緒呼叫`UpgradeToWriterLock`發行讀取器鎖定時，不會考慮鎖定計數，和，執行緒就會將寫入器鎖定的佇列的結尾。 因此，其他執行緒可能會寫入要求的升級會授與寫入器鎖定的執行緒之前的資源。  
   
 > [!IMPORTANT]
->  逾時例外狀況不會擲回呼叫執行緒直到<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法可以取得讀取器鎖定。 如果沒有其他執行緒等候寫入器鎖定，此事件會立即發生。 不過，如果另一個執行緒在佇列中等候寫入器的鎖定，執行緒的呼叫<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法不能重新取得讀取器鎖定，直到所有目前的讀取器已釋放其鎖定，以及一個執行緒具有取得和釋放寫入器的鎖定。 這是 true，即使要求寫入器鎖定的執行緒在目前的執行緒呼叫之後要求<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法。  
+>  逾時例外狀況不會擲回呼叫執行緒直到<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法可以重新取得讀取鎖定。 如果沒有其他執行緒等候寫入器鎖定，這會立即發生。 不過，如果另一個執行緒已排入佇列的寫入器鎖定時，執行緒的呼叫<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法不能重新取得讀取鎖定，直到所有目前的讀取器已釋放其鎖定，以及一個執行緒已經取得及釋放寫入器鎖定。 這是 true，即使要求寫入器鎖定的執行緒在目前的執行緒呼叫之後要求<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法。  
   
- 若要還原的鎖定狀態，請呼叫<xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A>使用<xref:System.Threading.LockCookie>傳回`UpgradeToWriterLock`。 不使用這個`LockCookie`與<xref:System.Threading.ReaderWriterLock.RestoreLock%2A>。  
+ 若要還原的鎖定狀態，請呼叫<xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A>使用<xref:System.Threading.LockCookie>所傳回`UpgradeToWriterLock`。 請勿使用此`LockCookie`與<xref:System.Threading.ReaderWriterLock.RestoreLock%2A>。  
   
  當執行緒必須沒有讀取器的鎖定時，請勿使用`UpgradeToWriterLock`。 請改用 <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>。  
   
@@ -974,9 +1006,9 @@
    
   
 ## Examples  
- 下列程式碼範例示範如何要求讀取器的鎖定、 將讀取器鎖定升級至寫入器鎖定，以及一次降級為讀取器的鎖定。  
+ 下列程式碼範例示範如何要求讀取器的鎖定，將讀取器鎖定升級至寫入器鎖定，再降級為讀取器的鎖定。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
   
  [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
  [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
@@ -1004,6 +1036,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1032,12 +1066,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當一個執行緒呼叫`UpgradeToWriterLock`釋放讀取器鎖定，鎖定計數，不管和執行緒進行的寫入器鎖定的佇列結尾。 因此，其他執行緒可能會寫入之前要求升級會授與寫入器鎖定的執行緒資源。  
+ 當執行緒呼叫`UpgradeToWriterLock`發行讀取器鎖定時，不會考慮鎖定計數，和，執行緒就會將寫入器鎖定的佇列的結尾。 因此，其他執行緒可能會寫入要求的升級會授與寫入器鎖定的執行緒之前的資源。  
   
 > [!IMPORTANT]
->  逾時例外狀況不會擲回呼叫執行緒直到<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法可以取得讀取器鎖定。 如果沒有其他執行緒等候寫入器鎖定，此事件會立即發生。 不過，如果另一個執行緒在佇列中等候寫入器的鎖定，執行緒的呼叫<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法不能重新取得讀取器鎖定，直到所有目前的讀取器已釋放其鎖定，以及一個執行緒具有取得和釋放寫入器的鎖定。 這是 true，即使要求寫入器鎖定的執行緒在目前的執行緒呼叫之後要求<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法。  
+>  逾時例外狀況不會擲回呼叫執行緒直到<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法可以重新取得讀取鎖定。 如果沒有其他執行緒等候寫入器鎖定，這會立即發生。 不過，如果另一個執行緒已排入佇列的寫入器鎖定時，執行緒的呼叫<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法不能重新取得讀取鎖定，直到所有目前的讀取器已釋放其鎖定，以及一個執行緒已經取得及釋放寫入器鎖定。 這是 true，即使要求寫入器鎖定的執行緒在目前的執行緒呼叫之後要求<xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>方法。  
   
- 若要還原的鎖定狀態，請呼叫<xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A>使用<xref:System.Threading.LockCookie>傳回`UpgradeToWriterLock`。 不使用這個`LockCookie`與<xref:System.Threading.ReaderWriterLock.RestoreLock%2A>。  
+ 若要還原的鎖定狀態，請呼叫<xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A>使用<xref:System.Threading.LockCookie>所傳回`UpgradeToWriterLock`。 請勿使用此`LockCookie`與<xref:System.Threading.ReaderWriterLock.RestoreLock%2A>。  
   
  當執行緒必須沒有讀取器的鎖定時，請勿使用`UpgradeToWriterLock`。 請改用 <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>。  
   
@@ -1061,6 +1095,8 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1083,18 +1119,18 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 此順序數字會增加每當執行緒取得寫入器的鎖定。 您可以儲存的序號，並將它傳遞給<xref:System.Threading.ReaderWriterLock.AnyWritersSince%2A>稍後，如果您想要判斷是否其他執行緒已取得寫入器鎖定同時。  
+ 順序號碼會漸次每當執行緒取得寫入器鎖定。 您可以儲存的序號，並將它傳遞給<xref:System.Threading.ReaderWriterLock.AnyWritersSince%2A>稍後，如果您想要判斷是否其他執行緒已經取得寫入器鎖定同時。  
   
- 您可以使用`WriterSeqNum`改善應用程式效能。 例如，執行緒可能會快取保留讀取鎖定時取得的資訊。 之後釋出和更新版本重新取得鎖定，執行緒可以判斷其他的執行緒是否已寫入至資源藉由呼叫`AnyWritersSince`; 如果沒有，可以使用快取的資訊。 讀取鎖定所保護的資訊是高度耗費資源; 時，這項技術非常有用例如，執行資料庫查詢。  
+ 您可以使用`WriterSeqNum`改善應用程式效能。 例如，執行緒可能會快取的讀取器鎖定時取得的資訊。 之後釋出和更新版本重新取得鎖定，則執行緒可以決定其他執行緒是否已藉由呼叫寫入至資源`AnyWritersSince`; 如果沒有，可以使用快取的資訊。 高讀取鎖定所保護的資訊時，這個技術非常有用例如，執行資料庫查詢。  
   
- 呼叫端必須寫入器鎖定或讀取器鎖定保留順序，序號才能發揮作用。  
+ 呼叫端必須將讀取器鎖定或寫入器鎖定保留順序的序號，才能發揮作用。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何使用<xref:System.Threading.ReaderWriterLock.WriterSeqNum%2A>屬性和<xref:System.Threading.ReaderWriterLock.AnyWritersSince%2A>方法來判斷另一個執行緒是否已受保護的資源寫入器鎖定，因為目前的執行緒上一次保留寫入器的鎖定。  
+ 下列程式碼範例示範如何使用<xref:System.Threading.ReaderWriterLock.WriterSeqNum%2A>屬性和<xref:System.Threading.ReaderWriterLock.AnyWritersSince%2A>方法，以判斷另一個執行緒是否會取得受保護資源的寫入器鎖定，因為目前的執行緒上一次保留的寫入器鎖定。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLock>類別。  
   
  [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
  [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]

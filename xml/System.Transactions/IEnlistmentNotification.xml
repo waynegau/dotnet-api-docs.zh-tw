@@ -1,11 +1,11 @@
 <Type Name="IEnlistmentNotification" FullName="System.Transactions.IEnlistmentNotification">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="ce7c186bfa7974506e6f23870b923c6bfab1a333" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="7256756ee2810fe0aa45f03eee75996fac132199" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36406443" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37754195" />
   </Metadata>
   <TypeSignature Language="C#" Value="public interface IEnlistmentNotification" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IEnlistmentNotification" />
@@ -15,6 +15,7 @@
   <TypeSignature Language="F#" Value="type IEnlistmentNotification = interface" />
   <AssemblyInfo>
     <AssemblyName>System.Transactions</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -34,26 +35,26 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 資源管理員可以參與交易的順序，它必須在交易管理員的交易中登記。 <xref:System.Transactions.Transaction> 類別會定義一組提供這個功能的方法，其名稱開頭為 `Enlist`。 不同`Enlist`方法會對應至不同類型的資源管理員可能具有的編列。  
+ 為了讓資源管理員以參與交易，它必須在透過交易管理員在交易中登記。 <xref:System.Transactions.Transaction> 類別會定義一組提供這個功能的方法，其名稱開頭為 `Enlist`。 不同`Enlist`方法會對應至不同類型的資源管理員可能具有的登記。  
   
- 這個類別描述資源管理員應該在登記參與時，交易管理員提供兩階段認可通知回呼實作的介面。 每個資源管理員的實作<xref:System.Transactions.IEnlistmentNotification>介面，您應該將它登錄使用<xref:System.Transactions.Transaction.EnlistVolatile%2A>方法或<xref:System.Transactions.Transaction.EnlistDurable%2A>方法<xref:System.Transactions.Transaction>類別，根據您的資源是變動性或永久性。 登記和 2PC 的詳細資訊，請參閱[編列的資源，以在交易中的參與者身分](~/docs/framework/data/transactions/enlisting-resources-as-participants-in-a-transaction.md)和[認可的交易中單一和多重階段](~/docs/framework/data/transactions/committing-a-transaction-in-single-phase-and-multi-phase.md)分別。  
+ 這個類別描述資源管理員應該實作提供兩階段認可告知回呼來登記參與交易管理員的介面。 每個資源管理員的實作<xref:System.Transactions.IEnlistmentNotification>介面，您應該將它登錄使用<xref:System.Transactions.Transaction.EnlistVolatile%2A>方法或<xref:System.Transactions.Transaction.EnlistDurable%2A>方法<xref:System.Transactions.Transaction>類別，根據您的資源是永久性或變動性。 如需有關登記和 2PC 的詳細資訊，請參閱[在交易中的參與者登記的資源](~/docs/framework/data/transactions/enlisting-resources-as-participants-in-a-transaction.md)並[認可交易，以在單一階段和多重階段](~/docs/framework/data/transactions/committing-a-transaction-in-single-phase-and-multi-phase.md)分別。  
   
- 交易管理員在兩階段認可通訊協定的不同階段告知登記的物件，透過下列方法。  
+ 交易管理員在不同的兩階段交易認可通訊協定階段告知登記的物件，遵循以下方法。  
   
 |方法|描述|  
 |------------|-----------------|  
-|<xref:System.Transactions.IEnlistmentNotification.Prepare%2A>|已登錄的物件的方法回呼，交易管理員的交易，在第一階段時用作交易管理員詢問參與者是否能認可的交易。|  
-|<xref:System.Transactions.IEnlistmentNotification.Commit%2A>|這個方法的已登錄的物件作為回呼，交易管理員在交易的第二個階段交易已認可。|  
-|<xref:System.Transactions.IEnlistmentNotification.Rollback%2A>|這個方法的已登錄的物件作為回呼由交易管理員在交易的第二個階段交易已中止 （亦即已回復）。|  
-|<xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>|這個方法的已登錄的物件作為回呼，交易管理員交易的第二個階段的交易處於不確定。|  
+|<xref:System.Transactions.IEnlistmentNotification.Prepare%2A>|這個方法的登記的物件回呼，交易管理員的交易，在第一階段時用作交易管理員會要求參與者是否能認可的交易。|  
+|<xref:System.Transactions.IEnlistmentNotification.Commit%2A>|如果交易已認可的交易管理員會在交易的第二個階段內，使用這種登記的物件的方法來當做回呼。|  
+|<xref:System.Transactions.IEnlistmentNotification.Rollback%2A>|如果交易已中止 （亦即已回復），交易管理員會在交易的第二個階段內，使用這個方法的登記的物件來當做回呼。|  
+|<xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>|這種登記的物件的方法如果會使用當做回呼，交易管理員在交易的第二個階段 transakce je zpochybněn。|  
   
 > [!NOTE]
->  您應該注意，循序或依特定順序，不可能會傳送通知。  
+>  您應該注意循序或以特定順序，不可能會傳送通知。  
   
    
   
 ## Examples  
- 下列範例示範實作這個介面，以及為交易使用中參與者登記物件<xref:System.Transactions.Transaction.EnlistVolatile%2A>方法。  
+ 下列範例示範實作這個介面，以及將物件登記在交易中使用的參與者<xref:System.Transactions.Transaction.EnlistVolatile%2A>方法。  
   
  [!code-csharp[Tx_Enlist#1](~/samples/snippets/csharp/VS_Snippets_CFX/tx_enlist/cs/enlist.cs#1)]
  [!code-vb[Tx_Enlist#1](~/samples/snippets/visualbasic/VS_Snippets_CFX/tx_enlist/vb/enlist.vb#1)]  
@@ -72,6 +73,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -98,11 +100,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 它會指示所有參與者都来認可的交易時，交易管理員會呼叫這個方法登記之物件的承諾，第二個階段。  
+ 它會指示所有參與者都認可交易時，交易管理員會呼叫這個方法的登記的物件承諾，第二個階段。  
   
- 資源管理員應該執行任何工作需要完成交易，然後通知完成藉由呼叫 TM<xref:System.Transactions.Enlistment.Done%2A>方法`enlistment`參數。  
+ 資源管理員應該執行任何必要的工作以完成交易，並接著通知 TM 已完成藉由呼叫<xref:System.Transactions.Enlistment.Done%2A>方法`enlistment`參數。  
   
- 如果資源管理員已登錄永久，但不會回應呼叫<xref:System.Transactions.Enlistment.Done%2A>方法時，交易管理員不確定資源管理員已收到<xref:System.Transactions.IEnlistmentNotification.Commit%2A>呼叫。 因此，交易管理員會持續等候回應，以及維護與此交易相關資訊。  如果<xref:System.Transactions.Enlistment.Done%2A>是永遠不會呼叫，此項資訊是周圍無限期地保留在記憶體中或在整個系統資源。 這會導致無法回收資源。 如果是分散式交易，這可能最後會填滿中止 MSDTC 程序的 MSDTC 記錄檔。 如果是交易受<xref:System.Transactions>，這會導致記憶體耗用量，資源管理員的程序的漸進式且持續增加。 因此，很重要，您呼叫<xref:System.Transactions.Enlistment.Done%2A>方法，一旦您的資源管理員透過您準備工作。  
+ 如果資源管理員已永久，登錄，但不會回應呼叫<xref:System.Transactions.Enlistment.Done%2A>方法中，交易管理員會確定資源管理員已收到<xref:System.Transactions.IEnlistmentNotification.Commit%2A>呼叫。 此情況下，交易管理員會等候回應，並維護此交易的相關資訊。  如果<xref:System.Transactions.Enlistment.Done%2A>是絕不會呼叫，這項資訊是有關無限期保留在記憶體中或全系統資源。 這會導致無法回收資源。 如果是分散式的交易，這可能最終會填滿突然停止 MSDTC 程序的 MSDTC 記錄檔。 在所管理的交易的情況下<xref:System.Transactions>，這會導致資源管理員的程序的記憶體耗用量漸進且持續增加。 因此，很重要，您可以呼叫<xref:System.Transactions.Enlistment.Done%2A>方法，您的資源管理員完成後您準備工作。  
   
  ]]></format>
         </remarks>
@@ -117,6 +119,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -143,14 +146,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法是針對動態資源呼叫，當交易管理員已叫用單一長期的資源，以單一階段認可作業，然後長期的資源的連線中斷之前取得交易結果。 此時，無法安全地判定交易結果。  
+ 當交易管理員已叫用的單一永久性資源的單一階段認可作業，並接著永久性資源的連線中斷之前取得交易結果時，此方法稱為動態資源。 此時，您無法安全地判斷這項交易的結果。  
   
- 做為<xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>會被視為交易的最後狀態，您不應該呼叫<xref:System.Transactions.IEnlistmentNotification.Commit%2A>或<xref:System.Transactions.IEnlistmentNotification.Rollback%2A>之後呼叫<xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>。  
+ 作為<xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>是視為最終狀態的交易，您不應該呼叫<xref:System.Transactions.IEnlistmentNotification.Commit%2A>或是<xref:System.Transactions.IEnlistmentNotification.Rollback%2A>之後呼叫<xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>。  
   
 > [!NOTE]
->  動態資源的這個方法的實作應該執行任何修復或內含項目作業其了解上受影響的資料。  它也必須呼叫<xref:System.Transactions.Enlistment.Done%2A>上的方法上`enlistment`完成其工作時的參數。  
+>  變動性資源的這個方法的實作應該執行任何修復或內含項目作業它了解在受影響的資料。  它還必須呼叫<xref:System.Transactions.Enlistment.Done%2A>上的方法上`enlistment`完成其工作時的參數。  
   
- 如果資源管理員已登錄永久，但不會回應呼叫<xref:System.Transactions.Enlistment.Done%2A>方法時，交易管理員不確定資源管理員已收到<xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>呼叫。 因此，交易管理員會持續等候回應，以及維護與此交易相關資訊。  如果<xref:System.Transactions.Enlistment.Done%2A>是永遠不會呼叫，此項資訊是周圍無限期地保留在記憶體中或在整個系統資源。 這會導致無法回收資源。 如果是分散式交易，這可能最後會填滿中止 MSDTC 程序的 MSDTC 記錄檔。 如果是交易受<xref:System.Transactions>，這會導致記憶體耗用量，資源管理員的程序的漸進式且持續增加。 因此，很重要，您呼叫<xref:System.Transactions.Enlistment.Done%2A>方法，一旦您的資源管理員透過您準備工作。  
+ 如果資源管理員已永久，登錄，但不會回應呼叫<xref:System.Transactions.Enlistment.Done%2A>方法中，交易管理員會確定資源管理員已收到<xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>呼叫。 此情況下，交易管理員會等候回應，並維護此交易的相關資訊。  如果<xref:System.Transactions.Enlistment.Done%2A>是絕不會呼叫，這項資訊是有關無限期保留在記憶體中或全系統資源。 這會導致無法回收資源。 如果是分散式的交易，這可能最終會填滿突然停止 MSDTC 程序的 MSDTC 記錄檔。 在所管理的交易的情況下<xref:System.Transactions>，這會導致資源管理員的程序的記憶體耗用量漸進且持續增加。 因此，很重要，您可以呼叫<xref:System.Transactions.Enlistment.Done%2A>方法，您的資源管理員完成後您準備工作。  
   
  ]]></format>
         </remarks>
@@ -165,6 +168,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -191,15 +195,15 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 交易管理員時呼叫這個方法的已登錄的資源管理員的階段 1 承諾，它會要求參與者是否能認可的交易。  
+ 交易管理員時呼叫這個方法的登記的資源管理員在階段 1 的承諾，它會要求參與者是否能認可的交易。  
   
- 當您在實作長期的資源管理員時，您應該記錄您在這個階段準備記錄。 記錄應該包含所有必要的資訊來執行復原。 這包括<xref:System.Transactions.PreparingEnlistment.RecoveryInformation%2A>屬性，傳遞至中的交易管理員<xref:System.Transactions.TransactionManager.Reenlist%2A>在復原期間的方法。 如需復原的詳細資訊，請參閱[執行復原](http://msdn.microsoft.com/library/d342c5c7-da64-4a4c-8e63-b52f4fbf2691)。  
+ 當您實作永久性資源管理員時，您應該記錄您在這個階段期間準備記錄。 該記錄應該包含所有必要的資訊，以便執行復原。 這包括<xref:System.Transactions.PreparingEnlistment.RecoveryInformation%2A>屬性，它會傳遞至中的交易管理員<xref:System.Transactions.TransactionManager.Reenlist%2A>在復原期間的方法。 如需有關復原的詳細資訊，請參閱[執行復原](http://msdn.microsoft.com/library/d342c5c7-da64-4a4c-8e63-b52f4fbf2691)。  
   
- 資源管理員應該先完成所有工作都必須完成之前先呼叫<xref:System.Transactions.PreparingEnlistment.Prepared%2A>方法`preparingEnlistment`參數，以指定其承諾投票。 您應該確定這接收認可、 復原或在不確定的任何第 2 階段通知這類之前完成。 這是因為第 2 階段通知只能在呼叫相同執行緒上的內嵌<xref:System.Transactions.PreparingEnlistment.Prepared%2A>階段 1 中的方法。 因此，當您預期在收到第二階段告知之前會完成 <xref:System.Transactions.PreparingEnlistment.Prepared%2A> 呼叫時，請勿在此呼叫之後執行任何工作 (例如，釋放鎖定)。  
+ 您的資源管理員應該完成所有工作，必須完成之前呼叫<xref:System.Transactions.PreparingEnlistment.Prepared%2A>方法的`preparingEnlistment`參數來指出它已投票認可。 您應該要確定這完成之前，認可、 復原或不確定接收任何第 2 階段通知這類項目。 這是因為第 2 階段告知會發生並內嵌呼叫的相同執行緒上<xref:System.Transactions.PreparingEnlistment.Prepared%2A>第 1 階段中的方法。 因此，當您預期在收到第二階段告知之前會完成 <xref:System.Transactions.PreparingEnlistment.Prepared%2A> 呼叫時，請勿在此呼叫之後執行任何工作 (例如，釋放鎖定)。  
   
- 您也可以呼叫的方法`preparingEnlistment`參數來指出投票，以進行回復。  
+ 您也可以呼叫的方法`preparingEnlistment`參數，以指定為可復原的投票。  
   
- 如果您想要觀察，並做出回應的交易，進度的物件不參與它，此方法的實作應該呼叫<xref:System.Transactions.Enlistment.Done%2A>方法`preparingEnlistment`完成其工作時的參數。 如此一來，您的資源管理員不會收到任何第 2 個階段的通知。  
+ 如果您想要觀察，並做出回應的交易，進度物件沒有參與它，此方法的實作應該呼叫<xref:System.Transactions.Enlistment.Done%2A>方法的`preparingEnlistment`完成其工作時的參數。 如此一來，您的資源管理員不會收到任何第 2 階段通知。  
   
  ]]></format>
         </remarks>
@@ -214,6 +218,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -240,11 +245,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當交易正在回復 （中止），因為一個或多個交易參與者無法認可交易時，交易管理員會呼叫這個方法的登記的物件。  
+ 當交易正在復原 （中止），因為一或多個交易參與者無法認可交易時，交易管理員會呼叫此方法登記的物件。  
   
- 資源管理員應該執行任何工作需要完成交易，然後通知完成藉由呼叫 TM<xref:System.Transactions.Enlistment.Done%2A>方法`enlistment`參數。  
+ 資源管理員應該執行任何必要的工作以完成交易，並接著通知 TM 已完成藉由呼叫<xref:System.Transactions.Enlistment.Done%2A>方法`enlistment`參數。  
   
- 如果資源管理員已登錄永久，但不會回應呼叫<xref:System.Transactions.Enlistment.Done%2A>方法時，交易管理員不確定資源管理員已收到<xref:System.Transactions.IEnlistmentNotification.Rollback%2A>呼叫。 因此，交易管理員會持續等候回應，以及維護與此交易相關資訊。  如果<xref:System.Transactions.Enlistment.Done%2A>是永遠不會呼叫，此項資訊是周圍無限期地保留在記憶體中或在整個系統資源。 這會導致無法回收資源。 如果是分散式交易，這可能最後會填滿中止 MSDTC 程序的 MSDTC 記錄檔。 如果是交易受<xref:System.Transactions>，這會導致記憶體耗用量，資源管理員的程序的漸進式且持續增加。 因此，很重要，您呼叫<xref:System.Transactions.Enlistment.Done%2A>方法，一旦您的資源管理員透過您準備工作。  
+ 如果資源管理員已永久，登錄，但不會回應呼叫<xref:System.Transactions.Enlistment.Done%2A>方法中，交易管理員會確定資源管理員已收到<xref:System.Transactions.IEnlistmentNotification.Rollback%2A>呼叫。 此情況下，交易管理員會等候回應，並維護此交易的相關資訊。  如果<xref:System.Transactions.Enlistment.Done%2A>是絕不會呼叫，這項資訊是有關無限期保留在記憶體中或全系統資源。 這會導致無法回收資源。 如果是分散式的交易，這可能最終會填滿突然停止 MSDTC 程序的 MSDTC 記錄檔。 在所管理的交易的情況下<xref:System.Transactions>，這會導致資源管理員的程序的記憶體耗用量漸進且持續增加。 因此，很重要，您可以呼叫<xref:System.Transactions.Enlistment.Done%2A>方法，您的資源管理員完成後您準備工作。  
   
  ]]></format>
         </remarks>
