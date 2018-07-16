@@ -1,19 +1,21 @@
 <Type Name="DataLoadOptions" FullName="System.Data.Linq.DataLoadOptions">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="96d0a9b25df23c8e50f076be3f0b33ceaf0820c2" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.openlocfilehash" Value="4d7a1641f923121f7dc6f5ac9f8bc574e9cf05e1" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-    <Meta Name="ms.locfileid" Value="30389692" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37680932" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class DataLoadOptions" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit DataLoadOptions extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Data.Linq.DataLoadOptions" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class DataLoadOptions" />
   <TypeSignature Language="C++ CLI" Value="public ref class DataLoadOptions sealed" />
+  <TypeSignature Language="F#" Value="type DataLoadOptions = class" />
   <AssemblyInfo>
     <AssemblyName>System.Data.Linq</AssemblyName>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
@@ -21,40 +23,40 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>提供以進行相關資料的立即載入和篩選。</summary>
+    <summary>Provides for immediate loading and filtering of related data.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
   
 ## <a name="general"></a>一般  
- 當您查詢物件時，實際上只擷取了所要求的物件。 *相關*物件無法自動擷取一次。 (如需詳細資訊，請參閱[跨關聯性查詢](~/docs/framework/data/adonet/sql/linq/querying-across-relationships.md)。)  
+ 當您查詢物件時，實際上只擷取了所要求的物件。 *相關*物件不會自動擷取一次。 (如需詳細資訊，請參閱 <<c0> [ 跨關聯性查詢](~/docs/framework/data/adonet/sql/linq/querying-across-relationships.md)。)  
   
- <xref:System.Data.Linq.DataLoadOptions>類別提供兩種方法可以達到立即載入指定的相關資料。 <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A>方法可讓以立即載入與主要目標相關的資料。 <xref:System.Data.Linq.DataLoadOptions.AssociateWith%2A>方法可讓篩選相關的物件。  
+ <xref:System.Data.Linq.DataLoadOptions>類別提供兩種方法可以達到指定的相關資料的立即載入。 <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A>方法可讓以立即載入與主要目標相關的資料。 <xref:System.Data.Linq.DataLoadOptions.AssociateWith%2A>方法是用來篩選相關的物件。  
   
 ## <a name="rules"></a>規則  
  請注意下列規則有關<xref:System.Data.Linq.DataLoadOptions>使用量：  
   
--   指派<xref:System.Data.Linq.DataLoadOptions>至<xref:System.Data.Linq.DataContext>第一個查詢執行之後產生的例外狀況。  
+-   指派<xref:System.Data.Linq.DataLoadOptions>至<xref:System.Data.Linq.DataContext>第一個查詢執行之後會產生例外狀況。  
   
 -   修改<xref:System.Data.Linq.DataLoadOptions>指派給之後<xref:System.Data.Linq.DataContext>產生例外狀況  
   
 ## <a name="cycle-handling"></a>循環處理  
- <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> 和<xref:System.Data.Linq.DataLoadOptions.AssociateWith%2A>指示詞必須不會建立循環。 下列表示此類圖形的範例：  
+ <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> 和<xref:System.Data.Linq.DataLoadOptions.AssociateWith%2A>指示詞不得建立循環。 下列代表此類圖形的範例：  
   
--   範例 1： 自我遞迴  
+-   範例 1︰ 自我遞迴  
   
     -   `dlo.LoadWith<Employee>(e => e.Reports);`  
   
--   範例 2： 返回指標  
+-   範例 2： 上一步 指標  
   
     -   `dlo.LoadWith <Customer>(c => C.Orders);`  
   
     -   `dlo.LoadWith <Order>(o => o.Customer);`  
   
--   範例 3： 較長的循環  
+-   範例 3︰ 較長的循環  
   
-     雖然這不應該發生格式標準化模型中，很可能。  
+     雖然這不應該發生在已妥善正規化的模型，就可以了。  
   
     -   `dlo.LoadWith <A>(a => a.Bs);`  
   
@@ -62,30 +64,30 @@
   
     -   `dlo.LoadWith <C>(c => c.As);`  
   
--   範例 4： 自我遞迴子查詢  
+-   範例 4︰ 自我遞迴的子查詢  
   
     -   `dlo.AssociateWith<A>(a=>a.As.Where(a=>a.Id=33));`  
   
--   範例 5： 長遞迴子查詢  
+-   範例 5︰ 長遞迴子查詢  
   
     -   `dlo.AssociateWith<A>(a=>a.Bs.Where(b=>b.Id==3));`  
   
     -   `dlo.AssociateWith<B>(b=>b.As.Where(a=>a.Id==3));`  
   
- 以下是一些一般的規則可幫助您了解這些案例中發生的事件。  
+ 以下是一些一般的規則可幫助您了解在這些情況下可能發生的狀況。  
   
- **LoadWith**每次呼叫<xref:System.Data.Linq.DataLoadOptions.LoadWith%2A>會檢查是否已引進循環至圖形。 如果有，如範例 1、 2 和 3，擲回例外狀況。  
+ **LoadWith**每次呼叫<xref:System.Data.Linq.DataLoadOptions.LoadWith%2A>會檢查是否已引進循環至圖形。 如果有，如範例 1、 2 和 3，例外狀況會擲回。  
   
- **AssociateWith**運算式內的關聯性在執行階段引擎不會套用現有的子查詢子句。  
+ **AssociateWith**在執行階段引擎不會套用現有的子查詢子句運算式內的關聯性。  
   
--   範例 4`Where`子句會針對所有執行`A`，不只是子篩選由本身的子查詢運算式 （因為也就是遞迴）  
+-   範例 4`Where`子句會針對所有執行`A`，而不只是子篩選由本身的子查詢運算式 （因為這樣才是遞迴）  
   
--   範例 5 中，第一個`Where`子句套用至所有`B`s，即使是在子查詢沒有`B`。 第二個`Where`子句套用至所有`A`即使是沒有 s 的子查詢上`A`。  
+-   範例 5 中，第一個`Where`子句會套用到所有`B`s，即使是在子查詢沒有`B`。 第二個`Where`子句會套用到所有`A`即使是沒有 s 的子查詢上`A`。  
   
    
   
 ## Examples  
- 當您擷取`Customers`從 Northwind 範例資料庫中，您可以使用<xref:System.Data.Linq.DataLoadOptions>指定`Orders`也是用來擷取。 您甚至可以指定哪些子集`Orders`擷取。  
+ 當您擷取`Customers`從 Northwind 範例資料庫中，您可以使用<xref:System.Data.Linq.DataLoadOptions>以指定`Orders`也是要擷取。 您甚至可以指定的哪些子集`Orders`擷取。  
   
  ]]></format>
     </remarks>
@@ -100,11 +102,12 @@
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.Linq</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>初始化 <see cref="T:System.Data.Linq.DataLoadOptions" /> 類別的新執行個體。</summary>
+        <summary>Initializes a new instance of the <see cref="T:System.Data.Linq.DataLoadOptions" /> class.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -114,9 +117,11 @@
       <MemberSignature Language="DocId" Value="M:System.Data.Linq.DataLoadOptions.AssociateWith(System.Linq.Expressions.LambdaExpression)" />
       <MemberSignature Language="VB.NET" Value="Public Sub AssociateWith (expression As LambdaExpression)" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; void AssociateWith(System::Linq::Expressions::LambdaExpression ^ expression);" />
+      <MemberSignature Language="F#" Value="member this.AssociateWith : System.Linq.Expressions.LambdaExpression -&gt; unit" Usage="dataLoadOptions.AssociateWith expression" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.Linq</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -126,29 +131,13 @@
         <Parameter Name="expression" Type="System.Linq.Expressions.LambdaExpression" />
       </Parameters>
       <Docs>
-        <param name="expression">將查詢識別為用於特定的一對多欄位或屬性。 請注意下列事項：  
-  
- 如果運算式的開頭不是表示一對多關聯性的欄位或屬性，則會擲回例外狀況。  
-  
- 如果運算式中出現無效的運算子，則會擲回例外狀況。 下列是有效的運算子：  
-  
- 位置  
-  
- OrderBy  
-  
- ThenBy  
-  
- OrderByDescending  
-  
- ThenByDescending  
-  
- Take</param>
-        <summary>篩選針對特定關聯性所擷取的物件。</summary>
+        <param name="expression">Identifies the query to be used on a particular one-to-many field or property. Note the following:  If the expression does not start with a field or property that represents a one-to-many relationship, an exception is thrown.  If an operator other than a valid operator appears in the expression, an exception is thrown. Valid operators are as follows:  Where  OrderBy  ThenBy  OrderByDescending  ThenByDescending  Take</param>
+        <summary>Filters the objects retrieved for a particular relationship.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 在下列範例中，內部迴圈會逐一查看只會比`Orders`，都不寄今天。  
+ 在下列範例中，內部迴圈會逐一查看只有那些`Orders`，尚未運送今天。  
   
    
   
@@ -166,9 +155,11 @@
       <MemberSignature Language="DocId" Value="M:System.Data.Linq.DataLoadOptions.AssociateWith``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})" />
       <MemberSignature Language="VB.NET" Value="Public Sub AssociateWith(Of T) (expression As Expression(Of Func(Of T, Object)))" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename T&gt;&#xA; void AssociateWith(System::Linq::Expressions::Expression&lt;Func&lt;T, System::Object ^&gt; ^&gt; ^ expression);" />
+      <MemberSignature Language="F#" Value="member this.AssociateWith : System.Linq.Expressions.Expression&lt;Func&lt;'T, obj&gt;&gt; -&gt; unit" Usage="dataLoadOptions.AssociateWith expression" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.Linq</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -181,27 +172,9 @@
         <Parameter Name="expression" Type="System.Linq.Expressions.Expression&lt;System.Func&lt;T,System.Object&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">要據以查詢的型別。  
-  
- 如果型別不相符，就會擲回例外狀況。</typeparam>
-        <param name="expression">將查詢識別為用於特定的一對多欄位或屬性。 請注意下列事項：  
-  
- 如果運算式的開頭不是表示一對多關聯性的欄位或屬性，則會擲回例外狀況。  
-  
- 如果運算式中出現無效的運算子，則會擲回例外狀況。 下列是有效的運算子：  
-  
- 位置  
-  
- OrderBy  
-  
- ThenBy  
-  
- OrderByDescending  
-  
- ThenByDescending  
-  
- Take</param>
-        <summary>篩選針對特定關聯性所擷取的物件。</summary>
+        <typeparam name="T">據以查詢的型別。  如果類型不相符，則會擲回例外狀況。</typeparam>
+        <param name="expression">Identifies the query to be used on a particular one-to-many field or property. Note the following:  If the expression does not start with a field or property that represents a one-to-many relationship, an exception is thrown.  If an operator other than a valid operator appears in the expression, an exception is thrown. Valid operators are as follows:  Where  OrderBy  ThenBy  OrderByDescending  ThenByDescending  Take</param>
+        <summary>Filters objects retrieved for a particular relationship.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -211,7 +184,7 @@
    
   
 ## Examples  
- 在下列範例中，內部迴圈會逐一查看只會比`Orders`，都不寄今天。  
+ 在下列範例中，內部迴圈會逐一查看只有那些`Orders`，尚未運送今天。  
   
  [!code-csharp[System.Data.Linq.DataLoadOptions#1](~/samples/snippets/csharp/VS_Snippets_Data/system.data.linq.dataloadoptions/cs/program.cs#1)]
  [!code-vb[System.Data.Linq.DataLoadOptions#1](~/samples/snippets/visualbasic/VS_Snippets_Data/system.data.linq.dataloadoptions/vb/module1.vb#1)]  
@@ -225,6 +198,7 @@
       <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool GetAssociationCriteria(class System.Reflection.MemberInfo memberInfo, [out] class System.Linq.Expressions.LambdaExpression&amp; associationCriteria) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.Data.Linq.DataLoadOptions.GetAssociationCriteria(System.Reflection.MemberInfo,System.Linq.Expressions.LambdaExpression@)" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; bool GetAssociationCriteria(System::Reflection::MemberInfo ^ memberInfo, [Runtime::InteropServices::Out] System::Linq::Expressions::LambdaExpression ^ % associationCriteria);" />
+      <MemberSignature Language="F#" Value="member this.GetAssociationCriteria : System.Reflection.MemberInfo *  -&gt; bool" Usage="dataLoadOptions.GetAssociationCriteria (memberInfo, associationCriteria)" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.Linq</AssemblyName>
@@ -250,6 +224,7 @@
       <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool IsImmediate(class System.Reflection.MemberInfo memberInfo) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.Data.Linq.DataLoadOptions.IsImmediate(System.Reflection.MemberInfo)" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; bool IsImmediate(System::Reflection::MemberInfo ^ memberInfo);" />
+      <MemberSignature Language="F#" Value="member this.IsImmediate : System.Reflection.MemberInfo -&gt; bool" Usage="dataLoadOptions.IsImmediate memberInfo" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.Linq</AssemblyName>
@@ -274,9 +249,11 @@
       <MemberSignature Language="DocId" Value="M:System.Data.Linq.DataLoadOptions.LoadWith(System.Linq.Expressions.LambdaExpression)" />
       <MemberSignature Language="VB.NET" Value="Public Sub LoadWith (expression As LambdaExpression)" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; void LoadWith(System::Linq::Expressions::LambdaExpression ^ expression);" />
+      <MemberSignature Language="F#" Value="member this.LoadWith : System.Linq.Expressions.LambdaExpression -&gt; unit" Usage="dataLoadOptions.LoadWith expression" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.Linq</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -286,8 +263,8 @@
         <Parameter Name="expression" Type="System.Linq.Expressions.LambdaExpression" />
       </Parameters>
       <Docs>
-        <param name="expression">可識別相關內容的 lambda 運算式。</param>
-        <summary>使用 lambda 運算式，擷取與主要目標相關之指定的資料。</summary>
+        <param name="expression">A lambda expression that identifies the related material.</param>
+        <summary>Retrieves specified data related to the main target by using a lambda expression.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -310,9 +287,11 @@
       <MemberSignature Language="DocId" Value="M:System.Data.Linq.DataLoadOptions.LoadWith``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})" />
       <MemberSignature Language="VB.NET" Value="Public Sub LoadWith(Of T) (expression As Expression(Of Func(Of T, Object)))" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename T&gt;&#xA; void LoadWith(System::Linq::Expressions::Expression&lt;Func&lt;T, System::Object ^&gt; ^&gt; ^ expression);" />
+      <MemberSignature Language="F#" Value="member this.LoadWith : System.Linq.Expressions.Expression&lt;Func&lt;'T, obj&gt;&gt; -&gt; unit" Usage="dataLoadOptions.LoadWith expression" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.Linq</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -325,18 +304,14 @@
         <Parameter Name="expression" Type="System.Linq.Expressions.Expression&lt;System.Func&lt;T,System.Object&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">要據以查詢的型別。  
-  
- 如果此型別不相符，就會擲回例外狀況。</typeparam>
-        <param name="expression">識別要擷取的欄位或屬性。  
-  
- 如果運算式不是識別為表示一對一或一對多關聯性的欄位或屬性，則會擲回例外狀況。</param>
-        <summary>指定當送出型別 T 物件的查詢時，要擷取的子物件。</summary>
+        <typeparam name="T">要據以查詢的型別。  如果這個型別不相符，則會擲回例外狀況。</typeparam>
+        <param name="expression">Identifies the field or property to be retrieved.  If the expression does not identify a field or property that represents a one-to-one or one-to-many relationship, an exception is thrown.</param>
+        <summary>Specifies which sub-objects to retrieve when a query is submitted for an object of type T.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您不能指定兩個層級的關聯性的載入 (例如， `Orders.OrderDetails`)。 在這些案例中，您必須指定兩個不同<xref:System.Data.Linq.DataLoadOptions.LoadWith%2A>方法。  
+ 您不能指定兩個層級關聯性的載入 (例如`Orders.OrderDetails`)。 在這些案例中，您必須指定兩個不同<xref:System.Data.Linq.DataLoadOptions.LoadWith%2A>方法。  
   
  若要避免循環，請參閱 < 備註 > 一節中<xref:System.Data.Linq.DataLoadOptions>。  
   

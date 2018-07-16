@@ -1,17 +1,18 @@
 <Type Name="SqlTransaction" FullName="System.Data.SqlClient.SqlTransaction">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="14c4f5c3e1a37ca99143298ddcf3567e1cdbdeb8" />
-    <Meta Name="ms.sourcegitcommit" Value="4b4804968da1dfdf71c501075a5b66957b54f2e8" />
+    <Meta Name="ms.openlocfilehash" Value="579e95212cf9221715b6dddcc77959d010948046" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="04/27/2018" />
-    <Meta Name="ms.locfileid" Value="32037042" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37671531" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class SqlTransaction : System.Data.Common.DbTransaction, IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit SqlTransaction extends System.Data.Common.DbTransaction implements class System.Data.IDbTransaction, class System.IDisposable" />
   <TypeSignature Language="DocId" Value="T:System.Data.SqlClient.SqlTransaction" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class SqlTransaction&#xA;Inherits DbTransaction&#xA;Implements IDisposable" />
   <TypeSignature Language="C++ CLI" Value="public ref class SqlTransaction sealed : System::Data::Common::DbTransaction, IDisposable" />
+  <TypeSignature Language="F#" Value="type SqlTransaction = class&#xA;    inherit DbTransaction&#xA;    interface IDbTransaction&#xA;    interface IDisposable" />
   <AssemblyInfo>
     <AssemblyName>System.Data.SqlClient</AssemblyName>
     <AssemblyVersion>4.1.0.0</AssemblyVersion>
@@ -19,6 +20,8 @@
   </AssemblyInfo>
   <AssemblyInfo>
     <AssemblyName>System.Data</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -28,6 +31,7 @@
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Data.Common.DbTransaction</BaseTypeName>
+    <BaseTypeName FrameworkAlternate="netframework-1.1">System.MarshalByRefObject</BaseTypeName>
   </Base>
   <Interfaces>
     <Interface>
@@ -35,22 +39,22 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>表示要在 SQL Server 資料庫中進行的 Transact-SQL 交易。 這個類別無法被繼承。</summary>
+    <summary>Represents a Transact-SQL transaction to be made in a SQL Server database. This class cannot be inherited.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 應用程式建立<xref:System.Data.SqlClient.SqlTransaction>藉由呼叫物件<xref:System.Data.SqlClient.SqlConnection.BeginTransaction%2A>上<xref:System.Data.SqlClient.SqlConnection>物件。 交易 （例如，認可或中止交易），相關聯的所有後續作業會執行上<xref:System.Data.SqlClient.SqlTransaction>物件。  
+ 應用程式建立<xref:System.Data.SqlClient.SqlTransaction>藉由呼叫物件<xref:System.Data.SqlClient.SqlConnection.BeginTransaction%2A>上<xref:System.Data.SqlClient.SqlConnection>物件。 執行交易 （例如，認可或中止交易），相關聯的所有後續作業<xref:System.Data.SqlClient.SqlTransaction>物件。  
   
 > [!NOTE]
->  `Try`/`Catch` 認可或回復時，應一律使用例外狀況處理<xref:System.Data.SqlClient.SqlTransaction>。 同時<xref:System.Data.SqlClient.SqlTransaction.Commit%2A>和<xref:System.Data.SqlClient.SqlTransaction.Rollback%2A>產生<xref:System.InvalidOperationException>如果連線已中斷，或已經被回復交易在伺服器上。  
+>  `Try`/`Catch` 認可或回復時，應該一律使用例外狀況處理<xref:System.Data.SqlClient.SqlTransaction>。 兩者<xref:System.Data.SqlClient.SqlTransaction.Commit%2A>並<xref:System.Data.SqlClient.SqlTransaction.Rollback%2A>產生<xref:System.InvalidOperationException>如果連線已終止，或如果交易已經復原回伺服器上。  
   
- 如需有關 SQL Server 交易的詳細資訊，請參閱[外顯交易](http://msdn.microsoft.com/library/ms175127\(SQL.105\).aspx)和[撰寫有效率的交易](http://msdn.microsoft.com/library/ms187484\(SQL.105\).aspx)。  
+ 如需有關 SQL Server 交易的詳細資訊，請參閱[外顯交易](http://msdn.microsoft.com/library/ms175127\(SQL.105\).aspx)並[撰寫有效率的異動](http://msdn.microsoft.com/library/ms187484\(SQL.105\).aspx)。  
   
    
   
 ## Examples  
- 下列範例會建立<xref:System.Data.SqlClient.SqlConnection>和<xref:System.Data.SqlClient.SqlTransaction>。 它也會示範如何使用<xref:System.Data.SqlClient.SqlConnection.BeginTransaction%2A>， <xref:System.Data.SqlClient.SqlTransaction.Commit%2A>，和<xref:System.Data.SqlClient.SqlTransaction.Rollback%2A>方法。 交易已回復任何錯誤時，或已處置不第一次認可。 `Try`/`Catch` 錯誤處理用來處理任何錯誤，當您嘗試認可或回復交易時。  
+ 下列範例會建立<xref:System.Data.SqlClient.SqlConnection>和<xref:System.Data.SqlClient.SqlTransaction>。 它也會示範如何使用<xref:System.Data.SqlClient.SqlConnection.BeginTransaction%2A>， <xref:System.Data.SqlClient.SqlTransaction.Commit%2A>，和<xref:System.Data.SqlClient.SqlTransaction.Rollback%2A>方法。 交易已回復任何錯誤時，或如果它已處置而不需要先認可。 `Try`/`Catch` 錯誤處理用來處理任何錯誤，當您嘗試認可或回復交易時。  
   
  [!code-csharp[Classic WebData SqlConnection.BeginTransaction Example#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData SqlConnection.BeginTransaction Example/CS/source.cs#1)]
  [!code-vb[Classic WebData SqlConnection.BeginTransaction Example#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData SqlConnection.BeginTransaction Example/VB/source.vb#1)]  
@@ -65,6 +69,7 @@
       <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlTransaction.Commit" />
       <MemberSignature Language="VB.NET" Value="Public Overrides Sub Commit ()" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; override void Commit();" />
+      <MemberSignature Language="F#" Value="override this.Commit : unit -&gt; unit" Usage="sqlTransaction.Commit " />
       <MemberType>Method</MemberType>
       <Implements>
         <InterfaceMember>M:System.Data.IDbTransaction.Commit</InterfaceMember>
@@ -76,6 +81,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -88,15 +95,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>認可資料庫交易。</summary>
+        <summary>Commits the database transaction.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.SqlClient.SqlTransaction.Commit%2A>方法相當於 TRANSACT-SQL COMMIT TRANSACTION 陳述式。 您無法回復的交易已認可後，因為所有修改都已經都成為資料庫永久的一部分。 如需詳細資訊，請參閱《SQL Server 線上叢書》。  
+ <xref:System.Data.SqlClient.SqlTransaction.Commit%2A>方法相當於 TRANSACT-SQL COMMIT TRANSACTION 陳述式。 您無法回復交易之後已經過認可，因為所有修改已都成為資料庫永久的一部分。 如需詳細資訊，請參閱《SQL Server 線上叢書》。  
   
 > [!NOTE]
->  `Try`/`Catch` 認可或回復時，應一律使用例外狀況處理<xref:System.Data.SqlClient.SqlTransaction>。 同時`Commit`和<xref:System.Data.SqlClient.SqlTransaction.Rollback%2A>產生<xref:System.InvalidOperationException>如果連線已中斷，或已經被回復交易在伺服器上。  
+>  `Try`/`Catch` 認可或回復時，應該一律使用例外狀況處理<xref:System.Data.SqlClient.SqlTransaction>。 兩者`Commit`並<xref:System.Data.SqlClient.SqlTransaction.Rollback%2A>會產生<xref:System.InvalidOperationException>如果連線已終止，或如果交易已經復原回伺服器上。  
   
  如需有關 SQL Server 交易的詳細資訊，請參閱《SQL Server 線上叢書》中的「外顯交易」和「撰寫有效率的交易」。  
   
@@ -110,12 +117,8 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Exception">嘗試認可交易時發生錯誤。</exception>
-        <exception cref="T:System.InvalidOperationException">已認可或復原交易。  
-  
- -或-  
-  
- 連線已中斷。</exception>
+        <exception cref="T:System.Exception">An error occurred while trying to commit the transaction.</exception>
+        <exception cref="T:System.InvalidOperationException">The transaction has already been committed or rolled back.  -or-  The connection is broken.</exception>
       </Docs>
     </Member>
     <Member MemberName="Connection">
@@ -124,6 +127,7 @@
       <MemberSignature Language="DocId" Value="P:System.Data.SqlClient.SqlTransaction.Connection" />
       <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Connection As SqlConnection" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Data::SqlClient::SqlConnection ^ Connection { System::Data::SqlClient::SqlConnection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Connection : System.Data.SqlClient.SqlConnection" Usage="System.Data.SqlClient.SqlTransaction.Connection" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.SqlClient</AssemblyName>
@@ -132,6 +136,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -143,13 +149,13 @@
         <ReturnType>System.Data.SqlClient.SqlConnection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得與交易相關聯的 <see cref="T:System.Data.SqlClient.SqlConnection" /> 物件或 <see langword="null" /> (如果交易不再有效)。</summary>
+        <summary>Gets the <see cref="T:System.Data.SqlClient.SqlConnection" /> object associated with the transaction, or <see langword="null" /> if the transaction is no longer valid.</summary>
         <value>與交易相關聯的 <see cref="T:System.Data.SqlClient.SqlConnection" /> 物件。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 單一應用程式可能有多個資料庫連線，每個都有零個或多個交易。 這個屬性可讓您判斷所建立的特定交易相關聯的連接物件<xref:System.Data.SqlClient.SqlConnection.BeginTransaction%2A>。  
+ 單一應用程式可能有多個資料庫連線，每個都有零個或多個交易。 此屬性可讓您判斷所建立的特定交易相關聯的連接物件<xref:System.Data.SqlClient.SqlConnection.BeginTransaction%2A>。  
   
  ]]></format>
         </remarks>
@@ -161,6 +167,7 @@
       <MemberSignature Language="DocId" Value="P:System.Data.SqlClient.SqlTransaction.DbConnection" />
       <MemberSignature Language="VB.NET" Value="Protected Overrides ReadOnly Property DbConnection As DbConnection" />
       <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual property System::Data::Common::DbConnection ^ DbConnection { System::Data::Common::DbConnection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.DbConnection : System.Data.Common.DbConnection" Usage="System.Data.SqlClient.SqlTransaction.DbConnection" />
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.SqlClient</AssemblyName>
@@ -169,6 +176,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -186,11 +194,36 @@
       </Docs>
     </Member>
     <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public void Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlTransaction.Dispose" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Dispose ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Dispose();" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : unit -&gt; unit&#xA;override this.Dispose : unit -&gt; unit" Usage="sqlTransaction.Dispose " />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
       <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
       <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlTransaction.Dispose(System.Boolean)" />
       <MemberSignature Language="VB.NET" Value="Protected Overrides Sub Dispose (disposing As Boolean)" />
       <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void Dispose(bool disposing);" />
+      <MemberSignature Language="F#" Value="override this.Dispose : bool -&gt; unit" Usage="sqlTransaction.Dispose disposing" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.SqlClient</AssemblyName>
@@ -199,6 +232,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -224,6 +258,7 @@
       <MemberSignature Language="DocId" Value="P:System.Data.SqlClient.SqlTransaction.IsolationLevel" />
       <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property IsolationLevel As IsolationLevel" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Data::IsolationLevel IsolationLevel { System::Data::IsolationLevel get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsolationLevel : System.Data.IsolationLevel" Usage="System.Data.SqlClient.SqlTransaction.IsolationLevel" />
       <MemberType>Property</MemberType>
       <Implements>
         <InterfaceMember>P:System.Data.IDbTransaction.IsolationLevel</InterfaceMember>
@@ -235,6 +270,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -246,15 +283,15 @@
         <ReturnType>System.Data.IsolationLevel</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>指定適用於此交易的 <see cref="T:System.Data.IsolationLevel" />。</summary>
+        <summary>Specifies the <see cref="T:System.Data.IsolationLevel" /> for this transaction.</summary>
         <value>適用於此交易的 <see cref="T:System.Data.IsolationLevel" />。 預設值為 <see langword="ReadCommitted" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不支援平行交易。 因此，<xref:System.Data.IsolationLevel>套用至整個交易。  
+ 不支援平行交易。 因此，<xref:System.Data.IsolationLevel>適用於整個交易。  
   
- 如需有關 SQL Server 隔離層級的詳細資訊，請參閱 < 隔離層級在 Database Engine > SQL Server 線上叢書 》 中。  
+ 如需有關 SQL Server 隔離層級的詳細資訊，請參閱 「 隔離層級在 Database Engine > SQL Server 線上叢書 》 中。  
   
  ]]></format>
         </remarks>
@@ -267,7 +304,7 @@
         <AssemblyVersion>4.2.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>從暫止狀態復原交易。</summary>
+        <summary>Rolls back a transaction from a pending state.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="Rollback">
@@ -276,6 +313,7 @@
       <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlTransaction.Rollback" />
       <MemberSignature Language="VB.NET" Value="Public Overrides Sub Rollback ()" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; override void Rollback();" />
+      <MemberSignature Language="F#" Value="override this.Rollback : unit -&gt; unit" Usage="sqlTransaction.Rollback " />
       <MemberType>Method</MemberType>
       <Implements>
         <InterfaceMember>M:System.Data.IDbTransaction.Rollback</InterfaceMember>
@@ -287,6 +325,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -299,17 +339,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>從暫止狀態復原交易。</summary>
+        <summary>Rolls back a transaction from a pending state.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.SqlClient.SqlTransaction.Rollback%2A>方法相當於 TRANSACT-SQL ROLLBACK TRANSACTION 陳述式。 如需詳細資訊，請參閱《SQL Server 線上叢書》。  
+ <xref:System.Data.SqlClient.SqlTransaction.Rollback%2A>方法相當於 TRANSACT-SQL 的 ROLLBACK TRANSACTION 陳述式。 如需詳細資訊，請參閱《SQL Server 線上叢書》。  
   
- 交易可以只會回復從暫止狀態 (之後<xref:System.Data.SqlClient.SqlConnection.BeginTransaction%2A>之前已呼叫<xref:System.Data.SqlClient.SqlTransaction.Commit%2A>稱為)。 交易會回事件中加以處置之前`Commit`或`Rollback`呼叫。  
+ 可以只會回復交易從暫止狀態 (之後<xref:System.Data.SqlClient.SqlConnection.BeginTransaction%2A>之前已呼叫<xref:System.Data.SqlClient.SqlTransaction.Commit%2A>稱為)。 交易會回復萬一它之前已處置`Commit`或`Rollback`呼叫。  
   
 > [!NOTE]
->  `Try`/`Catch` 回復交易時，應該永遠使用例外狀況處理。 A`Rollback`產生<xref:System.InvalidOperationException>如果連線已中斷，或已經被回復交易在伺服器上。  
+>  `Try`/`Catch` 回復交易時，應該一律使用例外狀況處理。 A`Rollback`會產生<xref:System.InvalidOperationException>如果連線已終止，或如果交易已經復原回伺服器上。  
   
  如需有關 SQL Server 異動的詳細資訊，請參閱《SQL Server 線上叢書》中的「外顯異動」和「撰寫有效率的異動」。  
   
@@ -323,12 +363,8 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Exception">嘗試認可交易時發生錯誤。</exception>
-        <exception cref="T:System.InvalidOperationException">已認可或復原交易。  
-  
- -或-  
-  
- 連線已中斷。</exception>
+        <exception cref="T:System.Exception">An error occurred while trying to commit the transaction.</exception>
+        <exception cref="T:System.InvalidOperationException">The transaction has already been committed or rolled back.  -or-  The connection is broken.</exception>
       </Docs>
     </Member>
     <Member MemberName="Rollback">
@@ -337,6 +373,7 @@
       <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlTransaction.Rollback(System.String)" />
       <MemberSignature Language="VB.NET" Value="Public Sub Rollback (transactionName As String)" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; void Rollback(System::String ^ transactionName);" />
+      <MemberSignature Language="F#" Value="override this.Rollback : string -&gt; unit" Usage="sqlTransaction.Rollback transactionName" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.SqlClient</AssemblyName>
@@ -345,6 +382,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -359,18 +398,18 @@
         <Parameter Name="transactionName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="transactionName">要復原的交易名稱，或要復原的儲存點。</param>
-        <summary>從暫止狀態中復原交易，並指定交易和儲存點名稱。</summary>
+        <param name="transactionName">The name of the transaction to roll back, or the savepoint to which to roll back.</param>
+        <summary>Rolls back a transaction from a pending state, and specifies the transaction or savepoint name.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.SqlClient.SqlTransaction.Rollback%2A>方法相當於 TRANSACT-SQL ROLLBACK TRANSACTION 陳述式。 如需詳細資訊，請參閱 「 外顯異動 」 和 SQL Server 線上叢書 》 中的 「 交易儲存點 」。  
+ <xref:System.Data.SqlClient.SqlTransaction.Rollback%2A>方法相當於 TRANSACT-SQL 的 ROLLBACK TRANSACTION 陳述式。 如需詳細資訊，請參閱 「 外顯異動 」 和 SQL Server 線上叢書 》 中的 「 交易儲存點 」。  
   
- 交易可以只會回復從暫止狀態 (之後<xref:System.Data.SqlClient.SqlConnection.BeginTransaction%2A>之前已呼叫<xref:System.Data.SqlClient.SqlTransaction.Commit%2A>稱為)。 異動會回復之前加以處置`Commit`或`Rollback`呼叫。  
+ 可以只會回復交易從暫止狀態 (之後<xref:System.Data.SqlClient.SqlConnection.BeginTransaction%2A>之前已呼叫<xref:System.Data.SqlClient.SqlTransaction.Commit%2A>稱為)。 如果它已處置之前，會回復交易`Commit`或`Rollback`呼叫。  
   
 > [!NOTE]
->  `Try`/`Catch` 回復交易時，應該永遠使用例外狀況處理。 A`Rollback`產生<xref:System.InvalidOperationException>如果連線已中斷，或已經被回復交易在伺服器上。  
+>  `Try`/`Catch` 回復交易時，應該一律使用例外狀況處理。 A`Rollback`會產生<xref:System.InvalidOperationException>如果連線已終止，或如果交易已經復原回伺服器上。  
   
  如需有關 SQL Server 異動的詳細資訊，請參閱《SQL Server 線上叢書》中的「外顯異動」和「撰寫有效率的異動」。  
   
@@ -384,12 +423,8 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">沒有指定任何交易名稱。</exception>
-        <exception cref="T:System.InvalidOperationException">已認可或復原交易。  
-  
- -或-  
-  
- 連線已中斷。</exception>
+        <exception cref="T:System.ArgumentException">No transaction name was specified.</exception>
+        <exception cref="T:System.InvalidOperationException">The transaction has already been committed or rolled back.  -or-  The connection is broken.</exception>
       </Docs>
     </Member>
     <Member MemberName="Save">
@@ -398,6 +433,7 @@
       <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlTransaction.Save(System.String)" />
       <MemberSignature Language="VB.NET" Value="Public Sub Save (savePointName As String)" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; void Save(System::String ^ savePointName);" />
+      <MemberSignature Language="F#" Value="member this.Save : string -&gt; unit" Usage="sqlTransaction.Save savePointName" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.SqlClient</AssemblyName>
@@ -406,6 +442,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -420,26 +458,22 @@
         <Parameter Name="savePointName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="savePointName">儲存點的名稱。</param>
-        <summary>建立交易中的儲存點 (可用來復原部分的交易)，以及指定儲存點名稱。</summary>
+        <param name="savePointName">The name of the savepoint.</param>
+        <summary>Creates a savepoint in the transaction that can be used to roll back a part of the transaction, and specifies the savepoint name.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
  <xref:System.Data.SqlClient.SqlTransaction.Save%2A> 方法相當於 TRANSACT-SQL SAVE TRANSACTION 陳述式。  
   
- 使用中的值`savePoint`參數可以是相同的值用於`transactionName`參數的某些實作<xref:System.Data.SqlClient.SqlConnection.BeginTransaction%2A>方法。  
+ 使用中的值`savePoint`參數可以是相同的值中使用`transactionName`參數的某些實作<xref:System.Data.SqlClient.SqlConnection.BeginTransaction%2A>方法。  
   
- 儲存點提供了回復部份交易的機制。 您建立儲存點使用<xref:System.Data.SqlClient.SqlTransaction.Save%2A>方法，並稍後呼叫<xref:System.Data.SqlClient.SqlTransaction.Rollback%2A>回復到儲存點，而非回復到交易開始的方法。  
+ 儲存點提供了回復部份交易的機制。 您建立儲存點，使用<xref:System.Data.SqlClient.SqlTransaction.Save%2A>方法，並稍後再呼叫<xref:System.Data.SqlClient.SqlTransaction.Rollback%2A>回復到儲存點，而非回復到交易的開始方法。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Exception">嘗試認可交易時發生錯誤。</exception>
-        <exception cref="T:System.InvalidOperationException">已認可或復原交易。  
-  
- -或-  
-  
- 連線已中斷。</exception>
+        <exception cref="T:System.Exception">An error occurred while trying to commit the transaction.</exception>
+        <exception cref="T:System.InvalidOperationException">The transaction has already been committed or rolled back.  -or-  The connection is broken.</exception>
       </Docs>
     </Member>
   </Members>
