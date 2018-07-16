@@ -1,11 +1,11 @@
 <Type Name="Semaphore" FullName="System.Threading.Semaphore">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="47dc3c315c3032983e55c27b5310ada10bd2501f" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="312a73b1d0f299dfb59a7dcba73d3cf9dbc2bb2c" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36406827" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37609192" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class Semaphore : System.Threading.WaitHandle" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit Semaphore extends System.Threading.WaitHandle" />
@@ -22,6 +22,7 @@
   </AssemblyInfo>
   <AssemblyInfo>
     <AssemblyName>System</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -44,24 +45,24 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Threading.Semaphore>類別來控制存取權的資源集區。 執行緒進入號誌，藉由呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>方法，都繼承自<xref:System.Threading.WaitHandle>類別，並藉由呼叫釋放號誌<xref:System.Threading.Semaphore.Release%2A>方法。  
+ 使用<xref:System.Threading.Semaphore>類別來控制存取權的資源集區。 執行緒藉由呼叫進入號誌<xref:System.Threading.WaitHandle.WaitOne%2A>方法，它繼承自<xref:System.Threading.WaitHandle>類別，並藉由呼叫釋放號誌<xref:System.Threading.Semaphore.Release%2A>方法。  
   
- 號誌計數會每次在執行緒進入號誌，及執行緒釋放號誌時遞增遞減。 當計數為零時，後續的要求封鎖，直到其他的執行緒釋放號誌。 所有執行緒都釋放號誌，計數為最大值時指定已建立號誌。  
+ 號誌計數會每次在執行緒進入號誌，及執行緒釋放號誌時，遞增遞減。 當計數為零時，後續的要求封鎖，直到其他執行緒釋放號誌。 所有執行緒都釋放號誌，計數會達到最大值時指定已建立的號誌。  
   
- 沒有任何的保證的順序，例如 FIFO 或 LIFO，在其中已封鎖的執行緒進入號誌。  
+ 沒有任何保證的順序，例如 FIFO 或 LIFO，在其中已封鎖的執行緒進入號誌。  
   
- 執行緒可以進入號誌多次，藉由呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>方法重複。 若要釋放部分或所有這些項目，執行緒可以呼叫無參數<xref:System.Threading.Semaphore.Release>多的時間，或可以呼叫的方法多載<xref:System.Threading.Semaphore.Release%28System.Int32%29>方法多載會指定釋出的項目數目。  
+ 執行緒可以進入號誌多次，藉由呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>方法重複。 若要釋放的部分或所有項目，執行緒可以呼叫無參數<xref:System.Threading.Semaphore.Release>多次，或它可以呼叫的方法多載<xref:System.Threading.Semaphore.Release%28System.Int32%29>方法多載會指定釋出的項目數。  
   
- <xref:System.Threading.Semaphore>類別不會強制執行呼叫的執行緒識別<xref:System.Threading.WaitHandle.WaitOne%2A>或<xref:System.Threading.Semaphore.Release%2A>。 它是程式設計人員的責任在於確保的執行緒沒有釋放號誌太多次。 例如，假設某個號誌的最大計數為 2，且執行緒 A 和執行緒 B 都進入號誌。 如果執行緒 B 中的程式設計錯誤導致呼叫<xref:System.Threading.Semaphore.Release%2A>兩次，這兩個呼叫會成功。 此時號誌計數已滿，當執行緒 A 終於呼叫 <xref:System.Threading.Semaphore.Release%2A> 時，就會擲回 <xref:System.Threading.SemaphoreFullException>。  
+ <xref:System.Threading.Semaphore>類別不會強制呼叫的執行緒身分識別<xref:System.Threading.WaitHandle.WaitOne%2A>或<xref:System.Threading.Semaphore.Release%2A>。 它是程式設計人員必須負責確保，執行緒沒有釋放號誌太多次。 例如，假設某個號誌的最大計數為 2，且執行緒 A 和執行緒 B 都進入號誌。 如果執行緒 B 中的程式設計錯誤導致呼叫<xref:System.Threading.Semaphore.Release%2A>兩次，這兩個呼叫會成功。 此時號誌計數已滿，當執行緒 A 終於呼叫 <xref:System.Threading.Semaphore.Release%2A> 時，就會擲回 <xref:System.Threading.SemaphoreFullException>。  
   
- 號誌有兩種類型： 本機號誌和具名的系統號誌。 如果您建立<xref:System.Threading.Semaphore>物件使用的建構函式接受名稱，它是與作業系統號誌，該名稱的關聯。 具名的系統號誌可在作業系統各處並可用來同步處理程序的活動。 您可以建立多個<xref:System.Threading.Semaphore>物件，代表相同具名系統號誌，而且您可以使用<xref:System.Threading.Semaphore.OpenExisting%2A>方法來開啟現有的具名系統號誌。  
+ 號誌有兩種類型： 本機號誌和具名的系統號誌。 如果您建立<xref:System.Threading.Semaphore>物件使用的建構函式可接受名稱，它是與該名稱的作業系統號誌相關聯。 具名的系統號誌會顯示整個作業系統，而且可用來同步處理程序的活動。 您可以建立多個<xref:System.Threading.Semaphore>代表相同的物件命名系統號誌，而且您可以使用<xref:System.Threading.Semaphore.OpenExisting%2A>方法來開啟現有的具名系統號誌。  
   
- 只有在您的程序內，存在本機號誌。 在處理序內，只要是參考了本機 <xref:System.Threading.Semaphore> 物件的執行緒，就可使用本機 Mutex。 每個<xref:System.Threading.Semaphore>物件是不同的區域號誌。  
+ 本機號誌只會存在於您的程序。 在處理序內，只要是參考了本機 <xref:System.Threading.Semaphore> 物件的執行緒，就可使用本機 Mutex。 每個<xref:System.Threading.Semaphore>物件是否不同本機號誌。  
   
    
   
 ## Examples  
- 下列程式碼範例會建立信號的最大計數的三個與初始計數為零。 此範例會啟動五個執行緒，封鎖而等待號誌。 主要執行緒會使用<xref:System.Threading.Semaphore.Release%28System.Int32%29>號誌計數增加至其最大值，讓三個執行緒進入號誌的方法多載。 每個執行緒使用<xref:System.Threading.Thread.Sleep%2A?displayProperty=nameWithType>方法等候一秒，以模擬工作，然後呼叫<xref:System.Threading.Semaphore.Release>方法多載來釋放號誌。 已釋放號誌，每次會顯示先前的號誌計數。 主控台訊息追蹤號誌的使用。 模擬的工作間隔會稍微增加每個執行緒，可讓輸出更容易閱讀。  
+ 下列程式碼範例會建立號誌的三個最大計數與初始的計數為零。 此範例會啟動五個執行緒，封鎖等候號誌。 主要執行緒使用<xref:System.Threading.Semaphore.Release%28System.Int32%29>方法多載來增加為最大值，允許三個執行緒進入號誌的號誌計數。 每個執行緒會使用<xref:System.Threading.Thread.Sleep%2A?displayProperty=nameWithType>方法等候 1 秒，以模擬工作，然後呼叫<xref:System.Threading.Semaphore.Release>方法多載來釋放號誌。 已釋放號誌，每次會顯示先前的號誌計數。 主控台訊息追蹤號誌的使用。 模擬的工作間隔會稍微增加，每個執行緒，以讓輸出更容易閱讀。  
   
  [!code-cpp[System.Threading.Semaphore2#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Semaphore2/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.Semaphore2#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Semaphore2/CS/source.cs#1)]
@@ -100,6 +101,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -124,14 +126,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個建構函式會初始化未命名的號誌。 使用這類號誌的執行個體的所有執行緒都必須都有執行個體的參考。  
+ 這個建構函式會初始化未命名的號誌。 使用這類的號誌的執行個體的所有執行緒都必須都有執行個體的參考。  
   
- 如果`initialCount`是小於`maximumCount`，結果是相同的目前執行緒已呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>(`maximumCount`減去`initialCount`) 時間。 如果您不想要保留之執行緒建立號誌的任何項目，使用相同號碼`maximumCount`和`initialCount`。  
+ 如果`initialCount`是小於`maximumCount`，效果等同視為目前的執行緒已呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>(`maximumCount`減去`initialCount`) 時間。 如果您不想保留任何項目之執行緒的建立號誌，使用的相同號碼`maximumCount`和`initialCount`。  
   
    
   
 ## Examples  
- 下列範例會建立一個號誌的最大計數，這三個與初始計數為零。 此範例會啟動五個執行緒，封鎖而等待號誌。 主要執行緒會使用<xref:System.Threading.Semaphore.Release%28System.Int32%29>號誌計數增加至其最大值，讓三個執行緒進入號誌的方法多載。 每個執行緒使用<xref:System.Threading.Thread.Sleep%2A?displayProperty=nameWithType>方法等候一秒，以模擬工作，然後呼叫<xref:System.Threading.Semaphore.Release>方法多載來釋放號誌。 已釋放號誌，每次會顯示先前的號誌計數。 主控台訊息追蹤號誌的使用。 模擬的工作間隔會稍微增加每個執行緒，可讓輸出更容易閱讀。  
+ 下列範例會建立一個號誌的三個最大計數與初始的計數為零。 此範例會啟動五個執行緒，封鎖等候號誌。 主要執行緒使用<xref:System.Threading.Semaphore.Release%28System.Int32%29>方法多載來增加為最大值，允許三個執行緒進入號誌的號誌計數。 每個執行緒會使用<xref:System.Threading.Thread.Sleep%2A?displayProperty=nameWithType>方法等候 1 秒，以模擬工作，然後呼叫<xref:System.Threading.Semaphore.Release>方法多載來釋放號誌。 已釋放號誌，每次會顯示先前的號誌計數。 主控台訊息追蹤號誌的使用。 模擬的工作間隔會稍微增加，每個執行緒，以讓輸出更容易閱讀。  
   
  [!code-cpp[System.Threading.Semaphore2#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Semaphore2/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.Semaphore2#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Semaphore2/CS/source.cs#1)]
@@ -162,6 +164,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -183,23 +186,23 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個建構函式初始化<xref:System.Threading.Semaphore>表示具名的系統號誌的物件。 您可以建立多個<xref:System.Threading.Semaphore>物件，代表相同具名系統號誌。  
+ 這個建構函式初始化<xref:System.Threading.Semaphore>代表具名的系統號誌的物件。 您可以建立多個<xref:System.Threading.Semaphore>代表相同的物件命名系統號誌。  
   
- 如果具名的系統號誌不存在，就會建立初始計數與所指定的最大計數`initialCount`和`maximumCount`。 如果已經存在的具名的系統號誌，`initialCount`和`maximumCount`不會使用，雖然無效的值仍然會造成例外狀況。 如果您需要確定是否具名的系統號誌已建立，請使用<xref:System.Threading.Semaphore.%23ctor%28System.Int32%2CSystem.Int32%2CSystem.String%2CSystem.Boolean%40%29>改為建構函式多載。  
+ 如果不存在的具名的系統號誌，則會建立初始的計數與所指定的計數上限`initialCount`和`maximumCount`。 如果具名的系統號誌已存在，`initialCount`和`maximumCount`未使用，雖然無效的值仍會造成例外狀況。 若要判斷是否已命名的系統號誌已建立，使用<xref:System.Threading.Semaphore.%23ctor%28System.Int32%2CSystem.Int32%2CSystem.String%2CSystem.Boolean%40%29>改為建構函式多載。  
   
 > [!IMPORTANT]
->  當您使用這個建構函式多載時，建議的作法是指定相同數目的`initialCount`和`maximumCount`。 如果`initialCount`是小於`maximumCount`，和建立具名的系統號誌，結果是相同的目前執行緒已呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>(`maximumCount`減去`initialCount`) 時間。 不過，使用這個建構函式多載沒有任何方法來判斷是否已建立了具名的系統號誌。  
+>  當您使用這個建構函式多載時，建議的作法是指定的相同號碼`initialCount`和`maximumCount`。 如果`initialCount`是小於`maximumCount`，並建立具名的系統號誌，效果等同視為目前的執行緒已呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>(`maximumCount`減去`initialCount`) 時間。 不過，使用這個建構函式多載沒有任何方法來判斷是否已建立具名的系統號誌。  
   
- 如果您指定`null`或為空字串。 `name`，建立本機號誌時，您必須呼叫<xref:System.Threading.Semaphore.%23ctor%28System.Int32%2CSystem.Int32%29>建構函式多載。  
+ 如果您指定`null`或空字串`name`，建立本機號誌，視為已呼叫<xref:System.Threading.Semaphore.%23ctor%28System.Int32%2CSystem.Int32%29>建構函式多載。  
   
- 由於具名號誌是在作業系統各處，它們可用來協調資源使用跨處理序界限。  
+ 因為整個作業系統，您看不見具名號誌，它們可用來協調跨處理序界限的資源使用。  
   
- 如果您想要了解是否有具名的系統號誌，請使用<xref:System.Threading.Semaphore.OpenExisting%2A>方法。 <xref:System.Threading.Semaphore.OpenExisting%2A>方法會嘗試開啟現有的具名號誌，並擲回例外狀況，如果不存在之系統號誌。  
+ 如果您想要了解具名的系統號誌是否存在，請使用<xref:System.Threading.Semaphore.OpenExisting%2A>方法。 <xref:System.Threading.Semaphore.OpenExisting%2A>方法嘗試開啟現有的具名號誌，並擲回例外狀況，如果系統號誌不存在。  
   
    
   
 ## Examples  
- 下列程式碼範例示範具名號誌的跨處理序行為。 範例會建立具名號誌的最大計數為 5 與初始計數為 5。 讓程式三次呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>方法。 因此，如果您從兩個命令視窗執行編譯的範例，第二個副本將會封鎖第三個呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>。 放開解除封鎖第二個程式的第一個複本中的一個或多個項目。  
+ 下列程式碼範例將示範具名號誌的跨處理序行為。 此範例會建立具名號誌，其最大計數為 5 與初始的計數為 5。 讓程式在三次呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>方法。 因此，如果您是從兩個命令視窗執行編譯的範例，第二個複本將會封鎖第三個呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>。 發行的第一個程式，以解除封鎖第二個副本中的一或多個項目。  
   
  [!code-cpp[System.Threading.Semaphore.ctor named 3#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Semaphore.ctor named 3/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.Semaphore.ctor named 3#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Semaphore.ctor named 3/CS/source.cs#1)]
@@ -214,7 +217,7 @@
         <exception cref="T:System.IO.IOException">A Win32 error occurred.</exception>
         <exception cref="T:System.UnauthorizedAccessException">The named semaphore exists and has access control security, and the user does not have <see cref="F:System.Security.AccessControl.SemaphoreRights.FullControl" />.</exception>
         <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">The named semaphore cannot be created, perhaps because a wait handle of a different type has the same name.</exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">用於呼叫 unmanaged 程式碼來建立具名的系統號誌。 列舉型別相關聯： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />。  安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />。</permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">呼叫 unmanaged 程式碼來建立具名的系統號誌。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />。  安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />。</permission>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -234,6 +237,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -257,20 +261,20 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個建構函式初始化<xref:System.Threading.Semaphore>表示具名的系統號誌的物件。 您可以建立多個<xref:System.Threading.Semaphore>物件，代表相同具名系統號誌。  
+ 這個建構函式初始化<xref:System.Threading.Semaphore>代表具名的系統號誌的物件。 您可以建立多個<xref:System.Threading.Semaphore>代表相同的物件命名系統號誌。  
   
- 如果具名的系統號誌不存在，就會建立初始計數與所指定的最大計數`initialCount`和`maximumCount`。 如果已經存在的具名的系統號誌，`initialCount`和`maximumCount`不會使用，雖然無效的值仍然會造成例外狀況。 使用`createdNew`來判斷是否已建立之系統號誌。  
+ 如果不存在的具名的系統號誌，則會建立初始的計數與所指定的計數上限`initialCount`和`maximumCount`。 如果具名的系統號誌已存在，`initialCount`和`maximumCount`未使用，雖然無效的值仍會造成例外狀況。 使用`createdNew`來判斷是否已建立的系統號誌。  
   
- 如果`initialCount`是小於`maximumCount`，和`createdNew`是`true`，結果是相同的目前執行緒已呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>(`maximumCount`減去`initialCount`) 時間。  
+ 如果`initialCount`是小於`maximumCount`，並`createdNew`是`true`，效果等同視為目前的執行緒已呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>(`maximumCount`減去`initialCount`) 時間。  
   
- 如果您指定`null`或為空字串。 `name`，建立本機號誌時，您必須呼叫<xref:System.Threading.Semaphore.%23ctor%28System.Int32%2CSystem.Int32%29>建構函式多載。 在此情況下，`createdNew`一律`true`。  
+ 如果您指定`null`或空字串`name`，建立本機號誌，視為已呼叫<xref:System.Threading.Semaphore.%23ctor%28System.Int32%2CSystem.Int32%29>建構函式多載。 在此情況下，`createdNew`總是`true`。  
   
- 由於具名號誌是在作業系統各處，它們可用來協調資源使用跨處理序界限。  
+ 因為整個作業系統，您看不見具名號誌，它們可用來協調跨處理序界限的資源使用。  
   
    
   
 ## Examples  
- 下列程式碼範例示範具名號誌的跨處理序行為。 範例會建立具名號誌的最大計數為 5，且兩個初始計數。 也就是說，它會保留之執行緒的呼叫建構函式的三個項目。 如果`createNew`是`false`，讓程式三次呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>方法。 因此，如果您從兩個命令視窗執行編譯的範例，第二個副本將會封鎖第三個呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>。 放開解除封鎖第二個程式的第一個複本中的一個或多個項目。  
+ 下列程式碼範例將示範具名號誌的跨處理序行為。 此範例會建立具名號誌，使用其最大計數為 5，且兩個初始計數。 也就是說，它會保留之執行緒的呼叫建構函式的三個項目。 如果`createNew`已`false`，讓程式在三次呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>方法。 因此，如果您是從兩個命令視窗執行編譯的範例，第二個複本將會封鎖第三個呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>。 發行的第一個程式，以解除封鎖第二個副本中的一或多個項目。  
   
  [!code-cpp[System.Threading.Semaphore.ctor named 4#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Semaphore.ctor named 4/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.Semaphore.ctor named 4#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Semaphore.ctor named 4/CS/source.cs#1)]
@@ -285,7 +289,7 @@
         <exception cref="T:System.IO.IOException">A Win32 error occurred.</exception>
         <exception cref="T:System.UnauthorizedAccessException">The named semaphore exists and has access control security, and the user does not have <see cref="F:System.Security.AccessControl.SemaphoreRights.FullControl" />.</exception>
         <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">The named semaphore cannot be created, perhaps because a wait handle of a different type has the same name.</exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">用於呼叫 unmanaged 程式碼來建立具名的系統號誌。 列舉型別相關聯： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />。  安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />。</permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">呼叫 unmanaged 程式碼來建立具名的系統號誌。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />。  安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />。</permission>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -297,6 +301,7 @@
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -318,29 +323,29 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 要套用至具名的系統號誌的存取控制安全性，建立時，防止控管之號誌的其他程式碼中使用這個建構函式。  
+ 您可以使用這個建構函式套用至具名的系統號誌的存取控制安全性，當它建立時，防止其他程式碼的號誌的控制。  
   
- 這個建構函式初始化<xref:System.Threading.Semaphore>表示具名的系統號誌的物件。 您可以建立多個<xref:System.Threading.Semaphore>物件，代表相同具名系統號誌。  
+ 這個建構函式初始化<xref:System.Threading.Semaphore>代表具名的系統號誌的物件。 您可以建立多個<xref:System.Threading.Semaphore>代表相同的物件命名系統號誌。  
   
- 如果具名的系統號誌不存在，則會建立具有指定的存取控制安全性。 如果具名號誌已存在，則會忽略指定的存取控制安全性。  
+ 如果具名的系統號誌不存在，它會建立具有指定的存取控制安全性。 如果具名的信號已存在，則會忽略指定的存取控制安全性。  
   
 > [!NOTE]
->  呼叫端具有對於新建立的完整控制權<xref:System.Threading.Semaphore>物件，即使`semaphoreSecurity`拒絕，或將某些存取權授與目前的使用者就會失敗。 不過，如果目前的使用者試圖取得另一個<xref:System.Threading.Semaphore>物件代表相同具名號誌，使用建構函式或<xref:System.Threading.Semaphore.OpenExisting%2A>方法時，Windows 會套用存取控制安全性。  
+>  呼叫端具有全權掌控新建<xref:System.Threading.Semaphore>物件，即使`semaphoreSecurity`拒絕，或無法授與給目前的使用者部分存取權限。 不過，如果目前的使用者嘗試取得另一個<xref:System.Threading.Semaphore>物件代表相同具名號誌，使用建構函式或<xref:System.Threading.Semaphore.OpenExisting%2A>方法，套用存取控制安全性的 Windows。  
   
- 如果具名的系統號誌不存在，就會建立初始計數與所指定的最大計數`initialCount`和`maximumCount`。 如果已經存在的具名的系統號誌，`initialCount`和`maximumCount`不會使用，雖然無效的值仍然會造成例外狀況。 使用`createdNew`參數，來判斷是否由這個建構函式所建立之系統號誌。  
+ 如果不存在的具名的系統號誌，則會建立初始的計數與所指定的計數上限`initialCount`和`maximumCount`。 如果具名的系統號誌已存在，`initialCount`和`maximumCount`未使用，雖然無效的值仍會造成例外狀況。 使用`createdNew`參數，來判斷是否由這個建構函式所建立的系統號誌。  
   
- 如果`initialCount`是小於`maximumCount`，和`createdNew`是`true`，結果是相同的目前執行緒已呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>(`maximumCount`減去`initialCount`) 時間。  
+ 如果`initialCount`是小於`maximumCount`，並`createdNew`是`true`，效果等同視為目前的執行緒已呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>(`maximumCount`減去`initialCount`) 時間。  
   
- 如果您指定`null`或為空字串。 `name`，建立本機號誌時，您必須呼叫<xref:System.Threading.Semaphore.%23ctor%28System.Int32%2CSystem.Int32%29>建構函式多載。 在此情況下，`createdNew`一律`true`。  
+ 如果您指定`null`或空字串`name`，建立本機號誌，視為已呼叫<xref:System.Threading.Semaphore.%23ctor%28System.Int32%2CSystem.Int32%29>建構函式多載。 在此情況下，`createdNew`總是`true`。  
   
- 由於具名號誌是在作業系統各處，它們可用來協調資源使用跨處理序界限。  
+ 因為整個作業系統，您看不見具名號誌，它們可用來協調跨處理序界限的資源使用。  
   
    
   
 ## Examples  
- 下列程式碼範例示範具名號誌的跨處理序行為與存取控制安全性。 此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法多載來測試是否存在的具名號誌。 如果號誌不存在，它會建立兩個的最大計數與拒絕目前的使用者使用號誌的權限，但讀取和變更，號誌上的權限的權限會授與存取控制安全性。 如果您從兩個命令視窗執行編譯的範例，第二個副本將會擲回存取違規的例外狀況上呼叫<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法。 例外狀況時，和此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%2CSystem.Security.AccessControl.SemaphoreRights%29>方法多載來讀取和變更的權限所需的權限來開啟號誌。  
+ 下列程式碼範例會示範具名號誌的跨處理序行為具有存取控制安全性。 此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法多載來測試是否存在的具名號誌。 如果號誌不存在，它會建立兩個最大計數與拒絕目前的使用者使用號誌的權限，但是會授與讀取和變更號誌的權限的權限的存取控制安全性。 如果您從兩個命令視窗中執行編譯的範例，第二個複本將會擲回存取違規例外狀況呼叫<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法。 攔截到例外狀況時，和此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%2CSystem.Security.AccessControl.SemaphoreRights%29>方法多載來讀取和變更的權限所需的權限開啟號誌。  
   
- 變更權限之後，號誌被開啟來輸入，並釋放所需的權限。 如果您是從第三個命令視窗執行編譯的範例，它會使用執行新的權限。  
+ 權限變更之後，輸入，並釋放所需的權限開啟號誌。 如果您從第三個 [命令] 視窗中執行編譯的範例，它會執行使用新的權限。  
   
  [!code-cpp[System.Threading.Semaphore.ctor named 5a#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Semaphore.ctor named 5a/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.Semaphore.ctor named 5a#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Semaphore.ctor named 5a/CS/source.cs#1)]
@@ -355,7 +360,7 @@
         <exception cref="T:System.UnauthorizedAccessException">The named semaphore exists and has access control security, and the user does not have <see cref="F:System.Security.AccessControl.SemaphoreRights.FullControl" />.</exception>
         <exception cref="T:System.IO.IOException">A Win32 error occurred.</exception>
         <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">The named semaphore cannot be created, perhaps because a wait handle of a different type has the same name.</exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">用於呼叫 unmanaged 程式碼來建立具名的系統號誌。 列舉型別相關聯： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />。 安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />。</permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">呼叫 unmanaged 程式碼來建立具名的系統號誌。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />。 安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />。</permission>
       </Docs>
     </Member>
     <Member MemberName="GetAccessControl">
@@ -368,6 +373,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -386,18 +392,18 @@
   
  使用者必須擁有<xref:System.Security.AccessControl.SemaphoreRights.ReadPermissions?displayProperty=nameWithType>呼叫這個方法和號誌的權限必須是與開啟<xref:System.Security.AccessControl.SemaphoreRights.ReadPermissions?displayProperty=nameWithType>權限。  
   
- 存取控制安全性區域號誌，是不相關。 如果<xref:System.Threading.Semaphore>物件不代表具名的系統號誌，則這個方法會傳回<xref:System.Security.AccessControl.SemaphoreSecurity>授與任何使用者所有權限的物件。  
+ 在本機的號誌，存取控制安全性是不相關。 如果<xref:System.Threading.Semaphore>物件不代表具名的系統號誌，則這個方法會傳回<xref:System.Security.AccessControl.SemaphoreSecurity>授與給任何使用者的所有權限的物件。  
   
    
   
 ## Examples  
- 下列程式碼範例示範具名號誌的跨處理序行為與存取控制安全性。 此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法多載來測試是否存在的具名號誌。  
+ 下列程式碼範例會示範具名號誌的跨處理序行為具有存取控制安全性。 此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法多載來測試是否存在的具名號誌。  
   
- 如果號誌不存在，它會建立兩個的最大計數與拒絕目前使用者的權限使用號誌，但讀取和變更，號誌上的權限的權限會授與存取控制安全性。  
+ 如果號誌不存在，它會建立兩個最大計數與拒絕目前的使用者使用的號誌的權限，但是會授與讀取和變更號誌的權限的權限的存取控制安全性。  
   
- 如果您從兩個命令視窗執行編譯的範例，第二個副本將會擲回存取違規的例外狀況上呼叫<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法。 例外狀況時，和此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%2CSystem.Security.AccessControl.SemaphoreRights%29>方法多載來讀取和變更的權限所需的權限來開啟號誌。 使用來取得系統號誌的存取控制安全性<xref:System.Threading.Semaphore.GetAccessControl%2A>方法。  
+ 如果您從兩個命令視窗中執行編譯的範例，第二個複本將會擲回存取違規例外狀況呼叫<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法。 攔截到例外狀況時，和此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%2CSystem.Security.AccessControl.SemaphoreRights%29>方法多載來讀取和變更的權限所需的權限開啟號誌。 使用取得的系統號誌的存取控制安全性<xref:System.Threading.Semaphore.GetAccessControl%2A>方法。  
   
- 變更權限之後，號誌被開啟來輸入，並釋放所需的權限。 如果您是從第三個命令視窗執行編譯的範例，它會使用執行新的權限。  
+ 權限變更之後，輸入，並釋放所需的權限開啟號誌。 如果您從第三個 [命令] 視窗中執行編譯的範例，它會執行使用新的權限。  
   
  [!code-cpp[System.Threading.Semaphore.ctor named 5a#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Semaphore.ctor named 5a/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.Semaphore.ctor named 5a#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Semaphore.ctor named 5a/CS/source.cs#1)]
@@ -437,6 +443,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -458,9 +465,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Threading.Semaphore.OpenExisting%2A>方法嘗試開啟指定的具名號誌。 如果不存在之系統號誌，這個方法會擲回例外狀況而建立之系統號誌。 若要建立之系統號誌，已經不存在時，使用其中一種<xref:System.Threading.Semaphore.%23ctor%2A>建構函式具有`name`參數。  
+ <xref:System.Threading.Semaphore.OpenExisting%2A>方法嘗試開啟指定的具名號誌。 如果系統號誌不存在，這個方法會擲回的例外狀況，而不是建立的系統號誌。 若要建立的系統號誌，已經不存在時，使用其中一種<xref:System.Threading.Semaphore.%23ctor%2A>建構函式具有`name`參數。  
   
- 使用相同的值，這個方法的多次呼叫`name`不一定會傳回相同<xref:System.Threading.Semaphore>物件，即使會傳回代表的物件相同具名系統號誌。  
+ 使用相同的值，這個方法的多次呼叫`name`不一定會傳回相同<xref:System.Threading.Semaphore>物件，即使傳回的物件都代表相同命名系統號誌。  
   
  這個方法多載就相當於呼叫<xref:System.Threading.Semaphore.OpenExisting%2A>方法多載，並指定<xref:System.Security.AccessControl.SemaphoreRights.Synchronize?displayProperty=nameWithType>和<xref:System.Security.AccessControl.SemaphoreRights.Modify?displayProperty=nameWithType>權限，使用位元 OR 運算結合。  
   
@@ -469,13 +476,13 @@
    
   
 ## Examples  
- 下列程式碼範例示範具名號誌的跨處理序行為與存取控制安全性。 此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法多載來測試是否存在的具名號誌。  
+ 下列程式碼範例會示範具名號誌的跨處理序行為具有存取控制安全性。 此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法多載來測試是否存在的具名號誌。  
   
- 如果號誌不存在，它會建立兩個的最大計數與拒絕的目前使用者的權限使用號誌，但以授與讀取和變更，號誌上的權限的權限的存取控制安全性。  
+ 如果號誌不存在，它會建立兩個最大計數與和拒絕的目前使用者使用的號誌的權限，但這會授與讀取和變更號誌的權限的權限的存取控制安全性。  
   
- 如果您從兩個命令視窗執行編譯的範例，第二個副本將會擲回存取違規的例外狀況上呼叫<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法多載。 例外狀況時，和此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%2CSystem.Security.AccessControl.SemaphoreRights%29>方法多載來讀取和變更的權限所需的權限來開啟號誌。  
+ 如果您從兩個命令視窗中執行編譯的範例，第二個複本將會擲回存取違規例外狀況呼叫<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法多載。 攔截到例外狀況時，和此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%2CSystem.Security.AccessControl.SemaphoreRights%29>方法多載來讀取和變更的權限所需的權限開啟號誌。  
   
- 變更權限之後，號誌被開啟輸入，並釋放它所需的權限。 如果您是從第三個命令視窗執行編譯的範例，它會使用執行新的權限。  
+ 權限變更之後，輸入，並釋放它所需的權限開啟號誌。 如果您從第三個 [命令] 視窗中執行編譯的範例，它會執行使用新的權限。  
   
  [!code-cpp[System.Threading.Semaphore.ctor named 5a#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Semaphore.ctor named 5a/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.Semaphore.ctor named 5a#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Semaphore.ctor named 5a/CS/source.cs#1)]
@@ -490,7 +497,7 @@
         <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">The named semaphore does not exist.</exception>
         <exception cref="T:System.IO.IOException">A Win32 error occurred.</exception>
         <exception cref="T:System.UnauthorizedAccessException">The named semaphore exists, but the user does not have the security access required to use it.</exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">用於呼叫 unmanaged 程式碼，以開啟具名的系統號誌。 列舉型別相關聯： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />。  安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />。</permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">呼叫 unmanaged 程式碼，以開啟具名的系統號誌。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />。  安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />。</permission>
       </Docs>
     </Member>
     <Member MemberName="OpenExisting">
@@ -503,6 +510,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -522,22 +530,22 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- `rights`參數必須包含<xref:System.Security.AccessControl.SemaphoreRights.Synchronize?displayProperty=nameWithType>旗標以允許的執行緒進入號誌，而<xref:System.Security.AccessControl.SemaphoreRights.Modify?displayProperty=nameWithType>旗標以允許呼叫的執行緒<xref:System.Threading.Semaphore.Release%2A>方法。  
+ `rights`參數必須包含<xref:System.Security.AccessControl.SemaphoreRights.Synchronize?displayProperty=nameWithType>旗標，好讓執行緒進入號誌，而<xref:System.Security.AccessControl.SemaphoreRights.Modify?displayProperty=nameWithType>旗標以允許呼叫的執行緒<xref:System.Threading.Semaphore.Release%2A>方法。  
   
- <xref:System.Threading.Semaphore.OpenExisting%2A>方法嘗試開啟現有的具名號誌。 如果不存在之系統號誌，這個方法會擲回例外狀況而建立之系統號誌。 若要建立之系統號誌，已經不存在時，使用其中一種<xref:System.Threading.Semaphore.%23ctor%2A>建構函式具有`name`參數。  
+ <xref:System.Threading.Semaphore.OpenExisting%2A>方法嘗試開啟現有的具名號誌。 如果系統號誌不存在，這個方法會擲回的例外狀況，而不是建立的系統號誌。 若要建立的系統號誌，已經不存在時，使用其中一種<xref:System.Threading.Semaphore.%23ctor%2A>建構函式具有`name`參數。  
   
- 使用相同的值，這個方法的多次呼叫`name`不一定會傳回相同<xref:System.Threading.Semaphore>物件，即使會傳回代表的物件相同具名系統號誌。  
+ 使用相同的值，這個方法的多次呼叫`name`不一定會傳回相同<xref:System.Threading.Semaphore>物件，即使傳回的物件都代表相同命名系統號誌。  
   
    
   
 ## Examples  
- 下列程式碼範例示範具名號誌的跨處理序行為與存取控制安全性。 此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法多載來測試是否存在的具名號誌。  
+ 下列程式碼範例會示範具名號誌的跨處理序行為具有存取控制安全性。 此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法多載來測試是否存在的具名號誌。  
   
- 如果號誌不存在，它會建立兩個的最大計數與拒絕目前使用者的權限使用號誌，但讀取和變更，號誌上的權限的權限會授與存取控制安全性。  
+ 如果號誌不存在，它會建立兩個最大計數與拒絕目前的使用者使用的號誌的權限，但是會授與讀取和變更號誌的權限的權限的存取控制安全性。  
   
- 如果您從兩個命令視窗執行編譯的範例，第二個副本將會擲回存取違規的例外狀況上呼叫<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法。 例外狀況時，和此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%2CSystem.Security.AccessControl.SemaphoreRights%29>方法多載來讀取和變更的權限所需的權限來開啟號誌。  
+ 如果您從兩個命令視窗中執行編譯的範例，第二個複本將會擲回存取違規例外狀況呼叫<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法。 攔截到例外狀況時，和此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%2CSystem.Security.AccessControl.SemaphoreRights%29>方法多載來讀取和變更的權限所需的權限開啟號誌。  
   
- 變更權限之後，號誌被開啟輸入，並釋放它所需的權限。 如果您是從第三個命令視窗執行編譯的範例，它會使用執行新的權限。  
+ 權限變更之後，輸入，並釋放它所需的權限開啟號誌。 如果您從第三個 [命令] 視窗中執行編譯的範例，它會執行使用新的權限。  
   
  [!code-cpp[System.Threading.Semaphore.ctor named 5a#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Semaphore.ctor named 5a/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.Semaphore.ctor named 5a#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Semaphore.ctor named 5a/CS/source.cs#1)]
@@ -552,7 +560,7 @@
         <exception cref="T:System.Threading.WaitHandleCannotBeOpenedException">The named semaphore does not exist.</exception>
         <exception cref="T:System.IO.IOException">A Win32 error occurred.</exception>
         <exception cref="T:System.UnauthorizedAccessException">The named semaphore exists, but the user does not have the desired security access rights.</exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">用於呼叫 unmanaged 程式碼來建立具名的系統號誌。 列舉型別相關聯： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />。  安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />。</permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">呼叫 unmanaged 程式碼來建立具名的系統號誌。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />。  安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />。</permission>
       </Docs>
     </Member>
     <MemberGroup MemberName="Release">
@@ -583,6 +591,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -609,18 +618,18 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 執行緒通常會使用<xref:System.Threading.WaitHandle.WaitOne%2A>方法進入號誌，而且它們通常使用這個方法多載來結束。  
+ 執行緒通常會使用<xref:System.Threading.WaitHandle.WaitOne%2A>通常輸入信號，而且它們的方法會使用這個方法多載來結束。  
   
- 如果<xref:System.Threading.SemaphoreFullException>，所擲回<xref:System.Threading.Semaphore.Release%2A>方法，不一定表示呼叫執行緒的問題。 另一個執行緒中的程式設計錯誤可能導致該執行緒結束次數多於進入號誌。  
+ 如果<xref:System.Threading.SemaphoreFullException>就會擲回<xref:System.Threading.Semaphore.Release%2A>方法，它不一定表示呼叫執行緒的問題。 另一個執行緒中的程式設計錯誤可能會造成該執行緒結束號誌，更多的時間超出其輸入。  
   
- 如果目前<xref:System.Threading.Semaphore>物件代表具名的系統號誌，使用者必須擁有<xref:System.Security.AccessControl.SemaphoreRights.Modify?displayProperty=nameWithType>權限和號誌必須已經開啟與<xref:System.Security.AccessControl.SemaphoreRights.Modify?displayProperty=nameWithType>權限。  
+ 如果目前<xref:System.Threading.Semaphore>物件表示具名的系統號誌，則使用者必須擁有<xref:System.Security.AccessControl.SemaphoreRights.Modify?displayProperty=nameWithType>權限和號誌必須已經開啟與<xref:System.Security.AccessControl.SemaphoreRights.Modify?displayProperty=nameWithType>權限。  
   
    
   
 ## Examples  
- 下列程式碼範例會建立信號的最大計數的三個與初始計數為零。 此範例會啟動五個執行緒，封鎖而等待號誌。 主要執行緒會使用<xref:System.Threading.Semaphore.Release%28System.Int32%29>號誌計數增加至其最大值，讓三個執行緒進入號誌的方法多載。 每個執行緒使用<xref:System.Threading.Thread.Sleep%2A?displayProperty=nameWithType>方法等候一秒，以模擬工作，然後呼叫<xref:System.Threading.Semaphore.Release>方法多載來釋放號誌。  
+ 下列程式碼範例會建立號誌的三個最大計數與初始的計數為零。 此範例會啟動五個執行緒，封鎖等候號誌。 主要執行緒使用<xref:System.Threading.Semaphore.Release%28System.Int32%29>方法多載來增加為最大值，允許三個執行緒進入號誌的號誌計數。 每個執行緒會使用<xref:System.Threading.Thread.Sleep%2A?displayProperty=nameWithType>方法等候 1 秒，以模擬工作，然後呼叫<xref:System.Threading.Semaphore.Release>方法多載來釋放號誌。  
   
- 已釋放號誌，每次會顯示先前的號誌計數。 主控台訊息追蹤號誌的使用。 模擬的工作間隔會稍微增加每個執行緒，可讓輸出更容易閱讀。  
+ 已釋放號誌，每次會顯示先前的號誌計數。 主控台訊息追蹤號誌的使用。 模擬的工作間隔會稍微增加，每個執行緒，以讓輸出更容易閱讀。  
   
  [!code-cpp[System.Threading.Semaphore2#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Semaphore2/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.Semaphore2#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Semaphore2/CS/source.cs#1)]
@@ -650,6 +659,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -676,18 +686,18 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果執行緒已進入號誌多次，這個方法多載可讓與某個呼叫還原整個號誌計數。  
+ 如果執行緒已多次進入號誌，則這個方法多載可讓與某個呼叫還原整個的號誌計數。  
   
- 如果<xref:System.Threading.SemaphoreFullException>，所擲回<xref:System.Threading.Semaphore.Release%2A>方法，不一定表示呼叫執行緒的問題。 另一個執行緒中的程式設計錯誤可能導致該執行緒結束次數多於進入號誌。  
+ 如果<xref:System.Threading.SemaphoreFullException>就會擲回<xref:System.Threading.Semaphore.Release%2A>方法，它不一定表示呼叫執行緒的問題。 另一個執行緒中的程式設計錯誤可能會造成該執行緒結束號誌，更多的時間超出其輸入。  
   
- 如果目前<xref:System.Threading.Semaphore>物件代表具名的系統號誌，使用者必須擁有<xref:System.Security.AccessControl.SemaphoreRights.Modify?displayProperty=nameWithType>權限和號誌必須已經開啟與<xref:System.Security.AccessControl.SemaphoreRights.Modify?displayProperty=nameWithType>權限。  
+ 如果目前<xref:System.Threading.Semaphore>物件表示具名的系統號誌，則使用者必須擁有<xref:System.Security.AccessControl.SemaphoreRights.Modify?displayProperty=nameWithType>權限和號誌必須已經開啟與<xref:System.Security.AccessControl.SemaphoreRights.Modify?displayProperty=nameWithType>權限。  
   
    
   
 ## Examples  
- 下列程式碼範例會建立信號的最大計數的三個與初始計數為零。 此範例會啟動五個執行緒，封鎖而等待號誌。 主要執行緒會使用<xref:System.Threading.Semaphore.Release%28System.Int32%29>號誌計數增加至其最大值，讓三個執行緒進入號誌的方法多載。 每個執行緒使用<xref:System.Threading.Thread.Sleep%2A?displayProperty=nameWithType>方法等候一秒，以模擬工作，然後呼叫<xref:System.Threading.Semaphore.Release>方法多載來釋放號誌。  
+ 下列程式碼範例會建立號誌的三個最大計數與初始的計數為零。 此範例會啟動五個執行緒，封鎖等候號誌。 主要執行緒使用<xref:System.Threading.Semaphore.Release%28System.Int32%29>方法多載來增加為最大值，允許三個執行緒進入號誌的號誌計數。 每個執行緒會使用<xref:System.Threading.Thread.Sleep%2A?displayProperty=nameWithType>方法等候 1 秒，以模擬工作，然後呼叫<xref:System.Threading.Semaphore.Release>方法多載來釋放號誌。  
   
- 已釋放號誌，每次會顯示先前的號誌計數。 主控台訊息追蹤號誌的使用。 模擬的工作間隔會稍微增加每個執行緒，可讓輸出更容易閱讀。  
+ 已釋放號誌，每次會顯示先前的號誌計數。 主控台訊息追蹤號誌的使用。 模擬的工作間隔會稍微增加，每個執行緒，以讓輸出更容易閱讀。  
   
  [!code-cpp[System.Threading.Semaphore2#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Semaphore2/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.Semaphore2#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Semaphore2/CS/source.cs#1)]
@@ -711,6 +721,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -727,20 +738,20 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您只能上設定存取控制安全性<xref:System.Threading.Semaphore>表示具名的系統號誌的物件。  
+ 您可以只上設定存取控制安全性<xref:System.Threading.Semaphore>代表具名的系統號誌的物件。  
   
  使用者必須擁有<xref:System.Security.AccessControl.SemaphoreRights.ChangePermissions?displayProperty=nameWithType>呼叫這個方法和號誌的權限必須是與開啟<xref:System.Security.AccessControl.SemaphoreRights.ChangePermissions?displayProperty=nameWithType>權限。  
   
    
   
 ## Examples  
- 下列程式碼範例示範具名號誌的跨處理序行為與存取控制安全性。 此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法多載來測試是否存在的具名號誌。  
+ 下列程式碼範例會示範具名號誌的跨處理序行為具有存取控制安全性。 此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法多載來測試是否存在的具名號誌。  
   
- 如果號誌不存在，它會建立兩個的最大計數與拒絕目前的使用者使用號誌的權限，但讀取和變更，號誌上的權限的權限會授與存取控制安全性。  
+ 如果號誌不存在，它會建立兩個最大計數與拒絕目前的使用者使用號誌的權限，但是會授與讀取和變更號誌的權限的權限的存取控制安全性。  
   
- 如果您從兩個命令視窗執行編譯的範例，第二個副本將會擲回存取違規的例外狀況上呼叫<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法。 例外狀況時，和此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%2CSystem.Security.AccessControl.SemaphoreRights%29>方法多載來讀取和變更的權限所需的權限來開啟號誌。  
+ 如果您從兩個命令視窗中執行編譯的範例，第二個複本將會擲回存取違規例外狀況呼叫<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法。 攔截到例外狀況時，和此範例會使用<xref:System.Threading.Semaphore.OpenExisting%28System.String%2CSystem.Security.AccessControl.SemaphoreRights%29>方法多載來讀取和變更的權限所需的權限開啟號誌。  
   
- 變更的權限，使用後<xref:System.Threading.Semaphore.SetAccessControl%2A>來輸入，並釋放所需的權限開啟方法，號誌。 如果您是從第三個命令視窗執行編譯的範例，它會使用執行新的權限。  
+ 變更權限，使用後<xref:System.Threading.Semaphore.SetAccessControl%2A>來輸入，並釋放所需的權限開啟號誌的方法。 如果您從第三個 [命令] 視窗中執行編譯的範例，它會執行使用新的權限。  
   
  [!code-cpp[System.Threading.Semaphore.ctor named 5a#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Semaphore.ctor named 5a/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.Semaphore.ctor named 5a#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Semaphore.ctor named 5a/CS/source.cs#1)]
@@ -806,9 +817,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果不存在的具名號誌，這個方法不會建立它。 若要建立之系統號誌，已經不存在時，使用其中一種<xref:System.Threading.Semaphore.%23ctor%2A>建構函式具有`name`參數。  
+ 如果具名號誌不存在，這個方法不會建立它。 若要建立的系統號誌，已經不存在時，使用其中一種<xref:System.Threading.Semaphore.%23ctor%2A>建構函式具有`name`參數。  
   
- 如果您不確定具名號誌是否存在，請使用這個方法多載，而不是<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法多載，如果號誌不存在，擲回例外狀況。  
+ 如果您不確定是否存在的具名號誌，使用這個方法多載，而不是<xref:System.Threading.Semaphore.OpenExisting%28System.String%29>方法多載，則會擲回例外狀況，如果號誌不存在。  
   
  這個方法多載就相當於呼叫<xref:System.Threading.Semaphore.TryOpenExisting%2A>方法多載，並指定<xref:System.Security.AccessControl.SemaphoreRights.Synchronize?displayProperty=nameWithType>和<xref:System.Security.AccessControl.SemaphoreRights.Modify?displayProperty=nameWithType>權限，使用位元 OR 運算結合。 指定<xref:System.Security.AccessControl.SemaphoreRights.Synchronize?displayProperty=nameWithType>旗標可讓執行緒進入號誌，並指定<xref:System.Security.AccessControl.SemaphoreRights.Modify?displayProperty=nameWithType>旗標可讓呼叫執行緒<xref:System.Threading.Semaphore.Release%2A>方法。  
   
@@ -854,13 +865,13 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果不存在的具名號誌，這個方法不會建立它。 若要建立之系統號誌，已經不存在時，使用其中一種<xref:System.Threading.Semaphore.%23ctor%2A>建構函式具有`name`參數。  
+ 如果具名號誌不存在，這個方法不會建立它。 若要建立的系統號誌，已經不存在時，使用其中一種<xref:System.Threading.Semaphore.%23ctor%2A>建構函式具有`name`參數。  
   
- 如果您不確定具名號誌是否存在，請使用這個方法多載，而不是<xref:System.Threading.Semaphore.OpenExisting%28System.String%2CSystem.Security.AccessControl.SemaphoreRights%29>方法多載，如果號誌不存在，擲回例外狀況。  
+ 如果您不確定是否存在的具名號誌，使用這個方法多載，而不是<xref:System.Threading.Semaphore.OpenExisting%28System.String%2CSystem.Security.AccessControl.SemaphoreRights%29>方法多載，則會擲回例外狀況，如果號誌不存在。  
   
- `rights`參數必須包含<xref:System.Security.AccessControl.SemaphoreRights.Synchronize?displayProperty=nameWithType>旗標以允許的執行緒進入號誌，而<xref:System.Security.AccessControl.SemaphoreRights.Modify?displayProperty=nameWithType>旗標以允許呼叫的執行緒<xref:System.Threading.Semaphore.Release%2A>方法。  
+ `rights`參數必須包含<xref:System.Security.AccessControl.SemaphoreRights.Synchronize?displayProperty=nameWithType>旗標，好讓執行緒進入號誌，而<xref:System.Security.AccessControl.SemaphoreRights.Modify?displayProperty=nameWithType>旗標以允許呼叫的執行緒<xref:System.Threading.Semaphore.Release%2A>方法。  
   
- 使用相同的值，這個方法的多次呼叫`name`不一定會傳回相同<xref:System.Threading.Semaphore>物件，即使會傳回代表的物件相同具名系統號誌。  
+ 使用相同的值，這個方法的多次呼叫`name`不一定會傳回相同<xref:System.Threading.Semaphore>物件，即使傳回的物件都代表相同命名系統號誌。  
   
  ]]></format>
         </remarks>
