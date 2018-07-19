@@ -1,11 +1,11 @@
 <Type Name="DataflowBlock" FullName="System.Threading.Tasks.Dataflow.DataflowBlock">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="f558bf9a029763285a5fd334c30a979714b81d23" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="b1681b37f6256a345cba5980d6dd8e36899a63b3" />
+    <Meta Name="ms.sourcegitcommit" Value="44933aff38db926168781f50300446344189a04d" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36606932" />
+    <Meta Name="ms.lasthandoff" Value="07/16/2018" />
+    <Meta Name="ms.locfileid" Value="39064906" />
   </Metadata>
   <TypeSignature Language="C#" Value="public static class DataflowBlock" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit DataflowBlock extends System.Object" />
@@ -321,14 +321,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Threading.Tasks.Dataflow.DataflowBlock.Encapsulate%2A>方法需要兩個現有的區塊： 目標區塊 (實作類別的執行個體<xref:System.Threading.Tasks.Dataflow.ITargetBlock%601>) 和來源區塊 (實作類別的執行個體<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601>)。 <xref:System.Threading.Tasks.Dataflow.DataflowBlock.Encapsulate%2A> 建立連接的內部類別的新執行個體<xref:System.Threading.Tasks.Dataflow.ITargetBlock%601>介面成員`target`參數和<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601>介面成員`source`參數。  同時<xref:System.Threading.Tasks.Dataflow.ITargetBlock%601>和<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601>衍生自<xref:System.Threading.Tasks.Dataflow.IDataflowBlock>。 從來源到目標明確傳遞區塊的完成。 因此，<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Complete%2A>和<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Fault%2A>方法連線到目標，同時<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Completion%2A>屬性連接到來源。  您必須確定當一半完成時，目標一半取得完成以最適當的方式; 的來源例如：  
+ <xref:System.Threading.Tasks.Dataflow.DataflowBlock.Encapsulate%2A>方法需要兩個現有的區塊： 將目標區塊 (實作類別的執行個體<xref:System.Threading.Tasks.Dataflow.ITargetBlock%601>) 以及來源區塊 (實作類別的執行個體<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601>)。 <xref:System.Threading.Tasks.Dataflow.DataflowBlock.Encapsulate%2A> 建立連線的內部類別的新執行個體<xref:System.Threading.Tasks.Dataflow.ITargetBlock%601>介面成員`target`參數並<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601>介面成員`source`參數。  兩者<xref:System.Threading.Tasks.Dataflow.ITargetBlock%601>並<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601>衍生自<xref:System.Threading.Tasks.Dataflow.IDataflowBlock>。 從來源到目標明確傳遞區塊的完成。 因此，<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Complete%2A>並<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Fault%2A>方法連線到目標時<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Completion%2A>屬性連接至來源。  您必須確定，當目標一半完成時，最適合的方式; 完成一半的來源例如：  
   
  `target.Completion.ContinueWith(completion => source.Complete());`  
   
- 或者，如果您想要散佈完成類型，您可以使用這個更複雜的程式碼：  
+ 或者，如果您想要傳播完成類型，您可以使用這個更複雜的程式碼：  
   
 ```  
-target.Completion.ContinueWith(completion => { if (completion.IsFaulted) 3   
+target.Completion.ContinueWith(completion => { if (completion.IsFaulted)    
   
 ((IDataflowBlock)batchBlock).Fault(completion.Exception);   
 else   
@@ -337,7 +337,7 @@ batchBlock.Complete();
   
 ```  
   
- 您必須同時也可以明確提供訊息傳播從目標到來源。 這個明確連線的好處是，它能讓您自由地執行兩個封裝區塊之間任何未受限制的處理。 您可以執行，編碼成區塊的委派 （如果這些區塊會取得委派） 所需的處理，或內嵌區塊之間的子網路。 更簡單的方法是使用區塊採用委派。例如，使用<xref:System.Threading.Tasks.Dataflow.ActionBlock%601>， <xref:System.Threading.Tasks.Dataflow.TransformBlock%602>， <xref:System.Threading.Tasks.Dataflow.TransformManyBlock%602> （如果適用），或自訂的區塊。  
+ 您必須明確地提供訊息傳播從目標到來源。 此明確的好處是連線的，它能讓您能夠自由地執行兩個封裝區塊之間任何不受限制的處理。 您可以執行，以將其編碼成區塊的委派 （如果區塊需要委派） 所需的處理或內嵌區塊之間的子網路。 更簡單的方法是使用會採用委派; 區塊例如，使用<xref:System.Threading.Tasks.Dataflow.ActionBlock%601>， <xref:System.Threading.Tasks.Dataflow.TransformBlock%602>， <xref:System.Threading.Tasks.Dataflow.TransformManyBlock%602> （如果適用），或自訂的區塊。  
   
  ]]></format>
         </remarks>
@@ -589,7 +589,7 @@ batchBlock.Complete();
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 一旦決定目標區塊接受或拒絕的項目，但除非否則取決於特殊的語意的目標區塊，它不會等候要實際處理的項目，這個方法會傳回。 例如， <xref:System.Threading.Tasks.Dataflow.ActionBlock%601> ，將會傳回<xref:System.Threading.Tasks.Dataflow.DataflowBlock.Post%2A>它已儲存的已張貼的項目到其輸入佇列時)。 從區塊處理的觀點來看`Post`為非同步。 提供的訊息，該支援延後的目標區塊或區塊可能會在進行更多的處理其`Post`實作中，請考慮使用<xref:System.Threading.Tasks.Dataflow.DataflowBlock.SendAsync%2A>，這會立即傳回，並可讓延後的已張貼的訊息目標然後稍後再使用它之後`SendAsync`傳回。  
+ 一旦決定目標區塊接受或拒絕項目，但除非否則取決於目標區塊的特殊的語意，它不會等到要實際處理的項目，這個方法會傳回。 例如，<xref:System.Threading.Tasks.Dataflow.ActionBlock%601>會傳回從<xref:System.Threading.Tasks.Dataflow.DataflowBlock.Post%2A>只要它已儲存的已張貼的項目到其輸入佇列)。 從區塊處理的觀點來看`Post`是非同步的。 目標區塊提供的訊息，該支援延後或更多的處理進行中的區塊及其`Post`實作中，請考慮使用<xref:System.Threading.Tasks.Dataflow.DataflowBlock.SendAsync%2A>，這將會立即傳回，而且可讓延後已發佈的訊息目標然後稍後再使用它之後`SendAsync`傳回。  
   
  ]]></format>
         </remarks>
@@ -664,7 +664,7 @@ batchBlock.Complete();
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果成功，來源提供給這項作業所收到的項目，即使發生並行的取消要求時，會傳回該項目。  
+ 如果來源成功提供這項作業所收到的項目，即使發生並行的取消要求，會傳回該項目。  
   
  ]]></format>
         </remarks>
@@ -709,7 +709,7 @@ batchBlock.Complete();
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果成功，來源提供給這項作業所收到的項目，即使發生並行的逾時，會傳回該項目。  
+ 如果來源成功提供這項作業所收到的項目，即使發生並行的逾時，會傳回該項目。  
   
  ]]></format>
         </remarks>
@@ -757,7 +757,7 @@ batchBlock.Complete();
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果成功，來源提供給這項作業所收到的項目值，即使發生並行的逾時或取消要求時，會傳回該值。  
+ 如果來源成功提供這項作業所收到的項目值，即使同時連線的逾時或取消要求，就會發生，就是會傳回的值。  
   
  ]]></format>
         </remarks>
@@ -1026,7 +1026,7 @@ batchBlock.Complete();
 ## Remarks  
  這個方法不會等到來源有提供項目。  
   
- 它會傳回可用的項目。  
+ 它會傳回項目已可用。  
   
  ]]></format>
         </remarks>
