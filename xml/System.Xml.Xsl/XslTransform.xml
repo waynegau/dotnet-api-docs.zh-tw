@@ -1,11 +1,11 @@
 <Type Name="XslTransform" FullName="System.Xml.Xsl.XslTransform">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="bde6eef3e191bd0a25d4c462afa81d1cbfd131ba" />
-    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
+    <Meta Name="ms.openlocfilehash" Value="90f9aaa4f98d650b51fb98e9ae2d19d691591587" />
+    <Meta Name="ms.sourcegitcommit" Value="102d07546033d7818b72aa66d7a26c70235baedd" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
-    <Meta Name="ms.locfileid" Value="37733111" />
+    <Meta Name="ms.lasthandoff" Value="07/23/2018" />
+    <Meta Name="ms.locfileid" Value="39202241" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class XslTransform" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit XslTransform extends System.Object" />
@@ -746,8 +746,14 @@
   
  有不同的方式，提供辨識項。 下表描述何種辨識項，以便提供一般使用者案例。  
   
-    
+|情節|若要提供的辨識項型別|  
+|--------------|---------------------------------|  
+|XSLT 樣式表是獨立的或來自您信任的程式碼基底。|使用您的組件的來源辨識項。<br /><br /> <pre><code class="lang-csharp">XsltTransform xslt = new XslTransform(); &#13;&#10;xslt.Load(xslReader, resolver, this.GetType().Assembly.Evidence);</code></pre>|  
+|XSLT 樣式表來自外部來源。 已知來源的源頭，而且沒有可驗證的 URL。|建立辨識項使用的 URL。<br /><br /> <pre><code class="lang-csharp">XsltTransform xslt = new XslTransform();&#13;&#10; Evidence evidence = XmlSecureResolver.CreateEvidenceForUrl(stylesheetURL); &#13;&#10;xslt.Load(xslReader,resolver,evidence);</code></pre>|  
+|XSLT 樣式表來自外部來源。 來源的源頭未知。|將辨識項設為 `null`。 不會處理指令碼區塊、不支援 XSLT `document()` 函式，且不允許已授權的擴充物件。<br /><br /> 此外，您也可以設定`resolver`參數來`null`。 這可確保`xsl:import`和`xsl:include`不會處理元素。|  
+|XSLT 樣式表來自外部來源。 來源的源頭未知，但是您需要指令碼支援。|自呼叫端要求識別項。 API 的呼叫端必須提供一個方法，通常提供辨識項，<xref:System.Security.Policy.Evidence>類別。|  
   
+     
 ## Examples  
  下列範例會執行 XSLT 轉換所在`xsltReader`是<xref:System.Xml.XmlReader>包含樣式表並`secureURL`是受信任的 URL，可用來建立<xref:System.Security.Policy.Evidence>。 <xref:System.Xml.XmlSecureResolver.CreateEvidenceForUrl%2A?displayProperty=nameWithType>方法用來建立<xref:System.Security.Policy.Evidence>套用至樣式表。  
   
@@ -811,7 +817,14 @@
   
  有不同的方式，提供辨識項。 下表描述何種辨識項，以便提供一般使用者案例。  
   
-  ]]></format>
+|情節|若要提供的辨識項型別|  
+|--------------|---------------------------------|  
+|XSLT 樣式表是獨立的或來自您信任的程式碼基底。|使用您的組件的來源辨識項。<br /><br /> <pre><code class="lang-csharp">XsltTransform xslt = new XslTransform(); &#13;&#10;xslt.Load(style sheet, resolver, this.GetType().Assembly.Evidence);</code></pre>|  
+|XSLT 樣式表來自外部來源。 已知來源的源頭，而且沒有可驗證的 URL。|建立辨識項使用的 URL。<br /><br /> <pre><code class="lang-csharp">XsltTransform xslt = new XslTransform(); &#13;&#10;Evidence evidence = XmlSecureResolver.CreateEvidenceForUrl(style sheetURL); &#13;&#10;xslt.Load(style sheet,resolver,evidence);</code></pre>|  
+|XSLT 樣式表來自外部來源。 來源的源頭未知。|將辨識項設為 `null`。 不會處理指令碼區塊、不支援 XSLT `document()` 函式，且不允許已授權的擴充物件。<br /><br /> 此外，您也可以設定`resolver`參數來`null`。 這可確保`xsl:import`和`xsl:include`不會處理元素。|  
+|XSLT 樣式表來自外部來源。 來源的源頭未知，但是您需要指令碼支援。|自呼叫端要求識別項。 API 的呼叫端必須提供一個方法，通常提供辨識項，<xref:System.Security.Policy.Evidence>類別。|  
+  
+ ]]></format>
         </remarks>
         <exception cref="T:System.Xml.Xsl.XsltCompileException">載入的資源不是有效的樣式表。</exception>
         <exception cref="T:System.Security.SecurityException">參考的樣式表需要功能，而提供的辨識項不允許此功能。  呼叫端嘗試提供辨識項，但沒有 <see langword="ControlEvidence" /> 使用權限。</exception>
@@ -870,11 +883,18 @@
   
  有不同的方式，提供辨識項。 下表描述何種辨識項，以便提供一般使用者案例。  
   
-    
+|情節|若要提供的辨識項型別|  
+|--------------|---------------------------------|  
+|XSLT 樣式表是獨立的或來自您信任的程式碼基底。|使用您的組件的來源辨識項。<br /><br /> <pre><code class="lang-csharp">XsltTransform xslt = new XslTransform(); &#13;&#10;xslt.Load(xslNav, resolver, this.GetType().Assembly.Evidence);</code></pre>|  
+|XSLT 樣式表來自外部來源。 已知來源的源頭，而且沒有可驗證的 URL。|建立辨識項使用的 URL。<br /><br /> <pre><code class="lang-csharp">XsltTransform xslt = new XslTransform(); &#13;&#10;Evidence evidence = XmlSecureResolver.CreateEvidenceForUrl(style sheetURL); &#13;&#10;xslt.Load(xslNav,resolver,evidence);</code></pre>|  
+|XSLT 樣式表來自外部來源。 來源的源頭未知。|將辨識項設為 `null`。 不會處理指令碼區塊、不支援 XSLT `document()` 函式，且不允許已授權的擴充物件。<br /><br /> 此外，您也可以設定`resolver`參數來`null`。 這可確保`xsl:import`和`xsl:include`不會處理元素。|  
+|XSLT 樣式表來自外部來源。 來源的源頭未知，但是您需要指令碼支援。|自呼叫端要求識別項。 API 的呼叫端必須提供一個方法，通常提供辨識項，`Evidence`類別。|  
+  
+   
   
 ## Examples  
  下列範例會使用從外部來源的樣式表的 XSLT 轉換。 樣式表來自受信任的來源，因為`resolver`並`evidence`參數會設定為`null`。  
-  
+ 
  [!code-csharp[XslTransform.Load5#1](~/samples/snippets/csharp/VS_Snippets_Data/XslTransform.Load5/CS/trans_noev.cs#1)]
  [!code-vb[XslTransform.Load5#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XslTransform.Load5/VB/trans_noev.vb#1)]  
   
