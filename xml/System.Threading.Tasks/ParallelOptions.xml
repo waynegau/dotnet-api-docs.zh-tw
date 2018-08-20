@@ -1,10 +1,10 @@
 <Type Name="ParallelOptions" FullName="System.Threading.Tasks.ParallelOptions">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="47d80a70cbbd4bd17560003c948e41ca31dca239" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.sourcegitcommit" Value="d0bb31ec8354fa58c62c2a646057eec11d3e2150" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/17/2018" />
     <Meta Name="ms.locfileid" Value="36606454" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class ParallelOptions" />
@@ -34,7 +34,7 @@
   <Docs>
     <summary>儲存選項，這些選項設定 <see cref="T:System.Threading.Tasks.Parallel" /> 類別上之方法的作業。</summary>
     <remarks>To be added.</remarks>
-    <threadsafe>建構函式是安全執行緒，並可由多個執行緒同時以建構多個執行個體。 沒有公用成員是安全執行緒。</threadsafe>
+    <threadsafe>建構函式是安全執行緒，並可能供多個執行緒同時以建構多個執行個體。 沒有其他公用成員是安全執行緒。</threadsafe>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -65,7 +65,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個建構函式初始化具有預設值執行個體。 <xref:System.Threading.Tasks.ParallelOptions.MaxDegreeOfParallelism%2A> 會初始化為-1，表示沒有上限組上應該採用多少平行處理原則。 <xref:System.Threading.Tasks.ParallelOptions.CancellationToken%2A> 會初始化為 「 非可取消的語彙基元，和<xref:System.Threading.Tasks.ParallelOptions.TaskScheduler%2A>會初始化為預設排程器 (TaskScheduler.Default)。  
+ 這個建構函式初始化的執行個體，預設值。 <xref:System.Threading.Tasks.ParallelOptions.MaxDegreeOfParallelism%2A> 會初始化為-1，表示沒有上限 set 上多少的平行處理原則，應該採用。 <xref:System.Threading.Tasks.ParallelOptions.CancellationToken%2A> 會初始化為 「 非可取消的語彙基元，和<xref:System.Threading.Tasks.ParallelOptions.TaskScheduler%2A>會初始化為預設排程器 (TaskScheduler.Default)。  
   
  所有這些預設值可能會覆寫執行個體上使用屬性 set 存取子。  
   
@@ -105,7 +105,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 提供<xref:System.Threading.CancellationToken>至<xref:System.Threading.Tasks.Parallel>方法可讓要提早結束的作業。 作業之外的程式碼可能會取消語彙基元，以及如果操作觀察所設定的語彙基元，它可以提早結束藉由擲回<xref:System.OperationCanceledException>。  
+ 提供<xref:System.Threading.CancellationToken>至<xref:System.Threading.Tasks.Parallel>方法可讓要提早結束的作業。 外部作業的程式碼可能會取消語彙基元，和如果作業會遵守所設定的權杖，它可能會提早結束藉由擲回<xref:System.OperationCanceledException>。  
   
  ]]></format>
         </remarks>
@@ -143,17 +143,17 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Threading.Tasks.ParallelOptions.MaxDegreeOfParallelism%2A>屬性會影響所執行的並行作業數目<xref:System.Threading.Tasks.Parallel>方法呼叫會傳遞這<xref:System.Threading.Tasks.ParallelOptions>執行個體。 正值的屬性值會限制並行作業設定的值數目。 如果是-1，但同時執行作業的數目沒有限制。  
+ <xref:System.Threading.Tasks.ParallelOptions.MaxDegreeOfParallelism%2A>屬性會影響所執行的並行作業數目<xref:System.Threading.Tasks.Parallel>方法呼叫傳遞這<xref:System.Threading.Tasks.ParallelOptions>執行個體。 正值的屬性值會限制並行作業，以設定的值數目。 如果是-1，但同時執行作業的數目沒有限制。  
   
- 根據預設，<xref:System.Threading.Tasks.Parallel.For%2A>和<xref:System.Threading.Tasks.Parallel.ForEach%2A>不過許多執行緒基礎排程器提供，因此變更會利用<xref:System.Threading.Tasks.ParallelOptions.MaxDegreeOfParallelism%2A>從預設只會限制將使用多少並行的工作。  
+ 根據預設，<xref:System.Threading.Tasks.Parallel.For%2A>並<xref:System.Threading.Tasks.Parallel.ForEach%2A>不過許多執行緒基礎排程器提供，因此，變更將會利用<xref:System.Threading.Tasks.ParallelOptions.MaxDegreeOfParallelism%2A>從預設只會限制將使用多少並行工作。  
   
- 一般而言，您不需要修改此設定。 不過，您可以選擇明確設定這類進階的使用案例中：  
+ 一般而言，您不需要修改此設定。 不過，您可以選擇將它明確地設定這類進階的使用案例中：  
   
--   當您知道您正在使用特定演算法不會擴充超過核心數目。 您可以設定以避免浪費循環在額外的核心屬性。  
+-   當您知道您使用特定的演算法不會擴充超過特定數目的核心。 您可以設定以避免額外的核心上浪費循環屬性。  
   
--   當您要同時執行多個演算法，並想要手動定義每一種演算法可以利用的系統中有多少。 您可以設定<xref:System.Threading.Tasks.ParallelOptions.MaxDegreeOfParallelism%2A>每個值。  
+-   當您同時執行多個演算法，並想要手動定義每個演算法可以利用的系統中有多少。 您可以設定<xref:System.Threading.Tasks.ParallelOptions.MaxDegreeOfParallelism%2A>每個值。  
   
--   當執行緒集區的啟發學習法無法判斷要使用的執行緒數目，以及最後可能會插入的執行緒太多。 例如，在長時間執行迴圈主體反覆項目，執行緒集區可能無法區分合理進度或徵兆或死結時，並可能無法回收的執行緒，加入了以提升效能。 在此情況下，您可以設定屬性，以確保您不使用超過合理的執行緒數目。  
+-   當執行緒集區的啟發學習法無法判斷要使用的執行緒數目，以及最後可能會插入太多的執行緒。 比方說，在長時間執行迴圈主體反覆項目，執行緒集區可能無法判斷合理的進度或死結、 活結之間的差異，並可能無法回收新增，以改善效能的執行緒。 在此情況下，您可以設定屬性，以確認您未使用超過合理的執行緒數目。  
   
  ]]></format>
         </remarks>

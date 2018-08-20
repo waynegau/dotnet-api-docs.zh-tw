@@ -1,11 +1,11 @@
 <Type Name="BroadcastBlock&lt;T&gt;" FullName="System.Threading.Tasks.Dataflow.BroadcastBlock&lt;T&gt;">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="9f400ccf5fce9cd58a6827d264c907791c4dd243" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="668cfb9c5a1215cc037a527651c487e2ab185360" />
+    <Meta Name="ms.sourcegitcommit" Value="d877ae76e9e11799bf919379507239e2c4072742" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36606906" />
+    <Meta Name="ms.lasthandoff" Value="08/09/2018" />
+    <Meta Name="ms.locfileid" Value="39811463" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class BroadcastBlock&lt;T&gt; : System.Threading.Tasks.Dataflow.IPropagatorBlock&lt;T,T&gt;, System.Threading.Tasks.Dataflow.IReceivableSourceBlock&lt;T&gt;, System.Threading.Tasks.Dataflow.ISourceBlock&lt;T&gt;, System.Threading.Tasks.Dataflow.ITargetBlock&lt;T&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit BroadcastBlock`1&lt;T&gt; extends System.Object implements class System.Threading.Tasks.Dataflow.IDataflowBlock, class System.Threading.Tasks.Dataflow.IPropagatorBlock`2&lt;!T, !T&gt;, class System.Threading.Tasks.Dataflow.IReceivableSourceBlock`1&lt;!T&gt;, class System.Threading.Tasks.Dataflow.ISourceBlock`1&lt;!T&gt;, class System.Threading.Tasks.Dataflow.ITargetBlock`1&lt;!T&gt;" />
@@ -40,6 +40,14 @@
       <InterfaceName>System.Threading.Tasks.Dataflow.ITargetBlock&lt;T&gt;</InterfaceName>
     </Interface>
   </Interfaces>
+  <Attributes>
+    <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1">
+      <AttributeName>System.Diagnostics.DebuggerDisplay("{DebuggerDisplayContent,nq}")</AttributeName>
+    </Attribute>
+    <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1">
+      <AttributeName>System.Diagnostics.DebuggerTypeProxy(typeof(System.Threading.Tasks.Dataflow.BroadcastBlock`1/DebugView))</AttributeName>
+    </Attribute>
+  </Attributes>
   <Docs>
     <typeparam name="T">指定此資料流區塊目標區塊緩衝之資料的型別。</typeparam>
     <summary>提供緩衝區，一次至多儲存一個項目，並在下一個訊息到達時覆寫每個訊息。</summary>
@@ -50,7 +58,7 @@
   
 [!INCLUDE [tpl-install-instructions](~/includes/tpl-install-instructions.md)]
   
- <xref:System.Threading.Tasks.Dataflow.BroadcastBlock%601> 會公開最多一個項目，一次。 不過，不同於<xref:System.Threading.Tasks.Dataflow.WriteOnceBlock%601>，將會覆寫該項目，為新項目會提供給區塊。 <xref:System.Threading.Tasks.Dataflow.BroadcastBlock%601> 可確保目前的項目廣播給所有連結的目標，才能允許覆寫的項目。  
+ <xref:System.Threading.Tasks.Dataflow.BroadcastBlock%601> 會公開最多一個項目，一次。 不過，不同於<xref:System.Threading.Tasks.Dataflow.WriteOnceBlock%601>，新的項目會提供給區塊的項目將會覆寫。 <xref:System.Threading.Tasks.Dataflow.BroadcastBlock%601> 可確保目前的項目廣播到任何連結的目標，然後才允許覆寫的項目。  
   
  ]]></format>
     </remarks>
@@ -135,7 +143,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 之後<xref:System.Threading.Tasks.Dataflow.BroadcastBlock%601.Complete%2A>已經在資料流程區塊上呼叫，該區塊將會完成，且其<xref:System.Threading.Tasks.Dataflow.BroadcastBlock%601.Completion%2A>工作會進入最終狀態它已經處理所有先前可用的資料。 <xref:System.Threading.Tasks.Dataflow.BroadcastBlock%601.Complete%2A> 將區塊等待完成發生，而是會起始要求但要等待完成發生，<xref:System.Threading.Tasks.Dataflow.BroadcastBlock%601.Completion%2A>可能使用的工作。  
+ 之後<xref:System.Threading.Tasks.Dataflow.BroadcastBlock%601.Complete%2A>已經在資料流程區塊上呼叫，該區塊將會完成，並將其<xref:System.Threading.Tasks.Dataflow.BroadcastBlock%601.Completion%2A>工作會進入最終的狀態已經處理所有先前可用的資料。 <xref:System.Threading.Tasks.Dataflow.BroadcastBlock%601.Complete%2A> 將不會封鎖等候完成發生，而是會起始要求但等候完成發生，<xref:System.Threading.Tasks.Dataflow.BroadcastBlock%601.Completion%2A>可能使用的工作。  
   
  ]]></format>
         </remarks>
@@ -169,7 +177,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 資料流程區塊會時視為完成它目前未處理的訊息，以及當它有保證，不會處理任何其他訊息。 傳回<xref:System.Threading.Tasks.Task>完成相關聯的區塊時，會轉換為已完成狀態。 會轉換到<xref:System.Threading.Tasks.TaskStatus><xref:System.Threading.Tasks.TaskStatus.RanToCompletion>區塊完成其處理成功根據資料流程區塊時的狀態定義語意。 會轉換到<xref:System.Threading.Tasks.TaskStatus><xref:System.Threading.Tasks.TaskStatus.Faulted>狀態時即為資料流程區塊已完成處理提前因未處理的例外狀況，且會轉換到<xref:System.Threading.Tasks.TaskStatus><xref:System.Threading.Tasks.TaskStatus.Canceled>資料流程區塊完成狀態過早處理，因為收到取消要求。 當工作在<xref:System.Threading.Tasks.TaskStatus.Faulted>狀態，其`Exception`屬性會傳回<xref:System.AggregateException>包含造成失敗之區塊的一或多個例外狀況。  
+ 資料流程區塊會被視為完成，但當它目前未處理訊息，而且當它有保證，不會處理任何訊息。 傳回<xref:System.Threading.Tasks.Task>相關聯的區塊完成時，會轉換為已完成的狀態。 它會轉為<xref:System.Threading.Tasks.TaskStatus><xref:System.Threading.Tasks.TaskStatus.RanToCompletion>區塊本身完成處理成功根據資料流程區塊時的狀態定義語意。 它就會轉換成<xref:System.Threading.Tasks.TaskStatus><xref:System.Threading.Tasks.TaskStatus.Faulted>狀態，當資料流程區塊完成提前因為未處理的例外狀況處理，並將轉為<xref:System.Threading.Tasks.TaskStatus><xref:System.Threading.Tasks.TaskStatus.Canceled>資料流程區塊完成時的狀態正在處理不當，由於收到取消要求。 如果工作會在完成<xref:System.Threading.Tasks.TaskStatus.Faulted>狀態，其`Exception`屬性會傳回<xref:System.AggregateException>包含造成失敗之區塊的一或多個例外狀況。  
   
  ]]></format>
         </remarks>
@@ -239,7 +247,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 之後<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Fault%2A>已經在資料流程區塊上呼叫，該區塊將會完成，且其<xref:System.Threading.Tasks.Dataflow.BroadcastBlock%601.Completion%2A>工作將會進入最終狀態。 判定為失敗的區塊，做為與取消區塊，會造成遺失緩衝的訊息 （未處理的輸入的訊息，以及 unoffered 的輸出訊息）。  
+ 之後<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Fault%2A>已經在資料流程區塊上呼叫，該區塊將會完成，並將其<xref:System.Threading.Tasks.Dataflow.BroadcastBlock%601.Completion%2A>工作將會進入最終狀態。 錯誤區塊，做為與取消區塊中，會導致遺失緩衝的訊息 （未處理的輸入的訊息，以及 unoffered 的輸出訊息）。  
   
  ]]></format>
         </remarks>
@@ -265,7 +273,7 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="items" Type="System.Collections.Generic.IList&lt;T&gt;&amp;" RefType="out" />
+        <Parameter Name="items" Type="System.Collections.Generic.IList&lt;T&gt;" RefType="out" />
       </Parameters>
       <Docs>
         <param name="items">從來源接收的項目。</param>
@@ -277,7 +285,7 @@
 ## Remarks  
  這個方法不會封鎖等候提供項目來源。  
   
- 它會傳回之後檢查項目，或有可用的項目。  
+ 它會傳回之後檢查的項目，已使用的項目。  
   
  ]]></format>
         </remarks>
@@ -291,7 +299,7 @@
       <MemberSignature Language="C++ CLI" Value=" virtual T System.Threading.Tasks.Dataflow.ISourceBlock&lt;T&gt;.ConsumeMessage(System::Threading::Tasks::Dataflow::DataflowMessageHeader messageHeader, System::Threading::Tasks::Dataflow::ITargetBlock&lt;T&gt; ^ target, [Runtime::InteropServices::Out] bool % messageConsumed) = System::Threading::Tasks::Dataflow::ISourceBlock&lt;T&gt;::ConsumeMessage;" />
       <MemberType>Method</MemberType>
       <Implements>
-        <InterfaceMember>M:System.Threading.Tasks.Dataflow.ISourceBlock`1.ConsumeMessage(System.Threading.Tasks.Dataflow.DataflowMessageHeader,System.Threading.Tasks.Dataflow.ITargetBlock{`0},System.Boolean@)</InterfaceMember>
+        <InterfaceMember>M:System.Threading.Tasks.Dataflow.ISourceBlock`1.ConsumeMessage(System.Threading.Tasks.Dataflow.DataflowMessageHeader,System.Threading.Tasks.Dataflow.ITargetBlock{`0},System.Boolean)</InterfaceMember>
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Threading.Tasks.Dataflow</AssemblyName>
@@ -306,7 +314,7 @@
       <Parameters>
         <Parameter Name="messageHeader" Type="System.Threading.Tasks.Dataflow.DataflowMessageHeader" />
         <Parameter Name="target" Type="System.Threading.Tasks.Dataflow.ITargetBlock&lt;T&gt;" />
-        <Parameter Name="messageConsumed" Type="System.Boolean&amp;" RefType="out" />
+        <Parameter Name="messageConsumed" Type="System.Boolean" RefType="out" />
       </Parameters>
       <Docs>
         <param name="messageHeader">使用的訊息的 <see cref="T:System.Threading.Tasks.Dataflow.DataflowMessageHeader" />。</param>
@@ -318,7 +326,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 只有<xref:System.Threading.Tasks.Dataflow.ITargetBlock%601>執行個體連結到這<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601>執行個體使用<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601.ConsumeMessage%2A>，並且它必須只能取用<xref:System.Threading.Tasks.Dataflow.DataflowMessageHeader>先前提供此來源到目標執行個體。  
+ 只有<xref:System.Threading.Tasks.Dataflow.ITargetBlock%601>執行個體連結到這<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601>執行個體可能會使用<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601.ConsumeMessage%2A>，並且它必須只能取用<xref:System.Threading.Tasks.Dataflow.DataflowMessageHeader>先前提供此來源到目標執行個體。  
   
  ]]></format>
         </remarks>
@@ -361,7 +369,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 只<xref:System.Threading.Tasks.Dataflow.ITargetBlock%601>執行個體連結到這<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601>執行個體使用`ReleaseReservation`，並且它必須只能釋放<xref:System.Threading.Tasks.Dataflow.DataflowMessageHeader>目標所保留的先前且已順利執行個體。  
+ 只有<xref:System.Threading.Tasks.Dataflow.ITargetBlock%601>執行個體連結到這<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601>執行個體可能會使用`ReleaseReservation`，它只能用於發行和<xref:System.Threading.Tasks.Dataflow.DataflowMessageHeader>之前，已成功保留目標的執行個體。  
   
  ]]></format>
         </remarks>
@@ -406,11 +414,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 只有<xref:System.Threading.Tasks.Dataflow.ITargetBlock%601>執行個體連結到這<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601>執行個體使用<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601.ReserveMessage%2A>，並且它必須只能保留<xref:System.Threading.Tasks.Dataflow.DataflowMessageHeader>先前提供此來源到目標執行個體。  
+ 只有<xref:System.Threading.Tasks.Dataflow.ITargetBlock%601>執行個體連結到這<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601>執行個體可能會使用<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601.ReserveMessage%2A>，並且它必須只能保留<xref:System.Threading.Tasks.Dataflow.DataflowMessageHeader>先前提供此來源到目標執行個體。  
   
- 如果`true`傳回，則<xref:System.Threading.Tasks.Dataflow.ITargetBlock%601>必須接著呼叫<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601.ConsumeMessage%2A>或<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601.ReleaseReservation%2A>這個訊息。 若要這樣做可能會導致無法傳播到這個或其他目標的任何其他訊息的來源。  
+ 如果`true`會傳回<xref:System.Threading.Tasks.Dataflow.ITargetBlock%601>必須後續呼叫<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601.ConsumeMessage%2A>或<xref:System.Threading.Tasks.Dataflow.ISourceBlock%601.ReleaseReservation%2A>這個訊息。 若要這樣做可能會導致無法傳播至這個或其他目標的任何其他訊息的來源。  
   
- <xref:System.Threading.Tasks.Dataflow.ISourceBlock%601.ReserveMessage%2A> 必須不會呼叫目標所保留的任何內部鎖定時。 這樣會違反鎖定階層以避免資料流程網路中的死結。  
+ <xref:System.Threading.Tasks.Dataflow.ISourceBlock%601.ReserveMessage%2A> 必須不時呼叫的目標持有任何內部的鎖定。 這樣會違反鎖定階層以避免死結的資料流程網路。  
   
  ]]></format>
         </remarks>
@@ -511,7 +519,7 @@
       </ReturnValue>
       <Parameters>
         <Parameter Name="filter" Type="System.Predicate&lt;T&gt;" />
-        <Parameter Name="item" Type="T&amp;" RefType="out" />
+        <Parameter Name="item" Type="T" RefType="out" />
       </Parameters>
       <Docs>
         <param name="filter">述詞的值必須成功傳遞才能讓它接收。  <c>filter</c> 可能是 <see langword="null" />，這種情況下將傳遞所有項目。</param>
@@ -524,7 +532,7 @@
 ## Remarks  
  這個方法不會封鎖等候提供項目來源。  
   
- 它會傳回之後檢查的項目，或有可用的項目。  
+ 它會傳回之後檢查的項目，已使用的項目。  
   
  ]]></format>
         </remarks>

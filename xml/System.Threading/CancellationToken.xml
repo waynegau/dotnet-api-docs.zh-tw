@@ -1,11 +1,11 @@
 <Type Name="CancellationToken" FullName="System.Threading.CancellationToken">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="de6f75d4506356775c02922ff31f88f46d43b9c8" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="aff861d633b172c0996e4351071b31629dbba628" />
+    <Meta Name="ms.sourcegitcommit" Value="d877ae76e9e11799bf919379507239e2c4072742" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36606416" />
+    <Meta Name="ms.lasthandoff" Value="08/09/2018" />
+    <Meta Name="ms.locfileid" Value="39804579" />
   </Metadata>
   <TypeSignature Language="C#" Value="public struct CancellationToken" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit CancellationToken extends System.ValueType" />
@@ -37,11 +37,14 @@
   </Base>
   <Interfaces />
   <Attributes>
-    <Attribute>
+    <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
       <AttributeName>System.Diagnostics.DebuggerDisplay("IsCancellationRequested = {IsCancellationRequested}")</AttributeName>
     </Attribute>
-    <Attribute>
+    <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
       <AttributeName>System.Runtime.InteropServices.ComVisible(false)</AttributeName>
+    </Attribute>
+    <Attribute FrameworkAlternate="netcore-2.1">
+      <AttributeName>System.Runtime.CompilerServices.IsReadOnly</AttributeName>
     </Attribute>
   </Attributes>
   <Docs>
@@ -50,23 +53,23 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- A<xref:System.Threading.CancellationToken>可讓執行緒，執行緒集區工作項目之間的合作式取消或<xref:System.Threading.Tasks.Task>物件。 您建立的取消語彙基元，藉由執行個體化<xref:System.Threading.CancellationTokenSource>從擷取物件，取消語彙基元會管理其<xref:System.Threading.CancellationTokenSource.Token%2A?displayProperty=nameWithType>屬性。 然後，您會傳遞取消語彙基元給任何數目的執行緒、 工作或應該接收取消通知的作業。 語彙基元無法用來初始化取消。 當主控的物件呼叫<xref:System.Threading.CancellationTokenSource.Cancel%2A?displayProperty=nameWithType>、<xref:System.Threading.CancellationToken.IsCancellationRequested%2A>取消語彙基元的每個複本上的屬性設定為`true`。 接收通知的物件可以在適合的任何方式回覆。  
+ A<xref:System.Threading.CancellationToken>可讓執行緒，執行緒集區工作項目之間的合作式取消或<xref:System.Threading.Tasks.Task>物件。 您建立以具現化的取消語彙基元<xref:System.Threading.CancellationTokenSource>物件，用來管理取消語彙基元擷取自其<xref:System.Threading.CancellationTokenSource.Token%2A?displayProperty=nameWithType>屬性。 然後，將取消語彙基元傳遞至任意數目的執行緒、 工作或作業來接收取消通知。 語彙基元無法用以起始取消。 當主控的物件呼叫<xref:System.Threading.CancellationTokenSource.Cancel%2A?displayProperty=nameWithType>，則<xref:System.Threading.CancellationToken.IsCancellationRequested%2A>的取消語彙基元的每個複本上的屬性設定為`true`。 接收通知的物件可以回應適合的方式。  
   
- 如需詳細資訊和程式碼範例，請參閱[Managed 執行緒中的取消](~/docs/standard/threading/cancellation-in-managed-threads.md)。  
+ 如需詳細資訊和程式碼範例，請參閱[受控執行緒中的取消](~/docs/standard/threading/cancellation-in-managed-threads.md)。  
   
    
   
 ## Examples  
- 下列範例會使用隨機號碼產生器，來模擬從 11 個不同的工具讀取 10 的整數值的資料集合應用程式。 值為零表示度量已針對一個檢測，在此情況下應該取消作業和任何整體平均應該計算失敗。  
+ 下列範例會使用亂數產生器，來模擬從 11 個不同的 instruments 讀取 10 的整數值的資料收集應用程式。 值為零表示度量已失敗的一個檢測，要計算在此情況下應該取消作業並沒有整體的平均值。  
   
- 若要處理可能取消作業，此範例會具現化<xref:System.Threading.CancellationTokenSource>物件，會產生傳遞給的取消語彙基元<xref:System.Threading.Tasks.TaskFactory>物件。 <xref:System.Threading.Tasks.TaskFactory>物件接著會傳遞取消語彙基元至每項工作負責收集特定的檢測的讀數。 <xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%60%602%28System.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2CSystem.Func%7BSystem.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2C%60%601%7D%2CSystem.Threading.CancellationToken%29?displayProperty=nameWithType>以確保平均值會計算所有讀數都已經成功之後，才會呼叫方法。 如果工作已不是已取消，因為呼叫<xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%2A?displayProperty=nameWithType>方法會擲回的例外狀況。  
+ 若要處理可能取消作業，此範例會具現化<xref:System.Threading.CancellationTokenSource>物件，產生的取消語彙基元傳遞至<xref:System.Threading.Tasks.TaskFactory>物件。 <xref:System.Threading.Tasks.TaskFactory>物件接著傳遞取消語彙基元給每個工作負責收集特定的檢測的讀數。 <xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%60%602%28System.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2CSystem.Func%7BSystem.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2C%60%601%7D%2CSystem.Threading.CancellationToken%29?displayProperty=nameWithType>以確保平均值會計算所有的讀數蒐集成功之後，才會呼叫方法。 如果工作有不是已被取消，因為呼叫<xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%2A?displayProperty=nameWithType>方法會擲回的例外狀況。  
   
  [!code-csharp[System.Threading.CancellationTokenSource.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.cancellationtokensource.class/cs/cancel1.cs#1)]
  [!code-vb[System.Threading.CancellationTokenSource.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.cancellationtokensource.class/vb/cancel1.vb#1)]  
   
  ]]></format>
     </remarks>
-    <threadsafe>所有的 public 和 protected 成員的<see cref="T:System.Threading.CancellationToken" />是安全執行緒，且可能會從多個執行緒同時使用。</threadsafe>
+    <threadsafe>所有 public 和 protected 成員<see cref="T:System.Threading.CancellationToken" />是安全執行緒，且可能會從多個執行緒同時使用。</threadsafe>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -106,9 +109,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用這個建構函式建立的語彙基元依然會在所指定的已取消狀態`canceled`參數。 如果`canceled`是`false`，這兩個<xref:System.Threading.CancellationToken.CanBeCanceled%2A>和<xref:System.Threading.CancellationToken.IsCancellationRequested%2A>將`false`。  
+ 使用這個建構函式建立的權杖會保留在所指定的已取消狀態`canceled`參數。 如果`canceled`已`false`，這兩個<xref:System.Threading.CancellationToken.CanBeCanceled%2A>並<xref:System.Threading.CancellationToken.IsCancellationRequested%2A>會`false`。  
   
- 如果`canceled`是`true`，這兩個<xref:System.Threading.CancellationToken.CanBeCanceled%2A>和<xref:System.Threading.CancellationToken.IsCancellationRequested%2A>將`true`。  
+ 如果`canceled`已`true`，這兩個<xref:System.Threading.CancellationToken.CanBeCanceled%2A>並<xref:System.Threading.CancellationToken.IsCancellationRequested%2A>會`true`。  
   
  ]]></format>
         </remarks>
@@ -141,6 +144,11 @@
         <AssemblyVersion>4.2.0.0</AssemblyVersion>
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
@@ -151,9 +159,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果<xref:System.Threading.CancellationToken.CanBeCanceled%2A>傳回`false`，這樣會保證，語彙基元將永遠不會轉換為已取消的狀態，表示<xref:System.Threading.CancellationToken.IsCancellationRequested%2A>永遠不會傳回`true`。 無法取消的取消語彙基元所傳回的靜態<xref:System.Threading.CancellationToken.None%2A?displayProperty=nameWithType>屬性。  
+ 如果<xref:System.Threading.CancellationToken.CanBeCanceled%2A>會傳回`false`，並保證，權杖將永遠不會轉換為已取消的狀態，表示<xref:System.Threading.CancellationToken.IsCancellationRequested%2A>永遠不會傳回`true`。 無法取消的取消語彙基元由靜態<xref:System.Threading.CancellationToken.None%2A?displayProperty=nameWithType>屬性。  
   
- 您選擇可以使用這個屬性來判斷是否可以進行的取消語彙基元取消 examing 之前的值<xref:System.Threading.CancellationToken.IsCancellationRequested%2A>屬性來判斷是否已取消。  
+ 您選擇是否可以使用這個屬性來判斷是否可以進行的取消語彙基元 examing 之前，已取消的值<xref:System.Threading.CancellationToken.IsCancellationRequested%2A>屬性來判斷是否已取消。  
   
  ]]></format>
         </remarks>
@@ -210,9 +218,9 @@
           <format type="text/markdown"><![CDATA[  
 ## Remarks  
 
-兩個取消語彙基元是相等，如果任何一個下列條件成立： 
+兩個的取消語彙基元是相等，如果任何下列條件為真： 
 
-- 它們與相同相關聯<xref:System.Threading.CancellationTokenSource>。
+- 與其相關聯的相同<xref:System.Threading.CancellationTokenSource>。
 
 - 兩者都從公用來建構他們<xref:System.Threading.CancellationToken>建構函式，且其<xref:System.Threading.CancellationToken.IsCancellationRequested?displayProperty=nameWithType>值是否相等。
 
@@ -264,9 +272,9 @@
           <format type="text/markdown"><![CDATA[  
 ## Remarks  
 
-兩個取消語彙基元是相等，如果任何一個下列條件成立： 
+兩個的取消語彙基元是相等，如果任何下列條件為真： 
 
-- 它們與相同相關聯<xref:System.Threading.CancellationTokenSource>。
+- 與其相關聯的相同<xref:System.Threading.CancellationTokenSource>。
 
 - 兩者都從公用來建構他們<xref:System.Threading.CancellationToken>建構函式，且其<xref:System.Threading.CancellationToken.IsCancellationRequested?displayProperty=nameWithType>值是否相等。
 
@@ -340,20 +348,25 @@
         <AssemblyVersion>4.2.0.0</AssemblyVersion>
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>取得是否已要求取消這個語彙基元。</summary>
         <value>
-          <see langword="true" /> 如果取消已要求此語彙基元。否則， <see langword="false" />。</value>
+          <see langword="true" /> 取消作業是否已要求此權杖;否則， <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個屬性會指出是否已要求取消這個語彙基元，透過語彙基元已取消的狀態，一開始所建構，或是透過呼叫<xref:System.Threading.CancellationTokenSource.Cancel%2A>上相關聯的權杖的<xref:System.Threading.CancellationTokenSource>。  
+ 這個屬性會指出是否已要求取消這個語彙基元，可透過在已取消狀態中，一開始所建構的語彙基元或呼叫<xref:System.Threading.CancellationTokenSource.Cancel%2A>上的相關聯的語彙基元<xref:System.Threading.CancellationTokenSource>。  
   
- 如果這個屬性是`true`，它只保證已要求取消。 它並不保證每個已註冊的處理常式已完成執行時，也不發出取消要求已完成傳播到所有註冊處理常式。 額外的同步處理可能需要的特別是在情況下，同時取消相關的物件位置。  
+ 如果此屬性為`true`，而只會保證已要求取消。 它並不保證每個已註冊的處理常式已完成執行時，也不取消要求已完成傳播至所有註冊處理常式。 額外的同步處理可能是必要項，特別是在同時取消相關的物件位置的情況。  
   
    
   
@@ -363,9 +376,9 @@
  [!code-csharp[System.Threading.Tasks.CancellationToken.IsCancellationRequested#12](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.Threading.Tasks.CancellationToken.IsCancellationRequested/cs/cancellation.cs#12)]
  [!code-vb[System.Threading.Tasks.CancellationToken.IsCancellationRequested#12](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.Threading.Tasks.CancellationToken.IsCancellationRequested/vb/cancelthreads.vb#12)]  
   
- 此範例會具現化<xref:System.Threading.CancellationTokenSource>物件，用來控制存取權的取消語彙基元。 然後，它會定義兩個執行緒程序。 第一個定義為 lambda 運算式的集區鍵盤，並按下的"C"索引鍵時，會呼叫<xref:System.Threading.CancellationTokenSource.Cancel%2A?displayProperty=nameWithType>設為取消語彙基元已取消的狀態。 第二個是參數化的方法， `ServerClass.StaticMethod`，會執行迴圈，直到<xref:System.Threading.CancellationToken.IsCancellationRequested%2A>屬性是`true`。  
+ 此範例會具現化<xref:System.Threading.CancellationTokenSource>物件，用來控制存取權的取消語彙基元。 然後，它會定義兩個執行緒程序。 第一個定義為 lambda 運算式，集區的鍵盤，然後按下的"C"索引鍵時，呼叫<xref:System.Threading.CancellationTokenSource.Cancel%2A?displayProperty=nameWithType>設定的取消語彙基元已取消的狀態。 第二個是參數化的方法， `ServerClass.StaticMethod`，會執行迴圈，直到<xref:System.Threading.CancellationToken.IsCancellationRequested%2A>屬性是`true`。  
   
- 主執行緒然後啟動區塊與兩個執行緒的執行緒執行，直到`ServerClass.StaticMethod`方法會結束。  
+ 主執行緒然後啟動兩個執行緒和區塊之前執行的執行緒`ServerClass.StaticMethod`方法會結束。  
   
  ]]></format>
         </remarks>
@@ -398,6 +411,11 @@
         <AssemblyVersion>4.2.0.0</AssemblyVersion>
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Threading.CancellationToken</ReturnType>
       </ReturnValue>
@@ -408,11 +426,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 無法取消的取消語彙基元這個屬性所傳回。也就是說，其<xref:System.Threading.CancellationToken.CanBeCanceled%2A>屬性是`false`。  
+ 無法取消的取消語彙基元傳回此屬性;也就是說，其<xref:System.Threading.CancellationToken.CanBeCanceled%2A>屬性是`false`。  
   
  您也可以使用 C# [default(CancellationToken)](~/docs/csharp/language-reference/keywords/default.md)陳述式來建立空的取消語彙基元。 
 
- 兩個空的取消語彙基元永遠相等。
+ 兩個空的取消語彙基元都相等。
   
  ]]></format>
         </remarks>
@@ -461,9 +479,9 @@
           <format type="text/markdown"><![CDATA[  
 ## Remarks  
 
-兩個取消語彙基元是相等，如果任何一個下列條件成立： 
+兩個的取消語彙基元是相等，如果任何下列條件為真： 
 
-- 它們與相同相關聯<xref:System.Threading.CancellationTokenSource>。
+- 與其相關聯的相同<xref:System.Threading.CancellationTokenSource>。
 
 - 兩者都從公用來建構他們<xref:System.Threading.CancellationToken>建構函式，且其<xref:System.Threading.CancellationToken.IsCancellationRequested?displayProperty=nameWithType>值是否相等。
 
@@ -516,7 +534,7 @@
           <format type="text/markdown"><![CDATA[  
 ## Remarks  
 
-相等的定義，請參閱<xref:System.Threading.CancellationToken.Equals%2A>方法。 
+等號比較定義，請參閱<xref:System.Threading.CancellationToken.Equals%2A>方法。 
        ]]></format>
         </remarks>
         <exception cref="T:System.ObjectDisposedException">相關聯的 <see cref="T:System.Threading.CancellationTokenSource" /> 已經過處置。</exception>
@@ -573,9 +591,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果這個語彙基元已取消的狀態，委派將會立即和同步地執行。 委派會產生任何例外狀況會傳播超出這個方法呼叫。  
+ 如果這個語彙基元處於已取消的狀態，委派會立即和同步地執行。 委派會產生任何例外狀況會傳播從這個方法呼叫。  
   
- 目前<xref:System.Threading.ExecutionContext>委派以及擷取，而且會在執行它時使用。 
+ 目前<xref:System.Threading.ExecutionContext>擷取以及委派，而且會在執行它時使用。 
 
  目前<xref:System.Threading.SynchronizationContext>不會擷取。
  
@@ -629,11 +647,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果這個語彙基元已取消的狀態，委派將會立即和同步地執行。 委派會產生任何例外狀況會傳播超出這個方法呼叫。  
+ 如果這個語彙基元處於已取消的狀態，委派會立即和同步地執行。 委派會產生任何例外狀況會傳播從這個方法呼叫。  
   
- 目前<xref:System.Threading.ExecutionContext>委派以及擷取，而且會在執行它時使用。 
+ 目前<xref:System.Threading.ExecutionContext>擷取以及委派，而且會在執行它時使用。 
 
- 如果`useSynchronizationContext`是`true`，目前<xref:System.Threading.SynchronizationContext>，如果其中一個存在，也會擷取與委派一起而且會在執行它時使用。 否則，<xref:System.Threading.SynchronizationContext>不會擷取。
+ 如果`useSynchronizationContext`已`true`，目前<xref:System.Threading.SynchronizationContext>，如果其中一個存在，也會擷取委派以及而且會在執行它時使用。 否則，<xref:System.Threading.SynchronizationContext>不會擷取。
   
  ]]></format>
         </remarks>
@@ -685,9 +703,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果這個語彙基元已取消的狀態，委派將會立即和同步地執行。 委派會產生任何例外狀況會傳播超出這個方法呼叫。  
+ 如果這個語彙基元處於已取消的狀態，委派會立即和同步地執行。 委派會產生任何例外狀況會傳播從這個方法呼叫。  
   
- 目前<xref:System.Threading.ExecutionContext>委派以及擷取，而且會在執行它時使用。 
+ 目前<xref:System.Threading.ExecutionContext>擷取以及委派，而且會在執行它時使用。 
 
  目前<xref:System.Threading.SynchronizationContext>不會擷取。
   
@@ -743,11 +761,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果這個語彙基元已取消的狀態，委派將會立即和同步地執行。 委派會產生任何例外狀況會傳播超出這個方法呼叫。  
+ 如果這個語彙基元處於已取消的狀態，委派會立即和同步地執行。 委派會產生任何例外狀況會傳播從這個方法呼叫。  
   
- 目前<xref:System.Threading.ExecutionContext>委派以及擷取，而且會在執行它時使用。 
+ 目前<xref:System.Threading.ExecutionContext>擷取以及委派，而且會在執行它時使用。 
 
- 如果`useSynchronizationContext`是`true`，目前<xref:System.Threading.SynchronizationContext>，如果其中一個存在，也會擷取與委派一起而且會在執行它時使用。 否則，<xref:System.Threading.SynchronizationContext>不會擷取。
+ 如果`useSynchronizationContext`已`true`，目前<xref:System.Threading.SynchronizationContext>，如果其中一個存在，也會擷取委派以及而且會在執行它時使用。 否則，<xref:System.Threading.SynchronizationContext>不會擷取。
   
  ]]></format>
         </remarks>
@@ -783,6 +801,11 @@
         <AssemblyVersion>4.2.0.0</AssemblyVersion>
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -793,7 +816,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法會提供功能相當於：  
+ 這個方法會提供相當於的功能：  
   
  C#  
   
@@ -851,7 +874,7 @@ End If
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 存取這個屬性會導致<xref:System.Threading.WaitHandle>来具現化。 最好只使用 必要時，這個屬性，以及然後處置相關聯<xref:System.Threading.CancellationTokenSource>儘早 (disposing 來源會處置這個已配置的控制代碼) 的執行個體。 控制代碼不應關閉或處置直接。  
+ 存取這個屬性會導致<xref:System.Threading.WaitHandle>来具現化。 建議您最好只使用如有必要，這個屬性，然後處置相關聯<xref:System.Threading.CancellationTokenSource>儘早 (disposing 來源將會處置此配置的控制代碼) 的執行個體。 控制代碼不應該關閉或直接處置。  
   
  ]]></format>
         </remarks>

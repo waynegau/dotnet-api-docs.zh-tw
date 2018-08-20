@@ -1,10 +1,10 @@
 <Type Name="ArrayPool&lt;T&gt;" FullName="System.Buffers.ArrayPool&lt;T&gt;">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="c365ab2f2412036b41ba89388ab6a1187f6696d2" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.sourcegitcommit" Value="d0bb31ec8354fa58c62c2a646057eec11d3e2150" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/17/2018" />
     <Meta Name="ms.locfileid" Value="36647245" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class ArrayPool&lt;T&gt;" />
@@ -28,14 +28,14 @@
   </Base>
   <Interfaces />
   <Docs>
-    <typeparam name="T">資源集區中的物件類型。</typeparam>
+    <typeparam name="T">資源集區中的物件型別。</typeparam>
     <summary>提供可以重複使用類型 <see cref="T:T[]" /> 執行個體的資源集區。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
   
- 使用<xref:System.Buffers.ArrayPool%601>租用，並傳回緩衝區的類別 (使用<xref:System.Buffers.ArrayPool%601.Rent%2A>和<xref:System.Buffers.ArrayPool%601.Return%2A>方法) 可以改善效能，在其中建立和終結經常陣列的情況下，在記憶體回收的記憶體壓力收集器。
+ 使用<xref:System.Buffers.ArrayPool%601>出租，並傳回緩衝區的類別 (使用<xref:System.Buffers.ArrayPool%601.Rent%2A>和<xref:System.Buffers.ArrayPool%601.Return%2A>方法) 可以改善效能，在其中建立和終結經常陣列的情況下，而導致嚴重的記憶體壓力的記憶體回收收集器。
   
  ]]></format>
     </remarks>
@@ -64,7 +64,7 @@
   
 ## Remarks  
   
-請注意，這個建構函式會保護;只可以呼叫的類別衍生自<xref:System.Buffers.ArrayPool%601>類別。 
+請注意，受到這個建構函式;它只由衍生自的類別呼叫<xref:System.Buffers.ArrayPool%601>類別。 
  ]]></format>
         </remarks>
       </Docs>
@@ -127,7 +127,7 @@
   
 ## Remarks  
   
-執行個體<xref:System.Buffers.ArrayPool%601>這個方法所建立的類別將陣列分組成值區，且沒有執行任何多個`maxArraysPerBucket`中每個貯體，並與那些陣列不超過`maxArrayLength`的長度。
+執行個體<xref:System.Buffers.ArrayPool%601>這個方法所建立的類別將會分組陣列至貯體，含多個`maxArraysPerBucket`中每個貯體，以及與那些陣列未超過`maxArrayLength`的長度。
  ]]></format>
         </remarks>
       </Docs>
@@ -163,7 +163,7 @@
   
 ## Remarks  
 
-這個緩衝區借貸給呼叫者，且傳回相同的集區使用<xref:System.Buffers.ArrayPool%601.Return%2A>方法，所以它可以在後續呼叫重複使用<xref:System.Buffers.ArrayPool%601.Rent%2A>方法。 要傳回租來的緩衝區失敗不是嚴重的錯誤。 不過，它可能會導致降低應用程式效能，因為集區可能需要建立新的緩衝區，以取代遺失的密碼。
+這個緩衝區借貸給呼叫者，應該會返回相同的集區使用<xref:System.Buffers.ArrayPool%601.Return%2A>方法，所以它可以在後續呼叫重複使用<xref:System.Buffers.ArrayPool%601.Rent%2A>方法。 要傳回的出租的緩衝區的失敗不是嚴重的錯誤。 不過，它可能會導致降低的應用程式效能，因為集區可能需要建立新的緩衝區來取代遺失。
  ]]></format>
         </remarks>
       </Docs>
@@ -198,7 +198,7 @@
   
 ## Remarks  
 
-當緩衝區已傳回集區中時，呼叫端就會放棄所有擁有權的緩衝區，而且絕不能使用。 從指定的呼叫傳回參考<xref:System.Buffers.ArrayPool%601.Rent%2A>方法必須只傳回使用<xref:System.Buffers.ArrayPool%601.Return%2A>方法一次。 預設值<xref:System.Buffers.ArrayPool%601>可能會保留傳回的緩衝區租用，才能再試一次，或它可能會發行，傳回的緩衝區如果它由決定集區已經有足夠的緩衝區儲存。
+當緩衝區已傳回集區中時，呼叫端就會放棄所有的擁有權的緩衝區，而且不能使用它。 從指定的呼叫所傳回的參考<xref:System.Buffers.ArrayPool%601.Rent%2A>方法必須只傳回使用<xref:System.Buffers.ArrayPool%601.Return%2A>方法一次。 預設值<xref:System.Buffers.ArrayPool%601>可能保存到傳回的緩衝區上以租用一次，或它可能會釋放傳回的緩衝區如果它由決定集區已經有足夠的緩衝區儲存。
  ]]></format>
         </remarks>
       </Docs>
@@ -229,7 +229,7 @@
   
 ## Remarks  
 
-共用集區提供的預設實作<xref:System.Buffers.ArrayPool%601>適用於一般適用性的類別。 共用的類別會維護多個的大小的陣列，並可能交回比實際要求的大型陣列，但它會永遠不會交回小於所要求的較小的陣列。 租用共用的類別使用的緩衝區<xref:System.Buffers.ArrayPool%601.Rent%2A>方法將會導致正在採取從集區的適當緩衝區使用或在新的緩衝區所配置的一不能使用現有的緩衝區。
+共用的集區提供的預設實作<xref:System.Buffers.ArrayPool%601>類別，以供一般適用性。 共用的類別會維護多個大小的陣列，並可能會交回較大型的陣列不實際要求，但它將永遠不會送回小於所要求的較小的陣列。 從共用的類別使用的緩衝區租借<xref:System.Buffers.ArrayPool%601.Rent%2A>方法將會導致現有的緩衝區，如果適當的緩衝區可供新的緩衝區中如果有一個配置不提供或進行從集區。
  ]]></format>
         </remarks>
       </Docs>

@@ -1,10 +1,10 @@
 <Type Name="SpinWait" FullName="System.Threading.SpinWait">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="f6c385202d641d465586dc3206f02b247b2d6170" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.sourcegitcommit" Value="d0bb31ec8354fa58c62c2a646057eec11d3e2150" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/17/2018" />
     <Meta Name="ms.locfileid" Value="36605795" />
   </Metadata>
   <TypeSignature Language="C#" Value="public struct SpinWait" />
@@ -39,9 +39,9 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Threading.SpinWait> 封裝一般旋轉邏輯。 單一處理器電腦上產生一律會使用而不是忙碌中等候，並在電腦上採用超執行緒技術的 Intel 處理器，很有幫助防止硬體執行緒資源用盡。 SpinWait 封裝良好旋轉，則為 true 而產生的混合。  
+ <xref:System.Threading.SpinWait> 封裝一般轉動式邏輯。 單一處理器電腦上，而不是忙碌中等候，一律使用產生，並在電腦上採用超執行緒技術的 Intel 處理器，很有幫助防止硬體執行緒資源用盡。 SpinWait 封裝良好混用旋轉和產生的則為 true。  
   
- <xref:System.Threading.SpinWait> 是實值類型，這表示低階程式碼可以利用 SpinWait，而不必擔心不必要的配置額外負荷。 SpinWait 不通常適用於一般的應用程式。 在大部分情況下，您應該使用同步類別，.NET Framework 所提供，例如<xref:System.Threading.Monitor>。 微調等候需要的地方，不過，大部分的用途而言<xref:System.Threading.SpinWait>類型應該是慣用透過<xref:System.Threading.Thread.SpinWait%2A>方法。  
+ <xref:System.Threading.SpinWait> 是實值類型，這表示，低層級的程式碼還可以利用 SpinWait 毋需擔心的不必要的配置額外負荷。 SpinWait 不通常適用於一般的應用程式。 在大部分情況下，您應該使用提供.NET Framework 中，這類的同步處理類別<xref:System.Threading.Monitor>。 微調等候需要的地方，不過，大部分用途而言<xref:System.Threading.SpinWait>類型應該是偏好透過<xref:System.Threading.Thread.SpinWait%2A>方法。  
   
    
   
@@ -53,7 +53,7 @@
   
  ]]></format>
     </remarks>
-    <threadsafe>雖然<see cref="T:System.Threading.SpinWait" />是設計用於並行的應用程式中，它不是從多個執行緒同時使用。 <see cref="T:System.Threading.SpinWait" /> 成員不是安全執行緒。 如果必須微調多個執行緒，每個應使用自己的執行個體<see cref="T:System.Threading.SpinWait" />。</threadsafe>
+    <threadsafe>雖然<see cref="T:System.Threading.SpinWait" />是設計成在並行的應用程式，它不是從多個執行緒同時使用。 <see cref="T:System.Threading.SpinWait" /> 成員不是安全執行緒。 如果必須微調多個執行緒，每個應該使用自己的執行個體<see cref="T:System.Threading.SpinWait" />。</threadsafe>
   </Docs>
   <Members>
     <Member MemberName="Count">
@@ -123,7 +123,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 在單一 CPU 的電腦，<xref:System.Threading.SpinWait.SpinOnce%2A>永遠會產生處理器。 在多個 Cpu 的電腦上<xref:System.Threading.SpinWait.SpinOnce%2A>呼叫中未指定的次數之後，可能會產生。  
+ 單一 CPU 的電腦上<xref:System.Threading.SpinWait.SpinOnce%2A>永遠會產生處理器。 使用多個 Cpu 的機器上<xref:System.Threading.SpinWait.SpinOnce%2A>呼叫中未指定的次數之後，可能會產生。  
   
  ]]></format>
         </remarks>
@@ -163,12 +163,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這可讓<xref:System.Threading.SpinWait.SpinOnce%2A>和<xref:System.Threading.SpinWait.NextSpinWillYield%2A>一樣行為沒有呼叫<xref:System.Threading.SpinWait.SpinOnce%2A>此執行個體上發出。 如果<xref:System.Threading.SpinWait>多次重複使用執行個體，可能會重設它，以避免產生太快很有用。  
+ 這可讓<xref:System.Threading.SpinWait.SpinOnce%2A>並<xref:System.Threading.SpinWait.NextSpinWillYield%2A>行為，但沒有呼叫<xref:System.Threading.SpinWait.SpinOnce%2A>已發出這個執行個體上。 如果<xref:System.Threading.SpinWait>多次重複使用執行個體，它可以用來以重設它，以避免產生太快。  
   
    
   
 ## Examples  
- 以下是使用 SpinWait 簡單鎖定釋放堆疊實作中的範例。 （這是只是範例。 如果需要有效率的安全執行緒的堆疊，請考慮使用 ConcurrentStack。）  
+ 以下是簡單的無鎖堆疊實作中使用 SpinWait 的範例。 （這是只是範例。 如果需要有效率的安全執行緒的堆疊，請考慮使用 ConcurrentStack。）  
   
  `// C#`  
   
@@ -346,7 +346,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這通常稱為在迴圈中，並可能會變更的次數為基礎行為<xref:System.Threading.SpinWait.SpinOnce%2A>為止上呼叫這個執行個體。 每個微調導致<xref:System.Threading.Thread.SpinWait%2A>所呼叫方法。 計數會保留的次數<xref:System.Threading.SpinWait.SpinOnce%2A>呼叫時，並會在達到臨界值計數之後,<xref:System.Threading.Thread.Yield%2A>方法呼叫。  
+ 這通常稱為在迴圈中，並可能會變更的次數為基礎行為<xref:System.Threading.SpinWait.SpinOnce%2A>呼叫這個執行個體上為止。 每個微調導致<xref:System.Threading.Thread.SpinWait%2A>所呼叫的方法。 計數會保留的次數<xref:System.Threading.SpinWait.SpinOnce%2A>呼叫時，並達到臨界值計數之後,<xref:System.Threading.Thread.Yield%2A>呼叫方法。  
   
  ]]></format>
         </remarks>
