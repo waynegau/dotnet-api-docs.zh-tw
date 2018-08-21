@@ -1,11 +1,11 @@
 <Type Name="ParallelEnumerable" FullName="System.Linq.ParallelEnumerable">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="2927aed68842ea62e32600ad5483d15dcec54c74" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="531c5f2e3938f566fdcce77e8f362e92063c887e" />
+    <Meta Name="ms.sourcegitcommit" Value="d877ae76e9e11799bf919379507239e2c4072742" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36480053" />
+    <Meta Name="ms.lasthandoff" Value="08/09/2018" />
+    <Meta Name="ms.locfileid" Value="39984801" />
   </Metadata>
   <TypeSignature Language="C#" Value="public static class ParallelEnumerable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit ParallelEnumerable extends System.Object" />
@@ -68,6 +68,11 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>TSource</ReturnType>
       </ReturnValue>
@@ -115,6 +120,11 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>TAccumulate</ReturnType>
       </ReturnValue>
@@ -251,7 +261,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個多載會因平行化的查詢。 平行化的查詢可能會分割成幾個子序列 （資料分割） 資料來源序列。 `updateAccumulatorFunc`資料分割中的每個項目上叫用。 每個資料分割，然後產生單一的累加的結果。 `combineAccumulatorsFunc`然後結果的每個資料分割，以產生單一項目上叫用。 這個項目則轉換的`resultSelector`函式。  
+ 這個多載是特別針對平行查詢。 平行化的查詢可能會將資料來源序列分割成許多子序列 （分割區）。 `updateAccumulatorFunc`資料分割中的每個項目上叫用。 每個分割區，然後產生單一的累計的結果。 `combineAccumulatorsFunc`則會叫用來產生單一項目每個資料分割的結果。 這個項目會接著轉換`resultSelector`函式。  
   
  ]]></format>
         </remarks>
@@ -315,7 +325,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個多載是特定處理平行化的查詢。 平行化的查詢可能會分割成幾個子序列 （資料分割） 資料來源序列。 `updateAccumulatorFunc`資料分割中的每個項目上叫用。 每個資料分割，然後產生單一的累加的結果。 `combineAccumulatorsFunc`然後結果的每個資料分割，以產生單一項目上叫用。 這個項目則轉換的`resultSelector`函式。  
+ 這個多載會處理平行的查詢的特定項目。 平行化的查詢可能會將資料來源序列分割成許多子序列 （分割區）。 `updateAccumulatorFunc`資料分割中的每個項目上叫用。 每個分割區，然後產生單一的累計的結果。 `combineAccumulatorsFunc`則會叫用來產生單一項目每個資料分割的結果。 這個項目會接著轉換`resultSelector`函式。  
   
  ]]></format>
         </remarks>
@@ -360,7 +370,7 @@
         <Parameter Name="predicate" Type="System.Func&lt;TSource,System.Boolean&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要對其中項目套用述詞的序列。</param>
         <param name="predicate">用來測試每個項目是否符合條件的函式。</param>
         <summary>以平行方式判斷序列的所有項目是否都滿足條件。</summary>
@@ -414,7 +424,7 @@
         <Parameter Name="source" Type="System.Linq.ParallelQuery&lt;TSource&gt;" RefType="this" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要檢查是否為空的序列。</param>
         <summary>判斷平行序列是否包含任何項目。</summary>
         <returns>如果來源序列包含任何項目則為 true，否則為 false。</returns>
@@ -422,7 +432,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法多載，任何會導致完整緩衝處理的合併，以傳回結果之前執行。 合併行為可以會影響效能或記憶體不足例外狀況會導致大型的可列舉值。 若要避免合併行為，使用任何參數的函式多載，或是使用例如 FirstOrDefault 替代方法。  
+ 任何一個方法的這個多載會導致完整緩衝處理的合併，以傳回結果之前執行。 合併行為可以會影響效能或記憶體不足例外狀況會導致大型的可列舉值。 若要避免合併行為，使用任何參數的函式多載，或是使用例如 FirstOrDefault 替代方法。  
   
  ]]></format>
         </remarks>
@@ -465,7 +475,7 @@
         <Parameter Name="predicate" Type="System.Func&lt;TSource,System.Boolean&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">將對其中項目套用述詞的序列。</param>
         <param name="predicate">用來測試每個項目是否符合條件的函式。</param>
         <summary>以平行方式判斷是否有任何序列項目滿足條件。</summary>
@@ -499,6 +509,11 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Collections.Generic.IEnumerable&lt;TSource&gt;</ReturnType>
       </ReturnValue>
@@ -554,7 +569,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 效能與保留在平行處理的順序之間不存在的自然的張力。 根據預設，平行化的查詢就如同除非 AsOrdered 套用，或在查詢中沒有明確的 OrderBy 運算子結果的順序是任意的。 如需詳細資訊，請參閱 [PLINQ 中的順序保留](~/docs/standard/parallel-programming/order-preservation-in-plinq.md)。  
+ 自然的張力之間存在效能維持在平行處理的順序。 根據預設，平行化的查詢運作，除非只有套用，或在查詢中沒有明確的 OrderBy 運算子結果的順序是任意的。 如需詳細資訊，請參閱 [PLINQ 中的順序保留](~/docs/standard/parallel-programming/order-preservation-in-plinq.md)。  
   
  ]]></format>
         </remarks>
@@ -595,7 +610,7 @@
         <Parameter Name="source" Type="System.Linq.ParallelQuery&lt;TSource&gt;" RefType="this" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">輸入序列。</param>
         <summary>覆寫未排序的預設值，將資料來源當做已排序來處理。 只有在由 AsParallel、ParallelEnumerable.Range 和 ParallelEnumerable.Repeat 傳回的泛型序列上，才可叫用 AsOrdered。</summary>
         <returns>將維持後續查詢運算子內原始順序的來源序列。</returns>
@@ -603,7 +618,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 效能與保留在平行處理的順序之間不存在的自然的張力。 根據預設，平行化的查詢就如同除非 AsOrdered 套用，或在查詢中沒有明確的 OrderBy 運算子結果的順序是任意的。 如需詳細資訊，請參閱 [PLINQ 中的順序保留](~/docs/standard/parallel-programming/order-preservation-in-plinq.md)。  
+ 自然的張力之間存在效能維持在平行處理的順序。 根據預設，平行化的查詢運作，除非只有套用，或在查詢中沒有明確的 OrderBy 運算子結果的順序是任意的。 如需詳細資訊，請參閱 [PLINQ 中的順序保留](~/docs/standard/parallel-programming/order-preservation-in-plinq.md)。  
   
  ]]></format>
         </remarks>
@@ -623,7 +638,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法會將查詢繫結至 PLINQ。 如需詳細資訊，請參閱 [Parallel LINQ (PLINQ)](~/docs/standard/parallel-programming/parallel-linq-plinq.md)。  
+ 這個方法會將查詢繫結到 PLINQ。 如需詳細資訊，請參閱 [Parallel LINQ (PLINQ)](~/docs/standard/parallel-programming/parallel-linq-plinq.md)。  
   
  ]]></format>
         </remarks>
@@ -666,7 +681,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Linq.ParallelEnumerable.Cast%2A>運算子可用來將 ParallelQuery 轉換成 ParallelQuery(T)。  
+ <xref:System.Linq.ParallelEnumerable.Cast%2A>運算子可以用來轉換 ParallelQuery(T) ParallelQuery。  
   
  ]]></format>
         </remarks>
@@ -706,7 +721,7 @@
         <Parameter Name="source" Type="System.Collections.Concurrent.Partitioner&lt;TSource&gt;" RefType="this" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">輸入序列的 Partitioner。</param>
         <summary>啟用查詢的平行化作業，此時則指定負責將輸入序列分成多個分割的自訂 Partitioner 處理來源。</summary>
         <returns>當 ParallelQuery 繫結到 ParallelEnumerable 擴充方法時的 <paramref name="source" />。</returns>
@@ -714,7 +729,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 來源 partitioner 的 GetOrderedPartitions 排序時，方法使用已啟用，而如果排序不是，則會使用的 partitioner GetPartitions 啟用 （預設值）。 不會使用來源 partitioner 的 GetDynamicPartitions 和 GetDynamicOrderedPartitions。 如需詳細資訊和範例，請參閱[PLINQ 和 TPL 的自訂 Partitioner](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md)。  
+ 來源的 partitioner GetOrderedPartitions 排序時，方法使用已啟用，而如果不排序，則用 partitioner GetPartitions 啟用 （預設值）。 不會使用來源的 partitioner GetDynamicPartitions 和 GetDynamicOrderedPartitions。 如需詳細資訊和範例，請參閱 < [PLINQ 和 TPL 的自訂 Partitioner](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md)。  
   
  ]]></format>
         </remarks>
@@ -754,7 +769,7 @@
         <Parameter Name="source" Type="System.Collections.Generic.IEnumerable&lt;TSource&gt;" RefType="this" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">
           <see cref="T:System.Collections.Generic.IEnumerable`1" />，要轉換成 <see cref="T:System.Linq.ParallelQuery`1" />。</param>
         <summary>啟用查詢的平行化作業。</summary>
@@ -796,7 +811,7 @@
         <Parameter Name="source" Type="System.Linq.ParallelQuery&lt;TSource&gt;" RefType="this" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">
           <see cref="T:System.Linq.ParallelQuery`1" />，要轉換成 <see cref="T:System.Collections.Generic.IEnumerable`1" />。</param>
         <summary>將 <see cref="T:System.Linq.ParallelQuery`1" /> 轉換為 <see cref="T:System.Collections.Generic.IEnumerable`1" />，以便強制進行查詢的循序評估。</summary>
@@ -805,7 +820,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如需詳細資訊，請參閱[PLINQ 中的順序保留](~/docs/standard/parallel-programming/order-preservation-in-plinq.md)和[如何： 控制 PLINQ 查詢中所訂購](~/docs/standard/parallel-programming/how-to-control-ordering-in-a-plinq-query.md)。  
+ 如需詳細資訊，請參閱 < [PLINQ 中的順序保留](~/docs/standard/parallel-programming/order-preservation-in-plinq.md)並[如何： 控制 PLINQ 查詢中的順序](~/docs/standard/parallel-programming/how-to-control-ordering-in-a-plinq-query.md)。  
   
  ]]></format>
         </remarks>
@@ -845,7 +860,7 @@
         <Parameter Name="source" Type="System.Linq.ParallelQuery&lt;TSource&gt;" RefType="this" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">輸入序列。</param>
         <summary>允許將中繼查詢當做項目之中未套用順序的方式來進行處理。</summary>
         <returns>具有任意順序的來源序列。</returns>
@@ -853,7 +868,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- AsUnordered 查詢部分中不需要排序時，可能會提供效能優勢。 根據預設，PLINQ 視為序列之輸入的序列排序除非已指定 OrderBy 或 AsOrdered。 不過，如果排序已開啟且不再需要然後 AsUnordered 可用來在中間的查詢中，將它關閉，這可能會導致效能優勢。AsUnordered 運算子本身隨機來源序列中，未執行它只會移除對於後續運算子順序的需求。 如果來源經過排序，後續的運算子可能會保留該順序，如果是更有效率，若要這樣做。 AsUnordered 時，才能呼叫任何位置查詢。不需要在 AsParallel 之後立即呼叫。 如需詳細資訊，請參閱[PLINQ 中的了解加速](~/docs/standard/parallel-programming/understanding-speedup-in-plinq.md)和[PLINQ 中的順序保留](~/docs/standard/parallel-programming/order-preservation-in-plinq.md)。  
+ AsUnordered 順序不一定要在查詢的一部分時，可能會提供效能優勢。 根據預設，PLINQ 視為輸入的序列未排序除非在指定的排序方式] 或 [AsOrdered。 不過，如果排序已開啟，而且不再需要然後 AsUnordered 可用來在中間的查詢中，將它關閉，而且這可能會導致效能優勢。AsUnordered 運算子本身隨機來源序列中，不執行它只會移除後續運算子的順序需求。 如果來源經過排序，後續的運算子可能會保留該順序，如果是更有效率，若要這樣做。 可以任何位置呼叫 AsUnordered，在查詢中;它不需要呼叫 AsParallel 的後面。 如需詳細資訊，請參閱 <<c0> [ 認識 PLINQ 中的加速](~/docs/standard/parallel-programming/understanding-speedup-in-plinq.md)並[PLINQ 中的順序保留](~/docs/standard/parallel-programming/order-preservation-in-plinq.md)。  
   
  ]]></format>
         </remarks>
@@ -1313,7 +1328,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Decimal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">用來計算平均值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的平均值。</summary>
@@ -1361,7 +1376,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Double&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">用來計算平均值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的平均值。</summary>
@@ -1409,7 +1424,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Int32&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">用來計算平均值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的平均值。</summary>
@@ -1457,7 +1472,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Int64&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">用來計算平均值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的平均值。</summary>
@@ -1505,7 +1520,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Decimal&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">用來計算平均值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的平均值。</summary>
@@ -1553,7 +1568,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Double&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">用來計算平均值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的平均值。</summary>
@@ -1601,7 +1616,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Int32&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">用來計算平均值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的平均值。</summary>
@@ -1649,7 +1664,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Int64&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">用來計算平均值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的平均值。</summary>
@@ -1697,7 +1712,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Single&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">用來計算平均值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的平均值。</summary>
@@ -1745,7 +1760,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Single&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">用來計算平均值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的平均值。</summary>
@@ -1792,7 +1807,7 @@
         <Parameter Name="source" Type="System.Linq.ParallelQuery" RefType="this" />
       </Parameters>
       <Docs>
-        <typeparam name="TResult">要轉換的項目型別<c>來源</c>至。</typeparam>
+        <typeparam name="TResult">要轉換的項目型別<c>來源</c>到。</typeparam>
         <param name="source">序列，包含要轉換的項目。</param>
         <summary>將 ParallelQuery 的項目轉換為指定的類型。</summary>
         <returns>序列，包含已轉換成指定之類型的每個來源序列項目。</returns>
@@ -1835,7 +1850,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Obsolete("The second data source of a binary operator must be of type System.Linq.ParallelQuery&lt;T&gt; rather than System.Collections.Generic.IEnumerable&lt;T&gt;. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery&lt;T&gt;.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -1859,7 +1874,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個多載存在不允許使用 Concat 左邊的資料來源類型為<xref:System.Linq.ParallelQuery%601>和正確的資料來源類型的<xref:System.Collections.Generic.IEnumerable%601>。 否則，Concat 運算子看起來會繫結至平行實作中，但會事實上繫結至循序實作。  
+ 這個多載存在不允許使用 Concat 與左側的資料來源的型別<xref:System.Linq.ParallelQuery%601>和正確的資料來源的型別<xref:System.Collections.Generic.IEnumerable%601>。 否則 Concat 運算子似乎繫結至平行實作中，但會事實上繫結到循序實作。  
   
  ]]></format>
         </remarks>
@@ -1941,6 +1956,11 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
@@ -1952,7 +1972,7 @@
         <Parameter Name="value" Type="TSource" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要在其中尋找值的序列。</param>
         <param name="value">要在序列中尋找的值。</param>
         <summary>使用預設等號比較子來比較值，以平行方式來判斷序列是否包含指定的項目。</summary>
@@ -1998,7 +2018,7 @@
         <Parameter Name="comparer" Type="System.Collections.Generic.IEqualityComparer&lt;TSource&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要在其中尋找值的序列。</param>
         <param name="value">要在序列中尋找的值。</param>
         <param name="comparer">用來比較值的相等比較子。</param>
@@ -2239,6 +2259,11 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Linq.ParallelQuery&lt;TSource&gt;</ReturnType>
       </ReturnValue>
@@ -2465,7 +2490,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Obsolete("The second data source of a binary operator must be of type System.Linq.ParallelQuery&lt;T&gt; rather than System.Collections.Generic.IEnumerable&lt;T&gt;. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery&lt;T&gt;.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -2489,7 +2514,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不允許的使用方式的這個多載存在左邊的資料來源類型為 Except<xref:System.Linq.ParallelQuery%601>和正確的資料來源類型的<xref:System.Collections.Generic.IEnumerable%601>。 否則，Except 運算子看起來會繫結至平行實作中，但會事實上繫結至循序實作。  
+ 這個多載存在不允許使用左邊的資料來源類型為 Except<xref:System.Linq.ParallelQuery%601>和正確的資料來源的型別<xref:System.Collections.Generic.IEnumerable%601>。 否則 Except 運算子似乎繫結至平行實作中，但會事實上繫結到循序實作。  
   
  ]]></format>
         </remarks>
@@ -2518,6 +2543,11 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Linq.ParallelQuery&lt;TSource&gt;</ReturnType>
       </ReturnValue>
@@ -2564,7 +2594,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Obsolete("The second data source of a binary operator must be of type System.Linq.ParallelQuery&lt;T&gt; rather than System.Collections.Generic.IEnumerable&lt;T&gt;. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery&lt;T&gt;.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -2590,7 +2620,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 不允許的使用方式的這個多載存在左邊的資料來源類型為 Except<xref:System.Linq.ParallelQuery%601>和正確的資料來源類型的<xref:System.Collections.Generic.IEnumerable%601>。 否則，Except 運算子看起來會繫結至平行實作中，但會事實上繫結至循序實作。  
+ 這個多載存在不允許使用左邊的資料來源類型為 Except<xref:System.Linq.ParallelQuery%601>和正確的資料來源的型別<xref:System.Collections.Generic.IEnumerable%601>。 否則 Except 運算子似乎繫結至平行實作中，但會事實上繫結到循序實作。  
   
  ]]></format>
         </remarks>
@@ -2905,7 +2935,7 @@
         <Parameter Name="action" Type="System.Action&lt;TSource&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">
           <see cref="T:System.Linq.ParallelQuery`1" />，<c>action</c> 會處理其項目。</param>
         <param name="action">要在每個項目上叫用的動作。</param>
@@ -2914,7 +2944,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這是有效的方式來處理平行化查詢的輸出，因為它不需要結束 [合併] 步驟。 如需詳細資訊，請參閱[PLINQ 中的合併選項](~/docs/standard/parallel-programming/merge-options-in-plinq.md)或[PLINQ 中的順序保留](~/docs/standard/parallel-programming/order-preservation-in-plinq.md)。 這個方法會產生副作用，因為它可用來觀察實際執行平行查詢中的順序。  
+ 這是有效的方式來處理平行查詢的輸出，因為它不需要在結束合併步驟。 如需詳細資訊，請參閱 < [PLINQ 中的合併選項](~/docs/standard/parallel-programming/merge-options-in-plinq.md)或是[PLINQ 中的順序保留](~/docs/standard/parallel-programming/order-preservation-in-plinq.md)。 這個方法會產生副作用，因為它可用來觀察平行查詢執行的實際順序。  
   
  ]]></format>
         </remarks>
@@ -2956,6 +2986,11 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Linq.ParallelQuery&lt;System.Linq.IGrouping&lt;TKey,TSource&gt;&gt;</ReturnType>
       </ReturnValue>
@@ -2968,8 +3003,8 @@
         <Parameter Name="keySelector" Type="System.Func&lt;TSource,TKey&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <param name="source">包含要排序之項目的 OrderedParallelQuery{TSource}。</param>
         <param name="keySelector">用來從項目擷取索引鍵的函式。</param>
         <summary>依據指定的索引鍵選取器函式，以平行方式來分組序列的項目。</summary>
@@ -3016,8 +3051,8 @@
         <Parameter Name="comparer" Type="System.Collections.Generic.IEqualityComparer&lt;TKey&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>&gt;。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>&gt;。</typeparam>
         <param name="source">包含要排序之項目的 <see cref="T:System.Linq.OrderedParallelQuery`1" />。</param>
         <param name="keySelector">用來從項目擷取索引鍵的函式。</param>
         <param name="comparer">用來比較金鑰的 <see cref="T:System.Collections.Generic.IComparer`1" />。</param>
@@ -3052,6 +3087,11 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Linq.ParallelQuery&lt;System.Linq.IGrouping&lt;TKey,TElement&gt;&gt;</ReturnType>
       </ReturnValue>
@@ -3066,8 +3106,8 @@
         <Parameter Name="elementSelector" Type="System.Func&lt;TSource,TElement&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <typeparam name="TElement">
           <see cref="T:System.Linq.IGrouping`2" /> 中的項目類型。</typeparam>
         <param name="source">包含要排序之項目的 <see cref="T:System.Linq.OrderedParallelQuery`1" />。</param>
@@ -3119,8 +3159,8 @@
         <Parameter Name="comparer" Type="System.Collections.Generic.IEqualityComparer&lt;TKey&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <typeparam name="TElement">IGrouping 中項目的類型</typeparam>
         <param name="source">包含要排序之項目的 OrderedParallelQuery{TSource}。</param>
         <param name="keySelector">用來從項目擷取索引鍵的函式。</param>
@@ -3172,8 +3212,8 @@
       </Parameters>
       <Docs>
         <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
-        <typeparam name="TResult">所傳回的結果值的型別<c>resultSelector</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
+        <typeparam name="TResult">所傳回之結果值的型別<c>resultSelector</c>。</typeparam>
         <param name="source">其中的項目要進行分組的序列。</param>
         <param name="keySelector">用來擷取各項目之索引鍵的函式。</param>
         <param name="resultSelector">用來從各個群組建立結果值的函式。</param>
@@ -3225,8 +3265,8 @@
       </Parameters>
       <Docs>
         <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
-        <typeparam name="TResult">所傳回的結果值的型別<c>resultSelector</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
+        <typeparam name="TResult">所傳回之結果值的型別<c>resultSelector</c>。</typeparam>
         <param name="source">其中的項目要進行分組的序列。</param>
         <param name="keySelector">用來擷取各項目之索引鍵的函式。</param>
         <param name="resultSelector">用來從各個群組建立結果值的函式。</param>
@@ -3279,9 +3319,9 @@
       </Parameters>
       <Docs>
         <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <typeparam name="TElement">每個 IGrouping{TKey, TElement} 中項目的類型。</typeparam>
-        <typeparam name="TResult">所傳回的結果值的型別<c>resultSelector</c>。</typeparam>
+        <typeparam name="TResult">所傳回之結果值的型別<c>resultSelector</c>。</typeparam>
         <param name="source">其中的項目要進行分組的序列。</param>
         <param name="keySelector">用來擷取各項目之索引鍵的函式。</param>
         <param name="elementSelector">函式，用來將每個來源項目對應至 IGrouping&lt;TKey, TElement&gt; 的項目。</param>
@@ -3336,9 +3376,9 @@
       </Parameters>
       <Docs>
         <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <typeparam name="TElement">每個 IGrouping{TKey, TElement} 中項目的類型。</typeparam>
-        <typeparam name="TResult">所傳回的結果值的型別<c>resultSelector</c>。</typeparam>
+        <typeparam name="TResult">所傳回之結果值的型別<c>resultSelector</c>。</typeparam>
         <param name="source">其中的項目要進行分組的序列。</param>
         <param name="keySelector">用來擷取各項目之索引鍵的函式。</param>
         <param name="elementSelector">函式，用來將每個來源項目對應至 IGrouping{Key, TElement} 的項目。</param>
@@ -3387,7 +3427,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Obsolete("The second data source of a binary operator must be of type System.Linq.ParallelQuery&lt;T&gt; rather than System.Collections.Generic.IEnumerable&lt;T&gt;. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery&lt;T&gt;.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -3423,7 +3463,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個多載存在不允許使用 GroupJoin 左邊的資料來源類型為<xref:System.Linq.ParallelQuery%601>和正確的資料來源類型的<xref:System.Collections.Generic.IEnumerable%601>。 否則，GroupJoin 運算子看起來會繫結至平行實作中，但會事實上繫結至循序實作。  
+ 不允許使用 GroupJoin 左邊的資料來源類型為存在的這個多載<xref:System.Linq.ParallelQuery%601>和正確的資料來源的型別<xref:System.Collections.Generic.IEnumerable%601>。 否則 GroupJoin 運算子似乎繫結至平行實作中，但會事實上繫結到循序實作。  
   
  ]]></format>
         </remarks>
@@ -3455,6 +3495,11 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Linq.ParallelQuery&lt;TResult&gt;</ReturnType>
       </ReturnValue>
@@ -3513,7 +3558,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Obsolete("The second data source of a binary operator must be of type System.Linq.ParallelQuery&lt;T&gt; rather than System.Collections.Generic.IEnumerable&lt;T&gt;. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery&lt;T&gt;.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -3551,7 +3596,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個多載存在不允許使用 GroupJoin 左邊的資料來源類型為<xref:System.Linq.ParallelQuery%601>和正確的資料來源類型的<xref:System.Collections.Generic.IEnumerable%601>。 否則，GroupJoin 運算子看起來會繫結至平行實作中，但會事實上繫結至循序實作。  
+ 不允許使用 GroupJoin 左邊的資料來源類型為存在的這個多載<xref:System.Linq.ParallelQuery%601>和正確的資料來源的型別<xref:System.Collections.Generic.IEnumerable%601>。 否則 GroupJoin 運算子似乎繫結至平行實作中，但會事實上繫結到循序實作。  
   
  ]]></format>
         </remarks>
@@ -3650,7 +3695,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Obsolete("The second data source of a binary operator must be of type System.Linq.ParallelQuery&lt;T&gt; rather than System.Collections.Generic.IEnumerable&lt;T&gt;. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery&lt;T&gt;.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -3674,7 +3719,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個多載存在不允許使用左的資料來源類型為 Intersect<xref:System.Linq.ParallelQuery%601>和正確的資料來源類型的<xref:System.Collections.Generic.IEnumerable%601>。 否則，Intersect 運算子看起來會繫結至平行實作中，但會事實上繫結至循序實作。  
+ 這個多載存在不允許使用左邊的資料來源類型為 Intersect<xref:System.Linq.ParallelQuery%601>和正確的資料來源的型別<xref:System.Collections.Generic.IEnumerable%601>。 否則 Intersect 運算子似乎繫結至平行實作中，但會事實上繫結到循序實作。  
   
  ]]></format>
         </remarks>
@@ -3703,6 +3748,11 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Linq.ParallelQuery&lt;TSource&gt;</ReturnType>
       </ReturnValue>
@@ -3749,7 +3799,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Obsolete("The second data source of a binary operator must be of type System.Linq.ParallelQuery&lt;T&gt; rather than System.Collections.Generic.IEnumerable&lt;T&gt;. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery&lt;T&gt;.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -3775,7 +3825,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個多載存在不允許使用左的資料來源類型為 Intersect<xref:System.Linq.ParallelQuery%601>和正確的資料來源類型的<xref:System.Collections.Generic.IEnumerable%601>。 否則，Intersect 運算子看起來會繫結至平行實作中，但會事實上繫結至循序實作。  
+ 這個多載存在不允許使用左邊的資料來源類型為 Intersect<xref:System.Linq.ParallelQuery%601>和正確的資料來源的型別<xref:System.Collections.Generic.IEnumerable%601>。 否則 Intersect 運算子似乎繫結至平行實作中，但會事實上繫結到循序實作。  
   
  ]]></format>
         </remarks>
@@ -3862,7 +3912,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Obsolete("The second data source of a binary operator must be of type System.Linq.ParallelQuery&lt;T&gt; rather than System.Collections.Generic.IEnumerable&lt;T&gt;. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery&lt;T&gt;.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -3898,7 +3948,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個多載存在不允許使用聯結左邊的資料來源類型為<xref:System.Linq.ParallelQuery%601>和正確的資料來源類型的<xref:System.Collections.Generic.IEnumerable%601>。 否則，聯結運算子會顯示繫結至平行實作中，但會事實上繫結至循序實作。  
+ 這個多載存在不允許使用聯結左側的資料來源的型別<xref:System.Linq.ParallelQuery%601>和正確的資料來源的型別<xref:System.Collections.Generic.IEnumerable%601>。 否則為聯結運算子來繫結至平行實作中，會出現，但會實際上繫結到循序實作。  
   
  ]]></format>
         </remarks>
@@ -3930,6 +3980,11 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Linq.ParallelQuery&lt;TResult&gt;</ReturnType>
       </ReturnValue>
@@ -3988,7 +4043,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Obsolete("The second data source of a binary operator must be of type System.Linq.ParallelQuery&lt;T&gt; rather than System.Collections.Generic.IEnumerable&lt;T&gt;. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery&lt;T&gt;.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -4026,7 +4081,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個多載存在不允許使用聯結左邊的資料來源類型為<xref:System.Linq.ParallelQuery%601>和正確的資料來源類型的<xref:System.Collections.Generic.IEnumerable%601>。 否則，聯結運算子會顯示繫結至平行實作中，但會事實上繫結至循序實作。  
+ 這個多載存在不允許的聯結的使用方式，與左側的資料來源的型別<xref:System.Linq.ParallelQuery%601>和正確的資料來源的型別<xref:System.Collections.Generic.IEnumerable%601>。 否則為聯結運算子來繫結至平行實作中，會出現，但會實際上繫結到循序實作。  
   
  ]]></format>
         </remarks>
@@ -4918,7 +4973,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Decimal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最大值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最大值。</summary>
@@ -4965,7 +5020,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Double&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最大值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最大值。</summary>
@@ -5012,7 +5067,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Int32&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最大值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最大值。</summary>
@@ -5059,7 +5114,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Int64&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最大值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最大值。</summary>
@@ -5106,7 +5161,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Decimal&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最大值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最大值。</summary>
@@ -5153,7 +5208,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Double&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最大值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最大值。</summary>
@@ -5200,7 +5255,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Int32&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最大值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最大值。</summary>
@@ -5247,7 +5302,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Int64&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最大值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最大值。</summary>
@@ -5294,7 +5349,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Single&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最大值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最大值。</summary>
@@ -5341,7 +5396,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Single&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最大值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最大值。</summary>
@@ -5389,7 +5444,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,TResult&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <typeparam name="TResult">傳回值的型別<c>選取器</c>。</typeparam>
         <param name="source">要判斷最大值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
@@ -5856,7 +5911,7 @@
         <Parameter Name="source" Type="System.Linq.ParallelQuery&lt;TSource&gt;" RefType="this" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最小值的值序列。</param>
         <summary>傳回平行值序列中的最小值。</summary>
         <returns>序列中的最小值。</returns>
@@ -5902,7 +5957,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Decimal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最小值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最小值。</summary>
@@ -5949,7 +6004,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Double&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最小值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最小值。</summary>
@@ -5996,7 +6051,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Int32&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最小值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最小值。</summary>
@@ -6043,7 +6098,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Int64&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最小值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最小值。</summary>
@@ -6090,7 +6145,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Decimal&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最小值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最小值。</summary>
@@ -6137,7 +6192,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Double&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最小值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最小值。</summary>
@@ -6184,7 +6239,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Int32&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最小值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最小值。</summary>
@@ -6231,7 +6286,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Int64&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最小值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最小值。</summary>
@@ -6278,7 +6333,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Single&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最小值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最小值。</summary>
@@ -6325,7 +6380,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Single&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要判斷最小值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>在序列的每個項目上同時叫用轉換函式，並傳回最小值。</summary>
@@ -6373,7 +6428,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,TResult&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <typeparam name="TResult">傳回值的型別<c>選取器</c>。</typeparam>
         <param name="source">要判斷最小值的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
@@ -6475,8 +6530,8 @@
         <Parameter Name="keySelector" Type="System.Func&lt;TSource,TKey&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <param name="source">要排序的值序列。</param>
         <param name="keySelector">用來從項目擷取索引鍵的函式。</param>
         <summary>依據索引鍵，以平行方式來排序按遞增順序之序列中的項目。</summary>
@@ -6485,7 +6540,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 相較於循序實作，這不是穩定的排序。 若要達到穩定的排序，變更形式的查詢： 已排序的 var = 來源。Select((e,i) = > new {E = e、 I = i})。OrderBy((v) = > v.e)。ThenBy (v = > v.i)。Select((v) = > v.e);  
+ 相較於循序實作中，這不是穩定的排序。 若要達到穩定的排序，變更 形式的查詢： 已排序的 var = 來源。Select((e,i) = > 新的 {E = e、 I = i})。OrderBy((v) = > v.e)。ThenBy (v = > v.i)。Select((v) = > v.e);  
   
  ]]></format>
         </remarks>
@@ -6530,8 +6585,8 @@
         <Parameter Name="comparer" Type="System.Collections.Generic.IComparer&lt;TKey&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <param name="source">要排序的值序列。</param>
         <param name="keySelector">用來從項目擷取索引鍵的函式。</param>
         <param name="comparer">用來比較索引鍵的 IComparer{TKey}。</param>
@@ -6541,7 +6596,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 相較於循序實作，這不是穩定的排序。 請參閱備註<xref:System.Linq.ParallelEnumerable.OrderBy%2A>如實作穩定的排序方法。  
+ 相較於循序實作中，這不是穩定的排序。 請參閱的 < 備註 ><xref:System.Linq.ParallelEnumerable.OrderBy%2A>實作穩定的排序方法。  
   
  ]]></format>
         </remarks>
@@ -6595,8 +6650,8 @@
         <Parameter Name="keySelector" Type="System.Func&lt;TSource,TKey&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <param name="source">要排序的值序列。</param>
         <param name="keySelector">用來從項目擷取索引鍵的函式。</param>
         <summary>依據索引鍵，以平行方式來排序按遞減順序之序列中的項目。</summary>
@@ -6605,7 +6660,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 相較於循序實作，這不是穩定的排序。 請參閱備註<xref:System.Linq.ParallelEnumerable.OrderBy%2A>如實作穩定的排序方法。  
+ 相較於循序實作中，這不是穩定的排序。 請參閱的 < 備註 ><xref:System.Linq.ParallelEnumerable.OrderBy%2A>實作穩定的排序方法。  
   
  ]]></format>
         </remarks>
@@ -6650,8 +6705,8 @@
         <Parameter Name="comparer" Type="System.Collections.Generic.IComparer&lt;TKey&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <param name="source">要排序的值序列。</param>
         <param name="keySelector">用來從項目擷取索引鍵的函式。</param>
         <param name="comparer">用來比較索引鍵的 IComparer{TKey}。</param>
@@ -6661,7 +6716,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 相較於循序實作，這不是穩定的排序。 請參閱備註<xref:System.Linq.ParallelEnumerable.OrderBy%2A>如實作穩定的排序方法。  
+ 相較於循序實作中，這不是穩定的排序。 請參閱的 < 備註 ><xref:System.Linq.ParallelEnumerable.OrderBy%2A>實作穩定的排序方法。  
   
  ]]></format>
         </remarks>
@@ -6945,7 +7000,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Collections.Generic.IEnumerable&lt;TResult&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <typeparam name="TResult">由選取器傳回之序列項目的類型。</typeparam>
         <param name="source">要投影的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
@@ -6992,7 +7047,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Int32,System.Collections.Generic.IEnumerable&lt;TResult&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <typeparam name="TResult">由選取器傳回之序列項目的類型。</typeparam>
         <param name="source">要投影的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
@@ -7042,8 +7097,8 @@
         <Parameter Name="resultSelector" Type="System.Func&lt;TSource,TCollection,TResult&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">所收集的中繼項目類型<c>collectionSelector</c>。</typeparam>
-        <typeparam name="TCollection">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">所收集之中繼項目的型別<c>collectionSelector</c>。</typeparam>
+        <typeparam name="TCollection">元素的型別<c>來源</c>。</typeparam>
         <typeparam name="TResult">結果序列中之項目的類型。</typeparam>
         <param name="source">要投影的值序列。</param>
         <param name="collectionSelector">要套用到每個來源項目的轉換函式；此函式的第二個參數代表來源項目的索引。</param>
@@ -7094,8 +7149,8 @@
         <Parameter Name="resultSelector" Type="System.Func&lt;TSource,TCollection,TResult&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">所收集的中繼項目類型<c>collectionSelector</c>。</typeparam>
-        <typeparam name="TCollection">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">所收集之中繼項目的型別<c>collectionSelector</c>。</typeparam>
+        <typeparam name="TCollection">元素的型別<c>來源</c>。</typeparam>
         <typeparam name="TResult">要傳回之項目的類型。</typeparam>
         <param name="source">要投影的值序列。</param>
         <param name="collectionSelector">要套用到每個來源項目的轉換函式；此函式的第二個參數代表來源項目的索引。</param>
@@ -7143,7 +7198,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Obsolete("The second data source of a binary operator must be of type System.Linq.ParallelQuery&lt;T&gt; rather than System.Collections.Generic.IEnumerable&lt;T&gt;. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery&lt;T&gt;.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -7167,7 +7222,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個多載存在不允許使用 SequenceEqual 左邊的資料來源類型為<xref:System.Linq.ParallelQuery%601>和正確的資料來源類型的<xref:System.Collections.Generic.IEnumerable%601>。 否則，SequenceEqual 運算子看起來會繫結至平行實作中，但會事實上繫結至循序實作。  
+ 不允許使用 SequenceEqual 左邊的資料來源類型為存在的這個多載<xref:System.Linq.ParallelQuery%601>和正確的資料來源的型別<xref:System.Collections.Generic.IEnumerable%601>。 否則 SequenceEqual 運算子似乎繫結至平行實作中，但會事實上繫結到循序實作。  
   
  ]]></format>
         </remarks>
@@ -7242,7 +7297,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Obsolete("The second data source of a binary operator must be of type System.Linq.ParallelQuery&lt;T&gt; rather than System.Collections.Generic.IEnumerable&lt;T&gt;. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery&lt;T&gt;.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -7268,7 +7323,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個多載存在不允許使用 SequenceEqual 左邊的資料來源類型為<xref:System.Linq.ParallelQuery%601>和正確的資料來源類型的<xref:System.Collections.Generic.IEnumerable%601>。 否則，SequenceEqual 運算子看起來會繫結至平行實作中，但會事實上繫結至循序實作。  
+ 不允許使用 SequenceEqual 左邊的資料來源類型為存在的這個多載<xref:System.Linq.ParallelQuery%601>和正確的資料來源的型別<xref:System.Collections.Generic.IEnumerable%601>。 否則為 SequenceEqual 運算子來繫結至平行實作中，會出現，但會在現實中繫結到循序實作。  
   
  ]]></format>
         </remarks>
@@ -7557,7 +7612,7 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">傳回項目的序列。</param>
         <param name="count">傳回其餘項目之前要略過的項目數目。</param>
         <summary>略過平行序列中指定的項目數目，然後傳回其餘項目。</summary>
@@ -7620,7 +7675,7 @@
         <Parameter Name="predicate" Type="System.Func&lt;TSource,System.Boolean&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">傳回項目的序列。</param>
         <param name="predicate">用來測試每個項目是否符合條件的函式。</param>
         <summary>只要指定的條件為 true，便略過平行序列中的項目，然後傳回其餘項目。</summary>
@@ -7665,7 +7720,7 @@
         <Parameter Name="predicate" Type="System.Func&lt;TSource,System.Int32,System.Boolean&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">傳回項目的序列。</param>
         <param name="predicate">用來測試各來源項目是否符合條件的函式；此函式的第二個參數代表來源項目的索引。</param>
         <summary>只要指定的條件為 true，便略過平行序列中的項目，然後傳回其餘項目。 項目的索引是用於述詞功能的邏輯中。</summary>
@@ -8111,7 +8166,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Decimal&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要計算總和的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的總和。</summary>
@@ -8156,7 +8211,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Double&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要計算總和的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的總和。</summary>
@@ -8246,7 +8301,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Int64&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要計算總和的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的總和。</summary>
@@ -8291,7 +8346,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Decimal&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要計算總和的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的總和。</summary>
@@ -8336,7 +8391,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Double&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要計算總和的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的總和。</summary>
@@ -8381,7 +8436,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Int32&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要計算總和的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的總和。</summary>
@@ -8426,7 +8481,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Int64&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要計算總和的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的總和。</summary>
@@ -8471,7 +8526,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Nullable&lt;System.Single&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要計算總和的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的總和。</summary>
@@ -8516,7 +8571,7 @@
         <Parameter Name="selector" Type="System.Func&lt;TSource,System.Single&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要計算總和的值序列。</param>
         <param name="selector">要套用至每個項目的轉換函式。</param>
         <summary>同時計算在輸入序列中各項目上叫用轉換函式後所取得之值序列的總和。</summary>
@@ -8561,7 +8616,7 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">傳回項目的序列。</param>
         <param name="count">要傳回的項目數目。</param>
         <summary>從平行序列開頭傳回指定的連續項目數目。</summary>
@@ -8616,7 +8671,7 @@
         <Parameter Name="predicate" Type="System.Func&lt;TSource,System.Boolean&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">傳回項目的序列。</param>
         <param name="predicate">用來測試每個項目是否符合條件的函式。</param>
         <summary>只要指定的條件為 true，就會傳回平行序列中的項目。</summary>
@@ -8661,7 +8716,7 @@
         <Parameter Name="predicate" Type="System.Func&lt;TSource,System.Int32,System.Boolean&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">傳回項目的序列。</param>
         <param name="predicate">用來測試各來源項目是否符合條件的函式；此函式的第二個參數代表來源項目的索引。</param>
         <summary>只要指定的條件為 true，就會傳回平行序列中的項目。 項目的索引是用於述詞功能的邏輯中。</summary>
@@ -8718,8 +8773,8 @@
         <Parameter Name="keySelector" Type="System.Func&lt;TSource,TKey&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <param name="source">包含要排序之項目的 OrderedParallelQuery{TSource}。</param>
         <param name="keySelector">用來從項目擷取索引鍵的函式。</param>
         <summary>依據索引鍵，以平行方式執行按遞增順序之序列中的後續排序作業。</summary>
@@ -8728,7 +8783,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 相較於循序實作，這不是穩定的排序。 請參閱備註<xref:System.Linq.ParallelEnumerable.OrderBy%2A>如實作穩定的排序方法。  
+ 相較於循序實作中，這不是穩定的排序。 請參閱的 < 備註 ><xref:System.Linq.ParallelEnumerable.OrderBy%2A>實作穩定的排序方法。  
   
  ]]></format>
         </remarks>
@@ -8773,8 +8828,8 @@
         <Parameter Name="comparer" Type="System.Collections.Generic.IComparer&lt;TKey&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <param name="source">包含要排序之項目的 OrderedParallelQuery{TSource}。</param>
         <param name="keySelector">用來從項目擷取索引鍵的函式。</param>
         <param name="comparer">用來比較索引鍵的 IComparer{TKey}。</param>
@@ -8784,7 +8839,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 相較於循序實作，這不是穩定的排序。 請參閱備註<xref:System.Linq.ParallelEnumerable.OrderBy%2A>如實作穩定的排序方法。  
+ 相較於循序實作中，這不是穩定的排序。 請參閱的 < 備註 ><xref:System.Linq.ParallelEnumerable.OrderBy%2A>實作穩定的排序方法。  
   
  ]]></format>
         </remarks>
@@ -8838,8 +8893,8 @@
         <Parameter Name="keySelector" Type="System.Func&lt;TSource,TKey&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <param name="source">包含要排序之項目的 OrderedParallelQuery{TSource}。</param>
         <param name="keySelector">用來從項目擷取索引鍵的函式。</param>
         <summary>依據索引鍵，以平行方式執行按遞減順序之序列中的後續排序作業。</summary>
@@ -8848,7 +8903,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 相較於循序實作，這不是穩定的排序。 請參閱備註<xref:System.Linq.ParallelEnumerable.OrderBy%2A>如實作穩定的排序方法。  
+ 相較於循序實作中，這不是穩定的排序。 請參閱的 < 備註 ><xref:System.Linq.ParallelEnumerable.OrderBy%2A>實作穩定的排序方法。  
   
  ]]></format>
         </remarks>
@@ -8893,8 +8948,8 @@
         <Parameter Name="comparer" Type="System.Collections.Generic.IComparer&lt;TKey&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <param name="source">包含要排序之項目的 OrderedParallelQuery{TSource}。</param>
         <param name="keySelector">用來從項目擷取索引鍵的函式。</param>
         <param name="comparer">用來比較索引鍵的 IComparer{TKey}。</param>
@@ -8904,7 +8959,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 相較於循序實作，這不是穩定的排序。 請參閱備註<xref:System.Linq.ParallelEnumerable.OrderBy%2A>如實作穩定的排序方法。  
+ 相較於循序實作中，這不是穩定的排序。 請參閱的 < 備註 ><xref:System.Linq.ParallelEnumerable.OrderBy%2A>實作穩定的排序方法。  
   
  ]]></format>
         </remarks>
@@ -9002,7 +9057,7 @@
       </Parameters>
       <Docs>
         <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <param name="source">要從其中建立 <see cref="T:System.Collections.Generic.Dictionary`2" /> 的序列。</param>
         <param name="keySelector">用來從各個項目擷取索引鍵的函式。</param>
         <summary>根據指定的索引鍵選取器函式，從 <see cref="T:System.Collections.Generic.Dictionary`2" /> 建立 <see cref="T:System.Linq.ParallelQuery`1" />。</summary>
@@ -9051,7 +9106,7 @@
       </Parameters>
       <Docs>
         <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <param name="source">要從其中建立 <see cref="T:System.Collections.Generic.Dictionary`2" /> 的序列。</param>
         <param name="keySelector">用來從各個項目擷取索引鍵的函式。</param>
         <param name="comparer">用來比較金鑰的 <see cref="T:System.Collections.Generic.IEqualityComparer`1" />。</param>
@@ -9102,7 +9157,7 @@
       </Parameters>
       <Docs>
         <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <typeparam name="TElement">傳回值的型別<c>elementSelector</c>。</typeparam>
         <param name="source">要從其中建立 <see cref="T:System.Collections.Generic.Dictionary`2" /> 的序列。</param>
         <param name="keySelector">用來從各個項目擷取索引鍵的函式。</param>
@@ -9156,7 +9211,7 @@
       </Parameters>
       <Docs>
         <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <typeparam name="TElement">傳回值的型別<c>elementSelector</c>。</typeparam>
         <param name="source">要從其中建立 <see cref="T:System.Collections.Generic.Dictionary`2" /> 的序列。</param>
         <param name="keySelector">用來從各個項目擷取索引鍵的函式。</param>
@@ -9261,8 +9316,8 @@
         <Parameter Name="keySelector" Type="System.Func&lt;TSource,TKey&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <param name="source">要從其中建立 <see cref="T:System.Linq.ILookup`2" /> 的序列。</param>
         <param name="keySelector">用來從各個項目擷取索引鍵的函式。</param>
         <summary>根據指定的索引鍵選取器函式，從 <see cref="T:System.Linq.ILookup`2" /> 建立 <see cref="T:System.Linq.ParallelQuery`1" />。</summary>
@@ -9309,8 +9364,8 @@
         <Parameter Name="comparer" Type="System.Collections.Generic.IEqualityComparer&lt;TKey&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <param name="source">要從其中建立 <see cref="T:System.Linq.ILookup`2" /> 的序列。</param>
         <param name="keySelector">用來從各個項目擷取索引鍵的函式。</param>
         <param name="comparer">用來比較金鑰的 <see cref="T:System.Collections.Generic.IEqualityComparer`1" />。</param>
@@ -9359,8 +9414,8 @@
         <Parameter Name="elementSelector" Type="System.Func&lt;TSource,TElement&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <typeparam name="TElement">傳回值的型別<c>elementSelector</c>。</typeparam>
         <param name="source">要從其中建立 <see cref="T:System.Linq.ILookup`2" /> 的序列。</param>
         <param name="keySelector">用來從各個項目擷取索引鍵的函式。</param>
@@ -9412,8 +9467,8 @@
         <Parameter Name="comparer" Type="System.Collections.Generic.IEqualityComparer&lt;TKey&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
-        <typeparam name="TKey">所傳回的索引鍵類型<c>keySelector</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
+        <typeparam name="TKey">所傳回索引鍵的型別<c>keySelector</c>。</typeparam>
         <typeparam name="TElement">傳回值的型別<c>elementSelector</c>。</typeparam>
         <param name="source">要從其中建立 <see cref="T:System.Linq.ILookup`2" /> 的序列。</param>
         <param name="keySelector">用來從各個項目擷取索引鍵的函式。</param>
@@ -9461,7 +9516,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Obsolete("The second data source of a binary operator must be of type System.Linq.ParallelQuery&lt;T&gt; rather than System.Collections.Generic.IEnumerable&lt;T&gt;. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery&lt;T&gt;.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -9485,7 +9540,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個多載存在不允許使用等位的左的資料來源類型為<xref:System.Linq.ParallelQuery%601>和正確的資料來源類型的<xref:System.Collections.Generic.IEnumerable%601>。 否則，Union 運算子看起來會繫結至平行實作中，但會事實上繫結至循序實作。  
+ 這個多載存在不允許使用左側的資料來源類型的等位<xref:System.Linq.ParallelQuery%601>和正確的資料來源的型別<xref:System.Collections.Generic.IEnumerable%601>。 否則為等位運算子來繫結至平行實作中，會出現，但會實際上繫結到循序實作。  
   
  ]]></format>
         </remarks>
@@ -9516,6 +9571,11 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Linq.ParallelQuery&lt;TSource&gt;</ReturnType>
       </ReturnValue>
@@ -9562,7 +9622,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Obsolete("The second data source of a binary operator must be of type System.Linq.ParallelQuery&lt;T&gt; rather than System.Collections.Generic.IEnumerable&lt;T&gt;. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery&lt;T&gt;.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -9588,7 +9648,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個多載存在不允許使用等位的左的資料來源類型為<xref:System.Linq.ParallelQuery%601>和正確的資料來源類型的<xref:System.Collections.Generic.IEnumerable%601>。 否則，Union 運算子看起來會繫結至平行實作中，但會事實上繫結至循序實作。  
+ 這個多載存在不允許使用左側的資料來源類型的等位<xref:System.Linq.ParallelQuery%601>和正確的資料來源的型別<xref:System.Collections.Generic.IEnumerable%601>。 否則為等位運算子會出現以繫結至平行實作中，但會實際上繫結到循序實作。  
   
  ]]></format>
         </remarks>
@@ -9777,7 +9837,7 @@
         <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要對其設定選項的 ParallelQuery。</param>
         <param name="cancellationToken">取消語彙基元。</param>
         <summary>設定要與查詢產生關聯的 <see cref="T:System.Threading.CancellationToken" />。</summary>
@@ -9822,7 +9882,7 @@
         <Parameter Name="degreeOfParallelism" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">ParallelQuery，在其上面可設定平行處理原則程度的限制。</param>
         <param name="degreeOfParallelism">查詢的平行處理原則程度。 預設值為 Math.Min(<see cref="P:System.Environment.ProcessorCount" />, <see langword="MAX_SUPPORTED_DOP" />)，其中 <see langword="MAX_SUPPORTED_DOP" /> 是 512。</param>
         <summary>設定於查詢中使用的平行處理原則程度。 平行處理原則的程度，就是可在處理查詢時同步執行的最大作業數目。</summary>
@@ -9868,7 +9928,7 @@
         <Parameter Name="executionMode" Type="System.Linq.ParallelExecutionMode" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要對其設定選項的 ParallelQuery。</param>
         <param name="executionMode">執行查詢時所使用的模式。</param>
         <summary>設定查詢的執行模式。</summary>
@@ -9877,7 +9937,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 執行模式會指定是否 PLINQ 將會嘗試改為使用循序執行如果它偵測到特定的查詢圖形。 如需詳細資訊和範例，請參閱[How to： 在 PLINQ 中指定的執行模式](~/docs/standard/parallel-programming/how-to-specify-the-execution-mode-in-plinq.md)。  
+ 執行模式會指定 PLINQ 是否會嘗試回復為循序執行如果它偵測到特定的查詢圖形。 如需詳細資訊和範例，請參閱 <<c0> [ 如何： 在 PLINQ 中指定的執行模式](~/docs/standard/parallel-programming/how-to-specify-the-execution-mode-in-plinq.md)。  
   
  ]]></format>
         </remarks>
@@ -9921,7 +9981,7 @@
         <Parameter Name="mergeOptions" Type="System.Linq.ParallelMergeOptions" />
       </Parameters>
       <Docs>
-        <typeparam name="TSource">項目的型別<c>來源</c>。</typeparam>
+        <typeparam name="TSource">元素的型別<c>來源</c>。</typeparam>
         <param name="source">要對其設定選項的 ParallelQuery。</param>
         <param name="mergeOptions">要為這個查詢設定的合併選項。</param>
         <summary>設定這個查詢的合併選項，此選項會指定查詢將如何緩衝輸出。</summary>
@@ -9967,7 +10027,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Obsolete("The second data source of a binary operator must be of type System.Linq.ParallelQuery&lt;T&gt; rather than System.Collections.Generic.IEnumerable&lt;T&gt;. To fix this problem, use the AsParallel() extension method to convert the right data source to System.Linq.ParallelQuery&lt;T&gt;.")</AttributeName>
         </Attribute>
       </Attributes>
@@ -9997,7 +10057,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個多載存在不允許具有類型的左的資料來源的使用方式的 Zip<xref:System.Linq.ParallelQuery%601>和正確的資料來源類型的<xref:System.Collections.Generic.IEnumerable%601>。 否則，Zip 運算子看起來繫結至平行實作中，但會事實上繫結至循序實作。  
+ 這個多載存在不允許使用類型的左的資料來源的 Zip<xref:System.Linq.ParallelQuery%601>和正確的資料來源的型別<xref:System.Collections.Generic.IEnumerable%601>。 否則 Zip 運算子，看起來是繫結至平行實作中，但會實際上繫結到循序實作。  
   
  ]]></format>
         </remarks>
