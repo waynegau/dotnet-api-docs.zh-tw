@@ -1,10 +1,10 @@
 <Type Name="IDataflowBlock" FullName="System.Threading.Tasks.Dataflow.IDataflowBlock">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="34711813963d940018412100f9cfc38705ee40d3" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/24/2018" />
     <Meta Name="ms.locfileid" Value="36407600" />
   </Metadata>
   <TypeSignature Language="C#" Value="public interface IDataflowBlock" />
@@ -59,7 +59,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 之後<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Complete%2A>已經在資料流程區塊上呼叫，該區塊將會完成，且其<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Completion%2A>工作會進入最終狀態它已經處理所有先前可用的資料。 <xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Complete%2A> 將區塊等待完成發生，而是會起始要求但要等待完成發生，<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Completion%2A>可能使用的工作。  
+ 之後<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Complete%2A>已經在資料流程區塊上呼叫，該區塊將會完成，並將其<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Completion%2A>工作會進入最終的狀態已經處理所有先前可用的資料。 <xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Complete%2A> 將不會封鎖等候完成發生，而是會起始要求但等候完成發生，<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Completion%2A>可能使用的工作。  
   
  ]]></format>
         </remarks>
@@ -90,7 +90,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 資料流程區塊會時視為完成它目前未處理的訊息，以及當它有保證，不會處理任何其他訊息。 傳回<xref:System.Threading.Tasks.Task>完成相關聯的區塊時，會轉換為已完成狀態。 會轉換到<xref:System.Threading.Tasks.TaskStatus><xref:System.Threading.Tasks.TaskStatus.RanToCompletion>區塊完成其處理成功根據資料流程區塊時的狀態定義語意。 會轉換到<xref:System.Threading.Tasks.TaskStatus><xref:System.Threading.Tasks.TaskStatus.Faulted>狀態時即為資料流程區塊已完成處理提前因未處理的例外狀況，且會轉換到<xref:System.Threading.Tasks.TaskStatus><xref:System.Threading.Tasks.TaskStatus.Canceled>資料流程區塊完成狀態過早處理，因為收到取消要求。 當工作在<xref:System.Threading.Tasks.TaskStatus.Faulted>狀態，其`Exception`屬性會傳回<xref:System.AggregateException>包含造成失敗之區塊的一或多個例外狀況。  
+ 資料流程區塊會被視為完成，但當它目前未處理訊息，而且當它有保證，不會處理任何訊息。 傳回<xref:System.Threading.Tasks.Task>相關聯的區塊完成時，會轉換為已完成的狀態。 它會轉為<xref:System.Threading.Tasks.TaskStatus><xref:System.Threading.Tasks.TaskStatus.RanToCompletion>區塊本身完成處理成功根據資料流程區塊時的狀態定義語意。 它就會轉換成<xref:System.Threading.Tasks.TaskStatus><xref:System.Threading.Tasks.TaskStatus.Faulted>狀態，當資料流程區塊完成提前因為未處理的例外狀況處理，並將轉為<xref:System.Threading.Tasks.TaskStatus><xref:System.Threading.Tasks.TaskStatus.Canceled>資料流程區塊完成時的狀態正在處理不當，由於收到取消要求。 如果工作會在完成<xref:System.Threading.Tasks.TaskStatus.Faulted>狀態，其`Exception`屬性會傳回<xref:System.AggregateException>包含造成失敗之區塊的一或多個例外狀況。  
   
  ]]></format>
         </remarks>
@@ -123,7 +123,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 之後<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Fault%2A>已經在資料流程區塊上呼叫，該區塊將會完成，且其<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Completion%2A>工作將會進入最終狀態。 判定為失敗的區塊，做為與取消區塊，會造成遺失緩衝的訊息 （未處理的輸入的訊息，以及 unoffered 的輸出訊息）。  
+ 之後<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Fault%2A>已經在資料流程區塊上呼叫，該區塊將會完成，並將其<xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Completion%2A>工作將會進入最終狀態。 錯誤區塊，做為與取消區塊中，會導致遺失緩衝的訊息 （未處理的輸入的訊息，以及 unoffered 的輸出訊息）。  
   
  ]]></format>
         </remarks>

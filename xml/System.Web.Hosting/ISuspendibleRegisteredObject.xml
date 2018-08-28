@@ -1,10 +1,10 @@
 <Type Name="ISuspendibleRegisteredObject" FullName="System.Web.Hosting.ISuspendibleRegisteredObject">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="4d33e8bcc6b2bb1caeb9a9e6870c6e3ecaa6dd1e" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/24/2018" />
     <Meta Name="ms.locfileid" Value="36401100" />
   </Metadata>
   <TypeSignature Language="C#" Value="public interface ISuspendibleRegisteredObject : System.Web.Hosting.IRegisteredObject" />
@@ -23,16 +23,17 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>[在 .NET Framework 4.5.1 和更新版本中支援]  接聽暫停和繼續通知。</summary>
+    <summary>[在 .NET Framework 4.5.1 及更新版本中支援] 
+接聽暫停及繼續通知。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果應用程式將傳遞至<xref:System.Web.Hosting.HostingEnvironment.RegisterObject%2A>方法實作的物件<xref:System.Web.Hosting.ISuspendibleRegisteredObject>介面，在裝載環境會訂閱要接聽的物件暫停或繼續通知。  
+ 如果應用程式將傳遞至<xref:System.Web.Hosting.HostingEnvironment.RegisterObject%2A>方法的實作的物件<xref:System.Web.Hosting.ISuspendibleRegisteredObject>介面，裝載環境會訂閱要接聽物件暫停或繼續通知。  
   
  ]]></format>
     </remarks>
-    <threadsafe>此類型的執行個體成員並非都是安全執行緒。 您可以呼叫<see cref="M:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend" />方法在任何時間，包括在此相同的物件上的另一個方法呼叫期間會呼叫其他物件 '<see cref="M:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend" />方法，或甚至在此物件的呼叫期間<see cref="M:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend" />方法。 因為這些方法的執行是多執行緒，所以間隔<see cref="M:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend" />可以呼叫方法，即使呼叫<see cref="M:System.Web.Hosting.HostingEnvironment.UnregisterObject(System.Web.Hosting.IRegisteredObject)" />方法已完成。</threadsafe>
+    <threadsafe>這種類型的執行個體成員都不保證是安全執行緒。 您可以呼叫<see cref="M:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend" />在任何時間，包括在另一種方法，這個相同的物件上呼叫的方法會呼叫其他的物件<see cref="M:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend" />方法，或甚至是在對此物件的呼叫<see cref="M:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend" />方法。 因為這些方法的執行是多執行緒，所以沒有間隔<see cref="M:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend" />可以呼叫方法，即使呼叫<see cref="M:System.Web.Hosting.HostingEnvironment.UnregisterObject(System.Web.Hosting.IRegisteredObject)" />方法完成。</threadsafe>
   </Docs>
   <Members>
     <Member MemberName="Suspend">
@@ -52,17 +53,18 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>[在 .NET Framework 4.5.1 和更新版本中支援]  在 ASP.NET 告知應用程式正在暫停程序時呼叫。</summary>
+        <summary>[在 .NET Framework 4.5.1 及更新版本中支援] 
+在 ASP.NET 會告知應用程式正在暫停處理程序時時呼叫。</summary>
         <returns>To be added.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend%2A>方法未擲回例外狀況，否則行為是未定義，並可能會終止處理程序。 <xref:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend%2A>方法不會封鎖執行，因為五秒後，ASP.NET 會允許處理序遭擱置，即使並非所有<xref:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend%2A>方法已完成。  
+ <xref:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend%2A>方法必須擲回例外狀況，否則行為是未定義，並可能會終止處理序。 <xref:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend%2A>方法不應封鎖執行，因為 ASP.NET 會在五秒後允許的程序暫止，即使並非所有<xref:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend%2A>方法已完成。  
   
- 如果回呼傳回，它會叫用時繼續從暫止的處理序。 <xref:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend%2A>方法可能會傳回`null`如果並沒有繼續處理序時收到通知。  
+ 如果回呼傳回時，它會叫用時繼續從擱置的處理序。 <xref:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend%2A>方法可能會傳回`null`如果並沒有繼續處理序時收到通知。  
   
- <xref:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend%2A>整合模式在 IIS 中執行時，才支援方法。 ASP.NET 執行階段不保證<xref:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend%2A>方法會引發。  
+ <xref:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend%2A>方法只有在整合模式在 IIS 中執行時，才支援。 ASP.NET 執行階段不保證<xref:System.Web.Hosting.ISuspendibleRegisteredObject.Suspend%2A>方法會引發。  
   
  ]]></format>
         </remarks>

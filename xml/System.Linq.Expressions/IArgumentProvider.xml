@@ -1,10 +1,10 @@
 <Type Name="IArgumentProvider" FullName="System.Linq.Expressions.IArgumentProvider">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="c1987bffe3d2cba01471534c9b3fac3e0c152c07" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/24/2018" />
     <Meta Name="ms.locfileid" Value="36555644" />
   </Metadata>
   <TypeSignature Language="C#" Value="public interface IArgumentProvider" />
@@ -31,7 +31,17 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>提供內部介面以存取多個樹狀節點 (DynamicExpression、ElementInit、MethodCallExpression、InvocationExpression、NewExpression 和 InexExpression) 的引數。  您不應該使用這個 API。  它只有在 DLL 重構時為公用，且存在的唯一目的是將內部效能最佳化。  此工具可執行兩種最佳化，減少運算式樹狀架構的大小。  第一種會使樹狀節點保留 IList&lt;T&gt;，而不是 ReadOnlyCollection。  IList&lt;T&gt; 可為各節點節省 ReadOnlyCollection 的配置成本。  第二種可建立特定的子類別，以便保留特定數目的引數 (例如 Block2、Block3、Block4)。  如此一來，這些節點會避免同時配置 ReadOnlyCollection 和陣列來儲存其項目，每個節點可省下 32 位元組。  運算式樹狀架構節點會繼續公開 ReadOnlyCollections 的原始 LINQ 屬性。  為了執行這個動作，節點會重複使用欄位來同時儲存陣列或通常儲存在陣列中的項目。  如為陣列，集合為 IList&lt;T&gt; 類型而不是 ReadOnlyCollection&lt;T&gt; 類型。  節點一經初步建構即為陣列。  當編譯器存取成員時，它會使用此介面。  存取陣列項目時會將陣列升階至 ReadOnlyCollection。  如為物件，我們會將第一個引數儲存在物件的類型欄位中。  一開始建構節點時，欄位就會保留運算式。  編譯器會透過此介面來存取引數，而第一個引數的存取子會使用 Expression.ReturnObject 傳回處理 Expression 或 ReadOnlyCollection 狀況的物件。  當使用者存取 ReadOnlyCollection 時，會更新物件欄位以便直接保留 ReadOnlyCollection。  運算式務必始終傳回相同的 ReadOnlyCollection。  否則，重新寫入器的樹狀查核器會中斷。  這會中斷 LINQ v1 的變更，使得同一個運算式節點傳回不同的 ReadOnlyCollections。  目前的使用者可以依據物件識別，得知節點是否已變更。  將 ReadOnlyCollection 儲存在多載的欄位中可同時降低記憶體使用量並維持公用 API 的相容性。</summary>
+    <summary>提供內部介面以存取多個樹狀節點 (DynamicExpression、ElementInit、MethodCallExpression、InvocationExpression、NewExpression 和 InexExpression) 的引數。  您不應該使用這個 API。  它只有在 DLL 重構時為公用，且存在的唯一目的是將內部效能最佳化。  
+  
+此工具可執行兩種最佳化，減少運算式樹狀架構的大小。  第一種會使樹狀節點保留 IList&lt;T&gt;，而不是 ReadOnlyCollection。  IList&lt;T&gt; 可為各節點節省 ReadOnlyCollection 的配置成本。  第二種可建立特定的子類別，以便保留特定數目的引數 (例如 Block2、Block3、Block4)。  如此一來，這些節點會避免同時配置 ReadOnlyCollection 和陣列來儲存其項目，每個節點可省下 32 位元組。  
+  
+運算式樹狀架構節點會繼續公開 ReadOnlyCollections 的原始 LINQ 屬性。  為了執行這個動作，節點會重複使用欄位來同時儲存陣列或通常儲存在陣列中的項目。  
+  
+如為陣列，集合為 IList&lt;T&gt; 類型而不是 ReadOnlyCollection&lt;T&gt; 類型。  節點一經初步建構即為陣列。  當編譯器存取成員時，它會使用此介面。  存取陣列項目時會將陣列升階至 ReadOnlyCollection。  
+  
+如為物件，我們會將第一個引數儲存在物件的類型欄位中。  一開始建構節點時，欄位就會保留運算式。  編譯器會透過此介面來存取引數，而第一個引數的存取子會使用 Expression.ReturnObject 傳回處理 Expression 或 ReadOnlyCollection 狀況的物件。  當使用者存取 ReadOnlyCollection 時，會更新物件欄位以便直接保留 ReadOnlyCollection。  
+  
+運算式務必始終傳回相同的 ReadOnlyCollection。  否則，重新寫入器的樹狀查核器會中斷。  這會中斷 LINQ v1 的變更，使得同一個運算式節點傳回不同的 ReadOnlyCollections。  目前的使用者可以依據物件識別，得知節點是否已變更。  將 ReadOnlyCollection 儲存在多載的欄位中可同時降低記憶體使用量並維持公用 API 的相容性。</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -64,7 +74,7 @@
       </ReturnValue>
       <Docs>
         <summary>傳回運算式樹狀節點的引數數目。  您不應該使用這個類型。  它只有在組件重構時為公用，且使用於內部以取得效能最佳化。</summary>
-        <value>運算式樹狀結構節點，做為引數數目<see cref="T:System.Int32" />。</value>
+        <value>運算式樹狀節點做為引數數目<see cref="T:System.Int32" />。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

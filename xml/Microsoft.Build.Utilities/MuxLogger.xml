@@ -1,10 +1,10 @@
 <Type Name="MuxLogger" FullName="Microsoft.Build.Utilities.MuxLogger">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="a7f638e1c6b08a849c703c09d7ece293bb979d2a" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/24/2018" />
     <Meta Name="ms.locfileid" Value="36732740" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class MuxLogger : Microsoft.Build.Framework.INodeLogger" />
@@ -26,44 +26,46 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>表示多工記錄器。 這個記錄器的用途是要在建置期間註冊和取消註冊多個記錄器。 支援針對每個專案系統之組建要求註冊和移除註冊記錄器的 Visual Studio IDE 情節。 一個實體組建可以有多個邏輯組建，每一個都有它自己的一組記錄器。  <see langword="MuxLogger" /> 會向組建管理程式將本身註冊為一般中央 /l 樣式記錄器。 它會從組建管理員接收訊息，並根據訊息的來源邏輯建置，將它們傳送到正確的記錄器。</summary>
+    <summary>表示多工記錄器。 這個記錄器的用途是要在建置期間註冊和取消註冊多個記錄器。 支援針對每個專案系統之組建要求註冊和移除註冊記錄器的 Visual Studio IDE 情節。 一個實體組建可以有多個邏輯組建，每一個都有它自己的一組記錄器。  
+  
+<see langword="MuxLogger" /> 會向組建管理程式將本身註冊為一般中央 /l 樣式記錄器。 它會從組建管理員接收訊息，並根據訊息的來源邏輯建置，將它們傳送到正確的記錄器。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
  `MuxLogger`通常函式，如下所示：  
   
--   `MuxLogger`註冊的組建管理員開始建置開頭。  
+-   `MuxLogger`註冊組建管理員開始建置的開頭。  
   
-     註冊後，組建管理程式隨即啟動建置任何記錄器取得組建啟動事件做為同時`MuxLogger`。  
+     任何組建管理員開始建置之前已註冊的記錄器都會取得開始建置事件與同時`MuxLogger`。  
   
-     任何組建管理員啟動建置後註冊的記錄器取得合成的組建啟動的事件。 無法快取事件，因為組建啟動事件的時間戳記決定事件建立時，並快取事件會提供不正確的建置時間中註冊的記錄器`MuxLogger`。  
+     任何組建管理員啟動建置後註冊的記錄器都會取得合成的開始建置事件。 無法快取事件，因為當建立事件時，並快取事件會在您註冊的記錄器提供不正確的建置時間，開始建置事件的時間戳記決定`MuxLogger`。  
   
--   `MuxLogger`已由組建管理員初始化  
+-   `MuxLogger`組建管理員初始化  
   
-     `MuxLogger`從組建管理員會接聽事件來源上的所有事件，並正確地將事件路由至已註冊的記錄器。  
+     `MuxLogger`會接聽來自組建管理員的事件來源上的所有事件，並將事件路由至已註冊的記錄器的正確。  
   
--   `MuxLogger`在組建中結束建置完成時關閉。 在這個階段中，它會移除註冊任何附加的記錄器。  
+-   `MuxLogger`已關閉，如果完成建置後端組建中。 在這個階段中，它會取消註冊任何附加的記錄器。  
   
--   `MuxLogger`記錄時每個記錄器都會出現的第一個專案啟動事件的專案完成事件完成建置後事件。  
+-   `MuxLogger`記錄時的第一個專案啟動事件的專案完成事件會出現在每個記錄器的組建完成事件。  
   
- `MuxLogger`記錄器註冊方式如下：  
+ `MuxLogger`註冊記錄器，方式如下：  
   
-1.  記錄器傳遞至`MuxLogger.RegisterLogger`提交識別碼為用來將訊息路由至該記錄器的方法。  
+1.  記錄器會傳遞至`MuxLogger.RegisterLogger`方法用來將訊息路由至該記錄器的提交 ID。  
   
 2.  `MuxLogger`註冊記錄器`MuxLogger`事件來源。  
   
-3.  如果建置開始時間的事件已記錄，`MuxLogger`建立新的組建啟動事件，並將它傳送至記錄器的事件來源。  
+3.  如果開始建置事件已記錄，`MuxLogger`建立新的開始建置事件，並將它傳送至記錄器的事件來源。  
   
- `MuxLogger`取消註冊的記錄器，方式如下：  
+ `MuxLogger`移除記錄器的註冊方式如下：  
   
-1.  送出組建完成時，`MuxLogger.UnregisterLogger`提交識別碼記錄器呼叫方法。  
+1.  建置提交作業完成時，`MuxLogger.UnregisterLogger`方法呼叫記錄器的提交 ID。  
   
-2.  `MuxLogger`提交識別碼尋找專案完成事件的成功狀態，並建置完成的事件記錄到記錄器。  
+2.  `MuxLogger`尋找總專案完成事件的成功狀態的提交 ID，並建置完成的事件記錄到記錄器。  
   
 3.  `MuxLogger`清除的事件來源。  
   
-     請注意，取消註冊來自記錄執行緒以外的執行緒，如果記錄事件時，系統會呼叫取消註冊，可能會發生同步處理問題。  
+     請注意，取消註冊來自記錄執行緒以外的執行緒是否取消註冊呼叫的事件會記錄時，可能會發生同步處理問題。  
   
  ]]></format>
     </remarks>

@@ -1,10 +1,10 @@
 <Type Name="WSFederationAuthenticationModule" FullName="System.IdentityModel.Services.WSFederationAuthenticationModule">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="4946a226efb8c22b2cb54ac00bf7e2cedea35d6e" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/24/2018" />
     <Meta Name="ms.locfileid" Value="36558372" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class WSFederationAuthenticationModule : System.IdentityModel.Services.HttpModuleBase" />
@@ -23,73 +23,75 @@
   <Interfaces />
   <Docs>
     <summary>
-      <see cref="T:System.IdentityModel.Services.WSFederationAuthenticationModule" /> 是 HTTP 模組，會藉由強制執行連入要求的聯合驗證設定，用來保護 ASP.NET 應用程式。 <see cref="T:System.IdentityModel.Services.WSFederationAuthenticationModule" /> 是 WIF 現成提供的主要模組，用於處理 ASP.NET 應用程式中的宣告式識別存取。  <see cref="T:System.IdentityModel.Services.WSFederationAuthenticationModule" />會引發數個事件，它可讓 ASP.NET 開發人員變更預設行為，並控制驗證和宣告處理發生方式的詳細資訊。 <see cref="T:System.IdentityModel.Services.WSFederationAuthenticationModule" />功能會分為特定工作的方法。</summary>
+      <see cref="T:System.IdentityModel.Services.WSFederationAuthenticationModule" /> 是 HTTP 模組，會藉由強制執行連入要求的聯合驗證設定，用來保護 ASP.NET 應用程式。 <see cref="T:System.IdentityModel.Services.WSFederationAuthenticationModule" /> 是 WIF 現成提供的主要模組，用於處理 ASP.NET 應用程式中的宣告式識別存取。  
+  
+<see cref="T:System.IdentityModel.Services.WSFederationAuthenticationModule" />會引發數個事件，它可讓 ASP.NET 開發人員變更預設行為，並控制驗證和宣告處理發生方式的詳細資訊。 <see cref="T:System.IdentityModel.Services.WSFederationAuthenticationModule" />功能會分為特定工作的方法。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.IdentityModel.Services.WSFederationAuthenticationModule>類別會實作 HTTP 模組已知 WS-同盟驗證模組 (WSFAM)。 Windows Identity Foundation (WIF) 時，會立即可用的實作 WSFAM。 WSFAM 是 web.config 檔案中建立一個項目新增至 ASP.NET 管線。 它衍生自<xref:System.IdentityModel.Services.HttpModuleBase>，它會實作<xref:System.Web.IHttpModule>。 它會接聽的 ASP.NET 執行階段註冊<xref:System.Web.HttpApplication.EndRequest>和<xref:System.Web.HttpApplication.AuthenticateRequest>事件。 接聽<xref:System.Web.HttpApplication.EndRequest>事件，可讓用戶端重新導向至安全性權杖服務 (STS) 取得安全性權杖時所需資源上的授權失敗 WSFAM。 接聽<xref:System.Web.HttpApplication.AuthenticateRequest>事件可讓來監視 HTTP 要求的回應包含要求的語彙基元從 STS WSFAM。 當此權杖是存在且有效時，它會建立的執行個體<xref:System.Security.Claims.ClaimsPrincipal>已驗證的使用者使用的權杖中的宣告。  
+ <xref:System.IdentityModel.Services.WSFederationAuthenticationModule>類別會實作 HTTP 模組已知為 WS-同盟驗證模組 (WSFAM)。 WSFAM 會實作內建 Windows Identity Foundation (WIF)。 WSFAM 會在 web.config 檔案中建立一個項目新增至 ASP.NET 管線。 它衍生自<xref:System.IdentityModel.Services.HttpModuleBase>，它會實作<xref:System.Web.IHttpModule>。 它會向 ASP.NET 執行階段來接聽<xref:System.Web.HttpApplication.EndRequest>和<xref:System.Web.HttpApplication.AuthenticateRequest>事件。 接聽<xref:System.Web.HttpApplication.EndRequest>事件，可讓用戶端重新導向至安全性權杖服務 (STS) 取得安全性權杖，授權要求的資源上失敗時 WSFAM。 接聽<xref:System.Web.HttpApplication.AuthenticateRequest>事件可讓 WSFAM 來監視 HTTP 要求包含要求的權杖從 STS 的回應。 這類權杖存在且有效時，它會建立的執行個體<xref:System.Security.Claims.ClaimsPrincipal>通過驗證的使用者使用的權杖中的宣告。  
   
- 工作階段管理使用 WSFAM，當工作階段驗證模組 (SAM)，也就是執行個體所提供的<xref:System.IdentityModel.Services.SessionAuthenticationModule>從它衍生的類別或類別。 SAM 也會加入至組態檔中的 ASP.NET 管線。 SAM 監視 （工作階段） 的驗證 cookie 的要求。 當這些 cookie 確實存在且有效時，此模組會將擷取<xref:System.Security.Claims.ClaimsPrincipal>已驗證的使用者從<xref:System.IdentityModel.Tokens.SessionSecurityToken>並設定<xref:System.Web.HttpContext.User%2A?displayProperty=nameWithType>屬性和執行緒主體<xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType>屬性。  
+ 工作階段驗證模組 (SAM)，也就是執行個體時使用 WSFAM，提供工作階段管理的<xref:System.IdentityModel.Services.SessionAuthenticationModule>從中衍生的類別或類別。 SAM 也會加入至組態檔中的 ASP.NET 管線。 SAM 監視 （工作階段） 的驗證 cookie 的要求。 當這些 cookie 存在且有效，此模組會擷取<xref:System.Security.Claims.ClaimsPrincipal>通過驗證的使用者，從<xref:System.IdentityModel.Tokens.SessionSecurityToken>並設定<xref:System.Web.HttpContext.User%2A?displayProperty=nameWithType>屬性和執行緒主體<xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType>屬性。  
   
- WSFAM 提供：  
+ WSFAM 會提供：  
   
--   ASP.NET 應用程式將驗證外包給安全性權杖服務 (STS) 所使用的 WS-同盟通訊協定功能。 可以跨一個或多個身分識別領域同盟身分識別，並且包含多個 Sts。  
+-   提供 ASP.NET 應用程式將驗證外包給安全性權杖服務 (STS) 所使用的 WS-同盟通訊協定的能力。 可以跨一或多個身分識別領域同盟身分識別，並牽涉到多個 Sts。  
   
--   ASP.NET 應用程式的宣告型識別。 在驗證期間，WSFAM 建置從 STS 所傳送的安全性權杖中宣告的主體，並將這個宣告主體設定為主要執行緒。 您接著可以使用這個主體進行進一步授權、 展示和邏輯來判斷它所代表的使用者程式碼中。  
+-   ASP.NET 應用程式的宣告型識別。 在驗證期間，WSFAM 會建置從 STS 所傳送的安全性權杖中宣告的主體，並將此宣告主體設定為執行緒主體。 您接著可以使用此主體進行後續授權、 展示和邏輯決策，它代表的使用者的相關程式碼中。  
   
  WSFAM 會公開一些提供預設来使用的 WS-同盟登入和登出要求的訊息參數的屬性。 這些屬性通常初始化自[ &lt;wsFederation&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/wsfederation.md)組態檔中的項目。 這些屬性的最重要的是：  
   
--   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性，指定要將 WS-同盟登入和登出要求傳送至安全性權杖服務 (STS) 的位址。  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性，指定要將 WS-同盟登入和登出要求傳送的安全性權杖服務 (STS) 的位址。  
   
--   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm%2A>屬性，指定要使用的 wtrealm 參數在 WS-同盟登入要求。 Wtrealm 參數識別要 STS 的信賴憑證者 (rp) 應用程式的安全性領域。  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm%2A>屬性，在 WS-同盟登入要求中指定要使用的 wtrealm 參數。 Wtrealm 參數識別的安全性領域，STS 的信賴憑證者 (rp) 應用程式。  
   
- 登入訊息參數也可以變更每個要求為基礎所提供的事件處理常式委派<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。  
+ 登入訊息參數也可以變更每個要求提供事件處理常式委派<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。  
   
- 兩個屬性會控制行為的模組。 這兩個屬性通常也初始化自`<wsFederation>`組態中的項目。  
+ 兩個屬性控制模組的行為。 這兩個屬性通常也是初始化自`<wsFederation>`組態中的項目。  
   
--   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.PassiveRedirectEnabled%2A>屬性會指定模組是否應該執行被動重新導向至 STS 進行驗證。  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.PassiveRedirectEnabled%2A>屬性會指定模組是否應該執行被動式重新導向至 STS 進行驗證。  
   
--   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.PersistentCookiesOnPassiveRedirects%2A>屬性會指定工作階段是否應為永久性。 如果這個屬性設定為 true，SAM 用來寫入至用戶端工作階段 cookie。 在後續要求中從用戶端，SAM 會提供使用語彙基元驗證保存在工作階段 cookie。  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.PersistentCookiesOnPassiveRedirects%2A>屬性會指定是否應持續性工作階段。 如果這個屬性設定為 true，SAM 會使用工作階段 cookie 寫入用戶端。 在從用戶端的後續要求，SAM 會提供使用權杖驗證會保存在工作階段 cookie。  
   
- WSFAM 引發多個事件期間登入和登出，這可讓 ASP.NET 開發人員變更模組的預設行為，以及控制如何驗證和處理宣告進行的詳細資料。  
+ WSFAM 會引發數個事件在登入時，登出，可讓 ASP.NET 開發人員，以變更模組的預設行為，並控制如何驗證和宣告處理發生的詳細資料。  
   
  WS-同盟登入要求傳送至 STS 前，會引發下列事件：  
   
--   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.AuthorizationFailed>： 當被動式重新導向已啟用，且授權失敗要求的資源上引發。  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.AuthorizationFailed>： 當被動式重新導向已啟用，且要求的資源上的授權失敗時引發。  
   
--   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>： 之前引發 WSFAM 會傳送至 STS WS-同盟登入要求。 若要變更登入要求中的參數，您可以使用此事件。  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>： 之前引發 WSFAM 會傳送至 STS WS-同盟登入要求。 若要變更的登入要求中的參數，您可以使用此事件。  
   
- 從 STS 收到登入回應 （發出安全性權杖） 時，會引發下列事件：  
+ 從 STS 收到登入回應 （發出安全性權杖），則會引發下列事件：  
   
--   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenReceived>： 只在 STS 所傳送的安全性語彙基元讀取回應之後，才引發。  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenReceived>： 只在 STS 所傳送的安全性權杖從回應讀取之後，才引發。  
   
--   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenValidated>： 只在已驗證權杖之後，才引發。 您可以使用這個事件來篩選或轉換，將宣告新增至宣告主體 (<xref:System.Security.Claims.ClaimsPrincipal>) 所建立的安全性權杖。  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenValidated>： 只在驗證權杖之後，才引發。 您可以使用這個事件來篩選、 轉換，或將宣告新增至宣告主體 (<xref:System.Security.Claims.ClaimsPrincipal>) 建立的安全性權杖。  
   
--   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated>： 引發之前工作階段權杖 (<xref:System.IdentityModel.Tokens.SessionSecurityToken>) 主要用來設定執行緒主體的宣告和目前的使用者來建立並寫入工作階段 cookie。 可讓您有機會修改的工作階段權杖或啟用或停用寫入工作階段 cookie。  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated>： 工作階段權杖之前引發 (<xref:System.IdentityModel.Tokens.SessionSecurityToken>) 從目前的使用者與主體可用來設定執行緒主體的宣告會建立並寫入至工作階段 cookie。 可讓您有機會修改的工作階段權杖或啟用或停用撰寫工作階段 cookie。  
   
--   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedIn>： 在結束時引發的驗證之後已設定執行緒主體與目前使用者。  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedIn>： 在結束時引發的驗證之後已設定執行緒主體和目前使用者。  
   
--   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInError>： 引發登入期間發生的例外狀況。 您可以取消要求，並避免例外狀況傳回給呼叫端。  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInError>： 引發在登入期間發生的例外狀況。 您可以取消要求，並防止例外狀況傳回給呼叫端。  
   
- 當簽章登出工作階段，或處理 WS-同盟登出清除要求 (wsignoutcleanup1.0) 時，會引發下列事件：  
+ 簽署時登出工作階段，或處理的 WS-同盟登出清除要求 (wsignoutcleanup1.0) 時，會引發下列事件：  
   
--   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SigningOut>： 只在工作階段中刪除，讓您執行任何可能相依於工作階段的清除，或取消登出之前引發。  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SigningOut>： 只在工作階段遭到刪除，讓您執行任何可能相依於工作階段的清除作業，或取消登出之前，才引發。  
   
--   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedOut>： 只在已刪除工作階段之後，才引發。  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedOut>： 只在工作階段已被刪除之後，才引發。  
   
--   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutError>： 引發登出期間發生的例外狀況。您可以取消登出，並避免例外狀況傳回給呼叫端。  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutError>： 引發登出期間發生的例外狀況。您可以取消登出，並防止例外狀況傳回給呼叫端。  
   
 > [!NOTE]
->  登出在 STS 藉由呼叫時，不會引發登出事件<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
+>  當登出在 STS 藉由呼叫登出事件不會引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
   
- 有兩種登入使用 WSFAM STS。 第一個是藉由啟用透過被動重新導向<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.PassiveRedirectEnabled%2A>屬性。 在此情況下，當授權失敗要求的資源，而不是傳回`401:Access Denied`回應給用戶端，WSFAM 建置其內容的 WS-同盟登入要求訊息，並將用戶端重新導向至 STS，以擷取安全性權杖。 第二種方式是明確地將對 STS 的用戶端重新導向藉由呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignIn%2A>來自網頁或應用程式中的自訂控制項的方法。 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignIn%2A>方法也使用 WSFAM 屬性來建構登入要求。  
+ 有兩種登入使用 WSFAM STS。 第一種是藉由啟用被動式重新導向透過<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.PassiveRedirectEnabled%2A>屬性。 在此情況下，當授權失敗要求的資源，而不會傳回`401:Access Denied`回應給用戶端，WSFAM 建置其屬性的 WS-同盟登入要求訊息，並將用戶端重新導向至 STS 擷取安全性權杖。 第二種方式是明確地將 sts 的用戶端重新導向藉由呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignIn%2A>從網頁或應用程式中的自訂控制項的方法。 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignIn%2A>方法也使用 WSFAM 的屬性來建構的登入要求。  
   
- 任何多載<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%2A>方法可用來登出工作階段。 這會刪除用戶端上的工作階段 cookie。 它不會傳送至 STS WS-同盟登出訊息 (「 wsignout1.0")。 若要登出在 STS，您必須使用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
+ 任何多載<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%2A>方法可用來登出工作階段。 這會刪除用戶端上的工作階段 cookie。 它不會傳送至 STS WS-同盟登出訊息 ("wsignout1.0")。 若要登出在 STS，您必須使用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
   
- WSFAM 會藉由使用用戶端刪除其工作階段處理 WS-同盟登出清除要求 (「 wsignoutcleanup1.0")。 如果未設定 wreply 訊息中的參數登出清除，WSFAM 傳送訊息的 STS 傳回綠色的核取記號的映像。 這項功能可供 STS，以完成其登出 RP 通知的形式。  
+ WSFAM 會刪除其工作階段與用戶端，以處理 WS-同盟登出清除要求 ("wsignoutcleanup1.0")。 如果未設定登出清除訊息的 wreply 參數，WSFAM 會傳回至傳送訊息的 STS 綠色的核取記號的映像。 這項功能可供 STS 以 RP 已完成其登出通知的形式。  
   
- WSFAM 會公開其功能-例如，其要求處理管線-透過數個特定工作的方法。 您可以覆寫這些方法，以變更 WSFAM 行為衍生類別中。  
+ WSFAM 會公開其功能，比方說，其要求處理管線，透過幾個特定工作的方法。 您可以覆寫這些方法，以變更 WSFAM 行為的衍生類別中。  
   
  要使用此模組必須加入至管線，如下列 XML 所示：  
   
@@ -103,7 +105,7 @@
 </configuration>  
 ```  
   
- 一旦設定，<xref:System.IdentityModel.Services.WSFederationAuthenticationModule>處理 HTTP 要求的各個階段引發的事件。 ASP.NET 開發人員可以處理這些事件在 global.asax 檔案中。  
+ 設定後，<xref:System.IdentityModel.Services.WSFederationAuthenticationModule>引發事件的處理 HTTP 要求的各種階段。 ASP.NET 開發人員可以處理這些事件在 global.asax 檔案中。  
   
    
   
@@ -155,7 +157,7 @@
 ## Remarks  
  Wauth 參數是選擇性的。 如果<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.AuthenticationType%2A>屬性設定為`null`或登入要求中未包含空字串，wauth 參數。  
   
- 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 只在模組重新導向至與 WS-同盟登入要求訊息的安全性權杖服務 (STS) 之前，會引發這個事件。 所指定 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
+ 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 此模組會重新導向至安全性權杖服務 (STS) 使用 WS-同盟登入要求訊息之前，會引發這個事件。 所指定的 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
   
  ]]></format>
         </remarks>
@@ -182,14 +184,14 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.AuthorizationFailed>授權失敗的 HTTP 要求時，就會引發事件。 會引發此事件於<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnEndRequest%2A>透過呼叫事件處理常式委派<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthorizationFailed%2A>方法。  
+ <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.AuthorizationFailed>授權失敗的 HTTP 要求時，會引發事件。 會引發此事件內在<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnEndRequest%2A>透過呼叫的事件處理常式委派<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthorizationFailed%2A>方法。  
   
- 您可以設定<xref:System.IdentityModel.Services.AuthorizationFailedEventArgs.RedirectToIdentityProvider%2A?displayProperty=nameWithType>屬性，即可控制是否已重新導向至識別提供者。 架構會初始化此屬性為`false`如果使用者已經過驗證。 在此情況下，將屬性設定為`true`與 STS 可能會造成循環迴圈。  
+ 您可以設定<xref:System.IdentityModel.Services.AuthorizationFailedEventArgs.RedirectToIdentityProvider%2A?displayProperty=nameWithType>屬性，即可控制是否已重新導向至識別提供者。 架構會初始化此屬性為`false`如果使用者尚未通過驗證。 在此情況下，將屬性設定為`true`與 STS 可能會造成循環迴圈。  
   
 > [!NOTE]
->  <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件可用來修改 URL 或取消重新導向。  
+>  <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件可用來修改 URL，或 [取消] 重新導向。  
   
- 若要處理這個 ASP.NET 應用程式中的事件，建立名為方法`WSFederationAuthentication_AuthorizationFailed`global.asax 檔中。  
+ 若要處理此 ASP.NET 應用程式中的事件，建立名為`WSFederationAuthentication_AuthorizationFailed`global.asax 檔案中。  
   
    
   
@@ -211,7 +213,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 登入回應訊息會傳送至信賴憑證者的合作對象 (RP)，以回應登入要求訊息安全性權杖服務 (STS)。  
+ 登入回應訊息傳送到信賴憑證者的合作對象 (RP) 回應登入要求訊息中安全性權杖服務 (STS)。  
   
  ]]></format>
         </remarks>
@@ -243,9 +245,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法會從傳入的 HTTP 要求包含 WS-同盟登入回應訊息的表單張貼要求處理管線叫用。  
+ 這個方法會叫用從要求處理管線，以判斷連入 HTTP 要求是否為表單 post，其中包含 WS-同盟登入回應訊息。  
   
- 它會叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%28System.Web.HttpRequestBase%2CSystem.Boolean%29?displayProperty=nameWithType>多載`onPage`參數集`false`表示處理網頁時，不是呼叫。  
+ 它會叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%28System.Web.HttpRequestBase%2CSystem.Boolean%29?displayProperty=nameWithType>多載`onPage`參數集`false`來指示在處理網頁時，不是呼叫。  
   
  ]]></format>
         </remarks>
@@ -283,15 +285,15 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法會叫用要求處理管線，透過從<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%28System.Web.HttpRequestBase%29?displayProperty=nameWithType>多載，以便判斷連入 HTTP 要求是否為表單 POST 包含 WS-同盟登入回應訊息。  
+ 這個方法會叫用要求處理管線，透過從<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%28System.Web.HttpRequestBase%29?displayProperty=nameWithType>多載來判斷內送的 HTTP 要求是否為表單 POST，其中包含 WS-同盟登入回應訊息。  
   
  預設實作會執行下列作業：  
   
--   如果內送要求的表單 POST，它會呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.IsSignInResponse%2A>方法來判斷表單 POST 是否包含登入回應。  
+-   如果內送要求表單 POST，它會呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.IsSignInResponse%2A>方法，以判斷是否表單 POST 中包含登入回應。  
   
--   如果連入要求的表單 POST，而且未要求包含 WS-同盟登出清除要求 （wa 參數會是"wsignoutcleanup1.0"），則會執行登出清除。 在此情況下，<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType>叫用方法時 (以將參數設定為`true`指出登出清除) 登出工作階段。 這也會導致引發登出的事件。  
+-   如果連入要求不是表單 POST，且此要求包含 WS-同盟登出清除要求 （wa 參數為"wsignoutcleanup1.0"），則會執行登出的清除工作。 在此情況下，<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType>叫用方法 (參數設定為`true`來指出登出清除) 若要登出工作階段。 這也會造成要引發的登出事件。  
   
-     接下來，如果登出清除要求包含 wreply 參數，用戶端重新導向至所傳回的 URL<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSignOutRedirectUrl%2A>方法; 否則會對 STS 傳回綠色的核取記號的映像。 此映像的回條可以當做 sts 登出清除要求已接收並已順利處理 RP 所確認的訊息。  
+     接下來，如果登出清除要求包含 wreply 參數，用戶端重新導向至所傳回的 URL<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSignOutRedirectUrl%2A>方法; 否則綠色的核取記號的映像會傳回至 STS。 此映像的回條可用 sts 確認登出清除要求已收到並順利處理 RP。  
   
  ]]></format>
         </remarks>
@@ -330,28 +332,31 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 建立由 WS-同盟登入要求<xref:System.IdentityModel.Services.SignInRequestMessage>物件。 新的屬性<xref:System.IdentityModel.Services.SignInRequestMessage>物件設定如下：  
+ 建立表示 WS-同盟登入要求<xref:System.IdentityModel.Services.SignInRequestMessage>物件。 新屬性<xref:System.IdentityModel.Services.SignInRequestMessage>物件設定，如下所示：  
   
--   <xref:System.IdentityModel.Services.WSFederationMessage.Context%2A>屬性 （wctx 參數） 設定為建立使用的方法參數的值。  
+-   <xref:System.IdentityModel.Services.WSFederationMessage.Context%2A>屬性 （wctx 參數） 設定為建立使用方法參數的值。  
   
 -   <xref:System.IdentityModel.Services.SignInRequestMessage.CurrentTime%2A>屬性 （wct 參數） 設定為目前的時間。  
   
--   使用目前的執行個體的對等屬性會設定所有其他屬性。  
+-   使用目前的執行個體的對等的屬性會設定所有其他屬性。  
   
- 傳遞給方法的參數用來建立 wctx 訊息參數。 這是以下列格式的字串： `ru=returnUrl&cx=SignInContext&rm=rememberMeSet&id=uniqueId`。  
+ 傳遞給方法的參數用來建立訊息 wctx 參數。 這是以下列格式的字串： `ru=returnUrl&cx=SignInContext&rm=rememberMeSet&id=uniqueId`。  
   
--   `ru`值設定的值為`returnUrl`參數中傳遞給方法，它會指定模組應該直接以下成功驗證瀏覽器的 URL。 這是唯一的值儲存在可由 WSFAM wctx 字串。 此模組會呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetReturnUrlFromResponse%2A>處理 WS-同盟登入回應時，從 wctx 參數擷取這個值的方法。 不應混淆的 wreply 訊息參數，指定由<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Reply%2A>屬性和其提供安全性權杖服務 (STS) 應該將其回應導向的 RP 的位址。  
+-   `ru`值設定的值為`returnUrl`參數傳遞至方法，而且它會指定模組應該導向到下列的成功驗證的瀏覽器的 URL。 這是唯一的值儲存在由 WSFAM wctx 字串。 此模組會呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetReturnUrlFromResponse%2A>處理 WS-同盟登入回應時，從 wctx 參數中擷取此值的方法。 不應混淆 wreply 訊息參數，以指定<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Reply%2A>屬性並提供安全性權杖服務 (STS) 應將其回應導向的 RP 的位址。  
   
--   `cx`參數設定的值為<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInContext%2A>屬性。 這個屬性會公開可讓您設定要 wctx 字串; 字串中儲存任何應用程式定義的內容不過，WSFAM 未公開的方法，以擷取回應中的這個值。 如果您的應用程式，就需要這個值，您必須提供程式碼來剖析 wctx 字串和處理回應時讀取這個值。 您可能會完成此作業藉由覆寫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetReturnUrlFromResponse%2A>方法。  
+-   `cx`參數設定的值為<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInContext%2A>屬性。 此屬性的出現可讓您設定任何應用程式定義的內容應該是儲存在 wctx 字串;不過，WSFAM 不會公開方法以擷取回應中的這個值。 如果您的應用程式需要此值，您必須提供程式碼來剖析 wctx 字串和處理回應時讀取這個值。 您可能會覆寫來達成此<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetReturnUrlFromResponse%2A>方法。  
   
--   既不`rm`值，設定的值為`rememberMeSet`參數，也不`id`參數，設定的值為`uniqueId`WSFAM 所使用參數。 這些可以設定為任何值。  
+-   既不`rm`設為值的值`rememberMeSet`參數，也不`id`參數的值為`uniqueId`WSFAM 所使用參數。 這些可以設定為任何值。  
   
  <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A>方法從呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectToIdentityProvider%2A>方法。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.InvalidOperationException">
-          <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" /> 屬性為 <see langword="null" /> 或空字串。  -或-  <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" /> 屬性為 <see langword="null" /> 或空字串。</exception>
+          <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" /> 屬性為 <see langword="null" /> 或空字串。  
+  
+-或- 
+<see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" /> 屬性為 <see langword="null" /> 或空字串。</exception>
         <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectToIdentityProvider(System.String,System.String,System.Boolean)" />
       </Docs>
     </Member>
@@ -382,25 +387,28 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 呼叫此方法以傳送至指定的 STS WS-同盟登出要求訊息。 您可以選擇性地提供登出要求中 wreply 參數的值。  
+ 呼叫這個方法，以將 WS-同盟登出要求訊息傳送至指定的 STS。 您可以選擇性地提供在登出要求 wreply 參數的值。  
   
  方法會執行下列動作：  
   
-1.  使用指定的參數，以建立 WS-同盟登出要求訊息。  
+1.  使用指定的參數，建立 Ws-federation 登出要求訊息。  
   
-2.  呼叫<xref:System.IdentityModel.Services.SessionAuthenticationModule.DeleteSessionTokenCookie%2A?displayProperty=nameWithType>上刪除工作階段 cookie SAM 方法。  
+2.  呼叫<xref:System.IdentityModel.Services.SessionAuthenticationModule.DeleteSessionTokenCookie%2A?displayProperty=nameWithType>方法來刪除工作階段 cookie SAM。  
   
-3.  重新導向至 STS 使用第一個步驟的登出要求訊息。  
+3.  重新導向至 STS 的使用中的第一個步驟的登出要求訊息。  
   
- 沒有登出事件： <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SigningOut>， <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedOut>，或<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutError>由這個方法所引發。 若要刪除工作階段而不需要登出要求訊息傳送給 STS，請呼叫其中一個多載<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%2A>方法。  
+ 沒有登出事件： <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SigningOut>， <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedOut>，或<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutError>由這個方法所引發。 若要刪除的工作階段，而不需要登出要求訊息傳送至 STS，呼叫其中一個多載<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%2A>方法。  
   
 > [!NOTE]
->  若要使用的工作階段權杖執行被動登出，模組會依賴值儲存於<xref:System.IdentityModel.Tokens.SessionSecurityToken.Context%2A?displayProperty=nameWithType>屬性在登入時，如需詳細資訊，請參閱<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSessionTokenContext%2A>方法。  
+>  若要使用的工作階段權杖，以執行被動登出，模組會依賴儲存在值<xref:System.IdentityModel.Tokens.SessionSecurityToken.Context%2A?displayProperty=nameWithType>屬性在登入時，如需詳細資訊，請參閱<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSessionTokenContext%2A>方法。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="signOutUrl" /> 不是 <see langword="null" />，也不是絕對 URI。  -或-  <paramref name="replyUrl" /> 不是 <see langword="null" />，也不是絕對 URI。</exception>
+          <paramref name="signOutUrl" /> 不是 <see langword="null" />，也不是絕對 URI。  
+  
+-或- 
+ <paramref name="replyUrl" /> 不是 <see langword="null" />，也不是絕對 URI。</exception>
         <exception cref="T:System.InvalidOperationException">
           <paramref name="signOutUrl" /> 為 <see langword="null" />。</exception>
         <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut" />
@@ -431,7 +439,7 @@
 ## Remarks  
  Wfresh 參數是選擇性的。 如果<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Freshness%2A>屬性設定為`null`或登入要求中未包含空字串，wfresh 參數。  
   
- 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 只在模組重新導向至與 WS-同盟登入要求訊息的安全性權杖服務 (STS) 之前，會引發這個事件。 所指定 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
+ 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 此模組會重新導向至安全性權杖服務 (STS) 使用 WS-同盟登入要求訊息之前，會引發這個事件。 所指定的 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
   
  ]]></format>
         </remarks>
@@ -467,7 +475,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 會傳回在 URL 中： 基底 URI 設定為`issuer`wa 參數設定為"wsignout1.0"; wreply 參數設定為`signOutReply`; 中指定的參數和`signOutQueryString`會呈現為其他查詢字串參數。  
+ 在傳回的 URL： 基底 URI 設為`issuer`wa 參數設定為"wsignout1.0"; wreply 參數設定為`signOutReply`; 中指定的參數和`signOutQueryString`有做為額外的查詢字串參數。  
   
  ]]></format>
         </remarks>
@@ -501,9 +509,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 由呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetXmlTokenFromMessage%28System.IdentityModel.Services.SignInResponseMessage%29?displayProperty=nameWithType>內處理管線的解析 URL 收到來自安全性權杖服務 (STS) 的登入回應訊息中 wresultptr 參數中指定的方法。  
+ 由呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetXmlTokenFromMessage%28System.IdentityModel.Services.SignInResponseMessage%29?displayProperty=nameWithType>解決從安全性權杖服務 (STS) 所收到的登入回應訊息中的 wresultptr 參數中指定的 URL 處理管線內的方法。  
   
- 依預設這個方法會擲回<xref:System.NotSupportedException>。 覆寫這個方法在衍生的類別，以支援 wresultptr 參數。 URL 指向發行結果，也應為下列其中一項：`<wst:RequestSecurityTokenResponse>`項目，`<wst:RequestSecurityTokenResponseCollection>`項目、 SOAP 回應或 SOAP`<S:Fault>`項目。  
+ 依預設這個方法會擲回<xref:System.NotSupportedException>。 覆寫此方法在衍生的類別，以支援的 wresultptr 參數。 URL 會指向發行結果，應該是下列其中一項：`<wst:RequestSecurityTokenResponse>`項目，`<wst:RequestSecurityTokenResponseCollection>`項目、 SOAP 回應或 SOAP`<S:Fault>`項目。  
   
  ]]></format>
         </remarks>
@@ -536,11 +544,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法呼叫從要求處理管線 (<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A>方法) 以取得在信賴憑證者的合作對象 (RP) 將用戶端導向網頁的 URL 之後成功登入。 這是，一般而言，RP 的用戶端原先要求資源存取的 URL。  
+ 從 要求處理管線會呼叫這個方法 (<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A>方法) 以取得成功登入之後的信賴憑證者的合作對象 (RP) 將用戶端導向頁面的 URL。 這是，一般而言，RP 的用戶端原先要求的資源存取的 URL。  
   
- 根據預設，WSFAM 將 WS-同盟登入要求傳送給安全性權杖服務 (STS) 時，儲存內 wctx 訊息參數的傳回 URL。 根據 WS-同盟規格，wctx 參數會保留的實體透過此訊息傳遞，而且是透過 WS-同盟登入回應訊息中傳送的 STS 原封不動地傳回。  
+ 根據預設，WSFAM 會儲存在 wctx 訊息參數的傳回 URL，WS-同盟登入要求傳送到安全性權杖服務 (STS) 時。 Wctx 參數保留跨實體透過此訊息傳遞，而且是根據 WS-同盟規格，STS 所傳送的 WS-同盟登入回應訊息中原封不動地傳回。  
   
- 預設實作會從 wctx 參數登入回應中取得的傳回 URL。 正由 WSFAM wctx 參數的格式的相關資訊，請參閱<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A>方法。  
+ 預設實作會取得從登入回應中的 wctx 參數的傳回 URL。 WSFAM 會使用的 wctx 參數格式的相關資訊，請參閱<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A>方法。  
   
  ]]></format>
         </remarks>
@@ -585,7 +593,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 預設實作會叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetXmlTokenFromMessage%28System.IdentityModel.Services.SignInResponseMessage%2CSystem.IdentityModel.Services.WSFederationSerializer%29?displayProperty=nameWithType>方法來取得權杖，並讀取使用適當的處理常式中設定的安全性權杖處理常式。  
+ 預設實作會叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetXmlTokenFromMessage%28System.IdentityModel.Services.SignInResponseMessage%2CSystem.IdentityModel.Services.WSFederationSerializer%29?displayProperty=nameWithType>方法來取得權杖，並使用適當的處理常式，從設定的安全性權杖處理常式讀取它。  
   
  ]]></format>
         </remarks>
@@ -619,11 +627,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 要求處理管線，以取得做為 WS-同盟登入要求訊息從呼叫<xref:System.IdentityModel.Tokens.SecurityToken>物件。  
+ 從 要求處理管線，以取得 WS-同盟登入要求訊息，做為呼叫<xref:System.IdentityModel.Tokens.SecurityToken>物件。  
   
  預設實作會叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSignInResponseMessage%2A>方法來取得<xref:System.IdentityModel.Services.SignInResponseMessage>物件，然後再叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSecurityToken%28System.IdentityModel.Services.SignInResponseMessage%29?displayProperty=nameWithType>多載。  
   
- 您可以使用衍生的類別來解譯特定類型的要求。  
+ 您可以使用衍生的類別來解譯為特定類型的要求。  
   
  ]]></format>
         </remarks>
@@ -654,9 +662,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSessionTokenContext%2A>處理 WS-同盟登入回應訊息，取得要在儲存的值時，方法從要求處理管線呼叫<xref:System.IdentityModel.Tokens.SessionSecurityToken.Context%2A?displayProperty=nameWithType>屬性內的工作階段 cookie。  
+ <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSessionTokenContext%2A>處理以取得此值將儲存在 WS-同盟登入回應訊息時，方法從 要求處理管線呼叫<xref:System.IdentityModel.Tokens.SessionSecurityToken.Context%2A?displayProperty=nameWithType>內的工作階段 cookie 的屬性。  
   
- 您可以覆寫這個方法以提供特定應用程式的值儲存在 cookie 中。 WSFAM 未公開任何方法來擷取 cookie 的值。 您必須提供邏輯讀取傳回的 cookie 的值，如果需要在應用程式中。  
+ 您可以覆寫這個方法，以提供應用程式專屬值儲存在 cookie 中。 WSFAM 不公開任何方法來擷取 cookie 的值。 在您的應用程式從 cookie 讀取的值，必要時，您必須提供邏輯。  
   
  ]]></format>
         </remarks>
@@ -726,21 +734,21 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法從呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%2A>判定之後處理 WS-同盟登出清除要求重新導向至 URL 的要求處理管線中的方法。 它才會叫用如果訊息具有 wreply 參數 (`signOutMessage`參數具有<xref:System.IdentityModel.Services.SignOutCleanupRequestMessage.Reply%2A>，既不是屬性`null`或空白)。  
+ 這個方法會從呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%2A>要求處理管線，以判斷要在處理 WS-同盟登出清除要求之後，重新導向至的 URL 中的方法。 它才會叫用如果訊息的 wreply 參數 (`signOutMessage`參數具有<xref:System.IdentityModel.Services.SignOutCleanupRequestMessage.Reply%2A>屬性，則不`null`或空)。  
   
- 預設實作會驗證訊息中包含的回覆 URL (<xref:System.IdentityModel.Services.SignOutCleanupRequestMessage.Reply%2A?displayProperty=nameWithType>屬性) 對安全性權杖服務 (STS) 所指定的位址<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。 下列條件必須是有效的回覆 url，則為 true:  
+ 預設實作會驗證訊息中包含的回覆 URL (<xref:System.IdentityModel.Services.SignOutCleanupRequestMessage.Reply%2A?displayProperty=nameWithType>屬性) 針對安全性權杖服務 (STS) 所指定的位址<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。 下列條件必須為有效的回覆 url，則為 true:  
   
 1.  回覆 URL 是絕對 URL。  
   
-2.  回覆 URL 有簽發者相同的結構描述。  
+2.  回覆 URL 有相同的結構描述為簽發者。  
   
-3.  回覆 URL 有簽發者相同的通訊埠。  
+3.  回覆 URL 有相同的連接埠為簽發者。  
   
-4.  回覆 URL 已簽發者相同的主控件，或回覆 URL 指定簽發者的子網域。  
+4.  回覆 URL 與簽發者相同的主機或回覆 URL 會指定簽發者的子網域。  
   
- 如果下列所有條件都不成立，就會傳回回覆 URL （回覆）;否則，根據指定的 URL<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>會傳回屬性。  
+ 如果所有這些條件都為 true，會傳回回覆 URL (Reply);否則，所指定的 URL<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>會傳回屬性。  
   
- 覆寫這個方法以提供額外的驗證回覆 URL。  
+ 覆寫此方法以提供額外的回覆 URL 的驗證。  
   
  ]]></format>
         </remarks>
@@ -785,7 +793,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果登入回應訊息中，沒有 wresult 參數<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetReferencedResult%2A>呼叫方法，嘗試取得權杖使用 wresultptr 參數。  
+ 如果在登入回應訊息中，沒有 wresult 參數<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetReferencedResult%2A>呼叫方法來嘗試取得權杖使用的 wresultptr 參數。  
   
  ]]></format>
         </remarks>
@@ -848,7 +856,7 @@
 ## Remarks  
  Whr 參數是選擇性的。 如果<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.HomeRealm%2A>屬性設定為`null`或登入要求中未包含空字串，whr 參數。  
   
- 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 只在模組重新導向至與 WS-同盟登入要求訊息的安全性權杖服務 (STS) 之前，會引發這個事件。 所指定 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
+ 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 此模組會重新導向至安全性權杖服務 (STS) 使用 WS-同盟登入要求訊息之前，會引發這個事件。 所指定的 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
   
  ]]></format>
         </remarks>
@@ -874,12 +882,12 @@
       </Parameters>
       <Docs>
         <param name="context">包含這個模組的 HTTP 應用程式物件。</param>
-        <summary>初始化模組，並準備模組以處理來自模組之 [!INCLUDE[vstecasp] (~/includes/vstecasp-md.md)] 應用程式物件的事件。</summary>
+        <summary>初始化模組，並做準備以處理來自模組之 [!INCLUDE[vstecasp](~/includes/vstecasp-md.md)] 應用程式物件的事件。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 將根據下表的 ASP.NET 管線事件處理常式。  
+ 新增根據下表的 ASP.NET 管線事件處理常式。  
   
 |Event - 事件|處理常式|  
 |-----------|-------------|  
@@ -919,7 +927,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 模組屬性會使用對等的屬性初始化<xref:System.IdentityModel.Services.Configuration.WsFederationConfiguration>所指定物件<xref:System.IdentityModel.Services.Configuration.FederationConfiguration.WsFederationConfiguration%2A?displayProperty=nameWithType>屬性。  
+ 使用對等的屬性初始化模組屬性<xref:System.IdentityModel.Services.Configuration.WsFederationConfiguration>所指定的物件<xref:System.IdentityModel.Services.Configuration.FederationConfiguration.WsFederationConfiguration%2A?displayProperty=nameWithType>屬性。  
   
  您可以透過組態檔中指定設定[ &lt;wsFederation&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/wsfederation.md)項目。  
   
@@ -953,11 +961,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法從呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%2A>要求處理管線，以判斷連入 HTTP 要求是否為 WS-同盟登入回應訊息中的方法。  
+ 這個方法會從呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%2A>要求處理管線，以判斷連入 HTTP 要求是否為 WS-同盟登入回應訊息中的方法。  
   
- 預設實作會傳回`true`如果 wa 參數是"wsignin1.0 」 和 wreq，且不能同時設定 wreqptr 參數。  
+ 預設實作會傳回`true`如果 wa 參數為"wsignin1.0"wreq 和 wreqptr 參數都不設定。  
   
- 您可以覆寫這個方法在衍生類別來執行額外的驗證。  
+ 您可以覆寫這個方法在衍生類別就可以執行額外的驗證。  
   
  ]]></format>
         </remarks>
@@ -987,13 +995,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這是必要的屬性。 如果啟用被動重新導向，則必須設定。 它會指定 WS-同盟要求應該發行安全性權杖服務 (STS) 的 URL。  
+ 這是必要的屬性。 如果啟用被動式重新導向，則必須設定。 它會指定 WS-同盟要求應該簽發安全性權杖服務 (STS) 的 URL。  
   
- 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 只在模組重新導向至與 WS-同盟登入要求訊息的安全性權杖服務 (STS) 之前，會引發這個事件。 所指定 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
+ 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 此模組會重新導向至安全性權杖服務 (STS) 使用 WS-同盟登入要求訊息之前，會引發這個事件。 所指定的 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">嘗試將屬性設為 <see langword="null" /> 或空字串。  -或-  嘗試將屬性值設定為無效絕對 URI 的值。</exception>
+        <exception cref="T:System.ArgumentException">嘗試將屬性設為 <see langword="null" /> 或空字串。  
+  
+-或- 
+嘗試將屬性設為不是有效的絕對 URI 的值。</exception>
       </Docs>
     </Member>
     <Member MemberName="OnAuthenticateRequest">
@@ -1018,35 +1029,35 @@
       <Docs>
         <param name="sender">事件的來源。 這個將會是 <see cref="T:System.Web.HttpApplication" /> 物件。</param>
         <param name="args">事件的資料。</param>
-        <summary>處理來自 [!INCLUDE[vstecasp] (~/includes/vstecasp-md.md)] 管線的 <see cref="E:System.Web.HttpApplication.AuthenticateRequest" /> 事件。</summary>
+        <summary>處理來自 [!INCLUDE[vstecasp](~/includes/vstecasp-md.md)] 管線的 <see cref="E:System.Web.HttpApplication.AuthenticateRequest" /> 事件。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A>方法會實作 WS-同盟要求處理管線。 它會加入至<xref:System.Web.HttpApplication.AuthenticateRequest?displayProperty=nameWithType>中的事件[!INCLUDE[vstecasp](~/includes/vstecasp-md.md)]由管線<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.InitializeModule%2A>方法。  
+ <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A>方法會實作 WS-同盟要求處理管線。 它會新增至<xref:System.Web.HttpApplication.AuthenticateRequest?displayProperty=nameWithType>中的事件[!INCLUDE[vstecasp](~/includes/vstecasp-md.md)]管線由<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.InitializeModule%2A>方法。  
   
  此方法會執行下列作業：  
   
-1.  呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%28System.Web.HttpRequestBase%29>方法，以判斷是否已經接收到的 WS-同盟登入回應訊息 (「 wsignin1.0")。 如果回應的 WS-同盟登出清除要求 (「 wsignoutcleanup1.0 」)<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%28System.Web.HttpRequestBase%29>處理訊息，終止要求，並在要求中的 WS-同盟參數根據用戶端重新導向。 如果訊息不是登入回應或登出清除要求中，模組只會傳回。否則，它會執行下列步驟來處理登入回應。  
+1.  呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%28System.Web.HttpRequestBase%29>方法，以判斷是否已收到的 WS-同盟登入回應訊息 ("wsignin1.0")。 如果回應是 WS-同盟登出清除要求 ("wsignoutcleanup1.0")<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%28System.Web.HttpRequestBase%29>處理訊息，會終止要求，並在要求中的 WS-同盟參數根據用戶端重新導向。 如果訊息不是將登入回應或登出清除要求，此模組只會傳回;否則它會執行下列步驟，以處理登入回應。  
   
-2.  呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSecurityToken%28System.Web.HttpRequestBase%29>方法還原序列化<xref:System.IdentityModel.Tokens.SecurityToken>從要求的物件。  
+2.  呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSecurityToken%28System.Web.HttpRequestBase%29>方法來還原序列化<xref:System.IdentityModel.Tokens.SecurityToken>從要求的物件。  
   
-3.  引發 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenReceived> 事件。 您可以取消進一步處理，或修改此事件處理常式中接收的安全性權杖。 處理常式通常用來修改<xref:System.IdentityModel.Tokens.SecurityToken.ValidFrom%2A?displayProperty=nameWithType>或<xref:System.IdentityModel.Tokens.SecurityToken.ValidTo%2A?displayProperty=nameWithType>屬性。  
+3.  引發 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenReceived> 事件。 您可以取消進一步處理，或修改此事件處理常式中的已接收的安全性權杖。 處理常式通常用來修改<xref:System.IdentityModel.Tokens.SecurityToken.ValidFrom%2A?displayProperty=nameWithType>或<xref:System.IdentityModel.Tokens.SecurityToken.ValidTo%2A?displayProperty=nameWithType>屬性。  
   
 4.  驗證安全性權杖，並建立<xref:System.Security.Claims.ClaimsPrincipal>從安全性權杖中宣告的物件。  
   
-5.  引發 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenValidated> 事件。 您可以取消進一步處理，或修改此事件處理常式中的宣告主體。  
+5.  引發 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenValidated> 事件。 您可以取消進一步處理，或修改這個事件處理常式中的宣告主體。  
   
-6.  若要建立使用設定的工作階段驗證模組 (SAM)<xref:System.IdentityModel.Tokens.SessionSecurityToken>物件。 (在設定 sam<xref:System.IdentityModel.Services.SessionAuthenticationModule>所傳回物件<xref:System.IdentityModel.Services.FederatedAuthentication.SessionAuthenticationModule%2A?displayProperty=nameWithType>屬性。)使用在步驟 5 中所傳回宣告主體建立的工作階段權杖。 <xref:System.IdentityModel.Tokens.SessionSecurityToken.ValidFrom%2A?displayProperty=nameWithType>和<xref:System.IdentityModel.Tokens.SessionSecurityToken.ValidTo%2A?displayProperty=nameWithType>屬性使用設定的<xref:System.IdentityModel.Tokens.SecurityToken.ValidFrom%2A>和<xref:System.IdentityModel.Tokens.SecurityToken.ValidTo%2A>屬性<xref:System.IdentityModel.Tokens.SecurityToken>在步驟 3 傳回與目前時間與任一所指定的權杖存留期會驗證<xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler.DefaultTokenLifetime%2A>或<xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler.TokenLifetime%2A>屬性<xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler>WSFAM 正在使用的語彙基元處理常式集合中的物件。 權杖存留期在工作階段權杖處理常式可以透過組態中指定[ &lt;sessionTokenRequirement&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/sessiontokenrequirement.md)項目。 注意：<xref:System.IdentityModel.Services.CookieHandler.PersistentSessionLifetime%2A>屬性上設定不會使用 SAM cookie 處理常式。  
+6.  若要建立會使用設定的工作階段驗證模組 (SAM)<xref:System.IdentityModel.Tokens.SessionSecurityToken>物件。 (在設定 sam<xref:System.IdentityModel.Services.SessionAuthenticationModule>所傳回的物件<xref:System.IdentityModel.Services.FederatedAuthentication.SessionAuthenticationModule%2A?displayProperty=nameWithType>屬性。)使用步驟 5 中所傳回的宣告主體建立的工作階段權杖。 <xref:System.IdentityModel.Tokens.SessionSecurityToken.ValidFrom%2A?displayProperty=nameWithType>及<xref:System.IdentityModel.Tokens.SessionSecurityToken.ValidTo%2A?displayProperty=nameWithType>屬性使用設定的<xref:System.IdentityModel.Tokens.SecurityToken.ValidFrom%2A>並<xref:System.IdentityModel.Tokens.SecurityToken.ValidTo%2A>的屬性<xref:System.IdentityModel.Tokens.SecurityToken>步驟 3 中所傳回，並會根據目前時間與任一所指定的權杖存留期驗證<xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler.DefaultTokenLifetime%2A>或是<xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler.TokenLifetime%2A>屬性<xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler>WSFAM 正在使用的權杖處理常式集合中的物件。 透過設定中，可以指定在工作階段權杖處理常式的權杖存留期[ &lt;sessionTokenRequirement&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/sessiontokenrequirement.md)項目。 注意：<xref:System.IdentityModel.Services.CookieHandler.PersistentSessionLifetime%2A>上設定 SAM 未使用的 cookie 處理常式的屬性。  
   
-7.  呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SetPrincipalAndWriteSessionToken%2A>方法包含用來撰寫工作階段 cookie 工作階段 token。 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SetPrincipalAndWriteSessionToken%2A>第一個方法會引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated>事件。 您可以變更工作階段權杖上的屬性，或變更是否應該保存 cookie，此事件處理常式中。 引發事件之後，方法會再寫入使用 SAM 的 cookie。  
+7.  呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SetPrincipalAndWriteSessionToken%2A>撰寫工作階段 cookie 的工作階段權杖的方法。 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SetPrincipalAndWriteSessionToken%2A>方法的第一個會引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated>事件。 您可以變更工作階段權杖上的屬性，或變更是否 cookie 應保留在這個事件處理常式。 引發事件之後，方法則會寫入使用 SAM 的 cookie。  
   
     > [!NOTE]
-    >  <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler>組態的設定不會用來撰寫 cookie。  
+    >  <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler>組態中的設定不會用來寫入 cookie。  
   
-8.  呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignedIn%2A>方法，以引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedIn>事件。  
+8.  呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignedIn%2A>方法以引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedIn>事件。  
   
-9. 呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetReturnUrlFromResponse%2A>方法來取得要用戶端重新導向至 [RP] 頁面。 根據預設，這個方法會讀取 wctx 參數，在登入回應中傳回的 URL。 如需如何 WSFAM 儲存傳回 URL 的詳細資訊，請參閱<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A>方法。  
+9. 呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetReturnUrlFromResponse%2A>方法來取得要重新導向用戶端的 [RP] 頁面。 根據預設，這個方法會讀取之 wctx 參數中的登入回應傳回的 URL。 如需有關如何 WSFAM 會儲存傳回的 URL 的詳細資訊，請參閱<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A>方法。  
   
  ]]></format>
         </remarks>
@@ -1077,9 +1088,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 從呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnEndRequest%2A>授權失敗時，事件處理常式委派。  
+ 從呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnEndRequest%2A>授權失敗時的事件處理常式委派。  
   
- 初始化<xref:System.IdentityModel.Services.AuthorizationFailedEventArgs.RedirectToIdentityProvider%2A?displayProperty=nameWithType>屬性引發之前<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.AuthorizationFailed>事件以避免循環的重新導向，如果使用者已經過驗證。 如果使用者已經過驗證，屬性會初始化為`false`若要避免重新導向; 否則它會初始化為`true`。  
+ 初始化<xref:System.IdentityModel.Services.AuthorizationFailedEventArgs.RedirectToIdentityProvider%2A?displayProperty=nameWithType>屬性，才能引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.AuthorizationFailed>事件，以避免循環的重新導向，如果使用者尚未通過驗證。 如果使用者尚未通過驗證，此屬性會初始化為`false`若要避免重新導向; 否則它會初始化為`true`。  
   
  ]]></format>
         </remarks>
@@ -1107,7 +1118,7 @@
       <Docs>
         <param name="sender">事件的來源。 這個將會是 <see cref="T:System.Web.HttpApplication" /> 物件。</param>
         <param name="args">事件的資料。</param>
-        <summary>處理來自 [!INCLUDE[vstecasp] (~/includes/vstecasp-md.md)] 管線的 <see cref="E:System.Web.HttpApplication.EndRequest" /> 事件。</summary>
+        <summary>處理來自 [!INCLUDE[vstecasp](~/includes/vstecasp-md.md)] 管線的 <see cref="E:System.Web.HttpApplication.EndRequest" /> 事件。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1140,7 +1151,7 @@
       <Docs>
         <param name="sender">事件的來源。 這個將會是 <see cref="T:System.Web.HttpApplication" /> 物件。</param>
         <param name="e">事件的資料。</param>
-        <summary>處理來自 [!INCLUDE[vstecasp] (~/includes/vstecasp-md.md)] 管線的 <see cref="E:System.Web.HttpApplication.PostAuthenticateRequest" /> 事件。</summary>
+        <summary>處理來自 [!INCLUDE[vstecasp](~/includes/vstecasp-md.md)] 管線的 <see cref="E:System.Web.HttpApplication.PostAuthenticateRequest" /> 事件。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1248,7 +1259,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 從呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType>方法之後的工作階段遭到刪除。  
+ 從呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType>方法之後工作階段遭到刪除。  
   
  ]]></format>
         </remarks>
@@ -1366,7 +1377,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 未啟用此模式時，此模組將不會起始 WS-同盟通訊協定重新導向。 如果這個屬性是`true`、<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性必須設定的安全性權杖服務 (STS) 的呼叫端應該重新導向的 url。  
+ 未啟用此模式時，此模組將不會起始 WS-同盟通訊協定重新導向。 如果這個屬性是`true`，則<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性必須設為 URL 的安全性權杖服務 (STS) 的呼叫端應該重新導向。  
   
 > [!WARNING]
 >  應用程式程式碼可以明確發出 WS-同盟登入要求，使用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignIn%2A>方法，不論值<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.PassiveRedirectEnabled%2A>屬性。  
@@ -1399,7 +1410,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated>事件。 從要求處理管線處理 WS-同盟登入回應訊息從安全性權杖服務 (STS) 時，會引發這個事件。  
+ 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated>事件。 從 要求處理管線處理 WS-同盟登入回應訊息從安全性權杖服務 (STS) 時，會引發這個事件。  
   
  ]]></format>
         </remarks>
@@ -1430,7 +1441,7 @@
 ## Remarks  
  Wp 參數是選擇性的。 如果<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Policy%2A>屬性設定為`null`或登入要求中未包含空字串，wp 參數。  
   
- 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 只在模組重新導向至與 WS-同盟登入要求訊息的安全性權杖服務 (STS) 之前，會引發這個事件。 所指定 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
+ 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 此模組會重新導向至安全性權杖服務 (STS) 使用 WS-同盟登入要求訊息之前，會引發這個事件。 所指定的 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
   
  ]]></format>
         </remarks>
@@ -1458,15 +1469,18 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這是 WS-同盟登入要求的必要的屬性。 如果啟用被動重新導向，則必須設定。 URI 會識別對 STS RP。 (如識別 rp STS，請參閱<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性)。  
+ 這是 WS-同盟登入要求的必要的屬性。 如果啟用被動式重新導向，則必須設定。 URI 會識別向 STS RP。 (如識別為 rp 專屬 STS，請參閱<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性)。  
   
- 這個屬性的值會序列化為 WS-同盟通訊協定中 wtrealm 查詢字串參數。 它會識別對 STS RP。 它用來決定要套用的權杖發行及如何將使用者重新導向後權杖發行哪些原則 STS。 (如識別 rp STS，請參閱<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>。)  
+ 這個屬性的值會序列化為 WS-同盟通訊協定中的 wtrealm 查詢字串參數。 它會識別向 STS RP。 STS 用來決定要針對權杖發行和權杖發行之後，重新導向至使用者的位置套用哪些原則。 (如識別為 rp 專屬 STS，請參閱<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>。)  
   
- 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 只在模組重新導向至與 WS-同盟登入要求訊息的安全性權杖服務 (STS) 之前，會引發這個事件。 所指定 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
+ 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 此模組會重新導向至安全性權杖服務 (STS) 使用 WS-同盟登入要求訊息之前，會引發這個事件。 所指定的 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">嘗試將屬性設為 <see langword="null" /> 或空字串。  -或-  嘗試將屬性值設定為無效絕對 URI 的值。</exception>
+        <exception cref="T:System.ArgumentException">嘗試將屬性設為 <see langword="null" /> 或空字串。  
+  
+-或- 
+嘗試將屬性設為不是有效的絕對 URI 的值。</exception>
       </Docs>
     </Member>
     <Member MemberName="RedirectingToIdentityProvider">
@@ -1490,24 +1504,24 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您可以存取和修改 WS-同盟登入要求透過<xref:System.IdentityModel.Services.RedirectingToIdentityProviderEventArgs.SignInRequestMessage%2A?displayProperty=nameWithType>屬性。 例如，您可以修改<xref:System.IdentityModel.Services.FederationMessage.BaseUri%2A>登入訊息變更要求會重新導向的身分識別提供者中的屬性。 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件是可取消事件，您可以設定<xref:System.ComponentModel.CancelEventArgs.Cancel%2A>屬性`true`取消重新導向。  
+ 您可以存取及修改 WS-同盟登入要求透過<xref:System.IdentityModel.Services.RedirectingToIdentityProviderEventArgs.SignInRequestMessage%2A?displayProperty=nameWithType>屬性。 例如，您可以修改<xref:System.IdentityModel.Services.FederationMessage.BaseUri%2A>變更要求會重新導向的身分識別提供者登入訊息中的屬性。 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件可取消事件，而且您可以設定<xref:System.ComponentModel.CancelEventArgs.Cancel%2A>屬性設`true`取消重新導向。  
   
- 事件引發時，從內<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectToIdentityProvider%2A>方法透過呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnRedirectingToIdentityProvider%2A>方法。  
+ 事件引發時，從內<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectToIdentityProvider%2A>方法，透過呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnRedirectingToIdentityProvider%2A>方法。  
   
- 若要處理這個 ASP.NET 應用程式中的事件，建立方法，稱為`WSFederationAuthentication_RedirectingToIdentityProvider`global.asax 檔中。  
+ 若要處理此 ASP.NET 應用程式中的事件，建立呼叫的方法`WSFederationAuthentication_RedirectingToIdentityProvider`global.asax 檔案中。  
   
    
   
 ## Examples  
- 下列程式碼示範如何將加入的處理常式<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>中的事件`Application_Init`global.asax 檔案中的事件。 程式碼取自`FederationForWebApps`範例。 如需有關此範例的詳細資訊，請參閱[WIF 程式碼範例索引](~/docs/framework/security/wif-code-sample-index.md)。  
+ 下列程式碼示範如何將加入的處理常式<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>中的事件`Application_Init`global.asax 檔案中的事件。 程式碼取自`FederationForWebApps`範例。 如需有關此範例的詳細資訊，請參閱 < [WIF 程式碼範例索引](~/docs/framework/security/wif-code-sample-index.md)。  
   
   
   
- 下列程式碼顯示的處理常式<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>中的事件 RP 的 global.asax 檔中。 程式碼會檢查以查看是否傳入 HTTP 要求包含 whr 參數傳送，而且如果是的話，它會設定這個參數會傳送至 STS WS-同盟登入要求。 程式碼取自`FederationForWebApps`範例。 如需有關此範例的詳細資訊，請參閱[WIF 程式碼範例索引](~/docs/framework/security/wif-code-sample-index.md)。  
+ 下列程式碼顯示處理常式<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件在 RP 的 global.asax 檔案中。 程式碼會檢查以查看是否傳入 HTTP 要求包含 whr 參數，而且若是如此，它會設定此參數將會傳送至 STS WS-同盟登入要求。 程式碼取自`FederationForWebApps`範例。 如需有關此範例的詳細資訊，請參閱 < [WIF 程式碼範例索引](~/docs/framework/security/wif-code-sample-index.md)。  
   
   
   
- 下列程式碼顯示的處理常式<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>中的事件為同盟提供者 STS 的 global.asax 檔中。 程式碼會檢查傳入的 HTTP 要求是否包含 whr 參數。 如果要求包含 whr 參數，用戶端已導向至登入; IP STS如果沒有，則用戶端已導向至主領域探索頁面上，選取要登入 IP STS。 程式碼取自`FederationForWebApps`範例。 如需有關此範例的詳細資訊，請參閱[WIF 程式碼範例索引](~/docs/framework/security/wif-code-sample-index.md)。  
+ 下列程式碼顯示處理常式<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件中的的同盟提供者 STS 的 global.asax 檔案中。 程式碼會檢查傳入的 HTTP 要求是否包含 whr 參數。 如果要求包含的 whr 參數，用戶端已導向至 IP STS 進行登入;如果沒有，則用戶端時，會導向至主領域探索頁面上，選取要登入 IP-STS。 程式碼取自`FederationForWebApps`範例。 如需有關此範例的詳細資訊，請參閱 < [WIF 程式碼範例索引](~/docs/framework/security/wif-code-sample-index.md)。  
   
   
   
@@ -1544,22 +1558,31 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectToIdentityProvider%2A>方法從呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignIn%2A>方法時所呈現的信賴憑證者的合作對象 (RP) 或從網頁上發出要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnEndRequest%2A>上執行被動重新導向至身分識別提供者的事件處理常式委派授權失敗。  
+ <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectToIdentityProvider%2A>方法從呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignIn%2A>方法，從網頁上呈現的信賴憑證者的合作對象 (RP)，或從發出要求時<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnEndRequest%2A>上執行被動式重新導向至識別提供者的事件處理常式委派授權失敗。  
   
- 傳遞給方法的參數用來建立 wctx 訊息參數。 唯一顯著的參數是`returnUrl`參數。 這會指定 RP 應導向瀏覽器以下列驗證成功的 URL。 不應混淆的 wreply 訊息參數，指定由<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Reply%2A>屬性和其提供安全性權杖服務 (STS) 應該將其回應導向的 RP 的位址。  
+ 傳遞給方法的參數用來建立訊息 wctx 參數。 只有重要的參數是`returnUrl`參數。 這會指定 RP 應該導向到下列的成功驗證的瀏覽器的 URL。 不應混淆 wreply 訊息參數，以指定<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Reply%2A>屬性並提供安全性權杖服務 (STS) 應將其回應導向的 RP 的位址。  
   
  此方法會執行下列作業：  
   
 1.  叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.VerifyProperties%2A>方法，以確保有效的登入要求可以所簽發的模組。  
   
-2.  叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A>方法來建立登入要求，從在模組上設定的屬性。  
+2.  叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A>從模組上設定的屬性建立的登入要求的方法。  
   
-3.  叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnRedirectingToIdentityProvider%2A>方法，以引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 您可以取消重新導向，或修改此事件的事件處理常式中的登入要求訊息。  
+3.  叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnRedirectingToIdentityProvider%2A>方法以引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 您可以取消重新導向，或修改登入要求訊息中以這個事件的事件處理常式。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.InvalidOperationException">
-          <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" /> 為 <see langword="null" /> 或空字串。  -或-  <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" /> 為 <see langword="null" /> 或空字串。  -或-  <see cref="P:System.Web.HttpContext.Current" /> 屬性為 <see langword="null" /> 或空白。  -或-  <see cref="P:System.Web.HttpContext.Current" /> 所傳回內容的 <see cref="P:System.Web.HttpContext.Response" /> 屬性為 <see langword="null" /> 或空白。</exception>
+          <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" /> 為 <see langword="null" /> 或空字串。  
+  
+-或- 
+ <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" /> 為 <see langword="null" /> 或空字串。  
+  
+-或- 
+<see cref="P:System.Web.HttpContext.Current" /> 屬性為 <see langword="null" /> 或空的。  
+  
+-或- 
+由 <see cref="P:System.Web.HttpContext.Response" /> 傳回的內容的 <see cref="P:System.Web.HttpContext.Current" /> 屬性是 <see langword="null" /> 或空白。</exception>
       </Docs>
     </Member>
     <Member MemberName="Reply">
@@ -1586,7 +1609,7 @@
 ## Remarks  
  Wreply 參數是選擇性的。 如果<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Reply%2A>屬性設定為`null`或登入要求中未包含空字串，wreply 參數。  
   
- Wreply 參數由 STS 用於決定要將使用者重新導向後權杖發行的位置。 您不使用這個位址重新導向使用者，因為這類的重新導向有安全性弱點 STS 的建議。 STS （可能藉由比較一組預先設定的回覆地址的目的或透過其他方法） 必須驗證的回覆地址，請確定傳送回覆至了解已知且安全的位置。  
+ Wreply 參數由 STS 用於決定要將使用者重新導向在權杖發行之後的位置。 不建議用於盲目地使用此位址，因為這類的重新導向的安全性弱點，將使用者重新導向至 STS。 回覆地址必須經過 STS （可能藉由比較一組預先設定的回覆地址的目的或透過其他方法），藉此確定傳送回覆至了解已知且安全的位置。  
   
  ]]></format>
         </remarks>
@@ -1617,7 +1640,7 @@
 ## Remarks  
  Wreq 參數是選擇性的。 如果<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Request%2A>屬性設定為`null`或登入要求中未包含空字串，wreq 參數。  
   
- 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 只在模組重新導向至與 WS-同盟登入要求訊息的安全性權杖服務 (STS) 之前，會引發這個事件。 所指定 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
+ 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 此模組會重新導向至安全性權杖服務 (STS) 使用 WS-同盟登入要求訊息之前，會引發這個事件。 所指定的 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
   
  ]]></format>
         </remarks>
@@ -1647,7 +1670,7 @@
 ## Remarks  
  Wreqptr 參數是選擇性的。 如果<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RequestPtr%2A>屬性設定為`null`或登入要求中未包含空字串，wreq 參數。  
   
- 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 只在模組重新導向至與 WS-同盟登入要求訊息的安全性權杖服務 (STS) 之前，會引發這個事件。 所指定 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
+ 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 此模組會重新導向至安全性權杖服務 (STS) 使用 WS-同盟登入要求訊息之前，會引發這個事件。 所指定的 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
   
  ]]></format>
         </remarks>
@@ -1697,11 +1720,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wtrealm 參數，這是由<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm%2A>應該使用屬性，而非這個參數。  
+ Wtrealm 參數，會設定此<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm%2A>屬性應該用於取代本參數。  
   
  Wres 參數是選擇性的。 如果<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Resource%2A>屬性設定為`null`或登入要求中未包含空字串，wres 參數。  
   
- 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 只在模組重新導向至與 WS-同盟登入要求訊息的安全性權杖服務 (STS) 之前，會引發這個事件。 所指定 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
+ 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 此模組會重新導向至安全性權杖服務 (STS) 使用 WS-同盟登入要求訊息之前，會引發這個事件。 所指定的 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
   
  ]]></format>
         </remarks>
@@ -1728,9 +1751,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您可以加入事件處理常式之前驗證修改語彙基元。 在事件處理常式您可以存取的安全性權杖，透過<xref:System.IdentityModel.Services.SecurityTokenReceivedEventArgs.SecurityToken%2A?displayProperty=nameWithType>屬性。 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenReceived>事件是否可取消事件，您可以設定<xref:System.ComponentModel.CancelEventArgs.Cancel%2A>屬性`true`終止處理 WS-同盟登入回應訊息的事件處理常式中。  
+ 您可以新增事件處理常式來修改此語彙基元之前會進行驗證。 在事件處理常式您可以存取的安全性權杖，透過<xref:System.IdentityModel.Services.SecurityTokenReceivedEventArgs.SecurityToken%2A?displayProperty=nameWithType>屬性。 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenReceived>事件可取消事件，您可以設定<xref:System.ComponentModel.CancelEventArgs.Cancel%2A>屬性設`true`終止處理 WS-同盟登入回應訊息的事件處理常式中。  
   
- 會引發這個事件，從內<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A>處理接收從安全性權杖服務 (STS) 的 WS-同盟登入回應訊息 (「 wsignin1.0 」) 時，事件處理常式委派。 從 wresult 或 wresultptr 參數在登入回應訊息中，但驗證安全性權杖之前，已還原序列化安全性權杖之後，就會引發此事件。  
+ 會引發這個事件，從內<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A>處理從安全性權杖服務 (STS) 接收 WS-同盟登入回應訊息 ("wsignin1.0") 時，事件處理常式委派。 從 wresult 或 wresultptr 參數在登入回應訊息中，但驗證安全性權杖之前，已還原序列化安全性權杖之後，就會引發這個事件。  
   
    
   
@@ -1763,9 +1786,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您可以加入事件處理常式來修改它用來建立工作階段權杖之前，處理從安全性權杖服務 (STS) 的 WS-同盟登入回應訊息時所建立的主體。 在事件處理常式，您可以存取透過主體<xref:System.IdentityModel.Services.SecurityTokenValidatedEventArgs.ClaimsPrincipal%2A>屬性。 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenValidated>事件是否可取消事件，您可以設定<xref:System.ComponentModel.CancelEventArgs.Cancel%2A>屬性`true`終止處理 WS-同盟登入回應訊息的事件處理常式中。  
+ 您可以新增事件處理常式來修改它用來建立工作階段權杖之前，處理從安全性權杖服務 (STS) 的 WS-同盟登入回應訊息時所建立的主體。 在事件處理常式中，您可以存取透過主體<xref:System.IdentityModel.Services.SecurityTokenValidatedEventArgs.ClaimsPrincipal%2A>屬性。 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenValidated>事件可取消事件，您可以設定<xref:System.ComponentModel.CancelEventArgs.Cancel%2A>屬性設`true`終止處理 WS-同盟登入回應訊息的事件處理常式中。  
   
- 會引發這個事件，從內<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A>處理接收從安全性權杖服務 (STS) 的 WS-同盟登入回應訊息 (「 wsignin1.0 」) 時，事件處理常式委派。 會引發此事件只會在還原序列化 wresult 從安全性權杖之後或 wresultptr 參數登入回應訊息中的已驗證，以及工作階段安全性權杖建立之前。  
+ 會引發這個事件，從內<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A>處理從安全性權杖服務 (STS) 接收 WS-同盟登入回應訊息 ("wsignin1.0") 時，事件處理常式委派。 會引發此事件之後已從 wresult 還原序列化安全性權杖或已驗證登入回應訊息中的 wresultptr 參數，以及工作階段安全性語彙基元建立之前。  
   
    
   
@@ -1797,12 +1820,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您可以加入事件處理常式若要修改的工作階段權杖，再用來設定執行緒主體並寫入至工作階段 cookie。 在事件處理常式，您可以存取透過工作階段權杖<xref:System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs.SessionToken%2A?displayProperty=nameWithType>屬性。 您可以指定工作階段 cookie 是否應將設定寫入<xref:System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs.WriteSessionCookie%2A?displayProperty=nameWithType>屬性。  
+ 您可以新增事件處理常式若要修改的工作階段權杖，然後才會用來設定執行緒主體，並寫入工作階段 cookie。 在事件處理常式中，您可以存取透過工作階段權杖<xref:System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs.SessionToken%2A?displayProperty=nameWithType>屬性。 您可以指定是否應該藉由設定寫入工作階段 cookie<xref:System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs.WriteSessionCookie%2A?displayProperty=nameWithType>屬性。  
   
- 會引發這個事件，從內<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A>處理接收從安全性權杖服務 (STS) 的 WS-同盟登入回應訊息 (「 wsignin1.0 」) 時，事件處理常式委派。 會引發此事件之後已從 wresult 還原序列化安全性權杖或已驗證登入回應訊息中的 wresultptr 參數，並宣告前上設定主體<xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType>(以及<xref:System.Web.HttpContext.User%2A>屬性<xref:System.Web.HttpContext.Current%2A?displayProperty=nameWithType>).  
+ 會引發這個事件，從內<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A>處理從安全性權杖服務 (STS) 接收 WS-同盟登入回應訊息 ("wsignin1.0") 時，事件處理常式委派。 會引發此事件之後已從 wresult 還原序列化安全性權杖或已驗證登入回應訊息中的 wresultptr 參數，並且會在宣告之前上設定主體<xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType>(在<xref:System.Web.HttpContext.User%2A>的屬性<xref:System.Web.HttpContext.Current%2A?displayProperty=nameWithType>).  
   
 > [!IMPORTANT]
->  Microsoft 建議您提供的處理常式操作參考模式中的工作階段<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated?displayProperty=nameWithType>global.asax.cs 檔案，並在設定中的事件<xref:System.IdentityModel.Tokens.SessionSecurityToken.IsReferenceMode%2A?displayProperty=nameWithType>屬性對這個語彙基元傳入<xref:System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs.SessionToken%2A?displayProperty=nameWithType>屬性。 這可確保工作階段權杖仍會為每個要求的參考模式運作，並會優先使用前者只設定<xref:System.IdentityModel.Services.SessionAuthenticationModule.IsReferenceMode%2A?displayProperty=nameWithType>工作階段驗證模組上的屬性。  
+>  若要操作工作階段在參考模式中，Microsoft 建議您提供的處理常式<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated?displayProperty=nameWithType>事件中的 global.asax.cs 檔案及設定<xref:System.IdentityModel.Tokens.SessionSecurityToken.IsReferenceMode%2A?displayProperty=nameWithType>傳入的權杖上<xref:System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs.SessionToken%2A?displayProperty=nameWithType>屬性。 這可確保工作階段權杖會以每個要求的參考模式運作，且優先只要設定<xref:System.IdentityModel.Services.SessionAuthenticationModule.IsReferenceMode%2A?displayProperty=nameWithType>工作階段驗證模組上的屬性。  
   
    
   
@@ -1841,11 +1864,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 從要求處理管線實作中呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A>事件處理常式委派。 這個方法會執行下列動作：  
+ 從 要求處理管線實作中呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A>事件處理常式委派。 這個方法會執行下列動作：  
   
-1.  叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSessionSecurityTokenCreated%2A>方法，以引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated>事件。 若要修改的工作階段權杖，再用來設定執行緒主體並寫入工作階段 cookie，並指定是否可寫入的工作階段 cookie，您可以使用此事件。  
+1.  叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSessionSecurityTokenCreated%2A>方法以引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated>事件。 若要修改的工作階段權杖，然後才會是用來設定執行緒主體，並寫入工作階段 cookie，並指定是否應該將寫入工作階段 cookie，您可以使用此事件。  
   
-2.  叫用<xref:System.IdentityModel.Services.SessionAuthenticationModule.AuthenticateSessionSecurityToken%2A>方法上設定的工作階段驗證模組 (<xref:System.IdentityModel.Services.SessionAuthenticationModule>) 來設定執行緒主體以及 （選擇性） 撰寫工作階段 cookie。  
+2.  叫用<xref:System.IdentityModel.Services.SessionAuthenticationModule.AuthenticateSessionSecurityToken%2A>方法上設定的工作階段驗證模組 (<xref:System.IdentityModel.Services.SessionAuthenticationModule>) 設定執行緒主體，並選擇性地寫入工作階段 cookie。  
   
  ]]></format>
         </remarks>
@@ -1875,7 +1898,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果要求張貼至登入頁面，頁面上的控制項會引發這個事件，不是此模組。  
+ 如果要求張貼至登入頁面，頁面上的控制項就會引發此事件，而不是此模組。  
   
    
   
@@ -1907,11 +1930,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 透過呼叫就會引發這個事件<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignedOut%2A>內的方法<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType>方法並登出信賴憑證者的合作對象 (RP) 在工作階段。 當同盟登出功能，透過的這樣做時，不會引發事件<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
+ 透過呼叫會引發這個事件<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignedOut%2A>方法內<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType>時登出信賴憑證者的合作對象 (RP) 工作階段的方法。 同盟登出功能，透過的這麼做時，不會引發事件<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
   
- 您可以加入之後已刪除的工作階段 cookie 應用程式所需執行任何其他處理的事件處理常式。  
+ 您可以加入您的應用程式所需執行任何其他處理的事件處理常式之後已刪除的工作階段 cookie。  
   
- 不保證會針對每個工作階段呼叫這個事件。 Cookie 可能會在刪除用戶端，比方說，因此永遠不會引發這個事件。  
+ 此事件不保證會針對每個工作階段呼叫。 Cookie 可能會刪除在用戶端，比方說，因此永遠不會引發這個事件。  
   
  ]]></format>
         </remarks>
@@ -1970,11 +1993,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A>叫用方法時，就會產生登入訊息包含 wctx 參數具有下列格式： `ru=returnUrl&cx=SignInContext&rm=rememberMeSet&id=uniqueId`。 值<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInContext%2A>會儲存在`cx`參數。 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A> 可以直接從您的程式碼呼叫。 它也稱為 WSFAM 執行被動重新導向時以及當任一<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignIn%2A>方法或<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectToIdentityProvider%2A>應用程式碼會叫用方法。  
+ 當<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A>叫用方法時，會產生的登入訊息包含具有下列格式的 wctx 參數： `ru=returnUrl&cx=SignInContext&rm=rememberMeSet&id=uniqueId`。 值<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInContext%2A>會儲存在`cx`參數。 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A> 可以直接從您的程式碼呼叫。 也稱為 WSFAM 會執行被動式重新導向時以及當任一<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignIn%2A>方法或<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectToIdentityProvider%2A>應用程式程式碼會叫用方法。  
   
- 雖然 WSFAM 儲存<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInContext%2A>登入要求訊息，如果應用程式回應處理期間所使用的值中的值，您必須提供邏輯解壓縮從 wctx 參數登入回應訊息中。  
+ 雖然 WSFAM 會將儲存<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInContext%2A>在登入要求訊息中，如果值由您的應用程式，回應處理期間的值，您必須提供的邏輯擷取登入回應訊息中的 wctx 參數。  
   
- 如需的格式和處理 wctx 參數的詳細資訊，請參閱<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A>方法。  
+ 如需有關的格式和處理的 wctx 參數的詳細資訊，請參閱<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A>方法。  
   
  ]]></format>
         </remarks>
@@ -2002,7 +2025,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果要求張貼至登入頁面，頁面上的控制項會引發這個事件，不是此模組。  
+ 如果要求張貼至登入頁面，頁面上的控制項就會引發此事件，而不是此模組。  
   
  ]]></format>
         </remarks>
@@ -2029,11 +2052,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 透過呼叫就會引發這個事件<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSigningOut%2A>內的方法<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType>方法並登出信賴憑證者的合作對象 (RP) 在工作階段。 當同盟登出功能，透過的這樣做時，不會引發事件<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
+ 透過呼叫會引發這個事件<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSigningOut%2A>方法內<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType>時登出信賴憑證者的合作對象 (RP) 工作階段的方法。 同盟登出功能，透過的這麼做時，不會引發事件<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
   
- 您可以加入事件處理常式來執行工作階段 cookie 中刪除之前，應用程式所需的任何其他處理。 您可以閱讀<xref:System.IdentityModel.Services.SigningOutEventArgs.IsIPInitiated*>屬性來判斷是否登出已接收 WS-同盟登出清除要求訊息 (「 wsignoutcleanup1.0") 的結果從安全性權杖服務 (STS)，或已在來起始事件處理常式RP。  
+ 您可以新增事件處理常式執行之前刪除工作階段 cookie，應用程式所需的任何其他處理。 您可以閱讀<xref:System.IdentityModel.Services.SigningOutEventArgs.IsIPInitiated*>屬性來判斷是否登出是接收 WS-同盟登出清除要求訊息 ("wsignoutcleanup1.0") 的結果從安全性權杖服務 (STS)，或是否起始的事件處理常式RP。  
   
- 不保證會針對每個工作階段呼叫這個事件。 Cookie 可能會在刪除用戶端，比方說，因此永遠不會引發這個事件。  
+ 此事件不保證會針對每個工作階段呼叫。 Cookie 可能會刪除在用戶端，比方說，因此永遠不會引發這個事件。  
   
  ]]></format>
         </remarks>
@@ -2056,14 +2079,14 @@
       </ReturnValue>
       <Docs>
         <summary>取得或設定查詢字串，包含 WS-同盟登入要求 ("wsignin1.0") 中要傳送的任何其他參數。</summary>
-        <value>URL 片段包含額外的訊息中的參數以下列格式： <c>param1 = value1&amp;param2 = value2&amp;paramN = 看值</c>。 預設為空字串。</value>
+        <value>URL 片段包含其他訊息參數，以下列格式： <c>param1 = value1&amp;param2 = value2&amp;paramN = 看值</c>。 預設為空字串。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
  您可以使用這個屬性在登入要求中傳送額外的參數。 這些是應用程式特有的參數不是其中一個參數所指定的 WS-同盟通訊協定。 若要從要求中移除額外的參數設定此屬性設為空字串。  
   
- 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 只在模組重新導向至與 WS-同盟登入要求訊息的安全性權杖服務 (STS) 之前，會引發這個事件。 所指定 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
+ 您可以藉由新增的處理常式覆寫這項設定在每個 HTTP 要求<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>事件。 此模組會重新導向至安全性權杖服務 (STS) 使用 WS-同盟登入要求訊息之前，會引發這個事件。 所指定的 STS<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>屬性。  
   
  ]]></format>
         </remarks>
@@ -2083,7 +2106,7 @@
 ## Remarks  
  刪除目前工作階段。  
   
- 沒有登出要求訊息 (「 wsignout1.0 」) 會傳送給安全性權杖服務 (STS)。 若要登出在 STS 使用 WS-同盟通訊協定，使用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
+ 未登出要求 ("wsignout1.0") 傳送訊息給安全性權杖服務 (STS)。 若要登出在 STS 使用 WS-同盟通訊協定，使用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
   
  ]]></format>
         </remarks>
@@ -2111,11 +2134,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 刪除目前工作階段，並將瀏覽器重新導向回到目前 HTTP 要求中指定的 URL。  
+ 刪除目前工作階段，並將瀏覽器重新導向回到目前的 HTTP 要求中指定的 URL。  
   
- 叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.String%29?displayProperty=nameWithType>方法`redirectUrl`參數設定為目前要求的 URL。  
+ 叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.String%29?displayProperty=nameWithType>方法使用`redirectUrl`參數設定為目前要求的 URL。  
   
- 沒有登出要求訊息 (「 wsignout1.0 」) 會傳送給安全性權杖服務 (STS)。 若要登出在 STS 使用 WS-同盟通訊協定，使用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
+ 未登出要求 ("wsignout1.0") 傳送訊息給安全性權杖服務 (STS)。 若要登出在 STS 使用 WS-同盟通訊協定，使用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
   
  ]]></format>
         </remarks>
@@ -2148,17 +2171,17 @@
 ## Remarks  
  這個方法會執行刪除目前工作階段，並引發適當的登出事件的實際工作。 方法會執行下列動作：  
   
-1.  叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSigningOut%2A>方法，以引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SigningOut>事件。 事件處理常式可以提供任何必要的處理工作階段遭到刪除。 <xref:System.IdentityModel.Services.SigningOutEventArgs.IsIPInitiated%2A?displayProperty=nameWithType>屬性設定為根據`isIPRequest`參數。  
+1.  叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSigningOut%2A>方法以引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SigningOut>事件。 事件處理常式可以提供任何必要的處理工作階段遭到刪除。 <xref:System.IdentityModel.Services.SigningOutEventArgs.IsIPInitiated%2A?displayProperty=nameWithType>屬性設定為 根據`isIPRequest`參數。  
   
-2.  呼叫<xref:System.IdentityModel.Services.SessionAuthenticationModule.DeleteSessionTokenCookie%2A?displayProperty=nameWithType>方法在目前工作階段驗證管理員若要刪除的工作階段 cookie。  
+2.  呼叫<xref:System.IdentityModel.Services.SessionAuthenticationModule.DeleteSessionTokenCookie%2A?displayProperty=nameWithType>刪除工作階段 cookie 在目前工作階段驗證管理員上的方法。  
   
-     叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignedOut%2A>方法，以引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedOut>事件。  
+     叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignedOut%2A>方法以引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedOut>事件。  
   
-3.  如果在登出處理期間發生錯誤，會叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignOutError%2A>方法，以引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutError>事件。 事件處理常式可以取消處理，並防止傳回給呼叫端的例外狀況 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%2A>  
+3.  如果登出的處理期間發生錯誤，會叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignOutError%2A>方法以引發<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutError>事件。 事件處理常式可以取消處理，並防止在傳回給呼叫端的例外狀況 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%2A>  
   
- 您可以呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%2A?displayProperty=nameWithType>方法`isIPRequest`參數集`false`登出工作階段，而不需執行重新導向。 所有的其他多載最終呼叫方法<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%2A>方法 (具有`isIPRequest`參數設定為`false`) 來執行處理登出。 這個方法從呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%28System.Web.HttpRequestBase%2CSystem.Boolean%29?displayProperty=nameWithType>方法`isIPRequest`參數集`true`登出工作階段，當它正在處理的 WS-同盟登出清除訊息 (「 wsignoutcleanup1.0")。  
+ 您可以呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%2A?displayProperty=nameWithType>方法`isIPRequest`參數集`false`登出工作階段，而不需要執行重新導向。 所有其他多載的最後呼叫的方法<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%2A>方法 (使用`isIPRequest`參數設為`false`) 來執行處理登出。 此方法會從呼叫<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%28System.Web.HttpRequestBase%2CSystem.Boolean%29?displayProperty=nameWithType>方法`isIPRequest`參數集`true`登出工作階段時正在處理的 WS-同盟登出清除訊息 ("wsignoutcleanup1.0")。  
   
- 沒有登出要求訊息 (「 wsignout1.0 」) 會傳送給安全性權杖服務 (STS)。 若要登出在 STS 使用 WS-同盟通訊協定，使用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
+ 未登出要求 ("wsignout1.0") 傳送訊息給安全性權杖服務 (STS)。 若要登出在 STS 使用 WS-同盟通訊協定，使用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
   
  ]]></format>
         </remarks>
@@ -2193,7 +2216,7 @@
   
  叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType>方法`redirectUrl`參數與`initiateSignoutCleanup`設定`false`。  
   
- 沒有登出要求訊息 (「 wsignout1.0 」) 會傳送給安全性權杖服務 (STS)。 若要登出在 STS 使用 WS-同盟通訊協定，使用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
+ 未登出要求 ("wsignout1.0") 傳送訊息給安全性權杖服務 (STS)。 若要登出在 STS 使用 WS-同盟通訊協定，使用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
   
  ]]></format>
         </remarks>
@@ -2232,7 +2255,7 @@
   
  叫用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType>方法`initiateSignoutCleanup`參數集`false`。  
   
- 沒有登出要求訊息 (「 wsignout1.0 」) 會傳送給安全性權杖服務 (STS)。 若要登出在 STS 使用 WS-同盟通訊協定，使用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
+ 未登出要求 ("wsignout1.0") 傳送訊息給安全性權杖服務 (STS)。 若要登出在 STS 使用 WS-同盟通訊協定，使用<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
   
  ]]></format>
         </remarks>
@@ -2262,9 +2285,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 透過呼叫就會引發這個事件<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignOutError%2A>內的方法<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType>方法並登出信賴憑證者的合作對象 (RP) 在工作階段。 當同盟登出功能，透過的這樣做時，不會引發事件<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
+ 透過呼叫會引發這個事件<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignOutError%2A>方法內<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType>時登出信賴憑證者的合作對象 (RP) 工作階段的方法。 同盟登出功能，透過的這麼做時，不會引發事件<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法。  
   
- <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutError>是可取消事件。 您可以設定<xref:System.ComponentModel.CancelEventArgs.Cancel%2A>中若要避免這個例外狀況傳回給啟動者的登出造成錯誤的事件處理常式屬性。  
+ <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutError>事件是否可取消的事件。 您可以設定<xref:System.ComponentModel.CancelEventArgs.Cancel%2A>若要避免這個例外狀況造成錯誤傳回給啟動者的登出事件處理常式中的屬性。  
   
  ]]></format>
         </remarks>
@@ -2287,14 +2310,14 @@
       </ReturnValue>
       <Docs>
         <summary>取得或設定查詢字串，包含 WS-同盟登出要求 ("wsignout1.0") 中要傳送的任何其他參數。</summary>
-        <value>URL 片段包含額外的訊息中的參數以下列格式： <c>param1 = value1&amp;param2 = value2&amp;paramN = 看值</c>。 預設為空字串。</value>
+        <value>URL 片段包含其他訊息參數，以下列格式： <c>param1 = value1&amp;param2 = value2&amp;paramN = 看值</c>。 預設為空字串。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 依預設，這個屬性會初始化從`signOutQueryString`屬性[ &lt;wsFederation&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/wsfederation.md)組態檔中的項目。 它被要包含在 WS-同盟登出要求中傳送任何應用程式特有的參數。 若要移除這些參數，您可以設定此屬性設為空字串。  
+ 根據預設，這個屬性初始化自`signOutQueryString`的屬性[ &lt;wsFederation&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/wsfederation.md)組態檔中的項目。 它被要包含要在 WS-同盟登出要求中傳送任何應用程式特有的參數。 若要移除這些參數，您可以設定此屬性設為空字串。  
   
- WSFAM 不會直接; 使用這個屬性不過，您可以將它傳遞給<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetFederationPassiveSignOutUrl%2A>方法，以建立完整的 WS-同盟登出 URL，然後由您的程式碼。  
+ WSFAM 不會直接; 使用這個屬性不過，您可以將它傳遞給<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetFederationPassiveSignOutUrl%2A>方法用來建立完整的 WS-同盟登出 URL，然後由您的程式碼。  
   
  ]]></format>
         </remarks>
@@ -2323,11 +2346,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 依預設，這個屬性會初始化從`signOutReply`屬性[ &lt;wsFederation&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/wsfederation.md)組態檔中的項目。 它被為了代表 wreply 參數 WS-同盟登出要求中。  
+ 根據預設，這個屬性初始化自`signOutReply`的屬性[ &lt;wsFederation&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/wsfederation.md)組態檔中的項目。 它被用來代表 WS-同盟登出要求中的 wreply 參數。  
   
- Wreply 參數是選擇性的。 如果<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutReply%2A>屬性設定為`null`或登出要求中未包含空字串，wreply 參數。  
+ Wreply 參數是選擇性的。 如果<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutReply%2A>屬性設定為`null`或空字串，wreply 參數未包含在登出要求中。  
   
- WSFAM 不直接使用這個屬性。 不過，您可以將它傳遞給<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法時執行 WS-同盟登出從您的程式碼，或者您可以將它傳遞給<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetFederationPassiveSignOutUrl%2A>方法，以建立完整的 WS-同盟登出 URL。  
+ WSFAM 不直接使用這個屬性。 不過，您可以將它傳遞給<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A>方法時執行 WS-同盟登出您的程式碼，或您可以將它傳遞給<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetFederationPassiveSignOutUrl%2A>方法用來建立完整的 WS-同盟登出的 URL。  
   
  ]]></format>
         </remarks>
@@ -2353,7 +2376,16 @@
         <summary>確認 <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" /> 和 <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" /> 屬性不是空的，且如果 <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.RequireHttps" /> 屬性為 <see langword="true" />，則 <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" /> 和 <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" /> 的指定 URI 與 HTTPS 相容。</summary>
         <remarks>To be added.</remarks>
         <exception cref="T:System.InvalidOperationException">
-          <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" /> 為 <see langword="null" /> 或空字串。  -或-  <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" /> 為 <see langword="null" /> 或空字串。  -或-  <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.RequireHttps" /> 為 <see langword="true" />，而且 <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" /> 不符合 HTTPS 標準。  -或-  <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.RequireHttps" /> 為 <see langword="true" />，而且 <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" /> 不符合 HTTPS 標準。</exception>
+          <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" /> 為 <see langword="null" /> 或空字串。  
+  
+-或- 
+ <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" /> 為 <see langword="null" /> 或空字串。  
+  
+-或- 
+ <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.RequireHttps" /> 是 <see langword="true" />，而且 <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" /> 不符合 HTTPS 標準。  
+  
+-或- 
+ <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.RequireHttps" /> 是 <see langword="true" />，而且 <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" /> 不符合 HTTPS 標準。</exception>
       </Docs>
     </Member>
     <Member MemberName="XmlDictionaryReaderQuotas">
