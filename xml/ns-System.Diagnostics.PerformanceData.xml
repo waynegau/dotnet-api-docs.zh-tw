@@ -1,10 +1,10 @@
 <Namespace Name="System.Diagnostics.PerformanceData">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="8813c8ce03149b4c97305ad0ee10d1cdd88ce604" />
-    <Meta Name="ms.sourcegitcommit" Value="3907f9a5780957d9c85af2e54c0a5bc2a5bf19ab" />
+    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/14/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/24/2018" />
     <Meta Name="ms.locfileid" Value="34173733" />
   </Metadata>
   <Docs>
@@ -13,47 +13,47 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 此命名空間中的類別支援 Windows Vista 中導入的效能計數器 （2.0 版） 的新架構。 在新的架構，提供者不會再直接回應取用者要求，但改為只需維護的計數器資料。 系統執行緒到提供者的程序時插入此提供者建立的執行個體的計數器集合。執行緒負責處理取用者要求。  
+ 這個命名空間中的類別會支援新的架構 （2.0 版） 引進了 Windows Vista 中的效能計數器。 在新的架構，提供者無法再直接回應取用者要求，但改為只會維護的計數器資料。 系統會將執行緒插入提供者的程序提供者建立計數器集合; 的執行個體時執行緒負責處理取用者要求。  
   
- 下列步驟示範撰寫計數器提供者的程序。  
+ 下列步驟說明撰寫計數器提供者的程序。  
   
-1.  以 XML 為基礎的資訊清單中定義的提供者提供的計數器。 計數器會以邏輯方式分組為計數器集合。 計數器集合內的計數器的計數器集合內必須是唯一的數值識別碼來識別。 提供者可以定義一個或多個計數器集合。 計數器集合識別提供者的唯一 Guid。 請注意，如果您使用這些類別來撰寫您的提供者：  
+1.  以 XML 為基礎的資訊清單中定義的提供者提供的計數器。 計數器會以邏輯方式分組為計數器集合中。 計數器集合內的計數器識別計數器集內是唯一的數值識別碼。 提供者可以定義一或多個計數器集合。 計數器集合會識別提供者特有的 Guid。 請注意，如果您使用這些類別來撰寫您的提供者：  
   
-    -   提供者項目的回呼屬性會被忽略。  
+    -   回呼項目的屬性提供者會被忽略。  
   
-    -   已忽略 counterAttribute 項目的 name 屬性的參考值。  
+    -   CounterAttribute 項目的 name 屬性的參考值會被忽略。  
   
-     如需寫入資訊清單的詳細資訊，請參閱[效能計數器的結構描述](https://msdn.microsoft.com/library/windows/desktop/aa373092\(v=vs.85\).aspx)。  
+     如需撰寫的資訊清單的詳細資訊，請參閱[效能計數器的結構描述](https://msdn.microsoft.com/library/windows/desktop/aa373092\(v=vs.85\).aspx)。  
   
-2.  撰寫您的資訊清單之後，請使用[CTRPP](https://msdn.microsoft.com/library/windows/desktop/aa372128\(v=vs.85\).aspx)工具来編譯的資訊清單 (ctrpp provider.man)。 此工具會產生四個檔案：.h、.c、.rc，和 * _r.h。 您可以忽略的.h 和.c 檔。 .Rc 檔會包含在您的資訊清單中定義的當地語系化的字串。 您可以使用的.rc 和 *_r.h 檔案來建立您在您的專案中包含已編譯的資源檔 (.res)。 下列呼叫會示範如何編譯資源檔：  
+2.  撰寫您的資訊清單之後，請使用[CTRPP](https://msdn.microsoft.com/library/windows/desktop/aa372128\(v=vs.85\).aspx)工具来編譯資訊清單 (ctrpp provider.man)。 此工具會產生四個檔案：.h、.c、.rc，和 * _r.h。 您可以忽略的.h 和.cpp 檔案。 .Rc 檔會包含在您的資訊清單中定義的當地語系化的字串。 您可以使用的.rc 和 *_r.h 檔案來建立您在您的專案中包含已編譯的資源檔 (.res)。 下列呼叫會示範如何將資源檔編譯：  
   
     ```console  
     rc /r /i "c:\Program Files\Microsoft SDKs\Windows\v6.0\Include" provider.rc  
     ```  
   
-     如果您收到錯誤參考 sal.h header，複製 sal.h header 檔案從您的 Microsoft Visual Studio，Visual C 包含至/i 參數指定的目錄的目錄。  
+     如果您收到錯誤，參考 sal.h header，sal.h header 檔案複製您的 Microsoft Visual Studio、 Visual C 包含您/i 參數所指定的目錄的目錄。  
   
-     將路徑加入至已編譯的資源檔 (.res) 專案的應用程式屬性頁面。  
+     將路徑加入至已編譯的資源檔 (.res) 至您專案的應用程式屬性頁面。  
   
-3.  撰寫您的提供者。 下列步驟顯示提供者所進行的呼叫：  
+3.  撰寫您的提供者。 下列步驟說明提供者所進行的呼叫：  
   
-    1.  呼叫<xref:System.Diagnostics.PerformanceData.CounterSet.%23ctor%2A?displayProperty=nameWithType>建構函式來定義計數器集合。 呼叫這個方法的每個計數器集合定義資訊清單中。  
+    1.  呼叫<xref:System.Diagnostics.PerformanceData.CounterSet.%23ctor%2A?displayProperty=nameWithType>建構函式來定義計數器集合。 呼叫這個方法的設定資訊清單中定義的每個計數器。  
   
-    2.  針對每個計數器集合，請呼叫其中一種<xref:System.Diagnostics.PerformanceData.CounterSet.AddCounter%2A?displayProperty=nameWithType>將計數器加入至集合的方法。 呼叫這個方法針對每個計數器集合中定義的計數器。  
+    2.  針對每個計數器集合中，呼叫其中一個<xref:System.Diagnostics.PerformanceData.CounterSet.AddCounter%2A?displayProperty=nameWithType>將計數器加入至集合的方法。 每個計數器定義計數器集合中呼叫這個方法。  
   
-    3.  呼叫<xref:System.Diagnostics.PerformanceData.CounterSet.CreateCounterSetInstance%2A?displayProperty=nameWithType>方法建立 （執行個體包含的計數器資料） 的計數器集合的執行個體。 為單一執行個體的計數器集合，請呼叫這個方法一次。 若為多個執行個體的計數器集合，呼叫這個方法的每個您要提供 （使用每個執行個體的唯一名稱） 的計數器資料的執行個體。  
+    3.  呼叫<xref:System.Diagnostics.PerformanceData.CounterSet.CreateCounterSetInstance%2A?displayProperty=nameWithType>方法用來建立計數器集合 （執行個體包含的計數器資料） 的執行個體。 為單一執行個體的計數器集合，請呼叫這個方法一次。 為多個執行個體的計數器集合，呼叫這個方法的每個執行個體，您要提供 （使用每個執行個體的唯一名稱） 的計數器資料。  
   
-    4.  使用<xref:System.Diagnostics.PerformanceData.CounterSetInstance.Counters%2A?displayProperty=nameWithType>存取和設定計數器的計數器資料的屬性。  
+    4.  使用<xref:System.Diagnostics.PerformanceData.CounterSetInstance.Counters%2A?displayProperty=nameWithType>屬性來存取和設定計數器的計數器資料。  
   
-4.  完成您的提供者之後，使用 LodCtr 工具註冊電腦上的計數器。 例如，套用至物件的  
+4.  完成您的提供者之後，使用 LodCtr 工具註冊的電腦上的計數器。 例如，套用至物件的  
   
     ```console  
     lodctr /m:provider.man  
     ```  
   
-     這個範例假設在資訊清單和可執行檔會在目前的目錄。 如需使用 LodCtr 完整的詳細資訊，請參閱[Microsoft Technet](Http://Go.Microsoft.Com/FWLink/?LinkId=84000)。  
+     此範例假設在資訊清單和可執行檔位於目前的目錄。 如需使用 LodCtr 的完整詳細資訊，請參閱 < [Microsoft Technet](Http://Go.Microsoft.Com/FWLink/?LinkId=84000)。  
   
- 您可以在執行 Windows Vista 和更新版本的作業系統的電腦上的這個命名空間中使用類別。  
+ 您可以在執行 Windows Vista 和更新版作業系統的電腦上的這個命名空間中使用的類別。  
   
    
   
@@ -160,7 +160,7 @@
 </instrumentationManifest>  
 ```  
   
- 下圖顯示在資訊清單的簡單提供者實作：  
+ 下圖顯示的資訊清單的簡單提供者實作：  
   
 ```cs  
 using System.Diagnostics.PerformanceData;  
