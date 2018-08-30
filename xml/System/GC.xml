@@ -1,11 +1,11 @@
 <Type Name="GC" FullName="System.GC">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="c8c0e69634df9ae33ac5d21d72ad8ca2edd45573" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="bc70883d1f178e5912deca211e366c1112bd5e7e" />
+    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36431725" />
+    <Meta Name="ms.lasthandoff" Value="08/25/2018" />
+    <Meta Name="ms.locfileid" Value="39926578" />
   </Metadata>
   <TypeSignature Language="C#" Value="public static class GC" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit GC extends System.Object" />
@@ -24,6 +24,8 @@
   </AssemblyInfo>
   <AssemblyInfo>
     <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -36,22 +38,22 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Controls the system garbage collector, a service that automatically reclaims unused memory.</summary>
+    <summary>控制系統記憶體回收行程，它是自動回收未使用之記憶體的服務。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 記憶體回收行程是控制項的配置和釋放的 managed 記憶體的通用語言執行階段元件。 物件和釋放物件所配置的資源時執行記憶體回收時，就會影響此類別中的方法。 此類別中的屬性系統的年齡類別目錄或產生，配置給物件的記憶體中提供可用的記憶體總數量的相關資訊。  
+ 記憶體回收行程是控制項的配置和釋放的 managed 記憶體 common language runtime 元件。 物件上並釋放物件所配置的資源執行記憶體回收時，就會影響此類別中的方法。 此類別中的屬性系統和年齡類別目錄或產生，配置給物件的記憶體中提供可用的記憶體總數量的相關資訊。  
   
- 記憶體回收行程會追蹤，而且會回收配置於 managed 記憶體中的物件。 定期記憶體回收行程執行記憶體回收回收記憶體配置給物件的有無有效的參考。 使用可用記憶體無法滿足記憶體要求時，會自動發生記憶體回收。 或者，應用程式可以強制記憶體回收集合使用<xref:System.GC.Collect%2A>方法。  
+ 記憶體回收行程會追蹤，並回收在受管理的記憶體中配置的物件。 會定期記憶體回收行程執行回收來回收記憶體配置給物件的有無有效的參考。 使用提供的可用記憶體無法滿足記憶體要求時，會自動發生記憶體回收。 或者，應用程式可以強制記憶體回收集合使用<xref:System.GC.Collect%2A>方法。  
   
- 記憶體回收包含下列步驟：  
+ 記憶體回收是由下列步驟所組成：  
   
-1.  記憶體回收行程會搜尋在 managed 程式碼所參考的 managed 物件。  
+1.  記憶體回收行程會搜尋在 managed 程式碼中參考的 managed 物件。  
   
-2.  記憶體回收行程會嘗試完成未參考的物件。  
+2.  記憶體回收行程會嘗試將完成未參考的物件。  
   
-3.  記憶體回收行程釋放未參考的物件，並會回收記憶體。  
+3.  記憶體回收行程釋放未參考的物件，並回收其記憶體。  
   
  本主題包含下列章節：  
   
@@ -61,34 +63,34 @@
   
 <a name="unmanaged"></a>   
 ## <a name="the-garbage-collector-and-unmanaged-resources"></a>記憶體回收行程和 unmanaged 的資源  
- 在回收期間，記憶體回收行程不會釋放物件如果 managed 程式碼中發現一個或多個物件的參考。 不過，記憶體回收行程無法辨識從 unmanaged 程式碼中，物件的參考，而且可能釋放物件，除非明確地防止這樣使用 unmanaged 程式碼中以獨佔方式。 <xref:System.GC.KeepAlive%2A>方法提供一套機制，可以防止記憶體回收行程收集的物件仍在使用 unmanaged 程式碼中。  
+ 在回收期間，記憶體回收行程不會釋放物件如果 managed 程式碼中找到一或多個物件的參考。 不過，記憶體回收行程無法辨識從 unmanaged 程式碼，一個物件的參考，而且可能釋放物件，除非明確地防止這種方式使用 unmanaged 程式碼中以獨佔方式。 <xref:System.GC.KeepAlive%2A>方法提供一種機制，防止記憶體回收行程收集是仍在使用 unmanaged 程式碼中的物件。  
   
- 除了 managed 的記憶體配置的記憶體回收行程實作不會維護的物件，例如檔案控制代碼或資料庫連接所持有的資源的相關資訊。 當型別使用的 unmanaged 的資源，必須釋放回收的類型執行個體之前時，類型可以實作完成項。  
+ 除了 managed 的記憶體配置的記憶體回收行程的實作不會維護物件，例如檔案控制代碼或資料庫連線所持有的資源的相關資訊。 當型別會使用型別的執行個體，會回收之前，必須先釋放的 unmanaged 的資源時，類型可以實作完成項。  
   
- 在大部分情況下，完成項會實作覆寫<xref:System.Object.Finalize%2A?displayProperty=nameWithType>方法; 不過，撰寫 C# 或 c + + 中的類型實作解構函式的編譯器將轉換的覆寫成<xref:System.Object.Finalize%2A?displayProperty=nameWithType>。 在大部分情況下，如果物件具有完成項中，記憶體回收行程呼叫它之前釋出物件。 不過，記憶體回收行程不需要在所有情況下，呼叫完成項例如，<xref:System.GC.SuppressFinalize%2A>方法明確地防止物件的完成項呼叫。 此外，記憶體回收行程不需要使用特定的執行緒，以便最終處理物件，保證彼此參考，但可進行記憶體回收的物件呼叫完成項的順序。  
+ 在大部分情況下，完成項會實作藉由覆寫<xref:System.Object.Finalize%2A?displayProperty=nameWithType>方法; 不過，C# 或 c + + 撰寫的類型會實作解構函式的編譯器轉換成的覆寫<xref:System.Object.Finalize%2A?displayProperty=nameWithType>。 在大部分情況下，如果物件具有完成項，記憶體回收行程會呼叫它之前釋放物件。 不過，記憶體回收行程並不需要在所有情況下，呼叫完成項比方說，<xref:System.GC.SuppressFinalize%2A>方法明確地防止物件的完成項呼叫。 此外，記憶體回收行程不需要使用特定的執行緒完成物件，或是保證彼此參考，但可進行記憶體回收的物件呼叫完成項的順序。  
   
- 在特定時間必須釋放資源的情況下，類別可以實作<xref:System.IDisposable>介面，其中包含<xref:System.IDisposable.Dispose%2A?displayProperty=nameWithType>方法，執行資源管理和清除工作。 類別可實作<xref:System.IDisposable.Dispose%2A>必須指定，做為其類別合約的一部分時類別取用者呼叫方法，以清除物件。 記憶體回收行程不會根據預設，呼叫<xref:System.IDisposable.Dispose%2A>方法; 不過，實作<xref:System.IDisposable.Dispose%2A>方法可以呼叫方法中<xref:System.GC>類別來自訂記憶體回收行程的最終處理行為。  
+ 在指定的時間必須釋放資源的情況下，類別可以實作<xref:System.IDisposable>介面，其中包含<xref:System.IDisposable.Dispose%2A?displayProperty=nameWithType>方法，以執行資源管理和清除工作。 類別實作<xref:System.IDisposable.Dispose%2A>必須指定，其類別合約是否以及何時類別的取用者呼叫方法，以清除物件。 記憶體回收行程不會根據預設，呼叫<xref:System.IDisposable.Dispose%2A>方法; 不過，實作<xref:System.IDisposable.Dispose%2A>方法可以呼叫方法中<xref:System.GC>類別來自訂記憶體回收行程的最終處理行為。  
   
- 如需有關物件最終處理和 dispose 模式的詳細資訊，請參閱[清除 Unmanaged 資源上](~/docs/standard/garbage-collection/unmanaged.md)。  
+ 如需有關物件最終處理和 dispose 模式的詳細資訊，請參閱[清除 Unmanaged 資源總](~/docs/standard/garbage-collection/unmanaged.md)。  
   
 <a name="generations"></a>   
 ## <a name="object-aging-and-generations"></a>物件的過時和層代  
- Common language runtime 在記憶體回收行程支援物件使用的層代的時效性。 層代是測量的記憶體中物件的相對存在時間單位。 層代編號或年齡物件表示物件所屬的層代。 建立多個物件最近是較新的層代的一部分，而且具有小於物件先前在應用程式生命週期的層代編號。 層代 0 中，是最新的層代中的物件。 記憶體回收行程的這項實作支援三個層代的物件，這些層代 0、 1 和 2。 您可以擷取的值<xref:System.GC.MaxGeneration%2A>屬性，以判斷系統所支援的最大層代編號。  
+ Common language runtime 在記憶體回收行程會支援使用層代物件過時。 層代是測量的記憶體中物件的相對存在時間單位。 層代編號或年齡，物件表示物件所屬的產生。 建立多個物件最近屬於較新的層代，而且必須小於物件稍早建立的應用程式生命週期的層代編號。 最新的層代中的物件是在層代 0。 記憶體回收行程的這項實作支援之物件的三個層代，這些層代 0、 1 和 2。 您可以擷取的值<xref:System.GC.MaxGeneration%2A>屬性，以判斷系統所支援的最大層代編號。  
   
- 物件的時效性允許目標回收應用程式，在一組特定的層代，而不是需要評估所有層代記憶體回收行程。 多載<xref:System.GC.Collect%2A>方法包含`generation`參數可讓您指定要進行記憶體回收的最舊層代。  
+ 物件的時效性會允許目標回收應用程式在一組特定的層代，而不需要評估所有層代記憶體回收行程。 多載<xref:System.GC.Collect%2A>方法，包括`generation`參數可讓您指定要進行記憶體回收的最舊層代。  
   
 <a name="NoGCRegion"></a>   
 ## <a name="disallowing-garbage-collection"></a>不允許記憶體回收  
- 從開始[!INCLUDE[net_v46](~/includes/net-v46-md.md)]，記憶體回收行程支援無 GC 區域延遲模式，可以在記憶體回收的集合可以有負面影響的應用程式效能的關鍵路徑的執行期間使用。 無 GC 區域延遲模式需要您指定可從記憶體回收行程配置不受干擾的記憶體數量。 如果執行階段可以配置的記憶體，執行階段不會執行回收時執行的關鍵路徑中的程式碼。  
+ 從開始[!INCLUDE[net_v46](~/includes/net-v46-md.md)]，記憶體回收行程支援無 GC 區域延遲模式可在記憶體回收的集合可能會影響應用程式效能的關鍵路徑期間。 無 GC 區域延遲模式會要求您指定可從記憶體回收行程配置不受干擾的記憶體數量。 如果執行階段可以配置的記憶體，執行階段不會執行回收時執行的關鍵路徑中的程式碼。  
   
- 您透過呼叫其中一個多載定義的無 GC 區域的關鍵路徑的開頭<xref:System.GC.TryStartNoGCRegion%2A>。 您可以指定其關鍵路徑的結尾呼叫<xref:System.GC.EndNoGCRegion%2A>方法。  
+ 您藉由呼叫其中一個多載定義的無 GC 區域的關鍵路徑的開頭<xref:System.GC.TryStartNoGCRegion%2A>。 您可以指定其關鍵路徑的結尾呼叫<xref:System.GC.EndNoGCRegion%2A>方法。  
   
- 您無法巢狀呼叫<xref:System.GC.TryStartNoGCRegion%2A>方法，而且您應該只呼叫<xref:System.GC.EndNoGCRegion%2A>方法，如果執行階段目前處於無 GC 區域延遲模式。 換句話說，您不應該呼叫<xref:System.GC.TryStartNoGCRegion%2A>多次 （第一個方法呼叫之後，後續呼叫將不會成功），和不應呼叫<xref:System.GC.EndNoGCRegion%2A>才會成功，因為第一次呼叫<xref:System.GC.TryStartNoGCRegion%2A>成功。  
+ 您無法巢狀呼叫<xref:System.GC.TryStartNoGCRegion%2A>方法，而且您應該只呼叫<xref:System.GC.EndNoGCRegion%2A>方法，如果執行階段目前處於無 GC 區域延遲模式。 換句話說，您不應該呼叫<xref:System.GC.TryStartNoGCRegion%2A>多次 （第一個方法呼叫之後，後續呼叫將不會成功），而且不應會呼叫<xref:System.GC.EndNoGCRegion%2A>才會成功的第一次呼叫時，就算<xref:System.GC.TryStartNoGCRegion%2A>成功。  
   
    
   
 ## Examples  
- 下列範例會使用數個 GC 方法，以取得產生和記憶體未使用物件的區塊資訊並列印到主控台。 然後會回收未使用的物件，而且會顯示產生的記憶體總數。  
+ 下列範例會使用數個 GC 方法來取得產生和記憶體區塊的未使用物件的相關的資訊，並列印到主控台。 然後回收未使用的物件，並會顯示產生的記憶體總計。  
   
  [!code-cpp[System.GC.Collect Int Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.gc.collect int example/CPP/class1.cpp#1)]
  [!code-csharp[System.GC.Collect Int Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.collect int example/CS/class1.cs#1)]
@@ -118,6 +120,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -126,7 +129,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.5;netstandard-1.6;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -137,27 +140,30 @@
         <Parameter Name="bytesAllocated" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="bytesAllocated">The incremental amount of unmanaged memory that has been allocated.</param>
-        <summary>Informs the runtime of a large allocation of unmanaged memory that should be taken into account when scheduling garbage collection.</summary>
+        <param name="bytesAllocated">已配置的 Unmanaged 記憶體累加數量。</param>
+        <summary>告知執行階段，在排定記憶體回收時應考慮的大量 Unmanaged 記憶體配置。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 在決定何時要排定記憶體回收時，執行階段會考量已配置的受管理的記憶體。 如果小型的 managed 的物件會配置大量的未受管理的記憶體，執行階段會考量只有受管理的記憶體，並因此低估排定記憶體回收的急迫性。 <xref:System.GC.AddMemoryPressure%2A>方法告知執行階段，此額外系統記憶體不足。  
+ 在決定何時要排定記憶體回收時，執行階段會考慮到配置的受管理的記憶體。 如果小型的 managed 的物件會配置大量 unmanaged 記憶體，執行階段會考量只受管理的記憶體，並因此低估排定記憶體回收的急迫性。 <xref:System.GC.AddMemoryPressure%2A>方法告知執行階段，此額外系統記憶體不足的壓力。  
   
- 在最簡單的使用方式模式中，受管理的物件配置 unmanaged 的記憶體中的建構函式，並釋放它在`Dispose`或`Finalize`方法。 呼叫<xref:System.GC.AddMemoryPressure%2A>方法之後配置 unmanaged 的記憶體中，並呼叫<xref:System.GC.RemoveMemoryPressure%2A>之後釋出它的方法。  
+ 在最簡單的使用方式模式中，受管理的物件配置建構函式中的 unmanaged 的記憶體和釋放它在`Dispose`或`Finalize`方法。 呼叫<xref:System.GC.AddMemoryPressure%2A>方法之後配置 unmanaged 的記憶體中，並呼叫<xref:System.GC.RemoveMemoryPressure%2A>之後釋放它的方法。  
   
- 在更複雜的情況，其中 unmanaged 的記憶體配置的 managed 物件的存留期間變更本質上，您可以呼叫<xref:System.GC.AddMemoryPressure%2A>和<xref:System.GC.RemoveMemoryPressure%2A>通訊這些執行階段的累加變更的方法。  
+ 在更複雜的案例，其中的 unmanaged 的記憶體配置的 managed 物件的存留期間變更本質上，您可以呼叫<xref:System.GC.AddMemoryPressure%2A>和<xref:System.GC.RemoveMemoryPressure%2A>通訊這些執行階段的累加變更的方法。  
   
 > [!CAUTION]
->  您必須確定您移除完全壓力您新增的數量。 不這樣做的話，可能會影響系統的長時間執行的應用程式的效能。  
+>  您必須確定您移除完全您新增的壓力總量。 不這麼做的話，可能會影響在系統中的長時間執行的應用程式的效能。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="bytesAllocated" /> is less than or equal to 0.  -or-  On a 32-bit computer, <paramref name="bytesAllocated" /> is larger than <see cref="F:System.Int32.MaxValue" />.</exception>
+          <paramref name="bytesAllocated" /> 小於或等於 0。  
+  
+-或- 
+在 32 位元電腦上，<paramref name="bytesAllocated" /> 大於 <see cref="F:System.Int32.MaxValue" />。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">提供管理回收優先順序時，呼叫 unmanaged 程式碼的能力。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
-        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫者。 這個成員無法供部分信任或安全性透明程式碼。</permission>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫端。 此成員不能由部分信任或不透明的程式碼。</permission>
       </Docs>
     </Member>
     <Member MemberName="CancelFullGCNotification">
@@ -170,6 +176,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -183,7 +190,7 @@
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -192,17 +199,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Cancels the registration of a garbage collection notification.</summary>
+        <summary>取消註冊記憶體回收通知。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法會取消，使用已註冊記憶體回收通知<xref:System.GC.RegisterForFullGCNotification%2A>方法。 您不需要調整臨界值參數值在後續呼叫之前呼叫這個方法<xref:System.GC.RegisterForFullGCNotification%2A>方法。  
+ 這個方法會取消所註冊的使用記憶體回收通知<xref:System.GC.RegisterForFullGCNotification%2A>方法。 您不需要調整臨界值參數值，在後續呼叫之前呼叫這個方法<xref:System.GC.RegisterForFullGCNotification%2A>方法。  
   
    
   
 ## Examples  
- 下列範例會取消註冊記憶體回收集合。 這個範例是針對所提供之較大範例的一部分[記憶體回收通知](~/docs/standard/garbage-collection/notifications.md)主題。  
+ 下列範例會先取消記憶體回收註冊。 這個範例是針對提供之較大範例的一部分[記憶體回收通知](~/docs/standard/garbage-collection/notifications.md)主題。  
   
  [!code-cpp[GCNotification#7](~/samples/snippets/cpp/VS_Snippets_CLR/GCNotification/cpp/program.cpp#7)]
  [!code-csharp[GCNotification#7](~/samples/snippets/csharp/VS_Snippets_CLR/GCNotification/cs/Program.cs#7)]
@@ -210,9 +217,9 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">This member is not available when concurrent garbage collection is enabled. See the [&lt;gcConcurrent&gt;](~/docs/framework/configure-apps/file-schema/runtime/gcconcurrent-element.md) runtime setting for information about how to disable concurrent garbage collection.</exception>
-        <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">針對完全信任立即呼叫者。 這個成員無法供部分信任的程式碼使用。</permission>
-        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫者。 這個成員無法供部分信任或安全性透明程式碼。</permission>
+        <exception cref="T:System.InvalidOperationException">啟用並行記憶體回收時，無法使用這個成員。 如需如何停用並行記憶體回收的資訊，請參閱 [&lt;gcConcurrent&gt;](~/docs/framework/configure-apps/file-schema/runtime/gcconcurrent-element.md) 執行階段設定。</exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">針對完全信任立即呼叫端。 這個成員無法供部分信任的程式碼使用。</permission>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫端。 此成員不能由部分信任或不透明的程式碼。</permission>
       </Docs>
     </Member>
     <MemberGroup MemberName="Collect">
@@ -225,7 +232,7 @@
         <AssemblyVersion>4.2.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Forces garbage collection.</summary>
+        <summary>強制記憶體回收。</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="Collect">
@@ -247,6 +254,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -255,7 +264,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-1.0;netstandard-1.1;netstandard-1.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -264,16 +273,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Forces an immediate garbage collection of all generations.</summary>
+        <summary>強制立即執行所有層代的記憶體回收。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用這個方法，嘗試回收所有無法存取的記憶體。 它會執行所有層代的封鎖記憶體回收。  
+ 使用這個方法，嘗試回收所有無法存取的記憶體。 它會執行封鎖記憶體回收所有層代。  
   
- 所有的物件，不論多久已在記憶體中，會被視為集合;不過，不會收集 managed 程式碼中所參考的物件。 使用這個方法來強制系統嘗試回收的最大可用記憶體數量。  
+ 所有的物件，不論時間已在記憶體中，會被視為集合;不過，不會收集在 managed 程式碼中參考的物件。 您可以使用此方法，強制系統將嘗試回收的最大可用記憶體數量。  
   
- 從開始[!INCLUDE[net_v451](~/includes/net-v451-md.md)]，您可以藉由設定壓縮大型物件堆積 (LOH)<xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType>屬性<xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType>之前先呼叫<xref:System.GC.Collect%2A>方法，如下列範例會說明。  
+ 開頭[!INCLUDE[net_v451](~/includes/net-v451-md.md)]，您可以藉由設定壓縮大型物件堆積 (LOH)<xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType>屬性設<xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType>再呼叫<xref:System.GC.Collect%2A>方法，如下列範例會示範。  
   
  [!code-csharp[System.Runtime.GCSettings#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.gcsettings/cs/lohcompactionmode1.cs#1)]
  [!code-vb[System.Runtime.GCSettings#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.runtime.gcsettings/vb/lohcompactionmode1.vb#1)]  
@@ -281,7 +290,7 @@
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.GC.Collect%2A>方法執行所有層代的記憶體回收。 程式碼會產生未使用的物件數目，然後呼叫<xref:System.GC.Collect%2A>方法來從記憶體清除它們。  
+ 下列範例示範如何使用<xref:System.GC.Collect%2A>執行回收所有層代的記憶體上的方法。 程式碼會產生多個未使用的物件，然後再呼叫<xref:System.GC.Collect%2A>方法，以從記憶體清除它們。  
   
  [!code-cpp[System.GC.Collect Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.GC.Collect Example/CPP/class1.cpp#1)]
  [!code-csharp[System.GC.Collect Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.GC.Collect Example/CS/class1.cs#1)]
@@ -310,6 +319,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -324,24 +335,24 @@
         <Parameter Name="generation" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="generation">The number of the oldest generation to be garbage collected.</param>
-        <summary>Forces an immediate garbage collection from generation 0 through a specified generation.</summary>
+        <param name="generation">要進行記憶體回收的最舊層代數目。</param>
+        <summary>強制立即執行層代 0 至指定層代的記憶體回收。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 再試一次回收記憶體而無法使用這個方法。 不過，使用此方法不保證會回收所有存取的記憶體中指定的層代。  
+ 嘗試以回收記憶體而無法使用這個方法。 不過，使用此方法不保證會回收所有存取的記憶體中指定的層代。  
   
- 如果物件的時效性實作時，記憶體回收行程無法回收物件以產生數字高於指定層代。 未實作物件的時效性，如果記憶體回收行程會考慮在記憶體回收期間的所有物件。  
+ 如果實作物件過時，記憶體回收行程不會收集物件以產生數字大於指定層代。 如果未實作物件過時，記憶體回收行程會考慮所有物件在記憶體回收期間。  
   
- 使用<xref:System.GC.MaxGeneration%2A>屬性來判斷最大有效值`generation`參數。  
+ 使用<xref:System.GC.MaxGeneration%2A>屬性來判斷的最大有效值`generation`參數。  
   
- 若要考慮所有的物件，不論其層代記憶體回收行程，請使用這個方法不採用參數的版本。 若要將記憶體回收行程回收物件根據<xref:System.GCCollectionMode>設定，請使用<xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%29?displayProperty=nameWithType>方法多載。  
+ 若要考慮所有的物件，不論其層代記憶體回收行程，請使用這個方法不採用參數的版本。 若要將記憶體回收行程回收物件根據<xref:System.GCCollectionMode>設定，使用<xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%29?displayProperty=nameWithType>方法多載。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.GC.Collect%2A>執行回收的記憶體的個別圖層上的方法。 程式碼會產生未使用的物件數目，然後呼叫<xref:System.GC.Collect%2A>方法來從記憶體清除它們。  
+ 下列範例示範如何使用<xref:System.GC.Collect%2A>執行回收記憶體的個別圖層上的方法。 程式碼會產生多個未使用的物件，然後再呼叫<xref:System.GC.Collect%2A>方法，以從記憶體清除它們。  
   
  [!code-cpp[System.GC.Collect Int Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.gc.collect int example/CPP/class1.cpp#1)]
  [!code-csharp[System.GC.Collect Int Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.collect int example/CS/class1.cs#1)]
@@ -350,7 +361,7 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="generation" /> is not valid.</exception>
+          <paramref name="generation" /> 無效。</exception>
       </Docs>
     </Member>
     <Member MemberName="Collect">
@@ -372,6 +383,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -380,7 +392,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-1.0;netstandard-1.1;netstandard-1.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -392,27 +404,27 @@
         <Parameter Name="mode" Type="System.GCCollectionMode" />
       </Parameters>
       <Docs>
-        <param name="generation">The number of the oldest generation to be garbage collected.</param>
-        <param name="mode">An enumeration value that specifies whether the garbage collection is forced (<see cref="F:System.GCCollectionMode.Default" /> or <see cref="F:System.GCCollectionMode.Forced" />) or optimized (<see cref="F:System.GCCollectionMode.Optimized" />).</param>
-        <summary>Forces a garbage collection from generation 0 through a specified generation, at a time specified by a <see cref="T:System.GCCollectionMode" /> value.</summary>
+        <param name="generation">要進行記憶體回收的最舊層代數目。</param>
+        <param name="mode">列舉值，指定是要強制記憶體回收 (<see cref="F:System.GCCollectionMode.Default" /> 或 <see cref="F:System.GCCollectionMode.Forced" />) 還是進行最佳化 (<see cref="F:System.GCCollectionMode.Optimized" />)。</param>
+        <summary>在 <see cref="T:System.GCCollectionMode" /> 值所指定的時間，強制執行層代 0 至指定層代的記憶體回收。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用`mode`參數來指定是否應該發生記憶體回收立即] 或 [僅時間是否最佳回收物件。 使用此方法不保證會回收所有存取的記憶體中指定的層代。  
+ 使用`mode`參數來指定是否發生記憶體回收應該立刻] 或 [僅時間是否最適合回收物件。 使用此方法不保證會回收所有存取的記憶體中指定的層代。  
   
- 若要調整應用程式中的重大期間記憶體回收的干擾程度，請設定<xref:System.Runtime.GCSettings.LatencyMode%2A>屬性。  
+ 若要調整的應用程式中的重要期間回收干擾程度，請設定<xref:System.Runtime.GCSettings.LatencyMode%2A>屬性。  
   
- 記憶體回收行程不會收集以產生數字高於所指定的物件`generation`參數。 使用<xref:System.GC.MaxGeneration%2A>屬性來判斷最大有效值`generation`。  
+ 記憶體回收行程不會收集物件與比所指定更高的層代編號`generation`參數。 使用<xref:System.GC.MaxGeneration%2A>屬性來判斷的最大有效值`generation`。  
   
  若要考慮所有的物件，不論其層代記憶體回收行程，請使用這個方法不採用參數的版本。  
   
- 若要讓記憶體回收行程回收最多指定物件層代的物件，請使用<xref:System.GC.Collect%28System.Int32%29?displayProperty=nameWithType>方法多載。 當您指定最大層代時，則會收集所有物件。  
+ 若要將記憶體回收行程回收物件到指定的層代的物件，請使用<xref:System.GC.Collect%28System.Int32%29?displayProperty=nameWithType>方法多載。 當您指定最大層代時，則會收集所有物件。  
   
    
   
 ## Examples  
- 下列範例強制執行記憶體回收層代 2 物件<xref:System.GCCollectionMode.Optimized>設定。  
+ 下列範例會強制記憶體回收層代 2 物件<xref:System.GCCollectionMode.Optimized>設定。  
   
  [!code-csharp[System.GC.GCCollectionMode#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.GC.GCCollectionMode/cs/Program.cs#1)]
  [!code-vb[System.GC.GCCollectionMode#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.GC.GCCollectionMode/vb/program.vb#1)]  
@@ -420,7 +432,10 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="generation" /> is not valid.  -or-  <paramref name="mode" /> is not one of the <see cref="T:System.GCCollectionMode" /> values.</exception>
+          <paramref name="generation" /> 無效。  
+  
+-或- 
+ <paramref name="mode" /> 不是其中一個 <see cref="T:System.GCCollectionMode" /> 值。</exception>
       </Docs>
     </Member>
     <Member MemberName="Collect">
@@ -450,7 +465,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-1.0;netstandard-1.1;netstandard-1.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -463,28 +478,31 @@
         <Parameter Name="blocking" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="generation">The number of the oldest generation to be garbage collected.</param>
-        <param name="mode">An enumeration value that specifies whether the garbage collection is forced (<see cref="F:System.GCCollectionMode.Default" /> or <see cref="F:System.GCCollectionMode.Forced" />) or optimized (<see cref="F:System.GCCollectionMode.Optimized" />).</param>
+        <param name="generation">要進行記憶體回收的最舊層代數目。</param>
+        <param name="mode">列舉值，指定是要強制記憶體回收 (<see cref="F:System.GCCollectionMode.Default" /> 或 <see cref="F:System.GCCollectionMode.Forced" />) 還是進行最佳化 (<see cref="F:System.GCCollectionMode.Optimized" />)。</param>
         <param name="blocking">
-          <see langword="true" /> to perform a blocking garbage collection; <see langword="false" /> to perform a background garbage collection where possible.</param>
-        <summary>Forces a garbage collection from generation 0 through a specified generation, at a time specified by a <see cref="T:System.GCCollectionMode" /> value, with a value specifying whether the collection should be blocking.</summary>
+          <see langword="true" /> 表示要執行封鎖記憶體回收，<see langword="false" /> 表示要盡可能執行背景記憶體回收。</param>
+        <summary>在 <see cref="T:System.GCCollectionMode" /> 值 (含有指定是否應該封鎖回收作業的值) 所指定的時間，強制執行從層代 0 到指定之層代的記憶體回收。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 下表摘要說明之間的互動`mode`和`blocking`參數：  
+ 下表摘要說明的互動`mode`和`blocking`參數：  
   
 |`mode`|`blocking` 是 `true`|`blocking` 是 `false`|  
 |-|-|-|  
-|<xref:System.GCCollectionMode.Forced> 或 <xref:System.GCCollectionMode.Default>|會盡快執行封鎖回收。 如果正在進行中的背景集合和`generation`是 0 或 1，<xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%29>方法立即觸發封鎖的集合，並在完成集合後傳回。 如果正在進行中的背景集合和`generation`為 2，則方法會等候直到背景回收完成時，封鎖的層代 2 回收，觸發程序，然後傳回。|會盡快執行回收。 <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%29> 方法會要求背景集合，但不保證可取得。視情況而定，可能仍會執行封鎖集合。 如果已在進行背景回收，則這個方法會立即返回。|  
+|<xref:System.GCCollectionMode.Forced> 或 <xref:System.GCCollectionMode.Default>|會盡快執行封鎖回收。 如果正在進行背景回收並`generation`是 0 或 1，<xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%29>方法立即觸發封鎖回收，並在回收完成時傳回。 如果正在進行背景回收和`generation`為 2，方法會等到背景回收完成時，觸發封鎖層代 2 回收，，然後傳回。|會盡快執行回收。 <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%29> 方法會要求背景集合，但不保證可取得。視情況而定，可能仍會執行封鎖集合。 如果已在進行背景回收，則這個方法會立即返回。|  
 |<xref:System.GCCollectionMode.Optimized>|可能會因記憶體回收行程和 `generation` 參數的狀態而執行封鎖集合。 記憶體回收行程會嘗試提供最佳效能。|根據記憶體回收行程的狀態，可能會執行回收。 <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%29> 方法會要求背景集合，但不保證可取得。視情況而定，可能仍會執行封鎖集合。 記憶體回收行程會嘗試提供最佳效能。 如果已在進行背景回收，則這個方法會立即返回。|  
   
- 如果呼叫<xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%29>方法會執行完全封鎖記憶體回收，您也可以藉由設定壓縮大型物件堆積<xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType>屬性<xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType>之前先呼叫<xref:System.GC.Collect%2A>方法。  
+ 如果呼叫<xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%29>方法會執行完全封鎖記憶體回收，您也可以藉由設定壓縮大型物件堆積<xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType>屬性設<xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType>再呼叫<xref:System.GC.Collect%2A>方法。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="generation" /> is not valid.  -or-  <paramref name="mode" /> is not one of the <see cref="T:System.GCCollectionMode" /> values.</exception>
+          <paramref name="generation" /> 無效。  
+  
+-或- 
+ <paramref name="mode" /> 不是其中一個 <see cref="T:System.GCCollectionMode" /> 值。</exception>
       </Docs>
     </Member>
     <Member MemberName="Collect">
@@ -510,7 +528,7 @@
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -524,27 +542,27 @@
         <Parameter Name="compacting" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="generation">The number of the oldest generation to be garbage collected.</param>
-        <param name="mode">An enumeration value that specifies whether the garbage collection is forced (<see cref="F:System.GCCollectionMode.Default" /> or <see cref="F:System.GCCollectionMode.Forced" />) or optimized (<see cref="F:System.GCCollectionMode.Optimized" />).</param>
+        <param name="generation">要進行記憶體回收的最舊層代數目。</param>
+        <param name="mode">列舉值，指定是要強制記憶體回收 (<see cref="F:System.GCCollectionMode.Default" /> 或 <see cref="F:System.GCCollectionMode.Forced" />) 還是進行最佳化 (<see cref="F:System.GCCollectionMode.Optimized" />)。</param>
         <param name="blocking">
-          <see langword="true" /> to perform a blocking garbage collection; <see langword="false" /> to perform a background garbage collection where possible.</param>
+          <see langword="true" /> 表示要執行封鎖記憶體回收，<see langword="false" /> 表示要盡可能執行背景記憶體回收。</param>
         <param name="compacting">
-          <see langword="true" /> to compact the small object heap; <see langword="false" /> to sweep only.</param>
-        <summary>Forces a garbage collection from generation 0 through a specified generation, at a time specified by a <see cref="T:System.GCCollectionMode" /> value, with values that specify whether the collection should be blocking and compacting.</summary>
+          <see langword="true" /> 表示壓縮小型物件堆積；<see langword="false" /> 表示僅整理。</param>
+        <summary>在 <see cref="T:System.GCCollectionMode" /> 值 (含有指定是否應該封鎖及壓縮回收作業的值) 所指定的時間，強制執行從層代 0 到指定之層代的記憶體回收。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果`blocking`是`false`，GC 會決定是否要執行的背景或封鎖記憶體回收。 如果`compacting`是`true`，它會執行封鎖記憶體回收。  
+ 如果`blocking`是`false`，GC 會決定是否要執行為背景或封鎖記憶體回收。 如果`compacting`是`true`，它會執行封鎖記憶體回收。  
   
- 如果`compacting`是`true`，執行階段會壓縮小型物件堆積 (SOH)。 除非，不會壓縮大型物件堆積 (LOH)<xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType>屬性設定為<xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType>。 請注意，這包含所有封鎖記憶體回收，不只完整封鎖記憶體回收。  
+ 如果`compacting`是`true`，執行階段會壓縮小型物件堆積 (SOH)。 大型物件堆積 (LOH) 不會壓縮，除非<xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType>屬性設定為<xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType>。 請注意，這也包含所有封鎖記憶體回收，不只是完整封鎖記憶體回收。  
   
- 您可以呼叫<xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%2CSystem.Boolean%29>方法，以減少受管理的堆積大小最小，如下列程式碼片段所示。  
+ 您可以呼叫<xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%2CSystem.Boolean%29>方法，以減少大小最小，managed 的堆積，如下列程式碼片段所示。  
   
  [!code-csharp[System.GC.Collect#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.collect/cs/collect4.cs#1)]
  [!code-vb[System.GC.Collect#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.gc.collect/vb/collect4.vb#1)]  
   
- 指定`true`如`compacting`引數可保證壓縮、 完整封鎖記憶體回收。 設定<xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType>屬性<xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType>可確保會壓縮 LOH 與 SOH。  
+ 指定`true`針對`compacting`引數可保證壓縮、 完整封鎖記憶體回收。 設定<xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType>屬性設<xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType>可確保會壓縮 LOH 和 SOH。  
   
  ]]></format>
         </remarks>
@@ -569,6 +587,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -577,10 +596,10 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-1.0;netstandard-1.1;netstandard-1.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -591,19 +610,19 @@
         <Parameter Name="generation" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="generation">The generation of objects for which the garbage collection count is to be determined.</param>
-        <summary>Returns the number of times garbage collection has occurred for the specified generation of objects.</summary>
-        <returns>The number of times garbage collection has occurred for the specified generation since the process was started.</returns>
+        <param name="generation">要判斷記憶體回收計數的物件層代。</param>
+        <summary>傳回指定物件層代已發生記憶體回收的次數。</summary>
+        <returns>自從啟動處理程序之後，指定層代已發生記憶體回收的次數。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果您實作您自己的資源管理，您可能需要定期強制記憶體回收，藉由呼叫<xref:System.GC.Collect%2A>方法。 因為這是昂貴的作業，您可以藉由略過呼叫時最近發生記憶體回收改善效能。 儲存所傳回的值<xref:System.GC.CollectionCount%2A>後立即呼叫<xref:System.GC.Collect%2A>。 您需要呼叫在下一次<xref:System.GC.Collect%2A>，所傳回的目前值相比較<xref:System.GC.CollectionCount%2A>已儲存的值。 如果兩個值相等，過渡中發生任何集合，而且很合理地呼叫<xref:System.GC.Collect%2A>一次。  
+ 如果您實作您自己的資源管理，您可能需要強制執行記憶體回收會定期呼叫<xref:System.GC.Collect%2A>方法。 因為這是成本高昂的作業，您可以略過進行記憶體回收發生最近的呼叫來改善效能。 儲存所傳回的值<xref:System.GC.CollectionCount%2A>後立即呼叫<xref:System.GC.Collect%2A>。 您必須呼叫在下一次<xref:System.GC.Collect%2A>，所傳回的目前值相比較<xref:System.GC.CollectionCount%2A>已儲存的值。 如果兩個值相等，在此過渡期間發生任何集合，而它可合理地呼叫<xref:System.GC.Collect%2A>一次。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="generation" /> is less than 0.</exception>
+          <paramref name="generation" /> 小於 0。</exception>
       </Docs>
     </Member>
     <Member MemberName="EndNoGCRegion">
@@ -629,7 +648,7 @@
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -638,27 +657,33 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Ends the no GC region latency mode.</summary>
+        <summary>結束無 GC 區域延遲模式。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.GC.EndNoGCRegion%2A>方法會擲回<xref:System.InvalidOperationException>如果記憶體回收行程不處於無 GC 區域延遲模式。 發生這種情況下下列任何一個狀況：  
+ <xref:System.GC.EndNoGCRegion%2A>方法會擲回<xref:System.InvalidOperationException>如果記憶體回收行程不處於無 GC 區域延遲模式。 發生這種情況下任何下列條件：  
   
 -   <xref:System.GC.TryStartNoGCRegion%2A>不先前呼叫方法。  
   
--   若要呼叫<xref:System.GC.TryStartNoGCRegion%2A>方法會傳回`false`。  
+-   若要在呼叫<xref:System.GC.TryStartNoGCRegion%2A>方法會傳回`false`。  
   
 -   若要呼叫<xref:System.GC.TryStartNoGCRegion%2A>方法會擲回例外狀況。  
   
- 您可以使用程式碼如下所示，基於這些原因避免例外狀況：  
+ 您可以使用如下所示的程式碼的下列任何一個原因的檔案，以避免例外狀況：  
   
  [!code-csharp[System.GC.EndNoGCRegion#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.endnogcregion/cs/endnogcregion1.cs#1)]
  [!code-vb[System.GC.EndNoGCRegion#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.gc.endnogcregion/vb/endnogcregion1.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The garbage collector is not in no GC region latency mode.  -or-  The no GC region latency mode was ended previously because a garbage collection was induced.  -or-  A memory allocation exceeded the amount specified in the call to the <see cref="M:System.GC.TryStartNoGCRegion(System.Int64)" /> method.</exception>
+        <exception cref="T:System.InvalidOperationException">記憶體回收行程不在無 GC 區域延遲模式下。  
+  
+-或- 
+無 GC 區域延遲模式之前已結束，因為已包含記憶體回收。  
+  
+-或- 
+記憶體配置超過 <see cref="M:System.GC.TryStartNoGCRegion(System.Int64)" /> 方法呼叫中所指定的數量。</exception>
         <altmember cref="M:System.GC.TryStartNoGCRegion(System.Int64)" />
         <altmember cref="P:System.Runtime.GCSettings.LatencyMode" />
       </Docs>
@@ -694,7 +719,7 @@
         <AssemblyVersion>4.2.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Returns the current generation number of an object.</summary>
+        <summary>傳回物件的目前層代編號。</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="GetGeneration">
@@ -714,6 +739,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -722,7 +749,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -733,19 +760,20 @@
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">The object that generation information is retrieved for.</param>
-        <summary>Returns the current generation number of the specified object.</summary>
-        <returns>The current generation number of <paramref name="obj" />.</returns>
+        <param name="obj">要為其擷取層代資訊的物件。</param>
+        <summary>傳回指定物件的目前層代編號。</summary>
+        <returns>
+          <paramref name="obj" /> 的目前層代編號。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用此方法來判斷物件的存留期，然後使用該資訊與<xref:System.GC.Collect%2A>相同的層代中的方法，以強制記憶體回收行程回收物件。 例如，當您有一組群組所建立的並且在相同的時間，變成無法存取的物件時，才能使用這個方法。  
+ 使用此方法來判斷物件的時間，並接著使用該項資訊與<xref:System.GC.Collect%2A>相同的層代中的方法，以強制記憶體回收行程回收物件。 例如，當您有一組群組所建立的並且在此同時，變成無法存取的物件時，才使用這個方法。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.GC.GetGeneration%2A>方法，以判斷物件的存留期。 此範例接著會執行記憶體回收集合來清除記憶體並比較預先張貼集合在主控台中的記憶體總數。  
+ 下列範例示範如何使用<xref:System.GC.GetGeneration%2A>方法，以判斷物件的存留期。 此範例接著會執行廢棄項目集合，來清除記憶體並比較前張貼集合在主控台中的記憶體總計。  
   
  [!code-cpp[System.GC.Collect Int Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.gc.collect int example/CPP/class1.cpp#1)]
  [!code-csharp[System.GC.Collect Int Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.collect int example/CS/class1.cs#1)]
@@ -766,6 +794,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -779,7 +809,7 @@
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -790,14 +820,16 @@
         <Parameter Name="wo" Type="System.WeakReference" />
       </Parameters>
       <Docs>
-        <param name="wo">A <see cref="T:System.WeakReference" /> that refers to the target object whose generation number is to be determined.</param>
-        <summary>Returns the current generation number of the target of a specified weak reference.</summary>
-        <returns>The current generation number of the target of <paramref name="wo" />.</returns>
+        <param name="wo">
+          <see cref="T:System.WeakReference" />，參考要判斷層代編號的目標物件。</param>
+        <summary>傳回指定弱式參考之目標的目前層代編號。</summary>
+        <returns>
+          <paramref name="wo" /> 之目標的目前層代編號。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- 下列範例示範如何使用<xref:System.GC.GetGeneration%2A>方法，以判斷最弱式參考物件的時間。  
+ 下列範例示範如何使用<xref:System.GC.GetGeneration%2A>方法，以判斷弱式參考物件的存留期。  
   
  [!code-cpp[System.GC.GetGenerationWeak Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.GC.GetGenerationWeak Example/CPP/systemgcgetgenerationweak.cpp#1)]
  [!code-csharp[System.GC.GetGenerationWeak Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.GC.GetGenerationWeak Example/CS/systemgcgetgenerationweak.cs#1)]
@@ -805,7 +837,7 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Garbage collection has already been performed on <paramref name="wo" />.</exception>
+        <exception cref="T:System.ArgumentException">在 <paramref name="wo" /> 上已執行記憶體回收。</exception>
         <altmember cref="P:System.GC.MaxGeneration" />
       </Docs>
     </Member>
@@ -828,6 +860,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -835,6 +869,11 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-1.0;netstandard-1.1;netstandard-1.2">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
@@ -842,20 +881,19 @@
         <Parameter Name="forceFullCollection" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="forceFullCollection">
-          <see langword="true" /> to indicate that this method can wait for garbage collection to occur before returning; otherwise, <see langword="false" />.</param>
-        <summary>Retrieves the number of bytes currently thought to be allocated. A parameter indicates whether this method can wait a short interval before returning, to allow the system to collect garbage and finalize objects.</summary>
-        <returns>A number that is the best available approximation of the number of bytes currently allocated in managed memory.</returns>
+        <param name="forceFullCollection">如果這個方法可以等待記憶體回收發生後再傳回則為 <see langword="true" />，否則為 <see langword="false" />。</param>
+        <summary>擷取目前被視為已配置的位元組數。 參數會指出這個方法是否可以先等待短暫間隔後再傳回，以便讓系統回收記憶體和最終處理物件。</summary>
+        <returns>數目，為目前配置於 Managed 記憶體中位元組的最佳可用近似數目。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果`forceFullCollection`參數是`true`，這個方法會等候再傳回較短的間隔時，系統會收集記憶體回收，並終結物件。 內部指定的限制，取決於已完成記憶體回收週期數目和復原循環之間的記憶體變更間隔的持續時間。 記憶體回收行程不保證會收集所有存取的記憶體。  
+ 如果`forceFullCollection`參數是`true`，這個方法會等候傳回之前在短時間內時，系統會收集記憶體回收，並終結物件。 在內部指定的限制，取決於完成記憶體回收週期數目和復原循環之間的記憶體變更間隔的持續時間。 記憶體回收行程並不保證會收集所有存取的記憶體。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.GC.GetTotalMemory%2A>方法來取得並顯示目前配置於 managed 記憶體中的位元組數目。  
+ 下列範例示範如何使用<xref:System.GC.GetTotalMemory%2A>方法來取得並顯示目前在受管理的記憶體中配置的位元組數目。  
   
  [!code-cpp[System.GC.Collect Int Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.gc.collect int example/CPP/class1.cpp#1)]
  [!code-csharp[System.GC.Collect Int Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.collect int example/CS/class1.cs#1)]
@@ -884,6 +922,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -892,8 +932,11 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -903,22 +946,22 @@
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">The object to reference.</param>
-        <summary>References the specified object, which makes it ineligible for garbage collection from the start of the current routine to the point where this method is called.</summary>
+        <param name="obj">要參考的物件。</param>
+        <summary>參考指定的物件，使它從目前常式的開始至呼叫這個方法時都不適合記憶體回收。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 目的<xref:System.GC.KeepAlive%2A>方法是確保可能過早被記憶體回收行程回收物件的參考是否存在。 這其中可能會發生的常見案例是當沒有物件參考 managed 程式碼或資料，但物件仍在使用 unmanaged 程式碼，例如 Win32 Api，unmanaged Dll，或使用 COM 方法  
+ 目的<xref:System.GC.KeepAlive%2A>方法可確保有風險的不當記憶體回收行程回收物件的參考是否存在。 這可能發生的常見案例是當沒有物件參考，在 managed 程式碼或資料，但物件仍在使用處於未受管理的程式碼，例如 Win32 Api，unmanaged 的 Dll，或使用 COM 方法  
   
- 這個方法所參考`obj`參數，使該物件適合記憶體回收從常式的開始點，以執行順序，會呼叫這個方法。 這個方法在結束時，無法開始時，指示的範圍的程式碼位置`obj`必須可供使用。  
+ 這個方法所參考`obj`參數，使該物件進行記憶體回收不適合從常式的開始點，以執行順序，會呼叫這個方法。 在結束時，不，範圍的開頭的指示，此方法的程式碼位置`obj`必須可供使用。  
   
- <xref:System.GC.KeepAlive%2A>方法會執行任何作業，並產生沒有副作用以外延伸做為參數傳遞的物件的存留期。  
+ <xref:System.GC.KeepAlive%2A>方法會執行任何作業，並產生非擴充做為參數傳入的物件的存留期沒有副作用。  
   
    
   
 ## Examples  
- 下列程式碼範例會建立物件的開頭其`Main`方法，而且不會一次，直到結束時，無法參考物件時<xref:System.GC.KeepAlive%2A>方法呼叫。 30 秒期間的物件保存`Main`方法，儘管呼叫<xref:System.GC.Collect%2A>和<xref:System.GC.WaitForPendingFinalizers%2A>方法。  
+ 下列程式碼範例會建立物件的開頭及其`Main`方法並不是指的物件直到結束時時,<xref:System.GC.KeepAlive%2A>方法呼叫。 30 秒期間持續存在的物件`Main`方法，呼叫儘管<xref:System.GC.Collect%2A>和<xref:System.GC.WaitForPendingFinalizers%2A>方法。  
   
  [!code-cpp[System.GC.KeepAlive Example2#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.GC.KeepAlive Example2/CPP/gckeepalive.cpp#1)]
  [!code-csharp[System.GC.KeepAlive Example2#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.GC.KeepAlive Example2/CS/gckeepalive.cs#1)]
@@ -947,6 +990,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -955,7 +1000,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-1.0;netstandard-1.1;netstandard-1.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>get: System.Security.SecuritySafeCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -963,22 +1008,22 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the maximum number of generations that the system currently supports.</summary>
+        <summary>取得系統目前支援的最大層代編號。</summary>
         <value>範圍從零至所支援最大層代編號的值。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 層代編號或年齡，物件會實作定義相對量值物件的使用期限。 最新建立的物件是層代 0 中，最舊的物件是小於或等於產生傳回的層代<xref:System.GC.MaxGeneration%2A>屬性。  
+ 層代編號或年齡，物件是實作定義相對量值物件的存留時間。 最近建立的物件層代 0 中，而且舊的物件是小於或等於產生傳回的層代中<xref:System.GC.MaxGeneration%2A>屬性。  
   
- 記憶體回收行程會假設較新的記憶體是比較可能是較舊的記憶體回收。 因此，記憶體回收行程會改善其效能調整它會回收記憶體，每次產生數字和<xref:System.GC.MaxGeneration%2A>屬性值可以隨著時間成長。  
+ 記憶體回收行程假設較新的記憶體是更有可能是比較舊的記憶體回收。 因此，記憶體回收行程回收記憶體，每次調整產生數字中改善其效能和<xref:System.GC.MaxGeneration%2A>屬性值可以隨著時間成長。  
   
- 如果實作物件的時效性，<xref:System.GC.MaxGeneration%2A>屬性會傳回系統所使用的最大層代編號，否則這個屬性會傳回零。  
+ 如果實作物件過時，<xref:System.GC.MaxGeneration%2A>屬性會傳回系統所使用的最大層代編號; 否則這個屬性會傳回零。  
   
    
   
 ## Examples  
- 下列範例會示範如何使用 MaxGeneration 屬性來使用目前顯示的最大層代編號。  
+ 下列範例示範如何使用 MaxGeneration 屬性來顯示目前使用的最大的層代編號。  
   
  [!code-cpp[System.GC.Collect Int Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.gc.collect int example/CPP/class1.cpp#1)]
  [!code-csharp[System.GC.Collect Int Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.collect int example/CS/class1.cs#1)]
@@ -987,7 +1032,7 @@
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>此實作中，傳回的值由<see cref="P:System.GC.MaxGeneration" />屬性會保證執行的應用程式的存留期間保持不變。使用<see cref="P:System.GC.MaxGeneration" />屬性來判斷呼叫時，您可以指定的最大值<see cref="M:System.GC.Collect(System.Int32)" />採用產生參數的方法。</para>
+          <para>此實作中，傳回的值由<see cref="P:System.GC.MaxGeneration" />屬性一定會執行的應用程式的存留期內保持不變。使用<see cref="P:System.GC.MaxGeneration" />屬性來判斷呼叫時，您可以指定的最大值<see cref="M:System.GC.Collect(System.Int32)" />採用 generation 參數的方法。</para>
         </block>
         <altmember cref="M:System.GC.GetGeneration(System.Object)" />
       </Docs>
@@ -1002,6 +1047,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1015,7 +1061,7 @@
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -1027,41 +1073,41 @@
         <Parameter Name="largeObjectHeapThreshold" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="maxGenerationThreshold">A number between 1 and 99 that specifies when the notification should be raised based on the objects allocated in generation 2.</param>
-        <param name="largeObjectHeapThreshold">A number between 1 and 99 that specifies when the notification should be raised based on objects allocated in the large object heap.</param>
-        <summary>Specifies that a garbage collection notification should be raised when conditions favor full garbage collection and when the collection has been completed.</summary>
+        <param name="maxGenerationThreshold">範圍從 1 到 99 的數字，指定何時應根據層代 2 中所配置的物件加以引發通知。</param>
+        <param name="largeObjectHeapThreshold">範圍從 1 到 99 的數字，指定何時根據大型物件堆積中所配置的物件加以引發通知。</param>
+        <summary>指定當情況需要完整記憶體回收時和回收完成時，應引發記憶體回收通知。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 針對每個層代中，記憶體回收行程會設定成該層代的配置臨界值。 當配置的記憶體大小超過此臨界值時，該層代上觸發記憶體回收。 如範例中，如果層代 2 的臨界值是 20 MB （亦即未層代 1 回收 20 MB，並提升至層代 2），超過 20 MB 尚未被第 1 代，而且會提示輸入至層代 2 中，將會嘗試下一個記憶體回收為層代 2 回收。 同樣地，如果大型物件堆積 (LOH) 臨界值是 20 MB，您的應用程式有已配置超過 20 MB 的大型物件下, 一個記憶體回收也會嘗試為層代 2 回收 （因為，gen2 記憶體回收中才會收集 LOH）。  
+ 針對每個層代，記憶體回收行程會設定配置到該層代的臨界值。 當配置的記憶體大小超過此臨界值時，該層代上觸發記憶體回收。 如範例中，如果層代 2 的臨界值是 20 MB （亦即 20 MB 不受影響的層代 1 回收和提升至層代 2），以及超過 20 MB 尚未被第 1 代，而且會提示輸入至層代 2，將會嘗試下一個記憶體回收為層代 2 回收。 同樣地，如果大型物件堆積 (LOH) 的臨界值為 20 MB 和您的應用程式已配置超過 20 MB 的大型物件下, 一個記憶體回收也會嘗試為層代 2 集合 （因為 gen2 回收中，才會收集 LOH）。  
   
- `maxGenerationThreshold`和`largeObjectHeapThreshold`臨界值會控制多少事先通知您完整記憶體回收發生之前。 閾值愈通知和下一個完整記憶體回收之間可能的多個配置。  
+ `maxGenerationThreshold`和`largeObjectHeapThreshold`臨界值可讓您控制多少事先通知您發生完整記憶體回收之前。 大於臨界值，可能會發生通知與下一個完整記憶體回收之間的多個配置。  
   
- 如果您在其中完整回收，common language runtime 會影響您的應用程式效能的情況下，您可以要求執行完整記憶體回收和規避該集合，由執行階段時收到通知自行引發集合 (使用<xref:System.GC.Collect%2A>方法) 時仍理想狀況。 除了變更自己的記憶體回收集合排程，完整 GC 通知適用於下列案例：  
+ 如果您已在其中完整記憶體回收的 common language runtime 會效能產生負面影響您的應用程式的情況下，您可以要求在執行階段即將執行完整記憶體回收，並對讓該集合時收到通知自行引發集合 (使用<xref:System.GC.Collect%2A>方法) 時仍有利於條件。 除了自行變更廢棄項目集合排程，完整的 GC 通知是用於下列案例：  
   
--   您進行監視的完整記憶體回收的方法，當系統通知您其中一個已接近，您縮小即時資料 （例如，藉由釋放某些快取項目）。 如此一來，當記憶體回收發生時，便能將回收更多記憶體。  
+-   您完整記憶體回收的方法進行監視，並當系統通知您即將達到其中一個，您即時資料的大小縮減 （比方說，釋出一些快取項目）。 如此一來，當記憶體回收發生時，它就能夠以回收更多的記憶體。  
   
--   您監視的完整記憶體回收完成，而您可以收集一些統計資料。  例如，您可以測量在 GC 完成堆積的大小，好讓您知道即時資料的大小。 （完整的 GC，堆積之後的最小大小。）  
+-   您完整記憶體回收完成監視，而您可以收集一些統計資料。  比方說，您可能想要測量 GC 完成在堆積的大小，好讓您知道即時資料的大小。 （在完整的 GC 之後, 堆積是以其最小的大小）。  
   
- 如需有關什麼代表完整記憶體回收的詳細資訊，請參閱[記憶體回收通知](~/docs/standard/garbage-collection/notifications.md)。  
+ 如需有關所代表的意義完整記憶體回收的詳細資訊，請參閱[記憶體回收通知](~/docs/standard/garbage-collection/notifications.md)。  
   
- 當您註冊記憶體回收通知時，接近完整記憶體回收時和完成時，則會通知您可以。 此模式類似於如何作業系統用來監視記憶體不足的通知。  
+ 當您註冊記憶體回收通知時，您就可以收到已接近完整記憶體回收時，並在完成時。 此模式類似於作業系統如何監視記憶體不足的通知。  
   
  使用下列指導方針來指定`maxGenerationThreshold`和`largeObjectHeapThreshold`參數：  
   
 -   臨界值越大，更多的配置會通知與完整記憶體回收之間發生。  
   
-     較大的臨界值會提供更多的機會，為了讓執行階段檢查接近的集合。 這會增加，系統會通知您的可能性。 不過，您不應該設定過高臨界值，因為這樣會造成更多的配置之前執行階段產生的下一個集合。  
+     較大的臨界值會提供更多的機會，讓執行階段檢查即將進行的回收。 這會增加您會收到通知的可能性。 不過，您不應該設定的臨界值太高，因為這會導致更多的配置之前執行階段引發的下一步 的集合。  
   
-     當您自行引發回收告知使用高臨界值時，會由執行階段的下一次回收收回比回收較少的物件。  
+     當您自行引發回收通知使用高臨界值時，較少的物件會回收比原本回收的執行階段的下一步 的集合。  
   
--   小臨界值，較少通知與完整記憶體回收之間配置。  
+-   較小的臨界值，較少通知與完整記憶體回收之間配置。  
   
    
   
 ## Examples  
- 下列範例會示範如何註冊記憶體回收通知並啟動執行緒來監視記憶體回收通知的狀態。 這個程式碼範例是針對所提供之較大範例的一部分[記憶體回收通知](~/docs/standard/garbage-collection/notifications.md)主題。  
+ 下列範例示範如何註冊記憶體回收通知，並啟動執行緒來監視記憶體回收通知的狀態。 此程式碼範例是針對提供之較大範例的一部分[記憶體回收通知](~/docs/standard/garbage-collection/notifications.md)主題。  
   
  [!code-cpp[GCNotification#2](~/samples/snippets/cpp/VS_Snippets_CLR/GCNotification/cpp/program.cpp#2)]
  [!code-csharp[GCNotification#2](~/samples/snippets/csharp/VS_Snippets_CLR/GCNotification/cs/Program.cs#2)]
@@ -1070,9 +1116,9 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="maxGenerationThreshold" /> or <paramref name="largeObjectHeapThreshold" /> is not between 1 and 99.</exception>
-        <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">針對完全信任立即呼叫者。 這個成員無法供部分信任的程式碼使用。</permission>
-        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫者。 這個成員無法供部分信任或安全性透明程式碼。</permission>
+          <paramref name="maxGenerationThreshold" /> 或 <paramref name="largeObjectHeapThreshold" /> 未介於 1 和 99 之間。</exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">針對完全信任立即呼叫端。 這個成員無法供部分信任的程式碼使用。</permission>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫端。 此成員不能由部分信任或不透明的程式碼。</permission>
       </Docs>
     </Member>
     <Member MemberName="RemoveMemoryPressure">
@@ -1094,6 +1140,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1102,7 +1149,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.5;netstandard-1.6;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -1113,27 +1160,30 @@
         <Parameter Name="bytesAllocated" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="bytesAllocated">The amount of unmanaged memory that has been released.</param>
-        <summary>Informs the runtime that unmanaged memory has been released and no longer needs to be taken into account when scheduling garbage collection.</summary>
+        <param name="bytesAllocated">已釋放的 Unmanaged 記憶體數量。</param>
+        <summary>告知執行階段，Unmanaged 記憶體已釋放，所以排定記憶體回收時不需要再考慮它。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 在決定何時要排定記憶體回收時，執行階段會考量已配置的受管理的記憶體。 如果小型的 managed 的物件會配置大量的未受管理的記憶體，執行階段會考量只有受管理的記憶體，並因此低估排定記憶體回收的急迫性。 <xref:System.GC.AddMemoryPressure%2A>方法告知執行階段，系統記憶體，此額外的壓力而<xref:System.GC.RemoveMemoryPressure%2A>方法會通知執行階段已釋放額外的壓力。  
+ 在決定何時要排定記憶體回收時，執行階段會考慮到配置的受管理的記憶體。 如果小型的 managed 的物件會配置大量 unmanaged 記憶體，執行階段會考量只受管理的記憶體，並因此低估排定記憶體回收的急迫性。 <xref:System.GC.AddMemoryPressure%2A>方法會通知執行階段的系統記憶體，造成此額外的壓力和<xref:System.GC.RemoveMemoryPressure%2A>方法會通知執行階段造成額外的壓力，已發行。  
   
- 在最簡單的使用方式模式中，受管理的物件配置 unmanaged 的記憶體中的建構函式，並釋放它在`Dispose`或`Finalize`方法。 呼叫<xref:System.GC.AddMemoryPressure%2A>方法之後配置 unmanaged 的記憶體中，並呼叫<xref:System.GC.RemoveMemoryPressure%2A>之後釋出它的方法。  
+ 在最簡單的使用方式模式中，受管理的物件配置建構函式中的 unmanaged 的記憶體和釋放它在`Dispose`或`Finalize`方法。 呼叫<xref:System.GC.AddMemoryPressure%2A>方法之後配置 unmanaged 的記憶體中，並呼叫<xref:System.GC.RemoveMemoryPressure%2A>之後釋放它的方法。  
   
- 在更複雜的情況，其中 unmanaged 的記憶體配置的 managed 物件的存留期間變更本質上，您可以呼叫<xref:System.GC.AddMemoryPressure%2A>和<xref:System.GC.RemoveMemoryPressure%2A>通訊這些執行階段的累加變更的方法。  
+ 在更複雜的案例，其中的 unmanaged 的記憶體配置的 managed 物件的存留期間變更本質上，您可以呼叫<xref:System.GC.AddMemoryPressure%2A>和<xref:System.GC.RemoveMemoryPressure%2A>通訊這些執行階段的累加變更的方法。  
   
 > [!CAUTION]
->  您必須確定您移除完全壓力您新增的數量。 不這樣做的話，可能會影響系統的長時間執行的應用程式的效能。  
+>  您必須確定您移除完全您新增的壓力總量。 不這麼做的話，可能會影響在系統中的長時間執行的應用程式的效能。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="bytesAllocated" /> is less than or equal to 0.  -or-  On a 32-bit computer, <paramref name="bytesAllocated" /> is larger than <see cref="F:System.Int32.MaxValue" />.</exception>
+          <paramref name="bytesAllocated" /> 小於或等於 0。  
+  
+-或- 
+在 32 位元電腦上，<paramref name="bytesAllocated" /> 大於 <see cref="F:System.Int32.MaxValue" />。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">提供管理回收優先順序時，呼叫 unmanaged 程式碼的能力。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
-        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫者。 這個成員無法供部分信任或安全性透明程式碼。</permission>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫端。 此成員不能由部分信任或不透明的程式碼。</permission>
       </Docs>
     </Member>
     <Member MemberName="ReRegisterForFinalize">
@@ -1155,6 +1205,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1163,7 +1215,7 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-1.0;netstandard-1.1;netstandard-1.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -1174,8 +1226,8 @@
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">The object that a finalizer must be called for.</param>
-        <summary>Requests that the system call the finalizer for the specified object for which <see cref="M:System.GC.SuppressFinalize(System.Object)" /> has previously been called.</summary>
+        <param name="obj">必須呼叫完成項的物件。</param>
+        <summary>要求系統為指定物件 (先前已經為其呼叫 <see cref="M:System.GC.SuppressFinalize(System.Object)" />) 呼叫完成項。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1184,14 +1236,14 @@
   
  呼叫<xref:System.GC.ReRegisterForFinalize%2A>方法不保證記憶體回收行程會呼叫物件的完成項。  
   
- 根據預設，會實作完成項的所有物件都加入至所需的最終處理; 的物件清單不過，物件可能已完成，或可能已停用最終處理藉由呼叫<xref:System.GC.SuppressFinalize%2A>方法。  
+ 根據預設，會實作完成項的所有物件都加入到需要結束; 的物件清單不過，物件可能已經結束，或可能已停用完成項呼叫<xref:System.GC.SuppressFinalize%2A>方法。  
   
- 完成項可以使用這個方法重新恢復它本身或它所參考的物件。  
+ 完成項可以使用這個方法，重新恢復它本身或它所參考的物件。  
   
    
   
 ## Examples  
- 下列範例示範如何使用 ReRegisterForFinalize 方法來完成第二個物件在回收之後的時間。  
+ 下列範例示範如何使用 ReRegisterForFinalize; 方法來完成第二個物件回收之後的時間。  
   
  [!code-cpp[System.GC.ReregisterForFinalize Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.GC.ReRegisterForFinalize Example/CPP/class1.cpp#1)]
  [!code-csharp[System.GC.ReregisterForFinalize Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.GC.ReRegisterForFinalize Example/CS/class1.cs#1)]
@@ -1200,7 +1252,7 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="obj" /> is <see langword="null" />.</exception>
+          <paramref name="obj" /> 為 <see langword="null" />。</exception>
         <altmember cref="M:System.GC.SuppressFinalize(System.Object)" />
       </Docs>
     </Member>
@@ -1223,6 +1275,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1231,11 +1285,14 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-1.0;netstandard-1.1;netstandard-1.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -1245,20 +1302,20 @@
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">The object whose finalizer must not be executed.</param>
-        <summary>Requests that the common language runtime not call the finalizer for the specified object.</summary>
+        <param name="obj">完成項不得執行的物件。</param>
+        <summary>要求 Common Language Runtime 不要為指定之物件呼叫完成項。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法會設定位元的物件標頭中`obj`，當呼叫完成項，執行階段檢查。 完成項，它由<xref:System.Object.Finalize%2A?displayProperty=nameWithType>方法，用於物件被記憶體回收前釋放 unmanaged 的資源。 如果`obj`沒有完成項中，呼叫<xref:System.GC.SuppressFinalize%2A>方法沒有任何作用。  
+ 這個方法的物件標頭中設定一個位元`obj`，當呼叫完成項，執行階段檢查。 完成項，由表示<xref:System.Object.Finalize%2A?displayProperty=nameWithType>方法，用來物件被記憶體回收前釋放 unmanaged 的資源。 如果`obj`沒有完成項，呼叫<xref:System.GC.SuppressFinalize%2A>方法沒有任何作用。  
   
- 物件，實作<xref:System.IDisposable>介面可以呼叫這個方法的物件從<xref:System.IDisposable.Dispose%2A?displayProperty=nameWithType>實作，以防止記憶體回收行程呼叫<xref:System.Object.Finalize%2A?displayProperty=nameWithType>上不需要的物件。 一般而言，這為了釋放已釋放的 unmanaged 的資源時，防止完成項<xref:System.IDisposable.Dispose%2A?displayProperty=nameWithType>實作。  
+ 物件，實作<xref:System.IDisposable>介面可以從物件的呼叫此方法<xref:System.IDisposable.Dispose%2A?displayProperty=nameWithType>實作，以防止記憶體回收行程呼叫<xref:System.Object.Finalize%2A?displayProperty=nameWithType>上不需要的物件。 一般而言，這為了釋放已由釋放的 unmanaged 的資源時，防止完成項<xref:System.IDisposable.Dispose%2A?displayProperty=nameWithType>實作。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.GC.SuppressFinalize%2A>中的資源類別，以避免多餘的記憶體回收集合時呼叫的方法。 此範例會使用[處置模式](~/docs/standard/design-guidelines/dispose-pattern.md)同時釋放 managed 資源 (也就是物件，實作<xref:System.IDisposable>) 與 unmanaged 資源。  
+ 下列範例示範如何使用<xref:System.GC.SuppressFinalize%2A>中的資源類別，以避免重複回收，呼叫的方法。 此範例會使用[處置模式](~/docs/standard/design-guidelines/dispose-pattern.md)同時釋放 managed 資源 (也就是物件實作<xref:System.IDisposable>) 與 unmanaged 資源。  
   
  [!code-csharp[System.GC.SuppressFinalize#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.suppressfinalize/cs/suppressfinalize1.cs#1)]
  [!code-vb[System.GC.SuppressFinalize#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.gc.suppressfinalize/vb/suppressfinalize1.vb#1)]  
@@ -1266,7 +1323,7 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="obj" /> is <see langword="null" />.</exception>
+          <paramref name="obj" /> 為 <see langword="null" />。</exception>
         <altmember cref="M:System.GC.ReRegisterForFinalize(System.Object)" />
         <altmember cref="M:System.Object.Finalize" />
       </Docs>
@@ -1278,14 +1335,14 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Attempts to disallow garbage collection during the execution of a critical path.</summary>
+        <summary>嘗試在執行關鍵路徑期間，禁止記憶體回收。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
   
 > [!IMPORTANT]
->  您無法巢狀呼叫<xref:System.GC.TryStartNoGCRegion%2A>方法，而且您應該只呼叫<xref:System.GC.EndNoGCRegion%2A>方法，如果執行階段目前處於無 GC 區域延遲模式。 換句話說，您不應該呼叫<xref:System.GC.TryStartNoGCRegion%2A>多次 （第一個方法呼叫之後，後續呼叫將不會成功），和不應呼叫<xref:System.GC.EndNoGCRegion%2A>才會成功，因為第一次呼叫<xref:System.GC.TryStartNoGCRegion%2A>成功。  
+>  您無法巢狀呼叫<xref:System.GC.TryStartNoGCRegion%2A>方法，而且您應該只呼叫<xref:System.GC.EndNoGCRegion%2A>方法，如果執行階段目前處於無 GC 區域延遲模式。 換句話說，您不應該呼叫<xref:System.GC.TryStartNoGCRegion%2A>多次 （第一個方法呼叫之後，後續呼叫將不會成功），而且不應會呼叫<xref:System.GC.EndNoGCRegion%2A>才會成功的第一次呼叫時，就算<xref:System.GC.TryStartNoGCRegion%2A>成功。  
   
  ]]></format>
         </remarks>
@@ -1315,7 +1372,7 @@
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -1326,28 +1383,27 @@
         <Parameter Name="totalSize" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="totalSize">The amount of memory in bytes to allocate without triggering a garbage collection. It must be less than or equal to the size of an ephemeral segment. For information on the size of an ephemeral segment, see the "Ephemeral generations and segments" section in the [Fundamentals of Garbage Collection](~/docs/standard/garbage-collection/fundamentals.md) article.</param>
-        <summary>Attempts to disallow garbage collection during the execution of a critical path if a specified amount of memory is available.</summary>
-        <returns>
-          <see langword="true" /> if the runtime was able to commit the required amount of memory and the garbage collector is able to enter no GC region latency mode; otherwise, <see langword="false" />.</returns>
+        <param name="totalSize">在不觸發記憶體回收的情況下，要配置的記憶體數量 (以位元組為單位)。 該值必須小於或等於暫時區段的大小。 如需暫時區段大小的資訊，請參閱[記憶體回收的基本概念](~/docs/standard/garbage-collection/fundamentals.md)一文中的＜暫時層代和區段＞一節。</param>
+        <summary>嘗試在有指定數量記憶體可用時，於執行關鍵路徑期間，禁止記憶體回收。</summary>
+        <returns>如果執行階段可以認可所需的記憶體數量且記憶體回收行程可以進入無 GC 區域延遲模式，則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.GC.TryStartNoGCRegion%28System.Int64%29>方法會嘗試將記憶體回收行程中不允許記憶體回收，而應用程式執行的程式碼的重要區域無 GC 區域延遲模式。  如果執行階段無法一開始配置要求的記憶體數量，記憶體回收行程會執行完全封鎖記憶體回收，嘗試釋放出額外的記憶體。 記憶體回收行程進入無 GC 區域延遲模式，它是否能夠配置所需的數量的記憶體，在此情況下為實際 2 *`totalSize`位元組 (它會嘗試配置`totalSize`小型物件堆積位元組和`totalSize`的位元組數大型物件堆積）。  
+ <xref:System.GC.TryStartNoGCRegion%28System.Int64%29>方法會嘗試將記憶體回收行程放在應用程式執行的程式碼的關鍵區域時，不允許記憶體回收無 GC 區域延遲模式。  如果執行階段無法一開始配置要求的記憶體數量，記憶體回收行程會執行完全封鎖記憶體回收，嘗試釋放其他記憶體。 記憶體回收行程會進入無 GC 區域延遲模式，如果無法配置所需的數量的記憶體，在此情況下為實際 2 *`totalSize`位元組 (它會嘗試配置`totalSize`小型物件堆積位元組和`totalSize`的位元組數大型物件堆積）。  
   
- `totalSize` 必須要夠大，無法處理發生的關鍵路徑中的所有記憶體配置。 這包括應用程式時，所配置，以及執行階段可讓應用程式的代表的配置。  
+ `totalSize` 必須夠大，無法處理發生的關鍵路徑中的所有記憶體配置。 這包括應用程式時，所配置，以及執行階段可讓應用程式的名義的配置。  
   
 > [!IMPORTANT]
->  您無法巢狀呼叫<xref:System.GC.TryStartNoGCRegion%2A>方法，而且您應該只呼叫<xref:System.GC.EndNoGCRegion%2A>方法，如果執行階段目前處於無 GC 區域延遲模式。 換句話說，您不應該呼叫<xref:System.GC.TryStartNoGCRegion%2A>多次 （第一個方法呼叫之後，後續呼叫將不會成功），和不應呼叫<xref:System.GC.EndNoGCRegion%2A>才會成功，因為第一次呼叫<xref:System.GC.TryStartNoGCRegion%2A>成功。  
+>  您無法巢狀呼叫<xref:System.GC.TryStartNoGCRegion%2A>方法，而且您應該只呼叫<xref:System.GC.EndNoGCRegion%2A>方法，如果執行階段目前處於無 GC 區域延遲模式。 換句話說，您不應該呼叫<xref:System.GC.TryStartNoGCRegion%2A>多次 （第一個方法呼叫之後，後續呼叫將不會成功），而且不應會呼叫<xref:System.GC.EndNoGCRegion%2A>才會成功的第一次呼叫時，就算<xref:System.GC.TryStartNoGCRegion%2A>成功。  
   
  您藉由呼叫結束無 GC 區域延遲模式<xref:System.GC.EndNoGCRegion%2A>方法。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="totalSize" /> exceeds the ephemeral segment size.</exception>
-        <exception cref="T:System.InvalidOperationException">The process is already in no GC region latency mode.</exception>
+          <paramref name="totalSize" /> 超過暫時區段的大小。</exception>
+        <exception cref="T:System.InvalidOperationException">處理序處於無 GC 區域延遲模式。</exception>
         <altmember cref="M:System.GC.EndNoGCRegion" />
       </Docs>
     </Member>
@@ -1374,7 +1430,7 @@
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -1386,32 +1442,31 @@
         <Parameter Name="disallowFullBlockingGC" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="totalSize">The amount of memory in bytes to allocate without triggering a garbage collection. It must be less than or equal to the size of an ephemeral segment. For information on the size of an ephemeral segment, see the "Ephemeral generations and segments" section in the [Fundamentals of Garbage Collection](~/docs/standard/garbage-collection/fundamentals.md) article.</param>
+        <param name="totalSize">在不觸發記憶體回收的情況下，要配置的記憶體數量 (以位元組為單位)。 該值必須小於或等於暫時區段的大小。 如需暫時區段大小的資訊，請參閱[記憶體回收的基本概念](~/docs/standard/garbage-collection/fundamentals.md)一文中的＜暫時層代和區段＞一節。</param>
         <param name="disallowFullBlockingGC">
-          <see langword="true" /> to omit a full blocking garbage collection if the garbage collector is initially unable to allocate <c>totalSize</c> bytes; otherwise, <see langword="false" />.</param>
-        <summary>Attempts to disallow garbage collection during the execution of a critical path if a specified amount of memory is available, and controls whether the garbage collector does a full blocking garbage collection if not enough memory is initially available.</summary>
-        <returns>
-          <see langword="true" /> if the runtime was able to commit the required amount of memory and the garbage collector is able to enter no GC region latency mode; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 表示如果記憶體回收行程最初無法配置 <c>totalSize</c> 個位元組，則省略完全封鎖記憶體回收；否則為 <see langword="false" />。</param>
+        <summary>嘗試在有指定數量記憶體可用時，於執行關鍵路徑期間，禁止記憶體回收，並控制在最初沒有足夠的記憶體可用時，記憶體回收行程是否執行完全封鎖記憶體回收。</summary>
+        <returns>如果執行階段可以認可所需的記憶體數量且記憶體回收行程可以進入無 GC 區域延遲模式，則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.GC.TryStartNoGCRegion%28System.Int64%2CSystem.Boolean%29>方法會嘗試將記憶體回收行程中不允許記憶體回收，而應用程式執行的程式碼的重要區域無 GC 區域延遲模式。  如果執行階段是無法一開始配置要求的記憶體數量和`disallowFullBlockingGC`引數是`false`，記憶體回收行程執行完全封鎖記憶體回收，嘗試釋放出額外的記憶體; 否則配置失敗，而且方法會傳回`false`。 記憶體回收行程進入無 GC 區域延遲模式，它是否能夠配置所需的數量的記憶體，在此情況下為實際 2 * `totalSize` (它會嘗試配置`totalSize`針對小物件堆積和`totalSize`大型物件堆積）。  
+ <xref:System.GC.TryStartNoGCRegion%28System.Int64%2CSystem.Boolean%29>方法會嘗試將記憶體回收行程放在應用程式執行的程式碼的關鍵區域時，不允許記憶體回收無 GC 區域延遲模式。  執行階段是否無法一開始配置要求的記憶體數量和`disallowFullBlockingGC`引數是`false`，記憶體回收行程執行完全封鎖記憶體回收，嘗試釋放其他記憶體; 否則配置失敗，而且方法會傳回`false`。 記憶體回收行程會進入無 GC 區域延遲模式，如果無法配置所需的數量的記憶體，在此情況下為實際 2 * `totalSize` (它會嘗試配置`totalSize`針對小物件堆積和`totalSize`大型物件堆積）。  
   
- `totalSize` 必須要夠大，無法處理發生的關鍵路徑中的所有記憶體配置。 這包括應用程式時，所配置，以及執行階段可讓應用程式的代表的配置。  
+ `totalSize` 必須夠大，無法處理發生的關鍵路徑中的所有記憶體配置。 這包括應用程式時，所配置，以及執行階段可讓應用程式的名義的配置。  
   
- 設定`disallowFullBlockingGC`至`true`為了避免完整的封鎖記憶體回收集合，如果沒有足夠的記憶體一開始是負載平衡案例中最為有用： 一個系統可以呼叫這個方法，並報告本身為準備好接受要求，如果它傳回`true`，而且如果它傳回，將要求重新導向至其他系統的負載平衡器`false`。 它不藉由呼叫處理要求時，它可以再執行完全封鎖記憶體回收<xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%2CSystem.Boolean%29>方法。  
+ 設定`disallowFullBlockingGC`至`true`為了避免完整封鎖記憶體回收集合，如果沒有足夠的記憶體可用的一開始是在負載平衡案例中最有用： 一個系統呼叫這個方法，並準備好接受要求，如果它傳回為報表本身`true`，如果它傳回，將要求重新導向至其他系統的負載平衡器和`false`。 它不藉由呼叫來處理要求時，它可以再執行完全封鎖記憶體回收<xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%2CSystem.Boolean%29>方法。  
   
 > [!IMPORTANT]
->  您無法巢狀呼叫<xref:System.GC.TryStartNoGCRegion%2A>方法，而且您應該只呼叫<xref:System.GC.EndNoGCRegion%2A>方法，如果執行階段目前處於無 GC 區域延遲模式。 換句話說，您不應該呼叫<xref:System.GC.TryStartNoGCRegion%2A>多次 （第一個方法呼叫之後，後續呼叫將不會成功），和不應呼叫<xref:System.GC.EndNoGCRegion%2A>才會成功，因為第一次呼叫<xref:System.GC.TryStartNoGCRegion%2A>成功。  
+>  您無法巢狀呼叫<xref:System.GC.TryStartNoGCRegion%2A>方法，而且您應該只呼叫<xref:System.GC.EndNoGCRegion%2A>方法，如果執行階段目前處於無 GC 區域延遲模式。 換句話說，您不應該呼叫<xref:System.GC.TryStartNoGCRegion%2A>多次 （第一個方法呼叫之後，後續呼叫將不會成功），而且不應會呼叫<xref:System.GC.EndNoGCRegion%2A>才會成功的第一次呼叫時，就算<xref:System.GC.TryStartNoGCRegion%2A>成功。  
   
  您藉由呼叫結束無 GC 區域延遲模式<xref:System.GC.EndNoGCRegion%2A>方法。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="totalSize" /> exceeds the ephemeral segment size.</exception>
-        <exception cref="T:System.InvalidOperationException">The process is already in no GC region latency mode.</exception>
+          <paramref name="totalSize" /> 超過暫時區段的大小。</exception>
+        <exception cref="T:System.InvalidOperationException">處理序處於無 GC 區域延遲模式。</exception>
         <altmember cref="M:System.GC.EndNoGCRegion" />
       </Docs>
     </Member>
@@ -1438,7 +1493,7 @@
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -1450,29 +1505,29 @@
         <Parameter Name="lohSize" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="totalSize">The amount of memory in bytes to allocate without triggering a garbage collection. <c>totalSize</c> –<c>lohSize</c> must be less than or equal to the size of an ephemeral segment. For information on the size of an ephemeral segment, see the "Ephemeral generations and segments" section in the [Fundamentals of Garbage Collection](~/docs/standard/garbage-collection/fundamentals.md) article.</param>
-        <param name="lohSize">The number of bytes in <c>totalSize</c> to use for large object heap (LOH) allocations.</param>
-        <summary>Attempts to disallow garbage collection during the execution of a critical path if a specified amount of memory is available for the large object heap and the small object heap.</summary>
-        <returns>
-          <see langword="true" /> if the runtime was able to commit the required amount of memory and the garbage collector is able to enter no GC region latency mode; otherwise, <see langword="false" />.</returns>
+        <param name="totalSize">在不觸發記憶體回收的情況下，要配置的記憶體數量 (以位元組為單位)。 <c>totalSize</c> - <c>lohSize</c> 必須小於或等於暫時區段的大小。 如需暫時區段大小的資訊，請參閱[記憶體回收的基本概念](~/docs/standard/garbage-collection/fundamentals.md)一文中的＜暫時層代和區段＞一節。</param>
+        <param name="lohSize">
+          <c>totalSize</c> 中要用於大型物件堆積 (LOH) 配置的位元組數目。</param>
+        <summary>嘗試在大型物件堆積與小型物件堆積有指定數量記憶體可用時，於執行關鍵路徑期間，禁止記憶體回收。</summary>
+        <returns>如果執行階段可以認可所需的記憶體數量且記憶體回收行程可以進入無 GC 區域延遲模式，則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.GC.TryStartNoGCRegion%28System.Int64%2CSystem.Int64%29>方法會嘗試將記憶體回收行程中不允許記憶體回收，而應用程式執行的程式碼的重要區域無 GC 區域延遲模式。  如果執行階段無法一開始配置要求的記憶體數量，記憶體回收行程會執行完全封鎖記憶體回收，嘗試釋放出額外的記憶體。 記憶體回收行程會進入無 GC 區域延遲模式，它是否能夠配置`lohSize`如 LOH 和`totalSize`–`lohSize`針對小物件堆積 (SOH)。  
+ <xref:System.GC.TryStartNoGCRegion%28System.Int64%2CSystem.Int64%29>方法會嘗試將記憶體回收行程放在應用程式執行的程式碼的關鍵區域時，不允許記憶體回收無 GC 區域延遲模式。  如果執行階段無法一開始配置要求的記憶體數量，記憶體回收行程會執行完全封鎖記憶體回收，嘗試釋放其他記憶體。 記憶體回收行程會進入無 GC 區域延遲模式，它是否能夠配置`lohSize`loh 與`totalSize`–`lohSize`針對小物件堆積 (SOH)。  
   
- `lohSize` 必須要夠大，無法處理 LOH，針對發生的關鍵路徑中的所有記憶體配置和`totalSize`–`lohSize`必須夠大，無法都處理的 SOH 中發生的關鍵路徑中的所有記憶體配置。 這包括應用程式時，所配置，以及執行階段可讓應用程式的代表的配置。  
+ `lohSize` 必須要夠大，無法處理對於 LOH 來說發生的關鍵路徑中的所有記憶體配置和`totalSize`–`lohSize`必須夠大，無法都處理的 SOH 中發生的關鍵路徑中的所有記憶體配置。 這包括應用程式時，所配置，以及執行階段可讓應用程式的名義的配置。  
   
 > [!IMPORTANT]
->  您無法巢狀呼叫<xref:System.GC.TryStartNoGCRegion%2A>方法，而且您應該只呼叫<xref:System.GC.EndNoGCRegion%2A>方法，如果執行階段目前處於無 GC 區域延遲模式。 換句話說，您不應該呼叫<xref:System.GC.TryStartNoGCRegion%2A>多次 （第一個方法呼叫之後，後續呼叫將不會成功），和不應呼叫<xref:System.GC.EndNoGCRegion%2A>才會成功，因為第一次呼叫<xref:System.GC.TryStartNoGCRegion%2A>成功。  
+>  您無法巢狀呼叫<xref:System.GC.TryStartNoGCRegion%2A>方法，而且您應該只呼叫<xref:System.GC.EndNoGCRegion%2A>方法，如果執行階段目前處於無 GC 區域延遲模式。 換句話說，您不應該呼叫<xref:System.GC.TryStartNoGCRegion%2A>多次 （第一個方法呼叫之後，後續呼叫將不會成功），而且不應會呼叫<xref:System.GC.EndNoGCRegion%2A>才會成功的第一次呼叫時，就算<xref:System.GC.TryStartNoGCRegion%2A>成功。  
   
  您藉由呼叫結束無 GC 區域延遲模式<xref:System.GC.EndNoGCRegion%2A>方法。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="totalSize" /> – <paramref name="lohSize" /> exceeds the ephemeral segment size.</exception>
-        <exception cref="T:System.InvalidOperationException">The process is already in no GC region latency mode.</exception>
+          <paramref name="totalSize" /> - <paramref name="lohSize" /> 超過暫時區段大小。</exception>
+        <exception cref="T:System.InvalidOperationException">處理序處於無 GC 區域延遲模式。</exception>
         <altmember cref="M:System.GC.EndNoGCRegion" />
       </Docs>
     </Member>
@@ -1499,7 +1554,7 @@
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -1512,33 +1567,33 @@
         <Parameter Name="disallowFullBlockingGC" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="totalSize">The amount of memory in bytes to allocate without triggering a garbage collection. <c>totalSize</c> –<c>lohSize</c> must be less than or equal to the size of an ephemeral segment. For information on the size of an ephemeral segment, see the "Ephemeral generations and segments" section in the [Fundamentals of Garbage Collection](~/docs/standard/garbage-collection/fundamentals.md) article.</param>
-        <param name="lohSize">The number of bytes in <c>totalSize</c> to use for large object heap (LOH) allocations.</param>
+        <param name="totalSize">在不觸發記憶體回收的情況下，要配置的記憶體數量 (以位元組為單位)。 <c>totalSize</c> - <c>lohSize</c> 必須小於或等於暫時區段的大小。 如需暫時區段大小的資訊，請參閱[記憶體回收的基本概念](~/docs/standard/garbage-collection/fundamentals.md)一文中的＜暫時層代和區段＞一節。</param>
+        <param name="lohSize">
+          <c>totalSize</c> 中要用於大型物件堆積 (LOH) 配置的位元組數目。</param>
         <param name="disallowFullBlockingGC">
-          <see langword="true" /> to omit a full blocking garbage collection if the garbage collector is initially unable to allocate the specified memory on the small object heap (SOH) and LOH; otherwise, <see langword="false" />.</param>
-        <summary>Attempts to disallow garbage collection during the execution of a critical path if a specified amount of memory is available for the large object heap and the small object heap, and controls whether the garbage collector does a full blocking garbage collection if not enough memory is initially available.</summary>
-        <returns>
-          <see langword="true" /> if the runtime was able to commit the required amount of memory and the garbage collector is able to enter no GC region latency mode; otherwise, <see langword="false" />.</returns>
+          <see langword="true" /> 表示如果記憶體回收行程最初無法在小型物件堆積 (SOH) 及 LOH 上配置指定的記憶體，則省略完全封鎖記憶體回收；否則為 <see langword="false" />。</param>
+        <summary>嘗試在大型物件堆積與小型物件堆積有指定數量記憶體可用時，於執行關鍵路徑期間，禁止記憶體回收，並控制在最初沒有足夠的記憶體可用時，記憶體回收行程是否執行完全封鎖記憶體回收。</summary>
+        <returns>如果執行階段可以認可所需的記憶體數量且記憶體回收行程可以進入無 GC 區域延遲模式，則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.GC.TryStartNoGCRegion%28System.Int64%2CSystem.Int64%2CSystem.Boolean%29>方法會嘗試將記憶體回收行程中不允許記憶體回收，而應用程式執行的程式碼的重要區域無 GC 區域延遲模式。  如果執行階段是無法一開始配置要求的記憶體數量和`disallowFullBlockingGC`引數是`false`，記憶體回收行程執行完全封鎖記憶體回收，嘗試釋放出額外的記憶體; 否則配置失敗，而且方法會傳回`false`。 記憶體回收行程會進入無 GC 區域延遲模式，它是否能夠配置`lohSize`如 LOH 和`totalSize`–`lohSize`針對小物件堆積 (SOH)。  
+ <xref:System.GC.TryStartNoGCRegion%28System.Int64%2CSystem.Int64%2CSystem.Boolean%29>方法會嘗試將記憶體回收行程放在應用程式執行的程式碼的關鍵區域時，不允許記憶體回收無 GC 區域延遲模式。  執行階段是否無法一開始配置要求的記憶體數量和`disallowFullBlockingGC`引數是`false`，記憶體回收行程執行完全封鎖記憶體回收，嘗試釋放其他記憶體; 否則配置失敗，而且方法會傳回`false`。 記憶體回收行程會進入無 GC 區域延遲模式，它是否能夠配置`lohSize`loh 與`totalSize`–`lohSize`針對小物件堆積 (SOH)。  
   
- `lohSize` 必須要夠大，無法處理 LOH，針對發生的關鍵路徑中的所有記憶體配置和`totalSize`–`lohSize`必須夠大，無法都處理的 SOH 中發生的關鍵路徑中的所有記憶體配置。 這包括應用程式時，所配置，以及執行階段可讓應用程式的代表的配置。  
+ `lohSize` 必須要夠大，無法處理對於 LOH 來說發生的關鍵路徑中的所有記憶體配置和`totalSize`–`lohSize`必須夠大，無法都處理的 SOH 中發生的關鍵路徑中的所有記憶體配置。 這包括應用程式時，所配置，以及執行階段可讓應用程式的名義的配置。  
   
- 設定`disallowFullBlockingGC`至`true`為了避免完整的封鎖記憶體回收集合，如果沒有足夠的記憶體一開始是負載平衡案例中最為有用： 一個系統可以呼叫這個方法，並報告本身為準備好接受要求，如果它傳回`true`，而且如果它傳回，將要求重新導向至其他系統的負載平衡器`false`。 它不藉由呼叫處理要求時，它可以再執行完全封鎖記憶體回收<xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%2CSystem.Boolean%29>方法。  
+ 設定`disallowFullBlockingGC`至`true`為了避免完整封鎖記憶體回收集合，如果沒有足夠的記憶體可用的一開始是在負載平衡案例中最有用： 一個系統呼叫這個方法，並準備好接受要求，如果它傳回為報表本身`true`，如果它傳回，將要求重新導向至其他系統的負載平衡器和`false`。 它不藉由呼叫來處理要求時，它可以再執行完全封鎖記憶體回收<xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%2CSystem.Boolean%29>方法。  
   
 > [!IMPORTANT]
->  您無法巢狀呼叫<xref:System.GC.TryStartNoGCRegion%2A>方法，而且您應該只呼叫<xref:System.GC.EndNoGCRegion%2A>方法，如果執行階段目前處於無 GC 區域延遲模式。 換句話說，您不應該呼叫<xref:System.GC.TryStartNoGCRegion%2A>多次 （第一個方法呼叫之後，後續呼叫將不會成功），和不應呼叫<xref:System.GC.EndNoGCRegion%2A>才會成功，因為第一次呼叫<xref:System.GC.TryStartNoGCRegion%2A>成功。  
+>  您無法巢狀呼叫<xref:System.GC.TryStartNoGCRegion%2A>方法，而且您應該只呼叫<xref:System.GC.EndNoGCRegion%2A>方法，如果執行階段目前處於無 GC 區域延遲模式。 換句話說，您不應該呼叫<xref:System.GC.TryStartNoGCRegion%2A>多次 （第一個方法呼叫之後，後續呼叫將不會成功），而且不應會呼叫<xref:System.GC.EndNoGCRegion%2A>才會成功的第一次呼叫時，就算<xref:System.GC.TryStartNoGCRegion%2A>成功。  
   
  您藉由呼叫結束無 GC 區域延遲模式<xref:System.GC.EndNoGCRegion%2A>方法。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="totalSize" /> – <paramref name="lohSize" /> exceeds the ephemeral segment size.</exception>
-        <exception cref="T:System.InvalidOperationException">The process is already in no GC region latency mode.</exception>
+          <paramref name="totalSize" /> - <paramref name="lohSize" /> 超過暫時區段大小。</exception>
+        <exception cref="T:System.InvalidOperationException">處理序處於無 GC 區域延遲模式。</exception>
         <altmember cref="M:System.GC.EndNoGCRegion" />
       </Docs>
     </Member>
@@ -1549,7 +1604,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Returns the status of a registered notification for determining whether a full, blocking garbage collection by the common language runtime is imminent.</summary>
+        <summary>傳回註冊通知的狀態，以判斷 Common Language Runtime 是否即將執行完整的封鎖記憶體回收。</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="WaitForFullGCApproach">
@@ -1562,6 +1617,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1575,7 +1631,7 @@
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -1584,24 +1640,24 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns the status of a registered notification for determining whether a full, blocking garbage collection by the common language runtime is imminent.</summary>
-        <returns>The status of the registered garbage collection notification.</returns>
+        <summary>傳回註冊通知的狀態，以判斷 Common Language Runtime 是否即將執行完整的封鎖記憶體回收。</summary>
+        <returns>已註冊記憶體回收通知的狀態。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.GCNotificationStatus>來判斷目前記憶體回收通知的使用已註冊狀態，這個方法所傳回的列舉<xref:System.GC.RegisterForFullGCNotification%2A>方法。 您也可以使用<xref:System.GC.WaitForFullGCComplete%2A>方法，以判斷是否已完成完整記憶體回收。  
+ 使用<xref:System.GCNotificationStatus>列舉型別，這個方法來判斷目前記憶體回收通知，使用已註冊狀態傳回<xref:System.GC.RegisterForFullGCNotification%2A>方法。 您也可以使用<xref:System.GC.WaitForFullGCComplete%2A>方法，以判斷是否已完成完整記憶體回收。  
   
- 當列舉型別傳回<xref:System.GCNotificationStatus.Succeeded>，您可以執行工作，例如防止其他物件所配置和與自行引發集合<xref:System.GC.Collect%2A>方法。 請注意通知並不保證，完整記憶體回收，就會發生，但是條件已達到是負責完整記憶體回收發生的臨界值。  
+ 當此列舉會傳回<xref:System.GCNotificationStatus.Succeeded>，您可以執行工作，例如防止其他物件配置，並使用您自己誘導集合<xref:System.GC.Collect%2A>方法。 請注意，通知並不保證，完整記憶體回收，就會發生只有該條件已達到是負責進行完整記憶體回收的臨界值。  
   
- 這個方法會無限期地等候取得記憶體回收通知。 如果您想要指定要傳回如果無法取得通知的方法逾時期間，使用<xref:System.GC.WaitForFullGCApproach%28System.Int32%29?displayProperty=nameWithType>方法多載。 如果您未指定逾時呼叫這個方法，您可以呼叫<xref:System.GC.CancelFullGCNotification%2A>方法，如果您在慣用再等候。  
+ 這個方法會無限期地等候取得記憶體回收通知。 如果您想要指定這個方法傳回 如果無法取得通知的逾時期間，使用<xref:System.GC.WaitForFullGCApproach%28System.Int32%29?displayProperty=nameWithType>方法多載。 如果您未指定逾時呼叫這個方法，您可以呼叫<xref:System.GC.CancelFullGCNotification%2A>方法，如果您在慣用的內容超過等候。  
   
- 您應該遵循此方法透過呼叫<xref:System.GC.WaitForFullGCComplete%2A>方法，確定您有完整記憶體回收。 單獨呼叫這個方法會造成未定的結果。  
+ 您應該遵循藉由呼叫這個方法<xref:System.GC.WaitForFullGCComplete%2A>方法以確定您已完整記憶體回收。 呼叫這個方法只會造成未定的結果。  
   
    
   
 ## Examples  
- 下列範例會示範如何使用這個方法來判斷是否已接近完整的封鎖記憶體回收。 每當通知的狀態是<xref:System.GCNotificationStatus.Succeeded>，使用者方法`OnFullGCApproachNotify`呼叫以執行動作以回應至接近的集合。 這個程式碼範例是針對所提供之較大範例的一部分[記憶體回收通知](~/docs/standard/garbage-collection/notifications.md)主題。  
+ 下列範例示範如何使用此方法來判斷是否已接近完整的封鎖記憶體回收。 通知的狀態是每當<xref:System.GCNotificationStatus.Succeeded>，將使用者方法`OnFullGCApproachNotify`呼叫以執行動作以回應到接近的集合。 此程式碼範例是針對提供之較大範例的一部分[記憶體回收通知](~/docs/standard/garbage-collection/notifications.md)主題。  
   
  [!code-cpp[GCNotification#3](~/samples/snippets/cpp/VS_Snippets_CLR/GCNotification/cpp/program.cpp#3)]
  [!code-csharp[GCNotification#3](~/samples/snippets/csharp/VS_Snippets_CLR/GCNotification/cs/Program.cs#3)]
@@ -1609,8 +1665,8 @@
   
  ]]></format>
         </remarks>
-        <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">針對完全信任立即呼叫者。 這個成員無法供部分信任的程式碼使用。</permission>
-        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫者。 這個成員無法供部分信任或安全性透明程式碼。</permission>
+        <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">針對完全信任立即呼叫端。 這個成員無法供部分信任的程式碼使用。</permission>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫端。 此成員不能由部分信任或不透明的程式碼。</permission>
       </Docs>
     </Member>
     <Member MemberName="WaitForFullGCApproach">
@@ -1623,6 +1679,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1636,7 +1693,7 @@
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -1647,29 +1704,29 @@
         <Parameter Name="millisecondsTimeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">The length of time to wait before a notification status can be obtained. Specify -1 to wait indefinitely.</param>
-        <summary>Returns, in a specified time-out period, the status of a registered notification for determining whether a full, blocking garbage collection by the common language runtime is imminent.</summary>
-        <returns>The status of the registered garbage collection notification.</returns>
+        <param name="millisecondsTimeout">在可以取得通知之前所要等待的時間長度。 指定 -1 會無限期等待。</param>
+        <summary>在指定的逾時期間傳回註冊通知的狀態，以判斷 Common Language Runtime 是否即將執行完整的封鎖記憶體回收。</summary>
+        <returns>已註冊記憶體回收通知的狀態。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.GCNotificationStatus>來判斷目前記憶體回收通知的使用已註冊狀態，這個方法所傳回的列舉<xref:System.GC.RegisterForFullGCNotification%2A>方法。 您也可以使用<xref:System.GC.WaitForFullGCComplete%2A>方法，以判斷是否已完成完整記憶體回收。  
+ 使用<xref:System.GCNotificationStatus>列舉型別，這個方法來判斷目前記憶體回收通知，使用已註冊狀態傳回<xref:System.GC.RegisterForFullGCNotification%2A>方法。 您也可以使用<xref:System.GC.WaitForFullGCComplete%2A>方法，以判斷是否已完成完整記憶體回收。  
   
- 請注意，這個方法會傳回每次記憶體回收集合取得通知，不論所指定的值，請立即`millisecondsTimeout`。 如果記憶體回收集合未取得通知之前`millisecondsTimeout`時間時，這個方法會傳回<xref:System.GCNotificationStatus.NotApplicable>。  
+ 請注意，這個方法傳回時要取得記憶體回收集合通知狀態，不論所指定的值，請立即`millisecondsTimeout`。 如果之前未取得記憶體回收集合通知狀態`millisecondsTimeout`次，這個方法會傳回<xref:System.GCNotificationStatus.NotApplicable>。  
   
- 當列舉型別傳回<xref:System.GCNotificationStatus.Succeeded>，您可以執行工作，例如防止其他物件所配置和與自行引發集合<xref:System.GC.Collect%2A>方法。 請注意通知並不保證，完整記憶體回收，就會發生，但是條件已達到是負責完整記憶體回收發生的臨界值。  
+ 當此列舉會傳回<xref:System.GCNotificationStatus.Succeeded>，您可以執行工作，例如防止其他物件配置，並使用您自己誘導集合<xref:System.GC.Collect%2A>方法。 請注意，通知並不保證，完整記憶體回收，就會發生只有該條件已達到是負責進行完整記憶體回收的臨界值。  
   
- 您可以呼叫<xref:System.GC.CancelFullGCNotification%2A>方法時，您無法等候逾時時間過去。  
+ 您可以呼叫<xref:System.GC.CancelFullGCNotification%2A>方法時您不能等候逾時週期過後。  
   
- 您應該遵循此方法透過呼叫<xref:System.GC.WaitForFullGCComplete%2A>方法，確定您有完整記憶體回收。 單獨呼叫這個方法會造成未定的結果。  
+ 您應該遵循藉由呼叫這個方法<xref:System.GC.WaitForFullGCComplete%2A>方法以確定您已完整記憶體回收。 呼叫這個方法只會造成未定的結果。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="millisecondsTimeout" /> must be either non-negative or less than or equal to <see cref="F:System.Int32.MaxValue" /> or -1.</exception>
-        <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">針對完全信任立即呼叫者。 這個成員無法供部分信任的程式碼使用。</permission>
-        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫者。 這個成員無法供部分信任或安全性透明程式碼。</permission>
+          <paramref name="millisecondsTimeout" /> 必須為非負數，或是小於或等於 <see cref="F:System.Int32.MaxValue" /> 或 -1。</exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">針對完全信任立即呼叫端。 這個成員無法供部分信任的程式碼使用。</permission>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫端。 此成員不能由部分信任或不透明的程式碼。</permission>
       </Docs>
     </Member>
     <MemberGroup MemberName="WaitForFullGCComplete">
@@ -1679,7 +1736,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Returns the status of a registered notification for determining whether a full, blocking garbage collection by the common language runtime has completed.</summary>
+        <summary>傳回註冊通知的狀態，以判斷 Common Language Runtime 是否已完成完整的封鎖記憶體回收。</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="WaitForFullGCComplete">
@@ -1692,6 +1749,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1705,7 +1763,7 @@
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -1714,24 +1772,24 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Returns the status of a registered notification for determining whether a full, blocking garbage collection by the common language runtime has completed.</summary>
-        <returns>The status of the registered garbage collection notification.</returns>
+        <summary>傳回註冊通知的狀態，以判斷 Common Language Runtime 是否已完成完整的封鎖記憶體回收。</summary>
+        <returns>已註冊記憶體回收通知的狀態。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.GCNotificationStatus>來判斷目前記憶體回收通知的使用已註冊狀態，這個方法所傳回的列舉<xref:System.GC.RegisterForFullGCNotification%2A>方法。 您也可以使用<xref:System.GC.WaitForFullGCApproach%2A>方法，以判斷是否即將完整記憶體回收。  
+ 使用<xref:System.GCNotificationStatus>列舉型別，這個方法來判斷目前記憶體回收通知，使用已註冊狀態傳回<xref:System.GC.RegisterForFullGCNotification%2A>方法。 您也可以使用<xref:System.GC.WaitForFullGCApproach%2A>方法，以判斷是否即將完整記憶體回收。  
   
- 當列舉型別傳回<xref:System.GCNotificationStatus.Succeeded>，您可以執行工作，例如繼續工作，並取得與集合計數<xref:System.GC.CollectionCount%2A>屬性。  
+ 當此列舉會傳回<xref:System.GCNotificationStatus.Succeeded>，您可以執行工作，例如繼續執行的工作，並取得與集合計數<xref:System.GC.CollectionCount%2A>屬性。  
   
- 這個方法會無限期地等候取得記憶體回收通知。 如果您想要指定要傳回如果無法取得通知的方法逾時期間，使用<xref:System.GC.WaitForFullGCApproach%28System.Int32%29?displayProperty=nameWithType>方法多載。 如果您未指定逾時呼叫這個方法，您可以呼叫<xref:System.GC.CancelFullGCNotification%2A>方法，如果您在慣用再等候。  
+ 這個方法會無限期地等候取得記憶體回收通知。 如果您想要指定這個方法傳回 如果無法取得通知的逾時期間，使用<xref:System.GC.WaitForFullGCApproach%28System.Int32%29?displayProperty=nameWithType>方法多載。 如果您未指定逾時呼叫這個方法，您可以呼叫<xref:System.GC.CancelFullGCNotification%2A>方法，如果您在慣用的內容超過等候。  
   
- 這個方法呼叫應該在前面加上呼叫<xref:System.GC.WaitForFullGCApproach%2A>方法，確定您有完整記憶體回收。 單獨呼叫這個方法可能會產生未定的結果。  
+ 這個方法呼叫應該在前面加上呼叫<xref:System.GC.WaitForFullGCApproach%2A>方法以確定您已完整記憶體回收。 單獨呼叫這個方法可能會產生未定的結果。  
   
    
   
 ## Examples  
- 下列範例會示範如何使用這個方法來判斷是否已完成完整記憶體回收。 每當通知的狀態是<xref:System.GCNotificationStatus.Succeeded>，使用者方法`OnFullGCCompletedNotify`呼叫以執行動作以回應至已完成的集合。 這個程式碼範例是針對所提供之較大範例的一部分[記憶體回收通知](~/docs/standard/garbage-collection/notifications.md)主題。  
+ 下列範例示範如何使用這個方法來判斷是否已完成完整記憶體回收。 通知的狀態是每當<xref:System.GCNotificationStatus.Succeeded>，將使用者方法`OnFullGCCompletedNotify`呼叫以執行動作以回應已完成的集合。 此程式碼範例是針對提供之較大範例的一部分[記憶體回收通知](~/docs/standard/garbage-collection/notifications.md)主題。  
   
  [!code-cpp[GCNotification#4](~/samples/snippets/cpp/VS_Snippets_CLR/GCNotification/cpp/program.cpp#4)]
  [!code-csharp[GCNotification#4](~/samples/snippets/csharp/VS_Snippets_CLR/GCNotification/cs/Program.cs#4)]
@@ -1739,8 +1797,8 @@
   
  ]]></format>
         </remarks>
-        <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">針對完全信任立即呼叫者。 這個成員無法供部分信任的程式碼使用。</permission>
-        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫者。 這個成員無法供部分信任或安全性透明程式碼。</permission>
+        <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">針對完全信任立即呼叫端。 這個成員無法供部分信任的程式碼使用。</permission>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫端。 此成員不能由部分信任或不透明的程式碼。</permission>
       </Docs>
     </Member>
     <Member MemberName="WaitForFullGCComplete">
@@ -1753,6 +1811,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1766,7 +1825,7 @@
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -1777,29 +1836,29 @@
         <Parameter Name="millisecondsTimeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">The length of time to wait before a notification status can be obtained. Specify -1 to wait indefinitely.</param>
-        <summary>Returns, in a specified time-out period, the status of a registered notification for determining whether a full, blocking garbage collection by common language the runtime has completed.</summary>
-        <returns>The status of the registered garbage collection notification.</returns>
+        <param name="millisecondsTimeout">在可以取得通知之前所要等待的時間長度。 指定 -1 會無限期等待。</param>
+        <summary>在指定的逾時期間傳回註冊通知的狀態，以判斷 Common Language Runtime 是否已完成完整的封鎖記憶體回收。</summary>
+        <returns>已註冊記憶體回收通知的狀態。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.GCNotificationStatus>來判斷目前記憶體回收通知的使用已註冊狀態，這個方法所傳回的列舉<xref:System.GC.RegisterForFullGCNotification%2A>方法。 您也可以使用<xref:System.GC.WaitForFullGCApproach%2A>方法，以判斷是否即將完整記憶體回收。  
+ 使用<xref:System.GCNotificationStatus>列舉型別，這個方法來判斷目前記憶體回收通知，使用已註冊狀態傳回<xref:System.GC.RegisterForFullGCNotification%2A>方法。 您也可以使用<xref:System.GC.WaitForFullGCApproach%2A>方法，以判斷是否即將完整記憶體回收。  
   
- 請注意，這個方法會傳回每次記憶體回收集合取得通知，不論所指定的值，請立即`millisecondsTimeout`。 如果記憶體回收集合未取得通知之前`millisecondsTimeout`時間時，這個方法會傳回<xref:System.GCNotificationStatus.NotApplicable>。  
+ 請注意，這個方法傳回時要取得記憶體回收集合通知狀態，不論所指定的值，請立即`millisecondsTimeout`。 如果之前未取得記憶體回收集合通知狀態`millisecondsTimeout`次，這個方法會傳回<xref:System.GCNotificationStatus.NotApplicable>。  
   
- 當列舉型別傳回<xref:System.GCNotificationStatus.Succeeded>，您可以執行工作，例如繼續工作，並取得與集合計數<xref:System.GC.CollectionCount%2A>屬性。  
+ 當此列舉會傳回<xref:System.GCNotificationStatus.Succeeded>，您可以執行工作，例如繼續執行的工作，並取得與集合計數<xref:System.GC.CollectionCount%2A>屬性。  
   
- 您可以呼叫<xref:System.GC.CancelFullGCNotification%2A>方法時，您無法等候逾時時間過去。  
+ 您可以呼叫<xref:System.GC.CancelFullGCNotification%2A>方法時您不能等候逾時週期過後。  
   
- 這個方法呼叫應該在前面加上呼叫<xref:System.GC.WaitForFullGCApproach%2A>方法，確定您有完整記憶體回收。 單獨呼叫這個方法可能會產生未定的結果。  
+ 這個方法呼叫應該在前面加上呼叫<xref:System.GC.WaitForFullGCApproach%2A>方法以確定您已完整記憶體回收。 單獨呼叫這個方法可能會產生未定的結果。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.InvalidOperationException">
-          <paramref name="millisecondsTimeout" /> must be either non-negative or less than or equal to <see cref="F:System.Int32.MaxValue" /> or -1.</exception>
-        <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">針對完全信任立即呼叫者。 這個成員無法供部分信任的程式碼使用。</permission>
-        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫者。 這個成員無法供部分信任或安全性透明程式碼。</permission>
+          <paramref name="millisecondsTimeout" /> 必須為非負數，或是小於或等於 <see cref="F:System.Int32.MaxValue" /> 或 -1。</exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">針對完全信任立即呼叫端。 這個成員無法供部分信任的程式碼使用。</permission>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">需要完全信任立即呼叫端。 此成員不能由部分信任或不透明的程式碼。</permission>
       </Docs>
     </Member>
     <Member MemberName="WaitForPendingFinalizers">
@@ -1821,6 +1880,8 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -1828,19 +1889,24 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-1.0;netstandard-1.1;netstandard-1.2">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Suspends the current thread until the thread that is processing the queue of finalizers has emptied that queue.</summary>
+        <summary>暫止目前的執行緒，直到處理完成項佇列的執行緒已經清空該佇列為止。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當記憶體回收行程會發現可以回收的物件時，它會檢查每個物件，以判斷物件的最終處理需求。 如果物件實作完成項且具有未停用最終處理藉由呼叫<xref:System.GC.SuppressFinalize%2A>，該物件放在標示為準備進行最終處理物件的清單。 記憶體回收行程呼叫<xref:System.Object.Finalize%2A>此清單中移除的項目從清單中物件的方法。 這個方法會封鎖直到所有的完成項已完成執行。  
+ 當記憶體回收行程會發現可以回收的物件時，它會檢查每個物件，以判斷物件的最終處理需求。 如果物件會實作完成項，並且具有未停用完成項呼叫<xref:System.GC.SuppressFinalize%2A>，該物件位於標示為準備進行最終處理的物件清單。 記憶體回收行程呼叫<xref:System.Object.Finalize%2A>這個清單並移除的項目從清單中物件的方法。 這個方法會封鎖直到所有的完成項已執行到完成為止。  
   
- 完成項執行所在的執行緒未指定，因此不保證此方法將會終止。 不過，這個執行緒可以會暫時中斷時的另一個執行緒<xref:System.GC.WaitForPendingFinalizers%2A>方法正在進行中。 例如，您可以啟動另一個執行緒等候一段時間，然後插斷這個執行緒，如果仍然暫止這個執行緒。  
+ 在其執行完成項執行緒未指定，因此這個方法會終止不保證。 不過，這個執行緒可以中斷時的另一個執行緒<xref:System.GC.WaitForPendingFinalizers%2A>方法正在進行中。 例如，您可以啟動另一個執行緒等候一段時間，然後中斷這個執行緒，如果仍然已暫止這個執行緒。  
   
    
   
