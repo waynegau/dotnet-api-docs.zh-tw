@@ -1,11 +1,11 @@
 <Type Name="WriteableBitmap" FullName="System.Windows.Media.Imaging.WriteableBitmap">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="56ccd799e4018d937a1aeed6d58defeddd74a9b0" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="df16f8272a26a4d60c19bafa3a5a773fdb389033" />
+    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36493553" />
+    <Meta Name="ms.lasthandoff" Value="08/25/2018" />
+    <Meta Name="ms.locfileid" Value="39764094" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class WriteableBitmap : System.Windows.Media.Imaging.BitmapSource" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit WriteableBitmap extends System.Windows.Media.Imaging.BitmapSource" />
@@ -15,6 +15,7 @@
   <TypeSignature Language="F#" Value="type WriteableBitmap = class&#xA;    inherit BitmapSource" />
   <AssemblyInfo>
     <AssemblyName>PresentationCore</AssemblyName>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
@@ -22,39 +23,39 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Provides a <see cref="T:System.Windows.Media.Imaging.BitmapSource" /> that can be written to and updated.</summary>
+    <summary>提供可以寫入及更新的 <see cref="T:System.Windows.Media.Imaging.BitmapSource" />。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Windows.Media.Imaging.WriteableBitmap>類別來更新，並呈現每個畫面格為基礎的點陣圖。 這是可用來產生演算法的內容，例如不規則映像和資料視覺效果，例如音樂視覺化檢視。  
+ 使用<xref:System.Windows.Media.Imaging.WriteableBitmap>類別來更新，並呈現每個畫面格為基礎的點陣圖。 這是可用來產生演算法的內容，例如碎形映像，以及資料視覺效果，例如音樂視覺化檢視。  
   
- <xref:System.Windows.Media.Imaging.WriteableBitmap>類別會使用兩個緩衝區。 *背景緩衝區*配置系統記憶體中，並且累積文件目前並未顯示的內容。 *前端緩衝區*配置系統記憶體中，包含目前顯示的內容。 呈現系統會將前端緩衝區複製到視訊記憶體以供顯示。  
+ <xref:System.Windows.Media.Imaging.WriteableBitmap>類別會使用兩個緩衝區。 *背景緩衝區*配置系統記憶體中，並累積目前未顯示的內容。 *前景緩衝區*配置系統記憶體與包含目前顯示的內容。 呈現系統會將前景緩衝區複製到視訊記憶體以供顯示。  
   
  兩個執行緒使用的緩衝區。 *使用者介面 (UI) 執行緒*產生 UI，但不會顯示該螢幕。 UI 執行緒會回應使用者輸入、 計時器和其他事件。 應用程式可以有多個 UI 執行緒。 *轉譯執行緒*撰寫，並呈現從 UI 執行緒的變更。 沒有每個應用程式只有一個呈現執行緒。  
   
- UI 執行緒背景緩衝區寫入內容。 呈現執行緒會讀取來自前端緩衝區的內容，並將它複製到視訊記憶體。 背景緩衝區的變更會追蹤與變更的矩形區域。  
+ UI 執行緒會將內容寫入背景緩衝區。 呈現執行緒會讀取來自前景緩衝區的內容，並將它複製到視訊記憶體。 指向背景緩衝區的變更會追蹤與變更的矩形區域。  
   
  呼叫其中一種<xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%2A>多載來更新，並會自動顯示背景緩衝區中的內容。  
   
- 如進一步控制更新，以及背景緩衝區的多執行緒存取，請使用下列工作流程。  
+ 為了進一步控制更新，以指向背景緩衝區的多執行緒存取，請使用下列工作流程。  
   
-1.  呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>保留更新背景緩衝區的方法。  
+1.  呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>方法，以保留背景緩衝區以供更新。  
   
-2.  取得背景緩衝區的指標，藉由存取<xref:System.Windows.Media.Imaging.WriteableBitmap.BackBuffer%2A>屬性。  
+2.  取得指向背景緩衝區的指標存取<xref:System.Windows.Media.Imaging.WriteableBitmap.BackBuffer%2A>屬性。  
   
-3.  將變更寫入以背景緩衝區。 其他執行緒可能會寫入變更到後端緩衝區時<xref:System.Windows.Media.Imaging.WriteableBitmap>已鎖定。  
+3.  寫入背景緩衝區中的變更。 其他執行緒可能會將變更寫入到後端緩衝區時<xref:System.Windows.Media.Imaging.WriteableBitmap>已鎖定。  
   
 4.  呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A>方法，以表示已變更的區域。  
   
-5.  呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>釋放背景緩衝區，並允許呈現至螢幕的方法。  
+5.  呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>方法來釋放背景緩衝區，並允許至畫面的呈現方式。  
   
- 當更新傳送至轉譯執行緒時，轉譯執行緒會將已變更的矩形從背景緩衝區複製到前端的緩衝區中。 呈現系統控制此交換，以避免死結，並且重繪其成品，例如 「 分裂 」。  
+ 當更新會傳送至轉譯執行緒時，呈現執行緒會將已變更的矩形從背景緩衝區複製到前景緩衝區中。 呈現系統控制此交換，以避免死結，並且重繪其成品，例如 「 分裂 」。  
   
    
   
 ## Examples  
- 下列範例會示範如何<xref:System.Windows.Media.Imaging.WriteableBitmap>可用來當作來源<xref:System.Windows.Controls.Image>滑鼠移動時，繪製像素為單位。  
+ 下列範例示範如何<xref:System.Windows.Media.Imaging.WriteableBitmap>可用來當做來源<xref:System.Windows.Controls.Image>繪製像素，當滑鼠移動時。  
   
  [!code-csharp[WriteableBitmap2#WriteableBitmapFullPage](~/samples/snippets/csharp/VS_Snippets_Wpf/WriteableBitmap2/CS/Program.cs#writeablebitmapfullpage)]  
   
@@ -69,7 +70,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> class.</summary>
+        <summary>初始化 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> 類別的新執行個體。</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName=".ctor">
@@ -82,10 +83,11 @@
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -93,15 +95,15 @@
         <Parameter Name="source" Type="System.Windows.Media.Imaging.BitmapSource" />
       </Parameters>
       <Docs>
-        <param name="source">The <see cref="T:System.Windows.Media.Imaging.BitmapSource" /> to use for initialization.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> class using the given <see cref="T:System.Windows.Media.Imaging.BitmapSource" />.</summary>
+        <param name="source">用來進行初始設定的 <see cref="T:System.Windows.Media.Imaging.BitmapSource" />。</param>
+        <summary>使用指定的 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />，初始化 <see cref="T:System.Windows.Media.Imaging.BitmapSource" /> 類別的新執行個體。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Windows.Media.Imaging.WriteableBitmap.%23ctor%28System.Int32%2CSystem.Int32%2CSystem.Double%2CSystem.Double%2CSystem.Windows.Media.PixelFormat%2CSystem.Windows.Media.Imaging.BitmapPalette%29>建構函式更為優先使用這個建構函式。  
+ <xref:System.Windows.Media.Imaging.WriteableBitmap.%23ctor%28System.Int32%2CSystem.Int32%2CSystem.Double%2CSystem.Double%2CSystem.Windows.Media.PixelFormat%2CSystem.Windows.Media.Imaging.BitmapPalette%29>建構函式，而不要使用這個建構函式。  
   
- 如果`source`不會使用原生支援的點陣圖格式，轉換會套用每個畫面格更新，會降低效能的格式。  
+ 如果`source`不會使用原生支援的點陣圖格式，轉換會針對每個畫面格的更新，進而導致效能降低所套用的格式。  
   
  ]]></format>
         </remarks>
@@ -117,10 +119,11 @@
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -133,18 +136,18 @@
         <Parameter Name="palette" Type="System.Windows.Media.Imaging.BitmapPalette" />
       </Parameters>
       <Docs>
-        <param name="pixelWidth">The desired width of the bitmap.</param>
-        <param name="pixelHeight">The desired height of the bitmap.</param>
-        <param name="dpiX">The horizontal [!INCLUDE[TLA#tla_dpi](~/includes/tlasharptla-dpi-md.md)] of the bitmap.</param>
-        <param name="dpiY">The vertical [!INCLUDE[TLA#tla_dpi](~/includes/tlasharptla-dpi-md.md)] of the bitmap.</param>
-        <param name="pixelFormat">The <see cref="T:System.Windows.Media.PixelFormat" /> of the bitmap.</param>
-        <param name="palette">The <see cref="T:System.Windows.Media.Imaging.BitmapPalette" /> of the bitmap.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> class with the specified parameters.</summary>
+        <param name="pixelWidth">所需的點陣圖寬度。</param>
+        <param name="pixelHeight">所需的點陣圖高度。</param>
+        <param name="dpiX">點陣圖的水平 [!INCLUDE[TLA#tla_dpi](~/includes/tlasharptla-dpi-md.md)]。</param>
+        <param name="dpiY">點陣圖的垂直 [!INCLUDE[TLA#tla_dpi](~/includes/tlasharptla-dpi-md.md)]。</param>
+        <param name="pixelFormat">點陣圖的 <see cref="T:System.Windows.Media.PixelFormat" />。</param>
+        <param name="palette">點陣圖的 <see cref="T:System.Windows.Media.Imaging.BitmapPalette" />。</param>
+        <summary>使用指定的參數，初始化 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> 類別的新執行個體。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 慣用的值`pixelFormat`是<xref:System.Windows.Media.PixelFormats.Bgr32%2A>和<xref:System.Windows.Media.PixelFormats.Pbgra32%2A>。 這些格式原生支援，而且不需要格式轉換。 其他`pixelFormat`值需要格式轉換針對每個畫面格的更新，這會降低效能。  
+ 偏好使用的值為`pixelFormat`都<xref:System.Windows.Media.PixelFormats.Bgr32%2A>和<xref:System.Windows.Media.PixelFormats.Pbgra32%2A>。 這些格式原生支援，而且不需要格式轉換。 其他`pixelFormat`值需要格式轉換針對每個畫面格的更新，這會降低效能。  
   
  ]]></format>
         </remarks>
@@ -161,10 +164,11 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -175,30 +179,31 @@
         <Parameter Name="dirtyRect" Type="System.Windows.Int32Rect" />
       </Parameters>
       <Docs>
-        <param name="dirtyRect">An <see cref="T:System.Windows.Int32Rect" /> representing the area that changed. Dimensions are in pixels.</param>
-        <summary>Specifies the area of the bitmap that changed.</summary>
+        <param name="dirtyRect">
+          <see cref="T:System.Windows.Int32Rect" />，表示變更的區域。 維度的單位是像素。</param>
+        <summary>指定所變更之點陣圖的區域。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A>方法，以表示您的程式碼具有背景緩衝區所做的變更。  
+ 呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A>方法，以表示您的程式碼有指向背景緩衝區所做的變更。  
   
- 當您呼叫這個方法多次時，已變更的區域就會累積足夠，但不是一定至最小，表示。 為了提高效率，保證都標示為中途的區域，向前複製到前端的緩衝區。 不過，因此您必須確保整個背景緩衝區都是有效的可能會轉寄、 複製點陣圖的任何部分。  
+ 當您多次呼叫這個方法時，已變更的區域就會累積足夠，但不是一定是最小，表示法中。 為了提高效率，只會標示為已變更的區域保證向前複製到前端的緩衝區。 不過，所以您必須確保整個背景緩衝區都是有效的可能會轉寄、 複製點陣圖的任何部分。  
   
- 呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A>方法呼叫之間只有<xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>和<xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>方法中所述<xref:System.Windows.Media.Imaging.WriteableBitmap>類別 < 備註 >。  
+ 呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A>方法呼叫之間只<xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>並<xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>中所述的方法<xref:System.Windows.Media.Imaging.WriteableBitmap>類別 < 備註 >。  
   
    
   
 ## Examples  
- 下列程式碼範例示範如何指定上一步的區域變更使用緩衝<xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A>方法。  
+ 下列程式碼範例示範如何指定區域中的後端緩衝區使用變更<xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A>方法。  
   
  [!code-csharp[WriteableBitmap2#2](~/samples/snippets/csharp/VS_Snippets_Wpf/WriteableBitmap2/CS/Program.cs#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The bitmap has not been locked by a call to the <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.Lock" /> or <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.TryLock(System.Windows.Duration)" /> methods.</exception>
+        <exception cref="T:System.InvalidOperationException">尚未呼叫 <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.Lock" /> 或 <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.TryLock(System.Windows.Duration)" /> 方法鎖定點鎖圖。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="dirtyRect" /> falls outside the bounds of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />.</exception>
+          <paramref name="dirtyRect" /> 落在 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> 範圍之外。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">用於存取 unmanaged 資源。 安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.Demand" />。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
       </Docs>
     </Member>
@@ -212,13 +217,14 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>get: System.Security.SecurityCritical</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>set: System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -226,21 +232,21 @@
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a pointer to the back buffer.</summary>
+        <summary>取得指向背景緩衝區的指標。</summary>
         <value>
-          <see cref="T:System.IntPtr" /> ，它會指向背景緩衝區的起始位址。</value>
+          <see cref="T:System.IntPtr" />，指向背景緩衝區基底位址 (Base Address)。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 背景緩衝區會包含在使用者要求的像素格式的點陣圖內容。  
+ 背景緩衝區會包含使用者所要求的像素格式的點陣圖內容。  
   
- 更新背景緩衝區之間的呼叫只<xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>和<xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>方法。 如果您未遵循鎖定/解除鎖定工作流程中所述<xref:System.Windows.Media.Imaging.WriteableBitmap>類別註解，未定義的行為，例如拆，可能會發生。  
+ 更新背景緩衝區之間的呼叫才<xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>和<xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>方法。 如果您未遵循鎖定/解除鎖定工作流程中所述<xref:System.Windows.Media.Imaging.WriteableBitmap>類別備註，未定義的行為，例如撕裂，可能會發生。  
   
  背景緩衝區的位址不會變更。  
   
 ## <a name="thread-safety"></a>執行緒安全  
- 您可以傳遞<xref:System.Windows.Media.Imaging.WriteableBitmap.BackBuffer%2A>指標外部元件和其他執行緒進行處理，但如果您這樣做，您必須提供您自己的執行緒協調。 特別是，您必須確定 UI 執行緒，藉由呼叫指定已變更的區域<xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A>方法，以及在 UI 執行緒解除鎖定緩衝區，藉由呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>方法。  
+ 您可以傳遞<xref:System.Windows.Media.Imaging.WriteableBitmap.BackBuffer%2A>指標外部元件和其他執行緒進行處理，但如果您這樣做，您必須提供您自己的執行緒協調。 特別是，您必須確定在 UI 執行緒，會指定已變更的區域，藉由呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A>方法，並在 UI 執行緒解除鎖定的緩衝區，藉由呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>方法。  
   
  ]]></format>
         </remarks>
@@ -256,14 +262,15 @@
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value indicating the number of bytes in a single row of pixel data.</summary>
-        <value>整數，表示單一像素資料的資料列中的位元組數目。</value>
+        <summary>取得值，這個值指出單列像素資料中的位元組數。</summary>
+        <value>整數，指出單列像素資料中的位元組數。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -277,6 +284,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -284,13 +292,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a modifiable clone of this <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />, making deep copies of this object's values. When copying dependency properties, this method copies resource references and data bindings (but they might no longer resolve) but not animations or their current values.</summary>
-        <returns>A modifiable clone of the current object. The cloned object's <see cref="P:System.Windows.Freezable.IsFrozen" /> property will be <see langword="false" /> even if the source's <see cref="P:System.Windows.Freezable.IsFrozen" /> property was <see langword="true." /></returns>
+        <summary>建立這個 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> 的可修改複製品，深層複製這個物件的值。 當複製相依性屬性時，這個方法會複製資源參考和資料繫結 (但可能無法再解析)，但不會複製動畫或它們目前的值。</summary>
+        <returns>目前物件的可修改複本。 即使來源的 <see cref="P:System.Windows.Freezable.IsFrozen" /> 屬性為 <see langword="true." />，複製物件的 <see cref="P:System.Windows.Freezable.IsFrozen" /> 屬性將仍為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法用來產生的可修改複本凍結<xref:System.Windows.Freezable>物件 (或任何<xref:System.Windows.Freezable>物件)。 為了方便起見，這個方法會遮蔽強型別實作繼承的版本。  
+ 這個方法用來產生的可修改複本凍結<xref:System.Windows.Freezable>物件 (或任何<xref:System.Windows.Freezable>物件)。 為了方便起見，這個方法會遮蔽的強型別實作繼承的版本。  
   
  如需詳細資訊，請參閱<xref:System.Windows.Freezable.Clone%2A?displayProperty=nameWithType>。  
   
@@ -308,13 +316,14 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityTreatAsSafe</AttributeName>
         </Attribute>
       </Attributes>
@@ -340,6 +349,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -347,13 +357,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Creates a modifiable clone of this <see cref="T:System.Windows.Media.Animation.ByteAnimationUsingKeyFrames" /> object, making deep copies of this object's current values. Resource references, data bindings, and animations are not copied, but their current values are.</summary>
-        <returns>A modifiable clone of the current object. The cloned object's <see cref="P:System.Windows.Freezable.IsFrozen" /> property will be <see langword="false" /> even if the source's <see cref="P:System.Windows.Freezable.IsFrozen" /> property was <see langword="true" />.</returns>
+        <summary>建立這個 <see cref="T:System.Windows.Media.Animation.ByteAnimationUsingKeyFrames" /> 物件的可修改複製品，製作這個物件目前值的深層複本。 不會複製資源參考、資料繫結和動畫，但是會複製其目前值。</summary>
+        <returns>目前物件的可修改複本。 即使來源的 <see cref="P:System.Windows.Freezable.IsFrozen" /> 屬性為 <see langword="false" />，複製物件的 <see cref="P:System.Windows.Freezable.IsFrozen" /> 屬性將仍為 <see langword="true" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法用來產生的可修改複本凍結<xref:System.Windows.Freezable>物件 (或任何<xref:System.Windows.Freezable>物件)。 為了方便起見，這個方法會遮蔽強型別實作繼承的版本。  
+ 這個方法用來產生的可修改複本凍結<xref:System.Windows.Freezable>物件 (或任何<xref:System.Windows.Freezable>物件)。 為了方便起見，這個方法會遮蔽的強型別實作繼承的版本。  
   
  如需詳細資訊，請參閱<xref:System.Windows.Freezable.CloneCurrentValue%2A?displayProperty=nameWithType>。  
   
@@ -371,13 +381,14 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityTreatAsSafe</AttributeName>
         </Attribute>
       </Attributes>
@@ -403,6 +414,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -425,13 +437,14 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityTreatAsSafe</AttributeName>
         </Attribute>
       </Attributes>
@@ -458,13 +471,14 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityTreatAsSafe</AttributeName>
         </Attribute>
       </Attributes>
@@ -490,13 +504,14 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityTreatAsSafe</AttributeName>
         </Attribute>
       </Attributes>
@@ -522,6 +537,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -529,16 +545,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Reserves the back buffer for updates.</summary>
+        <summary>保留背景緩衝區以供更新。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>方法的鎖定計數遞增。 當<xref:System.Windows.Media.Imaging.WriteableBitmap>已鎖定，呈現系統不會傳送更新，直到<xref:System.Windows.Media.Imaging.WriteableBitmap>完全解除鎖定的呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>方法。  
+ <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>方法的鎖定計數遞增。 當<xref:System.Windows.Media.Imaging.WriteableBitmap>會鎖定，呈現系統不會傳送更新，直到<xref:System.Windows.Media.Imaging.WriteableBitmap>完全透過呼叫來解除鎖定<xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>方法。  
   
- 您可以使用<xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>方法，以支援多執行緒的實作。 在這些案例中，UI 執行緒會鎖定點陣圖，並公開 （expose） 給其他背景緩衝區。 當背景工作執行緒完成畫面格時，UI 執行緒會將已變更的矩形新增，且解除鎖定緩衝區。  
+ 您可以使用<xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>方法，以支援多執行緒的實作。 在這些情況下，UI 執行緒鎖定點陣圖，並公開 （expose） 的其他執行緒的背景緩衝區。 當背景工作執行緒完成畫面格時，UI 執行緒將已變更的矩形新增，並解除鎖定緩衝區。  
   
- 呈現執行緒取得鎖定後將其向前複製到前端的緩衝區的緩衝區上時，可以封鎖 UI 執行緒。 如果此區塊中的延遲時間太長，請使用<xref:System.Windows.Media.Imaging.WriteableBitmap.TryLock%2A>方法來等候一段時間，然後解除封鎖 UI 執行緒背景緩衝區鎖定時執行其他工作。  
+ 當呈現執行緒取得鎖定，以在背景緩衝區以將其複製到前端的緩衝區上，可以封鎖 UI 執行緒。 如果此區塊中的延遲時間太長，請使用<xref:System.Windows.Media.Imaging.WriteableBitmap.TryLock%2A>先等候一小段時間，然後解除封鎖 UI 執行緒背景緩衝區鎖定時執行其他工作的方法。  
   
    
   
@@ -563,10 +579,11 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -577,20 +594,20 @@
         <Parameter Name="timeout" Type="System.Windows.Duration" />
       </Parameters>
       <Docs>
-        <param name="timeout">A <see cref="T:System.Windows.Duration" /> that represents the length of time to wait. A value of 0 returns immediately. A value of <see cref="P:System.Windows.Duration.Forever" /> blocks indefinitely.</param>
-        <summary>Attempts to lock the bitmap, waiting for no longer than the specified length of time.</summary>
-        <returns>
-          <see langword="true" /> if the lock was acquired; otherwise, <see langword="false" />.</returns>
+        <param name="timeout">
+          <see cref="T:System.Windows.Duration" />，表示要等待的時間長度。 這時會立即傳回 0 值。 <see cref="P:System.Windows.Duration.Forever" /> 的值，表示會無限期封鎖。</param>
+        <summary>嘗試鎖定該點陣圖，並等待不超過指定長度的時間。</summary>
+        <returns>如果已取得鎖定，則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 取得鎖定時，行為<xref:System.Windows.Media.Imaging.WriteableBitmap.TryLock%2A>方法等同於<xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>方法。  
+ 當取得鎖定時，行為<xref:System.Windows.Media.Imaging.WriteableBitmap.TryLock%2A>方法等同於<xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>方法。  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="timeout" /> is set to <see cref="P:System.Windows.Duration.Automatic" />.</exception>
+          <paramref name="timeout" /> 設定為 <see cref="P:System.Windows.Duration.Automatic" />。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">用於存取 unmanaged 資源。 安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.Demand" />。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
         <altmember cref="M:System.Windows.Media.Imaging.WriteableBitmap.Lock" />
         <altmember cref="M:System.Windows.Media.Imaging.WriteableBitmap.Unlock" />
@@ -606,10 +623,11 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -618,12 +636,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases the back buffer to make it available for display.</summary>
+        <summary>釋放背景緩衝區以供顯示使用。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>方法減量鎖定計數。 如果要求時的鎖定計數到達 0 時，呈現階段<xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A>呼叫方法。  
+ <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>方法減量鎖定計數。 呈現階段時的鎖定計數到達 0 時，如果要求<xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A>已呼叫方法。  
   
    
   
@@ -634,7 +652,7 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">The bitmap has not been locked by a call to the <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.Lock" /> or <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.TryLock(System.Windows.Duration)" /> methods.</exception>
+        <exception cref="T:System.InvalidOperationException">尚未呼叫 <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.Lock" /> 或 <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.TryLock(System.Windows.Duration)" /> 方法鎖定點鎖圖。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">用於存取 unmanaged 資源。 安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.Demand" />。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
         <altmember cref="M:System.Windows.Media.Imaging.WriteableBitmap.Lock" />
         <altmember cref="M:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect(System.Windows.Int32Rect)" />
@@ -646,7 +664,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Updates the pixels of the writeable bitmap.</summary>
+        <summary>更新可寫入之點陣圖的像素。</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="WritePixels">
@@ -659,10 +677,11 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -676,16 +695,16 @@
         <Parameter Name="offset" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="sourceRect">The rectangle of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> to update.</param>
-        <param name="pixels">The pixel array used to update the bitmap.</param>
-        <param name="stride">The stride of the update region in <c>pixels</c>.</param>
-        <param name="offset">The input buffer offset.</param>
-        <summary>Updates the pixels in the specified region of the bitmap.</summary>
+        <param name="sourceRect">要更新的 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> 的矩形。</param>
+        <param name="pixels">用來更新點陣圖的像素陣列。</param>
+        <param name="stride">更新區域的步距 (Stride)，以<c>像素</c>為單位。</param>
+        <param name="offset">輸入緩衝區的位移。</param>
+        <summary>更新指定之點陣圖區域中的像素。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29>和<xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.IntPtr%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29>透過使用這個方法多載是慣用。  
+ <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29>和<xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.IntPtr%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29>透過使用此方法多載是慣用。  
   
 > [!NOTE]
 >  在部分信任，請使用<xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29>多載。  
@@ -693,21 +712,22 @@
    
   
 ## Examples  
- 下列程式碼範例示範如何使用更新中背景緩衝區的像素<xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%2A>方法。  
+ 下列程式碼範例示範如何使用更新後的緩衝區中像素<xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%2A>方法。  
   
  [!code-csharp[WriteableBitmap2#3](~/samples/snippets/csharp/VS_Snippets_Wpf/WriteableBitmap2/CS/Program.cs#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">One or more of the following conditions is true.  
+        <exception cref="T:System.ArgumentOutOfRangeException">下列一項或多項條件為 True。  
   
- <paramref name="sourceRect" /> falls outside the bounds of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />.  
+ <paramref name="sourceRect" /> 落在 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> 範圍之外。  
   
- <paramref name="stride" /> &lt; 1  <paramref name="offset" /> &lt; 0</exception>
+ <paramref name="stride" /> &lt; 1 
+ <paramref name="offset" /> &lt; 0</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="pixels" /> is <see langword="null" />.</exception>
+          <paramref name="pixels" /> 為 <see langword="null" />。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="pixels" /> has a rank other than 1 or 2, or its length is less than or equal to 0.</exception>
+          <paramref name="pixels" /> 的陣序 (Rank) 不是 1 或 2，或其長度小於或等於 0。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">用於存取 unmanaged 資源。 安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.Demand" />。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
       </Docs>
     </Member>
@@ -721,10 +741,11 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -738,29 +759,30 @@
         <Parameter Name="stride" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="sourceRect">The rectangle of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> to update.</param>
-        <param name="buffer">The input buffer used to update the bitmap.</param>
-        <param name="bufferSize">The size of the input buffer.</param>
-        <param name="stride">The stride of the update region in <c>buffer</c>.</param>
-        <summary>Updates the pixels in the specified region of the bitmap.</summary>
+        <param name="sourceRect">要更新的 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> 的矩形。</param>
+        <param name="buffer">用來更新點陣圖的輸入緩衝區。</param>
+        <param name="bufferSize">輸入緩衝區的大小。</param>
+        <param name="stride">更新區域的步距 (Stride)，以<c>緩衝區</c>為單位。</param>
+        <summary>更新指定之點陣圖區域中的像素。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29>和<xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.IntPtr%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29>透過使用這個方法多載是慣用。  
+ <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29>和<xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.IntPtr%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29>透過使用此方法多載是慣用。  
   
 > [!NOTE]
 >  在部分信任，請使用<xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29>多載。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">One or more of the following conditions is true.  
+        <exception cref="T:System.ArgumentOutOfRangeException">下列一項或多項條件為 True。  
   
- <paramref name="sourceRect" /> falls outside the bounds of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />.  
+ <paramref name="sourceRect" /> 落在 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> 範圍之外。  
   
- <paramref name="bufferSize" /> &lt; 1  <paramref name="stride" /> &lt; 1</exception>
+ <paramref name="bufferSize" /> &lt; 1 
+ <paramref name="stride" /> &lt; 1</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="buffer" /> is <see langword="null" />.</exception>
+          <paramref name="buffer" /> 為 <see langword="null" />。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">用於存取 unmanaged 資源。 安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.Demand" />。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
       </Docs>
     </Member>
@@ -774,10 +796,11 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -792,34 +815,34 @@
         <Parameter Name="destinationY" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="sourceRect">The rectangle in <c>sourceBuffer</c> to copy.</param>
-        <param name="sourceBuffer">The input buffer used to update the bitmap.</param>
-        <param name="sourceBufferStride">The stride of the input buffer, in bytes.</param>
-        <param name="destinationX">The destination x-coordinate of the left-most pixel in the back buffer.</param>
-        <param name="destinationY">The destination y-coordinate of the top-most pixel in the back buffer.</param>
-        <summary>Updates the pixels in the specified region of the bitmap.</summary>
+        <param name="sourceRect">要複製之 <c>sourceBuffer</c> 中的矩形。</param>
+        <param name="sourceBuffer">用來更新點陣圖的輸入緩衝區。</param>
+        <param name="sourceBufferStride">輸入緩衝區的步距，以位元組為單位。</param>
+        <param name="destinationX">背景緩衝區中最左邊像素的目的 X 座標。</param>
+        <param name="destinationY">背景緩衝區中最頂端像素的目的 Y 座標。</param>
+        <summary>更新指定之點陣圖區域中的像素。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%2A>方法，以更新<xref:System.Windows.Media.Imaging.WriteableBitmap>使用的內容自動`sourceBuffer`。 呼叫這個方法相當於使用<xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>和<xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>中所述的工作流程<xref:System.Windows.Media.Imaging.WriteableBitmap>類別 < 備註 >。  
+ 呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%2A>方法來更新<xref:System.Windows.Media.Imaging.WriteableBitmap>使用的內容自動`sourceBuffer`。 呼叫這個方法就相當於使用<xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>並<xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>中所述的工作流程<xref:System.Windows.Media.Imaging.WriteableBitmap>類別 < 備註 >。  
   
 > [!NOTE]
 >  在部分信任中使用此多載。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">One or more of the following conditions is true.  
+        <exception cref="T:System.ArgumentOutOfRangeException">下列一項或多項條件為 True。  
   
- <paramref name="sourceRect" /> falls outside the bounds of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />.  
+ <paramref name="sourceRect" /> 落在 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> 範圍之外。  
   
- <paramref name="destinationX" /> or <paramref name="destinationY" /> is outside the bounds of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />.  
+ <paramref name="destinationX" /> 或 <paramref name="destinationY" /> 落在 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> 範圍以外。  
   
  <paramref name="sourceBufferStride" /> &lt; 1</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="sourceBuffer" /> is <see langword="null" />.</exception>
+          <paramref name="sourceBuffer" /> 為 <see langword="null" />。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="sourceBuffer" /> has a rank other than 1 or 2, or its length is less than or equal to 0.</exception>
+          <paramref name="sourceBuffer" /> 的陣序 (Rank) 不是 1 或 2，或其長度小於或等於 0。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">用於存取 unmanaged 資源。 安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.Demand" />。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
         <altmember cref="M:System.Windows.Media.Imaging.WriteableBitmap.WritePixels(System.Windows.Int32Rect,System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32)" />
       </Docs>
@@ -834,10 +857,11 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
-        <Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
           <AttributeName>System.Security.SecurityCritical</AttributeName>
         </Attribute>
       </Attributes>
@@ -853,33 +877,34 @@
         <Parameter Name="destinationY" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="sourceRect">The rectangle in <c>sourceBuffer</c> to copy.</param>
-        <param name="sourceBuffer">The input buffer used to update the bitmap.</param>
-        <param name="sourceBufferSize">The size of the input buffer.</param>
-        <param name="sourceBufferStride">The stride of the input buffer, in bytes.</param>
-        <param name="destinationX">The destination x-coordinate of the left-most pixel in the back buffer.</param>
-        <param name="destinationY">The destination y-coordinate of the top-most pixel in the back buffer.</param>
-        <summary>Updates the pixels in the specified region of the bitmap.</summary>
+        <param name="sourceRect">要複製之 <c>sourceBuffer</c> 中的矩形。</param>
+        <param name="sourceBuffer">用來更新點陣圖的輸入緩衝區。</param>
+        <param name="sourceBufferSize">輸入緩衝區的大小。</param>
+        <param name="sourceBufferStride">輸入緩衝區的步距，以位元組為單位。</param>
+        <param name="destinationX">背景緩衝區中最左邊像素的目的 X 座標。</param>
+        <param name="destinationY">背景緩衝區中最頂端像素的目的 Y 座標。</param>
+        <summary>更新指定之點陣圖區域中的像素。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%2A>方法，以更新<xref:System.Windows.Media.Imaging.WriteableBitmap>使用的內容自動`sourceBuffer`。 呼叫這個方法相當於使用<xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>和<xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>中所述的工作流程<xref:System.Windows.Media.Imaging.WriteableBitmap>類別 < 備註 >。  
+ 呼叫<xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%2A>方法來更新<xref:System.Windows.Media.Imaging.WriteableBitmap>使用的內容自動`sourceBuffer`。 呼叫這個方法就相當於使用<xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A>並<xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A>中所述的工作流程<xref:System.Windows.Media.Imaging.WriteableBitmap>類別 < 備註 >。  
   
 > [!NOTE]
 >  在部分信任，請使用<xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29>多載。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">One or more of the following conditions is true.  
+        <exception cref="T:System.ArgumentOutOfRangeException">下列一項或多項條件為 True。  
   
- <paramref name="sourceRect" /> falls outside the bounds of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />.  
+ <paramref name="sourceRect" /> 落在 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> 範圍之外。  
   
- <paramref name="destinationX" /> or <paramref name="destinationY" /> is outside the bounds of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />.  
+ <paramref name="destinationX" /> 或 <paramref name="destinationY" /> 落在 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> 範圍以外。  
   
- <paramref name="sourceBufferSize" /> &lt; 1  <paramref name="sourceBufferStride" /> &lt; 1</exception>
+ <paramref name="sourceBufferSize" /> &lt; 1 
+ <paramref name="sourceBufferStride" /> &lt; 1</exception>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="sourceBuffer" /> is <see langword="null" />.</exception>
+          <paramref name="sourceBuffer" /> 為 <see langword="null" />。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">用於存取 unmanaged 資源。 安全性動作： <see cref="F:System.Security.Permissions.SecurityAction.Demand" />。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
         <altmember cref="M:System.Windows.Media.Imaging.WriteableBitmap.WritePixels(System.Windows.Int32Rect,System.Array,System.Int32,System.Int32,System.Int32)" />
       </Docs>
