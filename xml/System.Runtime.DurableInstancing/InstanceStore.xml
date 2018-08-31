@@ -1,11 +1,11 @@
 <Type Name="InstanceStore" FullName="System.Runtime.DurableInstancing.InstanceStore">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="d14fb4c0552691179d47eb6e214410054e826b0f" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="8972e8c961043629bb8c0c72a45e02d752733a77" />
+    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36540122" />
+    <Meta Name="ms.lasthandoff" Value="08/25/2018" />
+    <Meta Name="ms.locfileid" Value="39993459" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class InstanceStore" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit InstanceStore extends System.Object" />
@@ -32,7 +32,7 @@
  即使命令已執行完成，持續性提供者仍可在傳遞至 TryCommand 的控制代碼上呼叫 InstanceHandle.Free。 但持續性提供者不得保留 InstanceHandle 或 InstanceOwner 物件的強式參考，因為如此會導致 InstanceStore 無法由記憶體回收。  
   
 > [!WARNING]
->  無法變更已保存工作流程的工作流程定義。 如果工作流程定義後保存變更，工作流程執行階段會重新載入工作流程時將會損毀。  
+>  無法變更的持續性工作流程的工作流程定義。 如果工作流程定義之後它會保存變更，重新載入工作流程時，會損毀工作流程執行階段。  
   
  ]]></format>
     </remarks>
@@ -132,7 +132,7 @@
  如果命令可以執行，持續性提供者可以在 InstancePersistenceContext 上呼叫相關的方法，以提供命令的結果。  
   
 > [!WARNING]
->  即使這個方法宣告為`virtual`而不是`abstract`，沒有實作。 必須覆寫這個方法，才能提供的功能。  
+>  即使這個方法會宣告為`virtual`而非`abstract`，沒有任何實作。 必須覆寫這個方法，以便提供的功能。  
   
  ]]></format>
         </remarks>
@@ -289,6 +289,14 @@
         <AssemblyName>System.Runtime.DurableInstancing</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Runtime.DurableInstancing.InstanceOwner</ReturnType>
       </ReturnValue>
@@ -304,7 +312,7 @@
  不再需要 DefaultInstanceOwner 屬性時，必須將該屬性設定為 null。 如果 DefaultInstanceOwner 不是 null，InstanceStore 物件可能無法由記憶體回收。  
   
 > [!WARNING]
->  即使這個方法宣告為`virtual`而不是`abstract`，沒有實作。 必須覆寫這個方法，才能提供的功能。  
+>  即使這個方法會宣告為`virtual`而非`abstract`，沒有任何實作。 必須覆寫這個方法，以便提供的功能。  
   
  ]]></format>
         </remarks>
@@ -370,7 +378,7 @@
 ## Remarks  
   
 > [!WARNING]
->  即使這個方法宣告為`virtual`而不是`abstract`，沒有實作。 必須覆寫這個方法，才能提供的功能。  
+>  即使這個方法會宣告為`virtual`而非`abstract`，沒有任何實作。 必須覆寫這個方法，以便提供的功能。  
   
  ]]></format>
         </remarks>
@@ -434,9 +442,9 @@
  主機會呼叫 <xref:System.Runtime.DurableInstancing.InstanceStore.Execute%2A> 方法，對執行個體控制代碼執行持續性命令，而該控制代碼會由主機叫用 <xref:System.Runtime.DurableInstancing.InstanceStore.CreateInstanceHandle%2A> 方法而取得。 執行個體控制代碼可繫結至表示命令內容和目標的實體，例如執行個體、執行個體擁有者或執行個體鎖定。  一次只能針對一個執行個體控制代碼發出一個指令。  
   
 > [!WARNING]
->  如果這個方法會執行與<xref:System.Activities.DurableInstancing.CreateWorkflowOwnerCommand>，它會建立<xref:System.Runtime.DurableInstancing.InstanceOwner>並將它繫結至執行個體。 這表示沒有其他處理序能夠存取該工作流程。如果處理序結束時，就無法復原或執行工作流程。 如果這類工作流程會執行一次，<xref:System.Runtime.DurableInstancing.InstanceLockedException>就會擲回。  
+>  如果這個方法執行<xref:System.Activities.DurableInstancing.CreateWorkflowOwnerCommand>，它會建立<xref:System.Runtime.DurableInstancing.InstanceOwner>並將它繫結至執行個體。 這表示沒有其他處理序能夠存取該工作流程;如果在程序結束時，就無法復原或執行工作流程。 如果這類工作流程會執行一次，<xref:System.Runtime.DurableInstancing.InstanceLockedException>就會擲回。  
 >   
->  如果<xref:System.Activities.DurableInstancing.CreateWorkflowOwnerCommand>是未使用，執行個體存放區會建立暫存<xref:System.Runtime.DurableInstancing.InstanceOwner>，將刪除處理程序的結尾。 不過，如果工作流程的最後持續點之前，結束處理程序，此例外狀況，除非這段時間中指定**HostLockRenewalPeriod**參數已過期。  
+>  如果<xref:System.Activities.DurableInstancing.CreateWorkflowOwnerCommand>是未使用，執行個體存放區會建立暫存<xref:System.Runtime.DurableInstancing.InstanceOwner>，將會在程序結束時刪除。 不過，如果在程序結束之前的工作流程的最後持續點，此例外狀況，除非這段期間中指定**HostLockRenewalPeriod**參數已過期。  
   
  ]]></format>
         </remarks>
