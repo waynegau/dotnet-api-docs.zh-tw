@@ -1,11 +1,11 @@
 <Type Name="AppContext" FullName="System.AppContext">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="482d52e5b69288b9a8240a5a41deef259168aace" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="22baeef40fafd807844df877ee179199629f82f1" />
+    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36433571" />
+    <Meta Name="ms.lasthandoff" Value="08/25/2018" />
+    <Meta Name="ms.locfileid" Value="39909626" />
   </Metadata>
   <TypeSignature Language="C#" Value="public static class AppContext" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit AppContext extends System.Object" />
@@ -42,13 +42,13 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.AppContext>類別可讓程式庫作者為使用者提供新功能的統一退出機制。 它會建立元件之間的鬆散結合合約，以便溝通退出要求。 變更現有的功能時，此功能通常特別重要。 相反地，已經有新功能的隱含選擇加入。  
+ <xref:System.AppContext>類別可讓您的程式庫作者為使用者提供的新功能的統一退出機制。 它會建立元件之間的鬆散結合合約，以便溝通退出要求。 變更現有的功能時，此功能通常特別重要。 相反地，已經有新功能的隱含選擇加入。  
   
-## <a name="appcontext-for-library-developers"></a>程式庫開發人員 AppContext  
- 程式庫使用<xref:System.AppContext>類別來定義並公開相容性切換，而文件庫的使用者可以設定這些參數來影響程式庫行為。 根據預設，程式庫可提供新的功能，且它們只會在已設定此參數時變更它 (亦即，它們提供先前的功能)。  這可讓現有的 api 提供新的行為，但仍繼續支援取決於先前的行為的呼叫端程式庫。  
+## <a name="appcontext-for-library-developers"></a>程式庫開發人員的 AppContext  
+ 程式庫使用<xref:System.AppContext>切換來定義並公開相容性的類別，而程式庫使用者可以設定這些參數來影響程式庫行為。 根據預設，程式庫可提供新的功能，且它們只會在已設定此參數時變更它 (亦即，它們提供先前的功能)。  這可讓程式庫，以提供現有的 API 中的新行為，同時繼續支援取決於先前的行為的呼叫端。  
   
-### <a name="defining-the-switch-name"></a>定義參數名稱  
- 允許文件庫的取用者選擇不使用變更的最常見方式是行為的定義具名的參數。  其`value`元素是參數的名稱所組成的名稱/值組和其<xref:System.Boolean>值。  根據預設，參數是一律以隱含方式`false`，提供新的行為 （及選擇加入新行為讓預設）。 將參數設定為`true`啟用它，可提供舊版的行為。 明確地將參數設定為`false`也提供新的行為。  
+### <a name="defining-the-switch-name"></a>定義之參數名稱  
+ 若要允許您的媒體櫃退出行為變更的取用者的最常見方式是定義具名的參數。  其`value`項目是參數的名稱所組成的名稱/值組和其<xref:System.Boolean>值。  根據預設，參數是一律以隱含方式`false`，它提供新的行為 （及選擇加入的新行為讓預設情況下）。 將參數設定為`true`啟用它，它提供舊版的行為。 明確地將參數設定為`false`也提供新的行為。  
   
  很有幫助的交換器名稱，使用一致的格式，因為它們是程式庫所公開的正式合約。 以下是兩種明顯的格式。  
   
@@ -56,40 +56,40 @@
   
 -   *參數*.*程式庫*.*參數名稱*  
   
- 一旦您定義和文件的參數，呼叫端可以使用它藉由使用登錄中，加入[ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md)元素，其應用程式組態檔，或藉由呼叫<xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType>方法以程式設計的方式。 請參閱[程式庫的取用者 AppContext](#ForConsumers) > 一節，如需有關如何使用呼叫端，和設定的值<xref:System.AppContext>組態參數。  
+ 一旦您定義和文件切換時，呼叫端可以使用它使用登錄中，藉由新增[ \<Appcontextswitchoverrides> >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md)項目至其應用程式組態檔中，或藉由呼叫<xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType>方法以程式設計的方式。 請參閱[程式庫取用者 AppContext](#ForConsumers)一節，如需有關如何使用呼叫端，並將值<xref:System.AppContext>組態參數。  
   
- 當 common language runtime 執行應用程式時，它會自動讀取登錄的相容性設定，並載入以填入應用程式的應用程式組態檔<xref:System.AppContext>執行個體。 因為<xref:System.AppContext>以程式設計方式呼叫端或藉由執行階段，會填入執行個體，您不必採取任何動作，例如呼叫<xref:System.AppContext.SetSwitch%2A>方法，以設定<xref:System.AppContext>執行個體。  
+ 當 common language runtime 會執行的應用程式時，它會自動讀取登錄的相容性設定，並載入應用程式組態檔，以填入應用程式的<xref:System.AppContext>執行個體。 因為<xref:System.AppContext>執行個體已填入，以程式設計方式呼叫端或藉由執行階段，您不必採取任何動作，例如呼叫<xref:System.AppContext.SetSwitch%2A>方法，以設定<xref:System.AppContext>執行個體。  
   
 ### <a name="checking-the-setting"></a>檢查設定  
- 然後您可以檢查是否取用者已宣告的參數並藉由呼叫適當的動作值<xref:System.AppContext.TryGetSwitch%2A?displayProperty=nameWithType>方法。 方法會傳回`true`如果`switchName`找到引數，而且此方法傳回時，其`isEnabled`引數指出參數的值。  否則，方法會傳回 `false`。  
+ 您可以接著查看是否取用者已經宣告的參數並藉由呼叫適當的動作值<xref:System.AppContext.TryGetSwitch%2A?displayProperty=nameWithType>方法。 此方法會傳回`true`如果`switchName`找到引數，而且此方法傳回時，其`isEnabled`引數會指出參數的值。  否則，方法會傳回 `false`。  
   
 ### <a name="an-example"></a>範例  
- 下列範例說明使用<xref:System.AppContext>類別可讓客戶選擇原始程式庫方法的行為。   以下是名為程式庫版本 1.0 `StringLibrary`。 它會定義`SubstringStartsAt`方法，執行序數比較，來決定在較大的字串內子字串的起始索引。  
+ 下列範例示範如何將<xref:System.AppContext>以允許客戶選擇的程式庫方法的原始行為的類別。   以下是名為程式庫版本 1.0 `StringLibrary`。 它會定義`SubstringStartsAt`方法，以執行序數比較，來決定的較大的字串內的子字串的起始索引。  
   
  [!code-csharp[System.AppContext.Class#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example4.cs#4)]
  [!code-vb[System.AppContext.Class#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example4.vb#4)]  
   
- 下列範例接著會使用程式庫"考古學"中尋找子字串"archæ 」 的起始索引。 此方法會執行序數比較，因為無法找到子字串。  
+ 下列範例接著會使用程式庫"考古學"中尋找 「 archæ"的子字串的起始索引。 此方法會執行序數比較，因為找不到子字串。  
   
  [!code-csharp[System.AppContext.Class#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example4.cs#5)]
  [!code-vb[System.AppContext.Class#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example4.vb#5)]  
   
- 不過，變更文件庫中，第 2 版`SubstringStartsAt`使用區分文化特性的比較方法。  
+ 第 2 版的程式庫，不過，變更`SubstringStartsAt`来使用區分文化特性的比較方法。  
   
  [!code-csharp[System.AppContext.Class#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example6.cs#6)]
  [!code-vb[System.AppContext.Class#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example6.vb#6)]  
   
- 對新版本的程式庫執行重新編譯應用程式時，它現在會報告子字串"archæ 「 位於 」 考古學"中的索引 4。  
+ 若要執行的程式庫的新版本重新編譯應用程式時，現在回報的子字串"archæ 「 位於索引 4 」 考古學 」 中。  
   
  [!code-csharp[System.AppContext.Class#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example6.cs#7)]
  [!code-vb[System.AppContext.Class#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example6.vb#7)]  
   
- 這項變更可以防止中斷的應用程式相依於原始行為，藉由定義[ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md)切換。 在此情況下，名為交換器`StringLibrary.DoNotUseCultureSensitiveComparison`。 為預設值， `false`，指出程式庫應該執行其版本 2.0 區分文化特性的比較。 `true` 指示文件庫，應該進行其 1.0 版的序數比較。  稍微修改先前的程式碼可讓程式庫取用者設定來判斷此方法會執行的比較類型參數。  
+ 這項變更可以防止中斷依賴原始行為，藉由定義應用程式[ \<Appcontextswitchoverrides> >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md)切換。 在此情況下，名為交換器`StringLibrary.DoNotUseCultureSensitiveComparison`。 預設值， `false`，指出程式庫應該執行其版本 2.0 區分文化特性的比較。 `true` 表示程式庫應該執行其版本 1.0 的序數比較。  先前的程式碼稍微修改可讓程式庫取用者設定參數來判斷的方法所執行的比較類型。  
   
  [!code-csharp[System.AppContext.Class#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example8.cs#8)]
  [!code-vb[System.AppContext.Class#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example8.vb#8)]  
   
- 如果應用程式然後可以使用下列組態檔，以還原 1.0 版的行為。  
+ 如果應用程式接著可以使用下列組態檔以還原版本 1.0 的行為。  
   
 ```xml  
   
@@ -101,53 +101,53 @@
   
 ```  
   
- 執行應用程式時，使用組態檔存在，它會產生下列輸出：  
+ 當應用程式執行與組態檔存在時，它會產生下列輸出：  
   
 ```  
 'archæ' not found in 'The archaeologist'  
 ```  
   
 <a name="ForConsumers"></a>   
-## <a name="appcontext-for-library-consumers"></a>程式庫的取用者 AppContext  
- 如果您的程式庫，取用者<xref:System.AppContext>類別可讓您充分利用文件庫或程式庫方法的新功能的退出機制。   您要呼叫的類別庫的個別方法可定義特定的參數可啟用或停用新的行為。 參數的值是布林值。 如果是`false`，通常是預設值，已啟用新的行為; 如果它是`true`、 已停用新的行為，和成員的行為與之前一樣。  
+## <a name="appcontext-for-library-consumers"></a>程式庫的取用者的 AppContext  
+ 如果您的程式庫中，取用者<xref:System.AppContext>類別可讓您利用程式庫或程式庫方法的新功能的退出機制。   您要呼叫的類別庫的個別方法會定義特定的交換器，啟用或停用新的行為。 參數的值是布林值。 如果它是`false`，通常是預設值，會啟用新的行為; 如果是`true`、 停用新的行為，和成員的行為就像先前一樣。  
   
- 您可以設定參數值中有三種：  
+ 您可以使用三種方式之一來設定參數的值：  
   
--   藉由呼叫<xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType>程式碼中的方法。  `switchName`引數定義的參數名稱，而`isEnabled`屬性可定義參數的值。 因為<xref:System.AppContext>是靜態類別，它可針對每個應用程式網域。  
+-   藉由呼叫<xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType>程式碼中的方法。  `switchName`引數定義的參數名稱，而`isEnabled`屬性會定義參數的值。 因為<xref:System.AppContext>是靜態類別，它位於每個應用程式定義域為基準。  
   
      呼叫<xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType>有應用程式的範圍; 也就是說，它會影響應用程式。  
   
--   藉由新增`<AppContextSwitchOverrides>`元素[\<執行階段 >](~/docs/framework/configure-apps/file-schema/runtime/runtime-element.md) app.config 檔的區段。 參數具有單一屬性， `value`，其值是字串，表示其中包含參數名稱和其值的索引鍵/值組。  
+-   藉由新增`<AppContextSwitchOverrides>`項目[\<執行階段 >](~/docs/framework/configure-apps/file-schema/runtime/runtime-element.md) app.config 檔案的區段。 參數具有單一屬性`value`，其值是字串，表示包含參數名稱和其值的索引鍵/值組。  
   
-     若要定義多個參數，區隔每個參數中的索引鍵/值組[ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md)項目的`value`以分號的屬性。 在此情況下，`<AppContextSwitchOverrides>`項目具有下列格式：  
+     若要定義多個參數，區隔中的每個參數的索引鍵/值配對[ \<Appcontextswitchoverrides> >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md)項目的`value`使用分號的屬性。 在此情況下，`<AppContextSwitchOverrides>`項目具有下列格式：  
   
     ```xml  
     <AppContextSwitchOverrides value="switchName1=value1;switchName2=value2" />  
     ```  
   
-     使用`<AppContextSwitchOverrides>`項目來定義組態設定有應用程式的範圍; 也就是說，它會影響應用程式。  
+     使用`<AppContextSwitchOverrides>`來定義組態設定的項目具有應用程式範圍，也就是會影響應用程式。  
 
     > [!NOTE]    
-    > 如需.NET Framework 所定義的參數資訊，請參閱[ \<AppContextSwitchOverrides > 項目](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md)。
+    > 如需.NET Framework 所定義的參數資訊，請參閱 < [ \<Appcontextswitchoverrides> > 項目](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md)。
 
--   藉由新增字串值，其名稱是參數的名稱來`HKLM\SOFTWARE\Microsoft\.NETFramework\AppContext`登錄中的索引鍵。 其值必須是字串表示法<xref:System.Boolean>，可剖析<xref:System.Boolean.Parse%2A?displayProperty=nameWithType>方法; 也就是說，它必須是"True"，"true"，"False"或"false"。 如果執行階段遇到任何其他值，它會忽略這個參數。  
+-   藉由新增其名稱是參數名稱的字串值以`HKLM\SOFTWARE\Microsoft\.NETFramework\AppContext`金鑰在登錄中。 其值必須是字串表示法<xref:System.Boolean>，就能剖析<xref:System.Boolean.Parse%2A?displayProperty=nameWithType>方法，也就是它必須是"True"，"true"，"False"或"false"。 如果執行階段遇到任何其他值，它會忽略此參數。  
   
      使用登錄來定義<xref:System.AppContext>交換器有電腦範圍，也就是會影響電腦上執行的每個應用程式。  
   
- 如果您將相同的交換器設定一個以上的方式，來判斷哪些設定會覆寫其他的優先順序是：  
+ 如果您在多個方法中設定相同的交換器，來判斷哪些設定會覆寫其他優先順序就會是：  
   
-1.  以程式設計方式設定。  
+1.  以程式設計方式的設定。  
   
 2.  應用程式組態檔中的設定。  
   
 3.  登錄設定。  
   
- 以下是簡單的應用程式傳遞檔案的 URI 來<xref:System.IO.Path.GetDirectoryName%2A?displayProperty=nameWithType>方法。  當.NET Framework 4.6 下執行，它會擲回<xref:System.ArgumentException>因為`file://`不再有效的組件的檔案路徑。  
+ 以下是簡單的應用程式傳遞為檔案 URI 以<xref:System.IO.Path.GetDirectoryName%2A?displayProperty=nameWithType>方法。  當以.NET Framework 4.6 執行時，就會擲回<xref:System.ArgumentException>因為`file://`不再有效的組件的檔案路徑。  
   
  [!code-csharp[System.AppContext.Class#10](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/ForConsumers1.cs#10)]
  [!code-vb[System.AppContext.Class#10](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/ForConsumers1.vb#10)]  
   
- 若要還原方法的舊有行為，並避免這個例外狀況，您可以加入`Switch.System.IO.UseLegacyPathHandling`切換至應用程式組態檔，例如：  
+ 若要還原方法的先前的行為，並避免這個例外狀況，您可以新增`Switch.System.IO.UseLegacyPathHandling`切換至 應用程式組態檔，例如：  
   
 ```xml  
 <configuration>  
@@ -200,7 +200,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這是每個應用程式定義域屬性。 其值會對應到<xref:System.AppDomain.BaseDirectory%2A?displayProperty=nameWithType>目前的應用程式定義域的屬性。  
+ 這是每個應用程式網域屬性。 其值會對應到<xref:System.AppDomain.BaseDirectory%2A?displayProperty=nameWithType>目前的應用程式定義域的屬性。  
   
  ]]></format>
         </remarks>
@@ -232,6 +232,11 @@
         <AssemblyVersion>4.2.0.0</AssemblyVersion>
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netstandard-2.0">
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
@@ -287,9 +292,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.AppContext>類別可讓程式庫作者為使用者提供新功能的統一退出機制。 它會建立元件之間的鬆散結合合約，以便溝通退出要求。 變更現有的功能時，此功能通常特別重要。 相反地，已經有新功能的隱含選擇加入。  
+ <xref:System.AppContext>類別可讓您的程式庫作者為使用者提供的新功能的統一退出機制。 它會建立元件之間的鬆散結合合約，以便溝通退出要求。 變更現有的功能時，此功能通常特別重要。 相反地，已經有新功能的隱含選擇加入。  
   
- <xref:System.AppContext.SetSwitch%2A>方法會呼叫應用程式 （或程式庫） 來宣告參數的值 (一律<xref:System.Boolean>值)，定義相依程式庫。 參數是一律以隱含方式`false`，這樣會提供新的行為。 將參數設定為`true`啟用它，可提供舊版的行為。 明確地將參數設定為`false`也提供新的行為。 相依程式庫可以再檢查參數值呼叫<xref:System.AppContext.TryGetSwitch%2A>方法。  
+ <xref:System.AppContext.SetSwitch%2A>方法會呼叫應用程式 （或程式庫） 來宣告參數的值 (一律為<xref:System.Boolean>值)，相依程式庫所定義。 參數是一律以隱含方式`false`，以提供新的行為。 將參數設定為`true`啟用它，它提供舊版的行為。 明確地將參數設定為`false`也提供新的行為。 相依程式庫可以再檢查參數值呼叫<xref:System.AppContext.TryGetSwitch%2A>方法。  
   
 > [!NOTE]
 >  很有幫助的交換器名稱，使用一致的格式，因為它們是程式庫所公開的正式合約。 以下是兩種明顯的格式。  
@@ -297,9 +302,9 @@
 >  -   *參數*.*命名空間*.*參數名稱*  
 > -   *參數*.*程式庫*.*參數名稱*  
   
- 在.NET Framework 中，除了以程式設計的方式，設定參數的值上執行的應用程式它也可以設定：  
+ 在.NET Framework 中，除了以程式設計方式設定參數的值上執行的應用程式它也可以設定：  
   
--   加入參數名稱和值[ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md)中的項目[\<執行階段 >](~/docs/framework/configure-apps/file-schema/runtime/runtime-element.md)應用程式組態檔的區段。 例如，下列定義名為的交換器`Libraries.FPLibrary.UseExactFloatingPointComparison`其實`False`。  
+-   藉由新增的參數名稱和值[ \<Appcontextswitchoverrides> >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md)中的項目[\<執行階段 >](~/docs/framework/configure-apps/file-schema/runtime/runtime-element.md)應用程式組態檔區段。 例如，下列範例會定義名為的交換器`Libraries.FPLibrary.UseExactFloatingPointComparison`增值是`False`。  
   
     ```xml  
   
@@ -311,20 +316,20 @@
   
     ```  
   
--   藉由新增字串值，其名稱是參數的名稱來`HKLM\SOFTWARE\Microsoft\.NETFramework\AppContext`登錄中的索引鍵。 其值必須是字串表示法<xref:System.Boolean>，可剖析<xref:System.Boolean.Parse%2A?displayProperty=nameWithType>方法; 也就是說，它必須是"True"，"true"，"False"或"false"。  
+-   藉由新增其名稱是參數名稱的字串值以`HKLM\SOFTWARE\Microsoft\.NETFramework\AppContext`金鑰在登錄中。 其值必須是字串表示法<xref:System.Boolean>，就能剖析<xref:System.Boolean.Parse%2A?displayProperty=nameWithType>方法，也就是它必須是"True"，"true"，"False"或"false"。  
   
- 如果`switchName`已經存在，其值會覆寫由`isEnabled`引數。  也就是最新呼叫<xref:System.AppContext.SetSwitch%2A>方法會在登錄中，應用程式組態檔中，或由先前呼叫所定義的值覆寫<xref:System.AppContext.SetSwitch%2A>方法。  
+ 如果`switchName`已經存在，其值會覆寫`isEnabled`引數。  也就是最新的呼叫來<xref:System.AppContext.SetSwitch%2A>方法會覆寫登錄，在應用程式組態檔，或由先前呼叫中所定義的值<xref:System.AppContext.SetSwitch%2A>方法。  
  
- ### <a name="appcontextsetswitch-and-net-core"></a>AppContext.SetSwitch 和.NET 核心
+ ### <a name="appcontextsetswitch-and-net-core"></a>AppContext.SetSwitch 和.NET Core
 
-.NET core 支援以程式設計方式呼叫與<xref:System.AppContext.SetSwitch%2A>只方法。 支援下列參數：
+.NET core 支援使用以程式設計方式呼叫<xref:System.AppContext.SetSwitch%2A>僅方法。 支援下列參數：
 
 |參數|值|描述|
 |--|--|--|
-|`System.Net.Http.useSocketsHttpHandler` |`true`|`false`|判斷高階網路應用程式開發介面，例如<xref:System.Net.Http.HttpClient>使用<xref:System.Net.Http.SocketsHttpHandler?displayProperty=nameWithType>(`true`) 或<xref:System.Net.Http.HttpClientHandler?displayProperty=nameWithType>(`false`)。|   
+|`System.Net.Http.useSocketsHttpHandler` |`true`|`false`|判斷是否有高層級網路 Api，例如<xref:System.Net.Http.HttpClient>使用<xref:System.Net.Http.SocketsHttpHandler?displayProperty=nameWithType>(`true`) 或<xref:System.Net.Http.HttpClientHandler?displayProperty=nameWithType>(`false`)。|   
   
 ## Examples  
- 下列程式碼會設定名為的交換器`Switch.AmazingLib.ThrowOnException`至`true`，可讓舊版的行為。 程式庫可以再檢查程式庫的取用者是否已設定參數的值，呼叫<xref:System.AppContext.TryGetSwitch%2A>方法。  
+ 下列程式碼會設定名為的交換器`Switch.AmazingLib.ThrowOnException`至`true`，可使用舊版的行為。 程式庫接著可以選取程式庫取用者是否已設定參數值呼叫<xref:System.AppContext.TryGetSwitch%2A>方法。  
   
  [!code-csharp[System.AppContext.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/TestValue1.cs#1)]
  [!code-vb[System.AppContext.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/TestValue1.vb#1)]  
@@ -364,6 +369,11 @@
         <AssemblyVersion>4.2.0.0</AssemblyVersion>
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netstandard-2.0">
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
@@ -374,7 +384,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 目標 framework 版本的名稱對應至值<xref:System.Runtime.Versioning.TargetFrameworkAttribute.FrameworkName%2A?displayProperty=nameWithType>屬性。 如需.NET Framework 的目標架構名稱的清單，請參閱[ &lt;supportedRuntime&gt;元素](~/docs/framework/configure-apps/file-schema/startup/supportedruntime-element.md)項目。  
+ 目標 framework 版本的名稱會對應至值<xref:System.Runtime.Versioning.TargetFrameworkAttribute.FrameworkName%2A?displayProperty=nameWithType>屬性。 如需.NET Framework 的目標架構名稱的清單，請參閱 < [ &lt;Supportedruntime>&gt;項目](~/docs/framework/configure-apps/file-schema/startup/supportedruntime-element.md)項目。  
   
  ]]></format>
         </remarks>
@@ -414,7 +424,7 @@
       </ReturnValue>
       <Parameters>
         <Parameter Name="switchName" Type="System.String" />
-        <Parameter Name="isEnabled" Type="System.Boolean&amp;" RefType="out" />
+        <Parameter Name="isEnabled" Type="System.Boolean" RefType="out" />
       </Parameters>
       <Docs>
         <param name="switchName">參數的名稱。</param>
@@ -425,16 +435,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.AppContext>類別可讓程式庫作者為使用者提供新功能的統一退出機制。 它會建立元件之間的鬆散結合合約，以便溝通退出要求。 變更現有的功能時，此功能通常特別重要。 相反地，已經有新功能的隱含選擇加入。  
+ <xref:System.AppContext>類別可讓您的程式庫作者為使用者提供的新功能的統一退出機制。 它會建立元件之間的鬆散結合合約，以便溝通退出要求。 變更現有的功能時，此功能通常特別重要。 相反地，已經有新功能的隱含選擇加入。  
   
  Common language runtime 會自動填入參數指派給<xref:System.AppContext>藉由讀取登錄和應用程式的組態檔的執行個體。 然後可以覆寫這些參數的值，並加入新的參數，藉由呼叫<xref:System.AppContext.SetSwitch%2A>方法。  
   
- 呼叫程式庫<xref:System.AppContext.TryGetSwitch%2A>檢查其取用者是否已宣告參數的值，然後執行適當的動作上的方法。  預設情況下，如果未定義的參數，就會啟用新功能... 如果定義參數，且其值為`false`，也會啟用新功能。 如果其值為`true`，已啟用舊版行為。  
+ 程式庫呼叫<xref:System.AppContext.TryGetSwitch%2A>方法來檢查其取用者是否已宣告參數的值，然後適當地處理它。  預設情況下，如果未定義此參數，就會啟用新功能... 如果在定義參數，且其值為`false`，也會啟用新功能。 如果其值為`true`，會啟用舊版行為。  
   
    
   
 ## Examples  
- 下列範例會決定文件庫的取用者是否已設定名為的交換器`Switch.AmazingLib.ThrowOnException`。  
+ 下列範例會判斷程式庫取用者是否已設定名為的交換器`Switch.AmazingLib.ThrowOnException`。  
   
  [!code-csharp[System.AppContext.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/TestValue1.cs#2)]
  [!code-vb[System.AppContext.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/TestValue1.vb#2)]  
