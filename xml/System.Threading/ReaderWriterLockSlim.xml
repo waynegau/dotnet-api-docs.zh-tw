@@ -1,11 +1,11 @@
 <Type Name="ReaderWriterLockSlim" FullName="System.Threading.ReaderWriterLockSlim">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="c054992aa5b458c405c83dbc79a506889a9ffc87" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="48493860686ba3e73ed0b66dc031975b80866a90" />
+    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36407184" />
+    <Meta Name="ms.lasthandoff" Value="08/25/2018" />
+    <Meta Name="ms.locfileid" Value="42709127" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class ReaderWriterLockSlim : IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit ReaderWriterLockSlim extends System.Object implements class System.IDisposable" />
@@ -23,6 +23,7 @@
   <AssemblyInfo>
     <AssemblyName>System.Core</AssemblyName>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <AssemblyInfo>
@@ -38,130 +39,130 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Represents a lock that is used to manage access to a resource, allowing multiple threads for reading or exclusive access for writing.</summary>
+    <summary>代表鎖定，用來管理資源存取，允許多個執行緒的讀取權限或獨佔寫入權限。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用<xref:System.Threading.ReaderWriterLockSlim>來保護資源由多個執行緒的讀取及寫入由一個執行緒一次。 <xref:System.Threading.ReaderWriterLockSlim> 可讓多個執行緒處於讀取模式、 讓一個執行緒在寫入模式與獨佔擁有權的鎖定，並允許具有讀取權限可升級的讀取模式，供執行緒來升級至寫入模式，而不必放棄它的一個執行緒s 讀取資源的存取權。  
+ 使用<xref:System.Threading.ReaderWriterLockSlim>来保護的資源，是由多個執行緒所讀取和寫入至一個執行緒一次。 <xref:System.Threading.ReaderWriterLockSlim> 可讓多個執行緒處於讀取模式，允許一個執行緒處於寫入模式的鎖定，獨佔擁有權和允許一個執行緒已進入可升級讀取模式，從中執行緒可以升級至寫入模式，而不必放棄它的讀取權限s 讀取資源的存取權。  
   
 > [!NOTE]
 >  <xref:System.Threading.ReaderWriterLockSlim> 類似於 <xref:System.Threading.ReaderWriterLock>，但是它有遞迴以及升級和降級鎖定狀態的簡化規則。 <xref:System.Threading.ReaderWriterLockSlim> 可避免可能發生死結的許多情況。 此外，<xref:System.Threading.ReaderWriterLockSlim> 的效能明顯優於 <xref:System.Threading.ReaderWriterLock>。 建議針對所有新的開發使用 <xref:System.Threading.ReaderWriterLockSlim>。  
   
- 根據預設的新執行個體<xref:System.Threading.ReaderWriterLockSlim>以建立<xref:System.Threading.LockRecursionPolicy.NoRecursion?displayProperty=nameWithType>旗標，且不允許遞迴。 這項預設原則建議所有新的開發，因為遞迴會引進不必要的複雜性，而讓您的程式碼更容易發生死結。 若要簡化移轉作業從現有的專案使用<xref:System.Threading.Monitor>或<xref:System.Threading.ReaderWriterLock>，您可以使用<xref:System.Threading.LockRecursionPolicy.SupportsRecursion?displayProperty=nameWithType>建立的執行個體的旗標<xref:System.Threading.ReaderWriterLockSlim>，讓遞迴。  
+ 根據預設的新執行個體<xref:System.Threading.ReaderWriterLockSlim>以建立<xref:System.Threading.LockRecursionPolicy.NoRecursion?displayProperty=nameWithType>旗標，並不允許遞迴。 這項預設原則被建議所有新的開發，因為遞迴會引進不必要的複雜性，並讓您的程式碼更容易發生死結。 若要簡化從現有的移轉專案中使用<xref:System.Threading.Monitor>或是<xref:System.Threading.ReaderWriterLock>，您可以使用<xref:System.Threading.LockRecursionPolicy.SupportsRecursion?displayProperty=nameWithType>建立的執行個體的旗標<xref:System.Threading.ReaderWriterLockSlim>，允許遞迴。  
   
- 執行緒可以進入三種模式的鎖定： 讀取模式、 寫入模式和可升級的讀取的模式。 (在本主題的其餘部分，「 讀取可升級模式 」 指 「 可升級模式 」，並 「 輸入`x`模式 」 使用代表較長"輸入鎖定`x`模式 」。)  
+ 執行緒可以進入三種模式的鎖定： 讀取模式 」、 「 寫入模式，以及 「 可升級讀取的模式。 (在本主題的其餘部分，「 讀取可升級模式 」 指 「 進入可升級模式 」 和片語"輸入`x`模式 」 使用順序優先於較長 」 輸入中的鎖定`x`模式 」。)  
   
- 遞迴原則，不論只有一個執行緒可以在任何時間是在寫入模式中。 當執行緒在寫入模式中時，沒有其他執行緒可以在任何模式下進入鎖定。 只有一個執行緒可以在任何時間是在可升級模式。 任意數目的執行緒可以處於讀取模式，而且可以有一個執行緒在可升級模式中其他的執行緒處於讀取模式。  
+ 遞迴原則，不論只有一個執行緒可以處於寫入模式，在任何時間。 當執行緒處於寫入模式時，沒有其他執行緒可以進入任何模式的鎖定。 只有一個執行緒可以進入可升級模式是在任何時間。 任意數目的執行緒可以處於讀取模式，而且可以有一個執行緒進入可升級模式中其他執行緒處於讀取模式。  
   
 > [!IMPORTANT]
->  此類型會實作<xref:System.IDisposable>介面。 當您完成使用類型時，您應該會處置它直接或間接。 若要直接處置的類型，呼叫其<xref:System.IDisposable.Dispose%2A>方法中的`try` / `catch`區塊。 若要為其配置間接，使用語言建構例如`using`（C# 中） 或`Using`（在 Visual Basic)。 如需詳細資訊，請參閱中的 「 使用物件的實作 IDisposable 」 一節<xref:System.IDisposable>介面 > 主題。  
+>  此類型會實作<xref:System.IDisposable>介面。 當您完成使用型別時，您應該處置它直接或間接。 若要直接處置型別，呼叫其<xref:System.IDisposable.Dispose%2A>方法中的`try` / `catch`區塊。 若要處置它間接，使用的語言建構這類`using`（在 C# 中) 或`Using`（在 Visual Basic)。 如需詳細資訊，請參閱 「 使用物件，實作 IDisposable 」 一節<xref:System.IDisposable>介面 > 主題。  
   
- <xref:System.Threading.ReaderWriterLockSlim> 具有 managed 執行緒相似性。也就是說，每個<xref:System.Threading.Thread>物件必須讓自己進入或離開鎖定模式的方法呼叫。 任何執行緒可以不變更另一個執行緒的模式。  
+ <xref:System.Threading.ReaderWriterLockSlim> 具有 managed 執行緒親和性;也就是說，每個<xref:System.Threading.Thread>物件必須讓自己進入或離開鎖定模式的方法呼叫。 沒有任何執行緒可以變更另一個執行緒的模式。  
   
- 如果<xref:System.Threading.ReaderWriterLockSlim>不允許遞迴時，執行緒嘗試進入鎖定狀態可以封鎖有幾個原因：  
+ 如果<xref:System.Threading.ReaderWriterLockSlim>不允許遞迴時，執行緒嘗試進入鎖定可以封鎖原因有幾種：  
   
--   嘗試進入讀取的模式會遭封鎖，等待進入寫入模式，或如果寫入模式中沒有單一執行緒的執行緒時執行緒。  
+-   嘗試進入讀取的模式的區塊，如果沒有執行緒等待進入寫入模式，或是在寫入模式中有單一執行緒的執行緒。  
   
     > [!NOTE]
-    >  寫入器會排入佇列時，將封鎖新讀取器是寫入器鎖定公平性原則。 目前的公平性原則公平性讀取器和寫入器，提升產能的最常見的案例之間取得平衡。 未來版本[!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)]可能會導入新的公平性化原則。  
+    >  寫入器會排入佇列時，將封鎖新讀取器是偏重寫入器鎖定的公平性原則。 目前的公平性原則公平性讀取器和寫入器，來提升產能的最常見的案例之間取得平衡。 未來的版本[!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)]可能會導入新的公平性化原則。  
   
--   嘗試進入可升級模式的區塊，如果已經有執行緒在可升級模式中，如果沒有執行緒等待進入寫入模式，或如果在寫入模式中的單一執行緒的執行緒。  
+-   嘗試進入可升級模式的區塊，如果已經有執行緒在進入可升級模式中，如果沒有執行緒等待進入寫入模式，或如果在寫入模式中有單一執行緒的執行緒。  
   
--   嘗試進入寫入模式的區塊，如果沒有任何一種模式中的執行緒的執行緒。  
+-   嘗試進入寫入模式的區塊，如果沒有任何三個模式中的執行緒的執行緒。  
   
 ## <a name="upgrading-and-downgrading-locks"></a>升級和降級鎖定  
- 可升級模式適用於案例，其中執行緒通常會讀取受保護的資源，但是可能需要寫入其中，如果符合一些條件。 執行緒已進入<xref:System.Threading.ReaderWriterLockSlim>可升級模式具有讀取存取受保護的資源，而且可以升級至寫入模式，藉由呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterWriteLock%2A>或<xref:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock%2A>方法。 因為可以有只有一個執行緒在可升級模式下一次，升級至寫入模式不能發生死結時不允許遞迴，這是預設的原則。  
+ 可升級模式適用於情況下，執行緒通常會從讀取受保護的資源，但可能要寫入其中，如果符合一些條件。 執行緒已進入<xref:System.Threading.ReaderWriterLockSlim>可升級模式具有讀取存取權受保護的資源，以及可以升級為寫入模式，藉由呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterWriteLock%2A>或<xref:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock%2A>方法。 中可以有只有一個執行緒進入可升級模式一次，因為升級至寫入模式不能發生死結時不允許遞迴，這是預設原則。  
   
 > [!IMPORTANT]
->  不論遞迴原則，一開始進入讀取模式不允許升級至可升級模式 」 或 「 寫入模式，因為該模式會建立強式死結的可能性。 例如，如果兩個執行緒同時嘗試進入讀取模式中的寫入模式，它們將會發生死結。 可升級模式被為了避免這類死結。  
+>  不論遞迴原則，一開始進入讀取模式不允許升級進入可升級模式 」 或 「 寫入模式，因為該模式會發生死結的機率。 例如，如果兩個執行緒同時嘗試進入讀取模式中的寫入模式，它們會鎖死。 可升級模式的設計可避免發生這類死結。  
   
- 如果在讀取模式中，正在升級區塊的執行緒沒有其他執行緒。 當執行緒被封鎖時，其他的執行緒嘗試進入讀取的模式，將會遭到封鎖。 當所有執行緒都結束讀取模式時，封鎖升級的執行緒會進入寫入模式。 如果沒有其他執行緒等待進入寫入模式，它們保持封鎖，因為可升級模式的單一執行緒會防止它們無法獲得獨佔存取的資源。  
+ 如果在讀取模式，正在升級封鎖的執行緒中有其他執行緒。 執行緒已封鎖，而其他的執行緒嘗試進入讀取的模式，將會遭到封鎖。 當所有執行緒都結束讀取模式中時，已封鎖升級的執行緒會進入寫入模式。 如果有其他執行緒等待進入寫入模式，它們將持續封鎖，因為可升級模式是單一執行緒會讓使用者無法獲得獨佔資源存取權。  
   
- 當可升級模式中的執行緒結束寫入模式時，其他執行緒等待進入讀取的模式，可以這樣做，除非沒有執行緒等待進入寫入模式。 可升級模式中的執行緒可以升級和降級無限期地，只要它是只寫入受保護資源的執行緒。  
+ 當進入可升級模式中的執行緒結束寫入模式時，其他執行緒等待進入讀取的模式，可以這麼做，除非有執行緒等待進入寫入模式。 可升級模式中的執行緒可以升級並無限期，降級，只要它是唯一的執行緒將寫入至受保護的資源。  
   
 > [!IMPORTANT]
->  如果您允許多個執行緒進入寫入模式或可升級模式，您必須允許獨佔可升級模式的單一執行緒。 否則，執行緒嘗試進入寫入模式直接將會遭到封鎖，且已被封鎖，而其他的執行緒將無法進入讀取的模式。  
+>  如果您允許多個執行緒進入寫入模式或進入可升級模式，您必須允許單一執行緒獨佔進入可升級模式。 否則，執行緒嘗試進入寫入模式直接將會永遠被封鎖，且已被封鎖，而其他執行緒將無法進入讀取的模式。  
   
- 可升級模式的執行緒可以降級為讀取模式，藉由第一個呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A>方法，然後再呼叫<xref:System.Threading.ReaderWriterLockSlim.ExitUpgradeableReadLock%2A>方法。 即使此降級模式允許所有的鎖定遞迴原則<xref:System.Threading.LockRecursionPolicy.NoRecursion>。  
+ 可升級模式中的執行緒可以降級為讀取模式，第一次呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A>方法，然後呼叫<xref:System.Threading.ReaderWriterLockSlim.ExitUpgradeableReadLock%2A>方法。 即使允許所有的鎖定遞迴原則，此降級模式<xref:System.Threading.LockRecursionPolicy.NoRecursion>。  
   
- 降級為讀取模式以後, 執行緒無法重新輸入可升級模式，直到結束讀取模式。  
+ 降級為讀取模式之後，執行緒無法重新輸入可升級模式，直到它具有結束讀取模式。  
   
 ## <a name="entering-the-lock-recursively"></a>輸入鎖定以遞迴方式  
- 您可以建立<xref:System.Threading.ReaderWriterLockSlim>遞迴鎖定項目支援使用<xref:System.Threading.ReaderWriterLockSlim.%23ctor%28System.Threading.LockRecursionPolicy%29>建構函式指定鎖定原則，並指定<xref:System.Threading.LockRecursionPolicy.SupportsRecursion?displayProperty=nameWithType>。  
+ 您可以建立<xref:System.Threading.ReaderWriterLockSlim>使用支援遞迴鎖定項目<xref:System.Threading.ReaderWriterLockSlim.%23ctor%28System.Threading.LockRecursionPolicy%29>建構函式指定鎖定原則，並指定<xref:System.Threading.LockRecursionPolicy.SupportsRecursion?displayProperty=nameWithType>。  
   
 > [!NOTE]
->  使用遞迴建議不要進行新開發，因為它會引進不必要的複雜性，並讓您的程式碼更容易發生死結。  
+>  使用遞迴不會建議新的程式開發，因為它會引進不必要的複雜性，並讓您的程式碼更容易發生死結。  
   
- 如<xref:System.Threading.ReaderWriterLockSlim>，可讓遞迴，下列可說是有關執行緒可以進入模式：  
+ 針對<xref:System.Threading.ReaderWriterLockSlim>可讓遞迴功能，可說是下列相關執行緒可以進入的模式：  
   
--   在讀取模式中的執行緒可以輸入讀取的模式遞迴的但是無法進入寫入模式或可升級模式。 如果它嘗試這樣做，請<xref:System.Threading.LockRecursionException>就會擲回。 進入讀取模式，然後進入寫入模式，或可升級模式是一種模式與死結的機率，因此不允許。 如同先前討論，就必須升級鎖定的情況下提供可升級模式。  
+-   讀取模式中的執行緒可以進入讀取的模式遞迴的但無法進入寫入模式或進入可升級模式。 如果它嘗試這樣做，請<xref:System.Threading.LockRecursionException>就會擲回。 進入讀取模式，然後進入寫入模式，或進入可升級模式是死結的機率與模式，因此不允許。 如前文所述，就必須升級鎖定的情況下提供進入可升級模式。  
   
--   可升級模式的執行緒可以在寫入模式，及/或讀取的模式中，輸入，並可以輸入任何三個模式以遞迴方式。 不過，嘗試進入寫入模式區塊讀取模式中是否有其他的執行緒。  
+-   可升級模式中的執行緒可以在寫入模式，及/或讀取的模式中，輸入，並可以輸入任何三種模式以遞迴方式。 不過，嘗試進入寫入模式區塊讀取模式中是否有其他執行緒。  
   
--   寫入模式的執行緒會讀取的模式，及/或可升級模式，可以輸入，並可以輸入任何三個模式以遞迴方式。  
+-   寫入模式中的執行緒會讀取的模式，及/或可升級模式，可以輸入，並可以輸入任何三種模式以遞迴方式。  
   
--   尚未進入鎖定的執行緒可以進入任何模式。 這項嘗試可能會基於相同原因，因為嘗試輸入非遞迴鎖定封鎖。  
+-   不進入鎖定的執行緒可以進入任何模式。 這項嘗試可能會封鎖嘗試將輸入的是非遞迴鎖定理由相同。  
   
- 執行緒可以結束它已經進入依任何順序模式，只要它會結束，每一種模式中進入該模式的次數相同。 如果執行緒嘗試次數過多，結束模式或結束尚未進入，模式<xref:System.Threading.SynchronizationLockException>就會擲回。  
+ 執行緒可以結束它已經進入依任何順序的模式，只要結束每個進入該模式下的次數相同的模式。 如果執行緒嘗試次數過多時，結束模式，或結束的模式，它已經不進入<xref:System.Threading.SynchronizationLockException>就會擲回。  
   
 ## <a name="lock-states"></a>鎖定狀態  
- 您可能會發現很好的做法鎖定的狀態中。 A<xref:System.Threading.ReaderWriterLockSlim>可以處於四種狀態之一： 不是輸入讀取，升級和寫入。  
+ 您可能會有用來看待鎖定的狀態中的條款。 A<xref:System.Threading.ReaderWriterLockSlim>可以處於四種狀態之一： 不是輸入讀取、 升級和寫入。  
   
 -   未輸入： 處於此狀態，沒有任何執行緒已進入鎖定 （或所有執行緒都結束鎖定）。  
   
--   請閱讀： 處於此狀態，一或多個執行緒已進入鎖定進行讀取受保護的資源。  
+-   讀取： 處於此狀態中，一或多個執行緒已進入鎖定進行讀取存取受保護的資源。  
   
     > [!NOTE]
     >  執行緒可以進入讀取模式鎖定使用<xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A>或<xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A>方法，或從 可升級模式降級。  
   
--   升級： 處於此狀態，一個執行緒已進入鎖定進行讀取與寫入存取所升級選項 （也就是在可升級模式），以及零個或多個執行緒已進入讀取權限的鎖定。 一次只能有一個執行緒可以進入鎖定與升級; 選項嘗試進入可升級模式的其他執行緒會遭到封鎖。  
+-   升級： 處於此狀態中，一個執行緒已進入鎖定進行讀取，選擇是否要升級至寫入權限 （也就是在進入可升級模式中），以及零個或多個執行緒已進入鎖定的讀取權限。 一次不超過一個執行緒可以進入鎖定升級; 的選項嘗試進入可升級模式的其他執行緒會遭到封鎖。  
   
--   寫入： 處於此狀態，一個執行緒已進入鎖定進行寫入存取受保護的資源。 該執行緒擁有獨佔的鎖定。 嘗試進入鎖定，因為任何原因的其他任何執行緒會封鎖。  
+-   寫入： 處於此狀態中，一個執行緒已進入受保護的資源寫入存取權的鎖定。 該執行緒已鎖定的獨佔擁有權。 嘗試進入鎖定，因為任何原因的其他任何執行緒被封鎖。  
   
- 下表描述的鎖定狀態，不允許遞迴時，當執行緒的鎖定之間的轉換`t`採取最左邊的資料行中所述的動作。 在階段採取動作，`t`不有任何模式。 (的特殊情況下其中`t`中說明資料表註腳可升級模式。)上方資料列描述鎖定的開始狀態。 資料格描述執行緒，會發生什麼事，並顯示在括號中的鎖定狀態的變更。  
+ 下表描述的鎖定狀態，不允許遞迴時，當執行緒的鎖定之間的轉換`t`採取最左邊的資料行中所述。 當時它採取動作，`t`不有任何模式。 (的特殊情況下，`t`處於可升級模式所述的資料表註腳。)上方資料列描述鎖定的開始狀態。 資料格說明執行緒，會發生什麼事，並顯示在括號中的鎖定狀態的變更。  
   
 ||不進入 (N)|Read (R)|升級 (U)|寫入 (W)|  
 |-|-----------------------|----------------|-------------------|-----------------|  
-|`t` 進入讀取的模式|`t` 輸入 (R)。|`t` 如果執行緒正在等候寫入模式;，區塊否則，`t`進入。|`t` 如果執行緒正在等候寫入模式;，區塊否則，`t`進入。<sup>1</sup>|`t` 區塊。|  
-|`t` 進入可升級模式|`t` 輸入 (U)。|`t` 如果執行緒正在等候的區塊寫入模式或升級模式。否則，`t`進入 (U)。|`t` 區塊。|`t` 區塊。|  
+|`t` 進入讀取的模式|`t` 輸入 (R)。|`t` 如果執行緒正在等候寫入模式;，區塊否則，`t`進入。|`t` 如果執行緒正在等候寫入模式;，區塊否則，請`t`進入。<sup>1</sup>|`t` 區塊。|  
+|`t` 進入可升級模式|`t` 輸入 (U)。|`t` 如果執行緒正在等候的區塊寫入模式或升級模式;否則，`t`進入 (U)。|`t` 區塊。|`t` 區塊。|  
 |`t` 進入寫入模式|`t` 輸入 (W)。|`t` 區塊。|`t` 區塊。<sup>2</sup>|`t` 區塊。|  
   
- <sup>1</sup>如果`t`啟動出可升級模式，它進入讀取的模式。 這個動作會永遠不會封鎖。 鎖定狀態不會變更。 （在執行緒然後即可完成以結束可升級模式的方式讀取模式降級）。  
+ <sup>1</sup>如果`t`啟動出可升級模式，它會進入讀取的模式。 此動作會永遠不會封鎖。 鎖定狀態不會變更。 （執行緒即可完成降級至結束可升級模式，以讀取模式）。  
   
- <sup>2</sup>如果`t`開始都處於可升級模式，它會封鎖在讀取模式下執行緒時。 否則，會升級寫入模式。 鎖定狀態 會變更以寫入 (W)。 如果`t`區塊中，因為有執行緒處於讀取模式，因為在最後一個執行緒結束讀取的模式，即會進入寫入模式中，即使有執行緒等待進入寫入模式。  
+ <sup>2</sup>如果`t`開始都處於可升級模式，它會封鎖有執行緒在讀取模式中。 否則，會升級寫入模式。 鎖定狀態會改變要寫入 (W)。 如果`t`封鎖有執行緒處於讀取模式，因為它進入寫入模式，只要在最後一個執行緒結束讀取的模式，即使有執行緒等待進入寫入模式。  
   
- 執行緒結束鎖定，就會發生狀態變更下, 一個執行緒喚醒，當選取時，如下所示：  
+ 當執行緒結束鎖定，就會發生狀態變更時下, 一個要喚醒的執行緒則選取路由，如下所示：  
   
--   首先，正在等候執行緒寫入模式，且已在可升級模式 （有最多可達一個這類執行緒）。  
+-   首先，執行緒正在等候寫入模式，並已可升級模式 （可以有最多一個這類執行緒）。  
   
--   如果失敗，正在等候寫入模式的執行緒。  
+-   如果再次失敗，正在等候寫入模式的執行緒。  
   
--   如果失敗，正在等待進入可升級模式的執行緒。  
+-   如果再次失敗，正在等候進入可升級模式的執行緒。  
   
--   如果失敗，正在等候讀取模式的所有執行緒。  
+-   如果再次失敗，正在等候讀取模式的所有執行緒。  
   
- 後續狀態一律是鎖定的寫入 (W) 中的第一個兩種情況下與升級 (U) 在第三個案例中，不論鎖定現有執行緒觸發狀態變更時的狀態為何。 在最後一個案例中，鎖定狀態時升級 (U) 執行緒中沒有可升級模式之後的狀態變更和 Read (R) 否則無論之前的狀態。  
+ 後續狀態一律是鎖定的寫入 (W) 在第一個兩個案例和升級 (U) 在第三個案例中，不論現有的執行緒觸發狀態變更時鎖定的狀態。 在最後一個案例中，鎖定的狀態是升級 (U) 中是否有一個執行緒進入可升級模式之後的狀態變更和 Read (R) 否則不論先前的狀態。  
   
    
   
 ## Examples  
- 下列範例會示範簡單的同步處理快取保存字串與整數索引鍵。 執行個體<xref:System.Threading.ReaderWriterLockSlim>用來同步處理存取具備<xref:System.Collections.Generic.Dictionary%602>做為內部快取。  
+ 下列範例顯示簡單的同步處理快取保存字串與整數索引鍵。 執行個體<xref:System.Threading.ReaderWriterLockSlim>用來同步存取<xref:System.Collections.Generic.Dictionary%602>做為內部的快取。  
   
- 此範例包含簡單的方法加入至快取，刪除從快取，以及讀取快取。 為了示範逾時，此範例也包含它可以這樣做內指定的逾時，才將快取的方法。  
+ 範例包括簡單的方法，來新增至快取、 從快取中，刪除並從讀取快取。 為了示範逾時，此範例也包含的方法，則可以這麼內指定的逾時，才加入至快取。  
   
- 為了示範可升級模式，此範例包含方法，可擷取索引鍵相關聯的值，並比較它與新的值。 如果值為不變，則方法會傳回狀態，表示沒有變更。 它沒有值找不到索引鍵，會插入索引鍵/值組。 如果值已變更，它會更新。 可升級模式可讓執行緒升級從的寫入存取，如有需要而不會發生死結的讀取權限。  
+ 為了示範可升級模式，此範例包含方法，可擷取索引鍵相關聯的值，並比較它與新的值。 如果值未變更，則方法會傳回狀態，指出沒有變更。 如果不找到索引鍵的任何值，則會插入的索引鍵/值組。 如果值已變更，就會更新。 可升級模式，可讓執行緒從讀取權限寫入權限，如有需要死結的風險的情況下升級。  
   
- 此範例也包含巢狀的列舉，指定方法，示範可升級模式的傳回值。  
+ 此範例也包含巢狀的列舉，指定將示範可升級模式的方法的傳回值。  
   
- 此範例會使用預設建構函式，來建立鎖定，因此不允許遞迴。 程式設計<xref:System.Threading.ReaderWriterLockSlim>鎖定不允許遞迴是比較簡單且較不容易發生錯誤。  
+ 此範例會使用預設建構函式來建立鎖定，因此不允許遞迴。 程式設計<xref:System.Threading.ReaderWriterLockSlim>是更簡單且較不容易發生錯誤，當鎖定不允許遞迴。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/classexample1.cs#11)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/classexample1.vb#11)]  
 [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#12](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/classexample1.cs#12)]
 [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#12](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/classexample1.vb#12)]  
   
- 下列程式碼再使用`SynchronizedCache`儲存 vegetable 名稱的字典物件。 它會建立三項工作。 第一個寫入蔬菜儲存在陣列中的名稱`SynchronizedCache`執行個體。 第二個和第三個工作顯示蔬菜、 遞增順序 （從低索引最高索引），以遞減順序的第二個中的第一個的名稱。 最後一項工作會搜尋字串"cucumber 」，並在它時，會呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterUpgradeableReadLock%2A>方法來替代字串 「 綠色 bean"。  
+ 下列程式碼然後使用`SynchronizedCache`儲存 vegetable 名稱的字典物件。 它會建立三項工作。 第一個陣列中儲存的蔬菜名稱寫入`SynchronizedCache`執行個體。 第二個和第三個工作顯示蔬菜、 以遞增順序 （從低索引最高索引），以遞減順序的第二個的第一個的名稱。 最後一項工作會搜尋字串"cucumber 」，並找到它，當呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterUpgradeableReadLock%2A>方法來取代字串"綠色 bean"。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/classexample1.cs#11)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/classexample1.vb#11)]  
@@ -181,7 +182,7 @@
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.ReaderWriterLockSlim" /> class.</summary>
+        <summary>初始化 <see cref="T:System.Threading.ReaderWriterLockSlim" /> 類別的新執行個體。</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName=".ctor">
@@ -201,42 +202,48 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.ReaderWriterLockSlim" /> class with default property values.</summary>
+        <summary>使用預設屬性值，初始化 <see cref="T:System.Threading.ReaderWriterLockSlim" /> 類別的新執行個體。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- A <xref:System.Threading.ReaderWriterLockSlim> ，初始化與這個建構函式不允許遞迴。 亦即，<xref:System.Threading.ReaderWriterLockSlim.RecursionPolicy%2A> 屬性會傳回 <xref:System.Threading.LockRecursionPolicy.NoRecursion?displayProperty=nameWithType>。  
+ A<xref:System.Threading.ReaderWriterLockSlim>初始化與這個建構函式不允許遞迴。 亦即，<xref:System.Threading.ReaderWriterLockSlim.RecursionPolicy%2A> 屬性會傳回 <xref:System.Threading.LockRecursionPolicy.NoRecursion?displayProperty=nameWithType>。  
   
- 如需有關遞迴原則，以及它影響的詳細資訊，請參閱<xref:System.Threading.LockRecursionPolicy>列舉型別和<xref:System.Threading.ReaderWriterLockSlim>類別。  
+ 如需有關遞迴原則和其效果的詳細資訊，請參閱 <<c0> <xref:System.Threading.LockRecursionPolicy> 列舉型別和<xref:System.Threading.ReaderWriterLockSlim>類別。  
   
    
   
 ## Examples  
- 下列範例會示範簡單的同步處理快取保存字串與整數索引鍵。 執行個體<xref:System.Threading.ReaderWriterLockSlim>用來同步處理存取具備<xref:System.Collections.Generic.Dictionary%602>做為內部快取。 無參數建構函式用來建立鎖定。  
+ 下列範例顯示簡單的同步處理快取保存字串與整數索引鍵。 執行個體<xref:System.Threading.ReaderWriterLockSlim>用來同步存取<xref:System.Collections.Generic.Dictionary%602>做為內部的快取。 無參數建構函式用來建立鎖定。  
   
- 此範例包含簡單的方法加入至快取，刪除從快取，以及讀取快取。 為了示範逾時，此範例也包含它可以這樣做內指定的逾時，才將快取的方法。  
+ 範例包括簡單的方法，來新增至快取、 從快取中，刪除並從讀取快取。 為了示範逾時，此範例也包含的方法，則可以這麼內指定的逾時，才加入至快取。  
   
- 為了示範可升級模式，此範例包含方法，可擷取索引鍵相關聯的值，並比較它與新的值。 如果值為不變，則方法會傳回狀態，表示沒有變更。 它沒有值找不到索引鍵，會插入索引鍵/值組。 如果值已變更，它會更新。 可升級模式可讓執行緒升級從的寫入存取，如有需要而不會發生死結的讀取權限。  
+ 為了示範可升級模式，此範例包含方法，可擷取索引鍵相關聯的值，並比較它與新的值。 如果值未變更，則方法會傳回狀態，指出沒有變更。 沒有值找到索引鍵，會插入索引鍵/值組。 如果值已變更，就會更新。 可升級模式，可讓執行緒從讀取權限寫入權限，如有需要死結的風險的情況下升級。  
   
- 此範例也包含巢狀的列舉，指定方法，示範可升級模式的傳回值。  
+ 此範例也包含巢狀的列舉，指定將示範可升級模式的方法的傳回值。  
   
- 此範例會使用預設建構函式，來建立鎖定，因此不允許遞迴。 程式設計<xref:System.Threading.ReaderWriterLockSlim>鎖定不允許遞迴是比較簡單且較不容易發生錯誤。  
+ 此範例會使用預設建構函式來建立鎖定，因此不允許遞迴。 程式設計<xref:System.Threading.ReaderWriterLockSlim>是更簡單且較不容易發生錯誤，當鎖定不允許遞迴。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/classexample1.cs#11)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/classexample1.vb#11)]  
 [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#12](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/classexample1.cs#12)]
 [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#12](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/classexample1.vb#12)]  
   
- 下列程式碼再使用`SynchronizedCache`儲存 vegetable 名稱的字典物件。 它會建立三項工作。 第一個寫入蔬菜儲存在陣列中的名稱`SynchronizedCache`執行個體。 第二個和第三個工作顯示蔬菜、 遞增順序 （從低索引最高索引），以遞減順序的第二個中的第一個的名稱。 最後一項工作會搜尋字串"cucumber 」，並在它時，會呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterUpgradeableReadLock%2A>方法來替代字串 「 綠色 bean"。  
+ 下列程式碼然後使用`SynchronizedCache`儲存 vegetable 名稱的字典物件。 它會建立三項工作。 第一個陣列中儲存的蔬菜名稱寫入`SynchronizedCache`執行個體。 第二個和第三個工作顯示蔬菜、 以遞增順序 （從低索引最高索引），以遞減順序的第二個的第一個的名稱。 最後一項工作會搜尋字串"cucumber 」，並找到它，當呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterUpgradeableReadLock%2A>方法來取代字串"綠色 bean"。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/classexample1.cs#11)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/classexample1.vb#11)]  
@@ -266,6 +273,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -276,36 +284,36 @@
         <Parameter Name="recursionPolicy" Type="System.Threading.LockRecursionPolicy" />
       </Parameters>
       <Docs>
-        <param name="recursionPolicy">One of the enumeration values that specifies the lock recursion policy.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Threading.ReaderWriterLockSlim" /> class, specifying the lock recursion policy.</summary>
+        <param name="recursionPolicy">一個列舉值，指定鎖定遞迴原則。</param>
+        <summary>指定鎖定遞迴原則，初始化 <see cref="T:System.Threading.ReaderWriterLockSlim" /> 類別的新執行個體。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 遞迴原則會決定多次進入鎖定狀態的執行緒上的限制。 例如，如果建立鎖定時使用<xref:System.Threading.LockRecursionPolicy.NoRecursion?displayProperty=nameWithType>執行緒已進入讀取模式的鎖定和<xref:System.Threading.LockRecursionException>執行緒會嘗試重新進入讀取模式鎖定便會擲回。 同樣地，如果執行緒已進入寫入模式的鎖定<xref:System.Threading.LockRecursionException>如果執行緒會嘗試重新輸入任何模式中的鎖定，會擲回。  
+ 遞迴原則決定多次進入鎖定的執行緒上的限制。 例如，如果您建立鎖定時<xref:System.Threading.LockRecursionPolicy.NoRecursion?displayProperty=nameWithType>執行緒已進入讀取模式的鎖定和<xref:System.Threading.LockRecursionException>執行緒會嘗試重新輸入中讀取模式鎖定便會擲回。 同樣地，如果執行緒已進入寫入模式的鎖定<xref:System.Threading.LockRecursionException>如果執行緒嘗試重新輸入在任何模式的鎖定，會擲回。  
   
 > [!NOTE]
->  可升級模式的執行緒可以寫入模式升級或降級為讀取模式鎖定的遞迴原則設定。  
+>  可升級模式中的執行緒可以升級為寫入模式，或降級為讀取模式，不論鎖定遞迴原則設定。  
   
- 不論遞迴原則，一開始進入讀取模式不允許升級至可升級模式 」 或 「 寫入模式，因為該模式會建立強式死結的可能性。  
+ 不論遞迴原則，一開始進入讀取模式不允許升級進入可升級模式 」 或 「 寫入模式，因為該模式會發生死結的機率。  
   
- 如需有關遞迴原則，以及它影響的詳細資訊，請參閱<xref:System.Threading.LockRecursionPolicy>列舉型別和<xref:System.Threading.ReaderWriterLockSlim>類別。  
+ 如需有關遞迴原則和其效果的詳細資訊，請參閱 <<c0> <xref:System.Threading.LockRecursionPolicy> 列舉型別和<xref:System.Threading.ReaderWriterLockSlim>類別。  
   
    
   
 ## Examples  
- 下列範例示範兩個例外狀況，其中一個，取決於<xref:System.Threading.LockRecursionPolicy>設定，另一個則沒有。  
+ 下列範例顯示兩個例外狀況，其中一個，取決於<xref:System.Threading.LockRecursionPolicy>設定，另一個則否。  
   
- 在第一個案例中，執行緒會進入讀取的模式，並再嘗試進入讀取的模式遞迴。 如果<xref:System.Threading.ReaderWriterLockSlim>利用遞迴原則設定為預設建構函式建立<xref:System.Threading.LockRecursionPolicy.NoRecursion?displayProperty=nameWithType>，擲回例外狀況。 如果<xref:System.Threading.LockRecursionPolicy.SupportsRecursion?displayProperty=nameWithType>用來建立<xref:System.Threading.ReaderWriterLockSlim>，擲回任何例外狀況。  
+ 在第一個案例中，執行緒會進入讀取的模式，並嘗試遞迴地進入讀取的模式。 如果<xref:System.Threading.ReaderWriterLockSlim>遞迴原則設定的預設建構函式會建立<xref:System.Threading.LockRecursionPolicy.NoRecursion?displayProperty=nameWithType>，會擲回例外狀況。 如果<xref:System.Threading.LockRecursionPolicy.SupportsRecursion?displayProperty=nameWithType>用以建立<xref:System.Threading.ReaderWriterLockSlim>，會擲回任何例外狀況。  
   
- 在第二個案例中，執行緒會進入讀取的模式，然後嘗試進入寫入模式。 <xref:System.Threading.LockRecursionException> 就會擲回不論鎖定遞迴原則。  
+ 在第二個案例中，在執行緒進入讀取的模式，然後嘗試進入寫入模式。 <xref:System.Threading.LockRecursionException> 無論鎖定遞迴原則就會擲回。  
   
 [!code-csharp[System.Threading.LockRecursionPolicy#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.LockRecursionPolicy/cs/ClassExample1.cs#11)] 
 [!code-vb[System.Threading.LockRecursionPolicy#11](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.LockRecursionPolicy/vb/ClassExample1.vb#11)]   
 [!code-csharp[System.Threading.LockRecursionPolicy#12](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.LockRecursionPolicy/cs/ClassExample1.cs#12)] 
 [!code-vb[System.Threading.LockRecursionPolicy#12](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.LockRecursionPolicy/vb/ClassExample1.vb#12)]  
   
- 下列程式碼再使用`SynchronizedCache`儲存 vegetable 名稱的字典物件。 它會建立三項工作。 第一個寫入蔬菜儲存在陣列中的名稱`SynchronizedCache`執行個體。 第二個和第三個工作顯示蔬菜、 遞增順序 （從低索引最高索引），以遞減順序的第二個中的第一個的名稱。 最後一項工作會搜尋字串"cucumber 」，並在它時，會呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterUpgradeableReadLock%2A>方法來替代字串 「 綠色 bean"。  
+ 下列程式碼然後使用`SynchronizedCache`儲存 vegetable 名稱的字典物件。 它會建立三項工作。 第一個陣列中儲存的蔬菜名稱寫入`SynchronizedCache`執行個體。 第二個和第三個工作顯示蔬菜、 以遞增順序 （從低索引最高索引），以遞減順序的第二個的第一個的名稱。 最後一項工作會搜尋字串"cucumber 」，並找到它，當呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterUpgradeableReadLock%2A>方法來取代字串"綠色 bean"。  
   
 [!code-csharp[System.Threading.LockRecursionPolicy#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.LockRecursionPolicy/cs/ClassExample1.cs#11)] 
 [!code-vb[System.Threading.LockRecursionPolicy#11](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.LockRecursionPolicy/vb/ClassExample1.vb#11)]   
@@ -336,6 +344,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -346,7 +355,7 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the total number of unique threads that have entered the lock in read mode.</summary>
+        <summary>取得已進入讀取模式鎖定狀態的唯一執行緒總數。</summary>
         <value>已進入讀取模式鎖定狀態的唯一執行緒數目。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -354,12 +363,12 @@
 ## Remarks  
  執行緒只計算一次，即使鎖定允許遞迴和執行緒已進入讀取的模式多次。  
   
- 僅適用於偵錯、 分析和記錄功能，而非控制演算法的行為，請使用這個屬性。 計算時，可以變更結果。 因此，它並不安全根據此屬性決定。  
+ 僅適用於偵錯、 分析和記錄功能，而非控制演算法的行為，請使用這個屬性。 一旦已計算出，則可以變更結果。 因此，它並不安全根據此屬性決定。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.CurrentReadCount%2A>產生事件記錄檔項目，如果在讀取模式下的執行緒數目超過臨界值的屬性。  
+ 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.CurrentReadCount%2A>屬性，以產生事件記錄檔項目，如果在讀取模式中的執行緒數目超過臨界值。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#1)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#1)]  
@@ -393,23 +402,29 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases all resources used by the current instance of the <see cref="T:System.Threading.ReaderWriterLockSlim" /> class.</summary>
+        <summary>將 <see cref="T:System.Threading.ReaderWriterLockSlim" /> 類別目前的執行個體所使用的資源全部釋出。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Threading.ReaderWriterLockSlim.Dispose%2A> 使用完畢時，請呼叫 <xref:System.Threading.ReaderWriterLockSlim>。 <xref:System.Threading.ReaderWriterLockSlim.Dispose%2A> 方法會將 <xref:System.Threading.ReaderWriterLockSlim> 保留在無法使用的狀態。 在呼叫<xref:System.Threading.ReaderWriterLockSlim.Dispose%2A>，您必須釋放所有參考<xref:System.Threading.ReaderWriterLockSlim>讓記憶體回收行程可以回收記憶體的<xref:System.Threading.ReaderWriterLockSlim>所佔用。 如需詳細資訊，請參閱[清除 Unmanaged 資源上](~/docs/standard/garbage-collection/unmanaged.md)和[實作 Dispose 方法](~/docs/standard/garbage-collection/implementing-dispose.md)。  
+ <xref:System.Threading.ReaderWriterLockSlim.Dispose%2A> 使用完畢時，請呼叫 <xref:System.Threading.ReaderWriterLockSlim>。 <xref:System.Threading.ReaderWriterLockSlim.Dispose%2A> 方法會將 <xref:System.Threading.ReaderWriterLockSlim> 保留在無法使用的狀態。 之後呼叫<xref:System.Threading.ReaderWriterLockSlim.Dispose%2A>，您必須釋放所有的參考<xref:System.Threading.ReaderWriterLockSlim>讓記憶體回收行程可以回收記憶體，<xref:System.Threading.ReaderWriterLockSlim>所佔用。 如需詳細資訊，請參閱 <<c0> [ 清除 Unmanaged 資源向上](~/docs/standard/garbage-collection/unmanaged.md)並[實作 Dispose 方法](~/docs/standard/garbage-collection/implementing-dispose.md)。  
   
 > [!NOTE]
 >  請務必呼叫<xref:System.Threading.ReaderWriterLockSlim.Dispose%2A>您釋放最後一個參考之前<xref:System.Threading.ReaderWriterLockSlim>物件。  
@@ -417,7 +432,13 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.Threading.SynchronizationLockException">
-          <see cref="P:System.Threading.ReaderWriterLockSlim.WaitingReadCount" /> is greater than zero.  -or-  <see cref="P:System.Threading.ReaderWriterLockSlim.WaitingUpgradeCount" /> is greater than zero.  -or-  <see cref="P:System.Threading.ReaderWriterLockSlim.WaitingWriteCount" /> is greater than zero.</exception>
+          <see cref="P:System.Threading.ReaderWriterLockSlim.WaitingReadCount" /> 大於零。  
+  
+-或- 
+ <see cref="P:System.Threading.ReaderWriterLockSlim.WaitingUpgradeCount" /> 大於零。  
+  
+-或- 
+ <see cref="P:System.Threading.ReaderWriterLockSlim.WaitingWriteCount" /> 大於零。</exception>
       </Docs>
     </Member>
     <Member MemberName="EnterReadLock">
@@ -438,6 +459,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -449,28 +471,28 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Tries to enter the lock in read mode.</summary>
+        <summary>嘗試進入讀取模式的鎖定。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法會封鎖，直到呼叫的執行緒進入鎖定，因此可能永遠不會傳回。 使用<xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A>方法來封鎖指定的間隔，然後再回頭執行如果呼叫執行緒尚未進入讀取模式，在該間隔期間。  
+ 這個方法會封鎖，直到呼叫的執行緒進入鎖定，並因此可能永遠不會傳回。 使用<xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A>方法，以封鎖指定的間隔，然後再將 如果呼叫的執行緒尚未進入讀取模式，在該間隔期間。  
   
  多個執行緒可以進入讀取的模式，在相同的時間。  
   
- 如果一個或多個執行緒正在等待進入寫入模式中，執行緒呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A>方法封鎖，直到這些執行緒具有逾時或已進入寫入模式，然後從它結束。  
+ 如果一或多個執行緒在等待進入寫入模式中，執行緒的呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A>方法封鎖，直到這些執行緒已逾時或已進入寫入模式，然後結束它。  
   
 > [!NOTE]
 >  如果鎖定允許遞迴，已進入讀取模式鎖定的執行緒可以進入讀取的模式遞迴，即使其他執行緒等待進入寫入模式。  
   
- 最多一個執行緒可以在可升級模式，其他的執行緒處於讀取模式。 如果其他的執行緒等待進入可升級模式，且沒有執行緒等待進入寫入模式，執行緒呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A>方法會立即進入讀取的模式，而不會封鎖。  
+ 當其他執行緒處於讀取模式時，最多一個執行緒可以進入可升級模式中。 如果其他執行緒等待進入可升級模式，且沒有執行緒等待進入寫入模式，執行緒呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A>方法立即進入讀取的模式，並不會封鎖。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A>方法在讀取模式下進入鎖定。 在範例中所示的方法擷取索引鍵相關聯的值。 如果索引鍵找不到，由內部擲回的例外狀況<xref:System.Collections.Generic.Dictionary%602>允許 terminate 方法。 A`finally`區塊用來執行<xref:System.Threading.ReaderWriterLockSlim.ExitReadLock%2A>方法，確保呼叫端結束讀取的模式。  
+ 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A>進入讀取模式鎖定的方法。 在範例中所示的方法會擷取索引鍵相關聯的值。 如果找不到金鑰，由內部擲回的例外狀況<xref:System.Collections.Generic.Dictionary%602>允許 terminate 方法。 A`finally`區塊用來執行<xref:System.Threading.ReaderWriterLockSlim.ExitReadLock%2A>方法，確保呼叫端結束讀取的模式。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLockSlim>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLockSlim>類別。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#2)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#2)]  
@@ -479,8 +501,16 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Threading.LockRecursionException">The current thread cannot acquire the write lock when it holds the read lock.  -or-  The <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> property is <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />, and the current thread has attempted to acquire the read lock when it already holds the read lock.  -or-  The <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> property is <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />, and the current thread has attempted to acquire the read lock when it already holds the write lock.  -or-  The recursion number would exceed the capacity of the counter. This limit is so large that applications should never encounter this exception.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.ReaderWriterLockSlim" /> object has been disposed.</exception>
+        <exception cref="T:System.Threading.LockRecursionException">
+          <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性是 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />且目前的執行緒嘗試在已經保留讀取鎖定的情況下取得讀取鎖定。  
+  
+-或- 
+<see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性是 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />且目前的執行緒嘗試在已經保留寫入鎖定的情況下取得讀取鎖定。  
+  
+-或- 
+遞迴的次數會超過計數器的容量。 這項限制非常寬鬆，所以應用程式應該永遠都不會發生這種例外狀況。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件已經處置。</exception>
       </Docs>
     </Member>
     <Member MemberName="EnterUpgradeableReadLock">
@@ -501,6 +531,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -512,32 +543,32 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Tries to enter the lock in upgradeable mode.</summary>
+        <summary>嘗試進入可升級模式的鎖定狀態。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法會封鎖，直到呼叫的執行緒進入鎖定，因此可能永遠不會傳回。 使用<xref:System.Threading.ReaderWriterLockSlim.TryEnterUpgradeableReadLock%2A>來封鎖指定的間隔內，，然後傳回 如果呼叫執行緒尚未進入可升級模式在該間隔期間的方法。  
+ 這個方法會封鎖，直到呼叫的執行緒進入鎖定，並因此可能永遠不會傳回。 使用<xref:System.Threading.ReaderWriterLockSlim.TryEnterUpgradeableReadLock%2A>封鎖指定的間隔，然後再將 如果呼叫的執行緒尚未進入可升級模式在該間隔期間的方法。  
   
- 使用可升級模式下，當執行緒通常存取受保護的資源<xref:System.Threading.ReaderWriterLockSlim>在讀取模式，但可能需要進入寫入模式，如果符合特定條件。 可升級模式的執行緒可以降級為讀取模式，或升級至寫入模式。  
+ 當執行緒通常存取受保護的資源，則使用可升級模式<xref:System.Threading.ReaderWriterLockSlim>在讀取模式，但可能需要進入寫入模式，如果符合特定條件。 可升級模式中的執行緒可以降級為讀取模式，或升級為寫入模式。  
   
- 只有一個執行緒可以進入可升級模式，在任何指定時間。 如果執行緒是在可升級模式，且沒有執行緒等待進入寫入模式，任意數目的其他執行緒進入讀取的模式，即使有執行緒等待進入可升級模式。  
+ 只有一個執行緒可以進入可升級模式，在任何指定時間。 如果執行緒在進入可升級模式，且沒有執行緒等待進入寫入模式，任意數目的其他執行緒可以在即使有等待進入可升級模式的執行緒進入讀取的模式。  
   
- 如果一個或多個執行緒正在等待進入寫入模式中，執行緒呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterUpgradeableReadLock%2A>方法封鎖，直到這些執行緒具有逾時或已進入寫入模式，然後從它結束。  
+ 如果一或多個執行緒在等待進入寫入模式中，執行緒的呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterUpgradeableReadLock%2A>方法封鎖，直到這些執行緒已逾時或已進入寫入模式，然後結束它。  
   
 > [!NOTE]
->  如果鎖定允許遞迴已進入可升級模式鎖定的執行緒可以輸入可升級模式遞迴，即使其他執行緒等待進入寫入模式。  
+>  如果鎖定允許遞迴，已進入可升級模式鎖定的執行緒可以進入可升級模式遞迴地進入，即使其他執行緒等待進入寫入模式。  
   
    
   
 ## Examples  
  下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.EnterUpgradeableReadLock%2A>方法來進入可升級模式的鎖定。 A`finally`區塊用來執行<xref:System.Threading.ReaderWriterLockSlim.ExitUpgradeableReadLock%2A>方法，確保呼叫端結束可升級模式。  
   
- 在範例中所示的方法擷取索引鍵相關聯的值，並比較它與新的值。 如果值為不變，則方法會傳回狀態，表示沒有變更。 它沒有值找不到索引鍵，會插入索引鍵/值組。 如果值已變更，它會更新。 可升級模式可讓執行緒升級讀取的鎖定，如有需要而不發生死結的風險。  
+ 在範例中所示的方法擷取索引鍵相關聯的值，並比較它與新的值。 如果值未變更，則方法會傳回狀態，指出沒有變更。 沒有值找到索引鍵，會插入索引鍵/值組。 如果值已變更，就會更新。 可升級模式，可讓執行緒升級讀取的鎖定，如有需要而死結的風險。  
   
- 此範例會使用預設建構函式，來建立鎖定，因此不允許遞迴。 程式設計<xref:System.Threading.ReaderWriterLockSlim>鎖定不允許遞迴是比較簡單且較不容易發生錯誤。  
+ 此範例會使用預設建構函式來建立鎖定，因此不允許遞迴。 程式設計<xref:System.Threading.ReaderWriterLockSlim>是更簡單且較不容易發生錯誤，當鎖定不允許遞迴。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLockSlim>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLockSlim>類別。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#2)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#2)]  
@@ -548,8 +579,16 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Threading.LockRecursionException">The <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> property is <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" /> and the current thread has already entered the lock in any mode.  -or-  The current thread has entered read mode, so trying to enter upgradeable mode would create the possibility of a deadlock.  -or-  The recursion number would exceed the capacity of the counter. The limit is so large that applications should never encounter it.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.ReaderWriterLockSlim" /> object has been disposed.</exception>
+        <exception cref="T:System.Threading.LockRecursionException">
+          <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性為 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />，且目前的執行緒已進入任何模式的鎖定狀態。  
+  
+-或- 
+目前執行緒已進入讀取模式，因此嘗試進入可升級模式可能會造成死結。  
+  
+-或- 
+遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件已經處置。</exception>
       </Docs>
     </Member>
     <Member MemberName="EnterWriteLock">
@@ -570,6 +609,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -581,24 +621,24 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Tries to enter the lock in write mode.</summary>
+        <summary>嘗試進入寫入模式的鎖定。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法會封鎖，直到呼叫的執行緒進入鎖定，因此可能永遠不會傳回。 使用<xref:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock%2A>來封鎖指定的間隔內，，然後傳回 如果呼叫執行緒尚未進入寫入模式在該間隔期間的方法。  
+ 這個方法會封鎖，直到呼叫的執行緒進入鎖定，並因此可能永遠不會傳回。 使用<xref:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock%2A>封鎖指定的間隔，然後再將 如果呼叫的執行緒尚未進入寫入模式在該間隔期間的方法。  
   
- 如果其他的執行緒已進入讀取模式鎖定，執行緒呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterWriteLock%2A>方法會封鎖直到那些執行緒都結束讀取模式。 等待進入寫入模式的執行緒時，額外的執行緒嘗試進入讀取的模式或區塊可升級模式，直到所有等待進入寫入模式的執行緒具有逾時已進入寫入模式，或從它然後結束。  
+ 如果其他執行緒已進入讀取模式的鎖定，執行緒的呼叫<xref:System.Threading.ReaderWriterLockSlim.EnterWriteLock%2A>方法封鎖，直到這些執行緒都結束讀取模式。 等待進入寫入模式的執行緒時，額外的執行緒嘗試進入讀取的模式] 或 [可升級模式封鎖，直到等待進入寫入模式的所有執行緒都都是逾時或已進入寫入模式，然後結束它。  
   
 > [!NOTE]
->  如果鎖定允許遞迴已進入寫入模式鎖定的執行緒可以輸入遞迴寫入模式，即使其他執行緒等待進入寫入模式。  
+>  如果鎖定允許遞迴，已進入寫入模式鎖定的執行緒可以進入寫入模式以遞迴方式，即使其他執行緒等待進入寫入模式。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.EnterWriteLock%2A>方法，以在寫入模式下進入鎖定狀態。 範例所示的方法會將新的索引鍵/值組加入至同步處理快取。 如果機碼已經快取中，由內部擲回的例外狀況<xref:System.Collections.Generic.Dictionary%602>允許 terminate 方法。 A`finally`區塊用來執行<xref:System.Threading.ReaderWriterLockSlim.ExitWriteLock%2A>方法，確保呼叫端結束寫入模式。  
+ 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.EnterWriteLock%2A>進入寫入模式鎖定的方法。 範例所示的方法會將新的索引鍵/值組加入至同步處理的快取。 如果快取中，所擲回的內部例外狀況已有索引鍵<xref:System.Collections.Generic.Dictionary%602>允許 terminate 方法。 A`finally`區塊用來執行<xref:System.Threading.ReaderWriterLockSlim.ExitWriteLock%2A>方法，確保呼叫端結束寫入模式。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLockSlim>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLockSlim>類別。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#2)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#2)]  
@@ -607,8 +647,16 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Threading.LockRecursionException">The <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> property is <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" /> and the current thread has already entered the lock in any mode.  -or-  The current thread has entered read mode, so trying to enter the lock in write mode would create the possibility of a deadlock.  -or-  The recursion number would exceed the capacity of the counter. The limit is so large that applications should never encounter it.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.ReaderWriterLockSlim" /> object has been disposed.</exception>
+        <exception cref="T:System.Threading.LockRecursionException">
+          <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性為 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />，且目前的執行緒已進入任何模式的鎖定狀態。  
+  
+-或- 
+目前的執行緒已進入真實模式，而且還沒有擁有寫入鎖定，因此嘗試進入寫入模式鎖定可能會造成死結。  
+  
+-或- 
+遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件已經處置。</exception>
       </Docs>
     </Member>
     <Member MemberName="ExitReadLock">
@@ -629,6 +677,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -640,21 +689,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Reduces the recursion count for read mode, and exits read mode if the resulting count is 0 (zero).</summary>
+        <summary>減少讀取模式遞迴的計數，如果得出的計數為 0 (零)，則結束讀取模式。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法不是遞迴順序。 例如，如果在執行緒進入可升級模式鎖定，然後在讀取模式下進入鎖定的執行緒結束兩種模式的順序無關。 如果鎖定允許遞迴，執行緒可以進入寫入模式的鎖定，然後輸入它以遞迴方式在以讀取模式。在執行緒結束的順序模式讀寫模式並不重要。  
+ 這個方法不是遞迴順序。 例如，如果執行緒進入可升級模式的鎖定，然後在讀取模式下進入鎖定的執行緒結束的兩種模式的順序無關緊要。 如果鎖定允許遞迴，執行緒可以進入寫入模式的鎖定，然後輸入它以遞迴方式讀取模式;在執行緒結束的順序模式讀寫模式並不重要。  
   
- 結束鎖定，可能表示其他的等候中執行緒。  
+ 結束鎖定，可能表示其他等候中執行緒。  
   
    
   
 ## Examples  
- 下列範例示範如何使用`finally`區塊執行<xref:System.Threading.ReaderWriterLockSlim.ExitReadLock%2A>方法，確保呼叫端結束讀取的模式。 在範例中所示的方法擷取索引鍵相關聯的值。 如果索引鍵找不到，由內部擲回的例外狀況<xref:System.Collections.Generic.Dictionary%602>允許 terminate 方法。 <xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A>方法用來進入讀取的模式。  
+ 下列範例示範如何使用`finally`區塊執行<xref:System.Threading.ReaderWriterLockSlim.ExitReadLock%2A>方法，確保呼叫端結束讀取的模式。 在範例中所示的方法會擷取索引鍵相關聯的值。 如果找不到金鑰，由內部擲回的例外狀況<xref:System.Collections.Generic.Dictionary%602>允許 terminate 方法。 <xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A>方法用來進入讀取的模式。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLockSlim>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLockSlim>類別。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#2)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#2)]  
@@ -663,7 +712,7 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Threading.SynchronizationLockException">The current thread has not entered the lock in read mode.</exception>
+        <exception cref="T:System.Threading.SynchronizationLockException">目前的執行緒尚未進入讀取模式的鎖定狀態。</exception>
       </Docs>
     </Member>
     <Member MemberName="ExitUpgradeableReadLock">
@@ -684,6 +733,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -695,25 +745,25 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Reduces the recursion count for upgradeable mode, and exits upgradeable mode if the resulting count is 0 (zero).</summary>
+        <summary>減少可升級模式遞迴的計數，如果得出的計數為 0 (零)，則結束可升級模式。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法不是遞迴順序。 例如，如果在執行緒進入可升級模式鎖定，然後在寫入模式下進入鎖定的執行緒結束兩種模式的順序無關。 如果鎖定允許遞迴，執行緒可以進入寫入模式的鎖定，然後輸入它以遞迴方式可升級模式。在執行緒結束可升級模式 」 和 「 寫入模式的順序不重要。  
+ 這個方法不是遞迴順序。 例如，如果執行緒進入可升級模式的鎖定，然後在寫入模式下進入鎖定的執行緒結束的兩種模式的順序無關緊要。 如果鎖定允許遞迴，執行緒可以進入寫入模式鎖定，然後遞迴地進入可升級模式;在執行緒結束可升級模式和寫入模式的順序並不重要。  
   
- 結束鎖定，可能表示其他的等候中執行緒。  
+ 結束鎖定，可能表示其他等候中執行緒。  
   
    
   
 ## Examples  
  下列範例示範如何使用`finally`區塊執行<xref:System.Threading.ReaderWriterLockSlim.ExitUpgradeableReadLock%2A>方法，確保呼叫端結束可升級模式。  
   
- 在範例中所示的方法擷取索引鍵相關聯的值，並比較它與新的值。 如果值為不變，則方法會傳回狀態，表示沒有變更。 它沒有值找不到索引鍵，會插入索引鍵/值組。 如果值已變更，它會更新。 可升級模式可讓執行緒升級讀取的鎖定，如有需要而不發生死結的風險。  
+ 在範例中所示的方法擷取索引鍵相關聯的值，並比較它與新的值。 如果值未變更，則方法會傳回狀態，指出沒有變更。 沒有值找到索引鍵，會插入索引鍵/值組。 如果值已變更，就會更新。 可升級模式，可讓執行緒升級讀取的鎖定，如有需要而死結的風險。  
   
- 此範例會使用預設建構函式，來建立鎖定，因此不允許遞迴。 程式設計<xref:System.Threading.ReaderWriterLockSlim>鎖定不允許遞迴是比較簡單且較不容易發生錯誤。  
+ 此範例會使用預設建構函式來建立鎖定，因此不允許遞迴。 程式設計<xref:System.Threading.ReaderWriterLockSlim>是更簡單且較不容易發生錯誤，當鎖定不允許遞迴。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLockSlim>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLockSlim>類別。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#2)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#2)]  
@@ -724,7 +774,7 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Threading.SynchronizationLockException">The current thread has not entered the lock in upgradeable mode.</exception>
+        <exception cref="T:System.Threading.SynchronizationLockException">目前的執行緒尚未進入可升級模式的鎖定狀態。</exception>
       </Docs>
     </Member>
     <Member MemberName="ExitWriteLock">
@@ -745,6 +795,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -756,21 +807,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Reduces the recursion count for write mode, and exits write mode if the resulting count is 0 (zero).</summary>
+        <summary>減少寫入模式遞迴的計數，如果得出的計數為 0 (零)，則結束寫入模式。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法不是遞迴順序。 例如，如果在執行緒進入可升級模式鎖定，然後在寫入模式下進入鎖定的執行緒結束兩種模式的順序無關。 如果鎖定允許遞迴，執行緒可以進入寫入模式的鎖定，然後輸入它以遞迴方式在以讀取模式。在執行緒結束的順序模式讀寫模式並不重要。  
+ 這個方法不是遞迴順序。 例如，如果執行緒進入可升級模式的鎖定，然後在寫入模式下進入鎖定的執行緒結束的兩種模式的順序無關緊要。 如果鎖定允許遞迴，執行緒可以進入寫入模式的鎖定，然後輸入它以遞迴方式讀取模式;在執行緒結束的順序模式讀寫模式並不重要。  
   
- 結束鎖定，可能表示其他的等候中執行緒。  
+ 結束鎖定，可能表示其他等候中執行緒。  
   
    
   
 ## Examples  
- 下列範例示範如何使用`finally`區塊執行<xref:System.Threading.ReaderWriterLockSlim.ExitWriteLock%2A>方法，確保呼叫端結束寫入模式。 範例所示的方法會將新的索引鍵/值組加入至同步處理快取。 如果機碼已經快取中，由內部擲回的例外狀況<xref:System.Collections.Generic.Dictionary%602>允許 terminate 方法。 <xref:System.Threading.ReaderWriterLockSlim.EnterWriteLock%2A>方法用來在寫入模式下進入鎖定狀態。  
+ 下列範例示範如何使用`finally`區塊執行<xref:System.Threading.ReaderWriterLockSlim.ExitWriteLock%2A>方法，確保呼叫端結束寫入模式。 範例所示的方法會將新的索引鍵/值組加入至同步處理的快取。 如果快取中，所擲回的內部例外狀況已有索引鍵<xref:System.Collections.Generic.Dictionary%602>允許 terminate 方法。 <xref:System.Threading.ReaderWriterLockSlim.EnterWriteLock%2A>方法用來進入寫入模式的鎖定。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLockSlim>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLockSlim>類別。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#2)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#2)]  
@@ -779,7 +830,7 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Threading.SynchronizationLockException">The current thread has not entered the lock in write mode.</exception>
+        <exception cref="T:System.Threading.SynchronizationLockException">目前的執行緒尚未進入寫入模式的鎖定狀態。</exception>
       </Docs>
     </Member>
     <Member MemberName="IsReadLockHeld">
@@ -800,6 +851,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -810,18 +862,18 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the current thread has entered the lock in read mode.</summary>
+        <summary>取得值，表示目前執行緒是否已進入讀取模式的鎖定。</summary>
         <value>如果目前執行緒已進入讀取模式，則為 <see langword="true" />；否則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個屬性適用於判斷提示或其他偵錯功能。 請勿使用它來控制控制程式執行流程。  
+ 這個屬性適用於判斷提示或其他偵錯的目的。 請勿使用它來控制控制程式執行流程。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.IsReadLockHeld%2A>屬性來產生判斷提示，如果目前執行緒已進入讀取模式意外。  
+ 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.IsReadLockHeld%2A>屬性，以產生判斷提示，如果目前執行緒已進入讀取模式的意外。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#1)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#1)]  
@@ -850,6 +902,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -860,18 +913,18 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the current thread has entered the lock in upgradeable mode.</summary>
-        <value>如果目前執行緒已進入可升級模式，則為 <see langword="true" />；否則為 <see langword="false" />。</value>
+        <summary>取得值，表示目前執行緒是否已進入可升級模式的鎖定。</summary>
+        <value>如果目前執行緒已進入可升級模式，則為 <see langword="true" />，否則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個屬性適用於判斷提示或其他偵錯功能。 請勿使用它來控制控制程式執行流程。  
+ 這個屬性適用於判斷提示或其他偵錯的目的。 請勿使用它來控制控制程式執行流程。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.IsUpgradeableReadLockHeld%2A>產生判斷提示，如果目前執行緒已進入可升級模式非預期的屬性。  
+ 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.IsUpgradeableReadLockHeld%2A>如果目前執行緒已意外地進入可升級模式產生判斷提示的屬性。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#1)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#1)]  
@@ -900,6 +953,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -910,18 +964,18 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates whether the current thread has entered the lock in write mode.</summary>
+        <summary>取得值，表示目前執行緒是否已進入寫入模式的鎖定。</summary>
         <value>如果目前執行緒已進入寫入模式，則為 <see langword="true" />；否則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個屬性適用於判斷提示或其他偵錯功能。 請勿使用它來控制控制程式執行流程。  
+ 這個屬性適用於判斷提示或其他偵錯的目的。 請勿使用它來控制控制程式執行流程。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.IsWriteLockHeld%2A>產生判斷提示，如果目前執行緒已進入寫入模式非預期的屬性。  
+ 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.IsWriteLockHeld%2A>如果目前執行緒已意外地進入寫入模式產生判斷提示的屬性。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#1)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#1)]  
@@ -950,6 +1004,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -960,20 +1015,20 @@
         <ReturnType>System.Threading.LockRecursionPolicy</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that indicates the recursion policy for the current <see cref="T:System.Threading.ReaderWriterLockSlim" /> object.</summary>
+        <summary>取得值，表示目前 <see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件的遞迴原則。</summary>
         <value>一個列舉值，指定鎖定遞迴原則。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 遞迴原則會決定多次進入鎖定狀態的執行緒上的限制。 例如，如果建立鎖定時使用<xref:System.Threading.LockRecursionPolicy.NoRecursion?displayProperty=nameWithType>執行緒已進入讀取模式的鎖定和<xref:System.Threading.LockRecursionException>執行緒會嘗試重新進入讀取模式鎖定便會擲回。  
+ 遞迴原則決定多次進入鎖定的執行緒上的限制。 例如，如果您建立鎖定時<xref:System.Threading.LockRecursionPolicy.NoRecursion?displayProperty=nameWithType>執行緒已進入讀取模式的鎖定和<xref:System.Threading.LockRecursionException>執行緒會嘗試重新輸入中讀取模式鎖定便會擲回。  
   
 > [!NOTE]
->  可升級模式的執行緒可以寫入模式升級或降級為讀取模式鎖定的遞迴原則設定。  
+>  可升級模式中的執行緒可以升級為寫入模式，或降級為讀取模式，不論鎖定遞迴原則設定。  
   
- 不論遞迴原則，一開始進入讀取模式不允許升級至可升級模式 」 或 「 寫入模式，因為該模式會建立強式死結的可能性。  
+ 不論遞迴原則，一開始進入讀取模式不允許升級進入可升級模式 」 或 「 寫入模式，因為該模式會發生死結的機率。  
   
- 如需有關遞迴原則，以及它影響的詳細資訊，請參閱<xref:System.Threading.LockRecursionPolicy>列舉型別和<xref:System.Threading.ReaderWriterLockSlim>類別。  
+ 如需有關遞迴原則和其效果的詳細資訊，請參閱 <<c0> <xref:System.Threading.LockRecursionPolicy> 列舉型別和<xref:System.Threading.ReaderWriterLockSlim>類別。  
   
  ]]></format>
         </remarks>
@@ -998,6 +1053,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1008,13 +1064,13 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the number of times the current thread has entered the lock in read mode, as an indication of recursion.</summary>
-        <value>0 （零），如果目前執行緒尚未進入讀取模式，1，如果執行緒已進入讀取的模式，但是尚未遞迴進入該，或 * n * 如果執行緒已遞迴進入鎖定 * n *-1 次。</value>
+        <summary>取得目前執行緒已進入讀取模式鎖定的次數，做為遞迴的表示。</summary>
+        <value>0 （零），如果目前執行緒尚未進入讀取模式，1，表示執行緒已進入讀取的模式，但是尚未遞迴進入該，或是*n*如果執行緒已遞迴進入鎖定*n* -1 次。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 僅適用於偵錯、 分析和記錄功能，而非控制演算法的行為，請使用這個屬性。 計算時，可以變更結果。 因此，它並不安全根據此屬性決定。  
+ 僅適用於偵錯、 分析和記錄功能，而非控制演算法的行為，請使用這個屬性。 一旦已計算出，則可以變更結果。 因此，它並不安全根據此屬性決定。  
   
  ]]></format>
         </remarks>
@@ -1038,6 +1094,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1048,13 +1105,13 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the number of times the current thread has entered the lock in upgradeable mode, as an indication of recursion.</summary>
-        <value>如果目前執行緒尚未進入可升級模式，如果執行緒已進入可升級模式，但已遞迴進入該，1，0 或 * n * 如果執行緒已進入可升級模式遞迴 * n *-1 次。</value>
+        <summary>取得目前執行緒已進入可升級模式鎖定的次數，做為遞迴的表示。</summary>
+        <value>0，表示目前執行緒尚未進入可升級模式，如果執行緒已進入可升級模式，但是已遞迴進入該，則為 1 或*n*如果執行緒已進入可升級模式遞迴*n* -1時間。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 僅適用於偵錯、 分析和記錄功能，而非控制演算法的行為，請使用這個屬性。 計算時，可以變更結果。 因此，它並不安全根據此屬性決定。  
+ 僅適用於偵錯、 分析和記錄功能，而非控制演算法的行為，請使用這個屬性。 一旦已計算出，則可以變更結果。 因此，它並不安全根據此屬性決定。  
   
  ]]></format>
         </remarks>
@@ -1078,6 +1135,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1088,13 +1146,13 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the number of times the current thread has entered the lock in write mode, as an indication of recursion.</summary>
-        <value>0，表示目前執行緒尚未進入寫入模式，1 如果執行緒已進入寫入模式，但是尚未遞迴進入該，或 * n * 如果執行緒已遞迴進入寫入模式 * n *-1 次。</value>
+        <summary>取得目前執行緒已進入寫入模式鎖定的次數，做為遞迴的表示。</summary>
+        <value>0，表示目前執行緒尚未進入寫入模式中，1 如果執行緒已進入寫入模式，但是尚未遞迴進入該，或是*n*如果執行緒已進入寫入模式遞迴*n* -1 次。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 僅適用於偵錯、 分析和記錄功能，而非控制演算法的行為，請使用這個屬性。 計算時，可以變更結果。 因此，它並不安全根據此屬性決定。  
+ 僅適用於偵錯、 分析和記錄功能，而非控制演算法的行為，請使用這個屬性。 一旦已計算出，則可以變更結果。 因此，它並不安全根據此屬性決定。  
   
  ]]></format>
         </remarks>
@@ -1108,7 +1166,7 @@
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Tries to enter the lock in read mode, with an optional time-out.</summary>
+        <summary>嘗試以選用的逾時，在讀取模式下進入鎖定狀態。</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="TryEnterReadLock">
@@ -1129,6 +1187,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1142,30 +1201,35 @@
         <Parameter Name="millisecondsTimeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">The number of milliseconds to wait, or -1 (<see cref="F:System.Threading.Timeout.Infinite" />) to wait indefinitely.</param>
-        <summary>Tries to enter the lock in read mode, with an optional integer time-out.</summary>
-        <returns>
-          <see langword="true" /> if the calling thread entered read mode, otherwise, <see langword="false" />.</returns>
+        <param name="millisecondsTimeout">要等候的毫秒數；若要永遠等候，則為 -1 (<see cref="F:System.Threading.Timeout.Infinite" />)。</param>
+        <summary>嘗試以選用的整數逾時，進入讀取模式的鎖定狀態。</summary>
+        <returns>如果呼叫執行緒已進入讀取模式，則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果`millisecondsTimeout`是 0 （零），則這個方法會檢查鎖定狀態，並傳回`false`立即如果所需的狀態無法使用。  
+ 如果`millisecondsTimeout`為 0 （零），這個方法會檢查鎖定狀態，並傳回`false`立即如果所需的狀態無法使用。  
   
  多個執行緒可以進入讀取的模式，在相同的時間。  
   
- 如果一個或多個執行緒正在等待進入寫入模式中，執行緒呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A>方法會封鎖，直到這些執行緒有可能是等候逾時或已進入寫入模式，然後結束，或呼叫執行緒的自己逾時間隔到期為止。  
+ 如果一或多個執行緒在等待進入寫入模式中，執行緒的呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A>方法會封鎖，直到這些執行緒有可能是等候逾時或已進入寫入模式，然後結束，或是呼叫執行緒自己的逾時間隔到期。  
   
 > [!NOTE]
 >  如果鎖定允許遞迴，已進入讀取模式鎖定的執行緒可以進入讀取的模式遞迴，即使其他執行緒等待進入寫入模式。  
   
- 其他的執行緒處於讀取模式，可升級模式中只能有一個執行緒。 如果其他的執行緒等待進入可升級模式，且沒有執行緒等待進入寫入模式，執行緒呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A>方法會立即進入讀取的模式，而不會封鎖。  
+ 當其他執行緒處於讀取模式時，有一個執行緒可以進入可升級模式中。 如果其他執行緒等待進入可升級模式，且沒有執行緒等待進入寫入模式，執行緒呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A>方法立即進入讀取的模式，並不會封鎖。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Threading.LockRecursionException">The <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> property is <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" /> and the current thread has already entered the lock.  -or-  The recursion number would exceed the capacity of the counter. The limit is so large that applications should never encounter it.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The value of <paramref name="millisecondsTimeout" /> is negative, but it is not equal to <see cref="F:System.Threading.Timeout.Infinite" /> (-1), which is the only negative value allowed.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.ReaderWriterLockSlim" /> object has been disposed.</exception>
+        <exception cref="T:System.Threading.LockRecursionException">
+          <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性為 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />，且目前的執行緒已進入鎖定狀態。  
+  
+-或- 
+遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="millisecondsTimeout" /> 的值為負，但不等於 <see cref="F:System.Threading.Timeout.Infinite" /> (-1)，這是唯一允許的負值。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件已經處置。</exception>
       </Docs>
     </Member>
     <Member MemberName="TryEnterReadLock">
@@ -1186,6 +1250,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1199,30 +1264,38 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout">The interval to wait, or -1 milliseconds to wait indefinitely.</param>
-        <summary>Tries to enter the lock in read mode, with an optional time-out.</summary>
-        <returns>
-          <see langword="true" /> if the calling thread entered read mode, otherwise, <see langword="false" />.</returns>
+        <param name="timeout">等待的間隔，或 -1 毫秒無限期等待。</param>
+        <summary>嘗試以選用的逾時，在讀取模式下進入鎖定狀態。</summary>
+        <returns>如果呼叫執行緒已進入讀取模式，則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果`timeout`是 0 （零），則這個方法會檢查鎖定狀態，並傳回`false`立即如果所需的狀態無法使用。  
+ 如果`timeout`為 0 （零），這個方法會檢查鎖定狀態，並傳回`false`立即如果所需的狀態無法使用。  
   
- 多個執行緒可以在讀取模式下進入鎖定在相同的時間。  
+ 多個執行緒可以進入讀取模式鎖定，同時。  
   
- 如果一個或多個執行緒佇列進入寫入模式中，執行緒的呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A>方法會封鎖，直到這些執行緒有可能是等候逾時或已進入寫入模式，然後結束，或呼叫執行緒的自己逾時間隔到期為止。  
+ 如果一個或多個執行緒已進入寫入模式中排入佇列，執行緒的呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A>方法會封鎖，直到這些執行緒有可能是等候逾時或已進入寫入模式，然後結束，或是呼叫執行緒自己的逾時間隔到期。  
   
 > [!NOTE]
 >  如果鎖定允許遞迴，已進入讀取模式鎖定的執行緒可以進入讀取的模式遞迴，即使其他執行緒等待進入寫入模式。  
   
- 其他的執行緒處於讀取模式，可升級模式中只能有一個執行緒。 如果其他的執行緒等待進入可升級模式，且沒有執行緒等待進入寫入模式，執行緒呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A>方法會立即進入讀取的模式，而不會封鎖。  
+ 當其他執行緒處於讀取模式時，有一個執行緒可以進入可升級模式中。 如果其他執行緒等待進入可升級模式，且沒有執行緒等待進入寫入模式，執行緒呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A>方法立即進入讀取的模式，並不會封鎖。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Threading.LockRecursionException">The <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> property is <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" /> and the current thread has already entered the lock.  -or-  The recursion number would exceed the capacity of the counter. The limit is so large that applications should never encounter it.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The value of <paramref name="timeout" /> is negative, but it is not equal to -1 milliseconds, which is the only negative value allowed.  -or-  The value of <paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue" /> milliseconds.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.ReaderWriterLockSlim" /> object has been disposed.</exception>
+        <exception cref="T:System.Threading.LockRecursionException">
+          <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性為 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />，且目前的執行緒已進入鎖定狀態。  
+  
+-或- 
+遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="timeout" /> 的值為負，但不等於 -1 毫秒，這是唯一允許的負值。  
+  
+-或- 
+<paramref name="timeout" /> 的值大於 <see cref="F:System.Int32.MaxValue" /> 毫秒。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件已經處置。</exception>
       </Docs>
     </Member>
     <MemberGroup MemberName="TryEnterUpgradeableReadLock">
@@ -1233,7 +1306,7 @@
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Tries to enter the lock in upgradeable mode, with an optional time-out.</summary>
+        <summary>嘗試以選用的逾時，在可升級模式下進入鎖定狀態。</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="TryEnterUpgradeableReadLock">
@@ -1254,6 +1327,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1267,30 +1341,38 @@
         <Parameter Name="millisecondsTimeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">The number of milliseconds to wait, or -1 (<see cref="F:System.Threading.Timeout.Infinite" />) to wait indefinitely.</param>
-        <summary>Tries to enter the lock in upgradeable mode, with an optional time-out.</summary>
-        <returns>
-          <see langword="true" /> if the calling thread entered upgradeable mode, otherwise, <see langword="false" />.</returns>
+        <param name="millisecondsTimeout">要等候的毫秒數；若要永遠等候，則為 -1 (<see cref="F:System.Threading.Timeout.Infinite" />)。</param>
+        <summary>嘗試以選用的逾時，在可升級模式下進入鎖定狀態。</summary>
+        <returns>如果呼叫執行緒已進入可升級模式，則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果`millisecondsTimeout`是 0 （零），則這個方法會檢查鎖定狀態，並傳回`false`立即如果所需的狀態無法使用。  
+ 如果`millisecondsTimeout`為 0 （零），這個方法會檢查鎖定狀態，並傳回`false`立即如果所需的狀態無法使用。  
   
- 使用可升級模式下，當執行緒通常存取受保護的資源<xref:System.Threading.ReaderWriterLockSlim>在讀取模式，但可能需要進入寫入模式，如果符合特定條件。 可升級模式的執行緒可以寫入模式升級或降級為讀取模式。  
+ 當執行緒通常存取受保護的資源，則使用可升級模式<xref:System.Threading.ReaderWriterLockSlim>在讀取模式，但可能需要進入寫入模式，如果符合特定條件。 可升級模式中的執行緒可以升級為寫入模式，或降級為讀取模式。  
   
- 只有一個執行緒可以進入可升級模式鎖定，在任何指定時間。 如果執行緒是在可升級模式，且沒有執行緒等待進入寫入模式，任意數目的其他執行緒進入讀取的模式，即使有執行緒等待進入可升級模式。  
+ 只有一個執行緒可以進入可升級模式鎖定，在任何指定時間。 如果執行緒在進入可升級模式，且沒有執行緒等待進入寫入模式，任意數目的其他執行緒可以在即使有等待進入可升級模式的執行緒進入讀取的模式。  
   
- 如果一個或多個執行緒正在等待進入寫入模式中，執行緒呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterUpgradeableReadLock%2A>方法會封鎖，直到這些執行緒有可能是等候逾時或已進入寫入模式，然後結束，或呼叫執行緒的自己逾時間隔到期為止。  
+ 如果一或多個執行緒在等待進入寫入模式中，執行緒的呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterUpgradeableReadLock%2A>方法會封鎖，直到這些執行緒有可能是等候逾時或已進入寫入模式，然後結束，或是呼叫執行緒自己的逾時間隔到期。  
   
 > [!NOTE]
->  如果鎖定允許遞迴已進入可升級模式鎖定的執行緒可以輸入可升級模式遞迴，即使其他執行緒等待進入寫入模式。  
+>  如果鎖定允許遞迴，已進入可升級模式鎖定的執行緒可以進入可升級模式遞迴地進入，即使其他執行緒等待進入寫入模式。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Threading.LockRecursionException">The <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> property is <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" /> and the current thread has already entered the lock.  -or-  The current thread initially entered the lock in read mode, and therefore trying to enter upgradeable mode would create the possibility of a deadlock.  -or-  The recursion number would exceed the capacity of the counter. The limit is so large that applications should never encounter it.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The value of <paramref name="millisecondsTimeout" /> is negative, but it is not equal to <see cref="F:System.Threading.Timeout.Infinite" /> (-1), which is the only negative value allowed.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.ReaderWriterLockSlim" /> object has been disposed.</exception>
+        <exception cref="T:System.Threading.LockRecursionException">
+          <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性為 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />，且目前的執行緒已進入鎖定狀態。  
+  
+-或- 
+目前執行緒一開始已進入讀取模式的鎖定狀態，因此嘗試進入可升級模式可能會造成死結。  
+  
+-或- 
+遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="millisecondsTimeout" /> 的值為負，但不等於 <see cref="F:System.Threading.Timeout.Infinite" /> (-1)，這是唯一允許的負值。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件已經處置。</exception>
       </Docs>
     </Member>
     <Member MemberName="TryEnterUpgradeableReadLock">
@@ -1311,6 +1393,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1324,30 +1407,41 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout">The interval to wait, or -1 milliseconds to wait indefinitely.</param>
-        <summary>Tries to enter the lock in upgradeable mode, with an optional time-out.</summary>
-        <returns>
-          <see langword="true" /> if the calling thread entered upgradeable mode, otherwise, <see langword="false" />.</returns>
+        <param name="timeout">等待的間隔，或 -1 毫秒無限期等待。</param>
+        <summary>嘗試以選用的逾時，在可升級模式下進入鎖定狀態。</summary>
+        <returns>如果呼叫執行緒已進入可升級模式，則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果`timeout`是 0 （零），則這個方法會檢查鎖定狀態，並傳回`false`立即如果所需的狀態無法使用。  
+ 如果`timeout`為 0 （零），這個方法會檢查鎖定狀態，並傳回`false`立即如果所需的狀態無法使用。  
   
- 當執行緒通常存取受保護的資源時使用可升級模式<xref:System.Threading.ReaderWriterLockSlim>在讀取模式，但可能需要進入寫入模式，如果符合特定條件。 可升級模式的執行緒可以寫入模式升級或降級為讀取模式。  
+ 當執行緒通常存取受保護的資源，則使用可升級模式<xref:System.Threading.ReaderWriterLockSlim>在讀取模式，但可能需要進入寫入模式，如果符合特定條件。 可升級模式中的執行緒可以升級為寫入模式，或降級為讀取模式。  
   
- 只有一個執行緒可以進入可升級模式鎖定，在任何指定時間。 如果執行緒是在可升級模式，且沒有執行緒等待進入寫入模式，任意數目的其他執行緒進入讀取的模式，即使有執行緒等待進入可升級模式。  
+ 只有一個執行緒可以進入可升級模式鎖定，在任何指定時間。 如果執行緒在進入可升級模式，且沒有執行緒等待進入寫入模式，任意數目的其他執行緒可以在即使有等待進入可升級模式的執行緒進入讀取的模式。  
   
- 如果一個或多個執行緒正在等待進入寫入模式中，執行緒呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterUpgradeableReadLock%2A>方法會封鎖，直到這些執行緒有可能是等候逾時或已進入寫入模式，然後結束，或呼叫執行緒的自己逾時間隔到期為止。  
+ 如果一或多個執行緒在等待進入寫入模式中，執行緒的呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterUpgradeableReadLock%2A>方法會封鎖，直到這些執行緒有可能是等候逾時或已進入寫入模式，然後結束，或是呼叫執行緒自己的逾時間隔到期。  
   
 > [!NOTE]
->  如果鎖定允許遞迴已進入可升級模式鎖定的執行緒可以輸入可升級模式遞迴，即使其他執行緒等待進入寫入模式。  
+>  如果鎖定允許遞迴，已進入可升級模式鎖定的執行緒可以進入可升級模式遞迴地進入，即使其他執行緒等待進入寫入模式。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Threading.LockRecursionException">The <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> property is <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" /> and the current thread has already entered the lock.  -or-  The current thread initially entered the lock in read mode, and therefore trying to enter upgradeable mode would create the possibility of a deadlock.  -or-  The recursion number would exceed the capacity of the counter. The limit is so large that applications should never encounter it.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The value of <paramref name="timeout" /> is negative, but it is not equal to -1 milliseconds, which is the only negative value allowed.  -or-  The value of <paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue" /> milliseconds.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.ReaderWriterLockSlim" /> object has been disposed.</exception>
+        <exception cref="T:System.Threading.LockRecursionException">
+          <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性為 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />，且目前的執行緒已進入鎖定狀態。  
+  
+-或- 
+目前執行緒一開始已進入讀取模式的鎖定狀態，因此嘗試進入可升級模式可能會造成死結。  
+  
+-或- 
+遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="timeout" /> 的值為負，但不等於 -1 毫秒，這是唯一允許的負值。  
+  
+-或- 
+<paramref name="timeout" /> 的值大於 <see cref="F:System.Int32.MaxValue" /> 毫秒。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件已經處置。</exception>
       </Docs>
     </Member>
     <MemberGroup MemberName="TryEnterWriteLock">
@@ -1358,7 +1452,7 @@
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Tries to enter the lock in write mode, with an optional time-out.</summary>
+        <summary>嘗試以選用的逾時，在寫入模式下進入鎖定狀態。</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="TryEnterWriteLock">
@@ -1379,6 +1473,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1392,29 +1487,28 @@
         <Parameter Name="millisecondsTimeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">The number of milliseconds to wait, or -1 (<see cref="F:System.Threading.Timeout.Infinite" />) to wait indefinitely.</param>
-        <summary>Tries to enter the lock in write mode, with an optional time-out.</summary>
-        <returns>
-          <see langword="true" /> if the calling thread entered write mode, otherwise, <see langword="false" />.</returns>
+        <param name="millisecondsTimeout">要等候的毫秒數；若要永遠等候，則為 -1 (<see cref="F:System.Threading.Timeout.Infinite" />)。</param>
+        <summary>嘗試以選用的逾時，在寫入模式下進入鎖定狀態。</summary>
+        <returns>如果呼叫的執行緒已進入寫入模式，則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果`millisecondsTimeout`是 0 （零），則這個方法會檢查鎖定狀態，並傳回`false`立即如果所需的狀態無法使用。  
+ 如果`millisecondsTimeout`為 0 （零），這個方法會檢查鎖定狀態，並傳回`false`立即如果所需的狀態無法使用。  
   
- 如果其他的執行緒已進入讀取模式鎖定，執行緒呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock%2A>方法會封鎖，直到這些執行緒都結束讀取的模式或經過逾時間隔。 等待進入寫入模式封鎖執行緒，而嘗試進入讀取模式下或可升級模式的其他執行緒會封鎖直到執行緒等待進入寫入模式，其中已逾時或者已進入寫入模式，然後再從它然後結束。  
+ 如果其他執行緒已進入讀取模式的鎖定，執行緒的呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock%2A>方法會封鎖，直到這些執行緒都結束讀取的模式或經過逾時間隔為止。 等待進入寫入模式，會封鎖執行緒，而嘗試進入讀取的模式或進入可升級模式的其他執行緒會封鎖直到執行緒等待進入寫入模式，有其中一個等候逾時或已進入寫入模式，然後結束它。  
   
 > [!NOTE]
->  如果鎖定允許遞迴已進入寫入模式鎖定的執行緒可以輸入遞迴寫入模式，即使其他執行緒等待進入寫入模式。  
+>  如果鎖定允許遞迴，已進入寫入模式鎖定的執行緒可以進入寫入模式以遞迴方式，即使其他執行緒等待進入寫入模式。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock%2A>方法來進入寫入模式，以逾時的鎖定。範例所示的方法會將新的索引鍵/值組加入至同步處理快取。 如果已指定逾時間隔超過在執行緒進入鎖定之前，此方法會傳回`false`。 方法會傳回`true`如果索引鍵/值組已加入。  
+ 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock%2A>方法來進入寫入模式，與逾時的鎖定。範例所示的方法會將新的索引鍵/值組加入至同步處理的快取。 如果超過指定時間的指定逾時間隔，在執行緒進入鎖定之前，此方法會傳回`false`。 此方法會傳回`true`如果加入的索引鍵/值組。  
   
- 如果機碼已經快取中，由內部擲回的例外狀況<xref:System.Collections.Generic.Dictionary%602>允許 terminate 方法。 A`finally`區塊用來執行<xref:System.Threading.ReaderWriterLockSlim.ExitWriteLock%2A>方法，確保呼叫端都結束鎖定。  
+ 如果快取中，所擲回的內部例外狀況已有索引鍵<xref:System.Collections.Generic.Dictionary%602>允許 terminate 方法。 A`finally`區塊用來執行<xref:System.Threading.ReaderWriterLockSlim.ExitWriteLock%2A>方法，確保呼叫端都結束鎖定。  
   
- 這段程式碼是針對所提供之較大範例的一部分<xref:System.Threading.ReaderWriterLockSlim>類別。  
+ 此程式碼是針對提供之較大範例的一部分<xref:System.Threading.ReaderWriterLockSlim>類別。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#2)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#2)]  
@@ -1423,9 +1517,18 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Threading.LockRecursionException">The <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> property is <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" /> and the current thread has already entered the lock.  -or-  The current thread initially entered the lock in read mode, and therefore trying to enter write mode would create the possibility of a deadlock.  -or-  The recursion number would exceed the capacity of the counter. The limit is so large that applications should never encounter it.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The value of <paramref name="millisecondsTimeout" /> is negative, but it is not equal to <see cref="F:System.Threading.Timeout.Infinite" /> (-1), which is the only negative value allowed.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.ReaderWriterLockSlim" /> object has been disposed.</exception>
+        <exception cref="T:System.Threading.LockRecursionException">
+          <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性為 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />，且目前的執行緒已進入鎖定狀態。  
+  
+-或- 
+目前執行緒一開始已進入讀取模式的鎖定狀態，因此嘗試進入寫入模式可能會造成死結。  
+  
+-或- 
+遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="millisecondsTimeout" /> 的值為負，但不等於 <see cref="F:System.Threading.Timeout.Infinite" /> (-1)，這是唯一允許的負值。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件已經處置。</exception>
       </Docs>
     </Member>
     <Member MemberName="TryEnterWriteLock">
@@ -1446,6 +1549,7 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1459,26 +1563,37 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout">The interval to wait, or -1 milliseconds to wait indefinitely.</param>
-        <summary>Tries to enter the lock in write mode, with an optional time-out.</summary>
-        <returns>
-          <see langword="true" /> if the calling thread entered write mode, otherwise, <see langword="false" />.</returns>
+        <param name="timeout">等待的間隔，或 -1 毫秒無限期等待。</param>
+        <summary>嘗試以選用的逾時，在寫入模式下進入鎖定狀態。</summary>
+        <returns>如果呼叫的執行緒已進入寫入模式，則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果`timeout`是 0 （零），則這個方法會檢查鎖定狀態，並傳回`false`立即如果所需的狀態無法使用。  
+ 如果`timeout`為 0 （零），這個方法會檢查鎖定狀態，並傳回`false`立即如果所需的狀態無法使用。  
   
- 如果其他的執行緒已進入讀取模式鎖定，執行緒呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock%2A>方法會封鎖，直到這些執行緒都結束讀取的模式或經過逾時間隔。 等待進入寫入模式封鎖執行緒，而嘗試進入讀取模式下或可升級模式的其他執行緒會封鎖直到執行緒等待進入寫入模式，其中已逾時或者已進入寫入模式，然後再從它然後結束。  
+ 如果其他執行緒已進入讀取模式的鎖定，執行緒的呼叫<xref:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock%2A>方法會封鎖，直到這些執行緒都結束讀取的模式或經過逾時間隔為止。 等待進入寫入模式，會封鎖執行緒，而嘗試進入讀取的模式或進入可升級模式的其他執行緒會封鎖直到執行緒等待進入寫入模式，有其中一個等候逾時或已進入寫入模式，然後結束它。  
   
 > [!NOTE]
->  如果鎖定允許遞迴已進入寫入模式鎖定的執行緒可以輸入遞迴寫入模式，即使其他執行緒等待進入寫入模式。  
+>  如果鎖定允許遞迴，已進入寫入模式鎖定的執行緒可以進入寫入模式以遞迴方式，即使其他執行緒等待進入寫入模式。  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Threading.LockRecursionException">The <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> property is <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" /> and the current thread has already entered the lock.  -or-  The current thread initially entered the lock in read mode, and therefore trying to enter write mode would create the possibility of a deadlock.  -or-  The recursion number would exceed the capacity of the counter. The limit is so large that applications should never encounter it.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">The value of <paramref name="timeout" /> is negative, but it is not equal to -1 milliseconds, which is the only negative value allowed.  -or-  The value of <paramref name="timeout" /> is greater than <see cref="F:System.Int32.MaxValue" /> milliseconds.</exception>
-        <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.Threading.ReaderWriterLockSlim" /> object has been disposed.</exception>
+        <exception cref="T:System.Threading.LockRecursionException">
+          <see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性為 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />，且目前的執行緒已進入鎖定狀態。  
+  
+-或- 
+目前執行緒一開始已進入讀取模式的鎖定狀態，因此嘗試進入寫入模式可能會造成死結。  
+  
+-或- 
+遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="timeout" /> 的值為負，但不等於 -1 毫秒，這是唯一允許的負值。  
+  
+-或- 
+<paramref name="timeout" /> 的值大於 <see cref="F:System.Int32.MaxValue" /> 毫秒。</exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件已經處置。</exception>
       </Docs>
     </Member>
     <Member MemberName="WaitingReadCount">
@@ -1499,28 +1614,34 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the total number of threads that are waiting to enter the lock in read mode.</summary>
+        <summary>取得等待進入讀取模式鎖定狀態的執行緒總數。</summary>
         <value>等待進入讀取模式的執行緒總數。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 僅適用於偵錯、 分析和記錄功能，而非控制演算法的行為，請使用這個屬性。 計算時，可以變更結果。 因此，它並不安全根據此屬性決定。  
+ 僅適用於偵錯、 分析和記錄功能，而非控制演算法的行為，請使用這個屬性。 一旦已計算出，則可以變更結果。 因此，它並不安全根據此屬性決定。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.WaitingReadCount%2A>產生事件記錄檔項目，如果執行緒被封鎖，等待進入讀取的模式，數目超過臨界值的屬性。  
+ 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.WaitingReadCount%2A>屬性，以產生事件記錄檔項目，如果封鎖，等待進入讀取的模式，執行緒的數目超過臨界值。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#1)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#1)]  
@@ -1549,28 +1670,34 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the total number of threads that are waiting to enter the lock in upgradeable mode.</summary>
+        <summary>取得等待進入可升級模式鎖定狀態的執行緒總數。</summary>
         <value>等待進入可升級模式的執行緒總數。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 僅適用於偵錯、 分析和記錄功能，而非控制演算法的行為，請使用這個屬性。 計算時，可以變更結果。 因此，它並不安全根據此屬性決定。  
+ 僅適用於偵錯、 分析和記錄功能，而非控制演算法的行為，請使用這個屬性。 一旦已計算出，則可以變更結果。 因此，它並不安全根據此屬性決定。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.WaitingUpgradeCount%2A>產生事件記錄檔項目，如果執行緒被封鎖，等待進入可升級模式，數目超過臨界值的屬性。  
+ 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.WaitingUpgradeCount%2A>屬性，以產生事件記錄檔項目，如果封鎖，等待進入可升級模式，執行緒的數目超過臨界值。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#1)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#1)]  
@@ -1599,28 +1726,34 @@
       <AssemblyInfo>
         <AssemblyName>System.Core</AssemblyName>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the total number of threads that are waiting to enter the lock in write mode.</summary>
+        <summary>取得等待進入寫入模式鎖定狀態的執行緒總數。</summary>
         <value>等待進入寫入模式的執行緒總數。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 僅適用於偵錯、 分析和記錄功能，而非控制演算法的行為，請使用這個屬性。 計算時，可以變更結果。 因此，它並不安全根據此屬性決定。  
+ 僅適用於偵錯、 分析和記錄功能，而非控制演算法的行為，請使用這個屬性。 一旦已計算出，則可以變更結果。 因此，它並不安全根據此屬性決定。  
   
    
   
 ## Examples  
- 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.WaitingWriteCount%2A>產生的事件記錄檔項目，就會封鎖，等待進入寫入模式的執行緒數目超過臨界值的屬性。  
+ 下列範例示範如何使用<xref:System.Threading.ReaderWriterLockSlim.WaitingWriteCount%2A>屬性，以產生事件記錄檔項目，如果遭到封鎖，等待進入寫入模式的執行緒數目超過臨界值。  
   
  [!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#1)]
  [!code-vb[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#1)]  

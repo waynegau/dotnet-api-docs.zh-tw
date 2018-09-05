@@ -1,11 +1,11 @@
 <Type Name="BufferManager" FullName="System.ServiceModel.Channels.BufferManager">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="7b5cc292983bcc7fe3d3baa880329a56441698fc" />
-    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
+    <Meta Name="ms.openlocfilehash" Value="684df0618b4f7ebd8dfd2d1c98eee8f618fe6a9e" />
+    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
-    <Meta Name="ms.locfileid" Value="37622283" />
+    <Meta Name="ms.lasthandoff" Value="08/25/2018" />
+    <Meta Name="ms.locfileid" Value="39803211" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class BufferManager" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit BufferManager extends System.Object" />
@@ -30,7 +30,7 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Many Windows Communication Foundation (WCF) features require the use of buffers, which are expensive to create and destroy. You can use the <see cref="T:System.ServiceModel.Channels.BufferManager" /> class to manage a buffer pool. The pool and its buffers are created when you instantiate this class and destroyed when the buffer pool is reclaimed by garbage collection. Every time you need to use a buffer, you take one from the pool, use it, and return it to the pool when done. This process is much faster than creating and destroying a buffer every time you need to use one.</summary>
+    <summary>許多 Windows Communication Foundation (WCF) 功能都需要使用緩衝區，但是反覆建立與終結緩衝區是相當費時的工作。 您可以使用 <see cref="T:System.ServiceModel.Channels.BufferManager" /> 類別管理緩衝區集區。 當您產生這個類別時會建立集區與其緩衝區，而當記憶體回收要收回緩衝區集區時就會加以終結。 當您每次需要使用緩衝區時，就從集區取用一個，使用完畢後再交還給集區。 這個程序比每次需要使用時才建立與終結緩衝區要快得多。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
@@ -60,9 +60,14 @@
         <AssemblyVersion>4.1.1.0</AssemblyVersion>
         <AssemblyVersion>4.2.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <Parameters />
       <Docs>
-        <summary>Initializes a new instance of the <see cref="T:System.ServiceModel.Channels.BufferManager" /> class.</summary>
+        <summary>初始化 <see cref="T:System.ServiceModel.Channels.BufferManager" /> 類別的新執行個體。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -98,7 +103,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Releases the buffers currently cached in the manager.</summary>
+        <summary>釋放目前快取在管理員中的緩衝區。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -130,10 +135,10 @@
         <Parameter Name="maxBufferSize" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="maxBufferPoolSize">The maximum size of the pool.</param>
-        <param name="maxBufferSize">The maximum size of an individual buffer.</param>
-        <summary>Creates a new BufferManager with a specified maximum buffer pool size and a maximum size for each individual buffer in the pool.</summary>
-        <returns>Returns a <see cref="T:System.ServiceModel.Channels.BufferManager" /> object with the specified parameters.</returns>
+        <param name="maxBufferPoolSize">集區大小上限。</param>
+        <param name="maxBufferSize">個別緩衝區大小上限。</param>
+        <summary>使用指定的緩衝區集區大小上限，以及集區中個別緩衝區的大小上限建立新的 BufferManager。</summary>
+        <returns>傳回具有指定之參數的 <see cref="T:System.ServiceModel.Channels.BufferManager" /> 物件。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -144,10 +149,12 @@
         </remarks>
         <exception cref="T:System.InsufficientMemoryException">
           <block subset="none" type="note">
-            <para> In the [.NET for Windows Store apps](http://go.microsoft.com/fwlink/?LinkID=247912) or the [Portable Class Library](~/docs/standard/cross-platform/cross-platform-development-with-the-portable-class-library.md), catch the base class exception, <see cref="T:System.OutOfMemoryException" />, instead.  </para>
-          </block>  There was insufficient memory to create the requested buffer pool.</exception>
+            <para> 在[適用於 Microsoft Store 應用程式的 .NET](http://go.microsoft.com/fwlink/?LinkID=247912)中，或[可攜式類別庫](~/docs/standard/cross-platform/cross-platform-development-with-the-portable-class-library.md)中，改為捕捉基底類別例外狀況 <see cref="T:System.OutOfMemoryException" />。</para>
+          </block>  
+  
+記憶體不足，無法建立要求的緩衝區集區。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="maxBufferPoolSize" /> or <paramref name="maxBufferSize" /> was less than zero.</exception>
+          <paramref name="maxBufferPoolSize" /> 或 <paramref name="maxBufferSize" /> 小於零。</exception>
       </Docs>
     </Member>
     <Member MemberName="ReturnBuffer">
@@ -177,8 +184,8 @@
         <Parameter Name="buffer" Type="System.Byte[]" />
       </Parameters>
       <Docs>
-        <param name="buffer">A reference to the buffer being returned.</param>
-        <summary>Returns a buffer to the pool.</summary>
+        <param name="buffer">傳回之緩衝區的參考。</param>
+        <summary>將緩衝區傳回集區。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -188,8 +195,9 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="buffer" /> reference cannot be <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentException">Length of <paramref name="buffer" /> does not match the pool's buffer length property.</exception>
+          <paramref name="buffer" /> 參考不可以是 <see langword="null" />。</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="buffer" /> 的長度不符合集區的緩衝區長度屬性。</exception>
       </Docs>
     </Member>
     <Member MemberName="TakeBuffer">
@@ -219,9 +227,9 @@
         <Parameter Name="bufferSize" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="bufferSize">The size, in bytes, of the requested buffer.</param>
-        <summary>Gets a buffer of at least the specified size from the pool.</summary>
-        <returns>A byte array that is the requested size of the buffer.</returns>
+        <param name="bufferSize">要求緩衝區的大小 (以位元組為單位)。</param>
+        <summary>從集區取得最少為指定大小的緩衝區。</summary>
+        <returns>符合所要求之緩衝區大小的位元組陣列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -231,7 +239,7 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">
-          <paramref name="bufferSize" /> cannot be less than zero.</exception>
+          <paramref name="bufferSize" /> 不得小於零。</exception>
       </Docs>
     </Member>
   </Members>
