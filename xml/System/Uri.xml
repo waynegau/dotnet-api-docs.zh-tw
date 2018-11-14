@@ -1,11 +1,11 @@
 <Type Name="Uri" FullName="System.Uri">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="bc748165070ca7c2fc35cc5a3d821923907161f7" />
-    <Meta Name="ms.sourcegitcommit" Value="41742a1055cefdeaf2f9d76364f4bad3c9f83126" />
+    <Meta Name="ms.openlocfilehash" Value="6a2e8da0423adb69adab3d2953a45d27b12eeb0c" />
+    <Meta Name="ms.sourcegitcommit" Value="dc6ea82452beeb642259a38f3c2fad756ebd3d9f" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="10/16/2018" />
-    <Meta Name="ms.locfileid" Value="48689795" />
+    <Meta Name="ms.lasthandoff" Value="11/07/2018" />
+    <Meta Name="ms.locfileid" Value="51264563" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class Uri : System.Runtime.Serialization.ISerializable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit Uri extends System.Object implements class System.Runtime.Serialization.ISerializable" />
@@ -71,7 +71,9 @@
 -   如果主機名稱是 IPv6 位址，則會使用標準的 IPv6 位址。 ScopeId 和其他選用的 IPv6 資料被移除。  
   
 -   移除預設值和空白的連接埠號碼。
-
+  
+-   將隱含的檔案路徑，而不需要 file:// scheme (比方說，「 C:\my\file") 轉換成使用 file:// scheme 的明確的檔案路徑。
+  
 -   沒有保留的用途的逸出的字元 （也就是百分比編碼的八位元組） 會解碼 （也就是需要取消逸出）。 這些非保留的字元包括大寫和小寫字母 (%41-%5a 和 %61-%7a)、 小數位數 （%30-%39)、 連字號 (%2d)，期間 (%2e)、 底線 (%5f)，以及波狀符號 (%7e)。
 
 -   Canonicalizes 路徑為階層式 Uri 以壓縮的序列例如 /。 /.../，，/ / （是否序列逸出）。 請注意，某些配置中，這些序列則不會壓縮。
@@ -168,6 +170,14 @@ http://myUrl/
  <xref:System.GenericUriParser?displayProperty=nameWithType> 類別也已經擴充，允許建立可自訂的剖析器，支援 IRI 和 IDN。 指定 <xref:System.GenericUriParser?displayProperty=nameWithType> 物件行為的方法，是將 <xref:System.GenericUriParserOptions?displayProperty=nameWithType> 列舉中的可用值位元組合傳遞至 <xref:System.GenericUriParser?displayProperty=nameWithType> 建構函式。 <xref:System.GenericUriParserOptions.IriParsing?displayProperty=nameWithType> 類型，指出支援 RFC 3987 指定的國際資源識別碼 (IRI) 剖析規則的剖析器。 是否使用 IRI，取決於先前所討論的組態值。  
   
  <xref:System.GenericUriParserOptions.Idn?displayProperty=nameWithType> 類型，指出剖析器支援主機名稱的國際化網域名稱 (IDN) 剖析。 是否使用 IDN，取決於先前所討論的組態值。  
+  
+## <a name="implicit-file-path-support"></a>隱含的檔案路徑支援
+ <xref:System.Uri> 也可以用來代表本機檔案系統路徑。 這些路徑可以表示*明確*file:// scheme，以開頭的 Uri 中並*隱含*中並沒有 file:// scheme 的 Uri。 舉一個具體的範例，下列兩個 Uri 都有效，並代表相同的檔案路徑：
+```csharp
+Uri uri1 = new Uri("C:/test/path/file.txt") // Implicit file path.
+Uri uri2 = new Uri("file:///C:/test/path/file.txt") // Explicit file path.
+```
+ 這些隱含的檔案路徑不符合 URI 的規格，且應避免可能的話。 當以 Unix 為基礎的系統上使用.NET Core，隱含的檔案路徑可能會特別有問題，因為隱含的絕對檔案路徑*難以區分*從相對路徑。 有，這種模稜兩可時<xref:System.Uri>解譯為絕對 URI 路徑的預設值。
   
 ## <a name="performance-considerations"></a>效能考量  
  如果您使用 *Web.config * 檔案，其中包含 Uri 來初始化您的應用程式中，其他時間，才可處理的 Uri，如果配置識別項使用非標準。 在此情況下，受影響的組件，您的應用程式時初始化所需的 Uri，不是在開始時間。  
