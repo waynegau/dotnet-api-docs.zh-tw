@@ -1,11 +1,11 @@
 <Type Name="BinaryFormatter" FullName="System.Runtime.Serialization.Formatters.Binary.BinaryFormatter">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="3d3f18c3be90584fc6fefb3d92e79dfac68da8f4" />
-    <Meta Name="ms.sourcegitcommit" Value="0ec122ee5f3681159b8460ab15b409fd6e3d3ae0" />
+    <Meta Name="ms.openlocfilehash" Value="4f66f7862b6b883ed332228a0af53a2514289c8b" />
+    <Meta Name="ms.sourcegitcommit" Value="723b8a6d92667ba86fcda96190bad3b4a03283b3" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="10/04/2018" />
-    <Meta Name="ms.locfileid" Value="48671088" />
+    <Meta Name="ms.lasthandoff" Value="11/09/2018" />
+    <Meta Name="ms.locfileid" Value="51312733" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class BinaryFormatter : System.Runtime.Remoting.Messaging.IRemotingFormatter" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit BinaryFormatter extends System.Object implements class System.Runtime.Remoting.Messaging.IRemotingFormatter, class System.Runtime.Serialization.IFormatter" />
@@ -36,6 +36,9 @@
     <Interface>
       <InterfaceName>System.Runtime.Remoting.Messaging.IRemotingFormatter</InterfaceName>
     </Interface>
+    <Interface>
+      <InterfaceName>System.Runtime.Serialization.IFormatter</InterfaceName>
+    </Interface>
   </Interfaces>
   <Attributes>
     <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
@@ -43,7 +46,7 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>以二進位格式序列化和還原序列化物件，或連接之物件的整個圖形。</summary>
+    <summary>以二進位格式將物件或連接物件的整個圖形序列化和還原序列化。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
@@ -59,7 +62,7 @@
  方法回應的序列化程序是相同的方法呼叫的除了第一個物件的物件圖形必須支援<xref:System.Runtime.Remoting.Messaging.IMethodReturnMessage>介面。 若要還原序列化方法回應，使用<xref:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter.DeserializeMethodResponse%2A>方法。 為了節省時間，呼叫端物件的相關詳細資料會不傳送至遠端物件方法呼叫期間。 從原始的方法呼叫會傳遞至改為取得這些詳細資料<xref:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter.DeserializeMethodResponse%2A>方法中的<xref:System.Runtime.Remoting.Messaging.IMethodCallMessage>參數。 傳回圖形中的第一個物件<xref:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter.DeserializeMethodResponse%2A>方法可支援<xref:System.Runtime.Remoting.Messaging.IMethodReturnMessage>介面。  
   
 > [!IMPORTANT]
->  將不受信任的資料還原序列化使用二進位序列化可能會導致安全性風險。 如需詳細資訊，請參閱 <<c0> [ 資料驗證](https://www.owasp.org/index.php/Data_Validation)。  
+>  將不受信任的資料還原序列化使用二進位序列化可能會導致安全性風險。 如需詳細資訊，請參閱[資料驗證](https://www.owasp.org/index.php/Data_Validation)。  
   
 ## <a name="unpaired-surrogates"></a>非成對的 Surrogates  
  二進位序列化中不會遺失任何未配對的 surrogate 字元。 例如，下列字串會包含高 surrogate 的 Unicode 字元`(\ud800`) 之間兩個`Test`單字：  
@@ -72,12 +75,12 @@
 |----------------------|---------------|  
 |84|T|  
 |101|e|  
-|115|s|  
+|115|秒|  
 |116|t|  
 |55296|\ud800|  
 |84|T|  
 |101|e|  
-|115|s|  
+|115|秒|  
 |116|t|  
   
  之後還原序列化時，高 surrogate 的 Unicode 字元則會遺失項目：  
@@ -86,11 +89,11 @@
 |----------------------|---------------|  
 |84|T|  
 |101|e|  
-|115|s|  
+|115|秒|  
 |116|t|  
 |84|T|  
 |101|e|  
-|115|s|  
+|115|秒|  
 |116|t|  
   
    
@@ -413,7 +416,7 @@
   
 -或- 
 目標型別是 <see cref="T:System.Decimal" />，但是值在 <see cref="T:System.Decimal" /> 型別的範圍之外。</exception>
-        <exception cref="T:System.Security.SecurityException">呼叫端沒有必要的使用權限。</exception>
+        <exception cref="T:System.Security.SecurityException">呼叫端沒有必要的權限。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">提供序列化服務。 關聯的列舉型別：<see cref="F:System.Security.Permissions.SecurityPermissionFlag.SerializationFormatter" />。</permission>
       </Docs>
     </Member>
@@ -477,7 +480,7 @@
   
 -或- 
 目標型別是 <see cref="T:System.Decimal" />，但是值在 <see cref="T:System.Decimal" /> 型別的範圍之外。</exception>
-        <exception cref="T:System.Security.SecurityException">呼叫端沒有必要的使用權限。</exception>
+        <exception cref="T:System.Security.SecurityException">呼叫端沒有必要的權限。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">提供序列化服務。 關聯的列舉型別：<see cref="F:System.Security.Permissions.SecurityPermissionFlag.SerializationFormatter" />。</permission>
       </Docs>
     </Member>
@@ -536,7 +539,7 @@
           <paramref name="serializationStream" /> 為 <see langword="null" />。</exception>
         <exception cref="T:System.Runtime.Serialization.SerializationException">
           <paramref name="serializationStream" /> 支援搜尋，但是其長度為 0。</exception>
-        <exception cref="T:System.Security.SecurityException">呼叫端沒有必要的使用權限。</exception>
+        <exception cref="T:System.Security.SecurityException">呼叫端沒有必要的權限。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">提供序列化服務。 關聯的列舉型別：<see cref="F:System.Security.Permissions.SecurityPermissionFlag.SerializationFormatter" />。</permission>
       </Docs>
     </Member>
@@ -656,7 +659,7 @@
 -或- 
 <paramref name="graph" /> 為 null。</exception>
         <exception cref="T:System.Runtime.Serialization.SerializationException">在序列化期間發生錯誤，例如在 <paramref name="graph" /> 參數中的物件未標記為可序列化。</exception>
-        <exception cref="T:System.Security.SecurityException">呼叫端沒有必要的使用權限。</exception>
+        <exception cref="T:System.Security.SecurityException">呼叫端沒有必要的權限。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">提供序列化服務。 關聯的列舉型別：<see cref="F:System.Security.Permissions.SecurityPermissionFlag.SerializationFormatter" />。</permission>
       </Docs>
     </Member>
@@ -715,7 +718,7 @@
         <exception cref="T:System.ArgumentNullException">
           <paramref name="serializationStream" /> 為 <see langword="null" />。</exception>
         <exception cref="T:System.Runtime.Serialization.SerializationException">在序列化期間發生錯誤，例如在 <paramref name="graph" /> 參數中的物件未標記為可序列化。</exception>
-        <exception cref="T:System.Security.SecurityException">呼叫端沒有必要的使用權限。</exception>
+        <exception cref="T:System.Security.SecurityException">呼叫端沒有必要的權限。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">提供序列化服務。 關聯的列舉型別：<see cref="F:System.Security.Permissions.SecurityPermissionFlag.SerializationFormatter" />。</permission>
       </Docs>
     </Member>
@@ -856,7 +859,7 @@
           <paramref name="serializationStream" /> 為 <see langword="null" />。</exception>
         <exception cref="T:System.Runtime.Serialization.SerializationException">
           <paramref name="serializationStream" /> 支援搜尋，但是其長度為 0。</exception>
-        <exception cref="T:System.Security.SecurityException">呼叫端沒有必要的使用權限。</exception>
+        <exception cref="T:System.Security.SecurityException">呼叫端沒有必要的權限。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">提供序列化服務。 關聯的列舉型別：<see cref="F:System.Security.Permissions.SecurityPermissionFlag.SerializationFormatter" />。</permission>
       </Docs>
     </Member>
@@ -922,7 +925,7 @@
           <paramref name="serializationStream" /> 為 <see langword="null" />。</exception>
         <exception cref="T:System.Runtime.Serialization.SerializationException">
           <paramref name="serializationStream" /> 支援搜尋，但是其長度為 0。</exception>
-        <exception cref="T:System.Security.SecurityException">呼叫端沒有必要的使用權限。</exception>
+        <exception cref="T:System.Security.SecurityException">呼叫端沒有必要的權限。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">提供序列化服務。 關聯的列舉型別：<see cref="F:System.Security.Permissions.SecurityPermissionFlag.SerializationFormatter" />。</permission>
       </Docs>
     </Member>
