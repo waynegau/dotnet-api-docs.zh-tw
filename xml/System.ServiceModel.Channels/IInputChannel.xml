@@ -1,11 +1,11 @@
 <Type Name="IInputChannel" FullName="System.ServiceModel.Channels.IInputChannel">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="74aa9ee8d545e4ad8ffd808e16fde05d7701dbde" />
-    <Meta Name="ms.sourcegitcommit" Value="1afcc8f9041ff3093fd13fb0afda92ac188878a9" />
+    <Meta Name="ms.openlocfilehash" Value="be17233039c443b984375197d63600a6a97969ed" />
+    <Meta Name="ms.sourcegitcommit" Value="723b8a6d92667ba86fcda96190bad3b4a03283b3" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="09/06/2018" />
-    <Meta Name="ms.locfileid" Value="43850329" />
+    <Meta Name="ms.lasthandoff" Value="11/09/2018" />
+    <Meta Name="ms.locfileid" Value="51309321" />
   </Metadata>
   <TypeSignature Language="C#" Value="public interface IInputChannel : System.ServiceModel.Channels.IChannel" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IInputChannel implements class System.ServiceModel.Channels.IChannel, class System.ServiceModel.ICommunicationObject" />
@@ -29,6 +29,9 @@
     <Interface>
       <InterfaceName>System.ServiceModel.Channels.IChannel</InterfaceName>
     </Interface>
+    <Interface>
+      <InterfaceName>System.ServiceModel.ICommunicationObject</InterfaceName>
+    </Interface>
   </Interfaces>
   <Docs>
     <summary>定義通道必須實作以接收訊息的介面。</summary>
@@ -41,7 +44,7 @@
 
  <xref:System.ServiceModel.Channels.IInputChannel> 合約包括接收、嘗試接收 (try-to-receive) 和等候訊息 (wait-for-a-message) 功能的同步和非同步等變體。  
   
- 提取模型一般是配合 <xref:System.ServiceModel.Channels.IInputChannel> 使用來接收訊息：您要呼叫 <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> (從通道「提取」訊息) 然後等候訊息到達。 另一個替代的使用模式是呼叫 <xref:System.ServiceModel.Channels.IInputChannel.BeginWaitForMessage%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29> 或者 <xref:System.ServiceModel.Channels.IInputChannel.BeginWaitForMessage%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29>，然後呼叫 <xref:System.ServiceModel.Channels.IInputChannel.Receive%28System.TimeSpan%29>。 對於在 <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> 和 <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> 呼叫之間開始交易的交易用法而言，這是很常見的方法。  
+ 提取模型一般是配合 <xref:System.ServiceModel.Channels.IInputChannel> 使用來接收訊息：您要呼叫 <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> (從通道「提取」訊息) 然後等候訊息到達。 另一個替代的使用模式是呼叫 <xref:System.ServiceModel.Channels.IInputChannel.BeginWaitForMessage%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29> 或者 <xref:System.ServiceModel.Channels.IInputChannel.BeginWaitForMessage%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29>，然後呼叫 <xref:System.ServiceModel.Channels.IInputChannel.Receive%28System.TimeSpan%29>。 對於在 <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> 和 <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> 呼叫之間開始異動的異動用法而言，這是很常見的方法。  
   
  <xref:System.ServiceModel.Channels.IInputChannel> 不一定要繫結到單一寄件人。 其他的通道和通道介面可以提供特定寄件人和 <xref:System.ServiceModel.Channels.IInputChannel>之間的相互關聯，但是基底合約並未提供這類限制。 實作 (Implementation) 可以為每個訊息建立新的 <xref:System.ServiceModel.Channels.IInputChannel>，或者為多個訊息和寄件人重複使用相同的 <xref:System.ServiceModel.Channels.IInputChannel>。  
   
@@ -706,7 +709,7 @@
 ## Remarks  
  呼叫 <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29>，並不會導致訊息以任何其他方式進行接收或處理。  
   
- <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> 方法的存在目的，主要是針對使用者希望接收到使用交易之訊息的交易狀況。 一般針對這種狀況會只有使用 <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>，此時使用者必須建立交易並接著呼叫 <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>，然後期待訊息會在交息逾時之前到達，但是訊息可能不會如預期般到達。  
+ <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> 方法的存在目的，主要是針對使用者希望接收到使用異動之訊息的異動狀況。 一般針對這種狀況會只有使用 <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>，此時使用者必須建立交易並接著呼叫 <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>，然後期待訊息會在交息逾時之前到達，但是訊息可能不會如預期般到達。  
   
  相反的，使用者可以配合任何需要的逾時 (甚至無限時) 來呼叫 <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29>，接著在訊息到達時開啟交易並呼叫 <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>，然後深信自己可以在交易逾時之前取回訊息。  
   

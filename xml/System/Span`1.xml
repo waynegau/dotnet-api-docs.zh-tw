@@ -1,11 +1,11 @@
 <Type Name="Span&lt;T&gt;" FullName="System.Span&lt;T&gt;">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="ed04128e65524eee587eec2d84c3879e4073a91a" />
-    <Meta Name="ms.sourcegitcommit" Value="9dda17222b9f7d3edf130133bfb1370d5b410a4b" />
+    <Meta Name="ms.openlocfilehash" Value="882e05e21dfecfb02fbc683ac8abfa9b1e46c5c7" />
+    <Meta Name="ms.sourcegitcommit" Value="723b8a6d92667ba86fcda96190bad3b4a03283b3" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="09/22/2018" />
-    <Meta Name="ms.locfileid" Value="46640990" />
+    <Meta Name="ms.lasthandoff" Value="11/09/2018" />
+    <Meta Name="ms.locfileid" Value="51310907" />
   </Metadata>
   <TypeSignature Language="C#" Value="public struct Span&lt;T&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit Span`1&lt;T&gt; extends System.ValueType" />
@@ -42,9 +42,51 @@
     <remarks>
       <format type="text/markdown"><![CDATA[  
 
-`Span<T>` 已[ref struct](~/docs/csharp/reference-semantics-with-value-types.md#ref-struct-type)配置堆疊上，而不是 managed 堆積上。 Ref 結構類型有一些限制，以確保它們無法提升至受控堆積，包括無法 box 處理，以及他們無法指派給變數的型別<xref:System.Object>， `dynamic`，和任何介面類型。
+`Span<T>` 已[ref struct](~/docs/csharp/reference-semantics-with-value-types.md#ref-struct-type)配置堆疊上，而不是 managed 堆積上。 Ref 結構類型有一些限制，以確保它們無法提升至受控堆積，包括無法 box 處理，他們無法指派給變數的型別<xref:System.Object>，`dynamic`成任何介面類型，也不能是中的欄位參考型別，而且它們不能跨`await`和`yield`界限。 此外，兩個方法，會呼叫<xref:System.Span%601.Equals(System.Object)>並<xref:System.Span%601.GetHashCode%2A>，會擲回<xref:System.NotSupportedException>。 
 
-A`Span<T>`執行個體通常用來保存的項目陣列的一部分。 不同於陣列，不過，`Span<T>`執行個體可以指向受管理的記憶體，原生記憶體，或在受管理的記憶體堆疊。
+> [!IMPORTANT]
+> 因為它是僅限堆疊的型別，`Span<T>`不適合許多情況下，需要儲存在堆積上的緩衝區的參考。 這是如此，比方說，進行 asynchrous 方法呼叫的常式。 對於這類 scenarious 中，您可以使用免費<xref:System.Memory%601?displayProperty=nameWithType>和<xref:System.ReadOnlyMemory%601?displayProperty=nameWithType>型別。
+
+代表不可變或唯讀結構的 span，對於使用<xref:System.ReadOnlySpan%601?displayProperty=nameWithType>。
+
+## <a name="spant-and-memory"></a>範圍\<T > 和記憶體
+
+A`Span<T>`代表任意記憶體中的連續區域。 A`Span<T>`執行個體通常用來保存的項目陣列的一部分。 不同於陣列，不過，`Span<T>`執行個體可以指向受管理的記憶體，原生記憶體，或在受管理的記憶體堆疊。 下列範例會建立`Span<Byte>`從陣列：
+
+[!code-csharp[Creating a Span\<Byte> from an array](~/samples/snippets/csharp/api/system/span/program.cs#1)]
+     
+下列範例會建立`Span<Byte>`從 100 個位元組的原生記憶體：
+
+[!code-csharp[Creating a Span\<Byte> from native memory](~/samples/snippets/csharp/api/system/span/program.cs#2)]
+
+下列範例會使用C# [stackalloc](~/docs/csharp/language-reference/keywords/stackalloc.md)關鍵字可配置的記憶體堆疊上的 100 個位元組：
+
+[!code-csharp[Creating a Span\<Byte> from stack-allocated memory](~/samples/snippets/csharp/api/system/span/program.cs#3)]
+
+因為`Span<T>`是任意的記憶體區塊，方法的抽象概念`Span<T>`類別和方法`Span<T>`參數對任何`Span<T>`物件，不論其封裝的記憶體的類型。 例如，每個程式碼中的個別區段，用來初始化範圍及計算其項目的總和可以變更為單一的初始設定和計算方法，如下列範例說明：
+
+[!code-csharp[Creating a Span\<Byte> from stack-allocated memory](~/samples/snippets/csharp/api/system/span/program.cs#4)]
+
+## <a name="spant-and-arrays"></a>範圍\<T > 和陣列
+
+它會包裝在陣列中，當`Span<T>`可以包裝整個陣列中的範例中所顯示的一樣[範圍\<T > 和記憶體](#spant-and-memory)區段。 因為它支援切割，`Span<T>`也可以指向任何陣列中的連續範圍。  
+
+下列範例會建立 10 個元素的整數陣列的中間的五個項目之配量。 請注意程式碼會加倍的配量中的每個整數值。 如輸出所示，範圍所做的變更會反映在陣列的值。
+
+[!code-csharp[Creating a slice from a portion of a span](~/samples/snippets/csharp/api/system/span/slice/program.cs)]
+
+## <a name="spant-and-slices"></a>範圍\<T > 和配量
+
+`Span\<T>` 包含兩個多載<xref:System.Span%601.Slice%2A>形成配量超出指定的索引開始的目前範圍的方法。 如此可讓您將在資料`Span\<T>`做為一組可處理視資料處理管線，其中含有最少的效能影響的部分邏輯區塊。 例如，由於新式伺服器通訊協定通常是以文字為基礎，操作字串和子字串是特別重要。 在 <xref:System.String>類別的主要方法擷取子字串是<xref:System.String.Substring%2A>。 針對依賴廣泛的字串操作的資料管線，其使用會提供一些效能的負面影響，因為它：
+
+1. 建立新的字串，用來保存子字串。
+
+2. 原始字串一部分的字元複製到新的字串。
+
+要消除這項配置和複製作業，請使用`Span\<T>`或<xref:System.ReadOnlySpan%601>，如下列範例所示：
+
+[!code-csharp[Creating a slice from a substring](~/samples/snippets/csharp/api/system/span/slice2/program.cs)]
+
 
       ]]></format>
     </remarks>

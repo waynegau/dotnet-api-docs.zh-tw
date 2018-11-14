@@ -1,11 +1,11 @@
 <Type Name="ToolTask" FullName="Microsoft.Build.Utilities.ToolTask">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="33f36b3fd7b88547fbf2d436637320109ef7ec23" />
-    <Meta Name="ms.sourcegitcommit" Value="0ec122ee5f3681159b8460ab15b409fd6e3d3ae0" />
+    <Meta Name="ms.openlocfilehash" Value="57c54120a16bf1466b84eaa1dd29666f08c6c05e" />
+    <Meta Name="ms.sourcegitcommit" Value="723b8a6d92667ba86fcda96190bad3b4a03283b3" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="10/04/2018" />
-    <Meta Name="ms.locfileid" Value="48771422" />
+    <Meta Name="ms.lasthandoff" Value="11/09/2018" />
+    <Meta Name="ms.locfileid" Value="51312454" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class ToolTask : Microsoft.Build.Utilities.Task, Microsoft.Build.Framework.ICancelableTask" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit ToolTask extends Microsoft.Build.Utilities.Task implements class Microsoft.Build.Framework.ICancelableTask, class Microsoft.Build.Framework.ITask" />
@@ -31,6 +31,9 @@
   <Interfaces>
     <Interface>
       <InterfaceName>Microsoft.Build.Framework.ICancelableTask</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>Microsoft.Build.Framework.ITask</InterfaceName>
     </Interface>
   </Interfaces>
   <Docs>
@@ -143,7 +146,7 @@
       <Docs>
         <param name="taskResources">工作資源的 <see cref="T:System.Resources.ResourceManager" />。</param>
         <param name="helpKeywordPrefix">Help 關鍵字，用於工作引發的訊息。</param>
-        <summary>使用指定的 <see cref="T:Microsoft.Build.Utilities.ToolTask" /> 和 Help 關鍵字前置詞，初始化 <see cref="T:System.Resources.ResourceManager" /> 類別的新執行個體。</summary>
+        <summary>使用指定的 <see cref="T:System.Resources.ResourceManager" /> 和 Help 關鍵字前置詞，初始化 <see cref="T:Microsoft.Build.Utilities.ToolTask" /> 類別的新執行個體。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -328,16 +331,16 @@ using System.Collections.Specialized;
 /// </summary>  
 abstract class CustomToolTask : ToolTask  
 {  
-      protected override StringDictionary EnvironmentOverride  
-      {  
-            get  
-            {  
-                  string newPath = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.Process) + @";C:\MyDirectory";  
-                  StringDictionary result = new StringDictionary();  
-                  result.Add("Path", newPath);  
-                  return result;  
-            }  
-      }  
+      protected override StringDictionary EnvironmentOverride  
+      {  
+            get  
+            {  
+                  string newPath = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.Process) + @";C:\MyDirectory";  
+                  StringDictionary result = new StringDictionary();  
+                  result.Add("Path", newPath);  
+                  return result;  
+            }  
+      }  
 }  
   
 ```  
@@ -750,7 +753,7 @@ abstract class CustomToolTask : ToolTask
       <Parameters />
       <Docs>
         <summary>處理由可執行檔引發的執行錯誤。</summary>
-        <returns>如果方法成功執行則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
+        <returns>如果方法執行成功則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -971,7 +974,7 @@ abstract class CustomToolTask : ToolTask
         <ReturnType>System.Text.Encoding</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得回應檔 (Response File) 的 <see cref="T:System.Text.Encoding" />。</summary>
+        <summary>取得回應檔的 <see cref="T:System.Text.Encoding" />。</summary>
         <value>回應檔的 <see cref="T:System.Text.Encoding" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -1035,7 +1038,7 @@ abstract class CustomToolTask : ToolTask
       <Docs>
         <summary>表示是否應該略過工作執行。</summary>
         <returns>
-          <see langword="true" /> 表示略過工作執行，否則為 <see langword="false" />。</returns>
+          <see langword="true" /> 表示略過工作執行；否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1070,7 +1073,7 @@ abstract class CustomToolTask : ToolTask
         <ReturnType>System.Text.Encoding</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得工作之標準錯誤資料流的 <see cref="T:System.Text.Encoding" />。</summary>
+        <summary>取得工作標準錯誤資料流的 <see cref="T:System.Text.Encoding" />。</summary>
         <value>回應檔的 <see cref="T:System.Text.Encoding" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -1165,8 +1168,8 @@ abstract class CustomToolTask : ToolTask
         <ReturnType>Microsoft.Build.Framework.MessageImportance</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得用於記錄錯誤的 <see cref="T:Microsoft.Build.Framework.MessageImportance" />。</summary>
-        <value>用於記錄錯誤的 <see cref="T:Microsoft.Build.Framework.MessageImportance" />。</value>
+        <summary>取得用來記錄錯誤的 <see cref="T:Microsoft.Build.Framework.MessageImportance" />。</summary>
+        <value>用來記錄錯誤的 <see cref="T:Microsoft.Build.Framework.MessageImportance" />。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1194,7 +1197,7 @@ abstract class CustomToolTask : ToolTask
         <ReturnType>System.Text.Encoding</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得工作之標準輸出資料流的 <see cref="T:System.Text.Encoding" />。</summary>
+        <summary>取得工作標準輸出資料流的 <see cref="T:System.Text.Encoding" />。</summary>
         <value>回應檔的 <see cref="T:System.Text.Encoding" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -1289,8 +1292,8 @@ abstract class CustomToolTask : ToolTask
         <ReturnType>Microsoft.Build.Framework.MessageImportance</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得用於記錄錯誤的 <see cref="T:Microsoft.Build.Framework.MessageImportance" />。</summary>
-        <value>用於記錄錯誤的 <see cref="T:Microsoft.Build.Framework.MessageImportance" />。</value>
+        <summary>取得用來記錄錯誤的 <see cref="T:Microsoft.Build.Framework.MessageImportance" />。</summary>
+        <value>用來記錄錯誤的 <see cref="T:Microsoft.Build.Framework.MessageImportance" />。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1547,7 +1550,7 @@ abstract class CustomToolTask : ToolTask
       <Parameters />
       <Docs>
         <summary>指出是否所有的工作參數皆有效。</summary>
-        <returns>如果所有的工作參數都有效則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
+        <returns>如果所有的工作參數都有效，即為 <see langword="true" />；否則為 <see langword="false" />。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

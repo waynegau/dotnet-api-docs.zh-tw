@@ -1,11 +1,11 @@
 <Type Name="TransactionScope" FullName="System.Transactions.TransactionScope">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="a82d108607f3f18ca21c7c9b6212a340a2a97bc3" />
-    <Meta Name="ms.sourcegitcommit" Value="0ec122ee5f3681159b8460ab15b409fd6e3d3ae0" />
+    <Meta Name="ms.openlocfilehash" Value="45dd699021cf8a33b96b1b8974ed6335d84a9f52" />
+    <Meta Name="ms.sourcegitcommit" Value="610a413147ca5b230ff99a6df778612e165a6cdf" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="10/04/2018" />
-    <Meta Name="ms.locfileid" Value="48705973" />
+    <Meta Name="ms.lasthandoff" Value="11/10/2018" />
+    <Meta Name="ms.locfileid" Value="51506170" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class TransactionScope : IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit TransactionScope extends System.Object implements class System.IDisposable" />
@@ -47,7 +47,7 @@
 > [!IMPORTANT]
 >  我們建議您建立隱含的交易使用<xref:System.Transactions.TransactionScope>類別，以便為您自動管理環境交易內容。 您也應該使用<xref:System.Transactions.TransactionScope>和<xref:System.Transactions.DependentTransaction>需要使用相同的異動，跨多個函式呼叫或多個執行緒呼叫的應用程式的類別。 如需有關此模型的詳細資訊，請參閱 <<c0> [ 實作隱含異動使用異動範圍](~/docs/framework/data/transactions/implementing-an-implicit-transaction-using-transaction-scope.md)主題。 如需有關如何撰寫交易式應用程式的詳細資訊，請參閱[撰寫交易式應用程式](~/docs/framework/data/transactions/writing-a-transactional-application.md)。  
   
- 在具現化<xref:System.Transactions.TransactionScope>由`new`陳述式中，交易管理員會決定要參與哪個交易。 一旦決定後，範圍永遠會參與該異動。 此決策是根據兩個因素而定：環境交易是否存在，以及建構函式中的 `TransactionScopeOption` 參數值。  環境交易是您的程式碼中執行的交易。 您可以呼叫 <xref:System.Transactions.Transaction.Current%2A?displayProperty=nameWithType> 類別的靜態 <xref:System.Transactions.Transaction> 屬性，取得環境交易的參考。 如需有關如何使用此參數的詳細資訊，請參閱 < 交易流程管理 > 一節[實作隱含異動使用異動範圍](~/docs/framework/data/transactions/implementing-an-implicit-transaction-using-transaction-scope.md)主題。  
+ 在具現化<xref:System.Transactions.TransactionScope>由`new`陳述式中，交易管理員會決定要參與哪個交易。 一旦決定後，範圍永遠會參與該異動。 此決策是根據兩個因素而定：環境異動是否存在，以及建構函式中的 `TransactionScopeOption` 參數值。  環境交易是您的程式碼中執行的交易。 您可以呼叫 <xref:System.Transactions.Transaction.Current%2A?displayProperty=nameWithType> 類別的靜態 <xref:System.Transactions.Transaction> 屬性，取得環境異動的參考。 如需有關如何使用此參數的詳細資訊，請參閱 < 交易流程管理 > 一節[實作隱含異動使用異動範圍](~/docs/framework/data/transactions/implementing-an-implicit-transaction-using-transaction-scope.md)主題。  
   
  如果在異動範圍內不發生的任何例外狀況 (也就是之間的初始設定<xref:System.Transactions.TransactionScope>物件並呼叫其<xref:System.Transactions.TransactionScope.Dispose%2A>方法)，則範圍所參與的交易可以繼續。 如果在異動範圍內，未發生例外狀況，它所參與的交易將會回復。  
   
@@ -784,11 +784,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 呼叫這個方法會將標示交易範圍的結尾。 如果<xref:System.Transactions.TransactionScope>建立交易物件並<xref:System.Transactions.TransactionScope.Complete%2A>範圍內，呼叫<xref:System.Transactions.TransactionScope>物件嘗試認可交易，呼叫這個方法時。  
+ 呼叫這個方法會將標示交易範圍的結尾。 如果<xref:System.Transactions.TransactionScope>建立交易物件並<xref:System.Transactions.TransactionScope.Complete%2A>範圍內，呼叫<xref:System.Transactions.TransactionScope>物件嘗試認可交易，呼叫這個方法時。 在此情況下，交易處理這個方法會封鎖直到第一個階段已完成。 第一階段結束之後的所有資源管理員，並在交易中的登記皆已投票給交易結果而<xref:System.Transactions.TransactionManager>已永久地決定要認可或中止交易。 第二階段一律是處理的非同步的。 因此，就只是已認可從給定的交易內的資料將會立即可用之後不使用另一筆交易，若要檢視此資料時不保證。  
   
  使用 C#`using`建構可確保即使發生例外狀況，就會呼叫這個方法。 在呼叫這個方法後發生的例外狀況不太可能會影響異動。 這個方法也會還原環境交易給它的原始狀態。 A<xref:System.Transactions.TransactionAbortedException>沒有實際上已認可交易時，就會擲回。  
   
- 這個方法是同步，並會封鎖，直到認可或中止交易。 基於這個原因，您必須非常小心，在 Windows Form (WinForm) 應用程式中使用此方法時，或可能會發生死結。 如果您呼叫內一個 WinForm 控制項事件 （例如按一下按鈕），這個方法，並使用同步<xref:System.Windows.Forms.Control.Invoke%2A>方法來直接執行還在處理交易，某些 UI 工作 （例如變更色彩） 控制項將會發生死結。 這是因為<xref:System.Windows.Forms.Control.Invoke%2A>方法是同步，背景工作執行緒，直到 UI 執行緒完成其作業。 不過，在我們的案例中，UI 執行緒也等待認可交易的背景工作執行緒。 結果是，它們都可以繼續作業，範圍會無限期等待認可完成。 您應該使用<xref:System.Windows.Forms.Control.BeginInvoke%2A>而非<xref:System.Windows.Forms.Control.Invoke%2A>可能的情況下，因為它是非同步，因此較不容易發生死結。  
+ 因為這個方法會封鎖直到交易處理的第一個階段完成，您必須非常小心使用此方法，在 Windows Form (WinForm) 應用程式中或死結時可能會發生。 如果您呼叫內一個 WinForm 控制項事件 （例如按一下按鈕），這個方法，並使用同步<xref:System.Windows.Forms.Control.Invoke%2A>方法來直接執行還在處理交易，某些 UI 工作 （例如變更色彩） 控制項將會發生死結。 這是因為<xref:System.Windows.Forms.Control.Invoke%2A>方法是同步，背景工作執行緒，直到 UI 執行緒完成其作業。 不過，在我們的案例中，UI 執行緒也等待認可交易的背景工作執行緒。 結果是，它們都可以繼續作業，範圍會無限期等待認可完成。 您應該使用<xref:System.Windows.Forms.Control.BeginInvoke%2A>而非<xref:System.Windows.Forms.Control.Invoke%2A>可能的情況下，因為它是非同步，因此較不容易發生死結。  
   
  如需有關如何使用此方法的詳細資訊，請參閱 <<c0> [ 實作隱含異動使用異動範圍](~/docs/framework/data/transactions/implementing-an-implicit-transaction-using-transaction-scope.md)主題。  
   
