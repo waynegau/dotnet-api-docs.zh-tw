@@ -1,11 +1,11 @@
 <Type Name="Interlocked" FullName="System.Threading.Interlocked">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="7fd6b58d4830bad8e69f870f2d493afbb5945295" />
-    <Meta Name="ms.sourcegitcommit" Value="0ec122ee5f3681159b8460ab15b409fd6e3d3ae0" />
+    <Meta Name="ms.openlocfilehash" Value="2c4ca68eab5cab83362bc1249915513f4de221da" />
+    <Meta Name="ms.sourcegitcommit" Value="d71cc71109ed3cbcf3406a10a3cd7ac7e30f5e0c" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="10/04/2018" />
-    <Meta Name="ms.locfileid" Value="48769810" />
+    <Meta Name="ms.lasthandoff" Value="11/10/2018" />
+    <Meta Name="ms.locfileid" Value="51525771" />
   </Metadata>
   <TypeSignature Language="C#" Value="public static class Interlocked" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit Interlocked extends System.Object" />
@@ -57,9 +57,12 @@
 3.  將值儲存在執行個體變數。  
   
  如果您不要使用<xref:System.Threading.Interlocked.Increment%2A>和<xref:System.Threading.Interlocked.Decrement%2A>，執行緒可以在執行前兩個步驟之後被優先佔用。 接著，另一個執行緒可執行所有的三個步驟。 當第一個執行緒繼續執行時，它會覆寫執行個體變數中的值，而且遞增或遞減的第二個執行緒所執行的效果會遺失。  
+
+ <xref:System.Threading.Interlocked.Add%2A>方法以不可分割方式將整數值新增至整數變數，並傳回新的變數值。  
   
  <xref:System.Threading.Interlocked.Exchange%2A>方法會以不可分割方式交換指定變數的值。 <xref:System.Threading.Interlocked.CompareExchange%2A>方法結合了兩項作業： 比較兩個值，並儲存第三個值其中一個變數，並根據比較結果。 比較和交換作業成為不可部分完成的作業。  
-  
+
+ 請確定任何寫入或讀取權限共用的變數是不可部分完成。 否則，資料可能會損毀，或載入的值可能不正確。    
    
   
 ## Examples  
@@ -196,8 +199,6 @@
   
 ## Remarks  
  這個方法會藉由包裝來處理溢位狀況： 如果處的值`location1`是<xref:System.Int64.MaxValue?displayProperty=nameWithType>並`value`為 1，結果是<xref:System.Int64.MinValue?displayProperty=nameWithType>; 如果`value`為 2，則結果為 (<xref:System.Int64.MinValue?displayProperty=nameWithType> + 1); 等等。 不會有例外狀況擲回。  
-  
- <xref:System.Threading.Interlocked.Read%2A>方法和 64 位元的多載<xref:System.Threading.Interlocked.Increment%2A>， <xref:System.Threading.Interlocked.Decrement%2A>，以及<xref:System.Threading.Interlocked.Add%2A>方法是只在系統上真正不可部分完成其中<xref:System.IntPtr?displayProperty=nameWithType>是 64 位元。 其他在系統上，這些方法都是不可部分完成的尊重彼此，但不是會對於其他方法來存取資料。 因此，若要在 32 位元系統上的安全執行緒，64 位元值的任何存取必須透過成員<xref:System.Threading.Interlocked>類別。  
   
  ]]></format>
         </remarks>
@@ -534,22 +535,24 @@
         <Parameter Name="comparand" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="location1">目的端物件，此物件會與 <c>comparand</c> 進行比較且可能被取代。</param>
-        <param name="value">當比較的結果相等時，會取代目的端物件的物件。</param>
-        <param name="comparand">與 <c>location1</c> 的物件相比較的物件。</param>
+        <param name="location1">以傳址方式與 <c>comparand</c> 進行比較的目的地物件，且可能被取代。</param>
+        <param name="value">若參考比較結果相等，此物件會取代目的地物件。</param>
+        <param name="comparand">以傳址方式與 <c>location1</c> 的物件進行比較的物件。</param>
         <summary>比較兩個物件的參考是否相等；如果相等，則取代第一個物件。</summary>
         <returns>
           <paramref name="location1" /> 中的原始值。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- 如果`comparand`和中的物件`location1`相等，則`value`會儲存在`location1`。 否則，不會執行任何作業。 比較和交換作業成為不可部分完成的作業。 傳回值<xref:System.Threading.Interlocked.CompareExchange%2A>是中的原始值`location1`無論交換發生。  
-  
- 從.NET Framework 2.0 版中，<xref:System.Threading.Interlocked.CompareExchange%60%601%28%60%600%40%2C%60%600%2C%60%600%29>方法多載參考型別提供型別安全的替代方法。  
-  
+## Remarks
+
+> [!IMPORTANT]
+> 從.NET Framework 2.0，<xref:System.Threading.Interlocked.CompareExchange%60%601%28%60%600%40%2C%60%600%29>方法多載參考型別提供型別安全的替代方法。 我們建議您呼叫它而不是這個多載。
+
+如果`comparand`和中的物件`location1`上是相等的參考，然後`value`會儲存在`location1`。 否則，不會執行任何作業。 比較和交換作業成為不可部分完成的作業。 傳回值<xref:System.Threading.Interlocked.CompareExchange%2A>是中的原始值`location1`無論交換發生。  
+
 > [!NOTE]
->  參考相等比較的物件而非<xref:System.Object.Equals%2A?displayProperty=nameWithType>。 如此一來，兩個經過 boxing 處理的執行個體相同的實值型別 （例如，整數值 3） 永遠看起來是不相等，而且會執行任何作業。 請勿使用這個多載具有實值類型。  
+>  參考相等，而不是實值相等比較的物件。 如此一來，兩個經過 boxing 處理的執行個體相同的實值型別 （例如，整數值 3） 永遠看起來是不相等，而且會執行任何作業。 請勿使用這個多載具有實值類型。  
   
  ]]></format>
         </remarks>
@@ -682,17 +685,17 @@
       </Parameters>
       <Docs>
         <typeparam name="T">要用於型別<c>location1</c>，<c>值</c>，並<c>比較元</c>。 此類型必須是參考類型。</typeparam>
-        <param name="location1">目的端，其值會與「比較元」<c></c>進行比較且可能會被取代。 此為參考參數 (在 C# 中為 <see langword="ref" />，在 Visual Basic 中為 <see langword="ByRef" />)。</param>
-        <param name="value">當比較的結果相等時，會取代目的端值的值。</param>
-        <param name="comparand">與 <c>location1</c> 的值比較的值。</param>
-        <summary>比較指定參考型別 <paramref name="T" /> 的兩個執行個體是否相等；如果相等，則取代第一個。</summary>
+        <param name="location1">以傳址方式與 <c>comparand</c> 比較的目的地值，且可能被取代。 此為參考參數 (在 C# 中為 <see langword="ref" />，在 Visual Basic 中為 <see langword="ByRef" />)。</param>
+        <param name="value">當以傳址方式比較的結果相等時，會取代目的地的值。</param>
+        <param name="comparand">以傳址方式與 <c>location1</c> 值比較的值。</param>
+        <summary>比較指定參考型別 <paramref name="T" /> 的兩個執行個體是否參考相等；如果相等，則取代第一個。</summary>
         <returns>
           <paramref name="location1" /> 中的原始值。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 如果`comparand`中的值`location1`相等，則`value`會儲存在`location1`。 否則，不會執行任何作業。 比較和交換將會以不可部分完成的作業。 這個方法的傳回值是中的原始值`location1`無論交換發生。  
+ 如果`comparand`中的值`location1`上是相等的參考，然後`value`會儲存在`location1`。 否則，不會執行任何作業。 比較和交換將會以不可部分完成的作業。 這個方法的傳回值是中的原始值`location1`無論交換發生。  
   
  這個方法只支援參考型別。 有多載<xref:System.Threading.Interlocked.CompareExchange%2A>方法，實值型別<xref:System.Int32>， <xref:System.Int64>， <xref:System.IntPtr>， <xref:System.Single>，和<xref:System.Double>，但不支援其他實值型別。  
   
@@ -833,8 +836,6 @@
   
 ## Remarks  
  這個方法會藉由包裝來處理溢位狀況： 如果`location`  =  <xref:System.Int64.MinValue?displayProperty=nameWithType>， `location` -1 = <xref:System.Int64.MaxValue?displayProperty=nameWithType>。 不會有例外狀況擲回。  
-  
- <xref:System.Threading.Interlocked.Read%2A>方法和 64 位元的多載<xref:System.Threading.Interlocked.Increment%2A>， <xref:System.Threading.Interlocked.Decrement%2A>，以及<xref:System.Threading.Interlocked.Add%2A>方法是只在系統上真正不可部分完成其中<xref:System.IntPtr?displayProperty=nameWithType>是 64 位元。 其他在系統上，這些方法都是不可部分完成的尊重彼此，但不是會對於其他方法來存取資料。 因此，若要在 32 位元系統上的安全執行緒，64 位元值的任何存取必須透過成員<xref:System.Threading.Interlocked>類別。  
   
  ]]></format>
         </remarks>
@@ -1133,8 +1134,9 @@
   
 ## Remarks
 
-> [!NOTE]
-> 從.NET Framework 2.0 版中，<xref:System.Threading.Interlocked.Exchange%60%601%28%60%600%40%2C%60%600%29>方法多載參考型別提供型別安全的替代方法。  
+> [!IMPORTANT]
+> 從.NET Framework 2.0，<xref:System.Threading.Interlocked.Exchange%60%601%28%60%600%40%2C%60%600%29>方法多載參考型別提供型別安全的替代方法。 我們建議您呼叫它而不是這個多載。
+
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
@@ -1399,8 +1401,6 @@
 ## Remarks  
  這個方法會藉由包裝來處理溢位狀況： 如果`location`  =  <xref:System.Int64.MaxValue?displayProperty=nameWithType>， `location` + 1 = <xref:System.Int64.MinValue?displayProperty=nameWithType>。 不會有例外狀況擲回。  
   
- <xref:System.Threading.Interlocked.Read%2A>方法和 64 位元的多載<xref:System.Threading.Interlocked.Increment%2A>， <xref:System.Threading.Interlocked.Decrement%2A>，以及<xref:System.Threading.Interlocked.Add%2A>方法是只在系統上真正不可部分完成其中<xref:System.IntPtr?displayProperty=nameWithType>是 64 位元。 其他在系統上，這些方法都是不可部分完成的尊重彼此，但不是會對於其他方法來存取資料。 因此，若要在 32 位元系統上的安全執行緒，64 位元值的任何存取必須透過成員<xref:System.Threading.Interlocked>類別。  
-  
  ]]></format>
         </remarks>
         <exception cref="T:System.NullReferenceException">
@@ -1529,11 +1529,6 @@
   
 ## Remarks  
  <xref:System.Threading.Interlocked.Read%2A>方法是在 64 位元系統上沒有必要的因為 64 位元讀取的作業已經是不可部分完成。 32 位元系統上，64 位元讀取的作業不是不可部分完成，除非使用執行<xref:System.Threading.Interlocked.Read%2A>。  
-  
- <xref:System.Threading.Interlocked.Read%2A>方法和 64 位元的多載<xref:System.Threading.Interlocked.Increment%2A>， <xref:System.Threading.Interlocked.Decrement%2A>，以及<xref:System.Threading.Interlocked.Add%2A>方法是只在系統上真正不可部分完成其中<xref:System.IntPtr?displayProperty=nameWithType>是 64 位元。 其他在系統上，這些方法都是不可部分完成的尊重彼此，但不是會對於其他方法來存取資料。 因此，若要在 32 位元系統上的安全執行緒，64 位元值的任何存取必須透過成員<xref:System.Threading.Interlocked>類別。  
-  
-> [!NOTE]
->  <xref:System.IntPtr> 是特定平台類型。  
   
  ]]></format>
         </remarks>

@@ -1,11 +1,11 @@
 <Type Name="MemoryMarshal" FullName="System.Runtime.InteropServices.MemoryMarshal">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="5a0d1a21d9569a50c48df42c8cd2be3042ccc554" />
-    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
+    <Meta Name="ms.openlocfilehash" Value="c9bee59e8ded948e4d3f1729df63219d06920318" />
+    <Meta Name="ms.sourcegitcommit" Value="723b8a6d92667ba86fcda96190bad3b4a03283b3" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="08/25/2018" />
-    <Meta Name="ms.locfileid" Value="39966549" />
+    <Meta Name="ms.lasthandoff" Value="11/09/2018" />
+    <Meta Name="ms.locfileid" Value="51315197" />
   </Metadata>
   <TypeSignature Language="C#" Value="public static class MemoryMarshal" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit MemoryMarshal extends System.Object" />
@@ -23,7 +23,7 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>To be added.</summary>
+    <summary>提供方法來與 <see cref="T:System.Memory`1" />、<see cref="T:System.ReadOnlyMemory`1" />、<see cref="T:System.Span`1" /> 和 <see cref="T:System.ReadOnlySpan`1" /> 交互操作。</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -56,11 +56,22 @@
         <Parameter Name="span" Type="System.ReadOnlySpan&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="span">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">在唯讀模式的範圍中的項目型別。</typeparam>
+        <param name="span">要轉換的來源配量。</param>
+        <summary>將一個簡單型別 <paramref name="T" /> 的 <see cref="T:System.ReadOnlySpan`1" /> 轉換成 <see langword="ReadOnlySpan&lt;Byte&gt;" />。</summary>
+        <returns>型別 <see cref="T:System.Byte" /> 的唯讀範圍。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+`T` 不能包含指標或參考。 `T` 會在執行階段檢查為了保留型別安全。  
+
+      ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="T" /> 包含參考或指標。</exception>
+        <exception cref="T:System.OverflowException">新的 <see cref="T:System.ReadOnlySpan`1" /> 的 <see cref="P:System.ReadOnlySpan`1.Length" /> 屬性會超出 <see cref="F:System.Int32.MaxValue" /></exception>
       </Docs>
     </Member>
     <Member MemberName="AsBytes&lt;T&gt;">
@@ -92,11 +103,22 @@
         <Parameter Name="span" Type="System.Span&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="span">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">範圍中的項目類型。</typeparam>
+        <param name="span">要轉換的來源配量。</param>
+        <summary>將一個簡單型別 <paramref name="T" /> 的 <see cref="T:System.Span`1" /> 轉換成 <see langword="Span&lt;Byte&gt;" />。</summary>
+        <returns>型別 <see cref="T:System.Byte" /> 的範圍。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+`T` 不能包含指標或參考。 `T` 會在執行階段檢查為了保留型別安全。  
+
+       ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="T" /> 包含參考或指標。</exception>
+        <exception cref="T:System.OverflowException">新的 <see cref="T:System.Span`1" /> 的 <see cref="P:System.Span`1.Length" /> 屬性會超出 <see cref="F:System.Int32.MaxValue" /></exception>
       </Docs>
     </Member>
     <Member MemberName="AsMemory&lt;T&gt;">
@@ -122,11 +144,19 @@
         <Parameter Name="memory" Type="System.ReadOnlyMemory&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="memory">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">唯讀記憶體緩衝區中的項目類型。</typeparam>
+        <param name="memory">唯讀記憶體緩衝區。</param>
+        <summary>從 <see cref="T:System.ReadOnlyMemory`1" /> 建立 <see cref="T:System.Memory`1" /> 執行個體。</summary>
+        <returns>代表與 <see cref="T:System.ReadOnlyMemory`1" /> 相同記憶體的記憶體區塊。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+必須小心使用這個方法。 <xref:System.ReadOnlyMemory%601> 用來代表不可變的資料和其他不是要寫入的記憶體。 <xref:System.Memory%601> 這個方法所建立的執行個體應該不會寫入。 這個方法的目的是允許的型別為的變數<xref:System.Memory%601>但只能用於讀取，來儲存<xref:System.ReadOnlyMemory%601>。 
+
+       ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Cast&lt;TFrom,TTo&gt;">
@@ -165,12 +195,24 @@
         <Parameter Name="span" Type="System.ReadOnlySpan&lt;TFrom&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TFrom">To be added.</typeparam>
-        <typeparam name="TTo">To be added.</typeparam>
-        <param name="span">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="TFrom">來源範圍的類型。</typeparam>
+        <typeparam name="TTo">目標範圍的類型。</typeparam>
+        <param name="span">要轉換的來源配量。</param>
+        <summary>將一個簡單型別的唯讀範圍轉換為另一個簡單型別的唯讀範圍。</summary>
+        <returns>已轉換的唯讀範圍。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+既不`TFrom`也不`TTo`可以包含指標或參考。 `TFrom` 和`TTo`會在執行階段檢查，才能保留型別安全。  
+
+只有在支援不當記憶體存取的平台上支援這個方法，或當記憶體區塊會透過其他方式對齊。
+
+       ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="TFrom" /> 或 <paramref name="TTo" /> 包含參考或指標。</exception>
       </Docs>
     </Member>
     <Member MemberName="Cast&lt;TFrom,TTo&gt;">
@@ -209,12 +251,26 @@
         <Parameter Name="span" Type="System.Span&lt;TFrom&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="TFrom">To be added.</typeparam>
-        <typeparam name="TTo">To be added.</typeparam>
-        <param name="span">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="TFrom">來源範圍的類型。</typeparam>
+        <typeparam name="TTo">目標範圍的類型。</typeparam>
+        <param name="span">要轉換的來源配量。</param>
+        <summary>將一個簡單型別的範圍轉換為另一個簡單型別的範圍。</summary>
+        <returns>已轉換的範圍。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+既不`TFrom`也不`TTo`可以包含指標或參考。 `TFrom` 和`TTo`會在執行階段檢查，才能保留型別安全。  
+
+在 unchecked 內容中，就會發生轉換。 如果範圍`TTo`小於範圍`TFrom`，可能會發生資料遺失。 比方說，如果`TFrom`是<xref:System.Int64>，下列其中一個的`ReadOnlySpan<Int32>`的值是 0x100001111110F0F，和`TTo`是<xref:System.Int32>，產生的值是 11110F0F。
+
+只有在支援不當記憶體存取的平台上支援這個方法，或當記憶體區塊會透過其他方式對齊。
+
+       ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="TFrom" /> 或 <paramref name="TTo" /> 包含參考或指標。</exception>
       </Docs>
     </Member>
     <Member MemberName="CreateFromPinnedArray&lt;T&gt;">
@@ -241,13 +297,25 @@
         <Parameter Name="length" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="array">To be added.</param>
-        <param name="start">To be added.</param>
-        <param name="length">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">陣列的類型。</typeparam>
+        <param name="array">預先固定的來源陣列。</param>
+        <param name="start">要開始記憶體區塊的 <paramref name="array" /> 索引。</param>
+        <param name="length">要包含在記憶體區塊中的項目數量。</param>
+        <summary>在預先定義的目標陣列上建立新的記憶體緩衝區，從 <paramref name="start" /> 索引開始，並包含 <paramref name="length" /> 個項目。</summary>
+        <returns>在 <paramref name="array" /> 指定之元素上的記憶體區塊。 如果 <paramref name="array" /> 為 <see langword="null" />，或如果 <paramref name="start" /> 和 <paramref name="length" /> 為 0，方法會傳回 <see cref="System.Memory`1.Length" /> 為零的 <see cref="T:System.Memory`1" /> 執行個體。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+陣列必須已經釘選之前呼叫這個方法時，該陣列不能同時已取消釘選<xref:System.Memory%601>它所傳回的緩衝區是仍在使用中。 已取消釘選在陣列上呼叫這個方法可能會導致記憶體損毀。
+
+       ]]></format>
+        </remarks>
+        <exception cref="T:System.ArrayTypeMismatchException">
+          <paramref name="array" /> 是 Covariant，且 <paramref name="array" /> 的型別不完全是 <paramref name="T[]" />。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="start" /> 或結尾索引不在 0 到 <see cref="P:System.Array.Length" /> 的範圍內。</exception>
       </Docs>
     </Member>
     <Member MemberName="CreateReadOnlySpan&lt;T&gt;">
@@ -274,12 +342,24 @@
         <Parameter Name="length" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="reference">To be added.</param>
-        <param name="length">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">資料項目型別。</typeparam>
+        <param name="reference">資料的參考。</param>
+        <param name="length">
+          <paramref name="reference" /> 包含的 <paramref name="T" /> 元素數目。</param>
+        <summary>在一般受控物件上建立新的唯讀範圍。</summary>
+        <returns>唯讀的範圍。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+此方法很有用，如果受管理的物件部分代表固定的陣列。 
+
+> [!WARNING]
+> 這個方法應該謹慎使用。 它會有危險性因為`length`就不會檢查引數。 此外，傳回範圍的存留期不會驗證安全性範圍感知的語言。
+
+       ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CreateSpan&lt;T&gt;">
@@ -306,12 +386,24 @@
         <Parameter Name="length" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="reference">To be added.</param>
-        <param name="length">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">資料項目型別。</typeparam>
+        <param name="reference">資料的參考。</param>
+        <param name="length">
+          <paramref name="reference" /> 包含的 <paramref name="T" /> 元素數目。</param>
+        <summary>在一般受控物件上建立新的範圍。</summary>
+        <returns>範圍。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+此方法很有用，如果受管理的物件部分代表固定的陣列。 
+
+> [!WARNING]
+> 這個方法應該謹慎使用。 它會有危險性因為`length`就不會檢查引數。 此外，傳回範圍的存留期不會驗證安全性範圍感知的語言。
+
+       ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetReference&lt;T&gt;">
@@ -336,11 +428,19 @@
         <Parameter Name="span" Type="System.ReadOnlySpan&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="span">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">範圍中的項目類型。</typeparam>
+        <param name="span">擷取參考的來源唯讀範圍。</param>
+        <summary>傳回唯讀範圍索引位置為 0 的元素參考。</summary>
+        <returns>索引位置為 0 的元素參考。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+如果唯讀範圍是空的這個方法會傳回位於索引 0 處的項目會有已儲存的位置的參考。 這類的參考可能會或可能不是`null`。 傳回的參考可以用於釘選，但它必須永遠不會取值。
+
+       ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetReference&lt;T&gt;">
@@ -365,11 +465,19 @@
         <Parameter Name="span" Type="System.Span&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="span">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">範圍中的項目類型。</typeparam>
+        <param name="span">擷取參考的來源範圍。</param>
+        <summary>傳回範圍索引位置為 0 的元素參考。</summary>
+        <returns>索引位置為 0 的元素參考。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+如果範圍是空的則這個方法會傳回位於索引 0 處的項目會有已儲存的位置的參考。 這類的參考可能會或可能不是`null`。 傳回的參考可以用於釘選，但它必須永遠不會取值。
+
+       ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Read&lt;T&gt;">
@@ -401,11 +509,23 @@
         <Parameter Name="source" Type="System.ReadOnlySpan&lt;System.Byte&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="source">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">要擷取的唯寫的範圍的項目類型。</typeparam>
+        <param name="source">唯讀的範圍。</param>
+        <summary>讀取型別結構 <param name="T" /> 超出位元組的唯讀範圍。</summary>
+        <returns>從唯讀範圍擷取的結構。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+`T` 不能包含指標或參考。 ' 已在執行階段為了保留型別安全。  
+
+       ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="T" /> 包含參考或指標。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <param name="source" /> 小於 <param name="T" /></exception>
       </Docs>
     </Member>
     <Member MemberName="ToEnumerable&lt;T&gt;">
@@ -431,11 +551,19 @@
         <Parameter Name="memory" Type="System.ReadOnlyMemory&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="memory">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">唯讀記憶體緩衝區中的項目型別。</typeparam>
+        <param name="memory">唯讀記憶體緩衝區。</param>
+        <summary>建立指定唯讀記憶體緩衝區的 <see cref="T:System.Collections.Generic.IEnumerable`1" /> 檢視。</summary>
+        <returns>的列舉檢視 <param name="memory" />。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+這個方法可讓使用中要求的型別參數的現有 Api 的唯讀記憶體緩衝區<xref:System.Collections.Generic.IEnumerable%601>。 
+
+       ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TryGetArray&lt;T&gt;">
@@ -462,11 +590,11 @@
         <Parameter Name="segment" Type="System.ArraySegment&lt;T&gt;" RefType="out" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="memory">To be added.</param>
-        <param name="segment">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <typeparam name="T">唯讀記憶體緩衝區中的項目類型。</typeparam>
+        <param name="memory">唯讀記憶體緩衝區。</param>
+        <param name="segment">當方法傳回時，會包含擷取自基礎唯讀記憶體緩衝區的陣列區段。 如果方法失敗，方法會傳回預設的陣列區段。</param>
+        <summary>嘗試從基礎記憶體緩衝區取得陣列區段。 傳回值指出作業是否成功。</summary>
+        <returns>如果方法呼叫成功，則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -499,12 +627,12 @@
         <Parameter Name="manager" Type="TManager" RefType="out" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <typeparam name="TManager">To be added.</typeparam>
-        <param name="memory">To be added.</param>
-        <param name="manager">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <typeparam name="T">唯讀記憶體緩衝區中的項目型別。</typeparam>
+        <typeparam name="TManager">型別<see cref="T:System.Buffers.MemoryManager`1" />擷取。</typeparam>
+        <param name="memory">要取得記憶體管理員的唯讀記憶體緩衝區。</param>
+        <param name="manager">當方法傳回時，的管理員 <param name="memory" />。</param>
+        <summary>嘗試從基礎唯讀記憶體緩衝區擷取 <see cref="T:System.Buffers.MemoryManager`1" />。</summary>
+        <returns>如果方法已擷取記憶體管理員，則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -539,14 +667,14 @@
         <Parameter Name="length" Type="System.Int32" RefType="out" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <typeparam name="TManager">To be added.</typeparam>
-        <param name="memory">To be added.</param>
-        <param name="manager">To be added.</param>
-        <param name="start">To be added.</param>
-        <param name="length">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <typeparam name="T">唯讀記憶體緩衝區中的項目型別。</typeparam>
+        <typeparam name="TManager">型別<see cref="T:System.Buffers.MemoryManager`1" />擷取。</typeparam>
+        <param name="memory">要取得記憶體管理員的唯讀記憶體緩衝區。</param>
+        <param name="manager">當方法傳回時，的管理員 <param name="memory" />。</param>
+        <param name="start">當方法傳回時，從開始 <param name="manager" /> 所代表的 <param name="memory" /> 位移。</param>
+        <param name="length">當方法傳回時， <param name="manager" /> 所代表的 <param name="memory" /> 長度。</param>
+        <summary>嘗試從基礎唯讀記憶體緩衝區擷取 <see cref="T:System.Buffers.MemoryManager`1" />、開始索引和長度。</summary>
+        <returns>如果方法成功，則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -573,12 +701,12 @@
         <Parameter Name="length" Type="System.Int32" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="memory">To be added.</param>
-        <param name="text">To be added.</param>
-        <param name="start">To be added.</param>
-        <param name="length">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="memory">唯讀記憶體包含字元區塊。</param>
+        <param name="text">當方法傳回時，記憶體緩衝區中包含的字串。</param>
+        <param name="start">中的開始位置 <param name="text" />。</param>
+        <param name="length">中的字元數目 <param name="text" />。</param>
+        <summary>嘗試從 <see langword="System.ReadOnlyMemory&lt;Char&gt;" /> 取得基礎字串。</summary>
+        <returns>如果方法成功擷取基礎字串，則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -612,12 +740,22 @@
         <Parameter Name="value" Type="T" RefType="out" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="source">To be added.</param>
-        <param name="value">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">要擷取的結構類型。</typeparam>
+        <param name="source">位元組的唯讀範圍。</param>
+        <param name="value">當方法傳回時，的執行個體 <param name="T" />。</param>
+        <summary>嘗試讀取型別結構 <param name="T" /> 來自位元組的唯讀範圍。</summary>
+        <returns>如果方法成功擷取結構的執行個體則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+`T` 不能包含指標或參考。 ' 已在執行階段為了保留型別安全。  
+
+       ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="T" /> 包含參考或指標。</exception>
       </Docs>
     </Member>
     <Member MemberName="TryWrite&lt;T&gt;">
@@ -650,12 +788,22 @@
         <Parameter Name="value" Type="T" RefType="ref" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="destination">To be added.</param>
-        <param name="value">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">結構的類型。</typeparam>
+        <param name="destination">要包含結構的位元組範圍。</param>
+        <param name="value">要寫入至範圍的結構。</param>
+        <summary>嘗試寫入型別結構 <param name="T" /> 到位元組範圍。</summary>
+        <returns>如果作業執行成功，則為 <see langword="true" />，否則為 <see langword="false" />。 如果範圍太小而無法包含，方法會傳回 <see langword="false" /><param name="T" />。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+`T` 不能包含指標或參考。 ' 已在執行階段為了保留型別安全。  
+
+       ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="TFrom" /> 或 <paramref name="TTo" /> 包含參考或指標。</exception>
       </Docs>
     </Member>
     <Member MemberName="Write&lt;T&gt;">
@@ -688,11 +836,23 @@
         <Parameter Name="value" Type="T" RefType="ref" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="destination">To be added.</param>
-        <param name="value">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">結構的類型。</typeparam>
+        <param name="destination">要包含結構的位元組範圍。</param>
+        <param name="value">要寫入至範圍的結構。</param>
+        <summary>寫入型別結構 <param name="T" /> 到位元組範圍。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+`T` 不能包含指標或參考。 ' 已在執行階段為了保留型別安全。  
+
+       ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="T" /> 包含參考或指標。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="destination" /> 太小而無法包含<paramref name="value" />。</exception>
       </Docs>
     </Member>
   </Members>

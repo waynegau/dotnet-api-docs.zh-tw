@@ -1,11 +1,11 @@
 <Type Name="ThreadState" FullName="System.Threading.ThreadState">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="5caa2caa6d22a6bccdc3cfc010bb3f89f6737e58" />
-    <Meta Name="ms.sourcegitcommit" Value="0ec122ee5f3681159b8460ab15b409fd6e3d3ae0" />
+    <Meta Name="ms.openlocfilehash" Value="b0f3e8d9dab97678b690e340db3f71242cb82e32" />
+    <Meta Name="ms.sourcegitcommit" Value="723b8a6d92667ba86fcda96190bad3b4a03283b3" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="10/04/2018" />
-    <Meta Name="ms.locfileid" Value="48595333" />
+    <Meta Name="ms.lasthandoff" Value="11/09/2018" />
+    <Meta Name="ms.locfileid" Value="51314873" />
   </Metadata>
   <TypeSignature Language="C#" Value="public enum ThreadState" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed ThreadState extends System.Enum" />
@@ -55,30 +55,38 @@
  <xref:System.Threading.ThreadState> 定義一組執行緒的所有可能的執行狀態。 一旦建立執行緒時，就至少要有一個狀態到其結束為止。 Common language runtime 中建立的執行緒在一開始都`Unstarted`狀態，而外部執行緒進入執行階段已在`Running`狀態。 `Unstarted`執行緒會轉換成`Running`藉由呼叫狀態<xref:System.Threading.Thread.Start%2A>。 並非所有的組合`ThreadState`值才有效; 例如，執行緒不能在兩者`Aborted`和`Unstarted`狀態。  
   
 > [!IMPORTANT]
->  有兩個執行緒狀態列舉<xref:System.Threading.ThreadState?displayProperty=nameWithType>和<xref:System.Diagnostics.ThreadState?displayProperty=nameWithType>。  
+>  有兩個執行緒狀態列舉型別：<xref:System.Threading.ThreadState?displayProperty=nameWithType>和<xref:System.Diagnostics.ThreadState?displayProperty=nameWithType>。  
   
  下表顯示會導致狀態變更的動作。  
   
 |動作|ThreadState|  
 |------------|-----------------|  
-|在 common language runtime 會建立一個執行緒。|尚未開始|  
-|另一個執行緒呼叫<xref:System.Threading.Thread.Start%2A?displayProperty=nameWithType>上新的執行緒，並呼叫的方法會傳回。<br /><br /> <xref:System.Threading.Thread.Start%2A>方法不會傳回，直到新的執行緒已開始執行。 沒有辦法知道何時新的執行緒將會開始執行，在呼叫期間<xref:System.Threading.Thread.Start%2A>。|執行中|  
-|執行緒呼叫 <xref:System.Threading.Thread.Sleep%2A>|WaitSleepJoin|  
-|執行緒對另一個物件呼叫 <xref:System.Threading.Monitor.Wait%2A>。|WaitSleepJoin|  
-|執行緒對另一個執行緒呼叫 <xref:System.Threading.Thread.Join%2A>。|WaitSleepJoin|  
-|另一個執行緒呼叫 <xref:System.Threading.Thread.Interrupt%2A>|執行中|  
-|另一個執行緒呼叫 <xref:System.Threading.Thread.Suspend%2A>|SuspendRequested|  
-|執行緒回應 <xref:System.Threading.Thread.Suspend%2A> 要求。|暫停|  
-|另一個執行緒呼叫 <xref:System.Threading.Thread.Resume%2A>|執行中|  
-|另一個執行緒呼叫 <xref:System.Threading.Thread.Abort%2A>|AbortRequested|  
-|執行緒回應 <xref:System.Threading.Thread.Abort%2A> 要求。|已停止|  
+|在 common language runtime 會建立一個執行緒。|<xref:System.Threading.ThreadState.Unstarted>|  
+|另一個執行緒呼叫<xref:System.Threading.Thread.Start%2A?displayProperty=nameWithType>上新的執行緒，並呼叫的方法會傳回。<br /><br /> <xref:System.Threading.Thread.Start%2A>方法不會傳回，直到新的執行緒已開始執行。 沒有辦法知道何時新的執行緒將會開始執行，在呼叫期間<xref:System.Threading.Thread.Start%2A>。|<xref:System.Threading.ThreadState.Running>|  
+|執行緒呼叫 <xref:System.Threading.Thread.Sleep%2A>|<xref:System.Threading.ThreadState.WaitSleepJoin>|  
+|執行緒對另一個物件呼叫 <xref:System.Threading.Monitor.Wait%2A> 。|<xref:System.Threading.ThreadState.WaitSleepJoin>|  
+|執行緒對另一個執行緒呼叫 <xref:System.Threading.Thread.Join%2A> 。|<xref:System.Threading.ThreadState.WaitSleepJoin>|  
+|另一個執行緒呼叫 <xref:System.Threading.Thread.Interrupt%2A>|<xref:System.Threading.ThreadState.Running>|  
+|另一個執行緒呼叫 <xref:System.Threading.Thread.Suspend%2A>|<xref:System.Threading.ThreadState.SuspendRequested>|  
+|執行緒回應 <xref:System.Threading.Thread.Suspend%2A> 要求。|<xref:System.Threading.ThreadState.Suspended>|  
+|另一個執行緒呼叫 <xref:System.Threading.Thread.Resume%2A>|<xref:System.Threading.ThreadState.Running>|  
+|另一個執行緒呼叫 <xref:System.Threading.Thread.Abort%2A>|<xref:System.Threading.ThreadState.AbortRequested>|  
+|執行緒回應 <xref:System.Threading.Thread.Abort%2A> 要求。|<xref:System.Threading.ThreadState.Stopped>|  
 |終止執行緒。|已停止|  
   
- 除了先前所述的狀態，還有`Background`狀態，表示執行緒是否正在執行中的背景或前景。  
+ 除了先前所述的狀態，還有<xref:System.Threading.ThreadState.Background>狀態，表示執行緒是否正在執行中的背景或前景。  
   
- 執行緒可以在指定的時間是在一個以上的狀態。 比方說，如果在呼叫會封鎖執行緒<xref:System.Threading.Monitor.Wait%2A>，和另一個執行緒呼叫<xref:System.Threading.Thread.Abort%2A>封鎖的執行緒，封鎖的執行緒就會同時`WaitSleepJoin`而`AbortRequested`一次的狀態。 在此情況下，當執行緒從呼叫返回<xref:System.Threading.Monitor.Wait%2A>或已中斷，它會接收<xref:System.Threading.ThreadAbortException>開始中止。  
+ 執行緒可以在指定的時間是在一個以上的狀態。 比方說，如果在呼叫會封鎖執行緒<xref:System.Threading.Monitor.Wait%2A>，和另一個執行緒呼叫<xref:System.Threading.Thread.Abort%2A>封鎖的執行緒，封鎖的執行緒就會同時<xref:System.Threading.ThreadState.WaitSleepJoin>而<xref:System.Threading.ThreadState.AbortRequested>一次的狀態。 在此情況下，當執行緒從呼叫返回<xref:System.Threading.Monitor.Wait%2A>或已中斷，它會接收<xref:System.Threading.ThreadAbortException>開始中止。  
   
- <xref:System.Threading.Thread.ThreadState%2A?displayProperty=nameWithType>執行緒屬性會提供一個執行緒的目前狀態。 應用程式必須使用位元遮罩，來判斷執行緒是否正在執行。 值之後`Running`零 (0)，測試是否在執行緒正在使用 C# 程式碼，例如`(myThread.ThreadState & (ThreadState.Stopped | ThreadState.Unstarted)) == 0`或 Visual Basic 程式碼，例如`(myThread.ThreadState And (ThreadState.Stopped Or ThreadState.Unstarted)) = 0`。  
+ <xref:System.Threading.Thread.ThreadState%2A?displayProperty=nameWithType>執行緒屬性會提供一個執行緒的目前狀態。 應用程式必須使用的位元遮罩，來判斷執行緒是否正在執行。 值因為<xref:System.Threading.ThreadState.Running>是零 (0)，測試是否執行緒正在執行下列程式碼：
+
+```csharp
+(myThread.ThreadState & (ThreadState.Stopped | ThreadState.Unstarted)) == 0
+```
+
+```vb
+(myThread.ThreadState And (ThreadState.Stopped Or ThreadState.Unstarted)) = 0
+```
   
  ]]></format>
     </remarks>
@@ -216,7 +224,7 @@
       </ReturnValue>
       <MemberValue>0</MemberValue>
       <Docs>
-        <summary>執行緒已經啟動，並未受封鎖，也沒有暫止的 <see cref="T:System.Threading.ThreadAbortException" />。</summary>
+        <summary>執行緒已啟動且尚未停止。</summary>
       </Docs>
     </Member>
     <Member MemberName="Stopped">

@@ -1,11 +1,11 @@
 <Type Name="Thread" FullName="System.Threading.Thread">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="7c33ebbf7fda315ea7cdcd851f00c29b10d280bd" />
-    <Meta Name="ms.sourcegitcommit" Value="0ec122ee5f3681159b8460ab15b409fd6e3d3ae0" />
+    <Meta Name="ms.openlocfilehash" Value="38eda2875476a401d6a3442e5e40cebc592a4863" />
+    <Meta Name="ms.sourcegitcommit" Value="996ba67625b61917bcf75bfefe6dcb016019c2d8" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="10/04/2018" />
-    <Meta Name="ms.locfileid" Value="48741626" />
+    <Meta Name="ms.lasthandoff" Value="11/02/2018" />
+    <Meta Name="ms.locfileid" Value="50965470" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class Thread : System.Runtime.ConstrainedExecution.CriticalFinalizerObject, System.Runtime.InteropServices._Thread" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit Thread extends System.Runtime.ConstrainedExecution.CriticalFinalizerObject implements class System.Runtime.InteropServices._Thread" />
@@ -142,7 +142,11 @@
 <a name="Culture"></a>   
 ## <a name="culture-and-threads"></a>文化特性和執行緒  
  每個執行緒都所代表文化特性<xref:System.Threading.Thread.CurrentCulture%2A>屬性和 UI 文化特性，以表示<xref:System.Threading.Thread.CurrentUICulture%2A>屬性。  目前的文化特性支援剖析和格式化、 字串比較和排序，這種區分文化特性的作業，而且也會控制執行緒所使用的行事曆與書寫系統。 目前的 UI 文化特性提供區分文化特性擷取資源檔中的資源。  
-  
+
+> [!IMPORTANT]
+> <xref:System.Threading.Thread.CurrentCulture>和<xref:System.Threading.Thread.CurrentUICulture>屬性無法可靠地運作，搭配目前的執行緒以外的任何執行緒時。 在.NET Framework 中，讀取這些屬性是可靠的但不設定這些屬性目前的執行緒以外的執行緒。 在.NET Core 上<xref:System.InvalidOperationException>如果執行緒嘗試讀取或寫入這些屬性在不同的執行緒上擲回。
+> 我們建議您改用<xref:System.Globalization.CultureInfo.CurrentCulture?displayProperty=nameWithType>和<xref:System.Globalization.CultureInfo.CurrentUICulture?displayProperty=nameWithType>屬性，以擷取和設定目前的文化特性。
+
  具現化新的執行緒時，其文化特性和 UI 文化特性定義的目前系統文化特性和 UI 文化特性，而不是文化特性和 UI 文化特性，從中建立新的執行緒的執行緒。 這表示，例如，如果目前的系統文化特性是英文 （美國） 和主要應用程式執行緒的目前文化特性是法文 （法國），藉由呼叫所建立的新執行緒的文化特性<xref:System.Threading.Thread.%23ctor%28System.Threading.ParameterizedThreadStart%29>從主執行緒的建構函式英文 （美國） 和法文 （法國）。 如需詳細資訊，請參閱的 < 文化特性和執行緒 」 區段<xref:System.Globalization.CultureInfo>類別主題。  
   
 > [!IMPORTANT]
@@ -153,9 +157,9 @@
 -   您可以傳遞<xref:System.Globalization.CultureInfo>物件，表示該文化特性<xref:System.Threading.ParameterizedThreadStart>委派或<xref:System.Threading.ThreadPool.QueueUserWorkItem%28System.Threading.WaitCallback%2CSystem.Object%29?displayProperty=nameWithType>方法。  
   
 -   在上執行的應用程式[!INCLUDE[net_v45](~/includes/net-v45-md.md)]和更新版本中，您可以定義要指派給所設定的值建立應用程式定義域中的所有執行緒 UI 文化特性與文化特性<xref:System.Globalization.CultureInfo.DefaultThreadCurrentCulture%2A?displayProperty=nameWithType>和<xref:System.Globalization.CultureInfo.DefaultThreadCurrentUICulture%2A?displayProperty=nameWithType>屬性。 請注意，這是每個應用程式定義域的設定。  
-  
- 如需詳細資訊和範例，請參閱 「 文化特性和執行緒 > 一節<xref:System.Globalization.CultureInfo>類別主題。  
-  
+
+ 如需詳細資訊和範例，請參閱 「 文化特性和執行緒 > 一節<xref:System.Globalization.CultureInfo>類別主題。
+
 <a name="Properties"></a>   
 ## <a name="getting-information-about-and-controlling-threads"></a>取得相關資訊和控制執行緒  
  您可以擷取提供執行緒的相關資訊的屬性值的數目。 在某些情況下，您也可以設定這些屬性值，來控制執行緒的作業。 這些執行緒屬性包括：  
@@ -1109,13 +1113,15 @@ Main thread: ThreadProc.Join has returned.  Press Enter to end program.
   
 ## Remarks  
  <xref:System.Globalization.CultureInfo>搭配其相關聯的物件，這個屬性所傳回的物件判斷預設格式的日期、 時間、 數字、 貨幣值，排序順序的文字、 大小寫慣例，以及字串比較。 請參閱<xref:System.Globalization.CultureInfo>類別若要了解文化特性名稱和識別碼，而異、 中性和特定文化特性之間的差異，並方式文化特性資訊影響執行緒和應用程式定義域。 請參閱<xref:System.Globalization.CultureInfo.CurrentCulture%2A?displayProperty=nameWithType>屬性，以了解如何決定執行緒的預設文化特性，以及使用者設定其電腦的文化特性資訊的方式。  
-  
+
+> [!IMPORTANT]
+> <xref:System.Threading.Thread.CurrentCulture>屬性無法可靠地運作，搭配目前的執行緒以外的任何執行緒時。 在.NET Framework 中，讀取內容的可靠性，不過將它設定為目前的執行緒以外的執行緒並不是。 在.NET Core<xref:System.InvalidOperationException>就會擲回，如果執行緒嘗試讀取或寫入<xref:System.Threading.Thread.CurrentCulture>不同的執行緒上的屬性。
+> 我們建議您改用<xref:System.Globalization.CultureInfo.CurrentCulture?displayProperty=nameWithType>擷取或設定目前的文化特性屬性。
+
  開頭[!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)]，您可以設定<xref:System.Threading.Thread.CurrentCulture%2A>中性文化特性的屬性。 這是因為的行為<xref:System.Globalization.CultureInfo>類別已變更： 當它代表中性文化特性，其屬性值 (特別是， <xref:System.Globalization.CultureInfo.Calendar%2A>， <xref:System.Globalization.CultureInfo.CompareInfo%2A>， <xref:System.Globalization.CultureInfo.DateTimeFormat%2A>， <xref:System.Globalization.CultureInfo.NumberFormat%2A>，和<xref:System.Globalization.CultureInfo.TextInfo%2A>屬性) 現在反映是中性文化特性相關聯的特定文化特性。 在舊版的.NET Framework 中，<xref:System.Threading.Thread.CurrentCulture%2A>屬性會擲回<xref:System.NotSupportedException>中性文化特性已指派時發生的例外狀況。  
   
-   
-  
 ## Examples  
- 下列程式碼範例會顯示執行緒的陳述式，可讓 Windows Form，以顯示在 [控制台] 中設定的文化特性的使用者介面。 需要額外的程式碼。  
+ 下列範例示範可讓要顯示在 [控制台] 中設定的文化特性中的 Windows Forms 應用程式的使用者介面執行緒陳述式。 需要額外的程式碼。  
   
  [!code-cpp[System.Threading.Thread.Culture#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Thread.Culture/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.Thread.Culture#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Thread.Culture/CS/source.cs#1)]
@@ -1124,6 +1130,7 @@ Main thread: ThreadProc.Join has returned.  Press Enter to end program.
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">該屬性設定為 <see langword="null" />。</exception>
+        <exception cref="T:System.InvalidOperationException">僅限 .NET Core：不支援從另一個執行緒讀取或寫入執行緒的文化特性。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">用來設定屬性。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.ControlThread" /></permission>
       </Docs>
     </Member>
@@ -1288,7 +1295,11 @@ Main thread: ThreadProc.Join has returned.  Press Enter to end program.
   
 ## Remarks  
  UI 文化特性會指定應用程式所需的資源來支援使用者輸入和輸出，並依預設是作業系統的文化特性相同。 請參閱<xref:System.Globalization.CultureInfo>類別若要了解文化特性名稱和識別碼，而異、 中性和特定文化特性之間的差異，並方式文化特性資訊影響執行緒和應用程式定義域。 請參閱<xref:System.Globalization.CultureInfo.CurrentUICulture%2A?displayProperty=nameWithType>若要了解如何判斷執行緒的預設 UI 文化特性的屬性。  
-  
+
+> [!IMPORTANT]
+> <xref:System.Threading.Thread.CurrentUICulture>屬性無法可靠地運作，搭配目前的執行緒以外的任何執行緒時。 在.NET Framework 中，讀取內容的可靠性，不過將它設定為目前的執行緒以外的執行緒並不是。 在.NET Core<xref:System.InvalidOperationException>就會擲回，如果執行緒嘗試讀取或寫入<xref:System.Threading.Thread.CurrentUICulture>不同的執行緒上的屬性。
+> 我們建議您改用<xref:System.Globalization.CultureInfo.CurrentUICulture?displayProperty=nameWithType>擷取或設定目前的文化特性屬性。
+
  <xref:System.Globalization.CultureInfo>傳回這個屬性可以是中性文化特性。 中性文化特性不應以格式化方法，例如<xref:System.String.Format%28System.IFormatProvider%2CSystem.String%2CSystem.Object%5B%5D%29?displayProperty=nameWithType>， <xref:System.DateTime.ToString%28System.String%2CSystem.IFormatProvider%29?displayProperty=nameWithType>，和<xref:System.Convert.ToString%28System.Char%2CSystem.IFormatProvider%29?displayProperty=nameWithType>。 使用 <xref:System.Globalization.CultureInfo.CreateSpecificCulture%2A?displayProperty=nameWithType>方法來取得特定的文化特性，或使用<xref:System.Threading.Thread.CurrentCulture%2A>屬性。  
   
 > [!NOTE]
@@ -1312,6 +1323,7 @@ Main thread: ThreadProc.Join has returned.  Press Enter to end program.
         </remarks>
         <exception cref="T:System.ArgumentNullException">該屬性設定為 <see langword="null" />。</exception>
         <exception cref="T:System.ArgumentException">此屬性設為無法用來尋找資源檔的文化特性名稱。 資源檔名稱只可以包含字母、數字、連字號或底線。</exception>
+        <exception cref="T:System.InvalidOperationException">僅限 .NET Core：不支援從另一個執行緒讀取或寫入執行緒的文化特性。</exception>
       </Docs>
     </Member>
     <Member MemberName="DisableComObjectEagerCleanup">
@@ -1579,7 +1591,7 @@ Main thread: ThreadProc.Join has returned.  Press Enter to end program.
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>確認釋出資源，並在記憶體回收行程再利用 <see cref="T:System.Threading.Thread" /> 物件時執行其他清除作業。</summary>
+        <summary>確認釋出資源，並在記憶體回收行程回收 <see cref="T:System.Threading.Thread" /> 物件時執行其他清除作業。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -2147,7 +2159,7 @@ Main thread: ThreadProc.Join has returned.  Press Enter to end program.
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Security.SecurityException">呼叫端沒有適當的 <see cref="T:System.Security.Permissions.SecurityPermission" />。</exception>
+        <exception cref="T:System.Security.SecurityException">呼叫端沒有合適的 <see cref="T:System.Security.Permissions.SecurityPermission" />。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">在執行緒上的進階作業。 關聯的列舉型別：<see cref="F:System.Security.Permissions.SecurityPermissionFlag.ControlThread" />。</permission>
         <altmember cref="T:System.Threading.ThreadState" />
         <related type="Article" href="~/docs/standard/threading/pausing-and-resuming-threads.md">暫停和中斷執行緒</related>
@@ -2189,7 +2201,7 @@ Main thread: ThreadProc.Join has returned.  Press Enter to end program.
       </ReturnValue>
       <Docs>
         <summary>取得值，指出目前執行緒的執行狀態。</summary>
-        <value>如果這個執行緒已經啟動但還沒有正常結束或者中止，則為 <see langword="true" />，否則為 <see langword="false" />。</value>
+        <value>如果這個執行緒已經啟動但還沒有正常終止或者中止，則為 <see langword="true" />，否則為 <see langword="false" />。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2744,8 +2756,8 @@ Main thread: ThreadProc.Join has returned.  Press Enter to end program.
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Threading.ThreadStateException">執行緒已達最後狀態，例如 <see cref="F:System.Threading.ThreadState.Aborted" />。</exception>
-        <exception cref="T:System.ArgumentException">為 Set 作業指定的值不是有效的 <see cref="T:System.Threading.ThreadPriority" /> 值。</exception>
+        <exception cref="T:System.Threading.ThreadStateException">此執行緒已達到最終狀態，例如 <see cref="F:System.Threading.ThreadState.Aborted" />。</exception>
+        <exception cref="T:System.ArgumentException">針對設定作業指定的值不是有效的 <see cref="T:System.Threading.ThreadPriority" /> 值。</exception>
         <altmember cref="T:System.Threading.ThreadPriority" />
         <related type="Article" href="~/docs/standard/threading/scheduling-threads.md">排程執行緒</related>
       </Docs>
@@ -2799,7 +2811,7 @@ Main thread: ThreadProc.Join has returned.  Press Enter to end program.
         </remarks>
         <exception cref="T:System.PlatformNotSupportedException">僅限 .NET Core：不支援此成員。</exception>
         <exception cref="T:System.Threading.ThreadStateException">
-          <see langword="Abort" /> 並未在目前執行緒上被叫用。</exception>
+          <see langword="Abort" /> 不是在目前執行緒上所叫用。</exception>
         <exception cref="T:System.Security.SecurityException">呼叫端沒有目前執行緒的必要安全性權限。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">在執行緒上的進階作業。 關聯的列舉型別：<see cref="F:System.Security.Permissions.SecurityPermissionFlag.ControlThread" />。</permission>
         <related type="Article" href="~/docs/standard/threading/destroying-threads.md">終結執行緒</related>
@@ -2856,7 +2868,7 @@ Main thread: ThreadProc.Join has returned.  Press Enter to end program.
         </remarks>
         <exception cref="T:System.PlatformNotSupportedException">僅限 .NET Core：不支援此成員。</exception>
         <exception cref="T:System.Threading.ThreadStateException">執行緒未啟動、已無作用，或不是處於暫停狀態。</exception>
-        <exception cref="T:System.Security.SecurityException">呼叫端沒有適當的 <see cref="T:System.Security.Permissions.SecurityPermission" />。</exception>
+        <exception cref="T:System.Security.SecurityException">呼叫端沒有合適的 <see cref="T:System.Security.Permissions.SecurityPermission" />。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">在執行緒上的進階作業。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.SecurityPermissionFlag.ControlThread" /></permission>
         <related type="Article" href="~/docs/standard/threading/pausing-and-resuming-threads.md">暫停和中斷執行緒</related>
         <related type="Article" href="~/docs/standard/threading/managed-thread-states.md">Managed 執行緒狀態</related>
@@ -2925,7 +2937,7 @@ Main thread: ThreadProc.Join has returned.  Press Enter to end program.
         </remarks>
         <exception cref="T:System.PlatformNotSupportedException">僅限 .NET Core：macOS 和 Linux 平台不支援此成員。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="state" /> 不是有效的 Apartment 狀態。</exception>
+          <paramref name="state" /> 的 Apartment 狀態無效。</exception>
         <exception cref="T:System.Threading.ThreadStateException">已經啟動執行緒。</exception>
         <exception cref="T:System.InvalidOperationException">Apartment 狀態已經初始化。</exception>
       </Docs>
@@ -3450,7 +3462,7 @@ Main thread: ThreadProc.Join has returned.  Press Enter to end program.
         </remarks>
         <exception cref="T:System.PlatformNotSupportedException">僅限 .NET Core：不支援此成員。</exception>
         <exception cref="T:System.Threading.ThreadStateException">執行緒未啟動或無作用。</exception>
-        <exception cref="T:System.Security.SecurityException">呼叫端沒有適當的 <see cref="T:System.Security.Permissions.SecurityPermission" />。</exception>
+        <exception cref="T:System.Security.SecurityException">呼叫端沒有合適的 <see cref="T:System.Security.Permissions.SecurityPermission" />。</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">在執行緒上的進階作業。 關聯的列舉型別：<see cref="F:System.Security.Permissions.SecurityPermissionFlag.ControlThread" />。</permission>
         <related type="Article" href="~/docs/standard/threading/pausing-and-resuming-threads.md">暫停和中斷執行緒</related>
         <related type="Article" href="~/docs/standard/threading/managed-thread-states.md">Managed 執行緒狀態</related>
@@ -3772,7 +3784,7 @@ Main thread: ThreadProc.Join has returned.  Press Enter to end program.
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="state" /> 不是有效的 Apartment 狀態。</exception>
+          <paramref name="state" /> 的 Apartment 狀態無效。</exception>
         <exception cref="T:System.Threading.ThreadStateException">已經啟動執行緒。</exception>
       </Docs>
     </Member>
