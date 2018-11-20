@@ -1,11 +1,11 @@
 <Type Name="IEnlistmentNotification" FullName="System.Transactions.IEnlistmentNotification">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="e60dea71d0f2063b56a541d5294ba5ac305362d3" />
-    <Meta Name="ms.sourcegitcommit" Value="9dda17222b9f7d3edf130133bfb1370d5b410a4b" />
+    <Meta Name="ms.openlocfilehash" Value="198166c1aedb28a599cf6b4fc6e4d895c9a53dae" />
+    <Meta Name="ms.sourcegitcommit" Value="16d2d159872fd213cae4b8f371d7ae9c8b027c89" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="09/22/2018" />
-    <Meta Name="ms.locfileid" Value="46642209" />
+    <Meta Name="ms.lasthandoff" Value="11/17/2018" />
+    <Meta Name="ms.locfileid" Value="51891032" />
   </Metadata>
   <TypeSignature Language="C#" Value="public interface IEnlistmentNotification" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IEnlistmentNotification" />
@@ -30,7 +30,7 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>描述資源管理員應該實作的介面，以便在登記參與時，為交易管理員提供兩階段交易認可 (Two-Phase Commit) 告知回呼 (Callback)。</summary>
+    <summary>描述資源管理員應該實作的介面，可提供兩階段認可告知回呼，讓交易管理員用來登記參與。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
@@ -62,8 +62,8 @@
  ]]></format>
     </remarks>
     <altmember cref="T:System.Transactions.ISinglePhaseNotification" />
-    <related type="Article" href="http://msdn.microsoft.com/library/786a12c2-d530-49f4-9c59-5c973e15a11d">將資源登記成為交易中的參與者</related>
-    <related type="Article" href="http://msdn.microsoft.com/library/694ea153-e4db-41ae-96ac-9ac66dcb69a9">在單一階段和多重階段中認可交易</related>
+    <related type="Article" href="https://msdn.microsoft.com/library/786a12c2-d530-49f4-9c59-5c973e15a11d">將資源登記成為交易中的參與者</related>
+    <related type="Article" href="https://msdn.microsoft.com/library/694ea153-e4db-41ae-96ac-9ac66dcb69a9">在單一階段和多重階段中認可交易</related>
   </Docs>
   <Members>
     <Member MemberName="Commit">
@@ -199,7 +199,7 @@
 ## Remarks  
  交易管理員時呼叫這個方法的登記的資源管理員在階段 1 的承諾，它會要求參與者是否能認可的交易。  
   
- 當您實作永久性資源管理員時，您應該記錄您在這個階段期間準備記錄。 該記錄應該包含所有必要的資訊，以便執行復原。 這包括<xref:System.Transactions.PreparingEnlistment.RecoveryInformation%2A>屬性，它會傳遞至中的交易管理員<xref:System.Transactions.TransactionManager.Reenlist%2A>在復原期間的方法。 如需有關復原的詳細資訊，請參閱[執行復原](http://msdn.microsoft.com/library/d342c5c7-da64-4a4c-8e63-b52f4fbf2691)。  
+ 當您實作永久性資源管理員時，您應該記錄您在這個階段期間準備記錄。 該記錄應該包含所有必要的資訊，以便執行復原。 這包括<xref:System.Transactions.PreparingEnlistment.RecoveryInformation%2A>屬性，它會傳遞至中的交易管理員<xref:System.Transactions.TransactionManager.Reenlist%2A>在復原期間的方法。 如需有關復原的詳細資訊，請參閱[執行復原](https://msdn.microsoft.com/library/d342c5c7-da64-4a4c-8e63-b52f4fbf2691)。  
   
  您的資源管理員應該完成所有工作，必須完成之前呼叫<xref:System.Transactions.PreparingEnlistment.Prepared%2A>方法的`preparingEnlistment`參數來指出它已投票認可。 您應該要確定這完成之前，認可、 復原或不確定接收任何第 2 階段通知這類項目。 這是因為第 2 階段告知會發生並內嵌呼叫的相同執行緒上<xref:System.Transactions.PreparingEnlistment.Prepared%2A>第 1 階段中的方法。 因此，當您預期在收到第二階段告知之前會完成 <xref:System.Transactions.PreparingEnlistment.Prepared%2A> 呼叫時，請勿在此呼叫之後執行任何工作 (例如，釋放鎖定)。  
   
