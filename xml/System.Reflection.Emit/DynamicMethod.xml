@@ -1,11 +1,11 @@
 <Type Name="DynamicMethod" FullName="System.Reflection.Emit.DynamicMethod">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="7442e33d0c8711218cfea94b20299fe61d4a9c40" />
-    <Meta Name="ms.sourcegitcommit" Value="16d2d159872fd213cae4b8f371d7ae9c8b027c89" />
+    <Meta Name="ms.openlocfilehash" Value="77e79227fcaab509eedc378ec720b0bce479eaae" />
+    <Meta Name="ms.sourcegitcommit" Value="9e06b87bcfa4347dbbaaa4b3cc36b43b93b5badb" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="11/17/2018" />
-    <Meta Name="ms.locfileid" Value="51881203" />
+    <Meta Name="ms.lasthandoff" Value="11/20/2018" />
+    <Meta Name="ms.locfileid" Value="52227751" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class DynamicMethod : System.Reflection.MethodInfo" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit DynamicMethod extends System.Reflection.MethodInfo" />
@@ -34,7 +34,7 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>定義及代表可以編譯、執行和捨棄的動態方法。 捨棄的方法可被記憶體回收。</summary>
+    <summary>定義及代表可以編譯、執行和捨棄的動態方法。 已捨棄的方法可供記憶體回收所用。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
@@ -54,7 +54,7 @@
   
  下表顯示哪些類型和成員可以存取匿名裝載動態方法，包含或不含 JIT 可見度檢查，取決於是否<xref:System.Security.Permissions.ReflectionPermission>與<xref:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess>旗標會被授與。  
   
-||不含 <xref:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess>|包含 <xref:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess>|  
+||不使用 <xref:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess>|包含 <xref:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess>|  
 |-|-|-|  
 |不要略過 JIT 可見度檢查|任何組件中的公用類型的公用成員。|任何組件中的公用類型的公用成員。|  
 |略過 JIT 可見度檢查，但有限制|任何組件中的公用類型的公用成員。|所有的類型，只能在其信任層級會等於或小於發出動態方法的組件的信任層級的組件中的所有成員。|  
@@ -149,8 +149,8 @@
       <Docs>
         <param name="name">動態方法的名稱。 這可以是零長度的字串，但不能是 <see langword="null" />。</param>
         <param name="returnType">指定動態方法之傳回類型的 <see cref="T:System.Type" /> 物件；如果方法沒有傳回類型，則為 <see langword="null" />。</param>
-        <param name="parameterTypes">指定動態方法之參數型別的 <see cref="T:System.Type" /> 物件陣列，如果方法沒有任何參數則為 <see langword="null" />。</param>
-        <summary>初始化匿名裝載動態方法，指定方法名稱、傳回型別及參數型別。</summary>
+        <param name="parameterTypes">指定動態方法之參數類型的 <see cref="T:System.Type" /> 物件陣列；如果方法沒有參數，則為 <see langword="null" />。</param>
+        <summary>初始化匿名裝載的動態方法，並指定方法名稱、傳回類型和參數類型。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -169,11 +169,11 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="parameterTypes" /> 的一個項目是 <see langword="null" /> 或 <see cref="T:System.Void" />。</exception>
+          <paramref name="parameterTypes" /> 的項目為 <see langword="null" /> 或 <see cref="T:System.Void" />。</exception>
         <exception cref="T:System.ArgumentNullException">
           <paramref name="name" /> 為 <see langword="null" />。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="returnType" /> 是 <see cref="P:System.Type.IsByRef" /> 傳回 <see langword="true" /> 的型別。</exception>
+          <paramref name="returnType" /> 類型是 <see cref="P:System.Type.IsByRef" /> 傳回 <see langword="true" /> 的對象。</exception>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/how-to-define-and-execute-dynamic-methods.md">如何：定義和執行動態方法</related>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md">反映發出中的安全性問題</related>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/walkthrough-emitting-code-in-partial-trust-scenarios.md">逐步解說：在部分信任案例中發出程式碼</related>
@@ -213,8 +213,9 @@
         <param name="name">動態方法的名稱。 這可以是零長度的字串，但不能是 <see langword="null" />。</param>
         <param name="returnType">指定動態方法之傳回類型的 <see cref="T:System.Type" /> 物件；如果方法沒有傳回類型，則為 <see langword="null" />。</param>
         <param name="parameterTypes">指定動態方法之參數類型的 <see cref="T:System.Type" /> 物件陣列；如果方法沒有參數，則為 <see langword="null" />。</param>
-        <param name="restrictedSkipVisibility">若為 <see langword="true" />，則略過動態方法的 MSIL 所存取型別和成員的 JIT 可視性檢查，但有這項限制：包含這些型別和成員的組件信任層級，必須等於或低於發出動態方法之呼叫堆疊的信任層級，否則為 <see langword="false" />。</param>
-        <summary>初始化匿名裝載動態方法，指定方法名稱、傳回型別、參數型別，以及是否應當略過動態方法的 Microsoft intermediate language (MSIL) 所存取型別與成員的 Just-In-Time (JIT) 可視性檢查。</summary>
+        <param name="restrictedSkipVisibility">
+          <see langword="true" /> 則略過對動態方法的 MSIL 所存取之類型和成員的 JIT 可視性檢查，但有此限制：包含這些類型和成員的組件的信任層級，必須等於或小於發出動態方法的呼叫堆疊的信任層級；否則為 <see langword="false" />。</param>
+        <summary>初始化匿名裝載的動態方法，並指定方法名稱、傳回類型、參數類型、以及是否應該略過動態方法的 Microsoft Intermediate Language (MSIL) 所存取之類型和成員的 Just-In-Time (JIT) 可見度檢查。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -246,11 +247,11 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="parameterTypes" /> 的一個項目是 <see langword="null" /> 或 <see cref="T:System.Void" />。</exception>
+          <paramref name="parameterTypes" /> 的項目為 <see langword="null" /> 或 <see cref="T:System.Void" />。</exception>
         <exception cref="T:System.ArgumentNullException">
           <paramref name="name" /> 為 <see langword="null" />。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="returnType" /> 是 <see cref="P:System.Type.IsByRef" /> 傳回 <see langword="true" /> 的型別。</exception>
+          <paramref name="returnType" /> 類型是 <see cref="P:System.Type.IsByRef" /> 傳回 <see langword="true" /> 的對象。</exception>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/how-to-define-and-execute-dynamic-methods.md">如何：定義和執行動態方法</related>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md">反映發出中的安全性問題</related>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/walkthrough-emitting-code-in-partial-trust-scenarios.md">逐步解說：在部分信任案例中發出程式碼</related>
@@ -289,10 +290,10 @@
       <Docs>
         <param name="name">動態方法的名稱。 這可以是零長度的字串，但不能是 <see langword="null" />。</param>
         <param name="returnType">指定動態方法之傳回類型的 <see cref="T:System.Type" /> 物件；如果方法沒有傳回類型，則為 <see langword="null" />。</param>
-        <param name="parameterTypes">指定動態方法之參數型別的 <see cref="T:System.Type" /> 物件陣列，如果方法沒有任何參數則為 <see langword="null" />。</param>
+        <param name="parameterTypes">指定動態方法之參數類型的 <see cref="T:System.Type" /> 物件陣列；如果方法沒有參數，則為 <see langword="null" />。</param>
         <param name="m">
-          <see cref="T:System.Reflection.Module" />，表示動態方法在邏輯上與其相關聯的模組。</param>
-        <summary>為模組建立全域的動態方法，指定方法名稱、傳回型別、參數型別和模組。</summary>
+          <see cref="T:System.Reflection.Module" />，代表動態方法在邏輯上相關聯的模組。</param>
+        <summary>建立對模組通用的動態方法，並指定方法名稱、傳回類型、參數類型和模組。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -319,7 +320,7 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="parameterTypes" /> 的一個項目是 <see langword="null" /> 或 <see cref="T:System.Void" />。  
+          <paramref name="parameterTypes" /> 的項目為 <see langword="null" /> 或 <see cref="T:System.Void" />。  
   
 -或- 
  <paramref name="m" /> 是為動態方法提供匿名裝載的模組。</exception>
@@ -329,7 +330,7 @@
 -或- 
  <paramref name="m" /> 為 <see langword="null" />。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="returnType" /> 是 <see cref="P:System.Type.IsByRef" /> 傳回 <see langword="true" /> 的型別。</exception>
+          <paramref name="returnType" /> 類型是 <see cref="P:System.Type.IsByRef" /> 傳回 <see langword="true" /> 的對象。</exception>
         <permission cref="T:System.Security.Permissions.ReflectionPermission">呼叫模組以外的其他模組相關聯的動態方法。 關聯的列舉型別：<see cref="F:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess" />。</permission>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/how-to-define-and-execute-dynamic-methods.md">如何：定義和執行動態方法</related>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md">反映發出中的安全性問題</related>
@@ -369,8 +370,8 @@
         <param name="name">動態方法的名稱。 這可以是零長度的字串，但不能是 <see langword="null" />。</param>
         <param name="returnType">指定動態方法之傳回類型的 <see cref="T:System.Type" /> 物件；如果方法沒有傳回類型，則為 <see langword="null" />。</param>
         <param name="parameterTypes">指定動態方法之參數類型的 <see cref="T:System.Type" /> 物件陣列；如果方法沒有參數，則為 <see langword="null" />。</param>
-        <param name="owner">動態方法在邏輯方面相關聯的 <see cref="T:System.Type" />。 動態方法可以存取型別的所有成員。</param>
-        <summary>建立動態方法，指定方法名稱、傳回型別、參數型別和動態方法在邏輯上與其相關聯的型別。</summary>
+        <param name="owner">動態方法在邏輯方面相關聯的 <see cref="T:System.Type" />。 動態方法可存取該類型的所有成員。</param>
+        <summary>建立動態方法，指定方法名稱、傳回類型、參數類型及與動態方法在邏輯上相關聯的類型。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -410,7 +411,7 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="parameterTypes" /> 的一個項目是 <see langword="null" /> 或 <see cref="T:System.Void" />。  
+          <paramref name="parameterTypes" /> 的項目為 <see langword="null" /> 或 <see cref="T:System.Void" />。  
   
 -或- 
  <paramref name="owner" /> 是介面、陣列、開放式泛型類型，或者是泛型類型或方法的類型參數。</exception>
@@ -420,7 +421,7 @@
 -或- 
  <paramref name="owner" /> 為 <see langword="null" />。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="returnType" /> 是 <see langword="null" />，或是 <see cref="P:System.Type.IsByRef" /> 傳回 <see langword="true" /> 的型別。</exception>
+          <paramref name="returnType" /> 為 <see langword="null" />，或屬於 <see cref="P:System.Type.IsByRef" /> 會傳回 <see langword="true" /> 的類型。</exception>
         <permission cref="T:System.Security.Permissions.ReflectionPermission">在模組中呼叫的模組以外的類型相關聯的動態方法。 關聯的列舉型別：<see cref="F:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess" />。</permission>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/how-to-define-and-execute-dynamic-methods.md">如何：定義和執行動態方法</related>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md">反映發出中的安全性問題</related>
@@ -460,11 +461,12 @@
       <Docs>
         <param name="name">動態方法的名稱。 這可以是零長度的字串，但不能是 <see langword="null" />。</param>
         <param name="returnType">指定動態方法之傳回類型的 <see cref="T:System.Type" /> 物件；如果方法沒有傳回類型，則為 <see langword="null" />。</param>
-        <param name="parameterTypes">指定動態方法之參數型別的 <see cref="T:System.Type" /> 物件陣列，如果方法沒有任何參數則為 <see langword="null" />。</param>
+        <param name="parameterTypes">指定動態方法之參數類型的 <see cref="T:System.Type" /> 物件陣列；如果方法沒有參數，則為 <see langword="null" />。</param>
         <param name="m">
           <see cref="T:System.Reflection.Module" />，代表動態方法在邏輯上相關聯的模組。</param>
-        <param name="skipVisibility">若為 <see langword="true" />，則略過動態方法的 MSIL 所存取型別和成員的 JIT 可視性檢查。</param>
-        <summary>為模組建立全域的動態方法，指定方法名稱、傳回型別、參數型別、模組，以及是否應當略過動態方法的 Microsoft intermediate language (MSIL) 所存取型別與成員的 Just-In-Time (JIT) 可視性檢查。</summary>
+        <param name="skipVisibility">
+          <see langword="true" /> 表示要略過動態方法的 MSIL 所存取之類型和成員的 JIT 可見度檢查。</param>
+        <summary>建立對模組而言全域的動態方法，並指定方法名稱、傳回類型、參數類型、模組，以及是否應該略過動態方法的 Microsoft Intermediate Language (MSIL) 所存取之類型和成員的 Just-In-Time (JIT) 可見度檢查。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -482,7 +484,7 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="parameterTypes" /> 的一個項目是 <see langword="null" /> 或 <see cref="T:System.Void" />。  
+          <paramref name="parameterTypes" /> 的項目為 <see langword="null" /> 或 <see cref="T:System.Void" />。  
   
 -或- 
  <paramref name="m" /> 是為動態方法提供匿名裝載的模組。</exception>
@@ -492,7 +494,7 @@
 -或- 
  <paramref name="m" /> 為 <see langword="null" />。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="returnType" /> 是 <see cref="P:System.Type.IsByRef" /> 傳回 <see langword="true" /> 的型別。</exception>
+          <paramref name="returnType" /> 類型是 <see cref="P:System.Type.IsByRef" /> 傳回 <see langword="true" /> 的對象。</exception>
         <permission cref="T:System.Security.Permissions.ReflectionPermission">呼叫模組以外的其他模組相關聯的動態方法。 關聯的列舉型別：<see cref="F:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess" />。</permission>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/how-to-define-and-execute-dynamic-methods.md">如何：定義和執行動態方法</related>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md">反映發出中的安全性問題</related>
@@ -534,8 +536,9 @@
         <param name="returnType">指定動態方法之傳回類型的 <see cref="T:System.Type" /> 物件；如果方法沒有傳回類型，則為 <see langword="null" />。</param>
         <param name="parameterTypes">指定動態方法之參數類型的 <see cref="T:System.Type" /> 物件陣列；如果方法沒有參數，則為 <see langword="null" />。</param>
         <param name="owner">動態方法在邏輯方面相關聯的 <see cref="T:System.Type" />。 動態方法可存取該類型的所有成員。</param>
-        <param name="skipVisibility">若為 <see langword="true" />，則略過動態方法的 MSIL 所存取型別和成員的 JIT 可視性檢查，否則為 <see langword="false" />。</param>
-        <summary>建立動態方法，指定方法名稱、傳回型別、參數型別、與動態方法以邏輯方式相關聯的型別，以及是否應略過動態方法的 Microsoft intermediate language (MSIL) 所存取型別和成員的 Just-In-Time (JIT) 可視性檢查。</summary>
+        <param name="skipVisibility">
+          <see langword="true" /> 表示要略過動態方法的 MSIL 所存取之類型和成員的 JIT 可見度檢查，否則為 <see langword="false" />。</param>
+        <summary>建立動態方法，並指定方法名稱、傳回類型、參數類型、動態方法在邏輯上相關聯的類型，以及是否應該略過動態方法的 Microsoft Intermediate Language (MSIL) 所存取之類型和成員的 Just-In-Time (JIT) 可見度檢查。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -553,7 +556,7 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="parameterTypes" /> 的一個項目是 <see langword="null" /> 或 <see cref="T:System.Void" />。  
+          <paramref name="parameterTypes" /> 的項目為 <see langword="null" /> 或 <see cref="T:System.Void" />。  
   
 -或- 
  <paramref name="owner" /> 是介面、陣列、開放式泛型類型，或者是泛型類型或方法的類型參數。</exception>
@@ -563,7 +566,7 @@
 -或- 
  <paramref name="owner" /> 為 <see langword="null" />。</exception>
         <exception cref="T:System.NotSupportedException">
-          <paramref name="returnType" /> 是 <see langword="null" />，或是 <see cref="P:System.Type.IsByRef" /> 傳回 <see langword="true" /> 的型別。</exception>
+          <paramref name="returnType" /> 為 <see langword="null" />，或屬於 <see cref="P:System.Type.IsByRef" /> 會傳回 <see langword="true" /> 的類型。</exception>
         <permission cref="T:System.Security.Permissions.ReflectionPermission">在模組中呼叫的模組以外的類型相關聯的動態方法。 關聯的列舉型別：<see cref="F:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess" />。</permission>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/how-to-define-and-execute-dynamic-methods.md">如何：定義和執行動態方法</related>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md">反映發出中的安全性問題</related>
@@ -607,10 +610,11 @@
         <param name="attributes">指定動態方法屬性的 <see cref="T:System.Reflection.MethodAttributes" /> 值的位元組合。 唯一允許的組合是 <see cref="F:System.Reflection.MethodAttributes.Public" /> 和 <see cref="F:System.Reflection.MethodAttributes.Static" />。</param>
         <param name="callingConvention">動態方法的的呼叫慣例。 必須是 <see cref="F:System.Reflection.CallingConventions.Standard" />。</param>
         <param name="returnType">指定動態方法之傳回類型的 <see cref="T:System.Type" /> 物件；如果方法沒有傳回類型，則為 <see langword="null" />。</param>
-        <param name="parameterTypes">指定動態方法之參數型別的 <see cref="T:System.Type" /> 物件陣列，如果方法沒有任何參數則為 <see langword="null" />。</param>
+        <param name="parameterTypes">指定動態方法之參數類型的 <see cref="T:System.Type" /> 物件陣列；如果方法沒有參數，則為 <see langword="null" />。</param>
         <param name="m">To be added.</param>
-        <param name="skipVisibility">若為 <see langword="true" />，則略過動態方法的 MSIL 所存取型別和成員的 JIT 可視性檢查，否則為 <see langword="false" />。</param>
-        <summary>為模組建立全域的動態方法，指定方法名稱、屬性、呼叫慣例、傳回型別、參數型別、模組，以及是否應當略過動態方法的 Microsoft intermediate language (MSIL) 所存取型別與成員的 Just-In-Time (JIT) 可視性檢查。</summary>
+        <param name="skipVisibility">
+          <see langword="true" /> 表示要略過動態方法的 MSIL 所存取之類型和成員的 JIT 可見度檢查，否則為 <see langword="false" />。</param>
+        <summary>建立對模組而言全域的動態方法，並指定方法名稱、屬性、呼叫慣例、傳回類型、參數類型、模組，以及是否應該略過動態方法的 Microsoft Intermediate Language (MSIL) 所存取之類型和成員的 Just-In-Time (JIT) 可見度檢查。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -628,7 +632,7 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="parameterTypes" /> 的一個項目是 <see langword="null" /> 或 <see cref="T:System.Void" />。  
+          <paramref name="parameterTypes" /> 的項目為 <see langword="null" /> 或 <see cref="T:System.Void" />。  
   
 -或- 
  <paramref name="m" /> 是為動態方法提供匿名裝載的模組。</exception>
@@ -644,7 +648,7 @@
  <paramref name="callingConvention" /> 不是 <see cref="F:System.Reflection.CallingConventions.Standard" />。  
   
 -或- 
- <paramref name="returnType" /> 是 <see cref="P:System.Type.IsByRef" /> 傳回 <see langword="true" /> 的型別。</exception>
+ <paramref name="returnType" /> 類型是 <see cref="P:System.Type.IsByRef" /> 傳回 <see langword="true" /> 的對象。</exception>
         <permission cref="T:System.Security.Permissions.ReflectionPermission">呼叫模組以外的其他模組相關聯的動態方法。 關聯的列舉型別：<see cref="F:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess" />。</permission>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/how-to-define-and-execute-dynamic-methods.md">如何：定義和執行動態方法</related>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md">反映發出中的安全性問題</related>
@@ -690,8 +694,9 @@
         <param name="returnType">指定動態方法之傳回類型的 <see cref="T:System.Type" /> 物件；如果方法沒有傳回類型，則為 <see langword="null" />。</param>
         <param name="parameterTypes">指定動態方法之參數類型的 <see cref="T:System.Type" /> 物件陣列；如果方法沒有參數，則為 <see langword="null" />。</param>
         <param name="owner">動態方法在邏輯方面相關聯的 <see cref="T:System.Type" />。 動態方法可存取該類型的所有成員。</param>
-        <param name="skipVisibility">若為 <see langword="true" />，則略過動態方法的 MSIL 所存取型別和成員的 JIT 可視性檢查，否則為 <see langword="false" />。</param>
-        <summary>建立動態方法，指定方法名稱、屬性、呼叫慣例、傳回型別、參數型別、與動態方法在邏輯上相關聯的型別，以及是否應略過動態方法的 Microsoft intermediate language (MSIL) 所存取型別和成員的 Just-In-Time (JIT) 可視性檢查。</summary>
+        <param name="skipVisibility">
+          <see langword="true" /> 表示要略過動態方法的 MSIL 所存取之類型和成員的 JIT 可見度檢查，否則為 <see langword="false" />。</param>
+        <summary>建立動態方法、指定方法名稱、屬性、呼叫慣例、傳回類型、參數類型、動態方法在邏輯上相關聯的類型，以及是否應該略過動態方法的 Microsoft Intermediate Language (MSIL) 所存取之類型和成員的 Just-In-Time (JIT) 可見度檢查。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -709,7 +714,7 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="parameterTypes" /> 的一個項目是 <see langword="null" /> 或 <see cref="T:System.Void" />。  
+          <paramref name="parameterTypes" /> 的項目為 <see langword="null" /> 或 <see cref="T:System.Void" />。  
   
 -或- 
  <paramref name="owner" /> 是介面、陣列、開放式泛型類型，或者是泛型類型或方法的類型參數。</exception>
@@ -725,7 +730,7 @@
  <paramref name="callingConvention" /> 不是 <see cref="F:System.Reflection.CallingConventions.Standard" />。  
   
 -或- 
- <paramref name="returnType" /> 是 <see cref="P:System.Type.IsByRef" /> 傳回 <see langword="true" /> 的型別。</exception>
+ <paramref name="returnType" /> 類型是 <see cref="P:System.Type.IsByRef" /> 傳回 <see langword="true" /> 的對象。</exception>
         <permission cref="T:System.Security.Permissions.ReflectionPermission">在模組中呼叫的模組以外的類型相關聯的動態方法。 關聯的列舉型別：<see cref="F:System.Security.Permissions.ReflectionPermissionFlag.RestrictedMemberAccess" />。</permission>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/how-to-define-and-execute-dynamic-methods.md">如何：定義和執行動態方法</related>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md">反映發出中的安全性問題</related>
@@ -754,9 +759,9 @@
         <ReturnType>System.Reflection.MethodAttributes</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得建立動態方法時指定的屬性。</summary>
+        <summary>取得建立動態方法時所指定的屬性。</summary>
         <value>
-          <see cref="T:System.Reflection.MethodAttributes" /> 值的位元組合，表示方法的屬性。</value>
+          <see cref="T:System.Reflection.MethodAttributes" /> 值的位元組合，代表此方法的屬性。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -799,8 +804,9 @@
         <ReturnType>System.Reflection.CallingConventions</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得建立動態方法時指定的呼叫慣例。</summary>
-        <value>其中一個 <see cref="T:System.Reflection.CallingConventions" /> 值，表示方法的呼叫慣例。</value>
+        <summary>取得建立動態方法時所指定的呼叫慣例。</summary>
+        <value>
+          <see cref="T:System.Reflection.CallingConventions" /> 值的其中一個，表示該方法的呼叫慣例。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -827,7 +833,7 @@
         <AssemblyVersion>4.0.3.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>完成動態方法，並建立可用於執行該動態方法的委派。</summary>
+        <summary>完成動態方法，並建立可用來執行此動態方法的委派。</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="CreateDelegate">
@@ -864,9 +870,9 @@
         <Parameter Name="delegateType" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="delegateType">簽章與動態方法相符的委派型別。</param>
-        <summary>完成動態方法，並建立可用於執行該動態方法的委派。</summary>
-        <returns>指定型別的委派，可用於執行動態方法。</returns>
+        <param name="delegateType">一種委派類型，其簽章符合動態方法。</param>
+        <summary>完成動態方法，並建立可用來執行此動態方法的委派。</summary>
+        <returns>指定類型的委派，可用於執行動態方法。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -886,9 +892,9 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">動態方法沒有方法主體。</exception>
+        <exception cref="T:System.InvalidOperationException">此動態方法沒有任何方法主體。</exception>
         <exception cref="T:System.ArgumentException">
-          <paramref name="delegateType" /> 的參數數目錯誤或參數型別錯誤。</exception>
+          <paramref name="delegateType" /> 的參數數目錯誤或參數類型錯誤。</exception>
         <related type="Article" href="~/docs/framework/reflection-and-codedom/how-to-define-and-execute-dynamic-methods.md">如何：定義和執行動態方法</related>
       </Docs>
     </Member>
@@ -927,10 +933,10 @@
         <Parameter Name="target" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="delegateType">簽章與動態方法相符的委派型別，不包含第一個參數。</param>
-        <param name="target">委派繫結至的物件。 必須與動態方法的第一個參數型別相同。</param>
-        <summary>完成動態方法，並建立可用於執行該動態方法的委派，同時指定委派型別和委派繫結至的物件。</summary>
-        <returns>指定型別的委派，可用於執行具有指定目標物件的動態方法。</returns>
+        <param name="delegateType">一種委派類型，其簽章符合減去第一個參數的動態方法簽章。</param>
+        <param name="target">委派繫結至的物件。 必須是與動態方法的第一個參數相同類型。</param>
+        <summary>完成動態方法並建立可以用來執行它的委派，同時指定委派類型和委派繫結至的物件。</summary>
+        <returns>指定類型的委派，可用於對指定目標物件執行動態方法。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -967,12 +973,12 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">動態方法沒有方法主體。</exception>
+        <exception cref="T:System.InvalidOperationException">此動態方法沒有任何方法主體。</exception>
         <exception cref="T:System.ArgumentException">
           <paramref name="target" /> 與動態方法的第一個參數不是相同類型，且無法指派給該類型。  
   
 -或- 
- <paramref name="delegateType" /> 的參數數目錯誤或參數型別錯誤。</exception>
+ <paramref name="delegateType" /> 的參數數目錯誤或參數類型錯誤。</exception>
       </Docs>
     </Member>
     <Member MemberName="DeclaringType">
@@ -998,7 +1004,7 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得宣告方法的型別，對於動態方法而言一定是 <see langword="null" />。</summary>
+        <summary>取得宣告方法的類型，如果是動態方法，則一律為 <see langword="null" />。</summary>
         <value>一定是 <see langword="null" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -1045,18 +1051,18 @@
         <Parameter Name="parameterName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="position">參數清單中的參數位置。 第一個參數的參數索引從數字 1 開始。</param>
+        <param name="position">在參數清單中參數的位置。 第一個參數的參數索引從數字 1 開始。</param>
         <param name="attributes">指定參數屬性的 <see cref="T:System.Reflection.ParameterAttributes" /> 值的位元組合。</param>
-        <param name="parameterName">參數的名稱。 名稱可以是長度為零的字串。</param>
+        <param name="parameterName">參數名稱。 名稱可以是零長度字串。</param>
         <summary>定義動態方法的參數。</summary>
-        <returns>永遠傳回 <see langword="null" />。</returns>
+        <returns>一律傳回 <see langword="null" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
  如果`position`為 0，<xref:System.Reflection.Emit.DynamicMethod.DefineParameter%2A>方法是指傳回的值。 設定參數資訊會有不會影響傳回的值。  
   
- 如果動態方法已完成，藉由呼叫<xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A>或是<xref:System.Reflection.Emit.DynamicMethod.Invoke%2A>方法，<xref:System.Reflection.Emit.DynamicMethod.DefineParameter%2A>方法沒有任何作用。 不會擲回例外狀況。  
+ 如果動態方法已完成，藉由呼叫<xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A>或是<xref:System.Reflection.Emit.DynamicMethod.Invoke%2A>方法，<xref:System.Reflection.Emit.DynamicMethod.DefineParameter%2A>方法沒有任何作用。 不會有例外狀況擲回。  
   
    
   
@@ -1075,7 +1081,7 @@
  <paramref name="position" /> 小於 0。  
   
 -或- 
- <paramref name="position" /> 大於方法的參數數目。</exception>
+ <paramref name="position" /> 大於方法參數的數目。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetBaseDefinition">
@@ -1101,8 +1107,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>傳回方法的基底實作。</summary>
-        <returns>方法的基底實作。</returns>
+        <summary>傳回此方法的基底實作。</summary>
+        <returns>此方法的基底實作。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1149,9 +1155,9 @@
       </Parameters>
       <Docs>
         <param name="inherit">
-          <see langword="true" /> 表示搜尋方法的繼承鏈結以尋找自訂屬性，<see langword="false" /> 表示只檢查目前的方法。</param>
-        <summary>傳回為方法定義的所有自訂屬性。</summary>
-        <returns>物件的陣列，表示方法的所有自訂屬性。</returns>
+          <see langword="true" /> 表示要搜尋方法的繼承鏈結以尋找自訂屬性；<see langword="false" /> 表示只會檢查目前的方法。</param>
+        <summary>傳回為這個方法定義的所有自訂屬性。</summary>
+        <returns>代表這個方法所有自訂屬性的物件陣列。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1193,11 +1199,11 @@
       </Parameters>
       <Docs>
         <param name="attributeType">
-          <see cref="T:System.Type" />，表示要傳回之自訂屬性的型別。</param>
+          <see cref="T:System.Type" />，代表要傳回的自訂屬性類型。</param>
         <param name="inherit">
-          <see langword="true" /> 表示搜尋方法的繼承鏈結以尋找自訂屬性，<see langword="false" /> 表示只檢查目前的方法。</param>
-        <summary>傳回已套用至方法之指定型別的自訂屬性。</summary>
-        <returns>物件的陣列，表示型別為 <paramref name="attributeType" /> 或衍生自型別 <paramref name="attributeType" /> 之方法的屬性。</returns>
+          <see langword="true" /> 表示要搜尋方法的繼承鏈結以尋找自訂屬性；<see langword="false" /> 表示只會檢查目前的方法。</param>
+        <summary>傳回已套用至該方法之指定類型的自訂屬性。</summary>
+        <returns>代表此方法屬性的物件陣列之類型為 <paramref name="attributeType" /> 或衍生自類型 <paramref name="attributeType" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1241,9 +1247,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>傳回 <see cref="T:System.Reflection.Emit.DynamicILInfo" /> 物件，該物件可用於從中繼資料語彙基元 (Metadata Token)、範圍和 Microsoft Intermediate Language (MSIL) 資料流產生方法主體。</summary>
-        <returns>
-          <see cref="T:System.Reflection.Emit.DynamicILInfo" /> 物件，可用於從中繼資料語彙基元、範圍和 MSIL 資料流產生方法主體。</returns>
+        <summary>傳回 <see cref="T:System.Reflection.Emit.DynamicILInfo" /> 物件，其可用於從中繼資料語彙基元、範圍以及 Microsoft 中繼語言 (MSIL) 資料流中產生方法主體。</summary>
+        <returns>可用於從中繼資料語彙基元、範圍及 MSIL 資料流中產生方法主體的 <see cref="T:System.Reflection.Emit.DynamicILInfo" /> 物件。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1263,7 +1268,7 @@
         <AssemblyVersion>4.0.3.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>傳回可用於發出動態方法主體的 MSIL 產生器。</summary>
+        <summary>傳回可以用來發出動態方法之主體的 MSIL 產生器。</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="GetILGenerator">
@@ -1290,16 +1295,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>傳回這個方法的 Microsoft intermediate language (MSIL) 產生器，且預設 MSIL 資料流大小為 64 個位元組。</summary>
+        <summary>針對方法，傳回具有預設 Microsoft Intermediate Language (MSIL) 資料流大小 64 位元組的 MSIL 產生器。</summary>
         <returns>方法的 <see cref="T:System.Reflection.Emit.ILGenerator" /> 物件。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 已完成動態方法，藉由呼叫後<xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A>或<xref:System.Reflection.Emit.DynamicMethod.Invoke%2A>方法中，任何進一步嘗試新增 MSIL 會被忽略。 不會擲回例外狀況。  
+ 已完成動態方法，藉由呼叫後<xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A>或<xref:System.Reflection.Emit.DynamicMethod.Invoke%2A>方法中，任何進一步嘗試新增 MSIL 會被忽略。 不會有例外狀況擲回。  
   
 > [!NOTE]
->  有一些限制，無法驗證的程式碼，在動態方法，甚至在某些的完全信任情況下。 如需了解 <xref:System.Reflection.Emit.DynamicMethod>，請參閱「備註」中的「驗證」區段。  
+>  有一些限制，無法驗證的程式碼，在動態方法，甚至在某些的完全信任情況下。 如需了解 <xref:System.Reflection.Emit.DynamicMethod>，請參閱＜備註＞中的＜驗證＞一節。  
   
    
   
@@ -1346,17 +1351,17 @@
         <Parameter Name="streamSize" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="streamSize">MSIL 緩衝區的大小，以位元組為單位。</param>
-        <summary>傳回這個方法的 Microsoft intermediate language (MSIL) 產生器，且使用指定的 MSIL 資料流大小。</summary>
+        <param name="streamSize">MSIL 資料流的大小，以位元組為單位。</param>
+        <summary>針對方法，傳回具有指定 Microsoft Intermediate Language (MSIL) 資料流大小的 MSIL 產生器。</summary>
         <returns>方法的 <see cref="T:System.Reflection.Emit.ILGenerator" /> 物件，具有指定的 MSIL 資料流大小。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 已完成動態方法，藉由呼叫後<xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A>或<xref:System.Reflection.Emit.DynamicMethod.Invoke%2A>方法中，任何進一步嘗試新增 MSIL 會被忽略。 不會擲回例外狀況。  
+ 已完成動態方法，藉由呼叫後<xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A>或<xref:System.Reflection.Emit.DynamicMethod.Invoke%2A>方法中，任何進一步嘗試新增 MSIL 會被忽略。 不會有例外狀況擲回。  
   
 > [!NOTE]
->  有一些限制，無法驗證的程式碼，在動態方法，甚至在某些的完全信任情況下。 如需了解 <xref:System.Reflection.Emit.DynamicMethod>，請參閱「備註」中的「驗證」區段。  
+>  有一些限制，無法驗證的程式碼，在動態方法，甚至在某些的完全信任情況下。 如需了解 <xref:System.Reflection.Emit.DynamicMethod>，請參閱＜備註＞中的＜驗證＞一節。  
   
    
   
@@ -1397,7 +1402,7 @@
       <Docs>
         <summary>傳回方法的實作旗標。</summary>
         <returns>
-          <see cref="T:System.Reflection.MethodImplAttributes" /> 值的位元組合，表示方法的實作旗標。</returns>
+          <see cref="T:System.Reflection.MethodImplAttributes" /> 值的位元組合，代表此方法的實作旗標。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1434,7 +1439,7 @@
       <Docs>
         <summary>傳回動態方法的參數。</summary>
         <returns>
-          <see cref="T:System.Reflection.ParameterInfo" /> 物件的陣列，表示動態方法的參數。</returns>
+          <see cref="T:System.Reflection.ParameterInfo" /> 物件的陣列，代表動態方法的參數。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1478,7 +1483,7 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得或設定值，指出方法中的區域變數是否以零起始。</summary>
+        <summary>取得或設定值，表示在此方法中的區域變數是否以零起始。</summary>
         <value>如果在此方法中的區域變數以零起始，則為 <see langword="true" />；否則為 <see langword="false" />。 預設值為 <see langword="true" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -1532,17 +1537,17 @@
         <Parameter Name="culture" Type="System.Globalization.CultureInfo" />
       </Parameters>
       <Docs>
-        <param name="obj">由於這個參數是靜態的 (Static)，因此會動態方法忽略它們。 請指定 <see langword="null" />。</param>
+        <param name="obj">由於這個參數是靜態的，因此動態方法會予以忽略。 請指定 <see langword="null" />。</param>
         <param name="invokeAttr">
           <see cref="T:System.Reflection.BindingFlags" /> 值的位元組合。</param>
         <param name="binder">
-          <see cref="T:System.Reflection.Binder" /> 物件，它透過反映啟用繫結、引數型別的強制型轉 (Coercion)、成員的引動過程，和 <see cref="T:System.Reflection.MemberInfo" /> 物件的擷取。 如果 <c>Binder</c> 為 <see langword="null" />，則會使用預設 Binder。 如需詳細資訊，請參閱 <see cref="T:System.Reflection.Binder" />。</param>
+          <see cref="T:System.Reflection.Binder" /> 物件能用來啟用繫結、引數類型的強制型轉、成員的引動過程，以及透過反映來擷取 <see cref="T:System.Reflection.MemberInfo" /> 物件等功能。 如果 <paramref name="binder" /> 為 <see langword="null" />，則會使用預設繫結器。 如需詳細資訊，請參閱 <see cref="T:System.Reflection.Binder" />。</param>
         <param name="parameters">引數清單。 這是引數陣列，其數目、順序和類型與要叫用的方法參數相同。 如果沒有任何參數，這個參數應該為 <see langword="null" />。</param>
         <param name="culture">
-          <see cref="T:System.Globalization.CultureInfo" /> 的執行個體，用於管理型別的強制型轉。 如果這是 <see langword="null" />，會使用目前執行緒的 <see cref="T:System.Globalization.CultureInfo" />。 例如，必須有這個資訊，才能將表示 1000 的 <see cref="T:System.String" /> 正確地轉換為 <see cref="T:System.Double" /> 值，因為 1000 在不同文化特性中有不同的表示方式。</param>
-        <summary>使用指定的文化特性資訊，在指定繫結器 (Binder) 的條件約束下，以指定的參數叫用動態方法。</summary>
+          <see cref="T:System.Globalization.CultureInfo" /> 的執行個體，用於管理類型的強制型轉。 如果這是 <see langword="null" />，會使用目前執行緒的 <see cref="T:System.Globalization.CultureInfo" />。 例如，若要將代表 1000 的 <see cref="T:System.String" /> 正確轉換成 <see cref="T:System.Double" /> 值，需要這項資訊，因為 1000 的表示方式會因不同文化特性而有所不同。</param>
+        <summary>使用指定的文化特性資訊，在指定繫結器的條件約束下，以指定的參數叫用動態方法。</summary>
         <returns>
-          <see cref="T:System.Object" />，包含叫用方法的傳回值。</returns>
+          <see cref="T:System.Object" />，其中包含已叫用之方法的傳回值。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1587,7 +1592,7 @@
 動態方法已匿名裝載，而且建構已將 <paramref name="skipVisibility" /> 設定為 <see langword="false" />，但其所存取的成員不是 <see langword="public" />。  
   
 -或- 
-動態方法含有未經驗證的程式碼。 如需了解 <see cref="T:System.Reflection.Emit.DynamicMethod" />，請參閱「備註」中的「驗證」區段。</exception>
+動態方法含有未經驗證的程式碼。 如需了解 <see cref="T:System.Reflection.Emit.DynamicMethod" />，請參閱＜備註＞中的＜驗證＞一節。</exception>
         <altmember cref="M:System.Reflection.Emit.DynamicMethod.CreateDelegate(System.Type)" />
       </Docs>
     </Member>
@@ -1618,11 +1623,11 @@
       </Parameters>
       <Docs>
         <param name="attributeType">
-          <see cref="T:System.Type" />，表示要搜尋之自訂屬性的型別。</param>
+          <see cref="T:System.Type" />，代表要搜尋的自訂屬性類型。</param>
         <param name="inherit">
-          <see langword="true" /> 表示搜尋方法的繼承鏈結以尋找自訂屬性，<see langword="false" /> 表示只檢查目前的方法。</param>
-        <summary>指出指定的自訂屬性型別是否已定義。</summary>
-        <returns>如果指定的自訂屬性型別已定義，則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
+          <see langword="true" /> 表示要搜尋方法的繼承鏈結以尋找自訂屬性；<see langword="false" /> 表示只會檢查目前的方法。</param>
+        <summary>指出是否已定義指定的自訂屬性類型。</summary>
+        <returns>如果已定義指定的自訂屬性類型，則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1661,8 +1666,8 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得值，這個值表示目前動態方法是否為安全性關鍵或安全性安全關鍵，因此是否可以執行重要作業。</summary>
-        <value>如果目前動態方法為安全性關鍵或安全性安全關鍵，則為 <see langword="true" />，如果它是透明，則為 <see langword="false" />。</value>
+        <summary>取得值，這個值表示目前動態方法是否為安全性關鍵或安全性安全關鍵，因而可以執行重要的作業。</summary>
+        <value>如果目前動態方法為安全性關鍵或安全性安全關鍵，則為 <see langword="true" />，如果是安全性透明，則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1701,7 +1706,7 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">動態方法沒有方法主體。</exception>
+        <exception cref="T:System.InvalidOperationException">此動態方法沒有方法主體。</exception>
         <altmember cref="P:System.Reflection.Emit.DynamicMethod.IsSecuritySafeCritical" />
         <altmember cref="P:System.Reflection.Emit.DynamicMethod.IsSecurityTransparent" />
         <related type="Article" href="~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md">反映發出中的安全性問題</related>
@@ -1735,8 +1740,8 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得值，這個值表示目前動態方法在目前信任層級上是否為安全性安全關鍵，也就是說，它是否可以執行重要作業並且可供透明程式碼存取。</summary>
-        <value>如果動態方法在目前信任層級上為安全性安全關鍵，則為 <see langword="true" />，如果它是安全性關鍵或透明，則為 <see langword="false" />。</value>
+        <summary>取得值，這個值表示目前動態方法在目前信任層級上是否為安全性安全關鍵，也就是說，它是否能執行重要作業並由安全性透明的程式碼存取。</summary>
+        <value>如果動態方法在目前信任層級上為安全性安全關鍵，則為 <see langword="true" />；如果為安全性關鍵或安全性透明，則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1775,7 +1780,7 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">動態方法沒有方法主體。</exception>
+        <exception cref="T:System.InvalidOperationException">此動態方法沒有方法主體。</exception>
         <altmember cref="P:System.Reflection.Emit.DynamicMethod.IsSecurityCritical" />
         <altmember cref="P:System.Reflection.Emit.DynamicMethod.IsSecurityTransparent" />
         <related type="Article" href="~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md">反映發出中的安全性問題</related>
@@ -1809,8 +1814,8 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得值，這個值表示目前動態方法在目前信任層級上是否為透明，因此是否不得執行重要作業。</summary>
-        <value>如果動態方法在目前信任層級上為安全性透明，則為 <see langword="true" />，否則為 <see langword="false" />。</value>
+        <summary>取得值，這個值表示目前動態方法在目前信任層級上是否為安全性透明，因此無法執行重要作業。</summary>
+        <value>如果動態方法在目前信任層級上為安全性透明，則為 <see langword="true" />；否則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1849,7 +1854,7 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">動態方法沒有方法主體。</exception>
+        <exception cref="T:System.InvalidOperationException">此動態方法沒有方法主體。</exception>
         <altmember cref="P:System.Reflection.Emit.DynamicMethod.IsSecurityCritical" />
         <altmember cref="P:System.Reflection.Emit.DynamicMethod.IsSecuritySafeCritical" />
         <related type="Article" href="~/docs/framework/reflection-and-codedom/security-issues-in-reflection-emit.md">反映發出中的安全性問題</related>
@@ -1884,7 +1889,7 @@
         <summary>不支援動態方法。</summary>
         <value>不支援動態方法。</value>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.InvalidOperationException">不適用於動態方法。</exception>
+        <exception cref="T:System.InvalidOperationException">不允許動態方法。</exception>
       </Docs>
     </Member>
     <Member MemberName="MethodImplementationFlags">
@@ -1932,8 +1937,8 @@
         <ReturnType>System.Reflection.Module</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得動態方法在邏輯上與其相關聯的模組。</summary>
-        <value>目前的動態方法與其相關聯的 <see cref="T:System.Reflection.Module" />。</value>
+        <summary>取得動態方法在邏輯上相關聯的模組。</summary>
+        <value>與目前的動態方法關聯的 <see cref="T:System.Reflection.Module" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -2021,7 +2026,7 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得類別，用於反映中以取得方法。</summary>
+        <summary>取得用於反映中以取得方法的類別。</summary>
         <value>一定是 <see langword="null" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -2100,8 +2105,9 @@
         <ReturnType>System.Type</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得動態方法之傳回值的型別。</summary>
-        <value>表示目前方法之傳回值型別的 <see cref="T:System.Type" />，如果方法沒有任何傳回型別則為 <see cref="T:System.Void" />。</value>
+        <summary>取得此動態方法傳回值的類型。</summary>
+        <value>
+          <see cref="T:System.Type" /> 代表目前方法之傳回值的類型；如果此方法沒有傳回型別，則為 <see cref="T:System.Void" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -2145,7 +2151,7 @@
       <Docs>
         <summary>取得動態方法之傳回型別的自訂屬性。</summary>
         <value>
-          <see cref="T:System.Reflection.ICustomAttributeProvider" />，表示動態方法之傳回型別的自訂屬性。</value>
+          <see cref="T:System.Reflection.ICustomAttributeProvider" /> 表示動態方法之傳回型別的自訂屬性。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
