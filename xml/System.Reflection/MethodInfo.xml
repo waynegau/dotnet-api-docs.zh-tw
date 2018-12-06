@@ -1,11 +1,11 @@
 <Type Name="MethodInfo" FullName="System.Reflection.MethodInfo">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="365d65db1c7b36cbed15b07e5b2d6a7d6e0e31ba" />
-    <Meta Name="ms.sourcegitcommit" Value="16d2d159872fd213cae4b8f371d7ae9c8b027c89" />
+    <Meta Name="ms.openlocfilehash" Value="7cac9e186e446ab240ca469ac048ef85a355e3e0" />
+    <Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="11/17/2018" />
-    <Meta Name="ms.locfileid" Value="51879892" />
+    <Meta Name="ms.lasthandoff" Value="11/29/2018" />
+    <Meta Name="ms.locfileid" Value="52599483" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class MethodInfo : System.Reflection.MethodBase, System.Runtime.InteropServices._MethodInfo" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract serializable beforefieldinit MethodInfo extends System.Reflection.MethodBase implements class System.Runtime.InteropServices._MethodInfo" />
@@ -53,8 +53,8 @@
     <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
       <AttributeName>System.Runtime.InteropServices.ComVisible(true)</AttributeName>
     </Attribute>
-    <Attribute FrameworkAlternate="netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
-      <AttributeName>Serializable</AttributeName>
+    <Attribute FrameworkAlternate="netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+      <AttributeName>System.Serializable</AttributeName>
     </Attribute>
   </Attributes>
   <Docs>
@@ -150,9 +150,46 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>取得值，指出泛型方法是否包含未指派的泛型型別參數。</summary>
+        <value>如果目前的 <see cref="T:System.Reflection.MethodInfo" /> 包含未指派的泛型型別參數，則為 <see langword="true" />；否則為 <see langword="false" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+若要叫用泛型方法時，必須沒有泛型類型定義或開放式建構的類型的型別引數的方法本身，或任何封入類型。 進行這種遞迴判定可能很困難。 為了方便起見，並減少錯誤的機會`ContainsGenericParameters`屬性會提供標準的方式來區別封閉式的建構方法，可以叫用，並開啟建構方法，不能。 如果`ContainsGenericParameters`屬性會傳回 true，無法叫用方法。
+
+`ContainsGenericParameters`以遞迴方式型別參數的屬性搜尋。 例如，它會傳回`true`開放式型別中的任何方法`A<T>`(`A(Of T)` Visual Basic 中)，即使不是泛型方法本身。 與此相反的行為與<xref:System.Reflection.MethodInfo.IsGenericMethod>屬性，會傳回`false`這類方法。
+
+如需泛型的方法特定的恆成立條件，請參閱<xref:System.Reflection.MethodInfo.IsGenericMethod>屬性。 如需泛型反映中所使用的其他詞彙的非變異條件的清單，請參閱<xref:System.Type.IsGenericType>屬性。
+
+## Examples  
+下列程式碼範例會使用`ContainsGenericParameters`屬性來顯示訊息，指出是否<xref:System.Reflection.MethodInfo>是開放式泛型方法 （也就是，不論它有未繫結型別參數）。
+
+這個範例是針對提供之較大範例的一部分<xref:System.Reflection.MethodInfo.MakeGenericMethod%2A>方法。
+
+```vb
+Console.WriteLine(vbTab _
+    & "Does it have unassigned generic parameters? {0}", _
+    mi.ContainsGenericParameters)
+```
+
+```csharp
+Console.WriteLine("\tDoes it have unassigned generic parameters? {0}", 
+    mi.ContainsGenericParameters);
+```
+
+```cpp
+Console::WriteLine("\tDoes it have unassigned generic parameters? {0}", 
+    mi->ContainsGenericParameters);
+```
+
+]]></format>
+        </remarks>
+        <altmember cref="M:System.Reflection.MethodInfo.MakeGenericMethod(System.Type[])" />
+        <altmember cref="P:System.Reflection.MethodInfo.IsGenericMethod" />
+        <altmember cref="P:System.Reflection.MethodInfo.IsGenericMethodDefinition" />
+        <related type="Article" href="~/docs/framework/reflection-and-codedom/reflection-and-generic-types.md">反映和泛用類型</related>
+        <related type="Article" href="~/docs/csharp/programming-guide/generics/introduction-to-generics.md">泛型簡介 (C# 程式設計手冊)</related>
       </Docs>
     </Member>
     <MemberGroup MemberName="CreateDelegate">
@@ -731,9 +768,123 @@ public:
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>取得值，表示目前的 <see cref="T:System.Reflection.MethodInfo" />是否代表泛型方法的定義。</summary>
+        <value>如果 <see cref="T:System.Reflection.MethodInfo" /> 物件代表泛型方法的定義，則為 <see langword="true" />；否則為 <see langword="false" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+如果目前<xref:System.Reflection.MethodInfo>代表泛型方法定義，然後：
+
+  - `IsGenericMethodDefinition` 會傳回 `true`。
+
+  - 每個<xref:System.Type>中所傳回的陣列物件<xref:System.Reflection.MethodInfo.GetGenericArguments>方法：
+
+      - <xref:System.Type.IsGenericParameter?displayProperty=nameWithType> 屬性會傳回 `true`。
+
+      - <xref:System.Type.DeclaringMethod?displayProperty=nameWithType>會傳回目前<xref:System.Reflection.MethodInfo>。
+
+      - <xref:System.Type.GenericParameterPosition?displayProperty=nameWithType>屬性是相同的位置<xref:System.Type>陣列中的物件。
+
+使用`IsGenericMethodDefinition`屬性來判斷型別引數是否已指派給類型參數的泛型方法。 如果已指派型別引數，`IsGenericMethodDefinition`屬性傳回 false，即使某些類型引數是<xref:System.Type>代表封入類型的型別參數的物件。 例如，請考慮下列 C\#，Visual Basic 和 c + + 程式碼：
+
+    ```cs
+    class C
+    {
+        T N<T,U>(T t, U u) {...}
+        public V M<V>(V v)
+        {
+            return N<V,int>(v, 42);
+        }
+    }
+    ```
+
+    ```vb
+    Class C
+        Public Function N(Of T,U)(ByVal ta As T, ByVal ua As U) As T
+            ...
+        End Function
+        Public Function M(Of V)(ByVal va As V ) As V
+            Return N(Of V, Integer)(va, 42)
+        End Function
+    End Class
+    ```
+
+    ```cpp
+    ref class C
+    {
+    private:
+        generic <typename T, typename U> T N(T t, U u) {...}
+    public:
+        generic <typename V> V M(V v)
+        {
+            return N<V, int>(v, 42);
+        }
+    };
+    ```
+
+M 方法主體包含 N，M 和類型的型別參數的指定方法的呼叫<xref:System.Int32>。 `IsGenericMethodDefinition`屬性會傳回 false 方法`N<V,int>`。
+
+> [!NOTE]
+> 雖然開啟之建構方法`N<V,int>`會反映類別 C 中，不時發生，它必須產生使用<xref:System.Reflection.MethodInfo.MakeGenericMethod%2A>才能發出做為動態的類別 C。
+
+
+如果是泛型方法定義包含宣告型別的泛型參數，則會是泛型方法定義專屬於每個建構的類型。 例如，請考慮下列 C\#和 Visual Basic 程式碼：
+
+    ```csharp
+    class B<U,V> {}
+    class C<T> { public B<T,S> M<S>() {...}}
+    ```
+
+    ```vb
+    Class B(Of U, V)
+    End Class
+    Class C(Of T)
+        Public Function M(Of S)() As B(Of T, S)
+            ...
+        End Function
+    End Class
+    ```
+
+    ```cpp
+    generic <typename U, typename V> ref class B {};
+    generic <typename T> ref class C
+    {
+    public:
+        generic <typename S> B<T,S>^ M() {...};
+    };
+    ```
+
+在建構的型別`C<int>`(`C(Of Integer)` Visual Basic 中)，傳回泛型的方法 M `B<int, S>`。 在開啟的型別`C<T>`，M 傳回`B<T, S>`。 在這兩種情況下，`IsGenericMethodDefinition`屬性會傳回`true`如<xref:System.Reflection.MethodInfo>M 表示。
+
+如需泛型的方法特定的恆成立條件，請參閱<xref:System.Reflection.MethodInfo.IsGenericMethod>屬性。 如需泛型反映中所使用的其他詞彙的非變異條件的清單，請參閱<xref:System.Type.IsGenericType>屬性。
+
+## Examples  
+下列程式碼範例會使用`IsGenericMethodDefinition`屬性來顯示訊息，指出是否<xref:System.Reflection.MethodInfo>代表泛型方法定義。
+
+這個範例是針對提供之較大範例的一部分<xref:System.Reflection.MethodInfo.MakeGenericMethod%2A>方法。
+
+```vb
+Console.WriteLine(vbTab _
+    & "Is this a generic method definition? {0}", _
+    mi.IsGenericMethodDefinition)
+```
+
+```csharp
+Console.WriteLine("\tIs this a generic method definition? {0}", 
+    mi.IsGenericMethodDefinition);
+```
+
+```cpp
+Console::WriteLine("\tIs this a generic method definition? {0}", 
+    mi->IsGenericMethodDefinition);
+```
+
+]]></format>
+        </remarks>
+        <altmember cref="M:System.Reflection.MethodInfo.MakeGenericMethod(System.Type[])" />
+        <related type="Article" href="~/docs/framework/reflection-and-codedom/reflection-and-generic-types.md">反映和泛用類型</related>
+        <related type="Article" href="~/docs/csharp/programming-guide/generics/introduction-to-generics.md">泛型簡介 (C# 程式設計手冊)</related>
       </Docs>
     </Member>
     <Member MemberName="MakeGenericMethod">

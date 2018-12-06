@@ -1,11 +1,11 @@
 <Type Name="AutoResetEvent" FullName="System.Threading.AutoResetEvent">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="8fce8768b4a2ba80422edde0871cb31a0a891d1f" />
-    <Meta Name="ms.sourcegitcommit" Value="16d2d159872fd213cae4b8f371d7ae9c8b027c89" />
+    <Meta Name="ms.openlocfilehash" Value="c64c681a3837ebc150b0f23474a66a22791e1e98" />
+    <Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="11/17/2018" />
-    <Meta Name="ms.locfileid" Value="51871739" />
+    <Meta Name="ms.lasthandoff" Value="11/29/2018" />
+    <Meta Name="ms.locfileid" Value="52605567" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class AutoResetEvent : System.Threading.EventWaitHandle" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit AutoResetEvent extends System.Threading.EventWaitHandle" />
@@ -88,7 +88,6 @@
     <threadsafe>這個類別是安全執行緒。</threadsafe>
     <altmember cref="T:System.Threading.WaitHandle" />
     <related type="Article" href="~/docs/standard/threading/index.md">Managed 執行緒處理</related>
-    <related type="Article" href="https://msdn.microsoft.com/library/6d39c48d-6b37-4a9b-8631-f2924cfd9c18">AutoResetEvent</related>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -149,7 +148,6 @@
         </remarks>
         <altmember cref="T:System.Threading.WaitHandle" />
         <related type="Article" href="~/docs/standard/threading/index.md">Managed 執行緒處理</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/6d39c48d-6b37-4a9b-8631-f2924cfd9c18">AutoResetEvent</related>
       </Docs>
     </Member>
     <Member MemberName="Reset">
@@ -175,8 +173,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>將事件的狀態設定為未收到信號，會造成執行緒封鎖。</summary>
+        <returns>如果作業成功，則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -203,9 +201,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>將事件的狀態設定為收到信號，允許最多一個等候執行緒繼續執行。</summary>
+        <returns>如果作業成功，則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+Set 方法會釋放單一執行緒。 如果沒有任何等候中執行緒，等候控制代碼會維持收到訊號的狀態，直到執行緒嘗試等候它，或呼叫其重設方法。
+
+> [!IMPORTANT]
+> 也不會保證每次呼叫 Set 方法會釋放執行緒。 如果兩個呼叫太接近，以便第二次呼叫發生於之前已釋放執行緒，釋放只有一個執行緒，如同未發生第二次呼叫。 此外，如果要在沒有等待的執行緒時，呼叫 Set 方法和<xref:System.Threading.AutoResetEvent>已收到訊號，呼叫沒有任何作用。
+
+]]></format>
+        </remarks>
       </Docs>
     </Member>
   </Members>
