@@ -1,11 +1,11 @@
 <Type Name="RelatedEnd" FullName="System.Data.Objects.DataClasses.RelatedEnd">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="c3fcee3a79374bee386da7966a336f597aef0f04" />
-    <Meta Name="ms.sourcegitcommit" Value="16d2d159872fd213cae4b8f371d7ae9c8b027c89" />
+    <Meta Name="ms.openlocfilehash" Value="59186487ee63d29a10e4f974f73fe97241df86c8" />
+    <Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="11/17/2018" />
-    <Meta Name="ms.locfileid" Value="51862111" />
+    <Meta Name="ms.lasthandoff" Value="11/29/2018" />
+    <Meta Name="ms.locfileid" Value="52608466" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class RelatedEnd : System.Data.Objects.DataClasses.IRelatedEnd" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract serializable beforefieldinit RelatedEnd extends System.Object implements class System.Data.Objects.DataClasses.IRelatedEnd" />
@@ -31,7 +31,7 @@
       <AttributeName>System.Runtime.Serialization.DataContract</AttributeName>
     </Attribute>
     <Attribute FrameworkAlternate="netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
-      <AttributeName>Serializable</AttributeName>
+      <AttributeName>System.Serializable</AttributeName>
     </Attribute>
   </Attributes>
   <Docs>
@@ -115,11 +115,20 @@
         <Parameter Name="allowCollection" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <typeparam name="TEntity">To be added.</typeparam>
-        <param name="entities">To be added.</param>
-        <param name="allowCollection">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <typeparam name="TEntity">要附加之實體物件的 <see cref="T:System.Collections.Generic.IEnumerable`1" /> 集合類型。</typeparam>
+        <param name="entities">實體物件的 <see cref="T:System.Collections.Generic.IEnumerable`1" /> 集合。</param>
+        <param name="allowCollection">指定正在附加的物件是否屬於集合的一部分。</param>
+        <summary>定義兩個所附加物件之間的關聯性。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+`Attach<TEntity>(IEnumerable<TEntity>, Boolean)` 方法是用來在物件與相關物件已經附加至物件內容時，定義這兩個物件之間的關聯性。 如果相關物件尚未附加至物件內容，請將相關物件設定為 <xref:System.Data.Objects.DataClasses.EntityReference%601.Value> 的 <xref:System.Data.Objects.DataClasses.EntityReference%601> 屬性或針對 <xref:System.Data.Objects.DataClasses.EntityCollection%601.Add%2A> 呼叫 <xref:System.Data.Objects.DataClasses.EntityCollection%601> 方法。 當這兩個物件都中斷連結時，您也可以透過將相關物件設定為 <xref:System.Data.Objects.DataClasses.EntityReference%601.Value> 的 <xref:System.Data.Objects.DataClasses.EntityReference%601> 屬性或針對 <xref:System.Data.Objects.DataClasses.EntityCollection%601.Add%2A> 呼叫 <xref:System.Data.Objects.DataClasses.EntityCollection%601> 方法，然後在物件圖形中附加根物件 (Root Object)，定義其關聯性。 如需詳細資訊，請參閱 <<c0> [ 附加和卸離物件](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/bb896271(v=vs.100))。
+
+在附加作業期間，物件服務會針對相關端呼叫 `Attach<TEntity>(IEnumerable<TEntity>, Boolean)` 方法。
+
+]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetEnumerator">
@@ -321,12 +330,19 @@
         <Parameter Name="setIsLoaded" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <typeparam name="TEntity">To be added.</typeparam>
-        <param name="collection">To be added.</param>
-        <param name="mergeOption">To be added.</param>
-        <param name="setIsLoaded">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <typeparam name="TEntity">要合併之實體物件的 <see cref="T:System.Collections.Generic.IEnumerable`1" /> 集合類型。</typeparam>
+        <param name="collection">要加入至這個相關端之實體物件的 <see cref="T:System.Collections.Generic.IEnumerable`1" /> 集合。</param>
+        <param name="mergeOption">將物件合併至現有的 <see cref="T:System.Data.Objects.MergeOption" /> 時要使用的 <see cref="T:System.Data.Objects.DataClasses.EntityCollection`1" />。</param>
+        <param name="setIsLoaded">指出相關物件的集合是否完整而且與伺服器相符。 <see cref="M:System.Data.Objects.DataClasses.EntityCollection`1.Load(System.Data.Objects.MergeOption)" /> 等作業會將 setIsLoaded 設定為 <see langword="true" />，但 <see cref="Overload:System.Data.Objects.DataClasses.EntityCollection`1.Attach" /> 會將它設為 <see langword="false" />。</param>
+        <summary>將相關實體合併至本機 <see cref="T:System.Data.Objects.DataClasses.EntityCollection`1" /> 中。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+在關聯性作業期間，物件服務會呼叫 `Merge<TEntity>` 方法。
+
+]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="OnDeserialized">
@@ -393,7 +409,7 @@
       </ReturnValue>
       <Docs>
         <summary>取得這個相關端所參與之關聯性的名稱。</summary>
-        <value>這個 <see cref="T:System.Data.Objects.DataClasses.RelatedEnd" /> 所參與之關聯性的名稱。 這個關聯性名稱並未使用限定的命名空間 (Namespace)。</value>
+        <value>這個 <see cref="T:System.Data.Objects.DataClasses.RelatedEnd" /> 所參與之關聯性的名稱。 此關聯性名稱不符合命名空間。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -426,7 +442,7 @@
       </ReturnValue>
       <Docs>
         <summary>取得相關端中繼資料的參考。</summary>
-        <value>包含關聯性端中繼資料的 <see cref="T:System.Data.Metadata.Edm.RelationshipSet" /> 物件。</value>
+        <value>包含關聯性端點中繼資料的 <see cref="T:System.Data.Metadata.Edm.RelationshipSet" /> 物件。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -512,7 +528,7 @@
         <Parameter Name="entity" Type="System.Data.Objects.DataClasses.IEntityWithRelationships" />
       </Parameters>
       <Docs>
-        <param name="entity">要加入集合中的物件。 這個物件必須實作 <see cref="T:System.Data.Objects.DataClasses.IEntityWithRelationships" /> 介面。</param>
+        <param name="entity">要加入集合的物件。 這個物件必須實作 <see cref="T:System.Data.Objects.DataClasses.IEntityWithRelationships" /> 介面。</param>
         <summary>將物件加入至相關端。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -827,12 +843,28 @@
         <Parameter Name="allowCollection" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <typeparam name="TEntity">To be added.</typeparam>
-        <param name="entity">To be added.</param>
-        <param name="index">To be added.</param>
-        <param name="allowCollection">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <typeparam name="TEntity">要驗證之物件的型別。</typeparam>
+        <param name="entity">正在驗證的物件。</param>
+        <param name="index">正在驗證的物件位於集合中的位置。</param>
+        <param name="allowCollection">指出此物件是否為集合的成員。</param>
+        <summary>判斷某個物件是否可以附加至本機集合或參考。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+在附加作業期間，物件服務會呼叫 `ValidateEntityForAttach<TEntity>` 方法。
+
+]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">當正在附加的物件為 <see langword="null" /> 時。
+
+-或-
+
+附加至相關端的物件與來源物件不存在相同的 <see cref="T:System.Data.Objects.ObjectContext" /> 中。
+
+-或-
+
+正在附加的物件處於 <see cref="F:System.Data.EntityState.Added" /> 或 <see cref="F:System.Data.EntityState.Deleted" /> 狀態中。</exception>
       </Docs>
     </Member>
     <Member MemberName="ValidateLoad&lt;TEntity&gt;">
@@ -857,12 +889,30 @@
         <Parameter Name="relatedEndName" Type="System.String" />
       </Parameters>
       <Docs>
-        <typeparam name="TEntity">To be added.</typeparam>
-        <param name="mergeOption">To be added.</param>
-        <param name="relatedEndName">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="TEntity">要驗證之物件的型別。</typeparam>
+        <param name="mergeOption">將物件合併至現有的 <see cref="T:System.Data.Objects.MergeOption" /> 時要使用的 <see cref="T:System.Data.Objects.DataClasses.EntityCollection`1" />。</param>
+        <param name="relatedEndName">相關端的名稱。</param>
+        <summary>確保一個或多個相關物件可以成功載入本機集合或參考中。</summary>
+        <returns>用來在相關端載入一個或多個物件的 <see cref="T:System.Data.Objects.ObjectQuery`1" />。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+物件服務會取得<xref:System.Data.Objects.ObjectQuery%601>藉由呼叫[IRelatedEnd.CreateSourceQuery](xref:System.Data.Objects.DataClasses.RelatedEnd.System%23Data%23Objects%23DataClasses%23IRelatedEnd%23CreateSourceQuery)方法。
+
+物件服務會先呼叫 `ValidateLoad<TEntity>` 方法，然後再執行載入作業，以便確保作業會成功。
+
+]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">當來源物件是使用 <see cref="F:System.Data.Objects.MergeOption.NoTracking" /> 查詢所擷取的，而且 <see cref="T:System.Data.Objects.MergeOption" /> 不是 <see cref="F:System.Data.Objects.MergeOption.NoTracking" /> 或者相關物件已經載入時。
+
+-或-
+
+當來源物件沒有附加至 <see cref="T:System.Data.Objects.ObjectContext" /> 時。
+
+-或-
+
+當來源物件正在追蹤中，但是處於 <see cref="F:System.Data.EntityState.Added" /> 或 <see cref="F:System.Data.EntityState.Deleted" /> 狀態中，或者用於 <see cref="T:System.Data.Objects.MergeOption" /> 的 <see cref="Overload:System.Data.Objects.DataClasses.RelatedEnd.Load" /> 是 <see cref="F:System.Data.Objects.MergeOption.NoTracking" /> 時。</exception>
       </Docs>
     </Member>
     <Member MemberName="ValidateOwnerForAttach">
@@ -882,8 +932,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>確保相關端所屬的物件支援附加作業。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+物件服務會呼叫 ValidateOwnerForAttach 方法，然後再執行附加作業，以便確保作業會成功。
+
+]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">當來源物件沒有附加至 <see cref="T:System.Data.Objects.ObjectContext" />、從 <see cref="F:System.Data.Objects.MergeOption.NoTracking" /> 查詢中傳回來源物件，或者來源物件並非處於 <see cref="F:System.Data.EntityState.Modified" /> 或 <see cref="F:System.Data.EntityState.Unchanged" /> 狀態中。</exception>
       </Docs>
     </Member>
   </Members>

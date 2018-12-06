@@ -1,11 +1,11 @@
 <Type Name="InstancePersistenceContext" FullName="System.Runtime.DurableInstancing.InstancePersistenceContext">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="774f08f307628a25a88866a93592fcaade22fb04" />
-    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
+    <Meta Name="ms.openlocfilehash" Value="ad341bed6953172fb3eba70952b4f8f56f0e65d7" />
+    <Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="08/25/2018" />
-    <Meta Name="ms.locfileid" Value="39959562" />
+    <Meta Name="ms.lasthandoff" Value="11/29/2018" />
+    <Meta Name="ms.locfileid" Value="52611599" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class InstancePersistenceContext" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit InstancePersistenceContext extends System.Object" />
@@ -96,7 +96,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 嘗試取得鎖定時，持續性提供者可能會決定目前的執行個體已經鎖定在目前的存放區中。 如果其鎖定權杖符合目前控制代碼的鎖定權杖，則持續性提供者就可以透過檢查鎖定的版本並將它傳遞給 BeginBindReclaimedLock，嘗試回收鎖定。 在成功回收鎖定之前，持續性提供者不得對執行個體進行變更。 如果沒有其他控制代碼繫結至鎖定，則 BeginBindReclaimedLock 作業就會成功，而且目前的控制代碼會變成繫結至鎖定。 否則，BeginBindReclaimedLock 或 EndBindReclaimedLock 會擲回 InstanceHandleConflictException。 如果其他控制代碼的命令正在進行，在等候這些命令的結果來決定是否能夠回收鎖定時，此作業可能無法完成。  
+ 嘗試取得鎖定時，持續性提供者可能會決定目前的執行個體已經鎖定在目前的存放區中。 如果其鎖定權杖符合目前控制代碼的鎖定權杖，則持續性提供者可以嘗試透過檢查其版本，並將它傳遞給 BeginBindReclaimedLock 回收鎖定。 在成功回收鎖定之前，持續性提供者不得對執行個體進行變更。 如果沒有其他控制代碼繫結至鎖定，則 BeginBindReclaimedLock 作業就會成功，而且目前的控制代碼會變成繫結至鎖定。 否則，BeginBindReclaimedLock 或 EndBindReclaimedLock 會擲回 InstanceHandleConflictException。 如果其他控制代碼的命令正在進行，在等候這些命令的結果來決定是否能夠回收鎖定時，此作業可能無法完成。  
   
  目前的執行個體控制代碼必須繫結至執行個體和鎖定擁有者。 此執行個體不得為完成。 與鎖定擁有者相關聯的鎖定權杖會用來識別鎖定的擁有者。  
   
@@ -292,7 +292,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 嘗試取得鎖定時，持續性提供者可能會決定目前的執行個體已經鎖定在目前的存放區中。 如果其鎖定權杖符合目前控制代碼的鎖定權杖，則持續性提供者就可以透過檢查鎖定的版本並將它傳遞給 BindReclaimedLock，嘗試回收鎖定。 在成功回收鎖定之前，持續性提供者不得對執行個體進行變更。 如果沒有其他控制代碼繫結程序至鎖定，則 BindReclaimedLock 就會成功，而且目前的控制代碼會變成繫結程序至鎖定。 否則，BindReclaimedLock 會擲回 InstanceHandleConflictException。 如果其他控制代碼的命令正在進行，BindReclaimedLock 可能會進入封鎖狀態而等候這些命令的結果，然後再決定是否能夠回收鎖定。  
+ 嘗試取得鎖定時，持續性提供者可能會決定目前的執行個體已經鎖定在目前的存放區中。 如果其鎖定權杖符合目前控制代碼的鎖定權杖，則持續性提供者可以嘗試透過檢查其版本，並將它傳遞給 BindReclaimedLock 回收鎖定。 在成功回收鎖定之前，持續性提供者不得對執行個體進行變更。 如果沒有其他控制代碼繫結程序至鎖定，則 BindReclaimedLock 就會成功，而且目前的控制代碼會變成繫結程序至鎖定。 否則，BindReclaimedLock 會擲回 InstanceHandleConflictException。 如果其他控制代碼的命令正在進行，BindReclaimedLock 可能會進入封鎖狀態而等候這些命令的結果，然後再決定是否能夠回收鎖定。  
   
  目前的執行個體控制代碼必須繫結至執行個體和鎖定擁有者。 此執行個體不得為完成。 與鎖定擁有者相關聯的鎖定權杖會用來識別鎖定的擁有者。  
   
@@ -532,12 +532,12 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
       </ReturnValue>
       <Docs>
         <summary>取得目前執行個體控制代碼保留在目前執行個體上的鎖定版本。</summary>
-        <value>繫結至目前執行個體控制代碼的執行個體鎖定版本，但如果控制代碼沒有繫結至鎖定，則為 -1。</value>
+        <value>如果控制代碼沒有繫結至鎖定，執行個體鎖定版本繫結至目前的執行個體控制代碼，則為-1。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用繫結至鎖定的控制代碼來執行需要鎖定的作業 (例如保存執行個體資料) 時，持續性提供者應該針對保留在執行個體存放區中之執行個體上的鎖定版本檢查此值。 如果鎖定版本不符，此命令應該會由於 InstanceLockLostException 而失敗。  
+ 使用繫結至鎖定的控制代碼來執行需要鎖定的作業 (例如保存執行個體資料) 時，持續性提供者應該針對保留在執行個體存放區中之執行個體上的鎖定版本檢查此值。 如果鎖定版本不符，此命令應該會由於 instancelocklostexception。  
   
  ]]></format>
         </remarks>
@@ -625,12 +625,12 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
       </ReturnValue>
       <Docs>
         <summary>取得繫結至目前執行個體控制代碼之執行個體擁有者的鎖定權杖。</summary>
-        <value>繫結至目前執行個體控制代碼的鎖定權杖，但如果控制代碼沒有繫結至執行個體擁有者，則為 Guid.Empty。</value>
+        <value>如果控制代碼沒有繫結至執行個體擁有者，其鎖定權杖繫結至目前的執行個體控制代碼或 Guid.Empty。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 使用繫結至鎖定的控制代碼來執行需要鎖定的作業 (例如保存執行個體資料) 時，持續性提供者應該針對保留在執行個體存放區中之執行個體上的鎖定權杖檢查此值。 如果鎖定權杖不符，此命令應該會由於 InstanceLockLostException 而失敗。  
+ 使用繫結至鎖定的控制代碼來執行需要鎖定的作業 (例如保存執行個體資料) 時，持續性提供者應該針對保留在執行個體存放區中之執行個體上的鎖定權杖檢查此值。 如果鎖定權杖不符，此命令應該會由於 instancelocklostexception。  
   
  取得執行個體的新鎖定 (例如使用尚未繫結至鎖定的控制代碼來保存執行個體資料) 時，持續性提供者應該使用這個值當做鎖定權杖。 如果執行個體已經在執行個體存放區中鎖定，而且其鎖定權杖符合這個鎖定權杖，持續性提供者就可以嘗試使用 BindReclaimedLock 來回收執行個體。  
   
