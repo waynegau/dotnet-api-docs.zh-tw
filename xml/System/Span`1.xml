@@ -1,11 +1,11 @@
 <Type Name="Span&lt;T&gt;" FullName="System.Span&lt;T&gt;">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="6348ca48e2f74be9e672b6f8b005472eeb3f48ce" />
-    <Meta Name="ms.sourcegitcommit" Value="9e06b87bcfa4347dbbaaa4b3cc36b43b93b5badb" />
+    <Meta Name="ms.openlocfilehash" Value="d86be55e57011989fcd82d06e43b6ac95c5bf8fb" />
+    <Meta Name="ms.sourcegitcommit" Value="c902e847cd05ac37d93eca981b0fb009aae0a790" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="11/20/2018" />
-    <Meta Name="ms.locfileid" Value="52213335" />
+    <Meta Name="ms.lasthandoff" Value="11/28/2018" />
+    <Meta Name="ms.locfileid" Value="52454574" />
   </Metadata>
   <TypeSignature Language="C#" Value="public struct Span&lt;T&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit Span`1&lt;T&gt; extends System.ValueType" />
@@ -42,7 +42,7 @@
     <remarks>
       <format type="text/markdown"><![CDATA[  
 
-`Span<T>` 已[ref struct](~/docs/csharp/reference-semantics-with-value-types.md#ref-struct-type)配置堆疊上，而不是 managed 堆積上。 Ref 結構類型有一些限制，以確保它們無法提升至受控堆積，包括無法 box 處理，他們無法指派給變數的型別<xref:System.Object>，`dynamic`成任何介面類型，也不能是中的欄位參考型別，而且它們不能跨`await`和`yield`界限。 此外，兩個方法，會呼叫<xref:System.Span%601.Equals(System.Object)>並<xref:System.Span%601.GetHashCode%2A>，會擲回<xref:System.NotSupportedException>。 
+`Span<T>` 已[ref struct](~/docs/csharp/language-reference/keywords/ref.md#ref-struct-types)配置堆疊上，而不是 managed 堆積上。 Ref 結構類型有一些限制，以確保它們無法提升至受控堆積，包括無法 box 處理，他們無法指派給變數的型別<xref:System.Object>，`dynamic`成任何介面類型，也不能是中的欄位參考型別，而且它們不能跨`await`和`yield`界限。 此外，兩個方法，會呼叫<xref:System.Span%601.Equals(System.Object)>並<xref:System.Span%601.GetHashCode%2A>，會擲回<xref:System.NotSupportedException>。 
 
 > [!IMPORTANT]
 > 因為它是僅限堆疊的型別，`Span<T>`不適合許多情況下，需要儲存在堆積上的緩衝區的參考。 這是如此，比方說，進行 asynchrous 方法呼叫的常式。 對於這類 scenarious 中，您可以使用免費<xref:System.Memory%601?displayProperty=nameWithType>和<xref:System.ReadOnlyMemory%601?displayProperty=nameWithType>型別。
@@ -77,13 +77,13 @@ A`Span<T>`代表任意記憶體中的連續區域。 A`Span<T>`執行個體通�
 
 ## <a name="spant-and-slices"></a>範圍\<T > 和配量
 
-`Span\<T>` 包含兩個多載<xref:System.Span%601.Slice%2A>形成配量超出指定的索引開始的目前範圍的方法。 如此可讓您將在資料`Span\<T>`做為一組可處理視資料處理管線，其中含有最少的效能影響的部分邏輯區塊。 例如，由於新式伺服器通訊協定通常是以文字為基礎，操作字串和子字串是特別重要。 在 <xref:System.String>類別的主要方法擷取子字串是<xref:System.String.Substring%2A>。 針對依賴廣泛的字串操作的資料管線，其使用會提供一些效能的負面影響，因為它：
+`Span<T>` 包含兩個多載<xref:System.Span%601.Slice%2A>形成配量超出指定的索引開始的目前範圍的方法。 如此可讓您將在資料`Span<T>`做為一組可處理視資料處理管線，其中含有最少的效能影響的部分邏輯區塊。 例如，由於新式伺服器通訊協定通常是以文字為基礎，操作字串和子字串是特別重要。 在 <xref:System.String>類別的主要方法擷取子字串是<xref:System.String.Substring%2A>。 針對依賴廣泛的字串操作的資料管線，其使用會提供一些效能的負面影響，因為它：
 
 1. 建立新的字串，用來保存子字串。
 
 2. 原始字串一部分的字元複製到新的字串。
 
-要消除這項配置和複製作業，請使用`Span\<T>`或<xref:System.ReadOnlySpan%601>，如下列範例所示：
+要消除這項配置和複製作業，請使用`Span<T>`或<xref:System.ReadOnlySpan%601>，如下列範例所示：
 
 [!code-csharp[Creating a slice from a substring](~/samples/snippets/csharp/api/system/span/slice2/program.cs)]
 
@@ -164,32 +164,6 @@ A`Span<T>`代表任意記憶體中的連續區域。 A`Span<T>`執行個體通�
           <paramref name="T" /> 是參考型別或包含指標，因此無法儲存在非受控記憶體中。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException">
           <paramref name="length" /> 為負。</exception>
-      </Docs>
-    </Member>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public Span (T[] array, int start);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(!T[] array, int32 start) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Span`1.#ctor(`0[],System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (array As T(), start As Integer)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; Span(cli::array &lt;T&gt; ^ array, int start);" />
-      <MemberSignature Language="F#" Value="new Span&lt;'T&gt; : 'T[] * int -&gt; Span&lt;'T&gt;" Usage="new System.Span&lt;'T&gt; (array, start)" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Memory</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="array" Type="T[]" />
-        <Parameter Name="start" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="array">來源陣列。</param>
-        <param name="start">要包含在 <see cref="T:System.Span`1" /> 物件中之陣列第一個項目的索引。</param>
-        <summary>從指定的陣列建立新的 <see cref="T:System.Span`1" /> 物件，從指定的索引位置開始，並繼續到陣列的結尾。</summary>
-        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -292,64 +266,6 @@ A`Span<T>`代表任意記憶體中的連續區域。 A`Span<T>`執行個體通�
         </remarks>
         <exception cref="T:System.ArgumentException">
           <paramref name="destination" /> 比來源 <see cref="System.Span`1" /> 短。</exception>
-      </Docs>
-    </Member>
-    <Member MemberName="DangerousCreate">
-      <MemberSignature Language="C#" Value="public static Span&lt;T&gt; DangerousCreate (object obj, ref T objectData, int length);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig valuetype System.Span`1&lt;!T&gt; DangerousCreate(object obj, !T&amp; objectData, int32 length) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Span`1.DangerousCreate(System.Object,`0@,System.Int32)" />
-      <MemberSignature Language="VB.NET" Value="Public Shared Function DangerousCreate (obj As Object, ByRef objectData As T, length As Integer) As Span(Of T)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; static Span&lt;T&gt; DangerousCreate(System::Object ^ obj, T % objectData, int length);" />
-      <MemberSignature Language="F#" Value="static member DangerousCreate : obj *  * int -&gt; Span&lt;'T&gt;" Usage="System.Span&lt;'T&gt;.DangerousCreate (obj, objectData, length)" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Memory</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Span&lt;T&gt;</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="obj" Type="System.Object" />
-        <Parameter Name="objectData" Type="T" RefType="ref" />
-        <Parameter Name="length" Type="System.Int32" />
-      </Parameters>
-      <Docs>
-        <param name="obj">To be added.</param>
-        <param name="objectData">To be added.</param>
-        <param name="length">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="DangerousGetPinnableReference">
-      <MemberSignature Language="C#" Value="public T DangerousGetPinnableReference ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance !T DangerousGetPinnableReference() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Span`1.DangerousGetPinnableReference" />
-      <MemberSignature Language="VB.NET" Value="Public Function DangerousGetPinnableReference () As T" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; T % DangerousGetPinnableReference();" />
-      <MemberSignature Language="F#" Value="member this.DangerousGetPinnableReference : unit -&gt; " Usage="span.DangerousGetPinnableReference " />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Memory</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-      </AssemblyInfo>
-      <ReturnValue RefType="Ref">
-        <ReturnType>T</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Empty">
