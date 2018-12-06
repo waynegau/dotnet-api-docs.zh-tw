@@ -1,11 +1,11 @@
 <Type Name="Compiler" FullName="Microsoft.CSharp.Compiler">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="6ce05ee44ac65d4c530556eb4f9a715ed7fb72f9" />
-    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
+    <Meta Name="ms.openlocfilehash" Value="7b7f79572aac638b945fea6761568e66249d10a9" />
+    <Meta Name="ms.sourcegitcommit" Value="c0c07dbd19cd7017243f9ac36915755f79bc8da6" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="08/25/2018" />
-    <Meta Name="ms.locfileid" Value="39858513" />
+    <Meta Name="ms.lasthandoff" Value="11/27/2018" />
+    <Meta Name="ms.locfileid" Value="52364850" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class Compiler" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Compiler extends System.Object" />
@@ -15,6 +15,7 @@
   <TypeSignature Language="F#" Value="type Compiler = class" />
   <AssemblyInfo>
     <AssemblyName>cscompmgd</AssemblyName>
+    <AssemblyVersion>7.0.5000.0</AssemblyVersion>
     <AssemblyVersion>8.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
@@ -27,8 +28,17 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>**注意：這個 API 現在已淘汰。** 非過時的替代方式是 <see cref="T:Microsoft.CSharp.CSharpCodeProvider" />。
+
+C# 編譯器的受控包裝函式。</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[
+
+## Remarks  
+若要編譯 C\#程式碼同處理序，呼叫<xref:Microsoft.CSharp.Compiler.Compile(System.String[],System.String[],System.String,System.String[],System.Collections.IDictionary)>。
+
+]]></format>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName="Compile">
@@ -41,6 +51,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>cscompmgd</AssemblyName>
+        <AssemblyVersion>7.0.5000.0</AssemblyVersion>
         <AssemblyVersion>8.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -54,14 +65,73 @@
         <Parameter Name="options" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="sourceTexts">To be added.</param>
-        <param name="sourceTextNames">To be added.</param>
-        <param name="target">To be added.</param>
-        <param name="imports">To be added.</param>
-        <param name="options">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="sourceTexts">字串類型陣列，其中每個都具有 C\# 程式碼。</param>
+        <param name="sourceTextNames">字串類型陣列，包含每個 sourceTexts 的檔案名稱。</param>
+        <param name="target">輸出檔案名稱。 此引數為必要項目。</param>
+        <param name="imports">字串類型陣列，其中包含要參考的檔案。</param>
+        <param name="options">編譯器選項的 <see cref="T:System.Collections.IDictionary" />。</param>
+        <summary>將指定 C# 來源編譯到指定的目的地檔案。</summary>
+        <returns>將診斷訊息作為 <see cref="T:Microsoft.CSharp.CompilerError" /> 類型的陣列傳回。 若陣列為空白或所有項目皆為警告，則編譯便會成功。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+SourceTexts 參數中的每個字串相當於單一原始程式檔。 必須有至少一個 sourceTexts 項目。
+
+SourceTextNames 參數中的檔案名稱會用於編譯器診斷和偵錯資訊。 陣列是必要的但它可以在本機覆寫使用\#line 指示詞。 陣列必須有相同數目的元素做為 sourceTexts 參數。
+
+/Reference 編譯器選項相同的匯入參數。 這個參數可以是 <see langword="null" />。
+
+選項參數中，金鑰是編譯器選項的簡短形式。 值為所需選項的值。 選項參數可以是<see langword="null" />。 無法辨識某些編譯器選項。 可辨識的選項和值：
+
+| 索引鍵名稱 | 使用量 |
+| --- | --- |
+| addmodule | 此組件中包含的模組清單。 模組名稱必須以分隔號或直立線符號字元分隔。 值必須是型別<xref:System.String>。 請參閱[-addmodule (C#編譯器選項)](https://msdn.microsoft.com/library/1s46f83c)。 |
+| baseaddress | 程式庫的基底位址。 值必須是型別<xref:System.UInt32>。 請參閱[-baseaddress (C#編譯器選項)](~/docs/csharp/language-reference/compiler-options/baseaddress-compiler-option.md)。 |
+| bugreport | 會產生錯誤報告檔案。 值必須是型別<xref:System.String>。 請參閱[-bugreport (C#編譯器選項)](https://msdn.microsoft.com/library/kaky3xy9)。 |
+| checked | 若要檢查 （或取消核取），請設定預設運算式評估。 值必須是型別<xref:System.Boolean>。 請參閱[-檢查 (C#編譯器選項)](https://msdn.microsoft.com/library/h25wtyxf)。 |
+| d | 以分號分隔清單來定義的符號。 值必須是型別<xref:System.String>。 請參閱[-定義 (C#編譯器選項)](https://msdn.microsoft.com/library/0feaad6z)。 |
+| 偵錯 | 發出偵錯輸出的資訊。 值必須是型別<xref:System.Boolean>。 不能指定完整或僅限 pdb。 請參閱[-偵錯 (C#編譯器選項)](https://msdn.microsoft.com/library/8cw0bt21)。 |
+| 文件 | 將 XML 註解的檔案名稱。 值必須是型別<xref:System.String>。 請參閱[-doc (C#編譯器選項)](https://msdn.microsoft.com/library/3260k4x7)。 |
+| filealign | PE 區段對齊大小。 值必須是型別<xref:System.UInt32>。 請參閱[-filealign (C#編譯器選項)](https://msdn.microsoft.com/library/0s4tzdf2)。 |
+| incr | 啟用累加式重建。 值必須是型別<xref:System.Boolean>。 |
+| lib | 尋找模組和參考組件時所要搜尋的其他路徑。 值必須是型別<xref:System.String>。 請參閱[-lib (C#編譯器選項)](https://msdn.microsoft.com/library/s5bac5fx)。 |
+| linkres | 將受管理的資源連結至組件。 值必須是型別<xref:System.String>。 請參閱[-linkresource (C#編譯器選項)](https://msdn.microsoft.com/library/xawyf94k)。 |
+| m | 搜尋中的 Main 方法的型別。 值必須是型別<xref:System.String>。 請參閱[-主要 (C#編譯器選項)](https://msdn.microsoft.com/library/x3eht538)。 |
+| nostdlib | 執行不自動參考 mscorlib.dll。 值必須是型別<xref:System.Boolean>。 請參閱[-nostdlib (C#編譯器選項)](https://msdn.microsoft.com/library/fa13yay7)。 |
+| nowarn | 以分號分隔清單不會報告警告編號。 值必須是型別<xref:System.String>。 請參閱[-nowarn (C#編譯器選項)](https://msdn.microsoft.com/library/7f28x9z3)。 |
+| o | 啟用編譯器最佳化。 值必須是型別<xref:System.Boolean>。 請參閱[-最佳化 (C#編譯器選項)](https://msdn.microsoft.com/library/t0hfscdc)。 |
+| r | 參考的組件。 值必須是字串類型。 如果指定多個組件，則必須以分隔號或直立線符號字元分隔的檔案名稱。 請參閱[-參考 (C#編譯器選項)](https://msdn.microsoft.com/library/yabyz3h4)。 |
+| res | 內嵌 managed 的資源。 值必須是型別<xref:System.String>。 請參閱[-資源 (C#編譯器選項)](~/docs/csharp/language-reference/compiler-options/resource-compiler-option.md)。 |
+| target | 輸出檔案的目標類型，下列其中之一:"library"、"exe"、"winexe 」 或 「 模組 」。 值必須是型別<xref:System.String>。 請參閱[-目標 (C#編譯器選項)](https://msdn.microsoft.com/library/6h25dztx)。 |
+| unsafe | 允許不安全的建構。 值必須是型別<xref:System.Boolean>。 請參閱[-unsafe (C#編譯器選項)](https://msdn.microsoft.com/library/ct597kb0)。 |
+| w | 警告層級 (0-4)。 值必須是型別<xref:System.String>。 請參閱[-warn (C#編譯器選項)](https://msdn.microsoft.com/library/13b90fz7)。 |
+| warnaserror | 報告為錯誤的警告診斷。 值必須是型別<xref:System.Boolean>。 請參閱[-warnaserror (C#編譯器選項)](https://msdn.microsoft.com/library/406xhdz3)。 |
+| win32icon | Win32 圖示的自動產生 Win32 資源。 值必須是型別<xref:System.String>。 請參閱[-win32icon (C#編譯器選項)](https://msdn.microsoft.com/library/2aaxe43f)。 |
+| win32res | Win32 資源檔。 值必須是型別<xref:System.String>。 請參閱[-win32res (C#編譯器選項)](https://msdn.microsoft.com/library/8f2f5x2e)。 |
+
+]]></format>
+        </remarks>
+        <altmember cref="T:Microsoft.CSharp.Compiler" />
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="sourceTexts" /> 為 <see langword="null" />。
+          
+-或-
+
+<paramref name="sourceTextNames" /> 為 <see langword="null" />。
+
+-或-
+
+<paramref name="target" /> 為 <see langword="null" />。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="sourceTexts" /> 是空陣列。
+
+-或-
+
+<paramref name="sourceTextNames" /> 與 <paramref name="sourceTexts" /> 的大小不同。</exception>
+        <related type="Article" href="~/docs/csharp/language-reference/preprocessor-directives/preprocessor-line.md">#line (C# 參考)</related>
+        <related type="Article" href="~/docs/csharp/language-reference/compiler-options/reference-compiler-option.md">-reference (C# 編譯器選項)</related>
+        <related type="Article" href="~/docs/csharp/language-reference/compiler-options/index.md">C# 編譯器選項</related>
       </Docs>
     </Member>
   </Members>
