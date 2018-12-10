@@ -1,13 +1,5 @@
 <Type Name="EventWrittenEventArgs" FullName="System.Diagnostics.Tracing.EventWrittenEventArgs">
-  <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="46860fca723a945b6916f0d8377e0f4796e46365" />
-    <Meta Name="ms.sourcegitcommit" Value="9e06b87bcfa4347dbbaaa4b3cc36b43b93b5badb" />
-    <Meta Name="ms.translationtype" Value="HT" />
-    <Meta Name="ms.contentlocale" Value="zh-TW" />
-    <Meta Name="ms.lasthandoff" Value="11/20/2018" />
-    <Meta Name="ms.locfileid" Value="52240036" />
-  </Metadata>
-  <TypeSignature Language="C#" Value="public class EventWrittenEventArgs : EventArgs" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="6267829fa563f5420f5249f7a6248c140d093992" /><Meta Name="ms.sourcegitcommit" Value="9d1bf7e4c6d697123f26c810c1a049a755634634" /><Meta Name="ms.translationtype" Value="HT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="12/06/2018" /><Meta Name="ms.locfileid" Value="52981964" /></Metadata><TypeSignature Language="C#" Value="public class EventWrittenEventArgs : EventArgs" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit EventWrittenEventArgs extends System.EventArgs" />
   <TypeSignature Language="DocId" Value="T:System.Diagnostics.Tracing.EventWrittenEventArgs" />
   <TypeSignature Language="VB.NET" Value="Public Class EventWrittenEventArgs&#xA;Inherits EventArgs" />
@@ -37,7 +29,29 @@
   <Interfaces />
   <Docs>
     <summary>提供 <see cref="M:System.Diagnostics.Tracing.EventListener.OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs)" /> 回呼的資料。</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+每當事件分派至<xref:System.Diagnostics.Tracing.EventListener>，則<xref:System.Diagnostics.Tracing.EventListener.OnEventWritten%2A?displayProperty=nameWithType>叫用回呼方法。 它會傳遞`EventWrittenEventArgs`執行個體，包含事件相關聯的資訊。 所有的屬性值的`EventWrittenEventArgs`類別在回呼期間才會有效。 
+
+下列各節包含個別的其他資訊`EventWrittenEventArgs`屬性。
+
+### <a name="activityid-property"></a>ActivityId 屬性
+
+當使用<xref:System.Activities.Activity?displayProperty=nameWithType>和其衍生的類別，執行緒可以標示為有與其相關聯的活動。 `ActivityId`屬性會傳回記錄此事件之執行緒的活動識別碼。 注意執行緒不需要有活動，在此情況下，這個屬性會傳回<xref:System.Guid.Empty?displayProperty=nameWithType>。
+
+### <a name="osthreadid-and-timestamp-properties"></a>OSThreadId] 和 [時間戳記屬性 
+
+開始使用.NET Core 2.2<xref:System.Diagnostics.Tracing.EventListener>物件可以訂閱 （例如 GC、 JIT，以及執行緒集區事件） 的原生執行階段事件，除了所發出的事件<xref:System.Diagnostics.Tracing.EventSource>物件。 在舊版的.NET Core 和.NET framework 的所有版本中，執行緒 ID 和時間戳記可以收集在環境中，因為它們會分派它們，就發出的相同執行緒上同步。 並非所有的原生執行階段事件可分派以同步方式，不過。 管理時，會發出某些事件，例如 GC 事件，會暫停執行執行緒。 這些事件會在原生程式碼中進行緩衝處理，而且之後可以再次執行 managed 程式碼會由發送器執行緒，分派。 這些事件會進行緩衝處理，因為環境不能可靠地擷取的執行緒 ID 和時間戳記。 因為這個緣故，開頭為.NET Core 2.2，執行緒 ID 和時間戳記資訊會當作成員的`EventWrittenEventArgs`類別。
+
+### <a name="relatedactivityid-property"></a>RelatedActivityId 屬性
+
+ 相關的活動是強式與目前的活動。 一般來說，這是造成目前活動的其中一個活動 (事件`Start`opcode 通常這樣做) 或目前所建立的活動 (事件`Send`opcode 通常這樣做)。 它使用時，`RelatedActivityID`明確傳遞的執行記錄的方法。 許多事件未通過`RelatedActivityId`，這個屬性會傳回在此情況下<xref:System.Guid.Empty?displayProperty=nameWithType>。
+
+ ]]></format>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName="ActivityId">
@@ -76,18 +90,7 @@
       <Docs>
         <summary>取得將事件寫入之執行緒上的活動識別碼。</summary>
         <value>將事件寫入之執行緒上的活動識別碼。</value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- 擷取的值<xref:System.Diagnostics.Tracing.EventWrittenEventArgs.ActivityId%2A>屬性存取執行緒區域儲存區。 這有下列含意：  
-  
--   <xref:System.Diagnostics.Tracing.EventWrittenEventArgs.ActivityId%2A>欄位僅都是有效的持續時間<xref:System.Diagnostics.Tracing.EventListener.OnEventWritten%2A?displayProperty=nameWithType>回呼。  
-  
--   如果活動識別碼已變更的回呼期間，所傳回的活動識別碼<xref:System.Diagnostics.Tracing.EventWrittenEventArgs.ActivityId%2A>屬性無效。  
-  
- ]]></format>
-        </remarks>
+        <remarks>To be added.</remarks>
         <altmember cref="P:System.Diagnostics.Tracing.EventWrittenEventArgs.RelatedActivityId" />
         <altmember cref="M:System.Diagnostics.Tracing.EventSource.SetCurrentThreadActivityId(System.Guid)" />
       </Docs>
@@ -390,8 +393,8 @@
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>針對寫入事件的 OS 執行緒取得執行緒識別碼。 (僅限 .NET Core 2.2 及更新版本。)</summary>
+        <value>撰寫事件 OS 執行緒的執行緒識別項。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -499,14 +502,7 @@
       <Docs>
         <summary>取得與目前執行個體所代表之活動相關的活動識別項。</summary>
         <value>相關活動的識別項；如果沒有相關活動，則為 <see cref="F:System.Guid.Empty" />。</value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <xref:System.Diagnostics.Tracing.EventWrittenEventArgs.RelatedActivityId%2A>子系的<xref:System.Diagnostics.Tracing.EventWrittenEventArgs.ActivityId%2A>屬性。 活動識別碼可以是多個相關的活動識別碼相關聯。  
-  
- ]]></format>
-        </remarks>
+        <remarks>To be added.</remarks>
         <altmember cref="P:System.Diagnostics.Tracing.EventWrittenEventArgs.ActivityId" />
         <altmember cref="M:System.Diagnostics.Tracing.EventSource.WriteEventWithRelatedActivityId(System.Int32,System.Guid,System.Object[])" />
       </Docs>
@@ -601,8 +597,8 @@
         <ReturnType>System.DateTime</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>以 <see cref="System.DateTime" /> 時間戳記形式取得事件原先產生的時間。 (僅限 .NET Core 2.2 及更新版本。)</summary>
+        <value>日期和時間時記錄事件。 系統會嘗試盡可能精確。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
