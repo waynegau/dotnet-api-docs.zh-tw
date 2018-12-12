@@ -12,7 +12,7 @@
 
 - 藉由呼叫 <xref:System.Text.StringBuilder.ToString%2A> 方法將 <xref:System.Text.StringBuilder> 執行個體轉換為 <xref:System.String>，然後存取字串中的字元。
 
-- 將現有 <xref:System.Text.StringBuilder> 物件的內容複製到預留大小的新 <xref:System.Text.StringBuilder> 物件。 因為新的 <xref:System.Text.StringBuilder> 物件不是塊狀，所以會改善效能。 例如: 
+- 將現有 <xref:System.Text.StringBuilder> 物件的內容複製到預留大小的新 <xref:System.Text.StringBuilder> 物件。 因為新的 <xref:System.Text.StringBuilder> 物件不是塊狀，所以會改善效能。 例如：
 
    ```csharp
    // sbOriginal is the existing StringBuilder object
