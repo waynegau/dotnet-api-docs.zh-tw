@@ -1,1 +1,1 @@
-<span data-ttu-id="c2c6a-101">Windows Live ID</span><span class="sxs-lookup"><span data-stu-id="c2c6a-101">Windows Live ID</span></span>
+<span data-ttu-id="95599-101">Windows Live ID</span><span class="sxs-lookup"><span data-stu-id="95599-101">Windows Live ID</span></span>

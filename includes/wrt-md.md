@@ -1,1 +1,1 @@
-<span data-ttu-id="18d2e-101">Windows 執行階段</span><span class="sxs-lookup"><span data-stu-id="18d2e-101">Windows Runtime</span></span>
+<span data-ttu-id="935c5-101">Windows 執行階段</span><span class="sxs-lookup"><span data-stu-id="935c5-101">Windows Runtime</span></span>

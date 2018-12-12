@@ -1,1 +1,1 @@
-<span data-ttu-id="1cca9-101">Portable Network Graphics (PNG)</span><span class="sxs-lookup"><span data-stu-id="1cca9-101">Portable Network Graphics (PNG)</span></span>
+<span data-ttu-id="0404f-101">Portable Network Graphics (PNG)</span><span class="sxs-lookup"><span data-stu-id="0404f-101">Portable Network Graphics (PNG)</span></span>

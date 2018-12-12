@@ -1,1 +1,1 @@
-<span data-ttu-id="a3c4a-101">XML 文件物件模型 (DOM)</span><span class="sxs-lookup"><span data-stu-id="a3c4a-101">XML Document Object Model (DOM)</span></span>
+<span data-ttu-id="847da-101">XML 文件物件模型 (DOM)</span><span class="sxs-lookup"><span data-stu-id="847da-101">XML Document Object Model (DOM)</span></span>

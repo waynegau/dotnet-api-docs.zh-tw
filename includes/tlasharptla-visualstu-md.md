@@ -1,1 +1,1 @@
-<span data-ttu-id="4d721-101">Microsoft Visual Studio</span><span class="sxs-lookup"><span data-stu-id="4d721-101">Microsoft Visual Studio</span></span>
+<span data-ttu-id="02bb0-101">Microsoft Visual Studio</span><span class="sxs-lookup"><span data-stu-id="02bb0-101">Microsoft Visual Studio</span></span>

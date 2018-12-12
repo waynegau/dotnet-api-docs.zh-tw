@@ -1,1 +1,1 @@
-<span data-ttu-id="e9aae-101">Windows Embedded CE</span><span class="sxs-lookup"><span data-stu-id="e9aae-101">Windows Embedded CE</span></span>
+<span data-ttu-id="bb208-101">Windows Embedded CE</span><span class="sxs-lookup"><span data-stu-id="bb208-101">Windows Embedded CE</span></span>

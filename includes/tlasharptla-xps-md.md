@@ -1,1 +1,1 @@
-<span data-ttu-id="9e358-101">XML 文件規格 (XPS)</span><span class="sxs-lookup"><span data-stu-id="9e358-101">XML Paper Specification (XPS)</span></span>
+<span data-ttu-id="d060b-101">XML 文件規格 (XPS)</span><span class="sxs-lookup"><span data-stu-id="d060b-101">XML Paper Specification (XPS)</span></span>
