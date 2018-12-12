@@ -1,1 +1,1 @@
-<span data-ttu-id="bfca6-101">筆跡序列化格式 (ISF)</span><span class="sxs-lookup"><span data-stu-id="bfca6-101">Ink Serialized Format (ISF)</span></span>
+<span data-ttu-id="e3d3e-101">筆跡序列化格式 (ISF)</span><span class="sxs-lookup"><span data-stu-id="e3d3e-101">Ink Serialized Format (ISF)</span></span>

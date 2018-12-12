@@ -1,1 +1,1 @@
-<span data-ttu-id="6392b-101">JPEG 格式 (JPEG)</span><span class="sxs-lookup"><span data-stu-id="6392b-101">Joint Photographics Experts Group (JPEG)</span></span>
+<span data-ttu-id="46990-101">JPEG 格式 (JPEG)</span><span class="sxs-lookup"><span data-stu-id="46990-101">Joint Photographics Experts Group (JPEG)</span></span>

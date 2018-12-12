@@ -1,1 +1,1 @@
-<span data-ttu-id="f7567-101">可交換影像檔案 (Exif)</span><span class="sxs-lookup"><span data-stu-id="f7567-101">Exchangeable image file (Exif)</span></span>
+<span data-ttu-id="77bab-101">可交換影像檔案 (Exif)</span><span class="sxs-lookup"><span data-stu-id="77bab-101">Exchangeable image file (Exif)</span></span>
