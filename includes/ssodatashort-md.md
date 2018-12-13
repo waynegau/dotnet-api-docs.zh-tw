@@ -1,1 +1,1 @@
-<span data-ttu-id="358e0-101">OData</span><span class="sxs-lookup"><span data-stu-id="358e0-101">OData</span></span>
+<span data-ttu-id="98e3f-101">OData</span><span class="sxs-lookup"><span data-stu-id="98e3f-101">OData</span></span>

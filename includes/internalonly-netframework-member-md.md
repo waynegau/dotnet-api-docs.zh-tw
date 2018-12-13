@@ -1,1 +1,1 @@
-<span data-ttu-id="97209-101">這個成員可以支援 .NET Framework 基礎結構，但不建議直接使用於您的程式碼中。</span><span class="sxs-lookup"><span data-stu-id="97209-101">This member supports the .NET Framework infrastructure and is not intended to be used directly from your code.</span></span>
+<span data-ttu-id="3cb91-101">此成員支援 .NET Framework 基礎結構，並不能直接使用於您的程式碼中。</span><span class="sxs-lookup"><span data-stu-id="3cb91-101">This member supports the .NET Framework infrastructure and is not intended to be used directly from your code.</span></span>

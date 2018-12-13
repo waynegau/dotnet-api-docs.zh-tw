@@ -1,1 +1,1 @@
-<span data-ttu-id="e3fef-101">受控制序列中項目的型別。</span><span class="sxs-lookup"><span data-stu-id="e3fef-101">The type of an element in the controlled sequence.</span></span>
+<span data-ttu-id="4f6b4-101">受控制序列中項目的類型。</span><span class="sxs-lookup"><span data-stu-id="4f6b4-101">The type of an element in the controlled sequence.</span></span>
