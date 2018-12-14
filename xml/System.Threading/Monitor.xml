@@ -1,5 +1,5 @@
 <Type Name="Monitor" FullName="System.Threading.Monitor">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="df70f7cc62e1ef013835d69cf0220d9e8b42bc5a" /><Meta Name="ms.sourcegitcommit" Value="0ec122ee5f3681159b8460ab15b409fd6e3d3ae0" /><Meta Name="ms.translationtype" Value="HT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="10/04/2018" /><Meta Name="ms.locfileid" Value="48729796" /></Metadata><TypeSignature Language="C#" Value="public static class Monitor" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="e925d576d52267c0e301b6428f677609e99940d3" /><Meta Name="ms.sourcegitcommit" Value="adc8598fd19d91438cacaa8fa7ce613e28c8218e" /><Meta Name="ms.translationtype" Value="HT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="12/11/2018" /><Meta Name="ms.locfileid" Value="53230737" /></Metadata><TypeSignature Language="C#" Value="public static class Monitor" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit Monitor extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Threading.Monitor" />
   <TypeSignature Language="VB.NET" Value="Public Class Monitor" />
@@ -42,14 +42,14 @@
   
  本文內容：  
   
- [Monitor 類別： 概觀](#Overview)   
+ [監視類別：概觀](#Overview)   
  [鎖定物件](#Lock)   
  [重要區段](#CriticalSection)   
  [Pulse 及 PulseAll 等候](#Pulse)   
  [監視與等候控制代碼](#WaitHandles)  
   
 <a name="Overview"></a>   
-## <a name="the-monitor-class-an-overview"></a>Monitor 類別： 概觀  
+## <a name="the-monitor-class-an-overview"></a>監視類別：概觀  
  <xref:System.Threading.Monitor> 具有下列功能：  
   
 -   它是隨選物件相關聯。  
@@ -65,7 +65,7 @@
   
 |動作|描述|  
 |------------|-----------------|  
-|<xref:System.Threading.Monitor.Enter%2A>, <xref:System.Threading.Monitor.TryEnter%2A>|取得物件的鎖定。 此動作也會標示重要區段的開頭。 沒有任何其他執行緒可以進入重要區段，除非它使用不同的鎖定的物件的重要區段中執行的指示。|  
+|<xref:System.Threading.Monitor.Enter%2A>、 <xref:System.Threading.Monitor.TryEnter%2A>|取得物件的鎖定。 此動作也會標示重要區段的開頭。 沒有任何其他執行緒可以進入重要區段，除非它使用不同的鎖定的物件的重要區段中執行的指示。|  
 |<xref:System.Threading.Monitor.Wait%2A>|釋放鎖定物件以允許其他執行緒鎖定，並存取該物件。 另一個執行緒存取的物件，就會等候呼叫執行緒。 Pulse 信號用來通知等候中執行緒的相關物件的狀態變更。|  
 |<xref:System.Threading.Monitor.Pulse%2A> （信號）， <xref:System.Threading.Monitor.PulseAll%2A>|傳送訊號給一或多個等候中執行緒。 訊號通知等候的執行緒已鎖定物件的狀態已變更，並鎖定的擁有者已準備好解除鎖定。 等候執行緒位於物件的就緒佇列，使其最終可能會接收物件的鎖定。 一旦執行緒擁有鎖定，它可以檢查以查看是否已到達所需的狀態物件的新狀態。|  
 |<xref:System.Threading.Monitor.Exit%2A>|釋放物件上的鎖定。 此動作也會標示重要區段保護鎖定物件的結尾。|  
@@ -149,18 +149,18 @@
   
  從任何執行緒集區執行緒上執行的工作，可以存取它們，因為存取變數`total`和`n`也必須同步處理。 <xref:System.Threading.Interlocked.Add%2A?displayProperty=nameWithType>方法適用於此目的。  
   
- 下列範例示範如何結合的使用<xref:System.Threading.Monitor>類別 (實作`lock`或`SyncLock`語言建構)，則<xref:System.Threading.Interlocked>類別，而<xref:System.Threading.AutoResetEvent>類別。 它會定義兩個`internal`（在 C# 中) 或`Friend`（在 Visual Basic) 類別`SyncResource`和`UnSyncResource`，分別提供同步和非同步存取資源。 為了確保範例說明同步和非同步存取 （這可能是因為如果每個方法呼叫都迅速完成） 之間的差異，此方法包含隨機的延遲： 針對執行緒的<xref:System.Threading.Thread.ManagedThreadId%2A?displayProperty=nameWithType>屬性為偶數，方法呼叫<xref:System.Threading.Thread.Sleep%2A?displayProperty=nameWithType>引入 2,000 毫秒的延遲。 請注意，因為`SyncResource`類別不是公用的沒有任何用戶端程式碼在同步處理的資源上取得鎖定; 內部類別本身會取得鎖定。 這可防止惡意程式碼在公開物件上取得鎖定。  
+ 下列範例示範如何結合的使用<xref:System.Threading.Monitor>類別 (實作`lock`或`SyncLock`語言建構)，則<xref:System.Threading.Interlocked>類別，而<xref:System.Threading.AutoResetEvent>類別。 它會定義兩個 `internal` (在 C# 中) 或 `Friend` (在 Visual Basic 中) 類別 `SyncResource` 和 `UnSyncResource`，分別提供對資源的同步存取和非同步存取。 為了確保範例說明同步存取和非同步存取 (如果每個方法呼叫都迅速完成則可能發生這種情況) 之間的差異，這個方法會包含隨機延遲：針對其 <xref:System.Threading.Thread.ManagedThreadId%2A?displayProperty=nameWithType> 屬性為偶數的執行緒，這個方法會呼叫 <xref:System.Threading.Thread.Sleep%2A?displayProperty=nameWithType> 以引入 2,000 毫秒的延遲。 請注意，由於 `SyncResource` 類別不是公用的，因此不會有任何用戶端程式碼在同步處理的資源上取得鎖定；內部類別本身會取得鎖定。 這可防止惡意程式碼在公開物件上取得鎖定。  
   
  [!code-csharp[Conceptual.Monitors#1](~/samples/snippets/csharp/VS_Snippets_CLR/conceptual.monitors/cs/source.cs#1)]
  [!code-vb[Conceptual.Monitors#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/conceptual.monitors/vb/source.vb#1)]  
   
- 此範例會定義一個變數， `numOps`，定義會嘗試存取資源的執行緒數目。 應用程式執行緒呼叫<xref:System.Threading.ThreadPool.QueueUserWorkItem%28System.Threading.WaitCallback%29?displayProperty=nameWithType>方法的同步和非同步存取五次每一個。 <xref:System.Threading.ThreadPool.QueueUserWorkItem%28System.Threading.WaitCallback%29?displayProperty=nameWithType>方法具有單一參數，會接受任何參數，且不傳回值的委派。 針對同步存取，它會叫用`SyncUpdateResource`方法; 針對未同步存取，它會叫用`UnSyncUpdateResource`方法。 在方法呼叫的每個設定之後呼叫的應用程式執行緒[AutoResetEvent.WaitOne](xref:System.Threading.WaitHandle.WaitOne*)方法，以封鎖直到<xref:System.Threading.AutoResetEvent>執行個體收到訊號。  
+ 這個範例會定義變數 `numOps`，以定義將會嘗試存取資源的執行緒數目。 應用程式執行緒會針對同步存取和非同步存取各呼叫 <xref:System.Threading.ThreadPool.QueueUserWorkItem%28System.Threading.WaitCallback%29?displayProperty=nameWithType> 方法五次。 <xref:System.Threading.ThreadPool.QueueUserWorkItem%28System.Threading.WaitCallback%29?displayProperty=nameWithType> 方法具有單一參數和不接受任何參數的一個委派，並且不會傳回任何值。 針對同步存取，它會叫用 `SyncUpdateResource` 方法；針對未同步存取，它會叫用 `UnSyncUpdateResource` 方法。 在方法呼叫的每個設定之後呼叫的應用程式執行緒[AutoResetEvent.WaitOne](xref:System.Threading.WaitHandle.WaitOne*)方法，以封鎖直到<xref:System.Threading.AutoResetEvent>執行個體收到訊號。  
   
- 每次呼叫`SyncUpdateResource`方法都會呼叫內部`SyncResource.Access`方法，然後呼叫<xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType>方法，以遞減`numOps`計數器。 <xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType>方法會用於遞減計數器，因為否則您無法確定第二個執行緒將會存取值，才能在第一個執行緒的遞減值儲存在變數。 當上次同步處理背景工作執行緒遞減計數器為零時，表示所有同步處理的執行緒已完成存取資源，`SyncUpdateResource`方法呼叫<xref:System.Threading.EventWaitHandle.Set%2A?displayProperty=nameWithType>方法，以指示主執行緒繼續執行執行。  
+ 每次呼叫 `SyncUpdateResource` 方法都會呼叫內部 `SyncResource.Access` 方法，然後呼叫 <xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType> 方法以遞減 `numOps` 計數器。 <xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType>方法會用於遞減計數器，因為否則您無法確定第二個執行緒將會存取值，才能在第一個執行緒的遞減值儲存在變數。 當上次同步處理背景工作執行緒遞減計數器為零時，表示所有同步處理的執行緒已完成存取資源，`SyncUpdateResource`方法呼叫<xref:System.Threading.EventWaitHandle.Set%2A?displayProperty=nameWithType>方法，以指示主執行緒繼續執行執行。  
   
- 每次呼叫`UnSyncUpdateResource`方法都會呼叫內部`UnSyncResource.Access`方法，然後呼叫<xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType>方法，以遞減`numOps`計數器。 同樣地，<xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType>方法會用於遞減計數器，以確保第二個執行緒不會無法存取值在第一個執行緒的遞減值已指派給變數之前。 當上次非同步處理背景工作執行緒遞減計數器為零時，指出沒有其他非同步處理的執行緒需要存取資源，`UnSyncUpdateResource`方法呼叫<xref:System.Threading.EventWaitHandle.Set%2A?displayProperty=nameWithType>方法，以指示主執行緒繼續執行.  
+ 每次呼叫 `UnSyncUpdateResource` 方法都會呼叫內部 `UnSyncResource.Access` 方法，然後呼叫 <xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType> 方法以遞減 `numOps` 計數器。 同樣地，<xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType>方法會用於遞減計數器，以確保第二個執行緒不會無法存取值在第一個執行緒的遞減值已指派給變數之前。 當上次非同步處理背景工作執行緒遞減計數器為零時，指出沒有其他非同步處理的執行緒需要存取資源，`UnSyncUpdateResource`方法呼叫<xref:System.Threading.EventWaitHandle.Set%2A?displayProperty=nameWithType>方法，以指示主執行緒繼續執行.  
   
- 如範例輸出所示，同步存取可確保呼叫執行緒會先結束受保護的資源，其他執行緒才能存取該資源；每個執行緒都會等候其前置項。 相反地，若未鎖定，`UnSyncResource.Access`執行緒到達它的順序呼叫方法。  
+ 如範例輸出所示，同步存取可確保呼叫執行緒會先結束受保護的資源，其他執行緒才能存取該資源；每個執行緒都會等候其前置項。 相反地，若未鎖定，則會依執行緒到達的順序來呼叫 `UnSyncResource.Access` 方法。  
   
  ]]></format>
     </remarks>
@@ -491,7 +491,7 @@
  目前擁有指定的物件上鎖定的執行緒叫用這個方法來通知鎖定的行中的下一個執行緒。 在收到的 pulse 時，等候的執行緒會移到就緒佇列。 當執行緒叫用`Pulse`釋出鎖定，準備佇列 （也就是不一定接受 pulse 的執行緒） 中的下一個執行緒取得鎖定。  
   
 > [!IMPORTANT]
->  <xref:System.Threading.Monitor>類別不會維護狀態，指出<xref:System.Threading.Monitor.Pulse%2A>已呼叫方法。 因此，如果您呼叫<xref:System.Threading.Monitor.Pulse%2A>當沒有執行緒在等候下, 一個呼叫的執行緒<xref:System.Threading.Monitor.Wait%2A>區塊如同<xref:System.Threading.Monitor.Pulse%2A>從未呼叫。 如果使用兩個執行緒<xref:System.Threading.Monitor.Pulse%2A>和<xref:System.Threading.Monitor.Wait%2A>互動，這可能導致死結。 與此相反的行為與<xref:System.Threading.AutoResetEvent>類別： 如果您通知<xref:System.Threading.AutoResetEvent>藉由呼叫其<xref:System.Threading.EventWaitHandle.Set%2A>方法，沒有執行緒在等待，而<xref:System.Threading.AutoResetEvent>仍會處於收到信號的狀態，直到執行緒呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>， <xref:System.Threading.WaitHandle.WaitAny%2A>，或<xref:System.Threading.WaitHandle.WaitAll%2A>。 <xref:System.Threading.AutoResetEvent>釋放該執行緒，並傳回未發出訊號的狀態。  
+>  <xref:System.Threading.Monitor>類別不會維護狀態，指出<xref:System.Threading.Monitor.Pulse%2A>已呼叫方法。 因此，如果您呼叫<xref:System.Threading.Monitor.Pulse%2A>當沒有執行緒在等候下, 一個呼叫的執行緒<xref:System.Threading.Monitor.Wait%2A>區塊如同<xref:System.Threading.Monitor.Pulse%2A>從未呼叫。 如果使用兩個執行緒<xref:System.Threading.Monitor.Pulse%2A>和<xref:System.Threading.Monitor.Wait%2A>互動，這可能導致死結。 與此相反的行為與<xref:System.Threading.AutoResetEvent>類別：如果您發出信號<xref:System.Threading.AutoResetEvent>藉由呼叫其<xref:System.Threading.EventWaitHandle.Set%2A>方法，沒有執行緒在等待，而<xref:System.Threading.AutoResetEvent>仍會處於收到信號的狀態，直到執行緒呼叫<xref:System.Threading.WaitHandle.WaitOne%2A>， <xref:System.Threading.WaitHandle.WaitAny%2A>，或<xref:System.Threading.WaitHandle.WaitAll%2A>。 <xref:System.Threading.AutoResetEvent>釋放該執行緒，並傳回未發出訊號的狀態。  
   
  請注意 同步處理的物件擁有數個的參考，包括目前持有鎖定、 參考到就緒佇列，其中包含已準備好取得鎖定的執行緒，以及參考的等候佇列之執行緒的參考它包含執行緒等候的物件的狀態變更通知。  
   
@@ -845,7 +845,7 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> 參數為 <see langword="null" />。</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> 的值 (毫秒) 為負數且不等於 <see cref="F:System.Threading.Timeout.Infinite" /> (–1 毫秒)，或大於 <see cref="F:System.Int32.MaxValue" />。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> 的毫秒值為負值且不等於 <see cref="F:System.Threading.Timeout.Infinite" /> (-1 毫秒)，或大於 <see cref="F:System.Int32.MaxValue" />。</exception>
         <altmember cref="T:System.Threading.Thread" />
         <related type="Article" href="~/docs/standard/threading/index.md">Managed 執行緒處理</related>
       </Docs>
@@ -988,7 +988,7 @@
         </remarks>
         <exception cref="T:System.ArgumentException"><paramref name="lockTaken" /> 的輸入為 <see langword="true" />。</exception>
         <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> 參數為 <see langword="null" />。</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> 的值 (毫秒) 為負數且不等於 <see cref="F:System.Threading.Timeout.Infinite" /> (–1 毫秒)，或大於 <see cref="F:System.Int32.MaxValue" />。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> 的毫秒值為負值且不等於 <see cref="F:System.Threading.Timeout.Infinite" /> (-1 毫秒)，或大於 <see cref="F:System.Int32.MaxValue" />。</exception>
         <altmember cref="T:System.Threading.Thread" />
         <related type="Article" href="~/docs/standard/threading/index.md">Managed 執行緒處理</related>
       </Docs>
@@ -1207,7 +1207,7 @@
  當執行緒呼叫`Wait`，它會釋放該物件上的鎖定，並進入物件的等候佇列。 物件的就緒佇列中的下一個執行緒 （如果有的話） 取得鎖定並會獨佔使用的物件。 叫用的執行緒`Wait`仍會保留在等候佇列，直到保留鎖定的執行緒叫用<xref:System.Threading.Monitor.PulseAll%2A>，或它是在佇列中的下一步，並保留鎖定的執行緒叫用<xref:System.Threading.Monitor.Pulse%2A>。 不過，如果`timeout`另一個執行緒叫用這個物件的前經過<xref:System.Threading.Monitor.Pulse%2A>或<xref:System.Threading.Monitor.PulseAll%2A>方法，原始執行緒時，會移到就緒佇列上，才能重新取得鎖定。  
   
 > [!NOTE]
->  如果<xref:System.TimeSpan>代表-1 毫秒指定`timeout`參數，此方法會封鎖無限期地鎖定的持有者會呼叫除非<xref:System.Threading.Monitor.Pulse%2A>或<xref:System.Threading.Monitor.PulseAll%2A>。 如果`timeout`為 0 毫秒，呼叫的執行緒`Wait`釋出鎖定，然後才能重新取得鎖定立即進入就緒佇列。  
+>  如果<xref:System.TimeSpan>會指定代表-1 毫秒`timeout`參數，此方法會封鎖無限期地鎖定的持有者會呼叫除非<xref:System.Threading.Monitor.Pulse%2A>或<xref:System.Threading.Monitor.PulseAll%2A>。 如果`timeout`為 0 毫秒，呼叫的執行緒`Wait`釋出鎖定，然後才能重新取得鎖定立即進入就緒佇列。  
   
  呼叫端執行`Wait`一次，不論次數<xref:System.Threading.Monitor.Enter%2A>已叫用指定的物件。 就概念而言，`Wait`方法將儲存在呼叫端叫用次數<xref:System.Threading.Monitor.Enter%2A>物件上叫用<xref:System.Threading.Monitor.Exit%2A>次數所需的完全釋放鎖定的物件。 呼叫端會再封鎖等候重新取得物件時。 當呼叫端重新取得鎖定時，系統就會呼叫<xref:System.Threading.Monitor.Enter%2A>所需的還原已儲存次數<xref:System.Threading.Monitor.Enter%2A>呼叫端的計數。 呼叫`Wait`解除鎖定指定的物件; 如果呼叫端的其他物件的鎖定擁有者，會釋放這些鎖定不。  
   
@@ -1223,7 +1223,7 @@
         <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> 參數為 <see langword="null" />。</exception>
         <exception cref="T:System.Threading.SynchronizationLockException">呼叫執行緒沒有指定物件的鎖定。</exception>
         <exception cref="T:System.Threading.ThreadInterruptedException">叫用 <see langword="Wait" /> 的執行緒稍後會從等候狀態被插斷。 當另一個執行緒呼叫此執行緒的 <see cref="M:System.Threading.Thread.Interrupt" /> 方法時，就會發生此狀況。</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> 參數的毫秒值為負，且不表示 <see cref="F:System.Threading.Timeout.Infinite" /> (-1 毫秒)，或大於 <see cref="F:System.Int32.MaxValue" />。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> 參數的毫秒值為負值且不表示 <see cref="F:System.Threading.Timeout.Infinite" /> (-1 毫秒)，或大於 <see cref="F:System.Int32.MaxValue" />。</exception>
         <altmember cref="T:System.Threading.Thread" />
         <altmember cref="T:System.Threading.Monitor" />
         <related type="Article" href="~/docs/standard/threading/index.md">Managed 執行緒處理</related>
@@ -1388,7 +1388,7 @@
         <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> 參數為 <see langword="null" />。</exception>
         <exception cref="T:System.Threading.SynchronizationLockException"><see langword="Wait" /> 不是從同步處理的程式碼區塊中呼叫。</exception>
         <exception cref="T:System.Threading.ThreadInterruptedException">叫用 Wait 的執行緒稍後會從等候狀態中斷。 當另一個執行緒呼叫此執行緒的 <see cref="M:System.Threading.Thread.Interrupt" /> 方法時，就會發生此狀況。</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> 參數是負值且不代表 <see cref="F:System.Threading.Timeout.Infinite" /> (–1 毫秒)，或是大於 <see cref="F:System.Int32.MaxValue" />。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> 參數為負值且不表示 <see cref="F:System.Threading.Timeout.Infinite" /> (-1 毫秒)，或大於 <see cref="F:System.Int32.MaxValue" />。</exception>
         <altmember cref="T:System.Threading.Thread" />
         <altmember cref="T:System.Threading.Monitor" />
         <related type="Article" href="~/docs/standard/threading/index.md">Managed 執行緒處理</related>
