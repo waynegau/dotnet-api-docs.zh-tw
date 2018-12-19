@@ -1,5 +1,5 @@
 <Type Name="AssemblyLoadContext" FullName="System.Runtime.Loader.AssemblyLoadContext">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="1a5798f3c81e8fb04f46cc72b9ff78a79f39acec" /><Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" /><Meta Name="ms.translationtype" Value="HT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="08/24/2018" /><Meta Name="ms.locfileid" Value="36536416" /></Metadata><TypeSignature Language="C#" Value="public abstract class AssemblyLoadContext" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="d94f0ea7088ccab0622ff14804fdf4c480aa9e68" /><Meta Name="ms.sourcegitcommit" Value="d8bd5d494445ce3fcad1321267cb87548d23a45b" /><Meta Name="ms.translationtype" Value="HT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="12/15/2018" /><Meta Name="ms.locfileid" Value="53447444" /></Metadata><TypeSignature Language="C#" Value="public abstract class AssemblyLoadContext" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit AssemblyLoadContext extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.Loader.AssemblyLoadContext" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class AssemblyLoadContext" />
@@ -20,8 +20,54 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>代表繫結範圍的執行階段概念。 這個類別是抽象的。</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[
+
+## Remarks
+ <xref:System.Runtime.Loader.AssemblyLoadContext>表示載入內容。 就概念而言，載入內容會建立和載入、 解決，可能會卸載組件集合的範圍。
+ 
+ <xref:System.Runtime.Loader.AssemblyLoadContext>這是抽象類別。 <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)?displayProperty=nameWithType>需要建立的具象類別實作。
+ 
+ <xref:System.Runtime.Loader.AssemblyLoadContext>存在主要是為了提供組件繫結隔離。 它可讓多個要在單一處理序載入相同組件版本。 它會取代多個所提供的隔離機制<xref:System.AppDomain>.NET Framework 中的執行個體。
+ 
+ > [!NOTE]
+ > <xref:System.Runtime.Loader.AssemblyLoadContext> 不提供任何安全性功能。 所有的程式碼具有完整權限的程序。
+
+### <a name="usage-in-the-runtime"></a>在執行階段的使用方式
+ 執行階段會實作兩個組件載入內容: *<xref:System.Runtime.Loader.AssemblyLoadContext.Default?displayProperty=nameWithType>代表執行階段的預設繫結內容用於應用程式主要組件和其靜態的相依性。
+*<xref:System.Reflection.Assembly.LoadFile(System.String)?displayProperty=nameWithType>方法會隔離載入具現化最基本的組件<xref:System.Runtime.Loader.AssemblyLoadContext>。 它會載入在它自己的每個組件簡單的隔離配置<xref:System.Runtime.Loader.AssemblyLoadContext>沒有相依性解析。
+ 
+### <a name="application-usage"></a>應用程式使用量
+ 應用程式可以建立自己<xref:System.Runtime.Loader.AssemblyLoadContext>來建立進階繫結案例自訂解決方案。 自訂著重於定義相依性解析機制。
+ 
+ <xref:System.Runtime.Loader.AssemblyLoadContext>提供實作的 managed 組件解析的兩個擴充點：1. <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)?displayProperty=nameWithType>提供的第一個機會<xref:System.Runtime.Loader.AssemblyLoadContext>解析組件，請將其載入，並將它傳回。 如果<xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)?displayProperty=nameWithType>會傳回`null`，則載入器會嘗試將組件載入<xref:System.Runtime.Loader.AssemblyLoadContext.Default?displayProperty=nameWithType>。
+2. 如果<xref:System.Runtime.Loader.AssemblyLoadContext.Default?displayProperty=nameWithType>無法解析組件中，原始<xref:System.Runtime.Loader.AssemblyLoadContext>取得解析組件的第二次機會。 執行階段會引發<xref:System.Runtime.Loader.AssemblyLoadContext.Resolving>事件。
+ 
+ 此外<xref:System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDll(System.String)?displayProperty=nameWithType>虛擬方法可讓自訂的預設非受控組件解析。 預設實作會傳回`null`，因而導致執行階段搜尋，以使用預設搜尋原則即足以應付大部分的情況。
+
+### <a name="technical-challenges"></a>技術難題
+ * 您不可能載入多個單一處理序中的執行階段版本。
+     > [!CAUTION]
+     > 載入多個複本或不同版本的 framework 組件可能會導致非預期且很難診斷的行為。
+     
+     > [!TIP]
+     > 使用遠端處理和/或處理序間通訊的處理序界限，若要解決此隔離問題。
+ 
+ * 組件載入的時間可能會使測試和偵錯困難。 組件會載入通常不需立即解決其相依性。 如有需要會載入相依性：
+     * 當程式碼會分支到相依的組件。
+     * 當程式碼會載入資源。
+     * 當程式碼，明確地載入組件。
+ 
+ * 實作<xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)?displayProperty=nameWithType>可以加入新的相依性，這可能需要被隔離，以允許存在的不同版本。 在預設內容中，最自然的實作會將這些相依性。 謹慎設計，可以區隔新的相依性。
+ 
+ * 繫結隔離程序會建立多個類型，具有相同的型別名稱。
+     * 這可能會導致容易產生混淆的錯誤訊息，例如"Foo.Foo 類型無法轉換成輸入 Foo.Foo。 」
+     * 跨越隔離界限封送處理是重要的。 典型的解決方案是使用只載入預設載入內容之組件中定義的介面。
+ 
+ ]]></format>
+    </remarks>
+    <related type="Article" href="https://github.com/dotnet/coreclr/blob/master/Documentation/design-docs/assemblyloadcontext.md">AssemblyLoadContext CoreCLR 的設計文件</related>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -43,8 +89,16 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>初始化 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> 類別的新執行個體。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+
+這個建構函式受到保護。 它只能從呼叫<xref:System.Runtime.Loader.AssemblyLoadContext>類別或其衍生的類別。
+
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Default">
@@ -69,8 +123,8 @@
         <ReturnType>System.Runtime.Loader.AssemblyLoadContext</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>取得預設 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" />。 預設內容包含主應用程式組件及其靜態相依性。</summary>
+        <value>預設組件載入內容。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -99,11 +153,14 @@
         <Parameter Name="assemblyPath" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="assemblyPath">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="assemblyPath">組件的路徑。</param>
+        <summary>取得組件路徑的 <see cref="T:System.Reflection.AssemblyName" />。</summary>
+        <returns>物件，其包含組件 (位於 <paramref name="assemblyPath" />) 的完整剖析顯示名稱。</returns>
         <remarks>To be added.</remarks>
-      </Docs>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assemblyPath" /> 為 <see langword="null" />。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">找不到組件。</exception>
+        <exception cref="T:System.BadImageFormatException">此組件不是有效的組件。</exception>
+       </Docs>
     </Member>
     <Member MemberName="GetLoadContext">
       <MemberSignature Language="C#" Value="public static System.Runtime.Loader.AssemblyLoadContext GetLoadContext (System.Reflection.Assembly assembly);" />
@@ -129,10 +186,11 @@
         <Parameter Name="assembly" Type="System.Reflection.Assembly" />
       </Parameters>
       <Docs>
-        <param name="assembly">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="assembly">組件。</param>
+        <summary>取得 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" />，其中包含指定的 <see cref="T:System.Reflection.Assembly" />。</summary>
+        <returns>包含 <paramref name="assembly" /> 的組件載入內容。</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assembly" /> 為 <see langword="null" />。</exception>
       </Docs>
     </Member>
     <Member MemberName="Load">
@@ -159,10 +217,20 @@
         <Parameter Name="assemblyName" Type="System.Reflection.AssemblyName" />
       </Parameters>
       <Docs>
-        <param name="assemblyName">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="assemblyName">描述要載入之組件的物件。</param>
+        <summary>在衍生類別中覆寫時，允許組件根據其 <see cref="T:System.Reflection.AssemblyName" /> 解析並載入。</summary>
+        <returns>載入的組件或 <see langword="null" />。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+ 
+## Remarks
+ 組件解析期間<xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)>方法已載入的組件解析的組件名稱的第一個機會。 它可以載入組件，或傳回`null`。 如果它傳回`null`，解析程序會繼續。 請參閱<xref:System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName(System.Reflection.AssemblyName)>針對完整的處理序的描述。
+ 
+ > [!IMPORTANT]
+ > 若要避免遞迴堆疊溢位，請勿呼叫這個執行個體的<xref:System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName(System.Reflection.AssemblyName)>從這個方法的方法。
+ 
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="LoadFromAssemblyName">
@@ -189,10 +257,32 @@
         <Parameter Name="assemblyName" Type="System.Reflection.AssemblyName" />
       </Parameters>
       <Docs>
-        <param name="assemblyName">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="assemblyName">物件，其描述要載入的組件。</param>
+        <summary>解析並載入指定為 <see cref="T:System.Reflection.AssemblyName" /> 的組件。</summary>
+        <returns>載入的組件或 throws。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ <xref:System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName%2A> 載入組件解析<xref:System.Reflection.AssemblyName>。 這會觸發完整的解析度。 解析後援順序會遵循此程序：1. 方法呼叫<xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)>。
+         > [!IMPORTANT]
+         > <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)> must not call this method to prevent recursive stack overflow.
+     2. Unless the assembly is loaded or an exception is thrown, the method attempts to load the assembly in the default <xref:System.Runtime.Loader.AssemblyLoadContext>.
+     3. Unless the assembly is loaded or an exception is thrown, the method fires the <xref:System.Runtime.Loader.AssemblyLoadContext.Resolving> event.
+     4. Unless the assembly is loaded or an exception is thrown, the method fires the <xref:System.AppDomain.AssemblyResolve> event.
+ 
+ > [!NOTE]
+ > <xref:System.IO.FileLoadException> 如果擲回`assemblyRef`指定完整的組件名稱，而第一個符合的簡單名稱的組件有不相容的版本或文化特性。 載入器不會繼續探查比對的簡單名稱的其他組件。
+ 
+ 每個<xref:System.Runtime.Loader.AssemblyLoadContext>可以只載入: * 單一可執行檔的組件版本。
+* 一個新版每個文化特性的附屬組件的詳細資訊。
+ 
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assemblyName" /> 為 <see langword="null" />。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">找不到 <paramref name="assemblyName" />。</exception>
+        <exception cref="T:System.BadImageFormatException"><paramref name="assemblyName" /> 不是有效的組件。</exception>
+        <exception cref="T:System.IO.FileLoadException">載入的組件或模組不符合 <paramref name="assemblyName" />。</exception>
       </Docs>
     </Member>
     <Member MemberName="LoadFromAssemblyPath">
@@ -220,10 +310,15 @@
         <Parameter Name="assemblyPath" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="assemblyPath">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="assemblyPath">要載入的完整檔案路徑。</param>
+        <summary>載入指定路徑上組件檔案的內容。</summary>
+        <returns>載入的組件。</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="assemblyPath" /> 引數不是絕對路徑。</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assemblyPath" /> 參數為 <see langword="null" />。</exception>
+        <exception cref="T:System.IO.FileLoadException">無法載入找到的檔案。</exception>
+        <exception cref="T:System.IO.FileNotFoundException"><paramref name="assemblyPath" /> 參數為空字串 ("") 或不存在。</exception>
+        <exception cref="T:System.BadImageFormatException"><paramref name="assemblyPath" /> 不是有效的組件。</exception>
       </Docs>
     </Member>
     <Member MemberName="LoadFromNativeImagePath">
@@ -252,11 +347,26 @@
         <Parameter Name="assemblyPath" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="nativeImagePath">To be added.</param>
-        <param name="assemblyPath">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="nativeImagePath">要載入的完整檔案路徑。</param>
+        <param name="assemblyPath">所要載入檔案之 IL 版本的完整檔案路徑或 <see langword="null" />。</param>
+        <summary>載入指定路徑上受控組件檔案的原生映像內容。</summary>
+        <returns>載入的組件。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ Managed 組件的原生映像已預先 jit 編譯最佳化特定平台上執行。
+ 
+ 組件路徑是指的 IL 組件的版本路徑。 IL 通常包含在原生映像，它是選擇性引數。 它可供執行階段做為後援如果找不到原生映像。
+ 
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="nativeImagePath" /> 引數不是絕對路徑。</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="assemblyPath" /> 引數不是絕對路徑。</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="nativeImagePath" /> 參數為 <see langword="null" />。</exception>
+        <exception cref="T:System.IO.FileLoadException">無法載入找到的檔案。</exception>
+        <exception cref="T:System.IO.FileNotFoundException"><paramref name="nativeImagePath" /> 參數為空字串 ("") 或不存在。</exception>
+        <exception cref="T:System.BadImageFormatException"><paramref name="assemblyPath" /> 不是有效的組件。</exception>
       </Docs>
     </Member>
     <Member MemberName="LoadFromStream">
@@ -283,10 +393,12 @@
         <Parameter Name="assembly" Type="System.IO.Stream" />
       </Parameters>
       <Docs>
-        <param name="assembly">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="assembly">位元組陣列，該陣列是包含受控組件的 COFF 影像。</param>
+        <summary>載入包含受控組件的通用物件檔案格式 (COFF) 映像組件。</summary>
+        <returns>載入的組件。</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assembly" /> 為 <see langword="null" />。</exception>
+        <exception cref="T:System.BadImageFormatException"><paramref name="assembly" /> 不是有效的組件。</exception>
       </Docs>
     </Member>
     <Member MemberName="LoadFromStream">
@@ -314,11 +426,13 @@
         <Parameter Name="assemblySymbols" Type="System.IO.Stream" />
       </Parameters>
       <Docs>
-        <param name="assembly">To be added.</param>
-        <param name="assemblySymbols">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="assembly">位元組陣列，該陣列是包含受控組件的 COFF 影像。</param>
+        <param name="assemblySymbols">位元組陣列，包含表示組件符號的未經處理位元組。</param>
+        <summary>載入包含受控組件的通用物件檔案格式 (COFF) 映像組件，並選擇性地包含組件的符號。</summary>
+        <returns>載入的組件。</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assembly" /> 為 <see langword="null" />。</exception>
+        <exception cref="T:System.BadImageFormatException"><paramref name="assembly" /> 不是有效的組件。</exception>
       </Docs>
     </Member>
     <Member MemberName="LoadUnmanagedDll">
@@ -346,10 +460,19 @@
         <Parameter Name="unmanagedDllName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="unmanagedDllName">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="unmanagedDllName">非受控程式庫的名稱。 這通常是沒有路徑或副檔名的檔案名稱。</param>
+        <summary>允許衍生類別依名稱載入非受控程式庫。</summary>
+        <returns>所載入程式庫的控制代碼或 <see langword="null" />。</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ 預設實作永遠會傳回`null`。 當`null`會傳回執行階段載入的程式庫，其預設原則。
+ 
+ 可以覆寫此虛擬方法，以自訂的 unmanaged 程式庫搜尋演算法。 覆寫時的名稱可以用來識別程式庫。 載入的程式庫不需要符合所要求的名稱，但可以視需要轉換。 這可能包括調整平台特定命名的名稱。
+ 
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="LoadUnmanagedDllFromPath">
@@ -377,10 +500,13 @@
         <Parameter Name="unmanagedDllPath" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="unmanagedDllPath">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="unmanagedDllPath">非受控程式庫的路徑。</param>
+        <summary>從指定的路徑載入非受控程式庫。</summary>
+        <returns>所載入程式庫的控制代碼。</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="unmanagedDllPath" /> 為 <see langword="null" />。</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="unmanagedDllPath" /> 引數不是絕對路徑。</exception>
+        <exception cref="T:System.IO.FileNotFoundException">找不到非受控程式庫。</exception>
       </Docs>
     </Member>
     <Member MemberName="Resolving">
@@ -405,8 +531,22 @@
         <ReturnType>System.Func&lt;System.Runtime.Loader.AssemblyLoadContext,System.Reflection.AssemblyName,System.Reflection.Assembly&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>若嘗試載入至這項組件載入內容，解析組件失敗時就會發生這種情況。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ 傳回指定的組件，或是傳回這個事件處理常式負責`null`如果無法辨識的組件。
+ 
+ > [!IMPORTANT]
+ >  如果此事件註冊一個以上的事件處理常式，事件處理常式會依照順序呼叫事件處理常式傳回的值不`null`。 後續的事件處理常式會被忽略。
+ 
+ 如需有關如何處理事件的詳細資訊，請參閱 <<c0> [ 處理和引發事件](~/docs/standard/events/index.md)。
+ 
+ 它是值得您注意處理常式，可以加入任何此事件<xref:System.Runtime.Loader.AssemblyLoadContext>，包括預設的內容。
+ 
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetProfileOptimizationRoot">
@@ -491,7 +631,7 @@
         <ReturnType>System.Action&lt;System.Runtime.Loader.AssemblyLoadContext&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>發生於卸載 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> 時。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

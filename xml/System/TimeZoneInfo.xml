@@ -1,5 +1,5 @@
 <Type Name="TimeZoneInfo" FullName="System.TimeZoneInfo">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="70054d455b955161ef448f2b29946549404baabf" /><Meta Name="ms.sourcegitcommit" Value="adc8598fd19d91438cacaa8fa7ce613e28c8218e" /><Meta Name="ms.translationtype" Value="HT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="12/11/2018" /><Meta Name="ms.locfileid" Value="53232167" /></Metadata><TypeSignature Language="C#" Value="public sealed class TimeZoneInfo : IEquatable&lt;TimeZoneInfo&gt;, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="a0c1b671172dcff914cfb84a095c579b475828bb" /><Meta Name="ms.sourcegitcommit" Value="d8bd5d494445ce3fcad1321267cb87548d23a45b" /><Meta Name="ms.translationtype" Value="HT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="12/15/2018" /><Meta Name="ms.locfileid" Value="53449888" /></Metadata><TypeSignature Language="C#" Value="public sealed class TimeZoneInfo : IEquatable&lt;TimeZoneInfo&gt;, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit TimeZoneInfo extends System.Object implements class System.IEquatable`1&lt;class System.TimeZoneInfo&gt;, class System.Runtime.Serialization.IDeserializationCallback, class System.Runtime.Serialization.ISerializable" />
   <TypeSignature Language="DocId" Value="T:System.TimeZoneInfo" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class TimeZoneInfo&#xA;Implements IDeserializationCallback, IEquatable(Of TimeZoneInfo), ISerializable" />
@@ -79,13 +79,13 @@
 |靜態成員名稱|描述|  
 |------------------------|-----------------|  
 |<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A> 方法|從應用程式所提供的資料建立自訂時區。|  
-|<xref:System.TimeZoneInfo.FindSystemTimeZoneById%2A> 方法|具現化時區識別項為基礎的系統登錄中所定義的時區。|  
+|<xref:System.TimeZoneInfo.FindSystemTimeZoneById%2A> 方法|具現化時區，根據其識別項。|  
 |<xref:System.TimeZoneInfo.FromSerializedString%2A> 方法|還原序列化的字串值來重新建立先前序列化<xref:System.TimeZoneInfo>物件。|  
 |<xref:System.TimeZoneInfo.GetSystemTimeZones%2A> 方法|傳回可列舉<xref:System.Collections.ObjectModel.ReadOnlyCollection%601>的<xref:System.TimeZoneInfo>物件，表示所有本機系統可用的時區。|  
 |<xref:System.TimeZoneInfo.Local%2A> 屬性|具現化<xref:System.TimeZoneInfo>代表當地時區的物件。|  
 |<xref:System.TimeZoneInfo.Utc%2A> 屬性|具現化<xref:System.TimeZoneInfo>代表 UTC 時區的物件。|  
   
- 您可以使用<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>方法用來建立本機系統登錄中未定義的時區。 您可以接著使用<xref:System.TimeZoneInfo.ToSerializedString%2A>儲存為字串時，這些都可以儲存至應用程式存取某種形式的時區物件之資訊的屬性。 您可以使用<xref:System.TimeZoneInfo.FromSerializedString%2A>方法，將序列化的字串轉換回<xref:System.TimeZoneInfo>物件。  
+ 您可以使用<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>方法用來建立本機系統登錄在 Windows 系統或時區中的類別中未定義的時區[ICU 文件庫](http://userguide.icu-project.org/datetime/timezone)Linux 或 macOS 上。 您可以接著使用<xref:System.TimeZoneInfo.ToSerializedString%2A>儲存為字串時，這些都可以儲存至應用程式存取某種形式的時區物件之資訊的屬性。 您可以使用<xref:System.TimeZoneInfo.FromSerializedString%2A>方法，將序列化的字串轉換回<xref:System.TimeZoneInfo>物件。  
   
  ]]></format>
     </remarks>
@@ -193,11 +193,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 快取的時區資料包含資料的當地時區，Coordinated Universal Time (UTC) 區域中，藉由使用下列方法擷取任何時區<xref:System.TimeZoneInfo.FindSystemTimeZoneById%2A>和<xref:System.TimeZoneInfo.GetSystemTimeZones%2A>。  
+ 快取的時區資料會包含當地時區和國際標準時間 (UTC) 區域上的資料。  
   
- 您可能會呼叫<xref:System.TimeZoneInfo.ClearCachedData%2A>方法，以減少記憶體專門提供讓應用程式的快取的時區資訊，或反映的本機系統的時區已變更的事實。  
+ 您可能會呼叫`ClearCachedData`方法，以減少記憶體專門提供讓應用程式的快取的時區資訊，或反映的本機系統的時區已變更的事實。  
   
- 建議您不要儲存在本機和 UTC 時區的參考。 若要在呼叫之後<xref:System.TimeZoneInfo.ClearCachedData%2A>方法，這些物件的變數會是未定義<xref:System.TimeZoneInfo>不再參考的物件<xref:System.TimeZoneInfo.Local%2A?displayProperty=nameWithType>或<xref:System.TimeZoneInfo.Utc%2A?displayProperty=nameWithType>。 例如，下列程式碼中，第二個呼叫來<xref:System.TimeZoneInfo.ConvertTime%28System.DateTime%2CSystem.TimeZoneInfo%2CSystem.TimeZoneInfo%29?displayProperty=nameWithType>方法會擲回<xref:System.ArgumentException>因為`local`變數不會再視為等於<xref:System.TimeZoneInfo.Local%2A?displayProperty=nameWithType>。  
+ 建議您不要儲存在本機和 UTC 時區的參考。 若要在呼叫之後`ClearCachedData`方法，這些物件的變數會是未定義<xref:System.TimeZoneInfo>不再參考的物件<xref:System.TimeZoneInfo.Local%2A?displayProperty=nameWithType>或<xref:System.TimeZoneInfo.Utc%2A?displayProperty=nameWithType>。 例如，下列程式碼中，第二個呼叫來<xref:System.TimeZoneInfo.ConvertTime%28System.DateTime%2CSystem.TimeZoneInfo%2CSystem.TimeZoneInfo%29?displayProperty=nameWithType>方法會擲回<xref:System.ArgumentException>因為`local`變數不會再視為等於<xref:System.TimeZoneInfo.Local%2A?displayProperty=nameWithType>。  
   
  [!code-csharp[System.TimeZone2.BestPractices#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.TimeZone2.BestPractices/cs/System.TimeZone2.BestPractices.cs#1)]
  [!code-vb[System.TimeZone2.BestPractices#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.TimeZone2.BestPractices/vb/System.TimeZone2.BestPractices.vb#1)]  
@@ -544,7 +544,7 @@
   
  如果轉換`dateTime`早於日期和時間值會導致<xref:System.DateTime.MinValue?displayProperty=nameWithType>或更晚<xref:System.DateTime.MaxValue?displayProperty=nameWithType>，這個方法會傳回<xref:System.DateTime.MinValue?displayProperty=nameWithType>或<xref:System.DateTime.MaxValue?displayProperty=nameWithType>分別。  
   
- 這個方法會擷取所指定識別項的時區`destinationTimeZoneId`登錄中的參數。 無法擷取您建立使用的時區物件<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>方法。 `destinationTimeZoneId`參數必須確實對應到時區的登錄機碼的長度，但不是在案例中，成功比對發生的事件; 也就是比較`destinationTimeZoneId`時區識別項不區分大小寫。  
+ 這個方法會擷取有關所指定識別項的時區`destinationTimeZoneId`從 Windows 系統與登錄中的參數[ICU 文件庫](http://userguide.icu-project.org/datetime/timezone)Linux 和 macOS 上。 無法擷取您建立使用的時區物件<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>方法。 `destinationTimeZoneId`參數必須確實對應到時區的識別項的長度，但不是在案例中，成功比對發生的事件; 也就是比較`destinationTimeZoneId`時區識別項不區分大小寫。  
   
  ]]></format>
         </remarks>
@@ -602,7 +602,7 @@
   
  因為`dateTimeOffset`參數代表的日期和時間當時的位移與 Coordinated Universal Time (UTC)，它不能代表模稜兩可的時間無效。  
   
- 這個方法會擷取所指定識別項的時區`destinationTimeZoneId`登錄中的參數。 無法擷取您建立使用的時區物件<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>方法。 `destinationTimeZoneId`參數必須確實對應到時區的登錄機碼的長度，但不是在案例中，成功比對發生的事件; 也就是比較`destinationTimeZoneId`時區識別項不區分大小寫。  
+ 這個方法會擷取所指定識別項的時區`destinationTimeZoneId`從 Windows 系統與登錄中的參數[ICU 文件庫](http://userguide.icu-project.org/datetime/timezone)Linux 和 macOS 上。 無法擷取您建立使用的時區物件<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>方法。 `destinationTimeZoneId`參數必須確實對應到時區的識別項的長度，但不是在案例中，成功比對發生的事件; 也就是比較`destinationTimeZoneId`時區識別項不區分大小寫。  
   
  在轉換`dateTimeOffset`會考量任何目的地時區中的作用中的調整規則的目的地時區，此方法的時間值。  
   
@@ -664,7 +664,7 @@
   
  雖然類似於<xref:System.TimeZoneInfo.ConvertTime%28System.DateTime%2CSystem.TimeZoneInfo%2CSystem.TimeZoneInfo%29?displayProperty=nameWithType>方法，您可以使用<xref:System.TimeZoneInfo.ConvertTimeBySystemTimeZoneId%28System.DateTime%2CSystem.String%2CSystem.String%29?displayProperty=nameWithType>若要指定來源和目的地時區使用其識別碼，而不是其<xref:System.TimeZoneInfo>物件。 您必須將時間轉換而未擷取對應至它的時區物件，並不需要知道轉換後的時間是標準或日光節約時間時，這個方法是最有用。  
   
- 這個方法會擷取其識別碼為的時區`sourceTimeZoneId`和`destinationTimeZoneId`登錄中的參數。 無法擷取您所建立使用的時區物件<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>方法。  
+ 這個方法會擷取其識別碼為的時區`sourceTimeZoneId`並`destinationTimeZoneId`從 Windows 系統與登錄中的參數[ICU 文件庫](http://userguide.icu-project.org/datetime/timezone)Linux 和 macOS 上。 無法擷取您所建立使用的時區物件<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>方法。  
   
  值<xref:System.DateTime.Kind%2A>的屬性`dateTime`參數必須對應於`sourceTimeZoneId`參數，如下表所示。  
   
@@ -993,7 +993,7 @@
 |`displayName`|<xref:System.TimeZoneInfo.DisplayName%2A>|  
 |`standardDisplayName`|<xref:System.TimeZoneInfo.StandardName%2A>|  
   
- 一般而言，時區標準時間名稱和其識別碼都相同。 不過，時區的識別項的長度不可超過 32 個字元。 將字串傳遞至`displayName`參數會遵循相當標準的格式。 顯示名稱的第一個部分是國際標準時間，會以縮寫 GMT （格林威治標準時間），以括弧括住的時區的基底位移。 這被後面接著識別時區本身，或一或多個城市、 地區或國家/地區的時區，或兩者的字串。 例如:   
+ 一般而言，時區標準時間名稱和其識別碼都相同。 不過，時區的識別項的長度不可超過 32 個字元。 將字串傳遞至`displayName`參數會遵循相當標準的格式。 顯示名稱的第一個部分是國際標準時間，會以縮寫 GMT （格林威治標準時間），以括弧括住的時區的基底位移。 這被後面接著識別時區本身，或一或多個城市、 地區或國家/地區的時區，或兩者的字串。 例如：  
   
 ```  
 (GMT+02:00) Athens, Beirut, Istanbul, Minsk  
@@ -1294,7 +1294,7 @@
   
  A<xref:System.TimeZoneInfo.DaylightName%2A>屬性的值不是<xref:System.String.Empty?displayProperty=nameWithType>或`null`不一定表示時區支援日光節約時間。 若要判斷是否時區支援日光節約時間，請檢查的值及其<xref:System.TimeZoneInfo.SupportsDaylightSavingTime%2A>屬性。  
   
- 在大部分情況下，<xref:System.TimeZoneInfo.DaylightName%2A>不是屬性的登錄中所定義的時區<xref:System.String.Empty?displayProperty=nameWithType>或`null`。 不過，<xref:System.TimeZoneInfo.DaylightName%2A>屬性的自訂時區可以設定為<xref:System.String.Empty?displayProperty=nameWithType>。 建立自訂時區時，發生這種的情況<xref:System.TimeZoneInfo.CreateCustomTimeZone%28System.String%2CSystem.TimeSpan%2CSystem.String%2CSystem.String%29?displayProperty=nameWithType>或<xref:System.TimeZoneInfo.CreateCustomTimeZone%28System.String%2CSystem.TimeSpan%2CSystem.String%2CSystem.String%2CSystem.String%2CSystem.TimeZoneInfo.AdjustmentRule%5B%5D%2CSystem.Boolean%29?displayProperty=nameWithType>多載而`disableDaylightSavingTime`參數是`true`。 因此，您的程式碼應該永遠不會假設的值<xref:System.TimeZoneInfo.DaylightName%2A>屬性不是`null`或空白。  
+ 在大部分情況下，`DaylightName`不是屬性系統定莪時區<xref:System.String.Empty?displayProperty=nameWithType>或`null`。 不過，<xref:System.TimeZoneInfo.DaylightName%2A>屬性的自訂時區可以設定為<xref:System.String.Empty?displayProperty=nameWithType>。 建立自訂時區時，發生這種的情況<xref:System.TimeZoneInfo.CreateCustomTimeZone%28System.String%2CSystem.TimeSpan%2CSystem.String%2CSystem.String%29?displayProperty=nameWithType>或<xref:System.TimeZoneInfo.CreateCustomTimeZone%28System.String%2CSystem.TimeSpan%2CSystem.String%2CSystem.String%2CSystem.String%2CSystem.TimeZoneInfo.AdjustmentRule%5B%5D%2CSystem.Boolean%29?displayProperty=nameWithType>多載而`disableDaylightSavingTime`參數是`true`。 因此，您的程式碼應該永遠不會假設的值<xref:System.TimeZoneInfo.DaylightName%2A>屬性不是`null`或空白。  
   
  <xref:System.TimeZoneInfo.DaylightName%2A>屬性就相當於<xref:System.TimeZone.DaylightName%2A>屬性<xref:System.TimeZone>類別。  
   
@@ -1557,17 +1557,17 @@
       </Parameters>
       <Docs>
         <param name="id">對應於 <see cref="P:System.TimeZoneInfo.Id" /> 屬性的時區識別項。</param>
-        <summary>根據其識別項從登錄擷取 <see cref="T:System.TimeZoneInfo" /> 物件。</summary>
+        <summary>根據新 <see cref="T:System.TimeZoneInfo" /> 物件的識別碼加以具現化。</summary>
         <returns>識別項是 <paramref name="id" /> 參數值的物件。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- `id`參數必須確實對應到時區的登錄機碼的長度，但不是在案例中，成功比對發生的事件; 也就是比較`id`時區識別項不區分大小寫。 如果您想要擷取基礎部分符合結果的時區物件，您可以撰寫使用的唯讀集合的自訂程序<xref:System.TimeZoneInfo>所傳回的物件<xref:System.TimeZoneInfo.GetSystemTimeZones%2A>方法。  
+ `id`參數必須確實對應到時區的識別項的長度，但不是在案例中，成功比對發生的事件; 也就是比較`id`時區識別項不區分大小寫。 如果您想要擷取基礎部分符合結果的時區物件，您可以撰寫使用的唯讀集合的自訂程序<xref:System.TimeZoneInfo>所傳回的物件<xref:System.TimeZoneInfo.GetSystemTimeZones%2A>方法。  
   
- 在 Windows 系統上<xref:System.TimeZoneInfo.FindSystemTimeZoneById%2A>會嘗試比對`id`HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Time Zones 分支的登錄子機碼名稱。 此分支不一定包含時區識別項的完整清單。 如果應用程式的需要，您可以建立特定時區藉由呼叫其中一個多載<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>方法或來電 800-659-3579<xref:System.TimeZoneInfo.FromSerializedString%2A>還原序列化<xref:System.TimeZoneInfo>物件，表示所需的時區。 不過，這些方法呼叫所建立的時區不包含在登錄中，而且無法使用擷取<xref:System.TimeZoneInfo.FindSystemTimeZoneById%2A>方法。 只有透過所傳回的物件參考，可以存取這些自訂的時區<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>或<xref:System.TimeZoneInfo.FromSerializedString%2A>方法呼叫。  
+ 在 Windows 系統上`FindSystemTimeZoneById`會嘗試比對`id`HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Time Zones 分支的登錄子機碼名稱。 在 Linux 和 macOS 上，它會使用提供的時區資訊[ICU 文件庫](http://userguide.icu-project.org/datetime/timezone)。 如果登錄或程式庫並沒有您想要的時區資訊，您可以建立特定的時區是藉由呼叫其中一個多載<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>方法或來電 800-659-3579<xref:System.TimeZoneInfo.FromSerializedString%2A>還原序列化<xref:System.TimeZoneInfo>物件表示必要的時區。 不過，這些方法呼叫所建立的時區不是系統定義的時間，而且無法使用擷取<xref:System.TimeZoneInfo.FindSystemTimeZoneById%2A>方法。 只有透過所傳回的物件參考，可以存取這些自訂的時區<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>或<xref:System.TimeZoneInfo.FromSerializedString%2A>方法呼叫。  
   
-   
+這個方法會傳回新<xref:System.TimeZoneInfo>每個方法呼叫執行個體; 它不會傳回快取的物件。 這可能會影響呼叫的應用程式的效能`FindSystemTimeZoneById`方法重複使用相同的識別碼。   
   
 ## Examples  
  下列範例會使用<xref:System.TimeZoneInfo.FindSystemTimeZoneById%2A>方法來擷取東京標準時間區域。 這<xref:System.TimeZoneInfo>東京中轉換為時間的本地時間，並判斷它是否東京標準時間或東京日光節約時間，然後使用物件。  
@@ -1579,7 +1579,7 @@
         </remarks>
         <exception cref="T:System.OutOfMemoryException">系統沒有足夠記憶體來容納時區的相關資訊。</exception>
         <exception cref="T:System.ArgumentNullException"><paramref name="id" /> 參數為 <see langword="null" />。</exception>
-        <exception cref="T:System.TimeZoneNotFoundException">找不到 <paramref name="id" /> 所指定的時區識別項。 這表示其名稱與 <paramref name="id" /> 相符的登錄機碼不存在，或者機碼存在，但是不包含任何時區的資料。</exception>
+        <exception cref="T:System.TimeZoneNotFoundException">找不到 <paramref name="id" /> 所指定的時區識別項。 這意味名稱符合 <paramref name="id" /> 的時區識別碼不存在，或識別碼存在，但不包含任何時區資料。</exception>
         <exception cref="T:System.Security.SecurityException">處理序沒有必要權限可讀取包含時區資訊的登錄機碼。</exception>
         <exception cref="T:System.InvalidTimeZoneException">找到時區識別項，但登錄資料已損毀。</exception>
         <altmember cref="P:System.TimeZoneInfo.Id" />
@@ -1626,7 +1626,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 沒有提供建立時區，在登錄中找不到所需的所有程式碼的替代方案。 您可以定義自訂的時區，然後使用<xref:System.TimeZoneInfo.ToSerializedString%2A>獨立可執行檔或應用程式的安裝程式以將時區儲存為字串的使用中的方法。 應用程式可以擷取這個字串從其儲存體位置並使用它具現化<xref:System.TimeZoneInfo.FromSerializedString%2A>方法。  
+ 沒有提供建立時區，在 Windows 或在登錄中找不到所需的所有程式碼的替代方法[ICU 文件庫](http://userguide.icu-project.org/datetime/timezone)Linux 和 macOS 上。 您可以定義自訂的時區，然後使用<xref:System.TimeZoneInfo.ToSerializedString%2A>獨立可執行檔或應用程式的安裝程式以將時區儲存為字串的使用中的方法。 應用程式可以擷取這個字串從其儲存體位置並使用它具現化<xref:System.TimeZoneInfo.FromSerializedString%2A>方法。  
   
    
   
@@ -1942,10 +1942,10 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.TimeZoneInfo.GetSystemTimeZones%2A>方法會從登錄 HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Time Zones 機碼的子機碼來擷取所有可用的時區資訊。 如果無法成功地擷取及剖析特定的字串屬性的個別值<xref:System.TimeZoneInfo>物件，這個方法會設定它們的值為空字串 ("")。  
+ <xref:System.TimeZoneInfo.GetSystemTimeZones%2A>方法會從登錄 HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Time Zones 機碼在 Windows 系統上進出的子機碼來擷取所有可用的時區資訊[ICU文件庫](http://userguide.icu-project.org/datetime/timezone)在 Linux 和 macOS 上。 如果無法成功地擷取及剖析特定的字串屬性的個別值<xref:System.TimeZoneInfo>物件，這個方法會設定它們的值為空字串 ("")。  
   
 > [!IMPORTANT]
->  <xref:System.TimeZoneInfo.GetSystemTimeZones%2A>方法傳回的集合<xref:System.TimeZoneInfo>登錄中所定義的時區的物件。 它不包含時區使用多載建立<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>方法。 這些是只可透過存取時區建立方法所傳回的物件參考。  
+>  <xref:System.TimeZoneInfo.GetSystemTimeZones%2A>方法傳回的集合<xref:System.TimeZoneInfo>中定義的時區的物件或 ICU 文件庫。 它不包含時區使用多載建立<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>方法。 這些是只可透過存取時區建立方法所傳回的物件參考。  
   
  這個方法所傳回的集合被排序的 UTC 時差，並針對時區具有相同的 UTC 時差，以使用目前文化特性的顯示名稱。 顯示名稱的詳細資訊，請參閱<xref:System.TimeZoneInfo.DisplayName%2A>。  
   
@@ -2139,7 +2139,7 @@
    
   
 ## Examples  
- 一般而言，登錄中所定義的時區數有相同的位移，從 Coordinated Universal Time (UTC) 和相同的調整規則。 下列範例會顯示一份這些時區到主控台。  
+ 一般而言，在 Windows 登錄中所定義的時區的數目和[ICU 文件庫](http://userguide.icu-project.org/datetime/timezone)Linux 和 macOS 上有相同的位移，從 Coordinated Universal Time (UTC) 和相同的調整規則。 下列範例會顯示一份這些時區到主控台。  
   
  [!code-csharp[System.TimeZone2.HasSameRules#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.TimeZone2.HasSameRules/cs/HasSameRules.cs#1)]
  [!code-vb[System.TimeZone2.HasSameRules#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.TimeZone2.HasSameRules/vb/HasSameRules.vb#1)]  
@@ -2187,7 +2187,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 時區識別項會唯一識別特定時區的索引鍵字串。 在 Windows 系統上，它會對應至登錄 HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Time 區域 」 分支的子機碼。 它可以做為參數傳遞<xref:System.TimeZoneInfo.FindSystemTimeZoneById%2A>方法，以從登錄擷取特定的時區。  
+ 時區識別項會唯一識別特定時區的索引鍵字串。 在 Windows 系統上，它會對應至從 Windows 系統與登錄 HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Time 區域 」 分支的子機碼[ICU 文件庫](http://userguide.icu-project.org/datetime/timezone)Linux 和 macOS 上。 它可以做為參數傳遞<xref:System.TimeZoneInfo.FindSystemTimeZoneById%2A>方法具現化<xref:System.TimeZoneInfo>物件，表示特定時區。  
   
 > [!IMPORTANT]
 >  雖然在 Windows 登錄中的索引鍵名稱最多可有 255 個字元，但建議您指派給自訂的時區識別項是 32 個字元或更少。 較長的識別項，就越有可能不正確的索引鍵名稱將會提供擷取它時。  
@@ -2872,11 +2872,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 通常未定義的 Windows 系統登錄中的時區所依賴的應用程式可以使用<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>方法來具現化所需的時區，為<xref:System.TimeZoneInfo>物件。 應用程式接著可以呼叫<xref:System.TimeZoneInfo.ToSerializedString%2A>將時區的物件轉換為字串的方法。  
+ 通常不會在 Windows 系統登錄中定義的時區所依賴的應用程式或[ICU 程式庫](http://userguide.icu-project.org/datetime/timezone)可以使用 Linux 和 macOScan<xref:System.TimeZoneInfo.CreateCustomTimeZone%2A>方法來具現化為的所需的時區<xref:System.TimeZoneInfo>物件。 應用程式接著可以呼叫<xref:System.TimeZoneInfo.ToSerializedString%2A>將時區的物件轉換為字串的方法。  
   
  <xref:System.TimeZoneInfo>物件應該也儲存在其中的應用程式可以擷取它時所需的位置。 可能的位置包括：  
   
--   登錄中。  
+-   在 Windows 系統上登錄。  
   
 -   應用程式資源檔。  
   
@@ -2937,7 +2937,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 當指派的集合，包含<xref:System.TimeZoneInfo>物件清單控制項，例如<xref:System.Windows.Forms.ListBox>控制項，會自動呼叫控制項<xref:System.TimeZoneInfo.ToString%2A>方法來擷取描述來表示清單中的每個物件的字串。 如此一來，您不需要為字串時，儲存物件的有意義的描述，使用者不需要使用該字串，若要從集合擷取該物件。 請參閱[How to:列舉電腦上展示的時區](~/docs/standard/datetime/enumerate-time-zones.md)如需詳細資訊。  
+ 當指派的集合，包含<xref:System.TimeZoneInfo>物件清單控制項，例如<xref:System.Windows.Forms.ListBox>控制項，會自動呼叫控制項<xref:System.TimeZoneInfo.ToString%2A>方法來擷取描述來表示清單中的每個物件的字串。 如此一來，您不需要為字串時，儲存物件的有意義的描述，使用者不需要使用該字串，若要從集合擷取該物件。 請參閱[如何：列舉電腦上展示的時區](~/docs/standard/datetime/enumerate-time-zones.md)如需詳細資訊。  
   
  ]]></format>
         </remarks>
@@ -2983,7 +2983,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這是內建的物件;此資訊<xref:System.TimeZoneInfo>物件不從登錄中擷取。  
+ 這是內建的物件;相關的資訊<xref:System.TimeZoneInfo>物件不從 Windows 系統上，以及從登錄擷取[ICU 文件庫](http://userguide.icu-project.org/datetime/timezone)Linux 和 macOS 上。  
   
 > [!IMPORTANT]
 >  您應該一律存取透過 Coordinated Universal Time (UTC) 區域<xref:System.TimeZoneInfo.Utc%2A?displayProperty=nameWithType>屬性，而不是指派至 UTC 時區<xref:System.TimeZoneInfo>物件變數。 這可防止<xref:System.TimeZoneInfo>物件變數失效呼叫<xref:System.TimeZoneInfo.ClearCachedData%2A>方法。  
