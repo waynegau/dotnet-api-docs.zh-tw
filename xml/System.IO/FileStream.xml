@@ -1,5 +1,5 @@
 <Type Name="FileStream" FullName="System.IO.FileStream">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="7a06f70b77d575d1a15d0e980c99c1c5daf7ad47" /><Meta Name="ms.sourcegitcommit" Value="c5fd6b431a16f0412349201a0e93a9eacddf4b35" /><Meta Name="ms.translationtype" Value="HT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="12/14/2018" /><Meta Name="ms.locfileid" Value="53395483" /></Metadata><TypeSignature Language="C#" Value="public class FileStream : System.IO.Stream" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="dc5ed181a3b71bafd66689b0d61664367786fda3" /><Meta Name="ms.sourcegitcommit" Value="662f143e6be46d519ff8ab4451d543d91e651478" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="12/18/2018" /><Meta Name="ms.locfileid" Value="53568703" /></Metadata><TypeSignature Language="C#" Value="public class FileStream : System.IO.Stream" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit FileStream extends System.IO.Stream" />
   <TypeSignature Language="DocId" Value="T:System.IO.FileStream" />
   <TypeSignature Language="VB.NET" Value="Public Class FileStream&#xA;Inherits Stream" />
@@ -1489,14 +1489,18 @@
         <Parameter Name="stateObject" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="array">To be added.</param>
-        <param name="offset">To be added.</param>
-        <param name="numBytes">To be added.</param>
-        <param name="userCallback">To be added.</param>
-        <param name="stateObject">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="array">要讀取資料的緩衝區。</param>
+        <param name="offset">在 <paramref name="array" /> 中要開始讀取的位元組位移。</param>
+        <param name="numBytes">要讀取的最大位元組數。</param>
+        <param name="userCallback">在非同步讀取作業完成時所呼叫的方法。</param>
+        <param name="stateObject">使用者所提供的物件，其可以從其他要求中區分出這個特定非同步讀取的要求。</param>
+        <summary>開始非同步的讀取作業。 請考慮改用 <see cref="M:System.IO.FileStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)" />。</summary>
+        <returns>物件，參考非同步讀取。</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException">陣列長度減去 <paramref name="offset" /> 會小於 <paramref name="numBytes" />。</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="array" /> 為 <see langword="null" />。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset" /> 或 <paramref name="numBytes" /> 是負數。</exception>
+        <exception cref="T:System.IO.IOException">在超過檔案結尾處嘗試了非同步讀取。</exception>
       </Docs>
     </Member>
     <Member MemberName="BeginWrite">
@@ -1540,14 +1544,20 @@
         <Parameter Name="stateObject" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="array">To be added.</param>
-        <param name="offset">To be added.</param>
-        <param name="numBytes">To be added.</param>
-        <param name="userCallback">To be added.</param>
-        <param name="stateObject">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="array">包含要寫入目前資料流之資料的緩衝區。</param>
+        <param name="offset"><paramref name="array" /> 中以零起始的位元組位移，即開始將位元組複製到目前資料流的位置。</param>
+        <param name="numBytes">寫入的最大位元組數。</param>
+        <param name="userCallback">在非同步寫入作業完成時所呼叫的方法。</param>
+        <param name="stateObject">使用者所提供的物件，其可以從其他要求中區分出這個特定非同步寫入的要求。</param>
+        <summary>開始非同步的寫入作業。 請考慮改用 <see cref="M:System.IO.FileStream.WriteAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)" />。</summary>
+        <returns>物件，參考非同步寫入。</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="array" /> 長度減去 <paramref name="offset" /> 小於 <paramref name="numBytes" />。</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="array" /> 為 <see langword="null" />。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset" /> 或 <paramref name="numBytes" /> 為負。</exception>
+        <exception cref="T:System.NotSupportedException">資料流不支援寫入。</exception>
+        <exception cref="T:System.ObjectDisposedException">資料流已關閉。</exception>
+        <exception cref="T:System.IO.IOException">發生 I/O 錯誤。</exception>
       </Docs>
     </Member>
     <Member MemberName="CanRead">
@@ -1582,7 +1592,7 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得表示目前資料流是否支援讀取的值。</summary>
+        <summary>取得值，表示目前資料流是否支援讀取。</summary>
         <value>如果資料流支援讀取，則為 <see langword="true" />；如果資料流已關閉或以唯寫存取開啟，則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -1640,7 +1650,7 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得表示目前資料流是否支援搜尋的值。</summary>
+        <summary>取得值，表示目前資料流是否支援搜尋。</summary>
         <value>如果資料流支援搜尋，則為 <see langword="true" />；如果資料流已關閉或如果 <see langword="FileStream" /> 是從作業系統控制代碼 (例如管道或主控台的輸出) 建構，則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -1698,7 +1708,7 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得表示目前資料流是否支援寫入的值。</summary>
+        <summary>取得值，表示目前資料流是否支援寫入。</summary>
         <value>如果資料流支援寫入，則為 <see langword="true" />；如果資料流已關閉或以唯讀存取開啟，則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -2368,7 +2378,7 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得值，指出 <see langword="FileStream" /> 為非同步或同步開啟。</summary>
+        <summary>取得值，指出 <see langword="FileStream" /> 是以非同步或同步方式開啟。</summary>
         <value>如果 <see langword="FileStream" /> 是非同步開啟，則為 <see langword="true" />，否則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
