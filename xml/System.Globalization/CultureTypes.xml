@@ -1,5 +1,5 @@
 <Type Name="CultureTypes" FullName="System.Globalization.CultureTypes">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="90d1c338aff0fdcc586e0c7ccc25f989c82f8e2e" /><Meta Name="ms.sourcegitcommit" Value="c0c07dbd19cd7017243f9ac36915755f79bc8da6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="11/27/2018" /><Meta Name="ms.locfileid" Value="52357154" /></Metadata><TypeSignature Language="C#" Value="public enum CultureTypes" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="caa908feb7e94236c27b517f82513196ba6daa07" /><Meta Name="ms.sourcegitcommit" Value="a489a0c68ea6b109393f1400bbd772073b4befd4" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="01/20/2019" /><Meta Name="ms.locfileid" Value="54416965" /></Metadata><TypeSignature Language="C#" Value="public enum CultureTypes" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed CultureTypes extends System.Enum" />
   <TypeSignature Language="DocId" Value="T:System.Globalization.CultureTypes" />
   <TypeSignature Language="VB.NET" Value="Public Enum CultureTypes" />
@@ -44,10 +44,22 @@
 
 文化特性類型會傳回這些值所<xref:System.Globalization.CultureInfo.CultureTypes%2A?displayProperty=nameWithType>屬性，以及做為篩選，限制所傳回的文化特性<xref:System.Globalization.CultureInfo.GetCultures%2A?displayProperty=nameWithType>方法。 如需文化特性的詳細資訊，請參閱<xref:System.Globalization.CultureInfo>。  
   
-一般而言，您的應用程式時，應該使用列舉所有文化特性`CultureTypes.AllCultures`值。 這可讓自訂文化特性，以及其他文化特性類型的列舉型別。  
+一般而言，您所有的文化特性使用列舉`CultureTypes.AllCultures`值。 這可讓自訂文化特性，以及其他文化特性類型的列舉型別。  
   
 請注意，所有`CultureTypes`成員已被取代，除了`CultureTypes.AllCultures`， `CultureTypes.NeutralCultures`，和`CultureTypes.SpecificCultures`。  
+
+.NET 可辨識下列的文化特性類型，所傳回的列舉中包含當然也`CultureTypes.AllTypes`列舉成員：
+
+- **特定文化特性**，它會指定國家/地區和語言。 這些文化特性名稱遵循 RFC 4646。 格式是`<languagecode2>-<country/regioncode2>`，其中`<languagecode2>`衍生自 ISO 639-1 的小寫雙字母代碼和`<country/regioncode2>`衍生自 ISO 3166 的大寫雙字母代碼。 例如，"en-US" 代表英文 (美國) 是特定的文化特性。 自訂的特定文化特性 （也就是文化特性是應用程式，而不是系統定莪） 可以有任何使用者指定的名稱，而不只是符合標準的一個。  
+
+- **中性文化特性**，它會指定哪一個國家/地區的語言。 中性文化特性名稱包含衍生自 ISO 639-1 的小寫雙字母代碼。 例如："en" (英文) 是中性的文化特性。 自訂的中性文化特性 （也就是文化特性是應用程式，而不是系統定莪） 可以有任何使用者指定的名稱，而不只是兩個字母代碼。
   
+  文化特性而異的文化特性所傳回陣列中包含<xref:System.Globalization.CultureInfo.GetCultures%2A?displayProperty=nameWithType>方法，指定這個值。  
+
+- **自訂文化特性**，這是應用程式定義的文化特性。 自訂文化特性可以代表特定文化特性或中性文化特性，而且可以有任何應用程式指定的名稱。 
+
+   在 Windows 10 之前的 Windows 版本`UserCustomCulture`值指派給開發人員所建立的自訂文化特性。 在 Windows 10 中，`UserCustomCulture`值也會指派給系統文化特性，則不會備份的一組完整的文化特性的資料，並沒有唯一本機識別碼。 (所有文化特性的型別`UserCustomCulture`分享<xref:System.Globalization.CultureInfo.LCID%2A?displayProperty=nameWithType>的值`LOCALE_CUSTOM_UNSPECIFIED`（0x1000 控制或 4096）)。 如此一來，`CultureInfo.GetCultures(CultureTypes.UserCustomCulture)`方法會傳回不同的文化特性在不同的 Windows 版本上。  
+
 ## Examples  
 
 下列範例示範`CultureTypes.AllCultures`列舉型別成員和<xref:System.Globalization.CultureInfo.CultureTypes%2A>屬性。  
@@ -201,17 +213,6 @@
       <MemberValue>1</MemberValue>
       <Docs>
         <summary>與語言相關卻不限於特定國家/地區的文化特性。</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
-
-.NET 文化特性名稱包含衍生自 ISO 639-1 的小寫雙字母代碼。 例如："en" (英文) 是中性的文化特性。 自訂文化特性 （也就是文化特性是應用程式，而不是系統定莪） 可以有任何使用者指定的名稱，而不只是兩個字母代碼。  
-  
- 文化特性而異的文化特性所傳回陣列中包含<xref:System.Globalization.CultureInfo.GetCultures%2A?displayProperty=nameWithType>方法，指定這個值。  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ReplacementCultures">
@@ -275,17 +276,6 @@
       <MemberValue>2</MemberValue>
       <Docs>
         <summary>國家/地區特定的文化特性。</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks 
-
-這些文化特性名稱遵循 RFC 4646 (Windows Vista 和更新版本)。 格式為 "&lt;languagecode2&gt;-&lt;country/regioncode2&gt;"，其中 &lt;languagecode2&gt; 是衍生自 ISO 639-1 的小寫雙字母代碼，而 &lt;country/regioncode2&gt; 是衍生自 ISO 3166 的大寫雙字母代碼。 例如，"en-US" 代表英文 (美國) 是特定的文化特性。
-
-自訂文化特性 （也就是文化特性是應用程式，而不是系統定莪） 可以有任何使用者指定的名稱，而不只是一個標準相容的帳戶。  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="UserCustomCulture">
@@ -317,15 +307,6 @@
       <MemberValue>8</MemberValue>
       <Docs>
         <summary>**已取代這個成員。** 使用者建立的自訂文化特性。</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
-
-在 Windows 10 之前的 Windows 版本`UserCustomCulture`值指派給開發人員所建立的自訂文化特性。 在 Windows 10 中，`UserCustomCulture`值也會指派給系統文化特性，則不會備份的一組完整的文化特性的資料，並沒有唯一本機識別碼。 (所有文化特性的型別`UserCustomCulture`分享<xref:System.Globalization.CultureInfo.LCID%2A?displayProperty=nameWithType>的值`LOCALE_CUSTOM_UNSPECIFIED`（0x1000 控制或 4096）)。 如此一來，`CultureInfo.GetCultures(CultureTypes.UserCustomCulture)`方法會傳回不同的文化特性在不同的 Windows 版本上。  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WindowsOnlyCultures">
