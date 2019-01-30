@@ -1,5 +1,5 @@
 <Type Name="BindingFlags" FullName="System.Reflection.BindingFlags">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="73fce1aa21d20f45653df555c778b466bca7fbbb" /><Meta Name="ms.sourcegitcommit" Value="c0c07dbd19cd7017243f9ac36915755f79bc8da6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="11/27/2018" /><Meta Name="ms.locfileid" Value="52368178" /></Metadata><TypeSignature Language="C#" Value="public enum BindingFlags" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="61b76576a70d04513a7283ac5ace3dbd7521f391" /><Meta Name="ms.sourcegitcommit" Value="a489a0c68ea6b109393f1400bbd772073b4befd4" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="01/20/2019" /><Meta Name="ms.locfileid" Value="54416952" /></Metadata><TypeSignature Language="C#" Value="public enum BindingFlags" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed BindingFlags extends System.Enum" />
   <TypeSignature Language="DocId" Value="T:System.Reflection.BindingFlags" />
   <TypeSignature Language="VB.NET" Value="Public Enum BindingFlags" />
@@ -90,12 +90,12 @@
   
 |識別協助工具|識別引數繫結|識別作業|  
 |---------------------------------|------------------------------------|-----------------------------|  
-|DeclaredOnly<br /><br /> FlattenHierarchy<br /><br /> IgnoreCase<br /><br /> IgnoreReturn<br /><br /> 執行個體<br /><br /> 非公用<br /><br /> Public<br /><br /> Static|ExactBinding<br /><br /> OptionalParamBinding|CreateInstance<br /><br /> GetField<br /><br /> SetField<br /><br /> GetProperty<br /><br /> SetProperty<br /><br /> InvokeMethod<br /><br /> PutDispProperty<br /><br /> PutRefDispProperty|  
+|DeclaredOnly<br /><br /> FlattenHierarchy<br /><br /> IgnoreCase<br /><br /> IgnoreReturn<br /><br /> 執行個體<br /><br /> NonPublic<br /><br /> Public<br /><br /> Static|ExactBinding<br /><br /> OptionalParamBinding|CreateInstance<br /><br /> GetField<br /><br /> SetField<br /><br /> GetProperty<br /><br /> SetProperty<br /><br /> InvokeMethod<br /><br /> PutDispProperty<br /><br /> PutRefDispProperty|  
   
 > [!NOTE]
 >  您必須指定`Instance`或是`Static`連同`Public`或`NonPublic`或會傳回任何成員。  
   
- 下表列出由預設值強制型轉<xref:System.Reflection.Binder.ChangeType%2A?displayProperty=nameWithType>。 此資料表適用於特別`ExactBinding`繫結旗標。  
+ 下表列出由預設值強制型轉<xref:System.Reflection.Binder.ChangeType%2A?displayProperty=nameWithType>。 此資料表適用於特別`BindingFlags.ExactBinding`繫結旗標。 一般原則是<xref:System.Reflection.Binder.ChangeType%2A>擴展強制型轉，永遠不會遺失資料只應該執行。 擴展強制型轉的範例將強制轉型為 64 位元帶正負號的整數值的 32 位元帶正負號的整數的值。 這被區別縮小強制，可能會遺失資料。 縮小強制型轉的範例將強制轉型 64 位元帶正負號的整數，32 位元帶正負號的整數。 
   
 |來源類型|目標類型|  
 |-----------------|-----------------|  
@@ -112,8 +112,13 @@
 |`Int64`|`Single`、 `Double`|  
 |`Single`|`Double`|  
 |非參考|參考。|  
+
+當`BindingFlags.ExactBinding`繫結旗標，則反映模型一般類型系統的存取範圍規則。 比方說，如果呼叫端在相同的組件中，呼叫端不會不需要特殊權限的內部成員。 否則，呼叫端需要<xref:System.Security.Permissions.ReflectionPermission>。 這是與受保護的成員查閱一致、 私用等等。  
   
    
+  
+   
+     
   
 ## Examples  
  下列範例示範多種繫結旗標。  
@@ -312,19 +317,7 @@
       </ReturnValue>
       <MemberValue>65536</MemberValue>
       <Docs>
-        <summary>指定所提供的引數類型必須完全符合對應的型式參數類型。 如果呼叫端提供非 Null 的 <see langword="Binder" /> 物件，則反映會擲回例外狀況，因為那表示呼叫端正在提供會選擇適當方法的 <see langword="BindToXXX" /> 實作。</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- 反映模型一般類型系統的存取範圍規則。 比方說，如果呼叫端在相同的組件中，呼叫端不會不需要特殊權限的內部成員。 否則，呼叫端需要<xref:System.Security.Permissions.ReflectionPermission>。 這是一致的受保護的成員查閱、 私用等等。  
-  
- 一般原則是<xref:System.Reflection.Binder.ChangeType%2A>擴展強制型轉，永遠不會遺失資料只應該執行。 擴展強制型轉的範例將強制轉型為 64 位元帶正負號的整數值的 32 位元帶正負號的整數的值。 這被區別縮小強制，可能會遺失資料。 縮小強制型轉的範例將強制轉型 64 位元帶正負號的整數，32 位元帶正負號的整數。  
-  
- 預設繫結器會忽略此旗標，而自訂繫結器可實作此旗標的語意。  
-  
- ]]></format>
-        </remarks>
+        <summary>指定所提供的引數類型必須完全符合對應的型式參數類型。 如果呼叫端提供非 Null 的 <see langword="Binder" /> 物件，則反映會擲回例外狀況，因為那表示呼叫端正在提供會選擇適當方法的 <see langword="BindToXXX" /> 實作。 預設繫結器會忽略此旗標，而自訂繫結器則可實作此旗標的語意。</summary>
       </Docs>
     </Member>
     <Member MemberName="FlattenHierarchy">
@@ -679,15 +672,7 @@
       </ReturnValue>
       <MemberValue>262144</MemberValue>
       <Docs>
-        <summary>傳回成員集，其參數計數會符合所提供的引數數目。 這個繫結旗標可用於其參數具有預設值的方法，以及具有變數引數 (varargs) 的方法。 這個旗標應該只搭配 <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" /> 使用。</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- 參數具有預設值是只能用在呼叫位置省略尾端的引數。 它們必須是最後一個引數。  
-  
- ]]></format>
-        </remarks>
+        <summary>傳回成員集，其參數計數會符合所提供的引數數目。 這個繫結旗標可用於其參數具有預設值的方法，以及具有變數引數 (varargs) 的方法。 這個旗標應該只搭配 <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" /> 使用。<br /><br />具有預設值的參數僅限用於省略最後一個引數的呼叫。 它們必須是最後一個引數。</summary>
       </Docs>
     </Member>
     <Member MemberName="Public">

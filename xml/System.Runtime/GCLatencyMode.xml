@@ -1,5 +1,5 @@
 <Type Name="GCLatencyMode" FullName="System.Runtime.GCLatencyMode">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="71825bd6d7da0da68493922efe3f009ff816bdaf" /><Meta Name="ms.sourcegitcommit" Value="c0c07dbd19cd7017243f9ac36915755f79bc8da6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="11/27/2018" /><Meta Name="ms.locfileid" Value="52341567" /></Metadata><TypeSignature Language="C#" Value="public enum GCLatencyMode" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="6e0e2f032f5584e34758cafdf445dc8b1a38a363" /><Meta Name="ms.sourcegitcommit" Value="a489a0c68ea6b109393f1400bbd772073b4befd4" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="01/20/2019" /><Meta Name="ms.locfileid" Value="54416978" /></Metadata><TypeSignature Language="C#" Value="public enum GCLatencyMode" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed GCLatencyMode extends System.Enum" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.GCLatencyMode" />
   <TypeSignature Language="VB.NET" Value="Public Enum GCLatencyMode" />
@@ -38,10 +38,12 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 您也可以設定您的應用程式中調整記憶體回收的干擾程度<xref:System.Runtime.GCSettings.LatencyMode%2A>屬性，以任何<xref:System.Runtime.GCLatencyMode>NoGCRegion 以外的列舉值。 您也可以判斷記憶體回收行程的目前延遲模式，藉由擷取<xref:System.Runtime.GCSettings.LatencyMode%2A?displayProperty=nameWithType>屬性值。  
+ 您也可以設定您的應用程式中調整記憶體回收的干擾程度<xref:System.Runtime.GCSettings.LatencyMode%2A>屬性，以任何<xref:System.Runtime.GCLatencyMode>以外的列舉值`GCLatencyMode.NoGCRegion`。 您也可以判斷記憶體回收行程的目前延遲模式，藉由擷取<xref:System.Runtime.GCSettings.LatencyMode%2A?displayProperty=nameWithType>屬性值。  
   
  請參閱[延遲模式](~/docs/standard/garbage-collection/latency.md)如需如何進行記憶體回收的執行階段組態設定會影響這個列舉型別的預設值的討論。  
-  
+
+<xref:System.Runtime.GCLatencyMode.Batch?displayProperty=nameWithType>模式會覆寫[ \<gcConcurrent >](~/docs/framework/configure-apps/file-schema/runtime/gcconcurrent-element.md)執行階段組態設定。 如果已啟用並行記憶體回收[ \<gcConcurrent >](~/docs/framework/configure-apps/file-schema/runtime/gcconcurrent-element.md)項目中，切換至批次模式可防止任何進一步並行的集合。    
+
  ]]></format>
     </remarks>
     <related type="Article" href="https://msdn.microsoft.com/library/96278bb7-6eab-4612-8594-ceebfc887d81">延遲模式</related>
@@ -79,17 +81,7 @@
       </ReturnValue>
       <MemberValue>0</MemberValue>
       <Docs>
-        <summary>停用記憶體回收並行並回收批次呼叫中的物件。 這是干擾最大的模式。</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- 此模式是針對最大的輸送量，但會犧牲回應性。  
-  
- 此模式會覆寫執行階段組態設定。 如果已啟用，切換至批次模式可防止任何進一步並行的集合。  
-  
- ]]></format>
-        </remarks>
+        <summary>停用記憶體回收並行並回收批次呼叫中的物件。 這是干擾最大的模式。 此模式的設計是為了達到最大輸送量，但無法兼具回應性。</summary>
       </Docs>
     </Member>
     <Member MemberName="Interactive">
@@ -124,15 +116,7 @@
       </ReturnValue>
       <MemberValue>1</MemberValue>
       <Docs>
-        <summary>可讓記憶體回收並行，並且在應用程式執行時回收物件。 這是工作站的預設記憶體回收模式，而且干擾較 <see cref="F:System.Runtime.GCLatencyMode.Batch" /> 少。 它會在回應速度與處理量間取得平衡。</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- 此模式相當於在工作站上的並行記憶體回收。  
-  
- ]]></format>
-        </remarks>
+        <summary>可讓記憶體回收並行，並且在應用程式執行時回收物件。 這是工作站的預設記憶體回收模式，而且干擾較 <see cref="F:System.Runtime.GCLatencyMode.Batch" /> 少。 它會在回應速度與處理量間取得平衡。 此模式相當於工作站上的並行記憶體回收。</summary>
       </Docs>
     </Member>
     <Member MemberName="LowLatency">
@@ -167,15 +151,7 @@
       </ReturnValue>
       <MemberValue>2</MemberValue>
       <Docs>
-        <summary>啟用回收物件時較為保守的記憶體回收。 只有在系統記憶體不足才會出現完整回收，同時層代 0 和層代 1 回收頻率可能會變高</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- 這個模式不適用於 「 伺服器記憶體回收行程。  
-  
- ]]></format>
-        </remarks>
+        <summary>啟用回收物件時較為保守的記憶體回收。 只有在系統記憶體不足時，才會出現完整回收，較常出現的反而可能是層代 0 和層代 1 回收。 此模式不適用於伺服器記憶體回收行程。</summary>
       </Docs>
     </Member>
     <Member MemberName="NoGCRegion">

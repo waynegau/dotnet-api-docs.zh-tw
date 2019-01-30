@@ -1,5 +1,5 @@
 <Type Name="SocketsHttpHandler" FullName="System.Net.Http.SocketsHttpHandler">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="231b43b22ff6ee232f5083c5679b2c62b173f6f8" /><Meta Name="ms.sourcegitcommit" Value="19b66619a469ee45c85c618f8a605859882eb638" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="01/10/2019" /><Meta Name="ms.locfileid" Value="54183742" /></Metadata><TypeSignature Language="C#" Value="public sealed class SocketsHttpHandler : System.Net.Http.HttpMessageHandler" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="7cdbdc2743b0187f9b503ec7761a417e979bc862" /><Meta Name="ms.sourcegitcommit" Value="8c966994f39ffe6e7c21611e9ec1b91247a68500" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="01/26/2019" /><Meta Name="ms.locfileid" Value="55084586" /></Metadata><TypeSignature Language="C#" Value="public sealed class SocketsHttpHandler : System.Net.Http.HttpMessageHandler" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit SocketsHttpHandler extends System.Net.Http.HttpMessageHandler" />
   <TypeSignature Language="DocId" Value="T:System.Net.Http.SocketsHttpHandler" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class SocketsHttpHandler&#xA;Inherits HttpMessageHandler" />
@@ -14,8 +14,43 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>提供 .NET Core 2.1 及更新版本中 <see cref="T:System.Net.Http.HttpClient" /> 使用的預設訊息處理常式。</summary>
+        <remarks>  
+          <format type="text/markdown"><![CDATA[  
+
+.NET Core 2.1 中，從開始`SocketsHttpHandler`類別會提供這類使用較高層級的 HTTP 網路類別的實作<xref:System.Net.Http.HttpClient>。 使用`SocketsHttpHandler`提供許多優點：
+
+- 與之前的實作相比，能提供顯著的效能提升。
+
+- 排除的平台相依性，可簡化部署和服務。 比方說，`libcurl`不再適用於 macOS 和.NET Core 的相依性 .NET Core for Linux。
+
+- 跨所有.NET 平台的一致行為。
+
+如果不需要這項變更，您可以設定您的應用程式使用較舊<xref:System.Net.Http.HttpClientHandler?displayProperty=nameWithType>數種類別：
+
+- 藉由呼叫<xref:System.AppContext.SetSwitch%2A?displayProperty=nameWithType>方法，如下所示：
+
+   ```csharp
+   AppContext.SetSwitch("System.Net.Http.useSocketsHttpHandler", false);
+   ```
+
+   ```vb
+   AppContext.SetSwitch("System.Net.Http.useSocketsHttpHandler", False)
+   ``` 
+- 藉由定義`System.Net.Http.useSocketsHttpHandler`切換移入 *。 netcore.runtimeconfig.json*組態檔：
+
+  ```json
+  "runtimeOptions": {
+    "configProperties": {
+        "System.Net.Http.useSocketsHttpHandler": false
+    }
+  }
+  ```
+  
+- 定義名為環境變數`DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER`並將它設定為`false`則為 0。
+
+         ]]></format>
+         </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">

@@ -1,5 +1,5 @@
 <Type Name="HttpClientHandler" FullName="System.Net.Http.HttpClientHandler">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="ba3ed49c9a90efc55711df6801abd12d767b3a33" /><Meta Name="ms.sourcegitcommit" Value="9e3550fb2088d4faf2043f0acb29da4555519937" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="12/12/2018" /><Meta Name="ms.locfileid" Value="53291596" /></Metadata><TypeSignature Language="C#" Value="public class HttpClientHandler : System.Net.Http.HttpMessageHandler" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="4e4378873f3a5fa6c23c6de9bded7f111e986d3e" /><Meta Name="ms.sourcegitcommit" Value="8c966994f39ffe6e7c21611e9ec1b91247a68500" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="01/26/2019" /><Meta Name="ms.locfileid" Value="55084612" /></Metadata><TypeSignature Language="C#" Value="public class HttpClientHandler : System.Net.Http.HttpMessageHandler" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit HttpClientHandler extends System.Net.Http.HttpMessageHandler" />
   <TypeSignature Language="DocId" Value="T:System.Net.Http.HttpClientHandler" />
   <TypeSignature Language="VB.NET" Value="Public Class HttpClientHandler&#xA;Inherits HttpMessageHandler" />
@@ -22,24 +22,37 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary><see cref="T:System.Net.Http.HttpClient" /> 所使用的預設訊息處理常式。</summary>
+    <summary>.NET Framework 和 .NET Core 2.0 及更舊版本中 <see cref="T:System.Net.Http.HttpClient" /> 使用的預設訊息處理常式。</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Net.Http.HttpClientHandler>類別和從它衍生的類別可讓開發人員設定各種不同的範圍從 proxy 到驗證的選項。  
+ `HttpClientHandler`類別和從它衍生的類別可讓開發人員設定各種不同的範圍從 proxy 到驗證的選項。  
   
 ### <a name="httpclienthandler-in-net-core"></a>.NET Core 中的 HttpClientHandler
 
-.NET Core 2.1 中，從開始<xref:System.Net.Http.SocketsHttpHandler?displayProperty=nameWithType>類別而不是`HttpClientHandler`提供較高層級的 HTTP 網路功能 Api 所使用的實作。 您可以設定應用程式以使用`HttpClientHandler`改為呼叫<xref:System.AppContext.SetSwitch%2A>方法，如下所示：
+.NET Core 2.1 中，從開始<xref:System.Net.Http.SocketsHttpHandler?displayProperty=nameWithType>類別而不是`HttpClientHandler`提供較高層級的 HTTP 網路功能 Api 所使用的實作。 您可以設定您的應用程式使用`HttpClientHandler`改為在下列任一方式：
 
-```csharp
-AppContext.SetSwitch("System.Net.Http.useSocketsHttpHandler", false);
-```
-```vb
-AppContext.SetSwitch("System.Net.Http.useSocketsHttpHandler", False)
-``` 
+- 藉由呼叫<xref:System.AppContext.SetSwitch%2A?displayProperty=nameWithType>方法，如下所示：
+
+  ```csharp
+  AppContext.SetSwitch("System.Net.Http.useSocketsHttpHandler", false);
+  ```
+  ```vb
+  AppContext.SetSwitch("System.Net.Http.useSocketsHttpHandler", False)
+  ``` 
+藉由定義`System.Net.Http.useSocketsHttpHandler`切換移入 *。 netcore.runtimeconfig.json*組態檔：
+
+  ```json
+  "runtimeOptions": {
+    "configProperties": {
+        "System.Net.Http.useSocketsHttpHandler": false
+    }
+  }
+  ```
   
+- 定義名為環境變數`DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER`並將它設定為`false`則為 0。
+
 ## Examples  
  [!code-csharp[System.Net.Http.HttpClientHandler#1](~/samples/snippets/csharp/VS_Snippets_Misc/system.net.http.httpclienthandler/cs/source.cs#1)]  
   
@@ -324,7 +337,7 @@ AppContext.SetSwitch("System.Net.Http.useSocketsHttpHandler", False)
       </ReturnValue>
       <Docs>
         <summary>取得或設定這個處理常式所用的驗證資訊。</summary>
-        <value>與處理常式相關聯的驗證認證。 預設值為 <see langword="null" />。</value>
+        <value>與處理常式相關聯的驗證認證。 預設為 <see langword="null" />。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -911,7 +924,7 @@ handler.ServerCertificateCustomValidationCallback = httpClientHandler.DangerousA
       </ReturnValue>
       <Docs>
         <summary>取得值，這個值指出處理常式是否支援 <see cref="P:System.Net.Http.HttpClientHandler.AllowAutoRedirect" /> 和 <see cref="P:System.Net.Http.HttpClientHandler.MaxAutomaticRedirections" /> 屬性的組態設定。</summary>
-        <value>如果處理常式支援 <see cref="P:System.Net.Http.HttpClientHandler.AllowAutoRedirect" /> 和 <see cref="P:System.Net.Http.HttpClientHandler.MaxAutomaticRedirections" /> 屬性的組態設定，則為 <see langword="true" />，否則為 <see langword="false" />。 預設值是 <see langword="true" />。</value>
+        <value>如果處理常式支援 <see cref="P:System.Net.Http.HttpClientHandler.AllowAutoRedirect" /> 和 <see cref="P:System.Net.Http.HttpClientHandler.MaxAutomaticRedirections" /> 屬性的組態設定，則為 <see langword="true" />，否則為 <see langword="false" />。 預設值為 <see langword="true" />。</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
