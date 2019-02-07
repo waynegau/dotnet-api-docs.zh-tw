@@ -1,5 +1,5 @@
 <Type Name="StackOverflowException" FullName="System.StackOverflowException">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="1f6d3a4b551412dd113545524fabdb90f2a0abd9" /><Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="11/29/2018" /><Meta Name="ms.locfileid" Value="52606074" /></Metadata><TypeSignature Language="C#" Value="public sealed class StackOverflowException : SystemException" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="991aa9f4b94575c2f58703680ad95ac0d43e46c1" /><Meta Name="ms.sourcegitcommit" Value="9cee676b7864fa9dcb91319dcf5c339f3a724fbf" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="02/07/2019" /><Meta Name="ms.locfileid" Value="55828883" /></Metadata><TypeSignature Language="C#" Value="public sealed class StackOverflowException : SystemException" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed beforefieldinit StackOverflowException extends System.SystemException" />
   <TypeSignature Language="DocId" Value="T:System.StackOverflowException" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class StackOverflowException&#xA;Inherits SystemException" />
@@ -39,21 +39,25 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.StackOverflowException> 執行堆疊溢位錯誤，通常會發生的非常深或無限遞迴函式會擲回。  
+ `StackOverflowException` 執行堆疊溢位錯誤，通常會發生的非常深或無限遞迴函式會擲回。 因此請確定您的程式碼沒有無限迴圈或無限遞迴。
   
- <xref:System.StackOverflowException> 會使用 HRESULT COR_E_STACKOVERFLOW，其值 0x800703E9。 <xref:System.Reflection.Emit.OpCodes.Localloc> Intermediate language (IL) 指令則會擲回<xref:System.StackOverflowException>。 如需初始屬性值的清單<xref:System.StackOverflowException>資訊，請參閱<xref:System.StackOverflowException.%23ctor%2A>建構函式。  
+ `StackOverflowException` 會使用 HRESULT COR_E_STACKOVERFLOW，其值 0x800703E9。 <xref:System.Reflection.Emit.OpCodes.Localloc> Intermediate language (IL) 指令則會擲回`StackOverflowException`。 如需初始屬性值的清單`StackOverflowException`資訊，請參閱<xref:System.StackOverflowException.%23ctor%2A>建構函式。  
   
-## <a name="version-considerations"></a>版本的考量  
- 在.NET Framework 1.0 和 1.1 中，您可以攔截<xref:System.StackOverflowException>物件 （例如，從無限制的遞迴復原）。 從.NET Framework 2.0 開始，您不能攔截<xref:System.StackOverflowException>物件`try` / `catch`區塊，以及對應的處理序終止的預設值。 因此，您應該撰寫您的程式碼來偵測並防止堆疊溢位。 例如，如果您的應用程式相依於遞迴，使用計數器或狀態的條件來終止遞迴迴圈。 下列範例會使用計數器，以確保遞迴數目呼叫`Execute`方法不會超過 MAX_RECURSIVE_CALLS 常數所定義的最大值。  
+ 從.NET Framework 2.0 開始，您不能攔截`StackOverflowException`物件`try` / `catch`區塊，以及對應的處理序終止的預設值。 因此，您應該撰寫您的程式碼來偵測並防止堆疊溢位。 例如，如果您的應用程式相依於遞迴，使用計數器或狀態的條件來終止遞迴迴圈。
+請參閱 （如需這項技術的圖例 Examples)(#examples) 區段。
+ 
+> [!NOTE]
+>  套用<xref:System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute>屬性的方法，就會擲回`StackOverflowException`沒有任何作用。 您仍然無法處理的例外狀況，從使用者程式碼。
+
+ 如果您的應用程式裝載 common language runtime (CLR)，它可以指定 CLR 應該卸載的應用程式定義域，其中就會發生堆疊溢位例外狀況，而讓對應的程序繼續執行。 如需詳細資訊，請參閱 < [ICLRPolicyManager 介面](~/docs/framework/unmanaged-api/hosting/iclrpolicymanager-interface.md)。
+
+## Examples
+
+ 下列範例會使用計數器，以確保遞迴數目呼叫`Execute`方法不會超過 MAX_RECURSIVE_CALLS 常數所定義的最大值。
   
  [!code-csharp[System.StackOverflowException.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.stackoverflowexception.class/cs/example1a.cs#1)]
  [!code-vb[System.StackOverflowException.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.stackoverflowexception.class/vb/example1a.vb#1)]  
-  
-> [!NOTE]
->  套用<xref:System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute>屬性的方法，就會擲回<xref:System.StackOverflowException>沒有任何作用。 您仍然無法處理的例外狀況，從使用者程式碼。  
-  
- 如果您的應用程式裝載 common language runtime (CLR)，它可以指定 CLR 應該卸載的應用程式定義域，其中就會發生堆疊溢位例外狀況，而讓對應的程序繼續執行。 如需詳細資訊，請參閱 < [ICLRPolicyManager 介面](~/docs/framework/unmanaged-api/hosting/iclrpolicymanager-interface.md)。  
-  
+
  ]]></format>
     </remarks>
     <altmember cref="T:System.Exception" />
