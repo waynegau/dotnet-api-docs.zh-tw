@@ -1,5 +1,5 @@
 <Type Name="AssemblyLoadContext" FullName="System.Runtime.Loader.AssemblyLoadContext">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="8ebdc67076b230b6f3fc37df9fe5903780b82006" /><Meta Name="ms.sourcegitcommit" Value="220917117f9d774aaa482439aa7324e39dc1f5b6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="02/25/2019" /><Meta Name="ms.locfileid" Value="56772320" /></Metadata><TypeSignature Language="C#" Value="public abstract class AssemblyLoadContext" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="6209379b4106b6c91c0c89b2b8a7511fc986490a" /><Meta Name="ms.sourcegitcommit" Value="67e8bb367eab32b26025454e7769040cfb1d71c4" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="03/09/2019" /><Meta Name="ms.locfileid" Value="57701354" /></Metadata><TypeSignature Language="C#" Value="public abstract class AssemblyLoadContext" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit AssemblyLoadContext extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.Loader.AssemblyLoadContext" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class AssemblyLoadContext" />
@@ -71,6 +71,8 @@
  ]]></format>
     </remarks>
     <related type="Article" href="https://github.com/dotnet/coreclr/blob/master/Documentation/design-docs/assemblyloadcontext.md">AssemblyLoadContext CoreCLR 的設計文件</related>
+    <related type="Article" href="/en-us/dotnet/standard/assembly/unloadability-howto">如何使用及偵錯.NET Core 中的組件 unloadability</related>.
+    <related type="Article" href="https://github.com/dotnet/coreclr/blob/master/Documentation/design-docs/unloadability.md">AssemblyLoadContext unloadability 設計文件</related>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -121,8 +123,8 @@
         <Parameter Name="isCollectible" Type="System.Boolean" Index="0" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="isCollectible">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="isCollectible"><see langword="true" /> 以啟用記憶體回收；否則為 <see langword="false" />。</param>
+        <summary>使用指出是否已啟用記憶體回收的值來初始化 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> 類別的新執行個體。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -237,9 +239,16 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>取得指出此 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> 是否為可回收的值。</summary>
+        <value><see langword="true" /> 如果這個<see cref="T:System.Runtime.Loader.AssemblyLoadContext" />可回收; 否則即為<see langword="false" />。 如果建構函式中未指定值，則值是<see langword="false" />。</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ 如需詳細資訊，請參閱<see href="/en-us/dotnet/standard/assembly/unloadability-howto">如何使用及偵錯.NET Core 中的組件 unloadability</see>。
+
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Load">
@@ -706,8 +715,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>起始這個 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> 的卸載。</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+
++ 如果是可回收，AssemblyLoadContext 只能卸載。
++ 卸載會以非同步方式發生。
++ 卸載不會發生 AssemblyLoadContext 的參考時。
+
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">不允許卸載。</exception>
       </Docs>
     </Member>
     <Member MemberName="Unloading">
