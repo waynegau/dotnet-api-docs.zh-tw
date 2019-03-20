@@ -1,5 +1,5 @@
 <Type Name="StringLengthAttribute" FullName="System.ComponentModel.DataAnnotations.StringLengthAttribute">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="51d331bc16db945d74a534119894a67783c52523" /><Meta Name="ms.sourcegitcommit" Value="8e213bb5e6801f6e29861ba72664978ad00e34fa" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="02/18/2019" /><Meta Name="ms.locfileid" Value="56387765" /></Metadata><TypeSignature Language="C#" Value="public class StringLengthAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="c5702fa8b42a49316d32fa07f8c2ec6567d686d5" /><Meta Name="ms.sourcegitcommit" Value="bac13a81377b1c4ebf3990e3287a6f1700f73751" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="03/19/2019" /><Meta Name="ms.locfileid" Value="57936533" /></Metadata><TypeSignature Language="C#" Value="public class StringLengthAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit StringLengthAttribute extends System.ComponentModel.DataAnnotations.ValidationAttribute" />
   <TypeSignature Language="DocId" Value="T:System.ComponentModel.DataAnnotations.StringLengthAttribute" />
   <TypeSignature Language="VB.NET" Value="Public Class StringLengthAttribute&#xA;Inherits ValidationAttribute" />
@@ -38,9 +38,10 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- ASP.NET Dynamic Data 啟用資料模型中的 CRUD （建立、 讀取、 更新和刪除） 作業。 正在資料時，您可以指定每個欄位的字元的最小和最大長度插入或更新。 針對字元資料類型，<xref:System.ComponentModel.DataAnnotations.StringLengthAttribute.MinimumLength%2A>和<xref:System.ComponentModel.DataAnnotations.StringLengthAttribute.MaximumLength%2A>屬性會識別出最大的儲存字串所需的位元組數目。  
-  
-   
+ ASP.NET Dynamic Data 啟用資料模型中的 CRUD （建立、 讀取、 更新和刪除） 作業。 正在資料時，您可以指定每個欄位的字元的最小和最大長度插入或更新。 針對字元資料類型，<xref:System.ComponentModel.DataAnnotations.StringLengthAttribute.MinimumLength%2A>和<xref:System.ComponentModel.DataAnnotations.StringLengthAttribute.MaximumLength%2A>屬性會識別出最大的儲存字串所需的位元組數目。
+ 
+您可以使用[複合格式](~/docs/standard/base-types/composite-formatting.md)錯誤訊息中的預留位置：{0}是名稱的屬性。{1}長度上限為; 和{2}最小長度。
+對應至傳遞給引數的預留位置<xref:System.String.Format%2A?displayProperty=nameWithType>方法在執行階段。   
   
 ## Examples  
  下列範例顯示如何限制的欄位中的字元數。 此範例適用於在 AdventureWorksLT 資料庫中的 [產品] 資料表中的 [ThumbnailPhotoFileName] 欄位。 此欄位是有限的 4 個字元，藉由套用<xref:System.ComponentModel.DataAnnotations.StringLengthAttribute>至部分類別，表示 「 產品 」 實體屬性。  
@@ -59,6 +60,10 @@ public class ProductMetadata
     [StringLength(4, ErrorMessage = "The ThumbnailPhotoFileName value cannot exceed 4 characters. ")]  
     public object ThumbnailPhotoFileName;  
   
+    [ScaffoldColumn(true)]  
+    [StringLength(4, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]  
+    public object PhotoFileName;  
+
 }  
 ```  
   
@@ -73,6 +78,10 @@ Public Class ProductMetadata
     <ScaffoldColumn(True)> _   
     <StringLength(4, ErrorMessage := "The ThumbnailPhotoFileName value cannot exceed 4 characters. ")> _   
     Public ThumbnailPhotoFileName As Object   
+  
+    <ScaffoldColumn(True)> _   
+    <StringLength(4, ErrorMessage := "The {0} value cannot exceed {1} characters. ")> _   
+    Public PhotoFileName As Object   
   
 End Class  
 ```  
@@ -138,7 +147,7 @@ End Class
       </Parameters>
       <Docs>
         <param name="name">造成錯誤失敗之欄位的名稱。</param>
-        <summary>套用格式至指定的錯誤訊息。</summary>
+        <summary>將格式套用到指定的錯誤訊息 </summary>
         <returns>格式化的錯誤訊息。</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="maximumLength" /> 為負。  
