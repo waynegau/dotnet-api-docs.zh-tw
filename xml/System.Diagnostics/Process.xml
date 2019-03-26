@@ -1,5 +1,5 @@
 <Type Name="Process" FullName="System.Diagnostics.Process">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="6b1dc611089c85302c9d21de8cb2fc5281ea5b4d" /><Meta Name="ms.sourcegitcommit" Value="bac13a81377b1c4ebf3990e3287a6f1700f73751" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="03/19/2019" /><Meta Name="ms.locfileid" Value="57937316" /></Metadata><TypeSignature Language="C#" Value="public class Process : System.ComponentModel.Component" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="4b6bf6f299cf0346642cea501b760e0bcc0f3a76" /><Meta Name="ms.sourcegitcommit" Value="c181255cb311fdd498458b3f12418f773c97254a" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="03/21/2019" /><Meta Name="ms.locfileid" Value="58320846" /></Metadata><TypeSignature Language="C#" Value="public class Process : System.ComponentModel.Component" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Process extends System.ComponentModel.Component" />
   <TypeSignature Language="DocId" Value="T:System.Diagnostics.Process" />
   <TypeSignature Language="VB.NET" Value="Public Class Process&#xA;Inherits Component" />
@@ -4281,44 +4281,22 @@ process.BeginOutputReadLine();
  相反地，<xref:System.Diagnostics.Process.BeginErrorReadLine%2A>開始非同步讀取作業上<xref:System.Diagnostics.Process.StandardError%2A>資料流。 這個方法可讓資料流輸出指定的事件處理常式，並立即傳回給呼叫者，可以執行其他工作，而資料流輸出會導向至事件處理常式。  
   
  同步讀取作業採用之間讀取呼叫端相依性<xref:System.Diagnostics.Process.StandardError%2A>資料流和子處理該資料流寫入。 這些相依性可能會導致死結狀況。 呼叫端會從子處理序的重新導向資料流讀取，時，取決於子系。 呼叫者會等候讀取作業，直到寫入資料流中的子系，或關閉資料流。 子處理序寫入資料不足，無法填滿其重新導向的資料流，時，相依於父代。 子處理序會等候下一個寫入作業，直到父從完整的資料流讀取，或關閉資料流。 當呼叫端和子處理序等待彼此完成作業時，且無法繼續時，就會導致死結狀態。 您可以評估子處理序與呼叫端之間的相依性，以避免死結。  
-  
- 例如，下列 C# 程式碼會示範如何讀取重新導向資料流，並等候子處理序結束。  
-  
-```csharp  
-// Start the child process.  
- Process p = new Process();  
- // Redirect the error stream of the child process.  
- p.StartInfo.UseShellExecute = false;  
- p.StartInfo.RedirectStandardError = true;  
- p.StartInfo.FileName = "Write500Lines.exe";  
- p.Start();  
- // Do not wait for the child process to exit before  
- // reading to the end of its redirected error stream.  
- // p.WaitForExit();  
- // Read the error stream first and then wait.  
- string error = p.StandardError.ReadToEnd();  
- p.WaitForExit();  
-```  
-  
- 藉由呼叫程式碼範例可避免的鎖死的情況`p.StandardError.ReadToEnd`之前`p.WaitForExit`。 如果父系處理程序的呼叫，死結狀況可能會造成`p.WaitForExit`之前`p.StandardError.ReadToEnd`和子處理序寫入足夠的文字，以填滿的重新導向的資料流。 父處理序會無限期等候子處理序結束。 子處理序會無限期地等候從完整讀取的父代<xref:System.Diagnostics.Process.StandardError%2A>資料流。  
-  
- 當您從標準輸出和標準錯誤資料流讀取所有文字時，沒有類似的問題。 下列 C# 程式碼，例如，會執行兩個資料流上的讀取的作業。  
-  
-```csharp  
-// Do not perform a synchronous read to the end of both   
-// redirected streams.  
-// string output = p.StandardOutput.ReadToEnd();  
-// string error = p.StandardError.ReadToEnd();  
-// p.WaitForExit();  
-// Use asynchronous read operations on at least one of the streams.  
-p.BeginOutputReadLine();  
-string error = p.StandardError.ReadToEnd();  
-p.WaitForExit();  
-```  
-  
- 在程式碼範例執行非同步讀取作業，在避免發生死結狀況<xref:System.Diagnostics.Process.StandardOutput%2A>資料流。 如果父系處理程序的呼叫會產生鎖死的情況`p.StandardOutput.ReadToEnd`後面接著`p.StandardError.ReadToEnd`和子處理序寫入足夠的文字，以填滿其錯誤資料流。 父處理序會無限期地等候子處理序關閉其<xref:System.Diagnostics.Process.StandardOutput%2A>資料流。 子處理序會無限期地等候從完整讀取的父代<xref:System.Diagnostics.Process.StandardError%2A>資料流。  
-  
- 您可以使用非同步讀取的作業，以避免這些相依性，以及其潛在的死結。 或者，您可以藉由建立兩個執行緒，並讀取每個個別的執行緒上的資料流的輸出，避免發生死結狀況。  
+
+本節中的最後兩個範例會使用<xref:System.Diagnostics.Process.Start%2A>方法來啟動可執行檔名為*Write500Lines.exe*。 下列範例包含其原始碼。
+
+[!code-csharp[Executable launched by Process.Start](~/samples/snippets/csharp/api/system.diagnostics/process/standardoutput/write500lines.cs)]
+[!code-vb[Executable launched by Process.Start](~/samples/snippets/visualbasic/api/system.diagnostics/process/standardoutput/write500lines.vb)]
+
+下列範例示範如何從重新導向的錯誤資料流讀取，並等候子處理序結束。 這麼做可以避免發生死結狀況藉由呼叫`p.StandardError.ReadToEnd`之前`p.WaitForExit`。 如果父系處理程序的呼叫，死結狀況可能會造成`p.WaitForExit`之前`p.StandardError.ReadToEnd`和子處理序寫入足夠的文字，以填滿的重新導向的資料流。 父處理序會無限期等候子處理序結束。 子處理序會無限期地等候從完整讀取的父代<xref:System.Diagnostics.Process.StandardError%2A>資料流。   
+
+[!code-csharp[Reading from the error stream](~/samples/snippets/csharp/api/system.diagnostics/process/standarderror/stderror-sync.cs)]
+[!code-vb[Reading from the error stream](~/samples/snippets/visualbasic/api/system.diagnostics/process/standarderror/stderror-sync.vb)]  
+
+當您從標準輸出和標準錯誤資料流讀取所有文字時，沒有類似的問題。 下列範例會執行兩個資料流上的讀取的作業。 執行非同步讀取作業，在避免發生死結狀況<xref:System.Diagnostics.Process.StandardError%2A>資料流。 如果父系處理程序的呼叫會產生鎖死的情況`p.StandardOutput.ReadToEnd`後面接著`p.StandardError.ReadToEnd`和子處理序寫入足夠的文字，以填滿其錯誤資料流。 父處理序會無限期地等候子處理序關閉其<xref:System.Diagnostics.Process.StandardOutput%2A>資料流。 子處理序會無限期地等候從完整讀取的父代<xref:System.Diagnostics.Process.StandardError%2A>資料流。  
+[!code-csharp[Reading from both streams](~/samples/snippets/csharp/api/system.diagnostics/process/standardoutput/stdoutput-async.cs)]
+[!code-vb[Reading from both streams](~/samples/snippets/visualbasic/api/system.diagnostics/process/standardoutput/stdoutput-async.vb)]  
+
+您可以使用非同步讀取的作業，以避免這些相依性，以及其潛在的死結。 或者，您可以藉由建立兩個執行緒，並讀取每個個別的執行緒上的資料流的輸出，避免發生死結狀況。  
   
 > [!NOTE]
 >  您不能混用重新導向的資料流的非同步和同步讀取的作業。 一次重新導向資料流的<xref:System.Diagnostics.Process>開啟在非同步或同步模式中，所有進一步的讀取該資料流的作業必須是相同的模式。 例如，請勿遵循<xref:System.Diagnostics.Process.BeginErrorReadLine%2A>藉由呼叫<xref:System.IO.StreamReader.ReadLine%2A>上<xref:System.Diagnostics.Process.StandardError%2A>資料流，或反之亦然。 不過，您可以讀取在不同模式中的兩個不同資料流。 例如，您可以呼叫<xref:System.Diagnostics.Process.BeginOutputReadLine%2A>，然後呼叫<xref:System.IO.StreamReader.ReadLine%2A>如<xref:System.Diagnostics.Process.StandardError%2A>資料流。  
@@ -4475,34 +4453,20 @@ p.WaitForExit();
  相反地，<xref:System.Diagnostics.Process.BeginOutputReadLine%2A>開始非同步讀取作業上<xref:System.Diagnostics.Process.StandardOutput%2A>資料流。 這個方法可讓資料流輸出指定的事件處理常式，並立即傳回給呼叫者，可以執行其他工作，而資料流輸出會導向至事件處理常式。  
   
  同步讀取作業採用之間讀取呼叫端相依性<xref:System.Diagnostics.Process.StandardOutput%2A>資料流和子處理該資料流寫入。 這些相依性可能會導致死結狀況。 呼叫端會從子處理序的重新導向資料流讀取，時，取決於子系。 呼叫者會等候讀取作業，直到寫入資料流中的子系，或關閉資料流。 子處理序寫入資料不足，無法填滿其重新導向的資料流，時，相依於父代。 子處理序會等候下一個寫入作業，直到父從完整的資料流讀取，或關閉資料流。 當呼叫端和子處理序等待彼此完成作業時，且無法繼續時，就會導致死結狀態。 您可以評估子處理序與呼叫端之間的相依性，以避免死結。  
-  
- 例如，下列 C# 程式碼會示範如何讀取重新導向資料流，並等候子處理序結束。  
-  
-```csharp  
-Process p = new Process();  
-p.StartInfo.UseShellExecute = false;  
-p.StartInfo.RedirectStandardOutput = true;  
-p.StartInfo.FileName = "Write500Lines.exe";  
-p.Start();  
-  
-// To avoid deadlocks, always read the output stream first and then wait.  
-string output = p.StandardOutput.ReadToEnd();  
-p.WaitForExit();  
-```  
-  
- 藉由呼叫程式碼範例可避免的鎖死的情況`p.StandardOutput.ReadToEnd`之前`p.WaitForExit`。 如果父系處理程序的呼叫，死結狀況可能會造成`p.WaitForExit`之前`p.StandardOutput.ReadToEnd`和子處理序寫入足夠的文字，以填滿的重新導向的資料流。 父處理序會無限期等候子處理序結束。 子處理序會無限期地等候從完整讀取的父代<xref:System.Diagnostics.Process.StandardOutput%2A>資料流。  
-  
- 當您從標準輸出和標準錯誤資料流讀取所有文字時，沒有類似的問題。 下列 C# 程式碼，例如，會執行兩個資料流上的讀取的作業。  
-  
-```csharp  
-// To avoid deadlocks, use asynchronous read operations on at least one of the streams.  
-// Do not perform a synchronous read to the end of both redirected streams.  
-p.BeginOutputReadLine();  
-string error = p.StandardError.ReadToEnd();  
-p.WaitForExit();  
-```  
-  
- 在程式碼範例執行非同步讀取作業，在避免發生死結狀況<xref:System.Diagnostics.Process.StandardOutput%2A>資料流。 如果父系處理程序的呼叫會產生鎖死的情況`p.StandardOutput.ReadToEnd`後面接著`p.StandardError.ReadToEnd`和子處理序寫入足夠的文字，以填滿其錯誤資料流。 父處理序會無限期地等候子處理序關閉其<xref:System.Diagnostics.Process.StandardOutput%2A>資料流。 子處理序會無限期地等候從完整讀取的父代<xref:System.Diagnostics.Process.StandardError%2A>資料流。  
+
+本節中的最後兩個範例會使用<xref:System.Diagnostics.Process.Start%2A>方法來啟動可執行檔名為*Write500Lines.exe*。 下列範例包含其原始碼。
+
+[!code-csharp[Executable launched by Process.Start](~/samples/snippets/csharp/api/system.diagnostics/process/standardoutput/write500lines.cs)]
+[!code-vb[Executable launched by Process.Start](~/samples/snippets/visualbasic/api/system.diagnostics/process/standardoutput/write500lines.vb)]
+
+下列範例示範如何讀取重新導向資料流，並等候子處理序結束。 此範例可避免鎖死的情況，藉由呼叫`p.StandardOutput.ReadToEnd`之前`p.WaitForExit`。 如果父系處理程序的呼叫，死結狀況可能會造成`p.WaitForExit`之前`p.StandardOutput.ReadToEnd`和子處理序寫入足夠的文字，以填滿的重新導向的資料流。 父處理序會無限期等候子處理序結束。 子處理序會無限期地等候從完整讀取的父代<xref:System.Diagnostics.Process.StandardOutput%2A>資料流。  
+
+[!code-csharp[Reading synchronously from a redirected output stream](~/samples/snippets/csharp/api/system.diagnostics/process/standardoutput/stdoutput-sync.cs)]  
+[!code-vb[Reading synchronously from a redirected output stream](~/samples/snippets/visualbasic/api/system.diagnostics/process/standardoutput/stdoutput-sync.vb)]  
+
+當您從標準輸出和標準錯誤資料流讀取所有文字時，沒有類似的問題。 下列範例會執行兩個資料流上的讀取的作業。 執行非同步讀取作業，在避免發生死結狀況<xref:System.Diagnostics.Process.StandardError%2A>資料流。 如果父系處理程序的呼叫會產生鎖死的情況`p.StandardOutput.ReadToEnd`後面接著`p.StandardError.ReadToEnd`和子處理序寫入足夠的文字，以填滿其錯誤資料流。 父處理序會無限期地等候子處理序關閉其<xref:System.Diagnostics.Process.StandardOutput%2A>資料流。 子處理序會無限期地等候從完整讀取的父代<xref:System.Diagnostics.Process.StandardError%2A>資料流。   
+[!code-csharp[Reading from a redirected output and error stream](~/samples/snippets/csharp/api/system.diagnostics/process/standardoutput/stdoutput-async.cs)]  
+[!code-vb[Reading from a redirected output and error stream](~/samples/snippets/visualbasic/api/system.diagnostics/process/standardoutput/stdoutput-async.vb)]    
   
  您可以使用非同步讀取的作業，以避免這些相依性，以及其潛在的死結。 或者，您可以藉由建立兩個執行緒，並讀取每個個別的執行緒上的資料流的輸出，避免發生死結狀況。  
   
