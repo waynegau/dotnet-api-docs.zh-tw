@@ -1,5 +1,5 @@
 <Type Name="XslTransform" FullName="System.Xml.Xsl.XslTransform">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="4afbddceffc87860ef4d77470b0756b765447efc" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58736746" /></Metadata><TypeSignature Language="C#" Value="public sealed class XslTransform" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="56c2b4ff793499c653610da3b24ae254bfe9e9b3" /><Meta Name="ms.sourcegitcommit" Value="3efce15f3841385ee3ba24bd71ff0c0cf9a47815" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="04/03/2019" /><Meta Name="ms.locfileid" Value="58875368" /></Metadata><TypeSignature Language="C#" Value="public sealed class XslTransform" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit XslTransform extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Xml.Xsl.XslTransform" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class XslTransform" />
@@ -85,13 +85,52 @@
   
 -   `msxsl:script`元素必須包含`implements-prefix`包含表示指令碼區塊相關聯的命名空間的前置詞的屬性。 此命名空間必須定義樣式表中。 樣式表可以包含多個指令碼區塊會依命名空間。 您不能有相同的命名空間內的多個語言的指令碼區塊。 指令碼區塊可以呼叫另一個的指令碼區塊中定義的函式，提供指令碼區塊會位於相同的命名空間。 根據規則和指令碼語言的語法會剖析指令碼區塊的內容 (藉由提供`language`屬性)。 例如，如果您有 C# 指令碼區塊，註解會加上`//`字元。 註解必須是有效的 XML 內容。  
   
- `Note` 建議您將指令碼區塊包裝在 CDATA 區段。  
+> [!NOTE]
+> 建議您將指令碼區塊包裝在 CDATA 區段。
   
-```  
-<msxsl:script implements-prefix='xy' language='C#'>  
-  <![CDATA[  
-  // Add code here.  
-  ]]]></format>
+ [!INCLUDE [xsltransform-script](~/includes/xsltransform-script.md)] 
+   
+ 函式可在 `msxsl:script` 項目內進行宣告。 下表顯示根據預設所支援的命名空間。  
+  
+|支援的命名空間|描述|  
+|--------------------------|-----------------|  
+|`System`|系統類別。|  
+|`System.Collection`|集合類別。|  
+|`System.Text`|文字處理的類別。|  
+|`System.Xml`|核心 XML 類別。|  
+|`System.Xml.Xsl`|XSLT 類別。|  
+|`System.Xml.XPath`|XML 路徑語言 (XPath) 類別。|  
+  
+ 提供的引數和傳回指令碼函式所定義的值必須是其中一個下面所列的 World Wide Web Consortium (W3C) 型別。 下表詳述 W3C 型別、 XPath 或 XSLT 之間的對應和對應的.NET Framework 類別。  
+  
+|W3C 型別|對等的.NET 類別|  
+|--------------|---------------------------|  
+|字串 (XPath)|`System.String`|  
+|布林值 (XPath)|`System.Boolean`|  
+|數字 (XPath)|`System.Double`|  
+|Result Tree Fragment (XSLT)|`System.Xml.XPath.XPathNavigator`|  
+|節點集 (XPath)|`System.Xml.XPath.XPathNodeIterator`|  
+  
+ 如果指令碼函式使用下列其中一個數字型別：這些型別的 Int16、 UInt16、 Int32、 UInt32、 Int64、 UInt64、 Single 或 Decimal，強制轉成 Double，其對應至 W3C XPath 型別數目。  
+  
+ 發生例外狀況時呼叫的函式不能將引數的結果轉換成其中一個必要的型別。  
+  
+> [!NOTE]
+>  `msxsl:script` 並`msxsl:node-list`都是唯一的函式，從`urn:schemas-microsoft-com:xslt`所支援的命名空間<xref:System.Xml.Xsl.XslTransform>類別。  
+  
+ <xref:System.Xml.Xsl.XslTransform> 能夠利用 common language runtime (CLR) 程式碼，做為延伸模組機制。 這可以藉由傳遞至類別的執行個體<xref:System.Xml.Xsl.XslTransform>類別，然後呼叫它的 XSLT 樣式表中的公用方法。 方法所定義的`params`關鍵字，以允許未指定要傳遞的參數數目，無法在此案例中正常運作。 請參閱[params](~/docs/csharp/language-reference/keywords/params.md)如需詳細資訊。  
+  
+ 如需詳細資訊，請參閱[XSLT 轉換使用 XslTransform 類別](~/docs/standard/data/xml/xslt-transformations-with-the-xsltransform-class.md)。  
+  
+   
+  
+## Examples  
+ 下列範例會轉換指定的 XML 文件，並將結果輸出至主控台。  
+  
+ [!code-csharp[Classic WebData XslTransform Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XslTransform Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XslTransform Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XslTransform Example/VB/source.vb#1)]  
+  
+ ]]></format>
     </remarks>
     <threadsafe><see cref="T:System.Xml.Xsl.XslTransform" /> 物件是只轉換作業的執行緒安全。 其他作業不保證是安全執行緒。 您必須確定沒有其他方法，會在載入作業期間在物件上呼叫。</threadsafe>
   </Docs>
