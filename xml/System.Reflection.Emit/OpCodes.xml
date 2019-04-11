@@ -1,5 +1,5 @@
 <Type Name="OpCodes" FullName="System.Reflection.Emit.OpCodes">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="9bcce798c8cc62c813ad4a1b1fe926a783383e80" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58727882" /></Metadata><TypeSignature Language="C#" Value="public class OpCodes" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="d6d2cd6f31cc97089037cf8c47853b3dd6d37d7e" /><Meta Name="ms.sourcegitcommit" Value="3efce15f3841385ee3ba24bd71ff0c0cf9a47815" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="04/03/2019" /><Meta Name="ms.locfileid" Value="58875576" /></Metadata><TypeSignature Language="C#" Value="public class OpCodes" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit OpCodes extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Reflection.Emit.OpCodes" />
   <TypeSignature Language="VB.NET" Value="Public Class OpCodes" />
@@ -521,7 +521,7 @@
   
 |格式|組件格式|描述|  
 |------------|---------------------|-----------------|  
-|2E < `int8` >|後 `target`|分支至目標指令，位移`target`相等，如果簡短形式|  
+|2E < `int8` >|beq.s `target`|分支至目標指令，位移`target`相等，如果簡短形式|  
   
  堆疊的轉換行為，依連續順序是：  
   
@@ -647,7 +647,7 @@
   
 |格式|組件格式|描述|  
 |------------|---------------------|-----------------|  
-|2F `<int8>`|後 `target`|分支至目標指令中指定的位移的第一個值是否大於或等於第二個值，也就是簡短形式。|  
+|2F `<int8>`|bge.s `target`|分支至目標指令中指定的位移的第一個值是否大於或等於第二個值，也就是簡短形式。|  
   
  堆疊的轉換行為，依連續順序是：  
   
@@ -830,7 +830,7 @@
   
 |格式|組件格式|描述|  
 |------------|---------------------|-----------------|  
-|3D < `int32` >|bgt.s 使用 `target`|分支至目標指令中指定的位移的第一個值是否大於第二個值。|  
+|3D < `int32` >|bgt `target`|分支至目標指令中指定的位移的第一個值是否大於第二個值。|  
   
  堆疊的轉換行為，依連續順序是：  
   
@@ -891,7 +891,7 @@
   
 |格式|組件格式|描述|  
 |------------|---------------------|-----------------|  
-|30 < `int8` >|後 `target`|分支至目標指令中指定的位移的第一個值是否大於第二個值，也就是簡短形式。|  
+|30 < `int8` >|bgt.s `target`|分支至目標指令中指定的位移的第一個值是否大於第二個值，也就是簡短形式。|  
   
  堆疊的轉換行為，依連續順序是：  
   
@@ -1379,7 +1379,7 @@
   
 |格式|組件格式|描述|  
 |------------|---------------------|-----------------|  
-|32 < `int8` >|後 `target`|分支至目標指令，在指定的位移的第一個值是否小於第二個值，簡短形式。|  
+|32 < `int8` >|blt.s `target`|分支至目標指令，在指定的位移的第一個值是否小於第二個值，簡短形式。|  
   
  堆疊的轉換行為，依連續順序是：  
   
@@ -1684,7 +1684,7 @@
   
 |格式|組件格式|描述|  
 |------------|---------------------|-----------------|  
-|8C < `T` >|box `valTypeToken`|將實值型別轉換 (在指定之型別的`valTypeToken`)，則為 true 的物件參考。|  
+|8C < `T` >|方塊 `valTypeToken`|將實值型別轉換 (在指定之型別的`valTypeToken`)，則為 true 的物件參考。|  
   
  堆疊的轉換行為，依連續順序是：  
   
@@ -2168,7 +2168,7 @@
   
 |格式|組件格式|描述|  
 |------------|---------------------|-----------------|  
-|28 < `T` >|呼叫 `methodDesc`|呼叫所描述方法`methodDesc`。|  
+|28 < `T` >|call `methodDesc`|呼叫所描述方法`methodDesc`。|  
   
  堆疊的轉換行為，依連續順序是：  
   
@@ -2722,13 +2722,15 @@
 |------------|---------------------|-----------------|  
 |FE 04|clt|推送 1，如果`value1`是小於`value2`，否則將 0 推入。|  
   
- Stack 轉換行為的循序順序是：`value1`推送至堆疊。  
+ 堆疊的轉換行為，依連續順序是： 
+
+1.  `value1` 推送至堆疊。  
   
-1.  `value2` 推送至堆疊。  
+2.  `value2` 推送至堆疊。  
   
-2.  `value2` 和`value1`會彈出從堆疊;`clt`測試`value1`是小於`value2`。  
+3.  `value2` 和`value1`會彈出從堆疊;`clt`測試`value1`是小於`value2`。  
   
-3.  如果`value1`是小於`value2`，1 會推送至堆疊，否則為 0 會推入至堆疊。  
+4.  如果`value1`是小於`value2`，1 會推送至堆疊，否則為 0 會推入至堆疊。  
   
  `clt`指示比較`value1`和`value2`。 如果`value1`是小於`value2`，然後`int32`值 1 會推送到堆疊上。 否則， `int32` 0 值推送到堆疊上。  
   
@@ -13429,7 +13431,7 @@ callvirt m
   
 |格式|組件格式|描述|  
 |------------|---------------------|-----------------|  
-|80 < `T` >|這個前置 `field`|中的值取代`field`與提供的值。|  
+|80 < `T` >|stsfld `field`|中的值取代`field`與提供的值。|  
   
  堆疊的轉換行為，依連續順序是：  
   
@@ -14139,7 +14141,7 @@ callvirt m
   
 1.  位址會推送至堆疊。  
   
- `volatile`. 指定的位址是動態位址 （也就是可以從外部參考目前的執行緒） 和讀取位置無法快取，或發現無法隱藏多個門市，至該位置的結果。 標示為存取`volatile`只有該單一存取; 會影響其他存取相同的位置必須分別標示。 不需要以不可分割方式執行變動性的位置存取。  
+ `volatile`。 指定的位址是動態位址 （也就是可以從外部參考目前的執行緒） 和讀取位置無法快取，或發現無法隱藏多個門市，至該位置的結果。 標示為存取`volatile`只有該單一存取; 會影響其他存取相同的位置必須分別標示。 不需要以不可分割方式執行變動性的位置存取。  
   
  <xref:System.Reflection.Emit.OpCodes.Unaligned>和`volatile`可以按照任何順序結合前置詞。 後面必須緊接著`ldind`， `stind`， `ldfld`， `stfld`， `ldobj`， `stobj`， `initblk`，或`cpblk`指令。 只有`volatile`允許前置詞<xref:System.Reflection.Emit.OpCodes.Ldsfld>和<xref:System.Reflection.Emit.OpCodes.Stsfld>指示。  
   
