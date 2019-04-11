@@ -1,5 +1,5 @@
 <Type Name="ReaderWriterLockSlim" FullName="System.Threading.ReaderWriterLockSlim">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="3464038fcf06fcd6ab722a9c4b6f82b812141c99" /><Meta Name="ms.sourcegitcommit" Value="84c54c0c7d64827a5637d1f05e74e1f0598606a1" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="08/27/2018" /><Meta Name="ms.locfileid" Value="42942849" /></Metadata><TypeSignature Language="C#" Value="public class ReaderWriterLockSlim : IDisposable" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="0fee7c4885e8d1b579011bb73bd7952ec0ae6dc1" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58696275" /></Metadata><TypeSignature Language="C#" Value="public class ReaderWriterLockSlim : IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit ReaderWriterLockSlim extends System.Object implements class System.IDisposable" />
   <TypeSignature Language="DocId" Value="T:System.Threading.ReaderWriterLockSlim" />
   <TypeSignature Language="VB.NET" Value="Public Class ReaderWriterLockSlim&#xA;Implements IDisposable" />
@@ -21,6 +21,7 @@
   <AssemblyInfo>
     <AssemblyName>netstandard</AssemblyName>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -101,16 +102,16 @@
 ## <a name="lock-states"></a>鎖定狀態  
  您可能會有用來看待鎖定的狀態中的條款。 A<xref:System.Threading.ReaderWriterLockSlim>可以處於四種狀態之一： 不是輸入讀取、 升級和寫入。  
   
--   未輸入： 處於此狀態，沒有任何執行緒已進入鎖定 （或所有執行緒都結束鎖定）。  
+-   未輸入：在此狀態下，沒有任何執行緒已進入鎖定 （或所有執行緒都結束鎖定）。  
   
--   讀取： 處於此狀態中，一或多個執行緒已進入鎖定進行讀取存取受保護的資源。  
+-   讀取：在此狀態下，一或多個執行緒已進入鎖定的讀取權限受保護的資源。  
   
     > [!NOTE]
     >  執行緒可以進入讀取模式鎖定使用<xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A>或<xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A>方法，或從 可升級模式降級。  
   
--   升級： 處於此狀態中，一個執行緒已進入鎖定進行讀取，選擇是否要升級至寫入權限 （也就是在進入可升級模式中），以及零個或多個執行緒已進入鎖定的讀取權限。 一次不超過一個執行緒可以進入鎖定升級; 的選項嘗試進入可升級模式的其他執行緒會遭到封鎖。  
+-   升級：在此狀態下，一個執行緒已升級為寫入權限的選項與讀取權限進入鎖定 （也就是在進入可升級模式中），以及零個或多個執行緒已進入鎖定的讀取權限。 一次不超過一個執行緒可以進入鎖定升級; 的選項嘗試進入可升級模式的其他執行緒會遭到封鎖。  
   
--   寫入： 處於此狀態中，一個執行緒已進入受保護的資源寫入存取權的鎖定。 該執行緒已鎖定的獨佔擁有權。 嘗試進入鎖定，因為任何原因的其他任何執行緒被封鎖。  
+-   撰寫程式碼：在此狀態下，一個執行緒已進入鎖定進行寫入存取受保護的資源。 該執行緒已鎖定的獨佔擁有權。 嘗試進入鎖定，因為任何原因的其他任何執行緒被封鎖。  
   
  下表描述的鎖定狀態，不允許遞迴時，當執行緒的鎖定之間的轉換`t`採取最左邊的資料行中所述。 當時它採取動作，`t`不有任何模式。 (的特殊情況下，`t`處於可升級模式所述的資料表註腳。)上方資料列描述鎖定的開始狀態。 資料格說明執行緒，會發生什麼事，並顯示在括號中的鎖定狀態的變更。  
   
@@ -118,7 +119,7 @@
 |-|-----------------------|----------------|-------------------|-----------------|  
 |`t` 進入讀取的模式|`t` 輸入 (R)。|`t` 如果執行緒正在等候寫入模式;，區塊否則，`t`進入。|`t` 如果執行緒正在等候寫入模式;，區塊否則，請`t`進入。<sup>1</sup>|`t` 區塊。|  
 |`t` 進入可升級模式|`t` 輸入 (U)。|`t` 如果執行緒正在等候的區塊寫入模式或升級模式;否則，`t`進入 (U)。|`t` 區塊。|`t` 區塊。|  
-|`t` 進入寫入模式|`t` 輸入 (W)。|`t` 區塊。|`t` 區塊。<sup>2</sup>|`t` 區塊。|  
+|`t` 進入寫入模式|`t` 輸入 (W)。|`t` 區塊。|`t` blocks.<sup>2</sup>|`t` 區塊。|  
   
  <sup>1</sup>如果`t`啟動出可升級模式，它會進入讀取的模式。 此動作會永遠不會封鎖。 鎖定狀態不會變更。 （執行緒即可完成降級至結束可升級模式，以讀取模式）。  
   
@@ -200,6 +201,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
         <Attribute FrameworkAlternate="netframework-4.0">
@@ -271,13 +273,14 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters>
         <Parameter Name="recursionPolicy" Type="System.Threading.LockRecursionPolicy" />
       </Parameters>
       <Docs>
         <param name="recursionPolicy">一個列舉值，指定鎖定遞迴原則。</param>
-        <summary>指定鎖定遞迴原則，初始化 <see cref="T:System.Threading.ReaderWriterLockSlim" /> 類別的新執行個體。</summary>
+        <summary>指定鎖定遞迴原則來初始化 <see cref="T:System.Threading.ReaderWriterLockSlim" /> 類別的新執行個體。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -342,6 +345,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -400,6 +404,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
         <Attribute FrameworkAlternate="netframework-4.0">
@@ -411,7 +416,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>將 <see cref="T:System.Threading.ReaderWriterLockSlim" /> 類別目前的執行個體所使用的資源全部釋出。</summary>
+        <summary>釋放 <see cref="T:System.Threading.ReaderWriterLockSlim" /> 類別目前的執行個體所使用的全部資源。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -456,6 +461,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -492,13 +498,13 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Threading.LockRecursionException"><see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性是 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />且目前的執行緒嘗試在已經保留讀取鎖定的情況下取得讀取鎖定。  
+        <exception cref="T:System.Threading.LockRecursionException"><see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性是 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />，且目前的執行緒嘗試在已經保留讀取鎖定的情況下取得讀取鎖定。  
   
 -或- 
-<see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性是 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />且目前的執行緒嘗試在已經保留寫入鎖定的情況下取得讀取鎖定。  
+<see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性是 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />，且目前的執行緒嘗試在已經保留寫入鎖定的情況下取得讀取鎖定。  
   
 -或- 
-遞迴的次數會超過計數器的容量。 這項限制非常寬鬆，所以應用程式應該永遠都不會發生這種例外狀況。</exception>
+遞迴的次數會超出計數器的容量。 這項限制非常寬鬆，所以應用程式應該永遠都不會發生這種例外狀況。</exception>
         <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件已經處置。</exception>
       </Docs>
     </Member>
@@ -526,6 +532,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -574,7 +581,7 @@
 目前執行緒已進入讀取模式，因此嘗試進入可升級模式可能會造成死結。  
   
 -或- 
-遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+遞迴的次數會超出計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
         <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件已經處置。</exception>
       </Docs>
     </Member>
@@ -602,6 +609,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -640,7 +648,7 @@
 目前的執行緒已進入真實模式，而且還沒有擁有寫入鎖定，因此嘗試進入寫入模式鎖定可能會造成死結。  
   
 -或- 
-遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+遞迴的次數會超出計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
         <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件已經處置。</exception>
       </Docs>
     </Member>
@@ -668,6 +676,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -724,6 +733,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -786,6 +796,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
@@ -842,13 +853,14 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>取得值，表示目前執行緒是否已進入讀取模式的鎖定。</summary>
-        <value>如果目前執行緒已進入讀取模式，則為 <see langword="true" />；否則為 <see langword="false" />。</value>
+        <value>如果目前執行緒已進入讀取模式，則為 <see langword="true" />，否則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -893,6 +905,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -944,13 +957,14 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>取得值，表示目前執行緒是否已進入寫入模式的鎖定。</summary>
-        <value>如果目前執行緒已進入寫入模式，則為 <see langword="true" />；否則為 <see langword="false" />。</value>
+        <value>如果目前執行緒已進入寫入模式，則為 <see langword="true" />，否則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -995,6 +1009,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Threading.LockRecursionPolicy</ReturnType>
@@ -1044,6 +1059,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -1085,6 +1101,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -1126,6 +1143,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -1178,6 +1196,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1186,9 +1205,9 @@
         <Parameter Name="millisecondsTimeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">要等候的毫秒數；若要永遠等候，則為 -1 (<see cref="F:System.Threading.Timeout.Infinite" />)。</param>
+        <param name="millisecondsTimeout">要等待的毫秒數，或 -1 (<see cref="F:System.Threading.Timeout.Infinite" />) 則為無限期等待。</param>
         <summary>嘗試以選用的整數逾時，進入讀取模式的鎖定狀態。</summary>
-        <returns>如果呼叫執行緒已進入讀取模式，則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
+        <returns>如果呼叫的執行緒已進入讀取模式，則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1209,7 +1228,7 @@
         <exception cref="T:System.Threading.LockRecursionException"><see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性為 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />，且目前的執行緒已進入鎖定狀態。  
   
 -或- 
-遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+遞迴的次數會超出計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" /> 的值為負，但不等於 <see cref="F:System.Threading.Timeout.Infinite" /> (-1)，這是唯一允許的負值。</exception>
         <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件已經處置。</exception>
       </Docs>
@@ -1238,6 +1257,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1248,7 +1268,7 @@
       <Docs>
         <param name="timeout">等待的間隔，或 -1 毫秒無限期等待。</param>
         <summary>嘗試以選用的逾時，在讀取模式下進入鎖定狀態。</summary>
-        <returns>如果呼叫執行緒已進入讀取模式，則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
+        <returns>如果呼叫的執行緒已進入讀取模式，則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1269,7 +1289,7 @@
         <exception cref="T:System.Threading.LockRecursionException"><see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 屬性為 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />，且目前的執行緒已進入鎖定狀態。  
   
 -或- 
-遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+遞迴的次數會超出計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> 的值為負，但不等於 -1 毫秒，這是唯一允許的負值。  
   
 -或- 
@@ -1312,6 +1332,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1320,9 +1341,9 @@
         <Parameter Name="millisecondsTimeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">要等候的毫秒數；若要永遠等候，則為 -1 (<see cref="F:System.Threading.Timeout.Infinite" />)。</param>
+        <param name="millisecondsTimeout">要等待的毫秒數，或 -1 (<see cref="F:System.Threading.Timeout.Infinite" />) 則為無限期等待。</param>
         <summary>嘗試以選用的逾時，在可升級模式下進入鎖定狀態。</summary>
-        <returns>如果呼叫執行緒已進入可升級模式，則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
+        <returns>如果呼叫的執行緒已進入可升級模式，則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1346,7 +1367,7 @@
 目前執行緒一開始已進入讀取模式的鎖定狀態，因此嘗試進入可升級模式可能會造成死結。  
   
 -或- 
-遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+遞迴的次數會超出計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" /> 的值為負，但不等於 <see cref="F:System.Threading.Timeout.Infinite" /> (-1)，這是唯一允許的負值。</exception>
         <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件已經處置。</exception>
       </Docs>
@@ -1375,6 +1396,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1385,7 +1407,7 @@
       <Docs>
         <param name="timeout">等待的間隔，或 -1 毫秒無限期等待。</param>
         <summary>嘗試以選用的逾時，在可升級模式下進入鎖定狀態。</summary>
-        <returns>如果呼叫執行緒已進入可升級模式，則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
+        <returns>如果呼叫的執行緒已進入可升級模式，則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1409,7 +1431,7 @@
 目前執行緒一開始已進入讀取模式的鎖定狀態，因此嘗試進入可升級模式可能會造成死結。  
   
 -或- 
-遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+遞迴的次數會超出計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> 的值為負，但不等於 -1 毫秒，這是唯一允許的負值。  
   
 -或- 
@@ -1452,6 +1474,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1460,7 +1483,7 @@
         <Parameter Name="millisecondsTimeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">要等候的毫秒數；若要永遠等候，則為 -1 (<see cref="F:System.Threading.Timeout.Infinite" />)。</param>
+        <param name="millisecondsTimeout">要等待的毫秒數，或 -1 (<see cref="F:System.Threading.Timeout.Infinite" />) 則為無限期等待。</param>
         <summary>嘗試以選用的逾時，在寫入模式下進入鎖定狀態。</summary>
         <returns>如果呼叫的執行緒已進入寫入模式，則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
         <remarks>
@@ -1496,7 +1519,7 @@
 目前執行緒一開始已進入讀取模式的鎖定狀態，因此嘗試進入寫入模式可能會造成死結。  
   
 -或- 
-遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+遞迴的次數會超出計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" /> 的值為負，但不等於 <see cref="F:System.Threading.Timeout.Infinite" /> (-1)，這是唯一允許的負值。</exception>
         <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.ReaderWriterLockSlim" /> 物件已經處置。</exception>
       </Docs>
@@ -1525,6 +1548,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Boolean</ReturnType>
@@ -1555,7 +1579,7 @@
 目前執行緒一開始已進入讀取模式的鎖定狀態，因此嘗試進入寫入模式可能會造成死結。  
   
 -或- 
-遞迴的次數會超過計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
+遞迴的次數會超出計數器的容量。 限制過大，使應用程式永遠不會發生這個情形。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> 的值為負，但不等於 -1 毫秒，這是唯一允許的負值。  
   
 -或- 
@@ -1587,6 +1611,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
         <Attribute FrameworkAlternate="netframework-4.0">
@@ -1643,6 +1668,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
         <Attribute FrameworkAlternate="netframework-4.0">
@@ -1699,6 +1725,7 @@
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Attributes>
         <Attribute FrameworkAlternate="netframework-4.0">
