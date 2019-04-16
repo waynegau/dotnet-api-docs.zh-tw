@@ -1,5 +1,5 @@
 <Type Name="File" FullName="System.IO.File">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="4a19b0b66326966c1195690f88f41e90e98ae368" /><Meta Name="ms.sourcegitcommit" Value="2982b8c4cce02c2542285fcaf172f7544d6b80bc" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="04/09/2019" /><Meta Name="ms.locfileid" Value="59350349" /></Metadata><TypeSignature Language="C#" Value="public static class File" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="13a50ab90fca2598330ed34ec1427dd23aaa87a7" /><Meta Name="ms.sourcegitcommit" Value="635a1dbdc9cbcf7f7c258ac9ffa0314ed734da90" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="04/10/2019" /><Meta Name="ms.locfileid" Value="59472231" /></Metadata><TypeSignature Language="C#" Value="public static class File" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit File extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.IO.File" />
   <TypeSignature Language="VB.NET" Value="Public Class File" />
@@ -1265,15 +1265,18 @@
   
 ## Remarks  
  <xref:System.IO.File.Decrypt%2A>方法可讓您將使用加密檔案解密<xref:System.IO.File.Encrypt%2A>方法。  <xref:System.IO.File.Decrypt%2A>方法可以解密使用目前的使用者帳戶已加密的檔案。  
-  
+
+ > [!IMPORTANT]
+ > 這個 API 只有在能夠使用 NTFS 加密檔案系統 (EFS) 的 Windows 平台上執行。 嘗試在非 Windows 系統、 Windows Home Edition 系統或非 NTFS 磁碟機結果中的使用這<xref:System.PlatformNotSupportedException>或<xref:System.NotSupportedException>，取決於這種情況。
+ > 
+ > 不建議使用此 API 在.NET Core 中;它會包含啟用的應用程式，移至.NET Core，但仍會明確地以 Windows 為目標的可攜性。
+
  <xref:System.IO.File.Decrypt%2A>方法需要獨佔存取權進行解密，該檔案，並會引發例外狀況，如果另一個處理序正在使用檔案。 如果檔案未加密，<xref:System.IO.File.Decrypt%2A>會傳回非零的值，表示成功。  
   
  這兩個<xref:System.IO.File.Encrypt%2A>方法和<xref:System.IO.File.Decrypt%2A>方法使用電腦上安裝並呼叫方法的程序的檔案加密金鑰的密碼編譯服務提供者 (CSP)。  
   
  目前的檔案系統必須格式化為 NTFS 且目前的作業系統必須 Windows NT 或更新版本。  
-  
    
-  
 ## Examples  
  下列程式碼範例會使用<xref:System.IO.File.Encrypt%2A>方法和<xref:System.IO.File.Decrypt%2A>方法來加密和解密檔案。 檔案必須存在，範例才能運作。  
   
@@ -1433,10 +1436,14 @@
         <summary>加密檔案，只有使用加密檔案的帳戶才能將其解密。</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
-  
 ## Remarks  
  <xref:System.IO.File.Encrypt%2A>方法可讓您加密檔案，以便只將用來呼叫這個方法的帳戶可以將它解密。 使用<xref:System.IO.File.Decrypt%2A>方法來解密加密的檔案<xref:System.IO.File.Encrypt%2A>方法。  
-  
+
+ > [!IMPORTANT]
+ > 這個 API 只有在能夠使用 NTFS 加密檔案系統 (EFS) 的 Windows 平台上執行。 嘗試在非 Windows 系統、 Windows Home Edition 系統或非 NTFS 磁碟機結果中的使用這<xref:System.PlatformNotSupportedException>或<xref:System.NotSupportedException>，取決於這種情況。
+ > 
+ > 不建議使用此 API 在.NET Core 中;它會包含啟用的應用程式，移至.NET Core，但仍會明確地以 Windows 為目標的可攜性。
+
  <xref:System.IO.File.Encrypt%2A>方法需要獨佔存取權所加密的檔案，而且如果另一個處理序正在使用檔案將會失敗。  
   
  這兩個<xref:System.IO.File.Encrypt%2A>方法和<xref:System.IO.File.Decrypt%2A>方法使用電腦上安裝並呼叫方法的程序的檔案加密金鑰的密碼編譯服務提供者 (CSP)。  
@@ -1444,8 +1451,6 @@
  這個方法並不適用於所有版本的 Windows。 比方說，它並不適用於家用版。  
   
  目前的檔案系統必須格式化為 NTFS。  
-  
-   
   
 ## Examples  
  下列程式碼範例會使用<xref:System.IO.File.Encrypt%2A>方法和<xref:System.IO.File.Decrypt%2A>方法來加密和解密檔案。 檔案必須存在，範例才能運作。  
@@ -4089,7 +4094,7 @@
         <exception cref="T:System.ArgumentNullException"><paramref name="path" /> 為 <see langword="null" />。</exception>
         <exception cref="T:System.IO.PathTooLongException">指定的路徑、檔案名稱，或兩者都超出系統定義的長度上限。</exception>
         <exception cref="T:System.IO.IOException">執行此作業時發生 I/O 錯誤</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="creationTime" /> 指定值超出這項作業允許的日期或時間範圍 (或兩者皆超出)。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="creationTime" /> 指定的值，超出這項作業允許的日期或時間範圍 (或兩者皆超出)。</exception>
         <exception cref="T:System.UnauthorizedAccessException">呼叫端沒有必要的使用權限。</exception>
         <exception cref="T:System.NotSupportedException"><paramref name="path" /> 格式無效。</exception>
         <permission cref="T:System.Security.Permissions.FileIOPermission">用於寫入至指定的檔案。 相關聯的列舉型別： <see cref="F:System.Security.Permissions.FileIOPermissionAccess.Write" /></permission>
