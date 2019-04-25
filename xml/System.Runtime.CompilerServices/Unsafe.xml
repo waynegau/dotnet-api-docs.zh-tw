@@ -1,5 +1,5 @@
 <Type Name="Unsafe" FullName="System.Runtime.CompilerServices.Unsafe">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="25f6f9e753a0c47cbfccc2147725a47353028eab" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58703991" /></Metadata><TypeSignature Language="C#" Value="public static class Unsafe" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="bfce2be5c17299e8735ea4a200426489fb8d145b" /><Meta Name="ms.sourcegitcommit" Value="76fb6534b56e2b5f6aaaac2150d71a43c9133dbd" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="04/22/2019" /><Meta Name="ms.locfileid" Value="59893409" /></Metadata><TypeSignature Language="C#" Value="public static class Unsafe" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit Unsafe extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.CompilerServices.Unsafe" />
   <TypeSignature Language="VB.NET" Value="Public Class Unsafe" />
@@ -1046,11 +1046,38 @@
         <Parameter Name="box" Type="System.Object" Index="0" FrameworkAlternate="dotnet-plat-ext-3.0" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="box">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">為 unboxed 型別。</typeparam>
+        <param name="box">要 unbox 的值。</param>
+        <summary>傳回 <see langword="mutable ref" /> 至 boxed 值。</summary>
+        <returns>參考 boxed 值 <paramref name="box" /> 的 <see langword="mutable ref" />。</returns>
+        <remarks>  
+          <format type="text/markdown"><![CDATA[  
+
+`Unbox<T>`方法是只包裝函式的 IL [unbox](xref:System.Reflection.Emit.OpCodes.Unbox)指令。 它適合當做效能最佳化。 每當 API 採用<xref:System.Object>必須重複呼叫使用不同的實值類型，相同的值] 方塊中的物件可重複使用而不是 [新，每次建立一個。
+
+`Unbox<T>`方法有很重要的使用方式的條件約束，不會強制使用語言編譯器，這是呼叫者的責任。 IL`unbox`指令傳回的控制層可變動性的 managed 的指標。 因為.NET 和.NET 語言編譯器無法表示這個條件約束`Unbox<T>`方法會傳回一般可變動`ref T`。 但是開發人員**不得**變動傳回的參考，除非它們是確定`T`是可變動的結構類型。 例如，因為這類的數值基本<xref:System.Int32>不是可變動的結構類型，下列程式碼不支援：
+
+```csharp
+Unsafe.Box<int>(obj) = 30;
+```
+
+相較之下，這類的型別<xref:System.Drawing.Point?<displayProperty=nameWithType>是可變動的結構，含有公用屬性 setter，因此支援下列程式碼：
+
+```csharp
+Unsafe.Unbox<System.Drawing.Point>(obj).X = 50;
+```
+
+如需詳細資訊，請參閱章節 III.1.8.1.2.2 (「 受控 muttability managed 指標 」) 和 III.4.32 （「 進行 unbox 處理--將 boxed 實的值類型轉換成其原始格式 」） 中[ECMA-335:通用語言基礎結構 (CLI) 分割區我 VI](https://www.ecma-international.org/publications/files/ECMA-ST/ECMA-335.pdf)。
+
+         ]]></format>
+         </remarks>       
+        <exception cref="T:System.NullReferenceException"><paramref name="box" /> 是 <see langword="null" />，且 <typeparamref name="T" /> 不可為 Null 的實值型別。</exception>
+         <exception cref="T:System.InvalidCastException"><paramref name="box" /> 不是 boxed 實值型別。
+         
+-或-
+
+<paramref name="box" /> 不是 boxed <typeparamref name="T" />。</exception>
+        <exception cref="T:System.TypeLoadException">找不到 <typeparamref name="T" />。</exception>
       </Docs>
     </Member>
     <Member MemberName="Write&lt;T&gt;">
