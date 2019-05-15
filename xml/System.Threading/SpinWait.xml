@@ -1,5 +1,5 @@
 <Type Name="SpinWait" FullName="System.Threading.SpinWait">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="5896c27a5617b462d71583204dc20739a0fafd47" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58711952" /></Metadata><TypeSignature Language="C#" Value="public struct SpinWait" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="abb7bbb7dbaa77dbfde0e2229f83e792d539dc8b" /><Meta Name="ms.sourcegitcommit" Value="312579b66a6a983587a84f05c419be8fb0df7326" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="05/09/2019" /><Meta Name="ms.locfileid" Value="65473678" /></Metadata><TypeSignature Language="C#" Value="public struct SpinWait" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit SpinWait extends System.ValueType" />
   <TypeSignature Language="DocId" Value="T:System.Threading.SpinWait" />
   <TypeSignature Language="VB.NET" Value="Public Structure SpinWait" />
@@ -48,7 +48,7 @@
     </remarks>
     <threadsafe>雖然<see cref="T:System.Threading.SpinWait" />是設計成在並行的應用程式，它不是從多個執行緒同時使用。 <see cref="T:System.Threading.SpinWait" /> 成員不是安全執行緒。 如果必須微調多個執行緒，每個應該使用自己的執行個體<see cref="T:System.Threading.SpinWait" />。</threadsafe>
     <related type="Article" href="~/docs/standard/threading/spinwait.md">SpinWait</related>
-    <related type="Article" href="~/docs/standard/threading/how-to-use-spinwait-to-implement-a-two-phase-wait-operation.md">如何：使用 SpinWait 實作兩階段等候作業</related>
+    <related type="Article" href="~/docs/standard/threading/how-to-use-spinwait-to-implement-a-two-phase-wait-operation.md">作法：使用 SpinWait 實作兩階段等候作業</related>
   </Docs>
   <Members>
     <Member MemberName="Count">
@@ -80,11 +80,11 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得已在這個執行個體上呼叫 <see cref="M:System.Threading.SpinWait.SpinOnce" /> 的次數。</summary>
-        <value>傳回整數，表示已在這個執行個體上呼叫 <see cref="M:System.Threading.SpinWait.SpinOnce" /> 的次數。</value>
+        <summary>取得的次數<see cref="M:System.Threading.SpinWait.SpinOnce" />已呼叫這個執行個體上。</summary>
+        <value>傳回一個整數，表示的次數<see cref="M:System.Threading.SpinWait.SpinOnce" />已呼叫這個執行個體上。</value>
         <remarks>To be added.</remarks>
         <related type="Article" href="https://msdn.microsoft.com/library/36012f42-34e5-4f86-adf4-973f433ed6c6">SpinWait</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">如何：使用 SpinWait 實作兩階段等候作業</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">作法：使用 SpinWait 實作兩階段等候作業</related>
       </Docs>
     </Member>
     <Member MemberName="NextSpinWillYield">
@@ -116,8 +116,8 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得值，這個值表示下一次呼叫 <see cref="M:System.Threading.SpinWait.SpinOnce" /> 時是否讓出處理器，並觸發強制的環境切換。</summary>
-        <value>下一次呼叫 <see cref="M:System.Threading.SpinWait.SpinOnce" /> 時是否讓出處理器，並觸發強制的環境切換。</value>
+        <summary>取得是否下次呼叫<see cref="M:System.Threading.SpinWait.SpinOnce" />讓出處理器，並觸發強制的環境切換。</summary>
+        <value>下一步，是否呼叫至<see cref="M:System.Threading.SpinWait.SpinOnce" />讓出處理器，並觸發強制的環境切換。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -127,7 +127,7 @@
  ]]></format>
         </remarks>
         <related type="Article" href="https://msdn.microsoft.com/library/36012f42-34e5-4f86-adf4-973f433ed6c6">SpinWait</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">如何：使用 SpinWait 實作兩階段等候作業</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">作法：使用 SpinWait 實作兩階段等候作業</related>
       </Docs>
     </Member>
     <Member MemberName="Reset">
@@ -172,148 +172,13 @@
 ## Examples  
  以下是簡單的無鎖堆疊實作中使用 SpinWait 的範例。 （這是只是範例。 如果需要有效率的安全執行緒的堆疊，請考慮使用 ConcurrentStack。）  
   
- `// C#`  
-  
- `public class LockFreeStack<T>`  
-  
- `{`  
-  
- `private volatile Node m_head;`  
-  
- `private class Node { public Node Next; public T Value; }`  
-  
- `public void Push(T item)`  
-  
- `{`  
-  
- `var spin = new SpinWait();`  
-  
- `Node node = new Node { Value = item }, head;`  
-  
- `while (true)`  
-  
- `{`  
-  
- `head = m_head;`  
-  
- `node.Next = head;`  
-  
- `if (Interlocked.CompareExchange(ref m_head, node, head) == head) break;`  
-  
- `spin.SpinOnce();`  
-  
- `}`  
-  
- `}`  
-  
- `public bool TryPop(out T result)`  
-  
- `{`  
-  
- `result = default(T);`  
-  
- `var spin = new SpinWait();`  
-  
- `Node head;`  
-  
- `while (true)`  
-  
- `{`  
-  
- `head = m_head;`  
-  
- `if (head == null) return false;`  
-  
- `if (Interlocked.CompareExchange(ref m_head, head.Next, head) == head)`  
-  
- `{`  
-  
- `result = head.Value;`  
-  
- `return true;`  
-  
- `}`  
-  
- `spin.SpinOnce();`  
-  
- `}`  
-  
- `}`  
-  
- `}`  
-  
- `' Visual Basic`  
-  
- `Public Class LockFreeStack(Of T)`  
-  
- `Private m_head As Node`  
-  
- `Private Class Node`  
-  
- `Public [Next] As Node`  
-  
- `Public Value As T`  
-  
- `End Class`  
-  
- `Public Sub Push(ByVal item As T)`  
-  
- `Dim spin As New SpinWait()`  
-  
- `Dim head As Node, node As New Node With {.Value = item}`  
-  
- `While True`  
-  
- `Thread.MemoryBarrier()`  
-  
- `head = m_head`  
-  
- `node.Next = head`  
-  
- `If Interlocked.CompareExchange(m_head, node, head) Is head Then Exit While`  
-  
- `spin.SpinOnce()`  
-  
- `End While`  
-  
- `End Sub`  
-  
- `Public Function TryPop(ByRef result As T) As Boolean`  
-  
- `result = CType(Nothing, T)`  
-  
- `Dim spin As New SpinWait()`  
-  
- `Dim head As Node`  
-  
- `While True`  
-  
- `Thread.MemoryBarrier()`  
-  
- `head = m_head`  
-  
- `If head Is Nothing Then Return False`  
-  
- `If Interlocked.CompareExchange(m_head, head.Next, head) Is head Then`  
-  
- `result = head.Value`  
-  
- `Return True`  
-  
- `End If`  
-  
- `spin.SpinOnce()`  
-  
- `End While`  
-  
- `End Function`  
-  
- `End Class`  
-  
+ [!code-csharp[System.Threading.SpinWait.Reset#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.spinwait/cs/reset.cs#01)]
+ [!code-vb[System.Threading.SpinWait.Reset#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.spinwait/vb/reset.vb#01)]
+
  ]]></format>
         </remarks>
         <related type="Article" href="https://msdn.microsoft.com/library/36012f42-34e5-4f86-adf4-973f433ed6c6">SpinWait</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">如何：使用 SpinWait 實作兩階段等候作業</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">作法：使用 SpinWait 實作兩階段等候作業</related>
       </Docs>
     </Member>
     <Member MemberName="SpinOnce">
@@ -356,7 +221,7 @@
  ]]></format>
         </remarks>
         <related type="Article" href="https://msdn.microsoft.com/library/36012f42-34e5-4f86-adf4-973f433ed6c6">SpinWait</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">如何：使用 SpinWait 實作兩階段等候作業</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">HOW TO：使用 SpinWait 實作兩階段等候作業</related>
       </Docs>
     </Member>
     <Member MemberName="SpinOnce">
@@ -397,9 +262,9 @@
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>執行微調，直到滿足指定的條件為止。</summary>
+        <summary>執行微調，直到滿足指定的條件。</summary>
         <related type="Article" href="https://msdn.microsoft.com/library/36012f42-34e5-4f86-adf4-973f433ed6c6">SpinWait</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">如何：使用 SpinWait 實作兩階段等候作業</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">HOW TO：使用 SpinWait 實作兩階段等候作業</related>
       </Docs>
     </MemberGroup>
     <Member MemberName="SpinUntil">
@@ -434,12 +299,12 @@
         <Parameter Name="condition" Type="System.Func&lt;System.Boolean&gt;" />
       </Parameters>
       <Docs>
-        <param name="condition">會重複執行直到傳回 true 為止的委派。</param>
-        <summary>執行微調，直到滿足指定的條件為止。</summary>
+        <param name="condition">委派以反覆執行，直到它傳回 true。</param>
+        <summary>執行微調，直到滿足指定的條件。</summary>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentNullException"><paramref name="condition" /> 引數為 null。</exception>
         <related type="Article" href="https://msdn.microsoft.com/library/36012f42-34e5-4f86-adf4-973f433ed6c6">SpinWait</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">如何：使用 SpinWait 實作兩階段等候作業</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">作法：使用 SpinWait 實作兩階段等候作業</related>
       </Docs>
     </Member>
     <Member MemberName="SpinUntil">
@@ -475,15 +340,15 @@
         <Parameter Name="millisecondsTimeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="condition">會重複執行直到傳回 true 為止的委派。</param>
+        <param name="condition">委派以反覆執行，直到它傳回 true。</param>
         <param name="millisecondsTimeout">要等候的毫秒數，如果要無限期等候，則為 <see cref="F:System.Threading.Timeout.Infinite" /> (-1)。</param>
-        <summary>執行微調，直到滿足指定的條件或是指定的逾時過期為止。</summary>
-        <returns>如果滿足條件則為 true，否則為 false。</returns>
+        <summary>執行微調，直到滿足指定的條件，或直到指定的逾時過期為止。</summary>
+        <returns>如果在逾時; 內符合的條件，則為 true。否則為 false</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentNullException"><paramref name="condition" /> 引數為 null。</exception>
         <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" /> 為 -1 以外的負數，表示無限逾時。</exception>
         <related type="Article" href="https://msdn.microsoft.com/library/36012f42-34e5-4f86-adf4-973f433ed6c6">SpinWait</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">如何：使用 SpinWait 實作兩階段等候作業</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">作法：使用 SpinWait 實作兩階段等候作業</related>
       </Docs>
     </Member>
     <Member MemberName="SpinUntil">
@@ -519,15 +384,15 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="condition">會重複執行直到傳回 true 為止的委派。</param>
-        <param name="timeout"><see cref="T:System.TimeSpan" />，表示要等候的毫秒數，或是 TimeSpan，表示無限期等候的 -1 毫秒。</param>
-        <summary>執行微調，直到滿足指定的條件或是指定的逾時過期為止。</summary>
-        <returns>如果滿足條件則為 true，否則為 false。</returns>
+        <param name="condition">委派以反覆執行，直到它傳回 true。</param>
+        <param name="timeout">A <see cref="T:System.TimeSpan" /> ，代表要等候的毫秒數或 TimeSpan，表示無限期等候的-1 毫秒。</param>
+        <summary>執行微調，直到滿足指定的條件，或直到指定的逾時過期為止。</summary>
+        <returns>如果在逾時; 內符合的條件，則為 true。否則為 false</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentNullException"><paramref name="condition" /> 引數為 null。</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> 是除了 -1 毫秒以外的負數，表示無限逾時，或是大於 <see cref="F:System.Int32.MaxValue" /> 的逾時。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> 是-1 毫秒，表示無限逾時-或-逾時大於以外的負數<see cref="F:System.Int32.MaxValue" />。</exception>
         <related type="Article" href="https://msdn.microsoft.com/library/36012f42-34e5-4f86-adf4-973f433ed6c6">SpinWait</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">如何：使用 SpinWait 實作兩階段等候作業</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/b2ac4e4a-051a-4f65-b4b9-f8e103aff195">作法：使用 SpinWait 實作兩階段等候作業</related>
       </Docs>
     </Member>
   </Members>
