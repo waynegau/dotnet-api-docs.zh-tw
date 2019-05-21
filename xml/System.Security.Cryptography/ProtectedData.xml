@@ -1,5 +1,5 @@
 <Type Name="ProtectedData" FullName="System.Security.Cryptography.ProtectedData">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="bcc571c1b9e91c577a9733b53e867330b9c48f83" /><Meta Name="ms.sourcegitcommit" Value="220917117f9d774aaa482439aa7324e39dc1f5b6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="02/25/2019" /><Meta Name="ms.locfileid" Value="56771492" /></Metadata><TypeSignature Language="C#" Value="public sealed class ProtectedData" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="38eb090e97e5972009f0065e48a5b55765ceee17" /><Meta Name="ms.sourcegitcommit" Value="3575d47a0ba065e8986f03d99279f478811907b8" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="05/20/2019" /><Meta Name="ms.locfileid" Value="65922706" /></Metadata><TypeSignature Language="C#" Value="public sealed class ProtectedData" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit ProtectedData extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Security.Cryptography.ProtectedData" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class ProtectedData" />
@@ -28,15 +28,17 @@
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- 這個類別提供存取至資料保護 API (DPAPI) 適用於 Microsoft Windows 2000 和更新版本的作業系統。 這是一項服務，由作業系統提供，而且不需要額外的程式庫。 它會提供使用的使用者或電腦認證來加密或解密資料的保護。  
+## Remarks
+
+這個類別提供存取至 「 資料保護 API (DPAPI) Windows 作業系統中可用。 這是一項服務，由作業系統提供，而且不需要額外的程式庫。 它會提供使用的使用者或電腦認證來加密或解密資料的保護。
+
+> [!IMPORTANT]
+> 因為這取決於 DPAPI，`ProtectedData`只在 Windows 平台上支援類別。 在.NET Core 上使用 Windows 以外的平台上則會擲回<xref:System.PlatformNotSupportedException>。
   
- 類別包含兩個的包裝函式未受管理的 DPAPI，如<xref:System.Security.Cryptography.ProtectedData.Protect%2A>和<xref:System.Security.Cryptography.ProtectedData.Unprotect%2A>。 這兩種方法可用來加密和解密資料，例如密碼、 金鑰和連接字串。  
+類別包含兩個的包裝函式未受管理的 DPAPI，如<xref:System.Security.Cryptography.ProtectedData.Protect%2A>和<xref:System.Security.Cryptography.ProtectedData.Unprotect%2A>。 這兩種方法可用來加密和解密資料，例如密碼、 金鑰和連接字串。  
   
- 如果您在模擬期間使用這些方法，您可能會收到下列錯誤：「 金鑰不是有效用在指定的狀態 」。 會發生這種情況是因為 DPAPI 會儲存使用者設定檔中的索引鍵的資料。 如果未載入設定檔，則 DPAPI，將無法執行解密。 若要避免這個錯誤，載入您想要呼叫哪一種方法之前先模擬使用者的設定檔。 使用 DPAPI 與模擬可以帶來相當的複雜性，而且需要謹慎設計選擇。  
-  
-   
-  
+如果您在模擬期間使用這些方法，您可能會收到下列錯誤：「 金鑰不是有效用在指定的狀態 」。 會發生這種情況是因為 DPAPI 會儲存使用者設定檔中的索引鍵的資料。 如果未載入設定檔，則 DPAPI，將無法執行解密。 若要避免這個錯誤，載入您想要呼叫哪一種方法之前先模擬使用者的設定檔。 使用 DPAPI 與模擬可以帶來相當的複雜性，而且需要謹慎設計選擇。  
+
 ## Examples  
  下列範例示範如何使用資料保護。  
   
@@ -84,8 +86,8 @@
         <Parameter Name="scope" Type="System.Security.Cryptography.DataProtectionScope" />
       </Parameters>
       <Docs>
-        <param name="userData">包含要加密之資料的位元組陣列。</param>
-        <param name="optionalEntropy">用來提高加密複雜性的選擇性額外位元組陣列，若為 <see langword="null" /> 則表示沒有額外的複雜性。</param>
+        <param name="userData">位元組陣列，其中包含要加密資料。</param>
+        <param name="optionalEntropy">用來提高加密複雜性的選擇性額外位元組陣列或<see langword="null" />的任何額外的複雜性。</param>
         <param name="scope">其中一個列舉值，指定加密的範圍。</param>
         <summary>加密指定之位元組陣列中的資料，並傳回包含已加密資料的位元組陣列。</summary>
         <returns>表示已加密資料的位元組陣列。</returns>
@@ -111,8 +113,9 @@
         </remarks>
         <exception cref="T:System.ArgumentNullException"><paramref name="userData" /> 參數為 <see langword="null" />。</exception>
         <exception cref="T:System.Security.Cryptography.CryptographicException">加密失敗。</exception>
-        <exception cref="T:System.NotSupportedException">本作業系統不支援這個方法。</exception>
-        <exception cref="T:System.OutOfMemoryException">加密資料時，系統記憶體不足。</exception>
+        <exception cref="T:System.NotSupportedException">作業系統不支援這個方法。</exception>
+        <exception cref="T:System.OutOfMemoryException">加密資料時，系統已用盡記憶體。</exception>
+        <exception cref="T:System.PlatformNotSupportedException">僅限 .NET Core：若要呼叫<c>保護</c>方法支援在 Windows 作業系統上。</exception>
         <permission cref="T:System.Security.Permissions.DataProtectionPermission">使用關聯<see cref="P:System.Security.Permissions.DataProtectionPermissionAttribute.ProtectData" />來保護資料的權限的旗標。</permission>
       </Docs>
     </Member>
@@ -152,8 +155,8 @@
         <Parameter Name="scope" Type="System.Security.Cryptography.DataProtectionScope" />
       </Parameters>
       <Docs>
-        <param name="encryptedData">含有使用 <see cref="M:System.Security.Cryptography.ProtectedData.Protect(System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)" /> 方法所加密的資料之位元組陣列。</param>
-        <param name="optionalEntropy">進行資料加密所使用的選擇性額外位元組陣列，如果沒有使用額外位元組陣列則為 <see langword="null" />。</param>
+        <param name="encryptedData">位元組陣列，包含使用加密的資料<see cref="M:System.Security.Cryptography.ProtectedData.Protect(System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)" />方法。</param>
+        <param name="optionalEntropy">選擇性額外位元組陣列，用來加密資料，或<see langword="null" />如果沒有使用額外位元組陣列。</param>
         <param name="scope">其中一個列舉值，指定用來加密資料的資料保護範圍。</param>
         <summary>解密指定之位元組陣列中的資料，並傳回包含已解密資料的位元組陣列。</summary>
         <returns>表示已解密資料的位元組陣列。</returns>
@@ -179,8 +182,9 @@
         </remarks>
         <exception cref="T:System.ArgumentNullException"><paramref name="encryptedData" /> 參數為 <see langword="null" />。</exception>
         <exception cref="T:System.Security.Cryptography.CryptographicException">解密失敗。</exception>
-        <exception cref="T:System.NotSupportedException">本作業系統不支援這個方法。</exception>
+        <exception cref="T:System.NotSupportedException">作業系統不支援這個方法。</exception>
         <exception cref="T:System.OutOfMemoryException">記憶體不足。</exception>
+        <exception cref="T:System.PlatformNotSupportedException">僅限 .NET Core：若要呼叫<c>Unprotect</c>方法支援在 Windows 作業系統上。</exception>
         <permission cref="T:System.Security.Permissions.DataProtectionPermission">使用關聯<see cref="P:System.Security.Permissions.DataProtectionPermissionAttribute.UnprotectData" />取消保護資料的權限的旗標。</permission>
       </Docs>
     </Member>

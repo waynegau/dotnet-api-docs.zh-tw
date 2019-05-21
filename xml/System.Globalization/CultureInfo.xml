@@ -1,5 +1,5 @@
 <Type Name="CultureInfo" FullName="System.Globalization.CultureInfo">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="5d22463ac83363aad9b99f88b9600e59ebd2ac53" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58714282" /></Metadata><TypeSignature Language="C#" Value="public class CultureInfo : ICloneable, IFormatProvider" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="99a9c72622633b0afab49cf0a30001d21c76259e" /><Meta Name="ms.sourcegitcommit" Value="5ebd9691c6f7d50c4730e997fba69e54bdd7cc0c" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="05/17/2019" /><Meta Name="ms.locfileid" Value="65829773" /></Metadata><TypeSignature Language="C#" Value="public class CultureInfo : ICloneable, IFormatProvider" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi serializable beforefieldinit CultureInfo extends System.Object implements class System.ICloneable, class System.IFormatProvider" />
   <TypeSignature Language="DocId" Value="T:System.Globalization.CultureInfo" />
   <TypeSignature Language="VB.NET" Value="Public Class CultureInfo&#xA;Implements ICloneable, IFormatProvider" />
@@ -60,7 +60,7 @@
  [非變異、 中性和特定文化特性](#Invariant)   
  [自訂文化特性](#Custom)   
  [動態的文化特性的資料](#Dynamic)   
- [目前 UI 文化特性與目前的文化特性](#Current)   
+ [CultureInfo 和文化特性的資料](#cultureinfo-and-cultural-data)[目前 UI 文化特性與目前的文化特性](#Current)   
  [取得所有文化特性](#GetAll)   
  [文化特性和執行緒](#Threads)   
  [文化特性和應用程式網域](#AppDomain)   
@@ -69,7 +69,7 @@
  [控制台會覆寫](#CPanel)   
  [替代排序次序](#AlternateSort)   
  [文化特性和 Windows 應用程式](#Windows)  
-  
+
 <a name="CultureNames"></a>   
 ## <a name="culture-names-and-identifiers"></a>文化特性名稱和識別碼  
  <xref:System.Globalization.CultureInfo>類別會指定每個文化特性，根據 RFC 4646 的唯一名稱。 名稱是與語言相關聯的 ISO 639 兩個字母小寫文化特性代碼和國家/地區或區域相關聯的 ISO 3166 兩個字母大寫子文化特性代碼的組合。 此外，針對目標應用程式[!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)]或更新版本，而且正在執行 Windows 10 或更新版本中，對應至有效 BCP-47 語言標記支援的文化特性名稱。  
@@ -142,7 +142,27 @@
 -   請記住，自訂文化特性覆寫預設值。 因此，您無法考慮文化特性資料視為穩定。 國家/地區名稱、 數字和日期格式和拼字可能在未來變更。 如果您想要將區分文化特性的資料，例如要傳遞至日期和時間剖析函式的日期和時間字串序列化，您應該使用區分文化特性或特定。  
   
  <xref:System.Globalization.CultureInfo.CultureTypes%2A>安裝在系統上的自訂文化特性的屬性值會包含<xref:System.Globalization.CultureTypes?displayProperty=nameWithType>旗標及自訂的文化特性會被指派<xref:System.Globalization.CultureInfo.LCID%2A>屬性值為`LOCALE_CUSTOM_UNSPECIFIED`（0x1000 控制或 4096）。 請注意，從 Windows 10 開始，這個值也會指派給系統定義的文化特性缺少完整文化特性的資料。  
-  
+
+## <a name="cultureinfo-and-cultural-data"></a>CultureInfo 和文化特性的資料
+
+.NET 衍生其文化特性的資料從各種來源，取決於實作、 平台和版本的其中一個：
+
+- 在.NET Framework 3.5 和更早版本中，文化特性的資料是由 Windows 作業系統和.NET Framework 提供。
+
+- 在.NET Framework 4 和更新版本中，由 Windows 作業系統提供文化特性的資料。
+
+- 在所有版本的 Windows 上執行的.NET Core，文化特性的資料是由 Windows 作業系統提供。
+
+- 在所有版本的 Unix 平台上執行的.NET Core，文化特性的資料會提供[Unicode (ICU) 程式庫的多語系元件](http://site.icu-project.org/)。 ICU 程式庫的特定版本取決於個別的作業系統。
+
+因為這個緣故，在特定.NET 實作、 平台或版本，您可以使用的文化特性可能無法在不同.NET 實作、 平台或版本。
+
+某些`CultureInfo`物件基礎的平台而有所不同。 特別是，「 ZH-CN 」 或中文 （簡體，中國） 和 ZH-TW、 中文 （繁體，台灣），會在 Windows 系統上可用的文化特性，但會在 Unix 系統上的別名文化特性。 「 ZH-CN 」 是 「 Hans-ZH-CN"文化特性的別名和"ZH-TW"是"Hant-ZH-TW"文化特性的別名。 別名的文化特性不會傳回呼叫<xref:System.Globalization.CultureInfo.GetCultures%2A>方法，可能有不同的屬性值，包括不同<xref:System.Globalization.CultureInfo.Parent>文化特性，比與其 Windows 對應項目。 這些 differenes ZH-CN 和 ZH-TW 文化特性，包括下列：
+
+- Windows 系統上 「 ZH-CN 」 文化特性的父文化特性 」 Zh-hans"，而"ZH-TW"文化特性的父文化特性 」 Zh-hant"。 這些文化特性的父文化特性是 「 zh"。 在 Unix 系統上兩個文化特性的父代會是"zh 」。 這表示，如果您未提供特定文化特性資源之 「 ZH-CN"或"ZH-TW"文化特性，但不要提供資源的中性 」-Zh-hans 」 或 「 Zh-hant"文化特性，您的應用程式會載入在 Windows 上，但不是能在 Unix 中性文化特性的資源. Unix 系統上，您必須明確設定執行緒的<xref:System.Globalization.CultureInfo.CurrentUICulture>"Zh-hans 」 或 「 Zh-hant"。 
+
+- 在 Windows 系統上，呼叫<xref:System.Globalization.CultureInfo.Equals%2A?displayProperty=nameWithType>表示執行個體上的 「 ZH-CN 」 文化特性，並將其傳遞 「 Hans-ZH-CN"的執行個體傳回`true`。 在 Unix 系統上的方法呼叫傳回`false`。 此行為也適用於呼叫<xref:System.Globalization.CultureInfo.Equals%2A>上"ZH-TW"<xref:System.Globalization.CultureInfo>執行個體，並將其傳遞"Hant-Zh-tw"執行個體。
+
 <a name="Dynamic"></a>   
 ## <a name="dynamic-culture-data"></a>動態的文化特性的資料  
  除了文化特性而異，文化特性的資料是動態的。 這是也適用於預先定義的文化特性。 例如，國家或地區採用新的貨幣、 變更其拼字的文字，或變更其慣用的行事曆和文化特性定義變更來追蹤這。  自訂文化特性可能會有所變更，恕不另行通知，並可能會由自訂取代的文化特性覆寫任何特定的文化特性。 此外下, 面所述，個別使用者可以覆寫文化特性喜好設定。 應用程式一律應在執行階段取得文化特性的資料。  
@@ -152,7 +172,7 @@
   
 <a name="Current"></a>   
 ## <a name="the-current-culture-and-current-ui-culture"></a>目前 UI 文化特性與目前的文化特性  
- 在.NET Framework 應用程式中的每個執行緒有目前的文化特性和目前的 UI 文化特性。 目前的文化特性會決定格式設定慣例的日期、 時間、 數字和貨幣值、 文字、 大小寫慣例和比較字串的方式的排序次序。 目前的 UI 文化特性用來擷取在執行階段的特定文化特性的資源。  
+ 在.NET 應用程式中的每個執行緒有目前的文化特性和目前的 UI 文化特性。 目前的文化特性會決定格式設定慣例的日期、 時間、 數字和貨幣值、 文字、 大小寫慣例和比較字串的方式的排序次序。 目前的 UI 文化特性用來擷取在執行階段的特定文化特性的資源。  
   
 > [!NOTE]
 >  如需如何在個別執行緒上決定的目前和目前 UI 文化特性資訊，請參閱[文化特性和執行緒](#Threads)一節。 如需目前與目前 UI 文化特性如何判斷在執行緒上執行新的應用程式定義域和執行緒跨越應用程式定義域界限，請參閱[文化特性和應用程式定義域](#AppDomain)一節。 如需如何判斷目前與目前執行工作為基礎的非同步作業的執行緒上的資訊，請參閱[文化特性和以工作為基礎的非同步作業](#Async)一節。  
@@ -187,7 +207,7 @@
   
 1.  具現化<xref:System.Globalization.CultureInfo>物件，表示該文化特性，藉由呼叫<xref:System.Globalization.CultureInfo>類別建構函式，並將其傳遞文化特性名稱。 <xref:System.Globalization.CultureInfo.%23ctor%28System.String%29>建構函式具現化<xref:System.Globalization.CultureInfo>反映使用者的物件會覆寫，如果新的文化特性與目前的 Windows 文化特性相同。   <xref:System.Globalization.CultureInfo.%23ctor%28System.String%2CSystem.Boolean%29>建構函式可讓您指定是否新具現化<xref:System.Globalization.CultureInfo>物件會反映新的文化特性是否與目前的 Windows 文化特性相同，會覆寫使用者。  
   
-2.  指派<xref:System.Globalization.CultureInfo>物件至<xref:System.Threading.Thread.CurrentCulture%2A?displayProperty=nameWithType>或<xref:System.Threading.Thread.CurrentUICulture%2A?displayProperty=nameWithType>屬性。 此外，針對 4.6 或更新版本的桌面.NET Framework 版本上執行的應用程式，您也可以指派<xref:System.Globalization.CultureInfo>物件至<xref:System.Globalization.CultureInfo.CurrentCulture%2A?displayProperty=nameWithType>或<xref:System.Globalization.CultureInfo.CurrentUICulture%2A?displayProperty=nameWithType>屬性。  
+2.  指派<xref:System.Globalization.CultureInfo>物件至<xref:System.Globalization.CultureInfo.CurrentCulture%2A?displayProperty=nameWithType>或<xref:System.Globalization.CultureInfo.CurrentUICulture%2A?displayProperty=nameWithType>.NET Core 和.NET Framework 4.6 和更新版本上的屬性。 (.NET Framework 4.5.2 和舊版中，指派 youc`CultureInfo`物件至<xref:System.Threading.Thread.CurrentCulture%2A?displayProperty=nameWithType>或<xref:System.Threading.Thread.CurrentUICulture%2A?displayProperty=nameWithType>屬性。)   
   
  下列範例會擷取目前文化特性。 如果是法文 （法國） 文化特性以外的任何項目，它會將目前的文化特性變更為法文 （法國）。 否則，它目前的文化特性變更為法文 （盧森堡）。  
   
@@ -277,15 +297,15 @@
  [!code-csharp[System.Globalization.CultureInfo.Class.Async#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.globalization.cultureinfo.class.async/cs/asyncculture4.cs#4)]
  [!code-vb[System.Globalization.CultureInfo.Class.Async#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.globalization.cultureinfo.class.async/vb/asyncculture4.vb#4)]  
   
-<a name="Serialization"></a>   
+<a name="Serialization"></a>  
 ## <a name="cultureinfo-object-serialization"></a>CultureInfo 物件的序列化  
  當<xref:System.Globalization.CultureInfo>序列化物件時，實際上儲存只<xref:System.Globalization.CultureInfo.Name%2A>和<xref:System.Globalization.CultureInfo.UseUserOverride%2A>。 它是只在環境中成功還原序列化所在的<xref:System.Globalization.CultureInfo.Name%2A>具有相同的意義。 下列三個範例顯示為什麼這不一定會這樣：  
   
--   如果<xref:System.Globalization.CultureInfo.CultureTypes%2A>屬性值是<xref:System.Globalization.CultureTypes?displayProperty=nameWithType>，而且如果文化特性的首度在 Windows Vista 或更新版本的 Windows 作業系統，不可能將它還原序列化在 Windows XP 上。 同樣地，如果在 Windows XP Service Pack 2 中引進的文化特性，不可能將它還原序列化所在的文化特性尚未安裝的 Windows XP 系統。  
+- 如果<xref:System.Globalization.CultureInfo.CultureTypes%2A>屬性值是<xref:System.Globalization.CultureTypes.InstalledWin32Cultures?displayProperty=nameWithType>，如果在特定版本的 Windows 作業系統中引進該文化特性，不可能將它還原序列化舊版 Windows 上。 比方說，如果文化特性在 Windows 10 中引進，它無法還原序列化，在 Windows 8 上。  
   
--   如果<xref:System.Globalization.CultureInfo.CultureTypes%2A>值是<xref:System.Globalization.CultureTypes?displayProperty=nameWithType>，並在其已還原序列化的電腦沒有安裝此使用者自訂文化特性，不可能將它還原序列化。  
+-   如果<xref:System.Globalization.CultureInfo.CultureTypes%2A>值是<xref:System.Globalization.CultureTypes.UserCustomCulture?displayProperty=nameWithType>，並在其已還原序列化的電腦沒有安裝此使用者自訂文化特性，不可能將它還原序列化。  
   
--   如果<xref:System.Globalization.CultureInfo.CultureTypes%2A>值是<xref:System.Globalization.CultureTypes?displayProperty=nameWithType>，並在其已還原序列化的電腦沒有此取代的文化特性，還原序列化至相同的名稱，但不是所有相同的特性。 例如，EN-US 是否取代的文化特性上的電腦，但不是能在電腦 B，以及是否<xref:System.Globalization.CultureInfo>物件指的此文化特性會在電腦 A 上序列化並在電腦 B 上還原序列化則沒有任何自訂的文化特性，傳輸。 文化特性會取消序列化成功，但具有不同的意義。  
+-   如果<xref:System.Globalization.CultureInfo.CultureTypes%2A>值是<xref:System.Globalization.CultureTypes.ReplacementCultures?displayProperty=nameWithType>，並在其已還原序列化的電腦沒有此取代的文化特性，還原序列化至相同的名稱，但不是所有相同的特性。 例如，EN-US 是否取代的文化特性上的電腦，但不是能在電腦 B，以及是否<xref:System.Globalization.CultureInfo>物件指的此文化特性會在電腦 A 上序列化並在電腦 B 上還原序列化則沒有任何自訂的文化特性，傳輸。 文化特性還原序列化成功，但具有不同的意義。  
   
 <a name="CPanel"></a>   
 ## <a name="control-panel-overrides"></a>控制台會覆寫  
@@ -295,7 +315,7 @@
   
 <a name="AlternateSort"></a>   
 ## <a name="alternate-sort-orders"></a>替代排序次序  
- 某些文化特性支援一個以上的排序次序。 例如：  
+ 某些文化特性支援一個以上的排序次序。 例如:   
   
 -   西班牙文 （西班牙） 文化特性中有兩個排序順序： 預設的國際排序順序，與傳統的排序順序。 當您具現化<xref:System.Globalization.CultureInfo>ES-ES 文化特性名稱，物件會使用國際排序順序。 當您具現化<xref:System.Globalization.CultureInfo>es-ES-tradnl 文化特性名稱，物件會使用傳統的排序順序。  
   
@@ -309,8 +329,8 @@
 |zh-TW|中文 （台灣）|筆劃數：0x00000404|注音符號：0x00030404|  
 |zh-CN|中文 （中國）|發音：0x00000804|筆劃數：0x00020804|  
 |zh-HK|中文 （香港特別行政區）|筆劃數：0x00000c04|筆劃數：0x00020c04|  
-|zh-SG|中文 （新加坡）|發音：0x00001004|筆劃數：0x00021004|  
-|zh-MO|中文 （澳門特別行政區）|發音：0x00001404|筆劃數：0x00021404|  
+|zh-SG|中文 (新加坡)|發音：0x00001004|筆劃數：0x00021004|  
+|zh-MO|中文 (澳門特別行政區)|發音：0x00001404|筆劃數：0x00021404|  
 |ja-JP|日文 （日本）|預設：0x00000411|Unicode：0x00010411|  
 |ko-KR|韓文 （韓國）|預設：0x00000412|韓文 Xwansung-Unicode:0x00010412|  
 |de-DE|德文 （德國）|字典中：0x00000407|電話簿排序 DIN:0x00010407|  
@@ -812,8 +832,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>建立目前 <see cref="T:System.Globalization.CultureInfo" /> 的複本。</summary>
-        <returns>目前 <see cref="T:System.Globalization.CultureInfo" /> 的複本。</returns>
+        <summary>建立目前的 <see cref="T:System.Globalization.CultureInfo" /> 複本。</summary>
+        <returns>目前的 <see cref="T:System.Globalization.CultureInfo" /> 複本。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1365,7 +1385,7 @@
       </ReturnValue>
       <Docs>
         <summary>取得或設定 <see cref="T:System.Globalization.DateTimeFormatInfo" />，定義日期和時間在文化特性上適當的顯示格式。</summary>
-        <value><see cref="T:System.Globalization.DateTimeFormatInfo" />，定義日期和時間在文化特性上適當的顯示格式。</value>
+        <value><see cref="T:System.Globalization.DateTimeFormatInfo" />，定義用於顯示日期和時間的適當文化特性格式。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1390,7 +1410,7 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">此屬性設定為 null。</exception>
-        <exception cref="T:System.InvalidOperationException"><see cref="P:System.Globalization.CultureInfo.DateTimeFormat" /> 屬性或任何 <see cref="T:System.Globalization.DateTimeFormatInfo" /> 屬性已設定，而且 <see cref="T:System.Globalization.CultureInfo" /> 是唯讀的。</exception>
+        <exception cref="T:System.InvalidOperationException"><see cref="P:System.Globalization.CultureInfo.DateTimeFormat" /> 屬性或 <see cref="T:System.Globalization.DateTimeFormatInfo" /> 屬性的任何一個已設定，而且 <see cref="T:System.Globalization.CultureInfo" /> 處於唯讀狀態。</exception>
         <block subset="none" type="usage"><para>如果<see cref="P:System.Globalization.DateTimeFormatInfo.Calendar" />是<see cref="T:System.Globalization.TaiwanCalendar" />但<see cref="P:System.Threading.Thread.CurrentCulture" />不設定為中文 （台灣），名為 ZH-TW，然後<see cref="P:System.Globalization.DateTimeFormatInfo.NativeCalendarName" />， <see cref="M:System.Globalization.DateTimeFormatInfo.GetEraName(System.Int32)" />，和<see cref="M:System.Globalization.DateTimeFormatInfo.GetAbbreviatedEraName(System.Int32)" />傳回空字串 ("")。</para></block>
         <altmember cref="T:System.Globalization.DateTimeFormatInfo" />
         <altmember cref="M:System.Globalization.CultureInfo.GetFormat(System.Type)" />
@@ -1779,12 +1799,12 @@ csc /resource:GreetingStrings.resources Example1.cs
       <Docs>
         <param name="value">要與目前 <see cref="T:System.Globalization.CultureInfo" /> 比較的物件。</param>
         <summary>判斷指定物件是否與目前 <see cref="T:System.Globalization.CultureInfo" /> 為相同的文化特性。</summary>
-        <returns>如果 <paramref name="value" /> 與目前 <see cref="T:System.Globalization.CultureInfo" /> 為相同的文化特性，則為 <see langword="true" />，否則為 <see langword="false" />。</returns>
+        <returns>如果 <paramref name="value" /> 與目前 <see cref="T:System.Globalization.CultureInfo" /> 為相同的文化特性，則為 <see langword="true" />；否則為 <see langword="false" />。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法覆寫 <xref:System.Object.Equals%2A?displayProperty=nameWithType>。  
+ 這個方法會覆寫 <xref:System.Object.Equals%2A?displayProperty=nameWithType>。  
   
  兩個<xref:System.Globalization.CultureInfo>物件會被視為相等，如果他們<xref:System.Globalization.CultureInfo.Name%2A>和<xref:System.Globalization.CultureInfo.CompareInfo%2A>屬性相等。  
   
@@ -1870,7 +1890,7 @@ csc /resource:GreetingStrings.resources Example1.cs
 |阿薩姆文 （印度）|as-IN|en-US|  
 |孟加拉文|bn|en-US|  
 |孟加拉文 （孟加拉）|bn-BD|en-US|  
-|孟加拉文 （印度）|bn IN|en-US|  
+|孟加拉文 (印度)|bn IN|en-US|  
 |西藏文|bo|en-US|  
 |藏文 （中華人民共和國）|bo-CN|en-US|  
 |迪維西文|dv|en-US|  
@@ -2004,7 +2024,7 @@ csc /resource:GreetingStrings.resources Example1.cs
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="culture" /> 小於零。</exception>
-        <exception cref="T:System.Globalization.CultureNotFoundException"><paramref name="culture" /> 指定不支援的文化特性 (Culture)。 如需詳細資訊，請參閱＜呼叫者注意事項＞一節。</exception>
+        <exception cref="T:System.Globalization.CultureNotFoundException"><paramref name="culture" /> 指定不支援的文化特性。 如需詳細資訊，請參閱＜呼叫者注意事項＞一節。</exception>
         <block subset="none" type="usage"><para>[!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)]及更早版本會擲回<see cref="T:System.ArgumentException" />如果<paramref name="culture" />不是有效的文化特性識別項。 開頭[!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)]，此方法會擲回<see cref="T:System.Globalization.CultureNotFoundException" />。 開始執行的應用程式[!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)]或更新版本在 Windows 7 或更新版本中，這個方法會嘗試擷取<see cref="T:System.Globalization.CultureInfo" />物件，其識別碼為<paramref name="culture" />從作業系統; 如果作業系統不支援該文化特性，方法會擲回<see cref="T:System.Globalization.CultureNotFoundException" />。</para></block>
         <altmember cref="P:System.Globalization.CultureInfo.LCID" />
         <altmember cref="M:System.Globalization.CultureInfo.ClearCachedData" />
@@ -2062,7 +2082,7 @@ csc /resource:GreetingStrings.resources Example1.cs
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException"><paramref name="name" /> 為 null。</exception>
-        <exception cref="T:System.Globalization.CultureNotFoundException"><paramref name="name" /> 指定不支援的文化特性 (Culture)。 如需詳細資訊，請參閱＜呼叫者注意事項＞一節。</exception>
+        <exception cref="T:System.Globalization.CultureNotFoundException"><paramref name="name" /> 指定不支援的文化特性。 如需詳細資訊，請參閱＜呼叫者注意事項＞一節。</exception>
         <block subset="none" type="usage"><para>[!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)]及更早版本會擲回<see cref="T:System.ArgumentException" />如果<paramref name="name" />不是有效的文化特性名稱。 開頭[!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)]，此方法會擲回<see cref="T:System.Globalization.CultureNotFoundException" />。 開始執行的應用程式[!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)]或更新版本在 Windows 7 或更新版本中，這個方法會嘗試擷取<see cref="T:System.Globalization.CultureInfo" />物件，其識別碼為<paramref name="name" />從作業系統中; 如果作業系統不支援該文化特性，而且<paramref name="name" />不是補充或取代文化特性名稱，則方法會擲回<see cref="T:System.Globalization.CultureNotFoundException" />。</para></block>
         <altmember cref="P:System.Globalization.CultureInfo.Name" />
       </Docs>
@@ -2103,8 +2123,8 @@ csc /resource:GreetingStrings.resources Example1.cs
       </Parameters>
       <Docs>
         <param name="name">文化特性的名稱。 <paramref name="name" /> 不區分大小寫。</param>
-        <param name="altName">文化特性的名稱，這個文化特性提供 <see cref="T:System.Globalization.TextInfo" /> 和 <see cref="T:System.Globalization.CompareInfo" /> 物件，而這些物件是用來初始化 <paramref name="name" />。 <paramref name="altName" /> 不區分大小寫。</param>
-        <summary>擷取文化特性的快取、唯讀執行個體。 這些參數會指定文化特性，這個文化特性使用另一個文化特性所指定的 <see cref="T:System.Globalization.TextInfo" /> 和 <see cref="T:System.Globalization.CompareInfo" /> 物件來初始化。</summary>
+        <param name="altName">文化特性的名稱，這個文化特性提供 <see cref="T:System.Globalization.TextInfo" /> 與 <see cref="T:System.Globalization.CompareInfo" /> 物件，而這些物件是用來初始化 <paramref name="name" />。 <paramref name="altName" /> 不區分大小寫。</param>
+        <summary>擷取文化特性的快取、唯讀執行個體。 這些參數會指定文化特性，這個文化特性使用另一個文化特性所指定的 <see cref="T:System.Globalization.TextInfo" /> 與 <see cref="T:System.Globalization.CompareInfo" /> 物件來初始化。</summary>
         <returns>唯讀 <see cref="T:System.Globalization.CultureInfo" /> 物件。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -2119,7 +2139,7 @@ csc /resource:GreetingStrings.resources Example1.cs
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException"><paramref name="name" /> 或 <paramref name="altName" /> 為 null。</exception>
-        <exception cref="T:System.Globalization.CultureNotFoundException"><paramref name="name" /> 或 <paramref name="altName" /> 指定不支援的文化特性 (Culture)。 如需詳細資訊，請參閱＜呼叫者注意事項＞一節。</exception>
+        <exception cref="T:System.Globalization.CultureNotFoundException"><paramref name="name" /> 或 <paramref name="altName" /> 指定不受支援的文化特性。 如需詳細資訊，請參閱＜呼叫者注意事項＞一節。</exception>
         <block subset="none" type="usage"><para>[!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)]及更早版本會擲回<see cref="T:System.ArgumentException" />如果<paramref name="name" />或<paramref name="altName" />不是有效的文化特性名稱。 開頭[!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)]，此方法會擲回<see cref="T:System.Globalization.CultureNotFoundException" />。 開始執行的應用程式[!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)]或更新版本在 Windows 7 或更新版本中，這個方法會嘗試擷取<see cref="T:System.Globalization.CultureInfo" />物件，其識別碼為<paramref name="name" />從作業系統中; 如果作業系統不支援該文化特性，而且<paramref name="name" />不是補充或取代文化特性名稱，則方法會擲回<see cref="T:System.Globalization.CultureNotFoundException" />例外狀況。 開始執行的應用程式[!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)]或更新版本在 Windows 7 或更新版本中，這個方法會嘗試擷取<see cref="T:System.Globalization.CultureInfo" />物件，其識別碼為<paramref name="name" />從作業系統中; 如果作業系統不支援該文化特性，而且<paramref name="name" />不是補充或取代文化特性名稱，則方法會擲回<see cref="T:System.Globalization.CultureNotFoundException" />例外狀況。</para></block>
         <altmember cref="P:System.Globalization.CultureInfo.Name" />
         <altmember cref="M:System.Globalization.CultureInfo.ClearCachedData" />
@@ -2181,7 +2201,7 @@ csc /resource:GreetingStrings.resources Example1.cs
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException"><paramref name="name" /> 為 null。</exception>
-        <exception cref="T:System.Globalization.CultureNotFoundException"><paramref name="name" /> 未對應到支援的文化特性。</exception>
+        <exception cref="T:System.Globalization.CultureNotFoundException"><paramref name="name" /> 不會對應至支援的文化特性。</exception>
         <block subset="none" type="usage"><para>[!INCLUDE[net_v35_long](~/includes/net-v35-long-md.md)]及更早版本會擲回<see cref="T:System.ArgumentException" />如果<paramref name="name" />並未對應到支援的文化特性的名稱。 開頭[!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)]，此方法會擲回<see cref="T:System.Globalization.CultureNotFoundException" />。</para></block>
         <altmember cref="P:System.Globalization.CultureInfo.TextInfo" />
         <altmember cref="T:System.Globalization.CultureAndRegionInfoBuilder" />
@@ -2223,7 +2243,7 @@ csc /resource:GreetingStrings.resources Example1.cs
         <Parameter Name="types" Type="System.Globalization.CultureTypes" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="types">列舉值的位元 (Bitwise) 組合，這些值可篩選要擷取的文化特性。</param>
+        <param name="types">列舉值的位元組合，這些值可篩選要擷取的文化特性。</param>
         <summary>取得支援的文化特性清單，此清單經過指定的 <see cref="T:System.Globalization.CultureTypes" /> 參數篩選。</summary>
         <returns>包含 <paramref name="types" /> 參數所指定之文化特性的陣列。 文化特性陣列是未排序的。</returns>
         <remarks>
@@ -2257,7 +2277,7 @@ csc /resource:GreetingStrings.resources Example1.cs
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="types" /> 指定無效的 <see cref="T:System.Globalization.CultureTypes" /> 值組合。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="types" /> 指定了 <see cref="T:System.Globalization.CultureTypes" /> 值的無效組合。</exception>
         <altmember cref="T:System.Globalization.CultureTypes" />
       </Docs>
     </Member>
@@ -2306,15 +2326,15 @@ csc /resource:GreetingStrings.resources Example1.cs
         <Parameter Name="formatType" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="formatType">要取得其格式化物件的 <see cref="T:System.Type" />。 這個方法只支援 <see cref="T:System.Globalization.NumberFormatInfo" /> 和 <see cref="T:System.Globalization.DateTimeFormatInfo" /> 型別。</param>
-        <summary>取得定義如何格式化指定型別的物件。</summary>
-        <returns><see cref="P:System.Globalization.CultureInfo.NumberFormat" /> 屬性的值；如果 <paramref name="formatType" /> 是 <see cref="T:System.Globalization.NumberFormatInfo" /> 類別的 <see cref="T:System.Globalization.CultureInfo" /> 物件，則這會是包含目前 <see cref="T:System.Type" /> 的預設數值格式資訊的 <see cref="T:System.Globalization.NumberFormatInfo" />。  
+        <param name="formatType">要取得其格式化物件的 <see cref="T:System.Type" />。 這個方法只支援 <see cref="T:System.Globalization.NumberFormatInfo" /> 與 <see cref="T:System.Globalization.DateTimeFormatInfo" /> 類型。</param>
+        <summary>取得定義如何格式化指定類型的物件。</summary>
+        <returns><see cref="P:System.Globalization.CultureInfo.NumberFormat" /> 屬性的值；如果 <paramref name="formatType" /> 是 <see cref="T:System.Globalization.NumberFormatInfo" /> 類別的 <see cref="T:System.Type" /> 物件，則這會是包含目前 <see cref="T:System.Globalization.CultureInfo" /> 之預設數值格式資訊的 <see cref="T:System.Globalization.NumberFormatInfo" />。  
   
 -或- 
-<see cref="P:System.Globalization.CultureInfo.DateTimeFormat" /> 屬性的值；如果 <paramref name="formatType" /> 是 <see cref="T:System.Globalization.DateTimeFormatInfo" /> 類別的 <see cref="T:System.Globalization.CultureInfo" /> 物件，則這會是包含目前 <see cref="T:System.Type" /> 的預設日期及時間格式資訊的 <see cref="T:System.Globalization.DateTimeFormatInfo" />。  
+<see cref="P:System.Globalization.CultureInfo.DateTimeFormat" /> 屬性的值；如果 <paramref name="formatType" /> 是 <see cref="T:System.Globalization.DateTimeFormatInfo" /> 類別的 <see cref="T:System.Type" /> 物件，則這會是包含目前 <see cref="T:System.Globalization.CultureInfo" /> 之預設日期及時間格式資訊的 <see cref="T:System.Globalization.DateTimeFormatInfo" />。  
   
 -或- 
-null，如果 <paramref name="formatType" /> 為其他任何物件。</returns>
+Null，如果 <paramref name="formatType" /> 是任何其他物件。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -2372,13 +2392,13 @@ null，如果 <paramref name="formatType" /> 為其他任何物件。</returns>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>做為目前 <see cref="T:System.Globalization.CultureInfo" /> 的雜湊函式，適合於雜湊演算法和資料結構 (如雜湊資料表)。</summary>
+        <summary>做為目前 <see cref="T:System.Globalization.CultureInfo" /> 的雜湊函式，適用於雜湊演算法與資料結構，例如雜湊表。</summary>
         <returns>目前 <see cref="T:System.Globalization.CultureInfo" /> 的雜湊碼。</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法覆寫 <xref:System.Object.GetHashCode%2A?displayProperty=nameWithType>。  
+ 這個方法會覆寫 <xref:System.Object.GetHashCode%2A?displayProperty=nameWithType>。  
   
  這個方法會為兩個物件產生相同雜湊程式碼，這兩個物件根據 <xref:System.Globalization.CultureInfo.Equals%2A> 方法是相等的物件。  
   
@@ -2479,8 +2499,8 @@ null，如果 <paramref name="formatType" /> 為其他任何物件。</returns>
         <ReturnType>System.Globalization.CultureInfo</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得 <see cref="T:System.Globalization.CultureInfo" />，表示作業系統所安裝的文化特性。</summary>
-        <value><see cref="T:System.Globalization.CultureInfo" />，表示作業系統所安裝的文化特性。</value>
+        <summary>取得 <see cref="T:System.Globalization.CultureInfo" />，代表作業系統所安裝的文化特性。</summary>
+        <value><see cref="T:System.Globalization.CultureInfo" />，代表作業系統所安裝的文化特性。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -2604,8 +2624,8 @@ null，如果 <paramref name="formatType" /> 為其他任何物件。</returns>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得值，指出目前 <see cref="T:System.Globalization.CultureInfo" /> 是否表示中性文化特性。</summary>
-        <value>如果目前 <see cref="T:System.Globalization.CultureInfo" /> 表示中性文化特性，則為 <see langword="true" />，否則為 <see langword="false" />。</value>
+        <summary>取得值，指出目前 <see cref="T:System.Globalization.CultureInfo" /> 是否代表中性文化特性。</summary>
+        <value>如果目前 <see cref="T:System.Globalization.CultureInfo" /> 代表中性文化特性，則為 <see langword="true" />；否則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -2665,7 +2685,7 @@ null，如果 <paramref name="formatType" /> 為其他任何物件。</returns>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得值，指出目前 <see cref="T:System.Globalization.CultureInfo" /> 是否為唯讀。</summary>
+        <summary>取得值，指出目前 <see cref="T:System.Globalization.CultureInfo" /> 是否唯讀。</summary>
         <value>如果目前 <see langword="true" /> 是唯讀，則為 <see cref="T:System.Globalization.CultureInfo" />，否則為 <see langword="false" />。 預設為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -2960,7 +2980,7 @@ null，如果 <paramref name="formatType" /> 為其他任何物件。</returns>
       </ReturnValue>
       <Docs>
         <summary>取得或設定 <see cref="T:System.Globalization.NumberFormatInfo" />，定義數字、貨幣和百分比在文化特性上適當的顯示格式。</summary>
-        <value><see cref="T:System.Globalization.NumberFormatInfo" />，定義數字、貨幣和百分比在文化特性上適當的顯示格式。</value>
+        <value><see cref="T:System.Globalization.NumberFormatInfo" />，定義用於顯示數字、貨幣和百分比的適當文化特性格式。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -2985,7 +3005,7 @@ null，如果 <paramref name="formatType" /> 為其他任何物件。</returns>
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">此屬性設定為 null。</exception>
-        <exception cref="T:System.InvalidOperationException"><see cref="P:System.Globalization.CultureInfo.NumberFormat" /> 屬性或任何 <see cref="T:System.Globalization.NumberFormatInfo" /> 屬性已設定，而且 <see cref="T:System.Globalization.CultureInfo" /> 是唯讀的。</exception>
+        <exception cref="T:System.InvalidOperationException"><see cref="P:System.Globalization.CultureInfo.NumberFormat" /> 屬性或 <see cref="T:System.Globalization.NumberFormatInfo" /> 屬性的任何一個已設定，而且 <see cref="T:System.Globalization.CultureInfo" /> 處於唯讀狀態。</exception>
         <altmember cref="T:System.Globalization.NumberFormatInfo" />
         <altmember cref="M:System.Globalization.CultureInfo.GetFormat(System.Type)" />
         <altmember cref="P:System.Globalization.CultureInfo.DateTimeFormat" />
@@ -3031,7 +3051,7 @@ null，如果 <paramref name="formatType" /> 為其他任何物件。</returns>
       </ReturnValue>
       <Docs>
         <summary>取得可為文化特性所使用的曆法清單。</summary>
-        <value><see cref="T:System.Globalization.Calendar" /> 型別的陣列，表示可為目前 <see cref="T:System.Globalization.CultureInfo" /> 表示之文化特性所使用的曆法。</value>
+        <value><see cref="T:System.Globalization.Calendar" /> 類型的陣列，代表可為目前 <see cref="T:System.Globalization.CultureInfo" /> 所代表之文化特性所使用的曆法。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -3093,8 +3113,8 @@ null，如果 <paramref name="formatType" /> 為其他任何物件。</returns>
         <ReturnType>System.Globalization.CultureInfo</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得 <see cref="T:System.Globalization.CultureInfo" />，表示目前 <see cref="T:System.Globalization.CultureInfo" /> 的父文化特性。</summary>
-        <value><see cref="T:System.Globalization.CultureInfo" />，表示目前 <see cref="T:System.Globalization.CultureInfo" /> 的父文化特性。</value>
+        <summary>取得 <see cref="T:System.Globalization.CultureInfo" />，代表目前 <see cref="T:System.Globalization.CultureInfo" /> 的父文化特性。</summary>
+        <value><see cref="T:System.Globalization.CultureInfo" />，代表目前 <see cref="T:System.Globalization.CultureInfo" /> 的父文化特性。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -3225,8 +3245,8 @@ null，如果 <paramref name="formatType" /> 為其他任何物件。</returns>
         <ReturnType>System.Globalization.TextInfo</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得 <see cref="T:System.Globalization.TextInfo" />，定義與文化特性相關的書寫系統。</summary>
-        <value><see cref="T:System.Globalization.TextInfo" />，定義與文化特性相關的書寫系統。</value>
+        <summary>取得 <see cref="T:System.Globalization.TextInfo" />，定義與文化特性關聯的書寫系統。</summary>
+        <value><see cref="T:System.Globalization.TextInfo" />，定義與文化特性關聯的書寫系統。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -3354,8 +3374,8 @@ null，如果 <paramref name="formatType" /> 為其他任何物件。</returns>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得該語言在 Windows API 定義中的三個字母代碼。</summary>
-        <value>Windows API 中所定義的語言的三個字母代碼。</value>
+        <summary>取得 Windows API 中所定義之語言的三個字母代碼。</summary>
+        <value>Windows API 中所定義之語言的三個字母代碼。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -3428,7 +3448,7 @@ null，如果 <paramref name="formatType" /> 為其他任何物件。</returns>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 這個方法覆寫 <xref:System.Object.ToString%2A?displayProperty=nameWithType>。 它會傳回一個正規化的版本的文化特性名稱傳遞給<xref:System.Globalization.CultureInfo.%23ctor%28System.String%29>或是<xref:System.Globalization.CultureInfo.%23ctor%28System.String%2CSystem.Boolean%29>建構函式，或者<xref:System.Globalization.CultureInfo.CreateSpecificCulture%2A>或<xref:System.Globalization.CultureInfo.GetCultureInfo%28System.String%29>方法。 它將結果字串正規化轉換中的字元*languagecode2*小寫和轉換的字元，在*country/regioncode2*為大寫，如有必要。  
+ 這個方法會覆寫 <xref:System.Object.ToString%2A?displayProperty=nameWithType>。 它會傳回一個正規化的版本的文化特性名稱傳遞給<xref:System.Globalization.CultureInfo.%23ctor%28System.String%29>或是<xref:System.Globalization.CultureInfo.%23ctor%28System.String%2CSystem.Boolean%29>建構函式，或者<xref:System.Globalization.CultureInfo.CreateSpecificCulture%2A>或<xref:System.Globalization.CultureInfo.GetCultureInfo%28System.String%29>方法。 它將結果字串正規化轉換中的字元*languagecode2*小寫和轉換的字元，在*country/regioncode2*為大寫，如有必要。  
   
  預先定義的文化特性名稱所示[國家語言支援 (NLS) API 參考](https://go.microsoft.com/fwlink/?LinkId=200048)Go Global Developer Center 頁面。  
   
@@ -3477,8 +3497,8 @@ null，如果 <paramref name="formatType" /> 為其他任何物件。</returns>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>取得目前 <see cref="T:System.Globalization.CultureInfo" /> 的語言的 ISO 639-1 兩個字母代碼。</summary>
-        <value>目前 <see cref="T:System.Globalization.CultureInfo" /> 的語言的 ISO 639-1 兩個字母代碼。</value>
+        <summary>取得目前 <see cref="T:System.Globalization.CultureInfo" /> 之語言的 ISO 639-1 兩個字母代碼。</summary>
+        <value>目前 <see cref="T:System.Globalization.CultureInfo" /> 之語言的 ISO 639-1 兩個字母代碼。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -3541,7 +3561,7 @@ null，如果 <paramref name="formatType" /> 為其他任何物件。</returns>
       </ReturnValue>
       <Docs>
         <summary>取得值，指出目前 <see cref="T:System.Globalization.CultureInfo" /> 是否使用使用者選取的文化特性設定。</summary>
-        <value>如果目前 <see cref="T:System.Globalization.CultureInfo" /> 使用使用者選取的文化特性設定，則為 <see langword="true" />，否則為 <see langword="false" />。</value>
+        <value>如果目前 <see cref="T:System.Globalization.CultureInfo" /> 使用使用者選取的文化特性設定，則為 <see langword="true" />；否則為 <see langword="false" />。</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   

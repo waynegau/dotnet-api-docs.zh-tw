@@ -1,5 +1,5 @@
 <Type Name="MetadataReaderProvider" FullName="System.Reflection.Metadata.MetadataReaderProvider">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="993e92497e2081aca23625b05089edfa24014724" /><Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="zh-TW" /><Meta Name="ms.lasthandoff" Value="08/24/2018" /><Meta Name="ms.locfileid" Value="36640492" /></Metadata><TypeSignature Language="C#" Value="public sealed class MetadataReaderProvider : IDisposable" />
+  <TypeSignature Language="C#" Value="public sealed class MetadataReaderProvider : IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit MetadataReaderProvider extends System.Object implements class System.IDisposable" />
   <TypeSignature Language="DocId" Value="T:System.Reflection.Metadata.MetadataReaderProvider" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class MetadataReaderProvider&#xA;Implements IDisposable" />
@@ -11,6 +11,7 @@
     <AssemblyVersion>1.4.1.0</AssemblyVersion>
     <AssemblyVersion>1.4.2.0</AssemblyVersion>
     <AssemblyVersion>1.4.3.0</AssemblyVersion>
+    <AssemblyVersion>1.4.4.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -42,13 +43,14 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>處置所有讀取器所配置的記憶體。</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -66,6 +68,7 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Reflection.Metadata.MetadataReaderProvider</ReturnType>
@@ -74,10 +77,11 @@
         <Parameter Name="image" Type="System.Collections.Immutable.ImmutableArray&lt;System.Byte&gt;" />
       </Parameters>
       <Docs>
-        <param name="image">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="image">中繼資料的映像。</param>
+        <summary>您可以建立提供者在位元組陣列。</summary>
+        <returns>新的提供者。</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="image" /> 為 <see langword="null" />。</exception>
       </Docs>
     </Member>
     <Member MemberName="FromMetadataImage">
@@ -93,6 +97,7 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Reflection.Metadata.MetadataReaderProvider</ReturnType>
@@ -102,11 +107,13 @@
         <Parameter Name="size" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="start">To be added.</param>
-        <param name="size">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="start">中繼資料 blob 開頭的指標。</param>
+        <param name="size">中繼資料 blob 的大小。</param>
+        <summary>透過映像儲存在記憶體中建立的中繼資料提供者。</summary>
+        <returns>新的中繼資料提供者。</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="start" /> 為 <see cref="F:System.IntPtr.Zero" />。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="size" /> 為負。</exception>
       </Docs>
     </Member>
     <Member MemberName="FromMetadataStream">
@@ -121,6 +128,7 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Reflection.Metadata.MetadataReaderProvider</ReturnType>
@@ -131,12 +139,27 @@
         <Parameter Name="size" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="stream">To be added.</param>
-        <param name="options">To be added.</param>
-        <param name="size">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="stream"><see cref="T:System.IO.Stream" /> 執行個體。</param>
+        <param name="options">指定影像的區段如何讀取資料流的選項。</param>
+        <param name="size">資料流中的中繼資料 blob 的大小。 如果未指定，中繼資料的 blob 會假設跨越的資料流結尾。</param>
+        <summary>建立指定的大小開頭的資料流的提供者在其目前位置。</summary>
+        <returns>新的提供者。</returns>
+        <remarks>
+          <format type="text/markdown">
+        
+
+除非<xref:F:System.Reflection.Metadata.MetadataStreamOptions.LeaveOpen>指定的資料流擁有權轉移到<xref:T:System.Reflection.Metadata.MetadataReaderProvider>時成功的引數的驗證。 它會處置<xref:T:System.Reflection.Metadata.MetadataReaderProvider>和呼叫端必須不會管理它。
+            
+除非<xref:F:System.Reflection.Metadata.MetadataStreamOptions.PrefetchMetadata>指定從資料流讀取任何資料，是將它的建構期間<xref:T:System.Reflection.Metadata.MetadataReaderProvider>。 此外，資料流必須不由操作時的呼叫端<xref:T:System.Reflection.Metadata.MetadataReaderProvider>作用中且尚未處置。
+            
+如果<xref:F:System.Reflection.Metadata.MetadataStreamOptions.PrefetchMetadata>，則<xref:T:System.Reflection.Metadata.MetadataReaderProvider>會讀取所有要求在建構期間的資料。 因此，如果<xref:F:System.Reflection.Metadata.MetadataStreamOptions.LeaveOpen>同時指定，則呼叫端保留的資料流的完整擁有權，並可確保，它將不會由操作<xref:T:System.Reflection.Metadata.MetadataReaderProvider>建構完成之後。
+
+               </format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="stream" /> 為 <see langword="null" />。</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="stream" /> 不支援讀取，並搜尋作業。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">大小為負數或超出資料流結尾。</exception>
+        <exception cref="T:System.IO.IOException">從資料流讀取時發生錯誤 (只有當<see cref="F:System.Reflection.Metadata.MetadataStreamOptions.PrefetchMetadata" />指定)。</exception>
       </Docs>
     </Member>
     <Member MemberName="FromPortablePdbImage">
@@ -153,6 +176,7 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Reflection.Metadata.MetadataReaderProvider</ReturnType>
@@ -161,10 +185,11 @@
         <Parameter Name="image" Type="System.Collections.Immutable.ImmutableArray&lt;System.Byte&gt;" />
       </Parameters>
       <Docs>
-        <param name="image">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="image">可移植的 PDB 映像。</param>
+        <summary>您可以建立可移植的 PDB 中繼資料提供者在位元組陣列。</summary>
+        <returns>新可攜式 PDB 的中繼資料提供者。</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="image" /> 為 <see langword="null" />。</exception>
       </Docs>
     </Member>
     <Member MemberName="FromPortablePdbImage">
@@ -180,6 +205,7 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Reflection.Metadata.MetadataReaderProvider</ReturnType>
@@ -189,11 +215,13 @@
         <Parameter Name="size" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="start">To be added.</param>
-        <param name="size">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="start">可攜式 PDB blob 開頭的指標。</param>
+        <param name="size">可攜式 PDB blob 的大小。</param>
+        <summary>建立可移植的 PDB 中繼資料提供者儲存在記憶體中的 blob。</summary>
+        <returns>新可攜式 PDB 的中繼資料提供者。</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="start" /> 為 <see cref="F:System.IntPtr.Zero" />。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="size" /> 為負。</exception>
       </Docs>
     </Member>
     <Member MemberName="FromPortablePdbStream">
@@ -208,6 +236,7 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Reflection.Metadata.MetadataReaderProvider</ReturnType>
@@ -218,12 +247,26 @@
         <Parameter Name="size" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="stream">To be added.</param>
-        <param name="options">To be added.</param>
-        <param name="size">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="stream">資料流。</param>
+        <param name="options">指定影像的區段如何讀取資料流的選項。</param>
+        <param name="size">資料流中的中繼資料 blob 的大小。 如果未指定，中繼資料的 blob 會假設跨越的資料流結尾。</param>
+        <summary>建立指定的大小開頭的資料流的提供者在其目前位置。</summary>
+        <returns><see cref="T:System.Reflection.Metadata.MetadataReaderProvider" /> 執行個體。</returns>
+        <remarks>
+          <format type="text/markdown">
+        
+            
+除非<xref:F:System.Reflection.Metadata.MetadataStreamOptions.LeaveOpen>指定的資料流擁有權轉移到<xref:T:System.Reflection.Metadata.MetadataReaderProvider>時成功的引數的驗證。 它會處置<xref:T:System.Reflection.Metadata.MetadataReaderProvider>和呼叫端必須不會管理它。
+            
+除非<xref:F:System.Reflection.Metadata.MetadataStreamOptions.PrefetchMetadata>指定從資料流讀取任何資料，是將它的建構期間<xref:T:System.Reflection.Metadata.MetadataReaderProvider>。 此外，資料流必須不由操作時的呼叫端<xref:T:System.Reflection.Metadata.MetadataReaderProvider>作用中且尚未處置。
+            
+如果<xref:F:System.Reflection.Metadata.MetadataStreamOptions.PrefetchMetadata>，則<xref:T:System.Reflection.Metadata.MetadataReaderProvider>會讀取所有要求在建構期間的資料。 因此，如果<xref:F:System.Reflection.Metadata.MetadataStreamOptions.LeaveOpen>同時指定，則呼叫端保留的資料流的完整擁有權，並可確保，它將不會由操作<xref:T:System.Reflection.Metadata.MetadataReaderProvider>建構完成之後。
+
+               </format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="stream" /> 為 <see langword="null" />。</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="stream" /> 不支援讀取，並搜尋作業。</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">大小為負數或超出資料流結尾。</exception>
       </Docs>
     </Member>
     <Member MemberName="GetMetadataReader">
@@ -239,6 +282,7 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Reflection.Metadata.MetadataReader</ReturnType>
@@ -248,11 +292,15 @@
         <Parameter Name="utf8Decoder" Type="System.Reflection.Metadata.MetadataStringDecoder" />
       </Parameters>
       <Docs>
-        <param name="options">To be added.</param>
-        <param name="utf8Decoder">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="options">讀取中繼資料時，代表組態的列舉值的位元組合。</param>
+        <param name="utf8Decoder">要使用的編碼方式。</param>
+        <summary>取得<see cref="T:System.Reflection.Metadata.MetadataReader" />從<see cref="T:System.Reflection.Metadata.MetadataReaderProvider" />。</summary>
+        <returns>A<see cref="T:System.Reflection.Metadata.MetadataReader" />執行個體...</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException">編碼方式<paramref name="utf8Decoder" />不是<see cref="T:System.Text.UTF8Encoding" />。</exception>
+        <exception cref="T:System.PlatformNotSupportedException">目前的平台是位元組由大到小。</exception>
+        <exception cref="T:System.IO.IOException">從基礎資料流讀取時的 IO 錯誤。</exception>
+        <exception cref="T:System.ObjectDisposedException">提供者已經過處置。</exception>
       </Docs>
     </Member>
   </Members>
